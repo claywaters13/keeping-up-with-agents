@@ -1,0 +1,283 @@
+{
+  "is_error": false,
+  "duration_api_ms": 135644,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "898109df-a38d-41b2-9b7a-5a2930386ee1",
+  "total_cost_usd": 0.7030179999999999,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 37769,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 11813,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 37769,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 11813,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 37769,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 37769
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 24759,
+      "outputTokens": 16,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.024839,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 11813,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 37769,
+      "webSearchRequests": 0,
+      "costUSD": 0.678179,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\"concept\":\"rubric design\",\"state_of_practice\":\"The field has stopped treating the rubric as a static artifact written before evaluation and started treating it as an error-prone system with its own measurable accuracy. Lyft validates judges like binary classifiers on ~100 hand-labeled traces split train/dev/test and reports precision and recall; G2i measured a public benchmark's graders accepting wrong implementations on 8.5% of tasks and rejecting correct ones on 24%. Everyone converged on the point that final-state or aggregate pass-rate scoring is insufficient for agents \u2014 criteria must be applied to the trajectory, with judges built as agents that hold read-only access to the environment and independently verify state rather than trusting the agent's reported tool calls. Reward hacking is now attributed to the rubric rather than the model: a proxy left undefined at its boundaries is what gets exploited, and the standard defense is hindsight review of the full chain plus explicit criteria for prohibited actions, not instructions telling the judge to disallow a behavior. The live arguments are about granularity (binary business-outcome pass/fail versus ~20 criteria \u00d7 10 subcriteria), about whether a fixed rubric or an adaptive agent-judge is the right instrument, and about whether rubric scores are yet trustworthy enough to serve as an RL reward \u2014 LatchBio found their path-invariant rubric scores only loosely correlated with verifiable outcomes, and Theta found judges apply dense rubrics inconsistently on frontier problems.\",\"consensus\":[{\"claim\":\"Rubrics must be applied to the agent's trajectory, not just its final output or an aggregate pass rate \u2014 critical failures are invisible in categorical scores.\",\"support_count\":6,\"supporting_talks\":[\"how-evals-and-prompts-shape-agent-behavior\",\"rethinking-environments-for-long-horizon-work\",\"how-we-taught-agents-to-use-good-retrieval\",\"morgan-stanleys-alphalab-multi-agent-research-across-optimization-domains\",\"the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge\",\"your-agent-architecture-has-a-half-life-of-6-months\"],\"evidence_quote\":\"And we could not find that if we were just doing a categorical like the this x% pass rate or not. So we really had to look at the traces to see what was going on.\",\"evidence_talk\":\"how-evals-and-prompts-shape-agent-behavior\",\"evidence_timestamp_sec\":694},{\"claim\":\"Grading criteria cannot be fully specified in advance; they are discovered by grading real outputs and refined in hindsight.\",\"support_count\":4,\"supporting_talks\":[\"build-evals-that-actually-matter\",\"reinforcement-learning-without-verifiable-rewards\",\"verifiable-environments-for-ai-in-biology\",\"how-evals-and-prompts-shape-agent-behavior\"],\"evidence_quote\":\"The key idea is that we actually discover what our evaluation criteria is by looking at the data and grading our outputs.\",\"evidence_talk\":\"build-evals-that-actually-matter\",\"evidence_timestamp_sec\":1382},{\"claim\":\"The grader is itself an error-prone system whose accuracy must be measured against human labels \u2014 inter-grader agreement and judge precision/recall are first-class metrics, not assumptions.\",\"support_count\":4,\"supporting_talks\":[\"benchmarks-the-good-the-bad-and-the-ugly\",\"build-evals-that-actually-matter\",\"how-evals-and-prompts-shape-agent-behavior\",\"verifiable-environments-for-ai-in-biology\"],\"evidence_quote\":\"In Sweet Bench Pro, 8.5 of 8.5% of all the tasks uh accepted wrong implementation in one hand and more than 20 24% of the tasks uh rejected um correct implementations.\",\"evidence_talk\":\"benchmarks-the-good-the-bad-and-the-ugly\",\"evidence_timestamp_sec\":330},{\"claim\":\"Reward hacking is a defect in the rubric, not the model: criteria that are loose proxies undefined at their edges get exploited, so rubrics must explicitly score what the agent must not do.\",\"support_count\":4,\"supporting_talks\":[\"reinforcement-learning-without-verifiable-rewards\",\"benchmarks-the-good-the-bad-and-the-ugly\",\"rethinking-environments-for-long-horizon-work\",\"how-evals-and-prompts-shape-agent-behavior\"],\"evidence_quote\":\"reward hacking is when you have a kind of loose proxy for your objective that is undefined at the boundaries\",\"evidence_talk\":\"reinforcement-learning-without-verifiable-rewards\",\"evidence_timestamp_sec\":380},{\"claim\":\"Generic off-the-shelf quality criteria (helpfulness, toxicity, conciseness, thumbs up/down) are not usable core criteria; rubric items must be tied to a concrete task or business outcome to be actionable.\",\"support_count\":3,\"supporting_talks\":[\"build-evals-that-actually-matter\",\"your-agent-architecture-has-a-half-life-of-6-months\",\"benchmarks-the-good-the-bad-and-the-ugly\"],\"evidence_quote\":\"we can use these pre-built eval metrics as a baseline, but we shouldn't use them as our core eval metrics because we want eval metrics to be actionable and tied to the business outcome\",\"evidence_talk\":\"build-evals-that-actually-matter\",\"evidence_timestamp_sec\":1127}],\"disagreements\":[{\"question\":\"Should a rubric collapse to a binary pass/fail outcome, or decompose into many graded criteria?\",\"position_a\":\"Frame every criterion as binary task success/failure tied to a business outcome \u2014 binary is easy to calibrate and produces consistent judge scoring across trajectories.\",\"position_a_talks\":[\"build-evals-that-actually-matter\"],\"position_b\":\"Binary is too coarse to act on: raters must supply explanations, end-outcome grading is too sparse a signal and must be decomposed into intermediate analysis-DAG nodes, and training-grade rubrics need roughly 20 criteria with ~10 subcriteria each.\",\"position_b_talks\":[\"how-evals-and-prompts-shape-agent-behavior\",\"verifiable-environments-for-ai-in-biology\",\"rethinking-environments-for-long-horizon-work\"],\"why_it_matters\":\"Binary rubrics give a calibratable ship/no-ship gate but no credit assignment; dense rubrics localize the failure but degrade judge consistency exactly on the frontier problems you care most about. The choice determines whether your score can be used to debug the agent or only to gate it.\"},{\"question\":\"Is a fixed rubric applied by a judge still the right instrument for multi-step agents, or must the judge itself be an agent that decides what to examine?\",\"position_a\":\"Keep the rubric fixed and the grader cheap and deterministic where possible: a hand-tuned judge prompt validated on labeled examples, or a deterministic Python grader per task alongside human verification.\",\"position_a_talks\":[\"build-evals-that-actually-matter\",\"verifiable-environments-for-ai-in-biology\",\"benchmarks-the-good-the-bad-and-the-ugly\"],\"position_b\":\"Fixed rubrics structurally cannot catch modern agent failures because trajectories differ every run; the grader must be an agent that reuses the task harness, queries the enriched trajectory, and inspects environment state adaptively.\",\"position_b_talks\":[\"the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge\",\"rethinking-environments-for-long-horizon-work\",\"evolution-of-agentic-surfaces\"],\"why_it_matters\":\"Agent-judges cost far more per grade and are themselves unvalidated, but fixed rubrics silently miss loops, sandbox escapes, and hidden-test-suite reads. This decides whether evaluation cost scales with trace length or with test-case count.\"},{\"question\":\"Are rubric scores reliable enough to use as a training/RL reward, or only as diagnostics?\",\"position_a\":\"Yes \u2014 qualitative process rubrics grading how well a rollout followed the research process, and trajectory rubrics judging query quality and exploration volume, work today as RL reward alongside outcome metrics, and hindsight review catches most hacks.\",\"position_a_talks\":[\"morgan-stanleys-alphalab-multi-agent-research-across-optimization-domains\",\"how-we-taught-agents-to-use-good-retrieval\",\"reinforcement-learning-without-verifiable-rewards\"],\"position_b\":\"Not yet \u2014 rubric scores built from path-invariant choke points correlate only loosely with verifiable outcomes, and judges apply dense rubrics inconsistently on problems models cannot yet solve, so they are not trustworthy for RL or benchmarking.\",\"position_b_talks\":[\"verifiable-environments-for-ai-in-biology\",\"rethinking-environments-for-long-horizon-work\"],\"why_it_matters\":\"If rubric scores are trainable signal, soft-verifiable domains (finance, biology, research) open to RL immediately; if not, those domains stay gated on deterministic verifiers and expensive human grading.\"},{\"question\":\"Who should author and maintain the rubric \u2014 trained humans, or an automated loop?\",\"position_a\":\"Humans, deliberately and expensively: instructions and criteria authored and reviewed by humans, scientists grading each other's tasks to expose bad specifications, and cross-functional teams and scaled raters trained on how to rate.\",\"position_a_talks\":[\"benchmarks-the-good-the-bad-and-the-ugly\",\"verifiable-environments-for-ai-in-biology\",\"how-evals-and-prompts-shape-agent-behavior\"],\"position_b\":\"Reward and rubric design will climb the abstraction ladder the way coding agents did \u2014 harness and criteria design is itself a verifiable loop an LLM should meta-optimize, with humans reserved for the highest-level judgments about goals and quality.\",\"position_b_talks\":[\"reinforcement-learning-without-verifiable-rewards\",\"morgan-stanleys-alphalab-multi-agent-research-across-optimization-domains\"],\"why_it_matters\":\"LatchBio reports each task took three people about a week to build; if rubric authoring can be automated, eval coverage scales with compute instead of headcount, and the human role shifts from writing criteria to auditing them.\"}],\"practical_guidance\":{\"do\":[\"Hand-label ~100 traces pass/fail, split into train/dev/test, and score the judge on precision and recall before letting its output gate anything\",\"Give the judge read-only access to the same environment the agent ran in and have it verify state directly (GitHub, AWS logs) rather than trusting the agent's reported tool calls\",\"Store, enrich, and phase-segment long trajectories so the judge can query them, instead of stuffing the whole trace into one LLM call\",\"Attach confidence intervals to every reported score \u2014 84% vs 88% alignment on 50 traces is not a demonstrated gain\",\"Include criteria for what the agent must not do (e.g. removing a legally required disclaimer), not only whether the task succeeded\",\"Judge in hindsight, after the full chain of events, or by polling several models, rather than instructing a judge in advance not to allow a behavior\",\"Write task instructions as desired behaviors, objectives, and hard constraints \u2014 not implementation details, interfaces, or pointers to the test file\",\"Make the rubric path-invariant: check that several valid solution paths all pass before trusting a failure\",\"Decompose sparse end-outcome grading into intermediate nodes of the analysis DAG when models are too weak for the final outcome to carry signal\",\"QA rubric density explicitly rather than maximizing criterion count, and re-check judge consistency after each density increase\",\"Have domain experts grade each other's tasks \u2014 disagreement surfaces badly specified rubrics rather than bad work\",\"Fix criteria based on failure patterns across many examples, not on one failing run\",\"Decide launch gatekeeping thresholds before running the regression analysis, not after seeing results\",\"Keep the eval/rubric config in editable YAML so analysts and domain experts, not only engineers, can add cases\"],\"avoid\":[\"Tests that assert unspecified variable names or exercise unexported functions \u2014 weak verifiers that would fail code review\",\"Instructions that name the test file or hand over the full implementation interface, which leaks the answer and removes the task\",\"Helpfulness/toxicity/conciseness-style prebuilt metrics as core criteria; a 0.5 helpfulness score implies no action\",\"Grading open-ended work by diffing against one reference answer or sample trajectory \u2014 there are too many correct solutions to enumerate\",\"Maximizing rubric density on frontier problems, where judges cannot apply dense criteria consistently\",\"Moving to scaled human raters before the rubric is calibrated, which produces large swings in measured quality\",\"Shipping an LLM judge whose score gates no decision\",\"Buying your eval, your tasks, and your definition of task realism from the same vendor\",\"Accepting a 90%+ pass rate without checking whether the simulated user or environment is unrealistically easy\",\"Generating ~50 test queries by prompting an LLM instead of sampling and mutating production traffic\"]},\"notable_outliers\":[{\"claim\":\"Fine-tune the user simulator until the eval score goes down \u2014 a falling score is evidence the rubric got more realistic, not that quality dropped.\",\"talk\":\"build-evals-that-actually-matter\",\"timestamp_sec\":1015},{\"claim\":\"Evaluation-time rubrics can be dynamic: grant partial credit by assuming an agent's earlier mistaken assumption was correct, then grade the rest of the trajectory conditionally.\",\"talk\":\"rethinking-environments-for-long-horizon-work\",\"timestamp_sec\":1033},{\"claim\":\"Vendors cherry-pick tasks where models diverge, package them as a hard North Star benchmark, then sell the data to hill-climb that same benchmark \u2014 Goodhart's law with a profit motive.\",\"talk\":\"state-of-data\",\"timestamp_sec\":491},{\"claim\":\"Writing the eval forces more rigorous reasoning than doing the analysis yourself, and doing so revealed that many canonical bioinformatics QC thresholds are arbitrary.\",\"talk\":\"verifiable-environments-for-ai-in-biology\",\"timestamp_sec\":654},{\"claim\":\"Writing the evals is a small point on the diagram; humans arguing over what the rubric should be is the large task.\",\"talk\":\"how-evals-and-prompts-shape-agent-behavior\",\"timestamp_sec\":371},{\"claim\":\"A rubric-based grader agent running alongside the agent loop can keep the agent retrying until it meets the defined success criteria, turning the rubric into a control mechanism rather than a measurement.\",\"talk\":\"evolution-of-agentic-surfaces\",\"timestamp_sec\":1738}],\"maturity\":\"contested\",\"maturity_rationale\":\"There is real convergence on process \u2014 validate the grader, grade the trajectory, discover criteria from data, treat hacking as a rubric defect \u2014 but credible practitioners actively disagree on the fundamentals of the artifact itself: binary versus ~20\u00d710 criteria, fixed rubric versus agent-judge, and whether rubric scores are trustworthy enough to train on, with LatchBio and Theta reporting concrete measurements against and Morgan Stanley and Prime Intellect building on them.\"}",
+  "ttft_ms": 78833,
+  "ttft_stream_ms": 938,
+  "time_to_request_ms": 35,
+  "type": "result",
+  "duration_ms": 136092,
+  "uuid": "45747b01-9174-43f1-a435-10e1042a2944",
+  "passC": {
+    "concept": "rubric design",
+    "state_of_practice": "The field has stopped treating the rubric as a static artifact written before evaluation and started treating it as an error-prone system with its own measurable accuracy. Lyft validates judges like binary classifiers on ~100 hand-labeled traces split train/dev/test and reports precision and recall; G2i measured a public benchmark's graders accepting wrong implementations on 8.5% of tasks and rejecting correct ones on 24%. Everyone converged on the point that final-state or aggregate pass-rate scoring is insufficient for agents \u2014 criteria must be applied to the trajectory, with judges built as agents that hold read-only access to the environment and independently verify state rather than trusting the agent's reported tool calls. Reward hacking is now attributed to the rubric rather than the model: a proxy left undefined at its boundaries is what gets exploited, and the standard defense is hindsight review of the full chain plus explicit criteria for prohibited actions, not instructions telling the judge to disallow a behavior. The live arguments are about granularity (binary business-outcome pass/fail versus ~20 criteria \u00d7 10 subcriteria), about whether a fixed rubric or an adaptive agent-judge is the right instrument, and about whether rubric scores are yet trustworthy enough to serve as an RL reward \u2014 LatchBio found their path-invariant rubric scores only loosely correlated with verifiable outcomes, and Theta found judges apply dense rubrics inconsistently on frontier problems.",
+    "consensus": [
+      {
+        "claim": "Rubrics must be applied to the agent's trajectory, not just its final output or an aggregate pass rate \u2014 critical failures are invisible in categorical scores.",
+        "support_count": 6,
+        "supporting_talks": [
+          "how-evals-and-prompts-shape-agent-behavior",
+          "rethinking-environments-for-long-horizon-work",
+          "how-we-taught-agents-to-use-good-retrieval",
+          "morgan-stanleys-alphalab-multi-agent-research-across-optimization-domains",
+          "the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge",
+          "your-agent-architecture-has-a-half-life-of-6-months"
+        ],
+        "evidence_quote": "And we could not find that if we were just doing a categorical like the this x% pass rate or not. So we really had to look at the traces to see what was going on.",
+        "evidence_talk": "how-evals-and-prompts-shape-agent-behavior",
+        "evidence_timestamp_sec": 694
+      },
+      {
+        "claim": "Grading criteria cannot be fully specified in advance; they are discovered by grading real outputs and refined in hindsight.",
+        "support_count": 4,
+        "supporting_talks": [
+          "build-evals-that-actually-matter",
+          "reinforcement-learning-without-verifiable-rewards",
+          "verifiable-environments-for-ai-in-biology",
+          "how-evals-and-prompts-shape-agent-behavior"
+        ],
+        "evidence_quote": "The key idea is that we actually discover what our evaluation criteria is by looking at the data and grading our outputs.",
+        "evidence_talk": "build-evals-that-actually-matter",
+        "evidence_timestamp_sec": 1382
+      },
+      {
+        "claim": "The grader is itself an error-prone system whose accuracy must be measured against human labels \u2014 inter-grader agreement and judge precision/recall are first-class metrics, not assumptions.",
+        "support_count": 4,
+        "supporting_talks": [
+          "benchmarks-the-good-the-bad-and-the-ugly",
+          "build-evals-that-actually-matter",
+          "how-evals-and-prompts-shape-agent-behavior",
+          "verifiable-environments-for-ai-in-biology"
+        ],
+        "evidence_quote": "In Sweet Bench Pro, 8.5 of 8.5% of all the tasks uh accepted wrong implementation in one hand and more than 20 24% of the tasks uh rejected um correct implementations.",
+        "evidence_talk": "benchmarks-the-good-the-bad-and-the-ugly",
+        "evidence_timestamp_sec": 330
+      },
+      {
+        "claim": "Reward hacking is a defect in the rubric, not the model: criteria that are loose proxies undefined at their edges get exploited, so rubrics must explicitly score what the agent must not do.",
+        "support_count": 4,
+        "supporting_talks": [
+          "reinforcement-learning-without-verifiable-rewards",
+          "benchmarks-the-good-the-bad-and-the-ugly",
+          "rethinking-environments-for-long-horizon-work",
+          "how-evals-and-prompts-shape-agent-behavior"
+        ],
+        "evidence_quote": "reward hacking is when you have a kind of loose proxy for your objective that is undefined at the boundaries",
+        "evidence_talk": "reinforcement-learning-without-verifiable-rewards",
+        "evidence_timestamp_sec": 380
+      },
+      {
+        "claim": "Generic off-the-shelf quality criteria (helpfulness, toxicity, conciseness, thumbs up/down) are not usable core criteria; rubric items must be tied to a concrete task or business outcome to be actionable.",
+        "support_count": 3,
+        "supporting_talks": [
+          "build-evals-that-actually-matter",
+          "your-agent-architecture-has-a-half-life-of-6-months",
+          "benchmarks-the-good-the-bad-and-the-ugly"
+        ],
+        "evidence_quote": "we can use these pre-built eval metrics as a baseline, but we shouldn't use them as our core eval metrics because we want eval metrics to be actionable and tied to the business outcome",
+        "evidence_talk": "build-evals-that-actually-matter",
+        "evidence_timestamp_sec": 1127
+      }
+    ],
+    "disagreements": [
+      {
+        "question": "Should a rubric collapse to a binary pass/fail outcome, or decompose into many graded criteria?",
+        "position_a": "Frame every criterion as binary task success/failure tied to a business outcome \u2014 binary is easy to calibrate and produces consistent judge scoring across trajectories.",
+        "position_a_talks": [
+          "build-evals-that-actually-matter"
+        ],
+        "position_b": "Binary is too coarse to act on: raters must supply explanations, end-outcome grading is too sparse a signal and must be decomposed into intermediate analysis-DAG nodes, and training-grade rubrics need roughly 20 criteria with ~10 subcriteria each.",
+        "position_b_talks": [
+          "how-evals-and-prompts-shape-agent-behavior",
+          "verifiable-environments-for-ai-in-biology",
+          "rethinking-environments-for-long-horizon-work"
+        ],
+        "why_it_matters": "Binary rubrics give a calibratable ship/no-ship gate but no credit assignment; dense rubrics localize the failure but degrade judge consistency exactly on the frontier problems you care most about. The choice determines whether your score can be used to debug the agent or only to gate it."
+      },
+      {
+        "question": "Is a fixed rubric applied by a judge still the right instrument for multi-step agents, or must the judge itself be an agent that decides what to examine?",
+        "position_a": "Keep the rubric fixed and the grader cheap and deterministic where possible: a hand-tuned judge prompt validated on labeled examples, or a deterministic Python grader per task alongside human verification.",
+        "position_a_talks": [
+          "build-evals-that-actually-matter",
+          "verifiable-environments-for-ai-in-biology",
+          "benchmarks-the-good-the-bad-and-the-ugly"
+        ],
+        "position_b": "Fixed rubrics structurally cannot catch modern agent failures because trajectories differ every run; the grader must be an agent that reuses the task harness, queries the enriched trajectory, and inspects environment state adaptively.",
+        "position_b_talks": [
+          "the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge",
+          "rethinking-environments-for-long-horizon-work",
+          "evolution-of-agentic-surfaces"
+        ],
+        "why_it_matters": "Agent-judges cost far more per grade and are themselves unvalidated, but fixed rubrics silently miss loops, sandbox escapes, and hidden-test-suite reads. This decides whether evaluation cost scales with trace length or with test-case count."
+      },
+      {
+        "question": "Are rubric scores reliable enough to use as a training/RL reward, or only as diagnostics?",
+        "position_a": "Yes \u2014 qualitative process rubrics grading how well a rollout followed the research process, and trajectory rubrics judging query quality and exploration volume, work today as RL reward alongside outcome metrics, and hindsight review catches most hacks.",
+        "position_a_talks": [
+          "morgan-stanleys-alphalab-multi-agent-research-across-optimization-domains",
+          "how-we-taught-agents-to-use-good-retrieval",
+          "reinforcement-learning-without-verifiable-rewards"
+        ],
+        "position_b": "Not yet \u2014 rubric scores built from path-invariant choke points correlate only loosely with verifiable outcomes, and judges apply dense rubrics inconsistently on problems models cannot yet solve, so they are not trustworthy for RL or benchmarking.",
+        "position_b_talks": [
+          "verifiable-environments-for-ai-in-biology",
+          "rethinking-environments-for-long-horizon-work"
+        ],
+        "why_it_matters": "If rubric scores are trainable signal, soft-verifiable domains (finance, biology, research) open to RL immediately; if not, those domains stay gated on deterministic verifiers and expensive human grading."
+      },
+      {
+        "question": "Who should author and maintain the rubric \u2014 trained humans, or an automated loop?",
+        "position_a": "Humans, deliberately and expensively: instructions and criteria authored and reviewed by humans, scientists grading each other's tasks to expose bad specifications, and cross-functional teams and scaled raters trained on how to rate.",
+        "position_a_talks": [
+          "benchmarks-the-good-the-bad-and-the-ugly",
+          "verifiable-environments-for-ai-in-biology",
+          "how-evals-and-prompts-shape-agent-behavior"
+        ],
+        "position_b": "Reward and rubric design will climb the abstraction ladder the way coding agents did \u2014 harness and criteria design is itself a verifiable loop an LLM should meta-optimize, with humans reserved for the highest-level judgments about goals and quality.",
+        "position_b_talks": [
+          "reinforcement-learning-without-verifiable-rewards",
+          "morgan-stanleys-alphalab-multi-agent-research-across-optimization-domains"
+        ],
+        "why_it_matters": "LatchBio reports each task took three people about a week to build; if rubric authoring can be automated, eval coverage scales with compute instead of headcount, and the human role shifts from writing criteria to auditing them."
+      }
+    ],
+    "practical_guidance": {
+      "do": [
+        "Hand-label ~100 traces pass/fail, split into train/dev/test, and score the judge on precision and recall before letting its output gate anything",
+        "Give the judge read-only access to the same environment the agent ran in and have it verify state directly (GitHub, AWS logs) rather than trusting the agent's reported tool calls",
+        "Store, enrich, and phase-segment long trajectories so the judge can query them, instead of stuffing the whole trace into one LLM call",
+        "Attach confidence intervals to every reported score \u2014 84% vs 88% alignment on 50 traces is not a demonstrated gain",
+        "Include criteria for what the agent must not do (e.g. removing a legally required disclaimer), not only whether the task succeeded",
+        "Judge in hindsight, after the full chain of events, or by polling several models, rather than instructing a judge in advance not to allow a behavior",
+        "Write task instructions as desired behaviors, objectives, and hard constraints \u2014 not implementation details, interfaces, or pointers to the test file",
+        "Make the rubric path-invariant: check that several valid solution paths all pass before trusting a failure",
+        "Decompose sparse end-outcome grading into intermediate nodes of the analysis DAG when models are too weak for the final outcome to carry signal",
+        "QA rubric density explicitly rather than maximizing criterion count, and re-check judge consistency after each density increase",
+        "Have domain experts grade each other's tasks \u2014 disagreement surfaces badly specified rubrics rather than bad work",
+        "Fix criteria based on failure patterns across many examples, not on one failing run",
+        "Decide launch gatekeeping thresholds before running the regression analysis, not after seeing results",
+        "Keep the eval/rubric config in editable YAML so analysts and domain experts, not only engineers, can add cases"
+      ],
+      "avoid": [
+        "Tests that assert unspecified variable names or exercise unexported functions \u2014 weak verifiers that would fail code review",
+        "Instructions that name the test file or hand over the full implementation interface, which leaks the answer and removes the task",
+        "Helpfulness/toxicity/conciseness-style prebuilt metrics as core criteria; a 0.5 helpfulness score implies no action",
+        "Grading open-ended work by diffing against one reference answer or sample trajectory \u2014 there are too many correct solutions to enumerate",
+        "Maximizing rubric density on frontier problems, where judges cannot apply dense criteria consistently",
+        "Moving to scaled human raters before the rubric is calibrated, which produces large swings in measured quality",
+        "Shipping an LLM judge whose score gates no decision",
+        "Buying your eval, your tasks, and your definition of task realism from the same vendor",
+        "Accepting a 90%+ pass rate without checking whether the simulated user or environment is unrealistically easy",
+        "Generating ~50 test queries by prompting an LLM instead of sampling and mutating production traffic"
+      ]
+    },
+    "notable_outliers": [
+      {
+        "claim": "Fine-tune the user simulator until the eval score goes down \u2014 a falling score is evidence the rubric got more realistic, not that quality dropped.",
+        "talk": "build-evals-that-actually-matter",
+        "timestamp_sec": 1015
+      },
+      {
+        "claim": "Evaluation-time rubrics can be dynamic: grant partial credit by assuming an agent's earlier mistaken assumption was correct, then grade the rest of the trajectory conditionally.",
+        "talk": "rethinking-environments-for-long-horizon-work",
+        "timestamp_sec": 1033
+      },
+      {
+        "claim": "Vendors cherry-pick tasks where models diverge, package them as a hard North Star benchmark, then sell the data to hill-climb that same benchmark \u2014 Goodhart's law with a profit motive.",
+        "talk": "state-of-data",
+        "timestamp_sec": 491
+      },
+      {
+        "claim": "Writing the eval forces more rigorous reasoning than doing the analysis yourself, and doing so revealed that many canonical bioinformatics QC thresholds are arbitrary.",
+        "talk": "verifiable-environments-for-ai-in-biology",
+        "timestamp_sec": 654
+      },
+      {
+        "claim": "Writing the evals is a small point on the diagram; humans arguing over what the rubric should be is the large task.",
+        "talk": "how-evals-and-prompts-shape-agent-behavior",
+        "timestamp_sec": 371
+      },
+      {
+        "claim": "A rubric-based grader agent running alongside the agent loop can keep the agent retrying until it meets the defined success criteria, turning the rubric into a control mechanism rather than a measurement.",
+        "talk": "evolution-of-agentic-surfaces",
+        "timestamp_sec": 1738
+      }
+    ],
+    "maturity": "contested",
+    "maturity_rationale": "There is real convergence on process \u2014 validate the grader, grade the trajectory, discover criteria from data, treat hacking as a rubric defect \u2014 but credible practitioners actively disagree on the fundamentals of the artifact itself: binary versus ~20\u00d710 criteria, fixed rubric versus agent-judge, and whether rubric scores are trustworthy enough to train on, with LatchBio and Theta reporting concrete measurements against and Morgan Stanley and Prime Intellect building on them."
+  },
+  "_meta": {
+    "concept": "rubric design",
+    "slug": "rubric-design",
+    "talk_count": 14,
+    "missing_talks": [],
+    "wall_sec": 137.3,
+    "run_at": "2026-08-13T17:42:15Z"
+  }
+}

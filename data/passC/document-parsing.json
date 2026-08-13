@@ -1,0 +1,238 @@
+{
+  "is_error": false,
+  "duration_api_ms": 82496,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "649cd9ca-4b9e-4975-b003-a4e7db76d321",
+  "total_cost_usd": 0.346005,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 16576,
+    "cache_read_input_tokens": 10720,
+    "output_tokens": 6589,
+    "output_tokens_details": {
+      "thinking_tokens": 2238
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 16576,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 6589,
+        "cache_read_input_tokens": 10720,
+        "cache_creation_input_tokens": 16576,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 16576
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 10065,
+      "outputTokens": 17,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.01015,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 6589,
+      "cacheReadInputTokens": 10720,
+      "cacheCreationInputTokens": 16576,
+      "webSearchRequests": 0,
+      "costUSD": 0.335855,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\"concept\": \"document parsing\", \"state_of_practice\": \"The field has stopped treating PDF-to-text as a solved plumbing step and now treats it as the dominant determinant of downstream answer quality \u2014 Red Hat's position that \\\"how you process source documents, not which model you use\\\" drives correctness went essentially unchallenged. The stack that emerged is a middle path between two rejected extremes: naive text extractors (which truncate, linearize tables, merge columns, and leak page headers) and running every page through a frontier VLM (rejected on cost at thousands-of-documents scale, and on non-determinism plus model-version churn breaking structured-output consistency). Docling was the concrete tool named in two independent talks, both emphasizing fully local CPU-only operation, markdown/JSON/Pydantic output, and one citing Hugging Face's FinePDFs work at ~50x cost savings versus naive VLM/OCR. The most interesting shift is what the parse output is used for: preserved heading/section structure is increasingly the retrieval index itself, with speakers demonstrating RAG over a 418-section annual report with no chunker, embedding model, or vector DB. Where the field is still divided is trust \u2014 whether well-parsed extraction output can be consumed as data, or whether the parser may only emit provenance-carrying references that a deterministic substrate resolves, which is what a 94%-accurate fine-tuned extractor is deemed insufficient for in finance.\", \"consensus\": [{\"claim\": \"Deterministic, code-based document processing should be preferred over LLM/VLM extraction wherever document structure makes it possible, because it is idempotent, faster, cheaper, and testable.\", \"support_count\": 4, \"supporting_talks\": [\"structuring-the-unstructured\", \"ai-on-your-lakehouse-context-comes-in-shapes-not-queries\", \"bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry\", \"how-kepler-built-verifiable-ai-for-financial-services\"], \"evidence_quote\": \"the benefits of having a deterministic load like this is number one, it's going to be item potent. Um, so like you're not relying on an LLM in the beginning. Um, it's often going to be a little bit faster.\", \"evidence_talk\": \"ai-on-your-lakehouse-context-comes-in-shapes-not-queries\", \"evidence_timestamp_sec\": 3027}, {\"claim\": \"Parsing quality, not model selection, is the binding constraint on answer correctness; bad parses manifest directly as hallucination and are not recoverable by using a stronger model.\", \"support_count\": 4, \"supporting_talks\": [\"structuring-the-unstructured\", \"bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry\", \"when-agents-meet-physical-data-the-other-physics-of-agent-harnesses\", \"how-kepler-built-verifiable-ai-for-financial-services\"], \"evidence_quote\": \"that data and the way you process it is the key determining factor in whether your answer is going to be correct or incorrect for the user or customer at the end of the day\", \"evidence_talk\": \"structuring-the-unstructured\", \"evidence_timestamp_sec\": 157}, {\"claim\": \"Preserve the document's native structure (headings, sections, outline, links) through the parse and use it as the retrieval unit, instead of blind fixed-size character chunking.\", \"support_count\": 3, \"supporting_talks\": [\"structuring-the-unstructured\", \"bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry\", \"ai-on-your-lakehouse-context-comes-in-shapes-not-queries\"], \"evidence_quote\": \"what's really important here is that we're doing RAG but without having to use a chunker or embedding model or vector database, etc., etc. So the index ends up being the markdown outline of the document.\", \"evidence_talk\": \"structuring-the-unstructured\", \"evidence_timestamp_sec\": 872}, {\"claim\": \"Documents must be parsed into a structured layer ahead of query time rather than dumped raw into a model's context or scanned per-question, because per-query token cost and inconsistency scale badly with corpus size.\", \"support_count\": 3, \"supporting_talks\": [\"bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry\", \"structuring-the-unstructured\", \"when-agents-meet-physical-data-the-other-physics-of-agent-harnesses\"], \"evidence_quote\": \"imagine if if one or two pages the cost is next to nothing, but if you have 200 pages uh, then the cost going to be too much\", \"evidence_talk\": \"bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry\", \"evidence_timestamp_sec\": 614}], \"disagreements\": [{\"question\": \"Can values extracted by a document parser be consumed directly as data, or may the pipeline only emit references that a deterministic system resolves back to the source?\", \"position_a\": \"Parser output (markdown, JSON tables, LLM-enriched metadata) is trustworthy enough to feed straight into retrieval, answers, and downstream tables; the eight tables Docling exports from a PDF are the working artifact.\", \"position_a_talks\": [\"structuring-the-unstructured\", \"bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry\", \"when-agents-meet-physical-data-the-other-physics-of-agent-harnesses\"], \"position_b\": \"No extraction accuracy short of 100% is usable for consequential decisions \u2014 a fine-tuned extractor at 94% beating foundation models is still unacceptable \u2014 so the model must write only an atomic-provenance reference to a number and never the number itself; citations are an after-the-fact audit, not verification.\", \"position_b_talks\": [\"how-kepler-built-verifiable-ai-for-financial-services\"], \"why_it_matters\": \"It decides whether your parsing layer outputs values or pointers, and therefore whether you need a deterministic substrate that recomputes from source cells. Getting this wrong is invisible in evals and shows up as a wrong number in a work product nobody can trace.\"}, {\"question\": \"Once documents are parsed with structure preserved, does structural navigation replace vector retrieval or merely supplement it?\", \"position_a\": \"Structure is enough on its own \u2014 the markdown outline is the entire index, with the agent iterating multi-turn over sections, no chunker, embedding model, or vector DB required even on a 418-section annual report.\", \"position_a_talks\": [\"structuring-the-unstructured\"], \"position_b\": \"Structural navigation is not a replacement; production systems need hybrid retrieval, with BM25 keyword search mandatory for exact-match domains (SKUs, brand names, medications) where semantic similarity is actively wrong.\", \"position_b_talks\": [\"bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry\", \"ai-on-your-lakehouse-context-comes-in-shapes-not-queries\"], \"why_it_matters\": \"It determines whether a document pipeline ships with an embedding store and reranker at all, and how much per-query latency and multi-turn agent iteration you accept in exchange for dropping that infrastructure.\"}], \"practical_guidance\": {\"do\": [\"Convert PDFs locally with a CPU-only layout model (Docling was named in two talks) to markdown/JSON/Pydantic rather than paying frontier-model output tokens per page.\", \"Chunk on headings so each chunk is a referenceable question-answer unit, which makes a retrieval miss debuggable back to a specific chunk.\", \"Keep the document outline/section tree as a first-class retrieval index and let the agent traverse it before falling back to similarity search.\", \"Pair semantic search with BM25 keyword search whenever exact tokens matter \u2014 SKUs, brand names, medications.\", \"Route any arithmetic over extracted numbers to code; have the model decide what to compute, never compute it.\", \"Use a deterministic regex/structure-based load when documents already carry inherent structure and interlinking, reserving LLM assistance for ingest where titles and link names are poorly labeled.\", \"Use layout models to detect and strip PII from source documents before extraction.\", \"Store extracted metadata in a queryable typed layer (Pydantic schemas transpiled to SQL) with incremental updates and checkpoints, not millions of sidecar JSON files on S3.\", \"Store the source code that produced a derived dataset as its most important context, alongside an LLM-written description.\", \"Tune top-k by domain: retrieve more for product catalogs, fewer for medical answers where a wrong retrieval carries liability.\"], \"avoid\": [\"Bulk-uploading raw multi-page documents into a hosted chatbot \u2014 it burns tokens before any question is asked and you cannot see how it chunked them.\", \"Simple PDF text extractors that truncate text, linearize tables, drop images, and pull in page headers; column-merging errors have already injected nonsensical terms into 20 scientific papers.\", \"Running every page through a frontier VLM at scale \u2014 cost compounds at thousands of PDFs and a 5.1\u21925.2 deprecation breaks your structured-output consistency.\", \"Default 512-character chunking with overlap as a reflex 'best practice'; it produces chunks that cut mid-answer and reference the wrong section.\", \"Treating evals or a high extraction-accuracy score as verification for consequential numbers.\", \"Stacking probabilistic checkers \u2014 having one model check another's extraction is not a verification strategy.\", \"Three-to-four agent loops over a parsed corpus in an interactive assistant; 20-30 seconds of latency loses the user, and agent-driven search breaks the citation chain back to source chunks.\", \"Enforcing guardrails and prompt-injection defenses through system-prompt instructions instead of blocking in code before the LLM is called.\", \"Assuming a stronger frontier model will fix agent performance on unstructured data \u2014 everyone already uses frontier models; the harness is the differentiator.\", \"Humans manually transcribing numbers out of filings into spreadsheet models.\"]}, \"notable_outliers\": [{\"claim\": \"AI misparsing of a scanned two-column PDF merged words from adjacent columns into a nonsensical term that now appears in 20 published scientific papers \u2014 a parsing bug propagating into the literature.\", \"talk\": \"structuring-the-unstructured\", \"timestamp_sec\": 157}, {\"claim\": \"A 0.5B-parameter model (Qwen 2.5, ~400MB) is sufficient for an FAQ assistant and hallucinates less than larger models, provided the retrieved context is well-vetted \u2014 quality of parse substitutes for model size.\", \"talk\": \"bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry\", \"timestamp_sec\": 2550}, {\"claim\": \"With atomic provenance the model writes a reference to a number and cannot write or manipulate the number in any way \u2014 it doesn't even understand what that number is.\", \"talk\": \"how-kepler-built-verifiable-ai-for-financial-services\", \"timestamp_sec\": 611}, {\"claim\": \"CPU-based Docling delivered roughly 50x cost savings versus naive VLM and OCR pipelines in Hugging Face's FinePDFs Common Crawl work.\", \"talk\": \"structuring-the-unstructured\", \"timestamp_sec\": 482}, {\"claim\": \"Institutions buy Bloomberg and FactSet primarily to displace culpability for data errors \u2014 'at least if it's wrong, everyone on Wall Street has the same incorrect information' \u2014 which sets the real bar for automated extraction.\", \"talk\": \"how-kepler-built-verifiable-ai-for-financial-services\", \"timestamp_sec\": 217}, {\"claim\": \"2,000 video files can generate millions of extracted objects, so unstructured extraction output outgrows the source corpus by orders of magnitude and needs its own execution engine.\", \"talk\": \"when-agents-meet-physical-data-the-other-physics-of-agent-harnesses\", \"timestamp_sec\": 175}, {\"claim\": \"Modern agents are capable enough that entity nodes formerly required in a document graph data model can often be omitted entirely, with life-sciences ontologies as the counterexample.\", \"talk\": \"ai-on-your-lakehouse-context-comes-in-shapes-not-queries\", \"timestamp_sec\": 4073}], \"maturity\": \"consolidating\", \"maturity_rationale\": \"Speakers from four unrelated domains independently converged on the same architecture \u2014 local deterministic layout parsing, structure-preserving output, no frontier model in the conversion loop \u2014 and two named the same tool without coordination. What remains argued is downstream: whether parsed output is trustworthy as data or only as provenance references, and whether the preserved outline eliminates vector retrieval or merely supplements it.\"}",
+  "ttft_ms": 30823,
+  "ttft_stream_ms": 1057,
+  "time_to_request_ms": 61,
+  "type": "result",
+  "duration_ms": 83141,
+  "uuid": "475ea527-01a5-4efd-9ec0-a3d6c3d7706d",
+  "passC": {
+    "concept": "document parsing",
+    "state_of_practice": "The field has stopped treating PDF-to-text as a solved plumbing step and now treats it as the dominant determinant of downstream answer quality \u2014 Red Hat's position that \"how you process source documents, not which model you use\" drives correctness went essentially unchallenged. The stack that emerged is a middle path between two rejected extremes: naive text extractors (which truncate, linearize tables, merge columns, and leak page headers) and running every page through a frontier VLM (rejected on cost at thousands-of-documents scale, and on non-determinism plus model-version churn breaking structured-output consistency). Docling was the concrete tool named in two independent talks, both emphasizing fully local CPU-only operation, markdown/JSON/Pydantic output, and one citing Hugging Face's FinePDFs work at ~50x cost savings versus naive VLM/OCR. The most interesting shift is what the parse output is used for: preserved heading/section structure is increasingly the retrieval index itself, with speakers demonstrating RAG over a 418-section annual report with no chunker, embedding model, or vector DB. Where the field is still divided is trust \u2014 whether well-parsed extraction output can be consumed as data, or whether the parser may only emit provenance-carrying references that a deterministic substrate resolves, which is what a 94%-accurate fine-tuned extractor is deemed insufficient for in finance.",
+    "consensus": [
+      {
+        "claim": "Deterministic, code-based document processing should be preferred over LLM/VLM extraction wherever document structure makes it possible, because it is idempotent, faster, cheaper, and testable.",
+        "support_count": 4,
+        "supporting_talks": [
+          "structuring-the-unstructured",
+          "ai-on-your-lakehouse-context-comes-in-shapes-not-queries",
+          "bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry",
+          "how-kepler-built-verifiable-ai-for-financial-services"
+        ],
+        "evidence_quote": "the benefits of having a deterministic load like this is number one, it's going to be item potent. Um, so like you're not relying on an LLM in the beginning. Um, it's often going to be a little bit faster.",
+        "evidence_talk": "ai-on-your-lakehouse-context-comes-in-shapes-not-queries",
+        "evidence_timestamp_sec": 3027
+      },
+      {
+        "claim": "Parsing quality, not model selection, is the binding constraint on answer correctness; bad parses manifest directly as hallucination and are not recoverable by using a stronger model.",
+        "support_count": 4,
+        "supporting_talks": [
+          "structuring-the-unstructured",
+          "bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry",
+          "when-agents-meet-physical-data-the-other-physics-of-agent-harnesses",
+          "how-kepler-built-verifiable-ai-for-financial-services"
+        ],
+        "evidence_quote": "that data and the way you process it is the key determining factor in whether your answer is going to be correct or incorrect for the user or customer at the end of the day",
+        "evidence_talk": "structuring-the-unstructured",
+        "evidence_timestamp_sec": 157
+      },
+      {
+        "claim": "Preserve the document's native structure (headings, sections, outline, links) through the parse and use it as the retrieval unit, instead of blind fixed-size character chunking.",
+        "support_count": 3,
+        "supporting_talks": [
+          "structuring-the-unstructured",
+          "bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry",
+          "ai-on-your-lakehouse-context-comes-in-shapes-not-queries"
+        ],
+        "evidence_quote": "what's really important here is that we're doing RAG but without having to use a chunker or embedding model or vector database, etc., etc. So the index ends up being the markdown outline of the document.",
+        "evidence_talk": "structuring-the-unstructured",
+        "evidence_timestamp_sec": 872
+      },
+      {
+        "claim": "Documents must be parsed into a structured layer ahead of query time rather than dumped raw into a model's context or scanned per-question, because per-query token cost and inconsistency scale badly with corpus size.",
+        "support_count": 3,
+        "supporting_talks": [
+          "bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry",
+          "structuring-the-unstructured",
+          "when-agents-meet-physical-data-the-other-physics-of-agent-harnesses"
+        ],
+        "evidence_quote": "imagine if if one or two pages the cost is next to nothing, but if you have 200 pages uh, then the cost going to be too much",
+        "evidence_talk": "bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry",
+        "evidence_timestamp_sec": 614
+      }
+    ],
+    "disagreements": [
+      {
+        "question": "Can values extracted by a document parser be consumed directly as data, or may the pipeline only emit references that a deterministic system resolves back to the source?",
+        "position_a": "Parser output (markdown, JSON tables, LLM-enriched metadata) is trustworthy enough to feed straight into retrieval, answers, and downstream tables; the eight tables Docling exports from a PDF are the working artifact.",
+        "position_a_talks": [
+          "structuring-the-unstructured",
+          "bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry",
+          "when-agents-meet-physical-data-the-other-physics-of-agent-harnesses"
+        ],
+        "position_b": "No extraction accuracy short of 100% is usable for consequential decisions \u2014 a fine-tuned extractor at 94% beating foundation models is still unacceptable \u2014 so the model must write only an atomic-provenance reference to a number and never the number itself; citations are an after-the-fact audit, not verification.",
+        "position_b_talks": [
+          "how-kepler-built-verifiable-ai-for-financial-services"
+        ],
+        "why_it_matters": "It decides whether your parsing layer outputs values or pointers, and therefore whether you need a deterministic substrate that recomputes from source cells. Getting this wrong is invisible in evals and shows up as a wrong number in a work product nobody can trace."
+      },
+      {
+        "question": "Once documents are parsed with structure preserved, does structural navigation replace vector retrieval or merely supplement it?",
+        "position_a": "Structure is enough on its own \u2014 the markdown outline is the entire index, with the agent iterating multi-turn over sections, no chunker, embedding model, or vector DB required even on a 418-section annual report.",
+        "position_a_talks": [
+          "structuring-the-unstructured"
+        ],
+        "position_b": "Structural navigation is not a replacement; production systems need hybrid retrieval, with BM25 keyword search mandatory for exact-match domains (SKUs, brand names, medications) where semantic similarity is actively wrong.",
+        "position_b_talks": [
+          "bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry",
+          "ai-on-your-lakehouse-context-comes-in-shapes-not-queries"
+        ],
+        "why_it_matters": "It determines whether a document pipeline ships with an embedding store and reranker at all, and how much per-query latency and multi-turn agent iteration you accept in exchange for dropping that infrastructure."
+      }
+    ],
+    "practical_guidance": {
+      "do": [
+        "Convert PDFs locally with a CPU-only layout model (Docling was named in two talks) to markdown/JSON/Pydantic rather than paying frontier-model output tokens per page.",
+        "Chunk on headings so each chunk is a referenceable question-answer unit, which makes a retrieval miss debuggable back to a specific chunk.",
+        "Keep the document outline/section tree as a first-class retrieval index and let the agent traverse it before falling back to similarity search.",
+        "Pair semantic search with BM25 keyword search whenever exact tokens matter \u2014 SKUs, brand names, medications.",
+        "Route any arithmetic over extracted numbers to code; have the model decide what to compute, never compute it.",
+        "Use a deterministic regex/structure-based load when documents already carry inherent structure and interlinking, reserving LLM assistance for ingest where titles and link names are poorly labeled.",
+        "Use layout models to detect and strip PII from source documents before extraction.",
+        "Store extracted metadata in a queryable typed layer (Pydantic schemas transpiled to SQL) with incremental updates and checkpoints, not millions of sidecar JSON files on S3.",
+        "Store the source code that produced a derived dataset as its most important context, alongside an LLM-written description.",
+        "Tune top-k by domain: retrieve more for product catalogs, fewer for medical answers where a wrong retrieval carries liability."
+      ],
+      "avoid": [
+        "Bulk-uploading raw multi-page documents into a hosted chatbot \u2014 it burns tokens before any question is asked and you cannot see how it chunked them.",
+        "Simple PDF text extractors that truncate text, linearize tables, drop images, and pull in page headers; column-merging errors have already injected nonsensical terms into 20 scientific papers.",
+        "Running every page through a frontier VLM at scale \u2014 cost compounds at thousands of PDFs and a 5.1\u21925.2 deprecation breaks your structured-output consistency.",
+        "Default 512-character chunking with overlap as a reflex 'best practice'; it produces chunks that cut mid-answer and reference the wrong section.",
+        "Treating evals or a high extraction-accuracy score as verification for consequential numbers.",
+        "Stacking probabilistic checkers \u2014 having one model check another's extraction is not a verification strategy.",
+        "Three-to-four agent loops over a parsed corpus in an interactive assistant; 20-30 seconds of latency loses the user, and agent-driven search breaks the citation chain back to source chunks.",
+        "Enforcing guardrails and prompt-injection defenses through system-prompt instructions instead of blocking in code before the LLM is called.",
+        "Assuming a stronger frontier model will fix agent performance on unstructured data \u2014 everyone already uses frontier models; the harness is the differentiator.",
+        "Humans manually transcribing numbers out of filings into spreadsheet models."
+      ]
+    },
+    "notable_outliers": [
+      {
+        "claim": "AI misparsing of a scanned two-column PDF merged words from adjacent columns into a nonsensical term that now appears in 20 published scientific papers \u2014 a parsing bug propagating into the literature.",
+        "talk": "structuring-the-unstructured",
+        "timestamp_sec": 157
+      },
+      {
+        "claim": "A 0.5B-parameter model (Qwen 2.5, ~400MB) is sufficient for an FAQ assistant and hallucinates less than larger models, provided the retrieved context is well-vetted \u2014 quality of parse substitutes for model size.",
+        "talk": "bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry",
+        "timestamp_sec": 2550
+      },
+      {
+        "claim": "With atomic provenance the model writes a reference to a number and cannot write or manipulate the number in any way \u2014 it doesn't even understand what that number is.",
+        "talk": "how-kepler-built-verifiable-ai-for-financial-services",
+        "timestamp_sec": 611
+      },
+      {
+        "claim": "CPU-based Docling delivered roughly 50x cost savings versus naive VLM and OCR pipelines in Hugging Face's FinePDFs Common Crawl work.",
+        "talk": "structuring-the-unstructured",
+        "timestamp_sec": 482
+      },
+      {
+        "claim": "Institutions buy Bloomberg and FactSet primarily to displace culpability for data errors \u2014 'at least if it's wrong, everyone on Wall Street has the same incorrect information' \u2014 which sets the real bar for automated extraction.",
+        "talk": "how-kepler-built-verifiable-ai-for-financial-services",
+        "timestamp_sec": 217
+      },
+      {
+        "claim": "2,000 video files can generate millions of extracted objects, so unstructured extraction output outgrows the source corpus by orders of magnitude and needs its own execution engine.",
+        "talk": "when-agents-meet-physical-data-the-other-physics-of-agent-harnesses",
+        "timestamp_sec": 175
+      },
+      {
+        "claim": "Modern agents are capable enough that entity nodes formerly required in a document graph data model can often be omitted entirely, with life-sciences ontologies as the counterexample.",
+        "talk": "ai-on-your-lakehouse-context-comes-in-shapes-not-queries",
+        "timestamp_sec": 4073
+      }
+    ],
+    "maturity": "consolidating",
+    "maturity_rationale": "Speakers from four unrelated domains independently converged on the same architecture \u2014 local deterministic layout parsing, structure-preserving output, no frontier model in the conversion loop \u2014 and two named the same tool without coordination. What remains argued is downstream: whether parsed output is trustworthy as data or only as provenance references, and whether the preserved outline eliminates vector retrieval or merely supplements it."
+  },
+  "_meta": {
+    "concept": "document parsing",
+    "slug": "document-parsing",
+    "talk_count": 5,
+    "missing_talks": [],
+    "wall_sec": 84.6,
+    "run_at": "2026-08-13T21:03:13Z"
+  }
+}

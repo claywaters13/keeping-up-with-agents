@@ -1,0 +1,229 @@
+{
+  "is_error": false,
+  "duration_api_ms": 101246,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "641f9333-3a7c-4909-8c4a-05af0b9d0481",
+  "total_cost_usd": 0.40592200000000006,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 17881,
+    "cache_read_input_tokens": 10720,
+    "output_tokens": 8425,
+    "output_tokens_details": {
+      "thinking_tokens": 4451
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 17881,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 8425,
+        "cache_read_input_tokens": 10720,
+        "cache_creation_input_tokens": 17881,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 17881
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 11047,
+      "outputTokens": 14,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.011117,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 8425,
+      "cacheReadInputTokens": 10720,
+      "cacheCreationInputTokens": 17881,
+      "webSearchRequests": 0,
+      "costUSD": 0.3948050000000001,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\"concept\": \"long-context processing\", \"state_of_practice\": \"The field has largely stopped treating \\\"long context\\\" as a window-size problem and started treating it as a systems problem: the dominant answer at this conference was to keep the large artifact outside the model and let the model write code that inspects, slices, and summarizes it, then feed only the curated result into the main window. This is the Recursive Language Model (RLM) pattern \u2014 repo-as-data in a REPL, model-chosen decomposition into sub-calls, symbolic intermediate state \u2014 and it showed up independently in coding-agent harnesses, in a production data-center telemetry system, and (as a caution) in single-cell biology, where flattening structured records into token sequences underperforms. Practitioners reported concrete degradation curves rather than vibes: correctness falling from 80% at 64 entities to ~30% at 460,000, monorepo performance decaying as context grows, and a 300x token reduction (116M \u2192 390K per validation pass) once context was made to scale with hierarchy depth instead of instance count. The counterweight is infrastructure: MiniMax/Together are betting on serving whole codebases at 500K\u20131M context with sparse attention, where the hard part becomes KV-cache management that looks like a distributed file system. The live argument is over control flow \u2014 whether the model should freely choose its own recursive decomposition, or whether the pipeline should be a bounded two-or-three-step plan-then-resolve with flat, predictable cost.\", \"consensus\": [{\"claim\": \"Context management should be externalized into a programmable execution environment \u2014 the large artifact stays outside the window and the model writes code to curate what enters it.\", \"support_count\": 3, \"supporting_talks\": [\"rlm-recursive-language-models-for-large-codebases\", \"recursive-coding-agents\", \"semantic-blindness-500000-sensors-confused-an-llm\"], \"evidence_quote\": \"Core thesis of the RLM is you need to externalize the context management into programmable execution environment.\", \"evidence_talk\": \"rlm-recursive-language-models-for-large-codebases\", \"evidence_timestamp_sec\": 87}, {\"claim\": \"Naive in-context approaches degrade measurably as input size grows \u2014 this is a quantified failure curve, not a soft limit at the token count.\", \"support_count\": 3, \"supporting_talks\": [\"semantic-blindness-500000-sensors-confused-an-llm\", \"rlm-recursive-language-models-for-large-codebases\", \"recursive-coding-agents\"], \"evidence_quote\": \"So, we got 80% correctness at 64 GPUs, and that dropped to about 30% when the GPU grew to 400 460,000.\", \"evidence_talk\": \"semantic-blindness-500000-sensors-confused-an-llm\", \"evidence_timestamp_sec\": 657}, {\"claim\": \"Split the labor: the model plans and decomposes, deterministic code performs the exact traversal, enumeration, and set operations over the large input.\", \"support_count\": 4, \"supporting_talks\": [\"semantic-blindness-500000-sensors-confused-an-llm\", \"rlm-recursive-language-models-for-large-codebases\", \"recursive-coding-agents\", \"the-unreasonable-effectiveness-of-separating-the-task-from-the-model\"], \"evidence_quote\": \"The second insight that we had was LLMs are good for planning but not good for searching.\", \"evidence_talk\": \"semantic-blindness-500000-sensors-confused-an-llm\", \"evidence_timestamp_sec\": 389}, {\"claim\": \"Structured inputs (codebases, equipment hierarchies, single-cell matrices) should not be flattened into a token stream or compressed into a latent vector; the structure is the thing that makes long-context tractable.\", \"support_count\": 3, \"supporting_talks\": [\"semantic-blindness-500000-sensors-confused-an-llm\", \"rlm-recursive-language-models-for-large-codebases\", \"from-tokens-to-cells-foundation-models-for-single-cell-biology\"], \"evidence_quote\": \"If your data has structure, call it a hierarchy, graph, or a schema, a language model scanning it token by token is definitely the wrong tool.\", \"evidence_talk\": \"semantic-blindness-500000-sensors-confused-an-llm\", \"evidence_timestamp_sec\": 844}], \"disagreements\": [{\"question\": \"Should the recursive decomposition be chosen freely by the model at runtime, or fixed as a bounded plan-then-resolve pipeline?\", \"position_a\": \"The model itself must choose how to decompose the problem into sub-calls \u2014 a hardcoded map-reduce pipeline does not qualify as an RLM, and the harness should expose planning, coding, observation, and a sub-call budget for the model to drive.\", \"position_a_talks\": [\"recursive-coding-agents\", \"rlm-recursive-language-models-for-large-codebases\"], \"position_b\": \"Use a two- or three-step plan-then-resolve pipeline instead of a multi-step agentic loop, so cost stays flat and bounded (~9,000 tokens per query at any scale); anything that must be 100% reproducible is deterministic code, and hard constraints belong in code rather than in the model's discretion.\", \"position_b_talks\": [\"semantic-blindness-500000-sensors-confused-an-llm\", \"the-unreasonable-effectiveness-of-separating-the-task-from-the-model\"], \"why_it_matters\": \"Model-chosen decomposition generalizes to unseen query shapes but makes per-query cost and worst-case correctness unbounded; a fixed pipeline gives constant cost and reproducible set logic but breaks on inputs its author did not anticipate. The choice determines whether you can put the system in front of mission-critical infrastructure.\"}, {\"question\": \"Is the path to handling huge inputs a harness that keeps them out of the window, or an inference stack that serves them inside it?\", \"position_a\": \"Keep the artifact out of the window: RLMs can process inputs many orders of magnitude larger than the context window, and context should grow with tree depth rather than instance count.\", \"position_a_talks\": [\"recursive-coding-agents\", \"rlm-recursive-language-models-for-large-codebases\", \"semantic-blindness-500000-sensors-confused-an-llm\"], \"position_b\": \"Put it in the window and make the stack pay for it: agentic/coding workloads upload whole codebases, so the real work is sparse attention plus KV-cache handling at 500K\u20131M context under concurrency, treated as a distributed file system problem.\", \"position_b_talks\": [\"agents-at-scale-inside-minimaxs-model-and-the-infrastructure-behind-it\"], \"why_it_matters\": \"It decides where engineering effort and cost land \u2014 in application-layer decomposition code you own, or in serving infrastructure and per-token spend you buy. It also decides whether harness authors should keep optimizing around a window limit that the serving side expects to erase.\"}], \"practical_guidance\": {\"do\": [\"Treat the repository or corpus as data in a separate REPL/execution environment and have the model write code to inspect, slice, and compute the relevant chunks before anything enters the main context window\", \"Size context by hierarchy depth, not instance count \u2014 describe all root-to-leaf paths, so a 64-GPU system and a 460,000-GPU system yield roughly the same summary\", \"Use deterministic set operations for counting, dedup, and exact set logic over near-identical names, where perfect recall is required\", \"Give the harness explicit stages and a sub-call budget (planning, coding, observation, final output) rather than an open-ended loop\", \"Prototype by throwing everything into the context window first \u2014 it is the fastest way to find what is worth building \u2014 then migrate the hot, rule-expressible paths to deterministic code\", \"Fix the input/output interface of each repeated AI task so decomposition strategy, model, and technique can be swapped underneath without reshaping the program (Shopify: 550x cost reduction from a model swap with evals held fixed)\", \"If you do serve very long contexts, plan for KV-cache handling under concurrency as a distributed file system / database problem, not an ML problem\", \"Capture a successful 'golden session' as a reusable declarative workflow so the decomposition is repeatable rather than rediscovered each run\"], \"avoid\": [\"Vector-embedding retrieval over near-identical entity names \u2014 the embeddings are indistinguishable and recall collapses\", \"Sharding entity names across parallel LLM calls and merging the results: it produces phantom entities that do not exist and silently drops ones that do\", \"Asking a single LLM call to enumerate many similar names \u2014 frequency penalties cause the model to truncate or shut off mid-output\", \"Compressing high-dimensional structured records into a single latent vector; the information loss is why transformer-based single-cell models lose to simple linear baselines\", \"Multi-step agentic loops for validation passes whose cost grows with entity count (116M tokens for one pass, still with many errors)\", \"Treating RLM as a framework rather than a pattern \u2014 different implementations (DSPy's, RLM Code, Codex's REPL) are not interchangeable\", \"Assuming a smarter or larger-context model removes the need for last-mile context: intelligence is not the same as knowing your tasks, data, and relationships\", \"Scaling up existing low-quality data and expecting generalization \u2014 measurement quality has to improve alongside volume\"]}, \"notable_outliers\": [{\"claim\": \"Qwen 3.5 9B run as an RLM beats Opus and GPT-5.4 run as plain LLMs on long-reasoning tasks \u2014 harness structure outweighs a ~100x parameter gap on long-context work.\", \"talk\": \"recursive-coding-agents\", \"timestamp_sec\": 395}, {\"claim\": \"An unmodified default RLM harness, with no custom engineering, performs comparably to a top-10 purpose-built memory system in a category attracting billions in funding.\", \"talk\": \"recursive-coding-agents\", \"timestamp_sec\": 301}, {\"claim\": \"A restructured pipeline cost a flat ~9,000 tokens per query whether the system had 64 GPUs or 460,000 \u2014 roughly a 300x total reduction versus the in-context baseline, with 100% correctness held across all tested scales.\", \"talk\": \"semantic-blindness-500000-sensors-confused-an-llm\", \"timestamp_sec\": 700}, {\"claim\": \"KV cache handling at 500K\u20131M context under concurrency is essentially rebuilding a distributed file system \u2014 undergrad systems material that most ML practitioners skipped and are now rediscovering live in industry.\", \"talk\": \"agents-at-scale-inside-minimaxs-model-and-the-infrastructure-behind-it\", \"timestamp_sec\": 992}, {\"claim\": \"Karpathy's drift of software 1.0 into 3.0 runs backwards for AI-native systems: start at 3.0 (everything in context) and mature toward 1.0, because every deterministic function you add is more reliable ground for the LLM to stand on.\", \"talk\": \"semantic-blindness-500000-sensors-confused-an-llm\", \"timestamp_sec\": 892}, {\"claim\": \"Simple linear models sometimes match or outperform compute-expensive transformer foundation models on single-cell data, because treating cells as sentences and genes as tokens destroys information under compression.\", \"talk\": \"from-tokens-to-cells-foundation-models-for-single-cell-biology\", \"timestamp_sec\": 744}], \"maturity\": \"consolidating\", \"maturity_rationale\": \"Multiple independent talks \u2014 a coding-agent language, a reference RLM implementation, and a production telemetry system \u2014 converged on the same diagnosis (externalize the artifact, let the model curate what enters the window) with quantified degradation and cost numbers backing it. What remains genuinely argued is the control structure (model-chosen recursion vs. bounded plan-then-resolve) and whether serving-side long-context infrastructure will make the harness layer moot.\"}",
+  "ttft_ms": 55823,
+  "ttft_stream_ms": 800,
+  "time_to_request_ms": 38,
+  "type": "result",
+  "duration_ms": 101803,
+  "uuid": "51d0a47d-f78b-4b37-8485-c2367eddaad1",
+  "passC": {
+    "concept": "long-context processing",
+    "state_of_practice": "The field has largely stopped treating \"long context\" as a window-size problem and started treating it as a systems problem: the dominant answer at this conference was to keep the large artifact outside the model and let the model write code that inspects, slices, and summarizes it, then feed only the curated result into the main window. This is the Recursive Language Model (RLM) pattern \u2014 repo-as-data in a REPL, model-chosen decomposition into sub-calls, symbolic intermediate state \u2014 and it showed up independently in coding-agent harnesses, in a production data-center telemetry system, and (as a caution) in single-cell biology, where flattening structured records into token sequences underperforms. Practitioners reported concrete degradation curves rather than vibes: correctness falling from 80% at 64 entities to ~30% at 460,000, monorepo performance decaying as context grows, and a 300x token reduction (116M \u2192 390K per validation pass) once context was made to scale with hierarchy depth instead of instance count. The counterweight is infrastructure: MiniMax/Together are betting on serving whole codebases at 500K\u20131M context with sparse attention, where the hard part becomes KV-cache management that looks like a distributed file system. The live argument is over control flow \u2014 whether the model should freely choose its own recursive decomposition, or whether the pipeline should be a bounded two-or-three-step plan-then-resolve with flat, predictable cost.",
+    "consensus": [
+      {
+        "claim": "Context management should be externalized into a programmable execution environment \u2014 the large artifact stays outside the window and the model writes code to curate what enters it.",
+        "support_count": 3,
+        "supporting_talks": [
+          "rlm-recursive-language-models-for-large-codebases",
+          "recursive-coding-agents",
+          "semantic-blindness-500000-sensors-confused-an-llm"
+        ],
+        "evidence_quote": "Core thesis of the RLM is you need to externalize the context management into programmable execution environment.",
+        "evidence_talk": "rlm-recursive-language-models-for-large-codebases",
+        "evidence_timestamp_sec": 87
+      },
+      {
+        "claim": "Naive in-context approaches degrade measurably as input size grows \u2014 this is a quantified failure curve, not a soft limit at the token count.",
+        "support_count": 3,
+        "supporting_talks": [
+          "semantic-blindness-500000-sensors-confused-an-llm",
+          "rlm-recursive-language-models-for-large-codebases",
+          "recursive-coding-agents"
+        ],
+        "evidence_quote": "So, we got 80% correctness at 64 GPUs, and that dropped to about 30% when the GPU grew to 400 460,000.",
+        "evidence_talk": "semantic-blindness-500000-sensors-confused-an-llm",
+        "evidence_timestamp_sec": 657
+      },
+      {
+        "claim": "Split the labor: the model plans and decomposes, deterministic code performs the exact traversal, enumeration, and set operations over the large input.",
+        "support_count": 4,
+        "supporting_talks": [
+          "semantic-blindness-500000-sensors-confused-an-llm",
+          "rlm-recursive-language-models-for-large-codebases",
+          "recursive-coding-agents",
+          "the-unreasonable-effectiveness-of-separating-the-task-from-the-model"
+        ],
+        "evidence_quote": "The second insight that we had was LLMs are good for planning but not good for searching.",
+        "evidence_talk": "semantic-blindness-500000-sensors-confused-an-llm",
+        "evidence_timestamp_sec": 389
+      },
+      {
+        "claim": "Structured inputs (codebases, equipment hierarchies, single-cell matrices) should not be flattened into a token stream or compressed into a latent vector; the structure is the thing that makes long-context tractable.",
+        "support_count": 3,
+        "supporting_talks": [
+          "semantic-blindness-500000-sensors-confused-an-llm",
+          "rlm-recursive-language-models-for-large-codebases",
+          "from-tokens-to-cells-foundation-models-for-single-cell-biology"
+        ],
+        "evidence_quote": "If your data has structure, call it a hierarchy, graph, or a schema, a language model scanning it token by token is definitely the wrong tool.",
+        "evidence_talk": "semantic-blindness-500000-sensors-confused-an-llm",
+        "evidence_timestamp_sec": 844
+      }
+    ],
+    "disagreements": [
+      {
+        "question": "Should the recursive decomposition be chosen freely by the model at runtime, or fixed as a bounded plan-then-resolve pipeline?",
+        "position_a": "The model itself must choose how to decompose the problem into sub-calls \u2014 a hardcoded map-reduce pipeline does not qualify as an RLM, and the harness should expose planning, coding, observation, and a sub-call budget for the model to drive.",
+        "position_a_talks": [
+          "recursive-coding-agents",
+          "rlm-recursive-language-models-for-large-codebases"
+        ],
+        "position_b": "Use a two- or three-step plan-then-resolve pipeline instead of a multi-step agentic loop, so cost stays flat and bounded (~9,000 tokens per query at any scale); anything that must be 100% reproducible is deterministic code, and hard constraints belong in code rather than in the model's discretion.",
+        "position_b_talks": [
+          "semantic-blindness-500000-sensors-confused-an-llm",
+          "the-unreasonable-effectiveness-of-separating-the-task-from-the-model"
+        ],
+        "why_it_matters": "Model-chosen decomposition generalizes to unseen query shapes but makes per-query cost and worst-case correctness unbounded; a fixed pipeline gives constant cost and reproducible set logic but breaks on inputs its author did not anticipate. The choice determines whether you can put the system in front of mission-critical infrastructure."
+      },
+      {
+        "question": "Is the path to handling huge inputs a harness that keeps them out of the window, or an inference stack that serves them inside it?",
+        "position_a": "Keep the artifact out of the window: RLMs can process inputs many orders of magnitude larger than the context window, and context should grow with tree depth rather than instance count.",
+        "position_a_talks": [
+          "recursive-coding-agents",
+          "rlm-recursive-language-models-for-large-codebases",
+          "semantic-blindness-500000-sensors-confused-an-llm"
+        ],
+        "position_b": "Put it in the window and make the stack pay for it: agentic/coding workloads upload whole codebases, so the real work is sparse attention plus KV-cache handling at 500K\u20131M context under concurrency, treated as a distributed file system problem.",
+        "position_b_talks": [
+          "agents-at-scale-inside-minimaxs-model-and-the-infrastructure-behind-it"
+        ],
+        "why_it_matters": "It decides where engineering effort and cost land \u2014 in application-layer decomposition code you own, or in serving infrastructure and per-token spend you buy. It also decides whether harness authors should keep optimizing around a window limit that the serving side expects to erase."
+      }
+    ],
+    "practical_guidance": {
+      "do": [
+        "Treat the repository or corpus as data in a separate REPL/execution environment and have the model write code to inspect, slice, and compute the relevant chunks before anything enters the main context window",
+        "Size context by hierarchy depth, not instance count \u2014 describe all root-to-leaf paths, so a 64-GPU system and a 460,000-GPU system yield roughly the same summary",
+        "Use deterministic set operations for counting, dedup, and exact set logic over near-identical names, where perfect recall is required",
+        "Give the harness explicit stages and a sub-call budget (planning, coding, observation, final output) rather than an open-ended loop",
+        "Prototype by throwing everything into the context window first \u2014 it is the fastest way to find what is worth building \u2014 then migrate the hot, rule-expressible paths to deterministic code",
+        "Fix the input/output interface of each repeated AI task so decomposition strategy, model, and technique can be swapped underneath without reshaping the program (Shopify: 550x cost reduction from a model swap with evals held fixed)",
+        "If you do serve very long contexts, plan for KV-cache handling under concurrency as a distributed file system / database problem, not an ML problem",
+        "Capture a successful 'golden session' as a reusable declarative workflow so the decomposition is repeatable rather than rediscovered each run"
+      ],
+      "avoid": [
+        "Vector-embedding retrieval over near-identical entity names \u2014 the embeddings are indistinguishable and recall collapses",
+        "Sharding entity names across parallel LLM calls and merging the results: it produces phantom entities that do not exist and silently drops ones that do",
+        "Asking a single LLM call to enumerate many similar names \u2014 frequency penalties cause the model to truncate or shut off mid-output",
+        "Compressing high-dimensional structured records into a single latent vector; the information loss is why transformer-based single-cell models lose to simple linear baselines",
+        "Multi-step agentic loops for validation passes whose cost grows with entity count (116M tokens for one pass, still with many errors)",
+        "Treating RLM as a framework rather than a pattern \u2014 different implementations (DSPy's, RLM Code, Codex's REPL) are not interchangeable",
+        "Assuming a smarter or larger-context model removes the need for last-mile context: intelligence is not the same as knowing your tasks, data, and relationships",
+        "Scaling up existing low-quality data and expecting generalization \u2014 measurement quality has to improve alongside volume"
+      ]
+    },
+    "notable_outliers": [
+      {
+        "claim": "Qwen 3.5 9B run as an RLM beats Opus and GPT-5.4 run as plain LLMs on long-reasoning tasks \u2014 harness structure outweighs a ~100x parameter gap on long-context work.",
+        "talk": "recursive-coding-agents",
+        "timestamp_sec": 395
+      },
+      {
+        "claim": "An unmodified default RLM harness, with no custom engineering, performs comparably to a top-10 purpose-built memory system in a category attracting billions in funding.",
+        "talk": "recursive-coding-agents",
+        "timestamp_sec": 301
+      },
+      {
+        "claim": "A restructured pipeline cost a flat ~9,000 tokens per query whether the system had 64 GPUs or 460,000 \u2014 roughly a 300x total reduction versus the in-context baseline, with 100% correctness held across all tested scales.",
+        "talk": "semantic-blindness-500000-sensors-confused-an-llm",
+        "timestamp_sec": 700
+      },
+      {
+        "claim": "KV cache handling at 500K\u20131M context under concurrency is essentially rebuilding a distributed file system \u2014 undergrad systems material that most ML practitioners skipped and are now rediscovering live in industry.",
+        "talk": "agents-at-scale-inside-minimaxs-model-and-the-infrastructure-behind-it",
+        "timestamp_sec": 992
+      },
+      {
+        "claim": "Karpathy's drift of software 1.0 into 3.0 runs backwards for AI-native systems: start at 3.0 (everything in context) and mature toward 1.0, because every deterministic function you add is more reliable ground for the LLM to stand on.",
+        "talk": "semantic-blindness-500000-sensors-confused-an-llm",
+        "timestamp_sec": 892
+      },
+      {
+        "claim": "Simple linear models sometimes match or outperform compute-expensive transformer foundation models on single-cell data, because treating cells as sentences and genes as tokens destroys information under compression.",
+        "talk": "from-tokens-to-cells-foundation-models-for-single-cell-biology",
+        "timestamp_sec": 744
+      }
+    ],
+    "maturity": "consolidating",
+    "maturity_rationale": "Multiple independent talks \u2014 a coding-agent language, a reference RLM implementation, and a production telemetry system \u2014 converged on the same diagnosis (externalize the artifact, let the model curate what enters the window) with quantified degradation and cost numbers backing it. What remains genuinely argued is the control structure (model-chosen recursion vs. bounded plan-then-resolve) and whether serving-side long-context infrastructure will make the harness layer moot."
+  },
+  "_meta": {
+    "concept": "long-context processing",
+    "slug": "long-context-processing",
+    "talk_count": 6,
+    "missing_talks": [],
+    "wall_sec": 103.0,
+    "run_at": "2026-08-13T21:01:49Z"
+  }
+}

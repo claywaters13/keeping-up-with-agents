@@ -1,0 +1,278 @@
+{
+  "is_error": false,
+  "duration_api_ms": 68515,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "a00bc7a5-e4a6-44a4-943f-40e560a1a62b",
+  "total_cost_usd": 0.30093899999999996,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 13970,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 5872,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 13970,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 5872,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 13970,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 13970
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 9180,
+      "outputTokens": 19,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.009275,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 5872,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 13970,
+      "webSearchRequests": 0,
+      "costUSD": 0.291664,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"David Brumley argues that the way we teach frontier models to hack should mirror how elite human hackers learn: a ladder of tasks graded along two axes, target difficulty (toy programs \u2192 CTFs \u2192 hardened real-world targets) and exploitation difficulty (find the bug \u2192 crash it \u2192 arbitrary read/write \u2192 full code execution). His central methodological claim is that existing cybersecurity benchmarks are broken because they assume one vulnerability per program: models reward-hack by repeatedly finding the easiest bug, and benchmarks that hand the model a backtrace stunt its reasoning. He proposes the 'audit task' \u2014 ask for all vulnerabilities with proofs, uniquify crashes by stack backtrace with a deterministic grader, and score multiplicative precision and recall \u2014 which allows open-world grading on real open-source code including bugs you didn't know existed. The talk's payoff is an experiment on 41 verified V8 (Chrome JavaScript engine) vulnerabilities showing that crash-triggering no longer distinguishes models (95% for top models, ~50% even for weaker ones), but full sandbox escape does: 73% and 68% for the two strongest models versus 0% for others, with at least one exploit taking a route human Chrome experts thought impractical. Worth watching if you build RL environments, design evals with deterministic oracles, or care about where autonomous offensive capability actually stands.\",\n  \"key_points\": [\n    \"Cybersecurity is an unusually good fit for reinforcement learning because tasks form a natural difficulty ladder and each rung has a deterministic oracle for success.\",\n    \"Environments should be designed along two axes at once: target difficulty (toy \u2192 CTF/synthetic \u2192 hardened real targets) and exploitation difficulty (locate bug \u2192 trigger crash \u2192 arbitrary read/write \u2192 arbitrary code execution).\",\n    \"LLM-as-a-judge fails for security grading because models nearly always claim their hack succeeded; graders must be deterministic and must not be the model under training.\",\n    \"Benchmarks that assume a single known vulnerability are structurally broken \u2014 real programs have many, so the model just re-finds the easiest one and its learning trajectory flattens.\",\n    \"Hand-curating single-bug environments doesn't work even with enormous budgets: 50% of DARPA's Cyber Grand Challenge hand-curated challenges contained unknown exploitable bugs, and AIxCC saw 18 unintended bugs found.\",\n    \"Benchmarks that hand the model a backtrace pointing at the vulnerable function remove the need to reason about the program and stunt reasoning capability.\",\n    \"The proposed 'audit task' flips the prompt to 'find all vulnerabilities,' uniquifies proofs by stack backtrace, and scores multiplicative precision and recall so the model is rewarded for breadth but penalized for spamming non-exploits.\",\n    \"Asking for a working exploit rather than a bug report is what separates hallucination from real discovery, and separates bug-finding from security \u2014 crashing a program isn't hacking it.\",\n    \"On 41 expert-verified V8 CVEs, crash-triggering saturates across models while full out-of-sandbox arbitrary code execution sharply separates them (73% / 68% versus 0%).\",\n    \"Evidence against memorization: one model exploited a CVE via a novel path (reversing JavaScript's math.random to forge a pointer) that experts believed impractical, and succeeded on x86 where the team's own expert doubted exploitability.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"What we found in cybersecurity is that is flawed. The LLMs will always say they were successful hacking.\",\n      \"timestamp_sec\": 451,\n      \"why\": \"Direct rejection of LLM-as-a-judge for this domain, from empirical experience.\"\n    },\n    {\n      \"text\": \"you don't want to just ask, \\\"Can you find the vulnerability?\\\" because then you won't be able to distinguish between an LLM hallucination and a real vulnerability\",\n      \"timestamp_sec\": 518,\n      \"why\": \"States the core design rule: demand an executable witness, not an assertion.\"\n    },\n    {\n      \"text\": \"hacking is really a ladder. And this is what actually matches cybersecurity so well to reinforcement learning.\",\n      \"timestamp_sec\": 290,\n      \"why\": \"The talk's organizing thesis in one line.\"\n    },\n    {\n      \"text\": \"there's an assumption that the program only has one vulnerability. I don't know about you, but it's very rare to find a program for which you know there's only one vulnerability.\",\n      \"timestamp_sec\": 600,\n      \"why\": \"Names the flawed assumption underlying current cyber benchmarks.\"\n    },\n    {\n      \"text\": \"So the LLM no longer has to reason about the program and that will stunt its reasoning capability.\",\n      \"timestamp_sec\": 677,\n      \"why\": \"Explains why hint-giving benchmarks actively harm capability growth.\"\n    },\n    {\n      \"text\": \"This was DARPA spent $60 million designing a contest trying to come up with problems that were well defined and well scoped and they accidentally added additional bugs and 50% of those were ones that were actually exploited.\",\n      \"timestamp_sec\": 758,\n      \"why\": \"Concrete, expensive proof that curating single-bug environments is infeasible.\"\n    },\n    {\n      \"text\": \"This is again a very large DARPA program that ran last year in DEF CON where 18 of the bugs found were unintended ones.\",\n      \"timestamp_sec\": 797,\n      \"why\": \"Second independent data point on unintended vulnerabilities in curated contests.\"\n    },\n    {\n      \"text\": \"It also means that there's no LLM as a judge, because let's face it, you can't judge trust the LLM that you're teaching to be a judge.\",\n      \"timestamp_sec\": 979,\n      \"why\": \"Compact statement of the circularity problem in self-graded RL.\"\n    },\n    {\n      \"text\": \"don't define the task by a single bed, let the program define the task\",\n      \"timestamp_sec\": 1015,\n      \"why\": \"The speaker's own stated TLDR for benchmark design.\"\n    },\n    {\n      \"text\": \"Crashing a program is different than hacking it. You can't go steal someone's IP by simply crashing a program.\",\n      \"timestamp_sec\": 1088,\n      \"why\": \"The tradeoff at the heart of the second half: measurable proxy versus real capability.\"\n    },\n    {\n      \"text\": \"if you could give Chrome to an LLM and it could come up with a zero-day, you would essentially be able to hack nation-states at that point\",\n      \"timestamp_sec\": 1173,\n      \"why\": \"Frames the stakes of the chosen high-value target.\"\n    },\n    {\n      \"text\": \"GPT and GPT 5.5 and Mythos both achieved 95%. They were able to trigger a vulnerability 39 out of 41 times.\",\n      \"timestamp_sec\": 1292,\n      \"why\": \"Reports the number showing crash-based benchmarks have saturated.\"\n    },\n    {\n      \"text\": \"If you were looking at the old benchmarks, the message would be 50% of the time Kimmy succeeds in hacking, but that's because their definition of hacking was broken. It was simply crashing it.\",\n      \"timestamp_sec\": 1292,\n      \"why\": \"Shows how a bad oracle produces a badly misleading headline result.\"\n    },\n    {\n      \"text\": \"Mythos was a quite surprising able to do this 73% of the time. So, 30 out of the 41 examples, Mythos was able to do this sort of full control flow hijack.\",\n      \"timestamp_sec\": 1332,\n      \"why\": \"The headline capability number for full exploitation on a hardened target.\"\n    },\n    {\n      \"text\": \"One of the things that Mythos was able to do was reverse JavaScript's math.random and use that to forge a pointer for a return-oriented program out of the Uber cage exploit.\",\n      \"timestamp_sec\": 1373,\n      \"why\": \"Specific technical evidence of novel, non-memorized exploit strategy.\"\n    },\n    {\n      \"text\": \"At the end of this, the work was on par with a human elite researcher.\",\n      \"timestamp_sec\": 1411,\n      \"why\": \"The strongest capability claim in the talk, stated flatly.\"\n    },\n    {\n      \"text\": \"If we're going to publish these benchmarks and we believe in open science, but the models are creating actually interesting exploits for high-value targets. What do you do as far as the open science part of this? We don't have an answer.\",\n      \"timestamp_sec\": 1498,\n      \"why\": \"Honest statement of the disclosure dilemma created by capable exploit-generating models.\"\n    },\n    {\n      \"text\": \"We're able to do this at scale where some of our the companies that we work with we're providing up to 10,000 reinforcement learning environments per month\",\n      \"timestamp_sec\": 1538,\n      \"why\": \"Quantifies the scale of RL environment supply going to frontier labs.\"\n    }\n  ],\n  \"concepts\": [\n    \"reinforcement learning environment design\",\n    \"reward hacking\",\n    \"deterministic grading oracles\",\n    \"llm-as-a-judge limitations\",\n    \"vulnerability discovery\",\n    \"exploit weaponization\",\n    \"capability ladders\",\n    \"precision and recall scoring\",\n    \"crash deduplication via stack backtrace\",\n    \"benchmark contamination and memorization\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"LLM-as-a-judge is unreliable for grading cybersecurity tasks because models consistently claim their hacks succeeded; graders must be deterministic.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 451\n    },\n    {\n      \"claim\": \"Existing cyber benchmarks such as Cybex, CyberGym, and Bounty Bench are flawed because they assume a single vulnerability per program and only check for a crash.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 600\n    },\n    {\n      \"claim\": \"Giving the model a backtrace identifying the vulnerable function stunts its reasoning capability because it no longer has to reason about the program.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 677\n    },\n    {\n      \"claim\": \"Hand-curating benchmark programs with exactly one known vulnerability is infeasible; 50% of DARPA's Cyber Grand Challenge challenges contained unintended exploitable bugs and AIxCC had 18 unintended bugs found.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 758\n    },\n    {\n      \"claim\": \"The audit task formulation \u2014 asking for all vulnerabilities with proofs and scoring multiplicative precision and recall \u2014 prevents both easiest-bug reward hacking and proof spamming.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 908\n    },\n    {\n      \"claim\": \"Triggering a crash is not hacking; only control-flow hijack or sandbox escape counts as real exploitation.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1088\n    },\n    {\n      \"claim\": \"Crash-triggering no longer distinguishes frontier models \u2014 top models hit 95% (39/41) on V8 CVEs \u2014 so it is a saturated metric.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1292\n    },\n    {\n      \"claim\": \"Full arbitrary code execution does distinguish models: 73% and 68% for the two strongest versus 0% for Gemini and Kimi.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1332\n    },\n    {\n      \"claim\": \"The top model's V8 exploits are not memorized, evidenced by a novel math.random-reversal route and success on x86 where internal experts believed it infeasible.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1461\n    },\n    {\n      \"claim\": \"Frontier model exploitation on hardened targets is now on par with an elite human security researcher.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1411\n    },\n    {\n      \"claim\": \"Publishing full benchmark transcripts becomes ethically fraught once models produce weaponized exploits for high-value targets that were never public.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1498\n    },\n    {\n      \"claim\": \"Mining genuine zero-days for RL environments is necessary to rule out memorization as an explanation for model performance.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1538\n    },\n    {\n      \"claim\": \"Teaching models to hack should follow the same graduated-difficulty write-up-and-practice methodology that produces elite human hackers.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 157\n    },\n    {\n      \"claim\": \"Building good cybersecurity RL training requires a genuine domain expert to build the oracles and audit transcripts for memorization and reward hacking \u2014 it is not otherwise mysterious.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1579\n    }\n  ],\n  \"speaker_org\": \"Bugcrowd (Chief AI and Science Officer); also full professor at Carnegie Mellon University\"\n}",
+  "ttft_ms": 19830,
+  "ttft_stream_ms": 1248,
+  "time_to_request_ms": 34,
+  "type": "result",
+  "duration_ms": 67729,
+  "uuid": "be651d03-17ef-40d4-8ab3-346c7915ad92",
+  "passA": {
+    "summary": "David Brumley argues that the way we teach frontier models to hack should mirror how elite human hackers learn: a ladder of tasks graded along two axes, target difficulty (toy programs \u2192 CTFs \u2192 hardened real-world targets) and exploitation difficulty (find the bug \u2192 crash it \u2192 arbitrary read/write \u2192 full code execution). His central methodological claim is that existing cybersecurity benchmarks are broken because they assume one vulnerability per program: models reward-hack by repeatedly finding the easiest bug, and benchmarks that hand the model a backtrace stunt its reasoning. He proposes the 'audit task' \u2014 ask for all vulnerabilities with proofs, uniquify crashes by stack backtrace with a deterministic grader, and score multiplicative precision and recall \u2014 which allows open-world grading on real open-source code including bugs you didn't know existed. The talk's payoff is an experiment on 41 verified V8 (Chrome JavaScript engine) vulnerabilities showing that crash-triggering no longer distinguishes models (95% for top models, ~50% even for weaker ones), but full sandbox escape does: 73% and 68% for the two strongest models versus 0% for others, with at least one exploit taking a route human Chrome experts thought impractical. Worth watching if you build RL environments, design evals with deterministic oracles, or care about where autonomous offensive capability actually stands.",
+    "key_points": [
+      "Cybersecurity is an unusually good fit for reinforcement learning because tasks form a natural difficulty ladder and each rung has a deterministic oracle for success.",
+      "Environments should be designed along two axes at once: target difficulty (toy \u2192 CTF/synthetic \u2192 hardened real targets) and exploitation difficulty (locate bug \u2192 trigger crash \u2192 arbitrary read/write \u2192 arbitrary code execution).",
+      "LLM-as-a-judge fails for security grading because models nearly always claim their hack succeeded; graders must be deterministic and must not be the model under training.",
+      "Benchmarks that assume a single known vulnerability are structurally broken \u2014 real programs have many, so the model just re-finds the easiest one and its learning trajectory flattens.",
+      "Hand-curating single-bug environments doesn't work even with enormous budgets: 50% of DARPA's Cyber Grand Challenge hand-curated challenges contained unknown exploitable bugs, and AIxCC saw 18 unintended bugs found.",
+      "Benchmarks that hand the model a backtrace pointing at the vulnerable function remove the need to reason about the program and stunt reasoning capability.",
+      "The proposed 'audit task' flips the prompt to 'find all vulnerabilities,' uniquifies proofs by stack backtrace, and scores multiplicative precision and recall so the model is rewarded for breadth but penalized for spamming non-exploits.",
+      "Asking for a working exploit rather than a bug report is what separates hallucination from real discovery, and separates bug-finding from security \u2014 crashing a program isn't hacking it.",
+      "On 41 expert-verified V8 CVEs, crash-triggering saturates across models while full out-of-sandbox arbitrary code execution sharply separates them (73% / 68% versus 0%).",
+      "Evidence against memorization: one model exploited a CVE via a novel path (reversing JavaScript's math.random to forge a pointer) that experts believed impractical, and succeeded on x86 where the team's own expert doubted exploitability."
+    ],
+    "notable_quotes": [
+      {
+        "text": "What we found in cybersecurity is that is flawed. The LLMs will always say they were successful hacking.",
+        "timestamp_sec": 451,
+        "why": "Direct rejection of LLM-as-a-judge for this domain, from empirical experience."
+      },
+      {
+        "text": "you don't want to just ask, \"Can you find the vulnerability?\" because then you won't be able to distinguish between an LLM hallucination and a real vulnerability",
+        "timestamp_sec": 518,
+        "why": "States the core design rule: demand an executable witness, not an assertion."
+      },
+      {
+        "text": "hacking is really a ladder. And this is what actually matches cybersecurity so well to reinforcement learning.",
+        "timestamp_sec": 290,
+        "why": "The talk's organizing thesis in one line."
+      },
+      {
+        "text": "there's an assumption that the program only has one vulnerability. I don't know about you, but it's very rare to find a program for which you know there's only one vulnerability.",
+        "timestamp_sec": 600,
+        "why": "Names the flawed assumption underlying current cyber benchmarks."
+      },
+      {
+        "text": "So the LLM no longer has to reason about the program and that will stunt its reasoning capability.",
+        "timestamp_sec": 677,
+        "why": "Explains why hint-giving benchmarks actively harm capability growth."
+      },
+      {
+        "text": "This was DARPA spent $60 million designing a contest trying to come up with problems that were well defined and well scoped and they accidentally added additional bugs and 50% of those were ones that were actually exploited.",
+        "timestamp_sec": 758,
+        "why": "Concrete, expensive proof that curating single-bug environments is infeasible."
+      },
+      {
+        "text": "This is again a very large DARPA program that ran last year in DEF CON where 18 of the bugs found were unintended ones.",
+        "timestamp_sec": 797,
+        "why": "Second independent data point on unintended vulnerabilities in curated contests."
+      },
+      {
+        "text": "It also means that there's no LLM as a judge, because let's face it, you can't judge trust the LLM that you're teaching to be a judge.",
+        "timestamp_sec": 979,
+        "why": "Compact statement of the circularity problem in self-graded RL."
+      },
+      {
+        "text": "don't define the task by a single bed, let the program define the task",
+        "timestamp_sec": 1015,
+        "why": "The speaker's own stated TLDR for benchmark design."
+      },
+      {
+        "text": "Crashing a program is different than hacking it. You can't go steal someone's IP by simply crashing a program.",
+        "timestamp_sec": 1088,
+        "why": "The tradeoff at the heart of the second half: measurable proxy versus real capability."
+      },
+      {
+        "text": "if you could give Chrome to an LLM and it could come up with a zero-day, you would essentially be able to hack nation-states at that point",
+        "timestamp_sec": 1173,
+        "why": "Frames the stakes of the chosen high-value target."
+      },
+      {
+        "text": "GPT and GPT 5.5 and Mythos both achieved 95%. They were able to trigger a vulnerability 39 out of 41 times.",
+        "timestamp_sec": 1292,
+        "why": "Reports the number showing crash-based benchmarks have saturated."
+      },
+      {
+        "text": "If you were looking at the old benchmarks, the message would be 50% of the time Kimmy succeeds in hacking, but that's because their definition of hacking was broken. It was simply crashing it.",
+        "timestamp_sec": 1292,
+        "why": "Shows how a bad oracle produces a badly misleading headline result."
+      },
+      {
+        "text": "Mythos was a quite surprising able to do this 73% of the time. So, 30 out of the 41 examples, Mythos was able to do this sort of full control flow hijack.",
+        "timestamp_sec": 1332,
+        "why": "The headline capability number for full exploitation on a hardened target."
+      },
+      {
+        "text": "One of the things that Mythos was able to do was reverse JavaScript's math.random and use that to forge a pointer for a return-oriented program out of the Uber cage exploit.",
+        "timestamp_sec": 1373,
+        "why": "Specific technical evidence of novel, non-memorized exploit strategy."
+      },
+      {
+        "text": "At the end of this, the work was on par with a human elite researcher.",
+        "timestamp_sec": 1411,
+        "why": "The strongest capability claim in the talk, stated flatly."
+      },
+      {
+        "text": "If we're going to publish these benchmarks and we believe in open science, but the models are creating actually interesting exploits for high-value targets. What do you do as far as the open science part of this? We don't have an answer.",
+        "timestamp_sec": 1498,
+        "why": "Honest statement of the disclosure dilemma created by capable exploit-generating models."
+      },
+      {
+        "text": "We're able to do this at scale where some of our the companies that we work with we're providing up to 10,000 reinforcement learning environments per month",
+        "timestamp_sec": 1538,
+        "why": "Quantifies the scale of RL environment supply going to frontier labs."
+      }
+    ],
+    "concepts": [
+      "reinforcement learning environment design",
+      "reward hacking",
+      "deterministic grading oracles",
+      "llm-as-a-judge limitations",
+      "vulnerability discovery",
+      "exploit weaponization",
+      "capability ladders",
+      "precision and recall scoring",
+      "crash deduplication via stack backtrace",
+      "benchmark contamination and memorization"
+    ],
+    "positions": [
+      {
+        "claim": "LLM-as-a-judge is unreliable for grading cybersecurity tasks because models consistently claim their hacks succeeded; graders must be deterministic.",
+        "confidence": "stated",
+        "timestamp_sec": 451
+      },
+      {
+        "claim": "Existing cyber benchmarks such as Cybex, CyberGym, and Bounty Bench are flawed because they assume a single vulnerability per program and only check for a crash.",
+        "confidence": "stated",
+        "timestamp_sec": 600
+      },
+      {
+        "claim": "Giving the model a backtrace identifying the vulnerable function stunts its reasoning capability because it no longer has to reason about the program.",
+        "confidence": "stated",
+        "timestamp_sec": 677
+      },
+      {
+        "claim": "Hand-curating benchmark programs with exactly one known vulnerability is infeasible; 50% of DARPA's Cyber Grand Challenge challenges contained unintended exploitable bugs and AIxCC had 18 unintended bugs found.",
+        "confidence": "stated",
+        "timestamp_sec": 758
+      },
+      {
+        "claim": "The audit task formulation \u2014 asking for all vulnerabilities with proofs and scoring multiplicative precision and recall \u2014 prevents both easiest-bug reward hacking and proof spamming.",
+        "confidence": "stated",
+        "timestamp_sec": 908
+      },
+      {
+        "claim": "Triggering a crash is not hacking; only control-flow hijack or sandbox escape counts as real exploitation.",
+        "confidence": "stated",
+        "timestamp_sec": 1088
+      },
+      {
+        "claim": "Crash-triggering no longer distinguishes frontier models \u2014 top models hit 95% (39/41) on V8 CVEs \u2014 so it is a saturated metric.",
+        "confidence": "stated",
+        "timestamp_sec": 1292
+      },
+      {
+        "claim": "Full arbitrary code execution does distinguish models: 73% and 68% for the two strongest versus 0% for Gemini and Kimi.",
+        "confidence": "stated",
+        "timestamp_sec": 1332
+      },
+      {
+        "claim": "The top model's V8 exploits are not memorized, evidenced by a novel math.random-reversal route and success on x86 where internal experts believed it infeasible.",
+        "confidence": "stated",
+        "timestamp_sec": 1461
+      },
+      {
+        "claim": "Frontier model exploitation on hardened targets is now on par with an elite human security researcher.",
+        "confidence": "stated",
+        "timestamp_sec": 1411
+      },
+      {
+        "claim": "Publishing full benchmark transcripts becomes ethically fraught once models produce weaponized exploits for high-value targets that were never public.",
+        "confidence": "stated",
+        "timestamp_sec": 1498
+      },
+      {
+        "claim": "Mining genuine zero-days for RL environments is necessary to rule out memorization as an explanation for model performance.",
+        "confidence": "stated",
+        "timestamp_sec": 1538
+      },
+      {
+        "claim": "Teaching models to hack should follow the same graduated-difficulty write-up-and-practice methodology that produces elite human hackers.",
+        "confidence": "stated",
+        "timestamp_sec": 157
+      },
+      {
+        "claim": "Building good cybersecurity RL training requires a genuine domain expert to build the oracles and audit transcripts for memorization and reward hacking \u2014 it is not otherwise mysterious.",
+        "confidence": "stated",
+        "timestamp_sec": 1579
+      }
+    ],
+    "speaker_org": "Bugcrowd (Chief AI and Science Officer); also full professor at Carnegie Mellon University"
+  },
+  "_meta": {
+    "slug": "teaching-ai-to-find-real-vulnerabilities",
+    "video_id": "ZFxh7sqbUZo",
+    "url": "https://www.youtube.com/watch?v=ZFxh7sqbUZo",
+    "word_count": 5001,
+    "wall_sec": 68.7,
+    "run_at": "2026-08-12T20:17:05Z",
+    "effort": "medium"
+  }
+}

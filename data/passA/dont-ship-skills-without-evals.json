@@ -1,0 +1,303 @@
+{
+  "is_error": false,
+  "duration_api_ms": 51797,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "48c39399-9ed2-4f0d-a502-4cd101fba013",
+  "total_cost_usd": 0.23038299999999998,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 10926,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 4348,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 10926,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 4348,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 10926,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 10926
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 7184,
+      "outputTokens": 15,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.007259000000000001,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 4348,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 10926,
+      "webSearchRequests": 0,
+      "costUSD": 0.223124,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Philipp Schmid of Google DeepMind argues that agent skills have become ubiquitous while evals for them are essentially nonexistent \u2014 a survey of ~50,000 indexed skills found almost none had tests, and most were AI-written and untested. He distinguishes the agents we use (where the engineer notices immediately when a skill fails to trigger) from the agents we build for customers (who don't know skills exist and will never invoke them by name), which is why model-triggered skill descriptions carry so much weight. The talk delivers concrete authoring guidance \u2014 layered progressive disclosure, directives over essays, goals over step-by-step workflows, negative cases, removing no-ops \u2014 and then shows the eval harness DeepMind used for a Gemini Interactions API skill: 117 test cases, cheap regex asserts, no LLM judge needed, taking valid code generation to nearly 90%. It closes with the practice that makes it stick: evals run on every skill diff, changes don't merge unless they improve the tests, and ablation runs with and without the skill tell you when a skill can be retired. Worth watching if you write skills for anyone other than yourself.\",\n  \"key_points\": [\n    \"Skills are near-universally adopted but almost never tested \u2014 Skill Bench indexed over 50,000 skills and almost none had evals, leaving authors unable to tell whether a failure came from a bad skill or a task that was too hard for the model.\",\n    \"There is a critical distinction between skills in the agents you use, where you can notice a missed trigger and reprompt or use a slash command, and skills in agents you build for customers, who will never say 'use the refund skill'.\",\n    \"Capability skills teach models things they can't do consistently and are inherently temporary; preference skills encode team-specific style and workflow and are durable \u2014 evals are what tell you which category a skill has fallen into.\",\n    \"Skill Bench 1.1 measured roughly 15% average performance improvement from skills across ~100 coding and productivity tasks, but human-written skills outperformed AI-generated ones, which can hurt performance outright.\",\n    \"The description is the token cost you pay on every single model call, so it should be short and directive \u2014 stating why, how, and when to use the skill, plus when not to \u2014 while depth belongs in layered reference files.\",\n    \"If a workflow is always the same fixed sequence of steps, it should be a script the model invokes, not a skill; skills should define goals and constraints and leave the model freedom in how to reach them.\",\n    \"AI-generated skills accumulate no-ops \u2014 instructions like 'write clear high-quality code' that change nothing about agent behavior \u2014 which cost tokens without buying anything.\",\n    \"DeepMind's harness needs only a JSON file of test cases (prompt, language, should_trigger, expected checks) and a Python script running a coding agent; most assertions can be regex, making runs cheap enough to repeat on every model release.\",\n    \"Evals should test outcomes rather than paths \u2014 whether the task got done, not whether the skill loaded on turn one \u2014 and should use isolated runs, because coding agents will cheat by pulling context from previous chats.\",\n    \"Keep evals after retiring a skill: they become regression tests that tell you when model performance degrades and the skill should be reintroduced.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"Everyone uses skills, no one has evals.\",\n      \"timestamp_sec\": 1,\n      \"why\": \"the one-line diagnosis the entire talk is built to fix, delivered off a live show of hands\"\n    },\n    {\n      \"text\": \"it's very hard to know if your skill is good or bad because like agents are really non-deterministic. So you might not know if your uh task fails because your skill is bad or if your task fails because it's way too challenging for the model.\",\n      \"timestamp_sec\": 45,\n      \"why\": \"states the core attribution problem that motivates skill-level evals\"\n    },\n    {\n      \"text\": \"When you build an agent inside your application for consumer or customers, they have no idea about what a skill is. They don't start their prompt with use customer support skill to like help me refund or use refund skill to help me solve my problem.\",\n      \"timestamp_sec\": 119,\n      \"why\": \"the sharpest framing of why skill descriptions matter more in production than in personal use\"\n    },\n    {\n      \"text\": \"Capability skills teach models something they cannot do consistently at the moment.\",\n      \"timestamp_sec\": 192,\n      \"why\": \"defines half of the talk's central taxonomy\"\n    },\n    {\n      \"text\": \"the better our model gets, the more likely it is that we can remove those skills. And Evals will tell us when we can retire skill and when not.\",\n      \"timestamp_sec\": 192,\n      \"why\": \"ties skill lifecycle directly to eval infrastructure\"\n    },\n    {\n      \"text\": \"skills on average improve the performance by roughly 15%\",\n      \"timestamp_sec\": 245,\n      \"why\": \"the headline number establishing skills work at all\"\n    },\n    {\n      \"text\": \"human-written skills are the best we can provide. Uh AI-generated skills can uh impact performance negatively. And that skills or skills.md files should be below 500 lines of words.\",\n      \"timestamp_sec\": 286,\n      \"why\": \"a contrarian claim plus a concrete length threshold readers can act on today\"\n    },\n    {\n      \"text\": \"the description is the cost you always pay on every model invocation. So, on every model call, the description is part of the model context. So, you always pay that 100 200 tokens cost\",\n      \"timestamp_sec\": 461,\n      \"why\": \"names the specific token economics behind progressive disclosure\"\n    },\n    {\n      \"text\": \"If you have those type of use cases, you should not use skills. You maybe you should write a script because if the the process or the workflow is always the same, you don't need to waste models and tokens for that exercise.\",\n      \"timestamp_sec\": 529,\n      \"why\": \"a clear boundary on what skills are not for, where many practitioners get it wrong\"\n    },\n    {\n      \"text\": \"I like to create five for like the happy path. So, when do I want to use that skill? Five when I don't want to use that skill just to make sure the model is not over triggering the skill and confusing itself.\",\n      \"timestamp_sec\": 603,\n      \"why\": \"the concrete recipe for a minimum viable skill eval set\"\n    },\n    {\n      \"text\": \"no-ops basically is an instruction which does nothing to change the agent's behavior. It's like before making an implementation easy to read.\",\n      \"timestamp_sec\": 670,\n      \"why\": \"defines a specific, common failure mode in AI-authored skills\"\n    },\n    {\n      \"text\": \"we created 117 test cases\",\n      \"timestamp_sec\": 748,\n      \"why\": \"grounds the methodology in a real, sized production case\"\n    },\n    {\n      \"text\": \"the end result was that we improved the the performance up to like almost 90% for generating valid interactions API code with the latest Gemini models\",\n      \"timestamp_sec\": 748,\n      \"why\": \"the payoff number for the case study\"\n    },\n    {\n      \"text\": \"most of the tests or evals for skills can be regex. It's like very amazing how good of regex you can write using coding agents.\",\n      \"timestamp_sec\": 857,\n      \"why\": \"argues against reaching for LLM judges by default, the cheapest practical advice in the talk\"\n    },\n    {\n      \"text\": \"if a change happens to or like a diff to the skill file, the eval will be run, and there will also be a result, and the change will not be merged if it is not improving the test cases.\",\n      \"timestamp_sec\": 988,\n      \"why\": \"describes the enforcement mechanism that turns eval advice into an actual practice\"\n    },\n    {\n      \"text\": \"we have seen 50% of the failures uh because the skill was not triggered correctly because the prompt of the user was not uh detailed enough\",\n      \"timestamp_sec\": 1024,\n      \"why\": \"quantifies triggering as the dominant failure mode\"\n    },\n    {\n      \"text\": \"we don't want to test if the model loads the skill on like the first turn. We really want to test if it can achieve the task based on the prompt.\",\n      \"timestamp_sec\": 1102,\n      \"why\": \"the outcomes-not-paths principle stated plainly\"\n    },\n    {\n      \"text\": \"coding agents are very good at finding or cheating. So, if you run inside uh your existing environment, it might look up previous chats or it might look up some other executions\",\n      \"timestamp_sec\": 1102,\n      \"why\": \"a non-obvious eval-validity trap specific to agentic evaluation\"\n    },\n    {\n      \"text\": \"agent harnesses behave differently and of course model behaves differently. So, maybe your skill is very good with a Gemini but very bad with Codex\",\n      \"timestamp_sec\": 1137,\n      \"why\": \"flags cross-harness portability as an underrated risk\"\n    },\n    {\n      \"text\": \"If your um model is good enough that it doesn't need the skill anymore, keep that eval. You don't need to throw that eval away because you throw the skill away.\",\n      \"timestamp_sec\": 1181,\n      \"why\": \"reframes evals as durable assets outlasting the skills they were written for\"\n    },\n    {\n      \"text\": \"run always evals with your skill loaded and without your skill loaded. Only that way you will know when you can retire skill or if a skill is really helpful for your performance.\",\n      \"timestamp_sec\": 1250,\n      \"why\": \"the single actionable method for deciding whether a skill earns its keep\"\n    }\n  ],\n  \"concepts\": [\n    \"agent skills\",\n    \"progressive disclosure\",\n    \"skill eval harness design\",\n    \"skill triggering and description design\",\n    \"capability vs preference skills\",\n    \"ablation testing\",\n    \"regex-based assertions\",\n    \"llm as a judge\",\n    \"context token budgeting\",\n    \"skill retirement\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Human-written skills outperform AI-generated skills, and AI-generated skills can degrade performance.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 286\n    },\n    {\n      \"claim\": \"A skills.md file should be under 500 lines.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 286\n    },\n    {\n      \"claim\": \"Skills improve agent performance by roughly 15% on average, per Skill Bench 1.1 across ~100 tasks.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 245\n    },\n    {\n      \"claim\": \"If a workflow is a fixed sequence of steps, it should be a script rather than a skill.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 529\n    },\n    {\n      \"claim\": \"Most skill evals can be cheap regex assertions rather than LLM-as-judge.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 857\n    },\n    {\n      \"claim\": \"About 50% of skill failures come from the skill not being triggered, not from bad skill content.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1024\n    },\n    {\n      \"claim\": \"Evals should measure task outcomes, not whether the skill was loaded on a particular turn.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1102\n    },\n    {\n      \"claim\": \"Skill evals must run in isolated workspaces because coding agents will otherwise cheat by reading prior chats or executions.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1102\n    },\n    {\n      \"claim\": \"You should run three to six trials per eval case because agents are non-deterministic.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1137\n    },\n    {\n      \"claim\": \"Skills should be tested across multiple agent harnesses, since a skill that works on one harness may fail on another.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1137\n    },\n    {\n      \"claim\": \"A skill change should not be merged unless it improves the eval test cases.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 988\n    },\n    {\n      \"claim\": \"Evals should be retained after a skill is retired, serving as regression tests that signal when to reintroduce it.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1181\n    },\n    {\n      \"claim\": \"User-invoked skills are underrated and are the right fit for routine dev workflows like creating pull requests or staging documentation.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 332\n    },\n    {\n      \"claim\": \"Skill descriptions should include negative cases specifying when not to use the skill, to prevent over-triggering.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 603\n    },\n    {\n      \"claim\": \"Removing no-ops from skills saves tokens even when it does not change eval performance.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1250\n    },\n    {\n      \"claim\": \"Capability skills are temporary and will be obsoleted by better models, while preference skills are durable.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 192\n    }\n  ],\n  \"speaker_org\": \"Google DeepMind\"\n}",
+  "ttft_ms": 50663,
+  "ttft_stream_ms": 1124,
+  "time_to_request_ms": 39,
+  "type": "result",
+  "duration_ms": 52592,
+  "uuid": "ab5681c5-9f73-4c86-8783-f2e12b2a9f5e",
+  "passA": {
+    "summary": "Philipp Schmid of Google DeepMind argues that agent skills have become ubiquitous while evals for them are essentially nonexistent \u2014 a survey of ~50,000 indexed skills found almost none had tests, and most were AI-written and untested. He distinguishes the agents we use (where the engineer notices immediately when a skill fails to trigger) from the agents we build for customers (who don't know skills exist and will never invoke them by name), which is why model-triggered skill descriptions carry so much weight. The talk delivers concrete authoring guidance \u2014 layered progressive disclosure, directives over essays, goals over step-by-step workflows, negative cases, removing no-ops \u2014 and then shows the eval harness DeepMind used for a Gemini Interactions API skill: 117 test cases, cheap regex asserts, no LLM judge needed, taking valid code generation to nearly 90%. It closes with the practice that makes it stick: evals run on every skill diff, changes don't merge unless they improve the tests, and ablation runs with and without the skill tell you when a skill can be retired. Worth watching if you write skills for anyone other than yourself.",
+    "key_points": [
+      "Skills are near-universally adopted but almost never tested \u2014 Skill Bench indexed over 50,000 skills and almost none had evals, leaving authors unable to tell whether a failure came from a bad skill or a task that was too hard for the model.",
+      "There is a critical distinction between skills in the agents you use, where you can notice a missed trigger and reprompt or use a slash command, and skills in agents you build for customers, who will never say 'use the refund skill'.",
+      "Capability skills teach models things they can't do consistently and are inherently temporary; preference skills encode team-specific style and workflow and are durable \u2014 evals are what tell you which category a skill has fallen into.",
+      "Skill Bench 1.1 measured roughly 15% average performance improvement from skills across ~100 coding and productivity tasks, but human-written skills outperformed AI-generated ones, which can hurt performance outright.",
+      "The description is the token cost you pay on every single model call, so it should be short and directive \u2014 stating why, how, and when to use the skill, plus when not to \u2014 while depth belongs in layered reference files.",
+      "If a workflow is always the same fixed sequence of steps, it should be a script the model invokes, not a skill; skills should define goals and constraints and leave the model freedom in how to reach them.",
+      "AI-generated skills accumulate no-ops \u2014 instructions like 'write clear high-quality code' that change nothing about agent behavior \u2014 which cost tokens without buying anything.",
+      "DeepMind's harness needs only a JSON file of test cases (prompt, language, should_trigger, expected checks) and a Python script running a coding agent; most assertions can be regex, making runs cheap enough to repeat on every model release.",
+      "Evals should test outcomes rather than paths \u2014 whether the task got done, not whether the skill loaded on turn one \u2014 and should use isolated runs, because coding agents will cheat by pulling context from previous chats.",
+      "Keep evals after retiring a skill: they become regression tests that tell you when model performance degrades and the skill should be reintroduced."
+    ],
+    "notable_quotes": [
+      {
+        "text": "Everyone uses skills, no one has evals.",
+        "timestamp_sec": 1,
+        "why": "the one-line diagnosis the entire talk is built to fix, delivered off a live show of hands"
+      },
+      {
+        "text": "it's very hard to know if your skill is good or bad because like agents are really non-deterministic. So you might not know if your uh task fails because your skill is bad or if your task fails because it's way too challenging for the model.",
+        "timestamp_sec": 45,
+        "why": "states the core attribution problem that motivates skill-level evals"
+      },
+      {
+        "text": "When you build an agent inside your application for consumer or customers, they have no idea about what a skill is. They don't start their prompt with use customer support skill to like help me refund or use refund skill to help me solve my problem.",
+        "timestamp_sec": 119,
+        "why": "the sharpest framing of why skill descriptions matter more in production than in personal use"
+      },
+      {
+        "text": "Capability skills teach models something they cannot do consistently at the moment.",
+        "timestamp_sec": 192,
+        "why": "defines half of the talk's central taxonomy"
+      },
+      {
+        "text": "the better our model gets, the more likely it is that we can remove those skills. And Evals will tell us when we can retire skill and when not.",
+        "timestamp_sec": 192,
+        "why": "ties skill lifecycle directly to eval infrastructure"
+      },
+      {
+        "text": "skills on average improve the performance by roughly 15%",
+        "timestamp_sec": 245,
+        "why": "the headline number establishing skills work at all"
+      },
+      {
+        "text": "human-written skills are the best we can provide. Uh AI-generated skills can uh impact performance negatively. And that skills or skills.md files should be below 500 lines of words.",
+        "timestamp_sec": 286,
+        "why": "a contrarian claim plus a concrete length threshold readers can act on today"
+      },
+      {
+        "text": "the description is the cost you always pay on every model invocation. So, on every model call, the description is part of the model context. So, you always pay that 100 200 tokens cost",
+        "timestamp_sec": 461,
+        "why": "names the specific token economics behind progressive disclosure"
+      },
+      {
+        "text": "If you have those type of use cases, you should not use skills. You maybe you should write a script because if the the process or the workflow is always the same, you don't need to waste models and tokens for that exercise.",
+        "timestamp_sec": 529,
+        "why": "a clear boundary on what skills are not for, where many practitioners get it wrong"
+      },
+      {
+        "text": "I like to create five for like the happy path. So, when do I want to use that skill? Five when I don't want to use that skill just to make sure the model is not over triggering the skill and confusing itself.",
+        "timestamp_sec": 603,
+        "why": "the concrete recipe for a minimum viable skill eval set"
+      },
+      {
+        "text": "no-ops basically is an instruction which does nothing to change the agent's behavior. It's like before making an implementation easy to read.",
+        "timestamp_sec": 670,
+        "why": "defines a specific, common failure mode in AI-authored skills"
+      },
+      {
+        "text": "we created 117 test cases",
+        "timestamp_sec": 748,
+        "why": "grounds the methodology in a real, sized production case"
+      },
+      {
+        "text": "the end result was that we improved the the performance up to like almost 90% for generating valid interactions API code with the latest Gemini models",
+        "timestamp_sec": 748,
+        "why": "the payoff number for the case study"
+      },
+      {
+        "text": "most of the tests or evals for skills can be regex. It's like very amazing how good of regex you can write using coding agents.",
+        "timestamp_sec": 857,
+        "why": "argues against reaching for LLM judges by default, the cheapest practical advice in the talk"
+      },
+      {
+        "text": "if a change happens to or like a diff to the skill file, the eval will be run, and there will also be a result, and the change will not be merged if it is not improving the test cases.",
+        "timestamp_sec": 988,
+        "why": "describes the enforcement mechanism that turns eval advice into an actual practice"
+      },
+      {
+        "text": "we have seen 50% of the failures uh because the skill was not triggered correctly because the prompt of the user was not uh detailed enough",
+        "timestamp_sec": 1024,
+        "why": "quantifies triggering as the dominant failure mode"
+      },
+      {
+        "text": "we don't want to test if the model loads the skill on like the first turn. We really want to test if it can achieve the task based on the prompt.",
+        "timestamp_sec": 1102,
+        "why": "the outcomes-not-paths principle stated plainly"
+      },
+      {
+        "text": "coding agents are very good at finding or cheating. So, if you run inside uh your existing environment, it might look up previous chats or it might look up some other executions",
+        "timestamp_sec": 1102,
+        "why": "a non-obvious eval-validity trap specific to agentic evaluation"
+      },
+      {
+        "text": "agent harnesses behave differently and of course model behaves differently. So, maybe your skill is very good with a Gemini but very bad with Codex",
+        "timestamp_sec": 1137,
+        "why": "flags cross-harness portability as an underrated risk"
+      },
+      {
+        "text": "If your um model is good enough that it doesn't need the skill anymore, keep that eval. You don't need to throw that eval away because you throw the skill away.",
+        "timestamp_sec": 1181,
+        "why": "reframes evals as durable assets outlasting the skills they were written for"
+      },
+      {
+        "text": "run always evals with your skill loaded and without your skill loaded. Only that way you will know when you can retire skill or if a skill is really helpful for your performance.",
+        "timestamp_sec": 1250,
+        "why": "the single actionable method for deciding whether a skill earns its keep"
+      }
+    ],
+    "concepts": [
+      "agent skills",
+      "progressive disclosure",
+      "skill eval harness design",
+      "skill triggering and description design",
+      "capability vs preference skills",
+      "ablation testing",
+      "regex-based assertions",
+      "llm as a judge",
+      "context token budgeting",
+      "skill retirement"
+    ],
+    "positions": [
+      {
+        "claim": "Human-written skills outperform AI-generated skills, and AI-generated skills can degrade performance.",
+        "confidence": "stated",
+        "timestamp_sec": 286
+      },
+      {
+        "claim": "A skills.md file should be under 500 lines.",
+        "confidence": "stated",
+        "timestamp_sec": 286
+      },
+      {
+        "claim": "Skills improve agent performance by roughly 15% on average, per Skill Bench 1.1 across ~100 tasks.",
+        "confidence": "stated",
+        "timestamp_sec": 245
+      },
+      {
+        "claim": "If a workflow is a fixed sequence of steps, it should be a script rather than a skill.",
+        "confidence": "stated",
+        "timestamp_sec": 529
+      },
+      {
+        "claim": "Most skill evals can be cheap regex assertions rather than LLM-as-judge.",
+        "confidence": "stated",
+        "timestamp_sec": 857
+      },
+      {
+        "claim": "About 50% of skill failures come from the skill not being triggered, not from bad skill content.",
+        "confidence": "stated",
+        "timestamp_sec": 1024
+      },
+      {
+        "claim": "Evals should measure task outcomes, not whether the skill was loaded on a particular turn.",
+        "confidence": "stated",
+        "timestamp_sec": 1102
+      },
+      {
+        "claim": "Skill evals must run in isolated workspaces because coding agents will otherwise cheat by reading prior chats or executions.",
+        "confidence": "stated",
+        "timestamp_sec": 1102
+      },
+      {
+        "claim": "You should run three to six trials per eval case because agents are non-deterministic.",
+        "confidence": "stated",
+        "timestamp_sec": 1137
+      },
+      {
+        "claim": "Skills should be tested across multiple agent harnesses, since a skill that works on one harness may fail on another.",
+        "confidence": "stated",
+        "timestamp_sec": 1137
+      },
+      {
+        "claim": "A skill change should not be merged unless it improves the eval test cases.",
+        "confidence": "stated",
+        "timestamp_sec": 988
+      },
+      {
+        "claim": "Evals should be retained after a skill is retired, serving as regression tests that signal when to reintroduce it.",
+        "confidence": "stated",
+        "timestamp_sec": 1181
+      },
+      {
+        "claim": "User-invoked skills are underrated and are the right fit for routine dev workflows like creating pull requests or staging documentation.",
+        "confidence": "stated",
+        "timestamp_sec": 332
+      },
+      {
+        "claim": "Skill descriptions should include negative cases specifying when not to use the skill, to prevent over-triggering.",
+        "confidence": "stated",
+        "timestamp_sec": 603
+      },
+      {
+        "claim": "Removing no-ops from skills saves tokens even when it does not change eval performance.",
+        "confidence": "stated",
+        "timestamp_sec": 1250
+      },
+      {
+        "claim": "Capability skills are temporary and will be obsoleted by better models, while preference skills are durable.",
+        "confidence": "stated",
+        "timestamp_sec": 192
+      }
+    ],
+    "speaker_org": "Google DeepMind"
+  },
+  "_meta": {
+    "slug": "dont-ship-skills-without-evals",
+    "video_id": "0vphxNt4wyk",
+    "url": "https://www.youtube.com/watch?v=0vphxNt4wyk",
+    "word_count": 3967,
+    "wall_sec": 53.6,
+    "run_at": "2026-08-12T19:44:53Z",
+    "effort": "medium"
+  }
+}

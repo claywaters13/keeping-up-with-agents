@@ -1,0 +1,289 @@
+{
+  "is_error": false,
+  "duration_api_ms": 141680,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "8801bb4f-e0b0-4395-8e9a-2ddc25736590",
+  "total_cost_usd": 0.972977,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 63801,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 11465,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 63801,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 11465,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 63801,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 63801
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 43088,
+      "outputTokens": 18,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.043178,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 11465,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 63801,
+      "webSearchRequests": 0,
+      "costUSD": 0.9297989999999999,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\"concept\":\"inference cost optimization\",\"state_of_practice\":\"Cost stopped being a finance problem and became an engineering constraint monitored in production like an SLA \u2014 second only to quality in the 2026 survey, with 40% of respondents saying it regularly shapes how ambitiously they use AI. The dominant realization is that per-token price is the wrong unit: prices fall every generation while per-session token consumption grows exponentially (reasoning upgrades that keep list price flat but emit 3x output tokens, agent loops that resend full histories), so the levers that actually move spend are input-side \u2014 prompt caching, capping tool-loop iterations, keeping tool results out of context, and architecting retrieval so context grows with hierarchy depth rather than instance count. Tesco's measurement that ~90% of AI coding spend is input tokens and Phaidra's 116M\u2192390K tokens per validation pass are the canonical numbers. A second consensus is that difficulty-based routing is mandatory \u2014 nobody credible defends sending inbox triage to Opus \u2014 and that a large class of work (arithmetic, deterministic SQL, set logic, file conversion, reranking) should never touch a model at all; a 50/30/20 weighted heuristic reranker at 0.4ms beat LLM-as-judge reranking outright. Open-weight and post-trained small models are now the standard cost floor: GLM using 2x tokens at half the cost of Opus and beating it on build correctness, internal LLM gateways cutting spend nearly in half, a post-trained open model beating Opus on a finance task at a fraction of Haiku's price. What remains genuinely unsettled is the ownership question \u2014 whether to rent frontier APIs, self-host, or run locally \u2014 and whether deliberately buying reliability with redundant tokens (parallel attempts, verification agents, loops at $10.42/hour) is good economics or the thing that produces $200M inference bills and annual budgets exhausted in month four.\",\"consensus\":[{\"claim\":\"Not all traffic deserves the frontier model; agents must route by task difficulty across a tier of models, and a cheap model can serve as the router.\",\"support_count\":5,\"supporting_talks\":[\"notions-token-town\",\"your-agent-is-wasting-tokens-and-you-dont-know-it\",\"state-of-the-union-why-local-why-now\",\"local-models-trust-control-optimization\",\"develop-at-idea-velocity\"],\"evidence_quote\":\"And not all traffic is equal. It is a huge miss to send all of these to the latest opus model.\",\"evidence_talk\":\"notions-token-town\",\"evidence_timestamp_sec\":619},{\"claim\":\"Cost is dominated by what you put into the context window, not by model choice or output length, so the highest-leverage optimization is sending less input.\",\"support_count\":6,\"supporting_talks\":[\"we-cut-94-of-ai-coding-tokens-with-a-local-code-index\",\"your-agent-is-wasting-tokens-and-you-dont-know-it\",\"semantic-blindness-500000-sensors-confused-an-llm\",\"anthropics-cca-exam-as-a-field-guide-for-agentic-engineering\",\"stop-renting-your-cognitive-infrastructure\",\"develop-at-idea-velocity\"],\"evidence_quote\":\"This is the most important slide. 90% of your AI cost is input.\",\"evidence_talk\":\"we-cut-94-of-ai-coding-tokens-with-a-local-code-index\",\"evidence_timestamp_sec\":117},{\"claim\":\"Work that can be expressed as deterministic code \u2014 arithmetic, set operations, SQL, file conversion, reranking \u2014 should be routed to code rather than run through a model, because it is simultaneously cheaper and more correct.\",\"support_count\":4,\"supporting_talks\":[\"how-kepler-built-verifiable-ai-for-financial-services\",\"notions-token-town\",\"semantic-blindness-500000-sensors-confused-an-llm\",\"we-cut-94-of-ai-coding-tokens-with-a-local-code-index\"],\"evidence_quote\":\"Why would I run 1 + 1 through a multi-billion parameter model instead of one CPU cycle?\",\"evidence_talk\":\"how-kepler-built-verifiable-ai-for-financial-services\",\"evidence_timestamp_sec\":732},{\"claim\":\"Falling per-token prices do not translate into falling bills, because tokens consumed per session grow faster than prices drop \u2014 so cost must be budgeted and monitored as a first-class production constraint.\",\"support_count\":6,\"supporting_talks\":[\"the-biggest-challenge-in-your-stack-evals-evals-evals\",\"local-models-trust-control-optimization\",\"stop-renting-your-cognitive-infrastructure\",\"open-source-is-dead-long-live-open-source\",\"notions-token-town\",\"the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in\"],\"evidence_quote\":\"it turns out that infinite intelligence still comes with a usagebased bill.\",\"evidence_talk\":\"the-biggest-challenge-in-your-stack-evals-evals-evals\",\"evidence_timestamp_sec\":496},{\"claim\":\"Open-weight and specialized small models now deliver comparable task outcomes at a fraction of frontier cost, even when they burn more tokens to get there.\",\"support_count\":6,\"supporting_talks\":[\"open-source-is-dead-long-live-open-source\",\"local-models-trust-control-optimization\",\"notions-token-town\",\"state-of-the-union-why-local-why-now\",\"why-large-tiny-lms-agents-on-edgerobotics\",\"develop-at-idea-velocity\"],\"evidence_quote\":\"GLM used twice as many tokens but only cost half as much.\",\"evidence_talk\":\"open-source-is-dead-long-live-open-source\",\"evidence_timestamp_sec\":584}],\"disagreements\":[{\"question\":\"Should serious AI products rent inference from frontier APIs, or own the inference stack?\",\"position_a\":\"Own it. Rented endpoints are structurally wasteful (the endpoint cannot see the shape of the workload), prepaid credits remove the utility-bill anchor that disciplines spend, closed providers capture optimization gains as margin rather than passing them through, and audit/reproducibility requirements fail third-party dependency review. Enterprises should stand up their own infrastructure or internal gateways over open models.\",\"position_a_talks\":[\"stop-renting-your-cognitive-infrastructure\",\"local-models-trust-control-optimization\",\"open-source-is-dead-long-live-open-source\",\"state-of-the-union-why-local-why-now\"],\"position_b\":\"Rent, and don't try to compete on token economics. Applied AI companies should win on product, data flywheels, UI, and orchestration while staying model-agnostic across providers; inference and model serving is the clear buy market, and frontier vendors are cutting prices fast enough (GPT-5.5-level intelligence at half cost, $1/$6 per million) that owning the stack is a distraction.\",\"position_b_talks\":[\"notions-token-town\",\"the-biggest-challenge-in-your-stack-evals-evals-evals\",\"the-golden-age-of-ai-engineering\"],\"why_it_matters\":\"This determines whether an AI org staffs a GPU/serving team and takes on capex, or invests the same headcount in eval infrastructure and multi-provider routing. It also changes the negotiating posture with labs: owners bargain on credible walk-away, renters bargain on eval partnerships and volume.\"},{\"question\":\"Should inference default to cloud, or move to local and on-device execution?\",\"position_a\":\"Local. Cloud round-trips are expensive and too slow for real-time budgets (a 16ms frame at 60Hz), most daily tasks will run on a laptop within a year, ~90% of tasks don't need frontier intelligence, and reaching the majority of devices requires 50M\u2013500M parameter models rather than cloud calls at all. Running the index and search locally is itself a design advantage.\",\"position_a_talks\":[\"local-agentic-theory-for-mobile-games\",\"local-models-trust-control-optimization\",\"state-of-the-union-why-local-why-now\",\"why-large-tiny-lms-agents-on-edgerobotics\",\"we-cut-94-of-ai-coding-tokens-with-a-local-code-index\"],\"position_b\":\"Cloud. For most use cases hosting in the cloud makes more sense than running locally, because local hosting makes you responsible for uptime; the per-agent cost problem is better solved by sleep-and-wake architecture than by relocating compute, and the local-vs-cloud distinction should disappear entirely with the agent choosing its own environment.\",\"position_b_talks\":[\"the-agentic-web-and-the-bazaar-era-of-ai\",\"the-golden-age-of-ai-engineering\"],\"why_it_matters\":\"It decides whether cost engineering targets DRAM and quantization on constrained devices or scheduling and idle-compute reclamation in a datacenter \u2014 and whether product teams must ship a per-hardware model configuration story at all.\"},{\"question\":\"Is deliberately spending more tokens to buy reliability \u2014 parallel attempts, redundant reviewer agents, uncapped loops \u2014 good economics?\",\"position_a\":\"Yes. Running local plus staging agents roughly doubles token usage and is worth it for reliability; high throughput matters precisely because it lets you run five or six parallel approaches and pick the best; a manager agent with separate context is worth its tokens because a coding agent grading its own PR is biased toward success.\",\"position_a_talks\":[\"develop-at-idea-velocity\",\"the-golden-age-of-ai-engineering\"],\"position_b\":\"No. Stacking loops on loops and orchestrating quality problems away with more tokens does not survive contact with a company-scale budget; redundant LLM calls on work that doesn't need a model is how teams become token poor; and rented-endpoint agent loops are exactly where waste is structural \u2014 the observed failure mode is a year's token budget exhausted in month four.\",\"position_b_talks\":[\"the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in\",\"notions-token-town\",\"stop-renting-your-cognitive-infrastructure\"],\"why_it_matters\":\"If redundancy is cheap insurance, the right move is more parallel rollouts and more verification agents; if it isn't, the same reliability must come from deterministic verifiers, static checks, and capped loops \u2014 a completely different harness design and a different per-engineer token budget.\"}],\"practical_guidance\":{\"do\":[\"Cache the system prompt (and where possible the tool prompt and messages) \u2014 it is provider-agnostic, not framework-specific, and reduces the payload on every call after the first\",\"Set a maximum iteration count on every tool loop; uncapped loops observed running 10\u201320 times or going infinite\",\"Store large tool results outside the context and pass a summary, rather than re-sending the full result to the model on each loop iteration\",\"Use a cheap model as the router that decides which model handles each request (e.g. Haiku for cheap work, Sonnet for harder)\",\"Design retrieval so context grows with hierarchy/tree depth rather than instance count \u2014 Phaidra held ~9,000 tokens per query at both 64 and 460,000 GPUs\",\"Replace LLM-based reranking with a weighted heuristic (50% semantic, 30% keyword, 20% recency) plus an adaptive threshold: 0.4ms instead of adding 2\u20133 seconds and an extra call\",\"Combine semantic and keyword search \u2014 each alone misses ~25% of relevant results, together ~10%\",\"Keep agent context under ~100k tokens even with million-token windows (~200k upper bound, under 60k for the hardest problems), and deterministically re-allocate a fresh context each iteration instead of compacting, since compaction is lossy\",\"Use batch mode for non-urgent work: 50% fewer token cost with results delivered within 24 hours\",\"Evaluate vendors on whole trajectories rather than single-call cost or latency \u2014 Notion chose Parallel for web search despite it not being cheapest\",\"Run observability on tool calls before production to see how long each tool runs and how many times it loops\",\"Treat the cost ceiling as a non-negotiable production constraint gathered before design, alongside latency budget and regulatory requirements\",\"Instrument real queries against a counterfactual baseline to measure savings rather than estimating them, and state the baseline you measured against\",\"Post-train an open model on your own harness for a specialized task when the economics justify it \u2014 a finance specialization beating Opus at a fraction of Haiku's cost took one to two weeks\",\"Keep model optionality: the ability to switch providers is the leverage, and open-weight models lower the cost floor and improve negotiating position\"],\"avoid\":[\"Instructing the model in the prompt to use less context \u2014 the context is already transmitted and billed before the model reads the prompt\",\"Optimizing output length, max_tokens, or temperature to cut spend, when ~90% of the bill is input tokens\",\"Sending all traffic to the newest frontier model \u2014 charging a customer Opus rates to triage an email inbox\",\"Putting an LLM in the loop for CSV-to-PDF conversion, deterministic SQL, or tool calls that already sit behind a CLI\",\"Filling a million-token context window because it exists \u2014 it costs more and degrades answer accuracy\",\"Sharding entity enumeration across parallel LLM calls: it produces hallucinated entities and silent omissions on top of the token spend\",\"Committing to a single provider for a volume discount \u2014 no discount is worth the lost optionality, and you have no exit\",\"Assuming prepaid inference credits behave like a metered utility bill; without the periodic-bill anchor teams systematically overspend\",\"Leaving API keys as files or dashboards without per-seat usage limits \u2014 one talk cited a stolen key draining an endpoint in real time, another an accidental $500M single-month Claude bill from unset limits\",\"Assuming multiple probabilistic models checking each other's work is a cost-effective correctness strategy\"]},\"notable_outliers\":[{\"claim\":\"Cutting input tokens by 94% yields only ~61% total savings, and the 94% figure is against a worst-case full-file-read baseline \u2014 modern agentic tools like Claude Code are already smarter than that, so real-world savings are lower.\",\"talk\":\"we-cut-94-of-ai-coding-tokens-with-a-local-code-index\",\"timestamp_sec\":391},{\"claim\":\"At 1GW scale the naive approach burned 116 million tokens per validation pass while still producing errors, versus 390,000 for the restructured one \u2014 roughly a 300x reduction with correctness rising from ~30% to 100%.\",\"talk\":\"semantic-blindness-500000-sensors-confused-an-llm\",\"timestamp_sec\":700},{\"claim\":\"For 20\u201330 step browser tasks, a small computer-use model costs about 80 cents per task versus $230 for a frontier model \u2014 and accuracy differences between them are within statistical noise, so the real advantage is latency and cost, not quality.\",\"talk\":\"computer-use-models-will-agentify-the-web-not-apis\",\"timestamp_sec\":1087},{\"claim\":\"Data curation alone cuts response length enough to yield roughly 35x fewer flops per correct answer versus Qwen 3.5 \u2014 inference cost optimization achieved in pre-training, not serving.\",\"talk\":\"data-quality-is-the-compute-multiplier\",\"timestamp_sec\":530},{\"claim\":\"Running a coding agent in a loop works out to $10.42 an hour, which reframes token spend as cheap relative to engineer time.\",\"talk\":\"the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in\",\"timestamp_sec\":1242},{\"claim\":\"On edge devices DRAM cost, not compute, is the binding constraint \u2014 some phone makers are shipping less RAM this year than last, and Raspberry Pi 6GB prices rose ~2.5x since launch.\",\"talk\":\"why-large-tiny-lms-agents-on-edgerobotics\",\"timestamp_sec\":184},{\"claim\":\"A 10x local inference speedup on DGX Spark was achieved in about three weeks using only existing techniques \u2014 vLLM backend, quantization, config tuning \u2014 with no new computer science.\",\"talk\":\"state-of-the-union-why-local-why-now\",\"timestamp_sec\":1303},{\"claim\":\"There is no single highest-leverage inference optimization; the correct strategy is to pursue a thousand and one edges exhaustively rather than prioritize a few \u2014 and current GPU flop utilization should already be considered embarrassing.\",\"talk\":\"agents-at-scale-inside-minimaxs-model-and-the-infrastructure-behind-it\",\"timestamp_sec\":723}],\"maturity\":\"consolidating\",\"maturity_rationale\":\"The tactical layer has converged hard \u2014 prompt caching, difficulty-based routing, capped tool loops, keeping tool results out of context, and offloading deterministic work to code appear independently across five or more talks with concrete numbers attached. What remains actively argued is the strategic layer: rent versus own, cloud versus local, and whether redundant token spend is cheap insurance or the root cause of the budget blowups practitioners keep citing.\"}",
+  "ttft_ms": 75810,
+  "ttft_stream_ms": 4308,
+  "time_to_request_ms": 42,
+  "type": "result",
+  "duration_ms": 141388,
+  "uuid": "5047cab9-a16c-4fd6-82ee-1515ee5012c2",
+  "passC": {
+    "concept": "inference cost optimization",
+    "state_of_practice": "Cost stopped being a finance problem and became an engineering constraint monitored in production like an SLA \u2014 second only to quality in the 2026 survey, with 40% of respondents saying it regularly shapes how ambitiously they use AI. The dominant realization is that per-token price is the wrong unit: prices fall every generation while per-session token consumption grows exponentially (reasoning upgrades that keep list price flat but emit 3x output tokens, agent loops that resend full histories), so the levers that actually move spend are input-side \u2014 prompt caching, capping tool-loop iterations, keeping tool results out of context, and architecting retrieval so context grows with hierarchy depth rather than instance count. Tesco's measurement that ~90% of AI coding spend is input tokens and Phaidra's 116M\u2192390K tokens per validation pass are the canonical numbers. A second consensus is that difficulty-based routing is mandatory \u2014 nobody credible defends sending inbox triage to Opus \u2014 and that a large class of work (arithmetic, deterministic SQL, set logic, file conversion, reranking) should never touch a model at all; a 50/30/20 weighted heuristic reranker at 0.4ms beat LLM-as-judge reranking outright. Open-weight and post-trained small models are now the standard cost floor: GLM using 2x tokens at half the cost of Opus and beating it on build correctness, internal LLM gateways cutting spend nearly in half, a post-trained open model beating Opus on a finance task at a fraction of Haiku's price. What remains genuinely unsettled is the ownership question \u2014 whether to rent frontier APIs, self-host, or run locally \u2014 and whether deliberately buying reliability with redundant tokens (parallel attempts, verification agents, loops at $10.42/hour) is good economics or the thing that produces $200M inference bills and annual budgets exhausted in month four.",
+    "consensus": [
+      {
+        "claim": "Not all traffic deserves the frontier model; agents must route by task difficulty across a tier of models, and a cheap model can serve as the router.",
+        "support_count": 5,
+        "supporting_talks": [
+          "notions-token-town",
+          "your-agent-is-wasting-tokens-and-you-dont-know-it",
+          "state-of-the-union-why-local-why-now",
+          "local-models-trust-control-optimization",
+          "develop-at-idea-velocity"
+        ],
+        "evidence_quote": "And not all traffic is equal. It is a huge miss to send all of these to the latest opus model.",
+        "evidence_talk": "notions-token-town",
+        "evidence_timestamp_sec": 619
+      },
+      {
+        "claim": "Cost is dominated by what you put into the context window, not by model choice or output length, so the highest-leverage optimization is sending less input.",
+        "support_count": 6,
+        "supporting_talks": [
+          "we-cut-94-of-ai-coding-tokens-with-a-local-code-index",
+          "your-agent-is-wasting-tokens-and-you-dont-know-it",
+          "semantic-blindness-500000-sensors-confused-an-llm",
+          "anthropics-cca-exam-as-a-field-guide-for-agentic-engineering",
+          "stop-renting-your-cognitive-infrastructure",
+          "develop-at-idea-velocity"
+        ],
+        "evidence_quote": "This is the most important slide. 90% of your AI cost is input.",
+        "evidence_talk": "we-cut-94-of-ai-coding-tokens-with-a-local-code-index",
+        "evidence_timestamp_sec": 117
+      },
+      {
+        "claim": "Work that can be expressed as deterministic code \u2014 arithmetic, set operations, SQL, file conversion, reranking \u2014 should be routed to code rather than run through a model, because it is simultaneously cheaper and more correct.",
+        "support_count": 4,
+        "supporting_talks": [
+          "how-kepler-built-verifiable-ai-for-financial-services",
+          "notions-token-town",
+          "semantic-blindness-500000-sensors-confused-an-llm",
+          "we-cut-94-of-ai-coding-tokens-with-a-local-code-index"
+        ],
+        "evidence_quote": "Why would I run 1 + 1 through a multi-billion parameter model instead of one CPU cycle?",
+        "evidence_talk": "how-kepler-built-verifiable-ai-for-financial-services",
+        "evidence_timestamp_sec": 732
+      },
+      {
+        "claim": "Falling per-token prices do not translate into falling bills, because tokens consumed per session grow faster than prices drop \u2014 so cost must be budgeted and monitored as a first-class production constraint.",
+        "support_count": 6,
+        "supporting_talks": [
+          "the-biggest-challenge-in-your-stack-evals-evals-evals",
+          "local-models-trust-control-optimization",
+          "stop-renting-your-cognitive-infrastructure",
+          "open-source-is-dead-long-live-open-source",
+          "notions-token-town",
+          "the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in"
+        ],
+        "evidence_quote": "it turns out that infinite intelligence still comes with a usagebased bill.",
+        "evidence_talk": "the-biggest-challenge-in-your-stack-evals-evals-evals",
+        "evidence_timestamp_sec": 496
+      },
+      {
+        "claim": "Open-weight and specialized small models now deliver comparable task outcomes at a fraction of frontier cost, even when they burn more tokens to get there.",
+        "support_count": 6,
+        "supporting_talks": [
+          "open-source-is-dead-long-live-open-source",
+          "local-models-trust-control-optimization",
+          "notions-token-town",
+          "state-of-the-union-why-local-why-now",
+          "why-large-tiny-lms-agents-on-edgerobotics",
+          "develop-at-idea-velocity"
+        ],
+        "evidence_quote": "GLM used twice as many tokens but only cost half as much.",
+        "evidence_talk": "open-source-is-dead-long-live-open-source",
+        "evidence_timestamp_sec": 584
+      }
+    ],
+    "disagreements": [
+      {
+        "question": "Should serious AI products rent inference from frontier APIs, or own the inference stack?",
+        "position_a": "Own it. Rented endpoints are structurally wasteful (the endpoint cannot see the shape of the workload), prepaid credits remove the utility-bill anchor that disciplines spend, closed providers capture optimization gains as margin rather than passing them through, and audit/reproducibility requirements fail third-party dependency review. Enterprises should stand up their own infrastructure or internal gateways over open models.",
+        "position_a_talks": [
+          "stop-renting-your-cognitive-infrastructure",
+          "local-models-trust-control-optimization",
+          "open-source-is-dead-long-live-open-source",
+          "state-of-the-union-why-local-why-now"
+        ],
+        "position_b": "Rent, and don't try to compete on token economics. Applied AI companies should win on product, data flywheels, UI, and orchestration while staying model-agnostic across providers; inference and model serving is the clear buy market, and frontier vendors are cutting prices fast enough (GPT-5.5-level intelligence at half cost, $1/$6 per million) that owning the stack is a distraction.",
+        "position_b_talks": [
+          "notions-token-town",
+          "the-biggest-challenge-in-your-stack-evals-evals-evals",
+          "the-golden-age-of-ai-engineering"
+        ],
+        "why_it_matters": "This determines whether an AI org staffs a GPU/serving team and takes on capex, or invests the same headcount in eval infrastructure and multi-provider routing. It also changes the negotiating posture with labs: owners bargain on credible walk-away, renters bargain on eval partnerships and volume."
+      },
+      {
+        "question": "Should inference default to cloud, or move to local and on-device execution?",
+        "position_a": "Local. Cloud round-trips are expensive and too slow for real-time budgets (a 16ms frame at 60Hz), most daily tasks will run on a laptop within a year, ~90% of tasks don't need frontier intelligence, and reaching the majority of devices requires 50M\u2013500M parameter models rather than cloud calls at all. Running the index and search locally is itself a design advantage.",
+        "position_a_talks": [
+          "local-agentic-theory-for-mobile-games",
+          "local-models-trust-control-optimization",
+          "state-of-the-union-why-local-why-now",
+          "why-large-tiny-lms-agents-on-edgerobotics",
+          "we-cut-94-of-ai-coding-tokens-with-a-local-code-index"
+        ],
+        "position_b": "Cloud. For most use cases hosting in the cloud makes more sense than running locally, because local hosting makes you responsible for uptime; the per-agent cost problem is better solved by sleep-and-wake architecture than by relocating compute, and the local-vs-cloud distinction should disappear entirely with the agent choosing its own environment.",
+        "position_b_talks": [
+          "the-agentic-web-and-the-bazaar-era-of-ai",
+          "the-golden-age-of-ai-engineering"
+        ],
+        "why_it_matters": "It decides whether cost engineering targets DRAM and quantization on constrained devices or scheduling and idle-compute reclamation in a datacenter \u2014 and whether product teams must ship a per-hardware model configuration story at all."
+      },
+      {
+        "question": "Is deliberately spending more tokens to buy reliability \u2014 parallel attempts, redundant reviewer agents, uncapped loops \u2014 good economics?",
+        "position_a": "Yes. Running local plus staging agents roughly doubles token usage and is worth it for reliability; high throughput matters precisely because it lets you run five or six parallel approaches and pick the best; a manager agent with separate context is worth its tokens because a coding agent grading its own PR is biased toward success.",
+        "position_a_talks": [
+          "develop-at-idea-velocity",
+          "the-golden-age-of-ai-engineering"
+        ],
+        "position_b": "No. Stacking loops on loops and orchestrating quality problems away with more tokens does not survive contact with a company-scale budget; redundant LLM calls on work that doesn't need a model is how teams become token poor; and rented-endpoint agent loops are exactly where waste is structural \u2014 the observed failure mode is a year's token budget exhausted in month four.",
+        "position_b_talks": [
+          "the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in",
+          "notions-token-town",
+          "stop-renting-your-cognitive-infrastructure"
+        ],
+        "why_it_matters": "If redundancy is cheap insurance, the right move is more parallel rollouts and more verification agents; if it isn't, the same reliability must come from deterministic verifiers, static checks, and capped loops \u2014 a completely different harness design and a different per-engineer token budget."
+      }
+    ],
+    "practical_guidance": {
+      "do": [
+        "Cache the system prompt (and where possible the tool prompt and messages) \u2014 it is provider-agnostic, not framework-specific, and reduces the payload on every call after the first",
+        "Set a maximum iteration count on every tool loop; uncapped loops observed running 10\u201320 times or going infinite",
+        "Store large tool results outside the context and pass a summary, rather than re-sending the full result to the model on each loop iteration",
+        "Use a cheap model as the router that decides which model handles each request (e.g. Haiku for cheap work, Sonnet for harder)",
+        "Design retrieval so context grows with hierarchy/tree depth rather than instance count \u2014 Phaidra held ~9,000 tokens per query at both 64 and 460,000 GPUs",
+        "Replace LLM-based reranking with a weighted heuristic (50% semantic, 30% keyword, 20% recency) plus an adaptive threshold: 0.4ms instead of adding 2\u20133 seconds and an extra call",
+        "Combine semantic and keyword search \u2014 each alone misses ~25% of relevant results, together ~10%",
+        "Keep agent context under ~100k tokens even with million-token windows (~200k upper bound, under 60k for the hardest problems), and deterministically re-allocate a fresh context each iteration instead of compacting, since compaction is lossy",
+        "Use batch mode for non-urgent work: 50% fewer token cost with results delivered within 24 hours",
+        "Evaluate vendors on whole trajectories rather than single-call cost or latency \u2014 Notion chose Parallel for web search despite it not being cheapest",
+        "Run observability on tool calls before production to see how long each tool runs and how many times it loops",
+        "Treat the cost ceiling as a non-negotiable production constraint gathered before design, alongside latency budget and regulatory requirements",
+        "Instrument real queries against a counterfactual baseline to measure savings rather than estimating them, and state the baseline you measured against",
+        "Post-train an open model on your own harness for a specialized task when the economics justify it \u2014 a finance specialization beating Opus at a fraction of Haiku's cost took one to two weeks",
+        "Keep model optionality: the ability to switch providers is the leverage, and open-weight models lower the cost floor and improve negotiating position"
+      ],
+      "avoid": [
+        "Instructing the model in the prompt to use less context \u2014 the context is already transmitted and billed before the model reads the prompt",
+        "Optimizing output length, max_tokens, or temperature to cut spend, when ~90% of the bill is input tokens",
+        "Sending all traffic to the newest frontier model \u2014 charging a customer Opus rates to triage an email inbox",
+        "Putting an LLM in the loop for CSV-to-PDF conversion, deterministic SQL, or tool calls that already sit behind a CLI",
+        "Filling a million-token context window because it exists \u2014 it costs more and degrades answer accuracy",
+        "Sharding entity enumeration across parallel LLM calls: it produces hallucinated entities and silent omissions on top of the token spend",
+        "Committing to a single provider for a volume discount \u2014 no discount is worth the lost optionality, and you have no exit",
+        "Assuming prepaid inference credits behave like a metered utility bill; without the periodic-bill anchor teams systematically overspend",
+        "Leaving API keys as files or dashboards without per-seat usage limits \u2014 one talk cited a stolen key draining an endpoint in real time, another an accidental $500M single-month Claude bill from unset limits",
+        "Assuming multiple probabilistic models checking each other's work is a cost-effective correctness strategy"
+      ]
+    },
+    "notable_outliers": [
+      {
+        "claim": "Cutting input tokens by 94% yields only ~61% total savings, and the 94% figure is against a worst-case full-file-read baseline \u2014 modern agentic tools like Claude Code are already smarter than that, so real-world savings are lower.",
+        "talk": "we-cut-94-of-ai-coding-tokens-with-a-local-code-index",
+        "timestamp_sec": 391
+      },
+      {
+        "claim": "At 1GW scale the naive approach burned 116 million tokens per validation pass while still producing errors, versus 390,000 for the restructured one \u2014 roughly a 300x reduction with correctness rising from ~30% to 100%.",
+        "talk": "semantic-blindness-500000-sensors-confused-an-llm",
+        "timestamp_sec": 700
+      },
+      {
+        "claim": "For 20\u201330 step browser tasks, a small computer-use model costs about 80 cents per task versus $230 for a frontier model \u2014 and accuracy differences between them are within statistical noise, so the real advantage is latency and cost, not quality.",
+        "talk": "computer-use-models-will-agentify-the-web-not-apis",
+        "timestamp_sec": 1087
+      },
+      {
+        "claim": "Data curation alone cuts response length enough to yield roughly 35x fewer flops per correct answer versus Qwen 3.5 \u2014 inference cost optimization achieved in pre-training, not serving.",
+        "talk": "data-quality-is-the-compute-multiplier",
+        "timestamp_sec": 530
+      },
+      {
+        "claim": "Running a coding agent in a loop works out to $10.42 an hour, which reframes token spend as cheap relative to engineer time.",
+        "talk": "the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in",
+        "timestamp_sec": 1242
+      },
+      {
+        "claim": "On edge devices DRAM cost, not compute, is the binding constraint \u2014 some phone makers are shipping less RAM this year than last, and Raspberry Pi 6GB prices rose ~2.5x since launch.",
+        "talk": "why-large-tiny-lms-agents-on-edgerobotics",
+        "timestamp_sec": 184
+      },
+      {
+        "claim": "A 10x local inference speedup on DGX Spark was achieved in about three weeks using only existing techniques \u2014 vLLM backend, quantization, config tuning \u2014 with no new computer science.",
+        "talk": "state-of-the-union-why-local-why-now",
+        "timestamp_sec": 1303
+      },
+      {
+        "claim": "There is no single highest-leverage inference optimization; the correct strategy is to pursue a thousand and one edges exhaustively rather than prioritize a few \u2014 and current GPU flop utilization should already be considered embarrassing.",
+        "talk": "agents-at-scale-inside-minimaxs-model-and-the-infrastructure-behind-it",
+        "timestamp_sec": 723
+      }
+    ],
+    "maturity": "consolidating",
+    "maturity_rationale": "The tactical layer has converged hard \u2014 prompt caching, difficulty-based routing, capped tool loops, keeping tool results out of context, and offloading deterministic work to code appear independently across five or more talks with concrete numbers attached. What remains actively argued is the strategic layer: rent versus own, cloud versus local, and whether redundant token spend is cheap insurance or the root cause of the budget blowups practitioners keep citing."
+  },
+  "_meta": {
+    "concept": "inference cost optimization",
+    "slug": "inference-cost-optimization",
+    "talk_count": 25,
+    "missing_talks": [],
+    "wall_sec": 142.5,
+    "run_at": "2026-08-13T17:08:10Z"
+  }
+}

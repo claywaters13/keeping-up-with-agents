@@ -1,0 +1,277 @@
+{
+  "is_error": false,
+  "duration_api_ms": 71361,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "87a44119-db5b-4bd7-9b93-3113226215b9",
+  "total_cost_usd": 0.265548,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 10287,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 6030,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 10287,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 6030,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 10287,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 10287
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 6679,
+      "outputTokens": 17,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.006764,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 6030,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 10287,
+      "webSearchRequests": 0,
+      "costUSD": 0.258784,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Dmitry Petrov argues that coding agents fail on unstructured 'physical' data \u2014 video, sensor streams, robot telemetry \u2014 not because the models are weak but because the environment obeys different physics than the SQL/warehouse world the frontier-lab data-agent posts assume. He frames the fix as a data harness with four faculties: sight (Pydantic schemas over binary files instead of millions of S3 JSONs), hands (a distributed execution engine with incremental updates and checkpoints), verification (pre-built dimensional metadata layers so tests and questions answer in one query), and memory (a markdown knowledge base capturing why a dataset was built, its schema, stats, and above all its source code). He demos DataChain, an open-source implementation, running Claude Code over 91 dashcam clips: 24 minutes of compute produced ~100,000 detection records queryable in fast Python-to-SQL. The core claim is that stronger frontier models won't close the gap \u2014 everyone already uses them \u2014 so the leverage is in the harness. Worth watching if you build multimodal or physical-AI pipelines and keep re-running expensive extraction jobs.\",\n  \"key_points\": [\n    \"Frontier labs have independently documented that agents underperform on data work \u2014 Petrov cites Anthropic reporting 21% accuracy on data projects absent a data harness, and OpenAI prescribing six layers of context \u2014 but both were operating on structured business data, which is the easy case.\",\n    \"Unstructured data is a 'neutron star': a few thousand video files look small on the surface, but clips contain frames containing objects containing labels and confidences, so 90 videos in the demo generated roughly 100,000 records and thousands would reach millions.\",\n    \"The two common coping strategies both fail \u2014 millions of sidecar JSONs on S3 give terrible latency and no consistency, while a centralized metadata database splits the team across two stacks and two programming languages.\",\n    \"Petrov's answer is Pydantic as the single schema language so data models, code, and the SQL transpilation all live in Python with no 'SQL island' in the codebase.\",\n    \"An unstructured-data harness has to reinvent the execution engine that a warehouse provides for free; he favors a Dask-like model that binds Python functions, Pydantic input/output types, storage files, and the metadata warehouse into one distributable unit you scale by naming a machine count.\",\n    \"Incremental updates and checkpoints are non-negotiable because extraction runs are long and LLM-expensive: a failure midway must resume rather than recompute, and new files in the bucket must process without touching old ones.\",\n    \"Correctness matters more in data than in software because, as Petrov reads Anthropic's finding, software problems admit many valid solutions while a data question typically has exactly one correct answer.\",\n    \"Rather than answer a question by scripting over raw data, the agent first asks whether a metadata layer exists that answers it in one SQL-ish query, and if not builds one general enough to serve a class of related questions \u2014 reviving star schemas and one-big-table modeling for multimodal metadata.\",\n    \"Expensive results should be shared, not re-derived: a knowledge base of plain MD files per dataset \u2014 session context for why it was built, LLM-written description, storage dependency, data preview, schema, stats, and source code \u2014 gives teammates and their agents lineage so the recompute never happens twice.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"Anthropic published that accuracy for data projects on their agents is only 21% until you add specific data harnesses to them and provide context.\",\n      \"timestamp_sec\": 2,\n      \"why\": \"The headline number motivating the entire talk.\"\n    },\n    {\n      \"text\": \"OpenAI published a whole layers of context, six layers of context in order to make the data agent to work.\",\n      \"timestamp_sec\": 2,\n      \"why\": \"Second lab data point, establishing this is an industry-wide finding rather than a vendor pitch.\"\n    },\n    {\n      \"text\": \"In my life, I don't have this luxury unfortunately because I live in a very extreme side of the data universe, messy unstructured data.\",\n      \"timestamp_sec\": 63,\n      \"why\": \"Names the scope boundary \u2014 his claims are about unstructured data, not the warehouse world the lab posts studied.\"\n    },\n    {\n      \"text\": \"2000 objects, 2000 files of videos could easily generate you millions of objects inside the videos.\",\n      \"timestamp_sec\": 175,\n      \"why\": \"The neutron-star metaphor made concrete as a cardinality explosion.\"\n    },\n    {\n      \"text\": \"First step, let's put this meta information to JSON files and put it on S3 next to the images, right? And they end up with a millions of JSONs.\",\n      \"timestamp_sec\": 232,\n      \"why\": \"Names the first anti-pattern most teams reach for.\"\n    },\n    {\n      \"text\": \"But this way you end up with a two system with a two programming languages\",\n      \"timestamp_sec\": 232,\n      \"why\": \"States the tradeoff that kills the centralized-database approach.\"\n    },\n    {\n      \"text\": \"We found that the easiest way for researchers and developers to deal with the schema is Pydantic.\",\n      \"timestamp_sec\": 281,\n      \"why\": \"The concrete design choice at the center of his 'sight' layer.\"\n    },\n    {\n      \"text\": \"you use the same language for the data, for the schemas, as well as code. Uh there are no SQL island in your code base.\",\n      \"timestamp_sec\": 281,\n      \"why\": \"Articulates the specific benefit claimed for Pydantic-as-schema.\"\n    },\n    {\n      \"text\": \"It's not supposed to be big because we analyze only like 90 videos and 90 videos generated 100,000 of records, right?\",\n      \"timestamp_sec\": 653,\n      \"why\": \"Live demo number grounding the scale argument.\"\n    },\n    {\n      \"text\": \"In the sequel or structured data world, execution engine is your data warehouse, right? That's obvious and easy. In an unstructured data world, you have to reinvent one.\",\n      \"timestamp_sec\": 832,\n      \"why\": \"Cleanest statement of why unstructured tooling can't be borrowed from the warehouse stack.\"\n    },\n    {\n      \"text\": \"Incremental update and data checkpoints it's a must-have in this data world.\",\n      \"timestamp_sec\": 1111,\n      \"why\": \"A flat requirement claim others building agent data pipelines might treat as optional.\"\n    },\n    {\n      \"text\": \"In data, there is usually only one way and only one current correct answer\",\n      \"timestamp_sec\": 1162,\n      \"why\": \"The asymmetry between software and data agents that justifies the emphasis on verification.\"\n    },\n    {\n      \"text\": \"instead of answering the question right away, agent ask itself, do I have a proper data sets, proper metadata to answer this question quickly in a single like SQL-ish query.\",\n      \"timestamp_sec\": 1219,\n      \"why\": \"Describes the actual behavioral change baked into the harness.\"\n    },\n    {\n      \"text\": \"It tries to make sure this layer is general enough to answer not your particular question, but a set of questions related to the one that you asked.\",\n      \"timestamp_sec\": 1281,\n      \"why\": \"The generalization heuristic that turns one-off compute into reusable infrastructure.\"\n    },\n    {\n      \"text\": \"People are doing the same job over and over and over again. You're paying double, triple, quadruple price to solving the same problem.\",\n      \"timestamp_sec\": 1281,\n      \"why\": \"The economic argument for shared dataset memory.\"\n    },\n    {\n      \"text\": \"Uh description of the data set, which usually enrich by LLMs, source code. Probably the most important part here is the source code.\",\n      \"timestamp_sec\": 1390,\n      \"why\": \"Ranks source code above other metadata as the key context artifact.\"\n    },\n    {\n      \"text\": \"This is a world when your favorite coding agents, such as Copilot, Codex, Cloud Code, do not operate efficiently.\",\n      \"timestamp_sec\": 1540,\n      \"why\": \"Blunt claim that general coding agents are the wrong tool here as-shipped.\"\n    },\n    {\n      \"text\": \"Their intuition pushes them in a wrong direction because laws of physics changes. And in order to make it, you don't use stronger models. Everyone use frontiers. Instead, you are building data harness.\",\n      \"timestamp_sec\": 1602,\n      \"why\": \"The thesis in one breath: harness beats model scale for this problem class.\"\n    }\n  ],\n  \"concepts\": [\n    \"agent harness design\",\n    \"unstructured multimodal data\",\n    \"metadata layer modeling\",\n    \"pydantic schemas as data contracts\",\n    \"distributed execution engines\",\n    \"incremental computation and checkpointing\",\n    \"data lineage\",\n    \"agent memory and knowledge bases\",\n    \"dimensional modeling\",\n    \"video frame extraction pipelines\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Agent accuracy on data projects is only about 21% without a purpose-built data harness and supplied context, per Anthropic's published results.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 2\n    },\n    {\n      \"claim\": \"The frontier-lab findings on data agents apply to structured business data and therefore understate the problem for unstructured, physical data.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 327\n    },\n    {\n      \"claim\": \"Storing extracted metadata as millions of JSON files alongside objects in S3 is unworkable on latency, efficiency, and consistency.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 232\n    },\n    {\n      \"claim\": \"A separate centralized metadata database is the wrong fix because it forces teams into two systems and two programming languages that researchers won't adopt.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 232\n    },\n    {\n      \"claim\": \"Pydantic is the most accessible schema mechanism for researchers and developers, and schemas should transpile to SQL rather than exist as a separate SQL layer.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 281\n    },\n    {\n      \"claim\": \"Unstructured data needs its own execution engine because warehouses don't cover it; Dask's model of binding compute to data is the right template, adapted for binaries.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 883\n    },\n    {\n      \"claim\": \"Incremental updates and checkpoints are mandatory, not optional, for physical-data pipelines.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1111\n    },\n    {\n      \"claim\": \"Quality and accuracy matter more in data projects than software projects because data questions typically have exactly one correct answer while software problems have many valid solutions.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1162\n    },\n    {\n      \"claim\": \"Running Python scripts directly over raw data to answer questions is the slowest and most expensive approach; a pre-built metadata layer should answer them instead.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1219\n    },\n    {\n      \"claim\": \"Decades-old dimensional modeling techniques \u2014 star schemas, one big table \u2014 should be applied to unstructured metadata and are currently underused.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1219\n    },\n    {\n      \"claim\": \"Source code is the single most important piece of context to store about a derived dataset, a conclusion OpenAI also reached in its data agent blog post.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1390\n    },\n    {\n      \"claim\": \"A shared knowledge base of plain markdown files per dataset is sufficient infrastructure for agent-and-human dataset memory.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 1434\n    },\n    {\n      \"claim\": \"Using stronger models will not fix agent performance on physical data because everyone already uses frontier models; the harness is the differentiator.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1602\n    },\n    {\n      \"claim\": \"General coding agents' trained intuitions actively mislead them on physical data because the operating constraints differ from software repositories.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1602\n    }\n  ],\n  \"speaker_org\": \"DataChain\"\n}",
+  "ttft_ms": 24333,
+  "ttft_stream_ms": 1685,
+  "time_to_request_ms": 39,
+  "type": "result",
+  "duration_ms": 71179,
+  "uuid": "c70a8e4a-7508-447a-894f-0d42a93584df",
+  "passA": {
+    "summary": "Dmitry Petrov argues that coding agents fail on unstructured 'physical' data \u2014 video, sensor streams, robot telemetry \u2014 not because the models are weak but because the environment obeys different physics than the SQL/warehouse world the frontier-lab data-agent posts assume. He frames the fix as a data harness with four faculties: sight (Pydantic schemas over binary files instead of millions of S3 JSONs), hands (a distributed execution engine with incremental updates and checkpoints), verification (pre-built dimensional metadata layers so tests and questions answer in one query), and memory (a markdown knowledge base capturing why a dataset was built, its schema, stats, and above all its source code). He demos DataChain, an open-source implementation, running Claude Code over 91 dashcam clips: 24 minutes of compute produced ~100,000 detection records queryable in fast Python-to-SQL. The core claim is that stronger frontier models won't close the gap \u2014 everyone already uses them \u2014 so the leverage is in the harness. Worth watching if you build multimodal or physical-AI pipelines and keep re-running expensive extraction jobs.",
+    "key_points": [
+      "Frontier labs have independently documented that agents underperform on data work \u2014 Petrov cites Anthropic reporting 21% accuracy on data projects absent a data harness, and OpenAI prescribing six layers of context \u2014 but both were operating on structured business data, which is the easy case.",
+      "Unstructured data is a 'neutron star': a few thousand video files look small on the surface, but clips contain frames containing objects containing labels and confidences, so 90 videos in the demo generated roughly 100,000 records and thousands would reach millions.",
+      "The two common coping strategies both fail \u2014 millions of sidecar JSONs on S3 give terrible latency and no consistency, while a centralized metadata database splits the team across two stacks and two programming languages.",
+      "Petrov's answer is Pydantic as the single schema language so data models, code, and the SQL transpilation all live in Python with no 'SQL island' in the codebase.",
+      "An unstructured-data harness has to reinvent the execution engine that a warehouse provides for free; he favors a Dask-like model that binds Python functions, Pydantic input/output types, storage files, and the metadata warehouse into one distributable unit you scale by naming a machine count.",
+      "Incremental updates and checkpoints are non-negotiable because extraction runs are long and LLM-expensive: a failure midway must resume rather than recompute, and new files in the bucket must process without touching old ones.",
+      "Correctness matters more in data than in software because, as Petrov reads Anthropic's finding, software problems admit many valid solutions while a data question typically has exactly one correct answer.",
+      "Rather than answer a question by scripting over raw data, the agent first asks whether a metadata layer exists that answers it in one SQL-ish query, and if not builds one general enough to serve a class of related questions \u2014 reviving star schemas and one-big-table modeling for multimodal metadata.",
+      "Expensive results should be shared, not re-derived: a knowledge base of plain MD files per dataset \u2014 session context for why it was built, LLM-written description, storage dependency, data preview, schema, stats, and source code \u2014 gives teammates and their agents lineage so the recompute never happens twice."
+    ],
+    "notable_quotes": [
+      {
+        "text": "Anthropic published that accuracy for data projects on their agents is only 21% until you add specific data harnesses to them and provide context.",
+        "timestamp_sec": 2,
+        "why": "The headline number motivating the entire talk."
+      },
+      {
+        "text": "OpenAI published a whole layers of context, six layers of context in order to make the data agent to work.",
+        "timestamp_sec": 2,
+        "why": "Second lab data point, establishing this is an industry-wide finding rather than a vendor pitch."
+      },
+      {
+        "text": "In my life, I don't have this luxury unfortunately because I live in a very extreme side of the data universe, messy unstructured data.",
+        "timestamp_sec": 63,
+        "why": "Names the scope boundary \u2014 his claims are about unstructured data, not the warehouse world the lab posts studied."
+      },
+      {
+        "text": "2000 objects, 2000 files of videos could easily generate you millions of objects inside the videos.",
+        "timestamp_sec": 175,
+        "why": "The neutron-star metaphor made concrete as a cardinality explosion."
+      },
+      {
+        "text": "First step, let's put this meta information to JSON files and put it on S3 next to the images, right? And they end up with a millions of JSONs.",
+        "timestamp_sec": 232,
+        "why": "Names the first anti-pattern most teams reach for."
+      },
+      {
+        "text": "But this way you end up with a two system with a two programming languages",
+        "timestamp_sec": 232,
+        "why": "States the tradeoff that kills the centralized-database approach."
+      },
+      {
+        "text": "We found that the easiest way for researchers and developers to deal with the schema is Pydantic.",
+        "timestamp_sec": 281,
+        "why": "The concrete design choice at the center of his 'sight' layer."
+      },
+      {
+        "text": "you use the same language for the data, for the schemas, as well as code. Uh there are no SQL island in your code base.",
+        "timestamp_sec": 281,
+        "why": "Articulates the specific benefit claimed for Pydantic-as-schema."
+      },
+      {
+        "text": "It's not supposed to be big because we analyze only like 90 videos and 90 videos generated 100,000 of records, right?",
+        "timestamp_sec": 653,
+        "why": "Live demo number grounding the scale argument."
+      },
+      {
+        "text": "In the sequel or structured data world, execution engine is your data warehouse, right? That's obvious and easy. In an unstructured data world, you have to reinvent one.",
+        "timestamp_sec": 832,
+        "why": "Cleanest statement of why unstructured tooling can't be borrowed from the warehouse stack."
+      },
+      {
+        "text": "Incremental update and data checkpoints it's a must-have in this data world.",
+        "timestamp_sec": 1111,
+        "why": "A flat requirement claim others building agent data pipelines might treat as optional."
+      },
+      {
+        "text": "In data, there is usually only one way and only one current correct answer",
+        "timestamp_sec": 1162,
+        "why": "The asymmetry between software and data agents that justifies the emphasis on verification."
+      },
+      {
+        "text": "instead of answering the question right away, agent ask itself, do I have a proper data sets, proper metadata to answer this question quickly in a single like SQL-ish query.",
+        "timestamp_sec": 1219,
+        "why": "Describes the actual behavioral change baked into the harness."
+      },
+      {
+        "text": "It tries to make sure this layer is general enough to answer not your particular question, but a set of questions related to the one that you asked.",
+        "timestamp_sec": 1281,
+        "why": "The generalization heuristic that turns one-off compute into reusable infrastructure."
+      },
+      {
+        "text": "People are doing the same job over and over and over again. You're paying double, triple, quadruple price to solving the same problem.",
+        "timestamp_sec": 1281,
+        "why": "The economic argument for shared dataset memory."
+      },
+      {
+        "text": "Uh description of the data set, which usually enrich by LLMs, source code. Probably the most important part here is the source code.",
+        "timestamp_sec": 1390,
+        "why": "Ranks source code above other metadata as the key context artifact."
+      },
+      {
+        "text": "This is a world when your favorite coding agents, such as Copilot, Codex, Cloud Code, do not operate efficiently.",
+        "timestamp_sec": 1540,
+        "why": "Blunt claim that general coding agents are the wrong tool here as-shipped."
+      },
+      {
+        "text": "Their intuition pushes them in a wrong direction because laws of physics changes. And in order to make it, you don't use stronger models. Everyone use frontiers. Instead, you are building data harness.",
+        "timestamp_sec": 1602,
+        "why": "The thesis in one breath: harness beats model scale for this problem class."
+      }
+    ],
+    "concepts": [
+      "agent harness design",
+      "unstructured multimodal data",
+      "metadata layer modeling",
+      "pydantic schemas as data contracts",
+      "distributed execution engines",
+      "incremental computation and checkpointing",
+      "data lineage",
+      "agent memory and knowledge bases",
+      "dimensional modeling",
+      "video frame extraction pipelines"
+    ],
+    "positions": [
+      {
+        "claim": "Agent accuracy on data projects is only about 21% without a purpose-built data harness and supplied context, per Anthropic's published results.",
+        "confidence": "stated",
+        "timestamp_sec": 2
+      },
+      {
+        "claim": "The frontier-lab findings on data agents apply to structured business data and therefore understate the problem for unstructured, physical data.",
+        "confidence": "stated",
+        "timestamp_sec": 327
+      },
+      {
+        "claim": "Storing extracted metadata as millions of JSON files alongside objects in S3 is unworkable on latency, efficiency, and consistency.",
+        "confidence": "stated",
+        "timestamp_sec": 232
+      },
+      {
+        "claim": "A separate centralized metadata database is the wrong fix because it forces teams into two systems and two programming languages that researchers won't adopt.",
+        "confidence": "stated",
+        "timestamp_sec": 232
+      },
+      {
+        "claim": "Pydantic is the most accessible schema mechanism for researchers and developers, and schemas should transpile to SQL rather than exist as a separate SQL layer.",
+        "confidence": "stated",
+        "timestamp_sec": 281
+      },
+      {
+        "claim": "Unstructured data needs its own execution engine because warehouses don't cover it; Dask's model of binding compute to data is the right template, adapted for binaries.",
+        "confidence": "stated",
+        "timestamp_sec": 883
+      },
+      {
+        "claim": "Incremental updates and checkpoints are mandatory, not optional, for physical-data pipelines.",
+        "confidence": "stated",
+        "timestamp_sec": 1111
+      },
+      {
+        "claim": "Quality and accuracy matter more in data projects than software projects because data questions typically have exactly one correct answer while software problems have many valid solutions.",
+        "confidence": "stated",
+        "timestamp_sec": 1162
+      },
+      {
+        "claim": "Running Python scripts directly over raw data to answer questions is the slowest and most expensive approach; a pre-built metadata layer should answer them instead.",
+        "confidence": "stated",
+        "timestamp_sec": 1219
+      },
+      {
+        "claim": "Decades-old dimensional modeling techniques \u2014 star schemas, one big table \u2014 should be applied to unstructured metadata and are currently underused.",
+        "confidence": "stated",
+        "timestamp_sec": 1219
+      },
+      {
+        "claim": "Source code is the single most important piece of context to store about a derived dataset, a conclusion OpenAI also reached in its data agent blog post.",
+        "confidence": "stated",
+        "timestamp_sec": 1390
+      },
+      {
+        "claim": "A shared knowledge base of plain markdown files per dataset is sufficient infrastructure for agent-and-human dataset memory.",
+        "confidence": "implied",
+        "timestamp_sec": 1434
+      },
+      {
+        "claim": "Using stronger models will not fix agent performance on physical data because everyone already uses frontier models; the harness is the differentiator.",
+        "confidence": "stated",
+        "timestamp_sec": 1602
+      },
+      {
+        "claim": "General coding agents' trained intuitions actively mislead them on physical data because the operating constraints differ from software repositories.",
+        "confidence": "stated",
+        "timestamp_sec": 1602
+      }
+    ],
+    "speaker_org": "DataChain"
+  },
+  "_meta": {
+    "slug": "when-agents-meet-physical-data-the-other-physics-of-agent-harnesses",
+    "video_id": "bUJgirn4_yc",
+    "url": "https://www.youtube.com/watch?v=bUJgirn4_yc",
+    "word_count": 3405,
+    "wall_sec": 72.2,
+    "run_at": "2026-08-12T20:32:07Z",
+    "effort": "medium"
+  }
+}

@@ -1,0 +1,264 @@
+{
+  "is_error": false,
+  "duration_api_ms": 147142,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "26b9c0b8-1947-4a47-8a14-0a1369296bcf",
+  "total_cost_usd": 0.558913,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 24836,
+    "cache_read_input_tokens": 10720,
+    "output_tokens": 11573,
+    "output_tokens_details": {
+      "thinking_tokens": 6580
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 24836,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 11573,
+        "cache_read_input_tokens": 10720,
+        "cache_creation_input_tokens": 24836,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 24836
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 15783,
+      "outputTokens": 15,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.015857999999999997,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 11573,
+      "cacheReadInputTokens": 10720,
+      "cacheCreationInputTokens": 24836,
+      "webSearchRequests": 0,
+      "costUSD": 0.543055,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\"concept\": \"mcp server design\", \"state_of_practice\": \"The dominant question about MCP servers at this conference was not how to expose tools but who is allowed to call them and with what authority. Four independent security talks converged on the same diagnosis: today's servers are reached with a human's own credential or a kitchen-sink API key, they return the same tool surface regardless of which user authorized the agent, and they lean on a human approval click as the actual access control. The emerging pattern is that the agent is a distinct principal bound to a user, that grants are minted per tool call \u2014 audience-bound to one target server, minutes-long, never stored \u2014 and that policy is evaluated before a credential exists rather than after. Underneath the security layer, the protocol itself is still moving: MCP tasks (async, long-running) has zero client implementations and a V1-to-V2 rewrite that removes tasks/list and makes the protocol stateless, while MCP Apps extends servers to return host-controlled UI instead of text. Server-surface design is also being treated as a context-budget problem \u2014 every tool, relationship type, and re-rendered view spends client tokens \u2014 so the advice trends toward fewer, higher-level, per-caller-scoped surfaces. Servers are also now treated as attack surface in their own right: one Snyk cohort found one in twelve developers running an MCP server with a high or critical finding inside the server itself.\", \"consensus\": [{\"claim\": \"The agent must be its own principal with its own identity, bound to the user it acts for \u2014 not operate by holding the user's credentials or impersonating the user.\", \"support_count\": 3, \"supporting_talks\": [\"full-workshop-better-auth\", \"its-10pm-do-you-know-where-your-agents-are\", \"you-didnt-ship-a-bug-you-just-wrote-it-for-a-human\"], \"evidence_quote\": \"the actor, in this case, an agent, has to be bound to the principal at all times. And the agent should have its own identity.\", \"evidence_talk\": \"you-didnt-ship-a-bug-you-just-wrote-it-for-a-human\", \"evidence_timestamp_sec\": 548}, {\"claim\": \"Human-in-the-loop approval is not an access control; enforcement must be deterministic policy, because approvers are consent-fatigued and background/cloud agents have no human present at all.\", \"support_count\": 4, \"supporting_talks\": [\"its-10pm-do-you-know-where-your-agents-are\", \"you-didnt-ship-a-bug-you-just-wrote-it-for-a-human\", \"agentic-development-security\", \"full-workshop-better-auth\"], \"evidence_quote\": \"And we can't just solve this with human in the loop. We spent decades solving access management for humans. So just blindly trusting a human who might be a little bit consent fatigued uh or who might be tired enough at night, this isn't really going to be enough.\", \"evidence_talk\": \"its-10pm-do-you-know-where-your-agents-are\", \"evidence_timestamp_sec\": 315}, {\"claim\": \"Authority granted to an agent must be narrowed to the specific action and time window it is currently performing \u2014 per tool call, least privilege by default, just-in-time elevation \u2014 because an agent will use every permission it holds.\", \"support_count\": 3, \"supporting_talks\": [\"its-10pm-do-you-know-where-your-agents-are\", \"you-didnt-ship-a-bug-you-just-wrote-it-for-a-human\", \"full-workshop-better-auth\"], \"evidence_quote\": \"this request is asking for permissions to access the MCP server for that tool call but only that tool call.\", \"evidence_talk\": \"its-10pm-do-you-know-where-your-agents-are\", \"evidence_timestamp_sec\": 567}, {\"claim\": \"A server's surface is a context budget: every tool, schema, relationship type, scan result, and re-rendered view costs client tokens, so servers should hand agents a small number of high-level things rather than everything they could expose.\", \"support_count\": 4, \"supporting_talks\": [\"agents-need-receipts-not-more-tool-calls\", \"ai-on-your-lakehouse-context-comes-in-shapes-not-queries\", \"agentic-development-security\", \"mcp-apps-extending-the-frontier\"], \"evidence_quote\": \"it packages a lot of um underlying protocols and underlying tools where now you're not shoving everything into a uh LLM context. It just has a services that it needs to interact.\", \"evidence_talk\": \"agents-need-receipts-not-more-tool-calls\", \"evidence_timestamp_sec\": 1068}], \"disagreements\": [{\"question\": \"Can agent-to-MCP-server access control be built on existing OAuth machinery, or does it require new agent-native protocol primitives?\", \"position_a\": \"No new spec is needed: RFC 8693 token exchange, an existing OAuth 2 extension, already provides delegation, agent identity, audience binding and per-tool-call token minting \u2014 start from the scopes your resource server already exposes and layer tool-call scopes on top.\", \"position_a_talks\": [\"its-10pm-do-you-know-where-your-agents-are\"], \"position_b\": \"OAuth is only a starting point and is structurally inadequate: scopes like 'read' are too coarse, and even fine-grained OAuth still mints the token for the user rather than the agent \u2014 so agents need their own keypairs, a capability directory, and attribute/context/principal-level scoping that OAuth does not express.\", \"position_b_talks\": [\"full-workshop-better-auth\", \"you-didnt-ship-a-bug-you-just-wrote-it-for-a-human\"], \"why_it_matters\": \"If existing standards suffice, teams can ship agent access control today on their current IdP; if not, every service must adopt new endpoints and a new principal model before agents can be safely authorized, and the interim depends on translating OpenAPI specs into capabilities.\"}, {\"question\": \"Where should the enforcement point for agent actions live \u2014 inside the MCP server/service, or in an external layer between the agent runtime and the server?\", \"position_a\": \"In the service itself: the server declares fine-grained capabilities that agents discover and scope down against, and MCP servers must limit the tool surface they return based on which user authorized the agent. A data-handling proxy is explicitly rejected as unscalable \u2014 the intermediary should only be a directory.\", \"position_a_talks\": [\"full-workshop-better-auth\", \"you-didnt-ship-a-bug-you-just-wrote-it-for-a-human\"], \"position_b\": \"Outside the server: put the chokepoint where the credential is requested (between runtime and MCP server, evaluating policy before minting a token) or in local deterministic hooks that fire asynchronously on tool calls \u2014 Snyk explicitly moved off an MCP-server-plus-rule-files integration because agents ignored rule files and scans burned context.\", \"position_b_talks\": [\"its-10pm-do-you-know-where-your-agents-are\", \"agentic-development-security\"], \"why_it_matters\": \"It decides who has to change: thousands of MCP server authors implementing per-user tool filtering and capability declarations, versus a single broker or hook layer that works with servers as they exist today. It also determines whether coverage extends to servers you do not control.\"}, {\"question\": \"Should a server expose narrow, purpose-built, per-caller-scoped tools, or a broad general-purpose surface the agent composes itself?\", \"position_a\": \"Narrow and curated: package underlying protocols behind a small set of high-level services so the agent is not carrying everything in context, and filter the exposed tool list per authorizing user \u2014 a full surface makes agents pick the wrong tools.\", \"position_a_talks\": [\"agents-need-receipts-not-more-tool-calls\", \"you-didnt-ship-a-bug-you-just-wrote-it-for-a-human\"], \"position_b\": \"Broad and general: text-to-Cypher via CLI plus skills is now dramatically better than a year ago, and as that improves agents will increasingly prefer writing free-form queries over calling prebuilt shape scripts \u2014 so expose the query surface and the schema rather than pre-baked tools.\", \"position_b_talks\": [\"ai-on-your-lakehouse-context-comes-in-shapes-not-queries\"], \"why_it_matters\": \"It sets whether server maintainers invest in a growing catalog of curated tools or in schema/semantic-layer quality plus guardrails \u2014 and a general query surface makes per-user permission scoping much harder to express as tool-level scopes.\"}], \"practical_guidance\": {\"do\": [\"Audience-bind every downstream access token to a single target MCP server, expire it within a few minutes, and never persist it\", \"Request a token per tool call rather than per session, so the agent holds permissions only for the action it is currently proposing\", \"Start scope design from the scopes your resource server already exposes, then layer tool-call-level scopes on top or pass them through\", \"Filter the tool list an MCP server returns based on which user authorized the agent, instead of returning every tool the application supports\", \"Give each agent its own private key and identity so actions are attributable per agent, per host, and per user\", \"Grant read-type capabilities by default per host so approval prompts stay rare enough that users don't reflexively accept everything\", \"Time-bound agent permissions to the agent's operating window and default to least privilege with just-in-time elevation\", \"Check the human's approval itself against policy and the approver's role \u2014 an approval from someone lacking the role should be overridden\", \"Batch high-frequency writes triggered by agent traffic (Scalekit batched 'last seen' at one-second granularity after seeing 60x human write rates)\", \"Run security scanning in asynchronous hooks on tool calls rather than through the model's context window, which adds latency and burns tokens\", \"For long-running work, return a handle and make the task durable across client, server, and network failure \u2014 and persist the task ID, since an unpersisted ID is permanently unrecoverable\", \"Use graph as a metadata semantic layer over the warehouse; ETL data into the graph only when you need recursive-join performance, graph algorithms, embeddings, or clustering\", \"Prefer deterministic, structure-based document ingest over LLM entity extraction when the documents already have structure \u2014 it is idempotent and faster\", \"Use one generic containment relationship name across hierarchy levels rather than per-level names, to keep generated Cypher simple\", \"Return host-rendered UI resources for dense results instead of walls of text, and let the host keep control of what happens on user interaction\", \"Build agent-facing infrastructure on open standards so it stays compatible with runtimes and protocols that don't exist yet\"], \"avoid\": [\"Handing an agent a .env file or a long-lived kitchen-sink API key that can renew a certificate and drop a database with the same credential\", \"Treating a human approval click as the access control \u2014 approvers are consent-fatigued and background/cloud agents have no human watching\", \"Relying on model-level refusal as a safety boundary: Claude refused to read a .env file but complied when asked for a specific secret key\", \"Coarse OAuth scopes like 'read' or 'send email on your behalf' that cannot express time-of-day, sender, or recipient restrictions\", \"Stateful protocol surfaces \u2014 MCP tasks V1's tasks/list had no filter, making it unusable when a million tasks are in flight\", \"Tunneling input_required through a long-lived tasks/result connection with server-to-client elicitation; the V1 reference client handled these FIFO, so only the first task in flight could be answered\", \"A per-client polling model for task status, which will not scale to millions of concurrent tasks even under V2\", \"A proxy that handles the data in the authorization path \u2014 it does not scale; make the intermediary a directory instead\", \"Re-rendering heavy app views on every conversational turn instead of persisting and updating one identified view\", \"Shipping or installing MCP servers without auditing them \u2014 one in twelve developers in Snyk's cohort had a high or critical finding in the server itself\", \"Defining hundreds of distinct relationship types in a production data model \u2014 they stop fitting the model's context window and degrade query generation\", \"Asking an agent to go straight from an abstract specification to a production distributed implementation; it passes basic tests and breaks on concurrency, process failure, and network failure\"]}, \"notable_outliers\": [{\"claim\": \"No agent should ever be permitted to drop a database, even when the documented recovery runbook calls for it \u2014 the policy should deny it outright rather than escalate.\", \"talk\": \"its-10pm-do-you-know-where-your-agents-are\", \"timestamp_sec\": 807}, {\"claim\": \"One in 12 developers observed had an MCP server with a high or critical severity finding in the server itself; more than half of the group were using MCP servers.\", \"talk\": \"agentic-development-security\", \"timestamp_sec\": 509}, {\"claim\": \"The reason no MCP client implements tasks is that client authors are being smart \u2014 the spec shipped experimental and is about to change substantially, so not implementing it was the correct call.\", \"talk\": \"mcp-tasks-async-why-arent-any-agents-supporting-them\", \"timestamp_sec\": 1}, {\"claim\": \"The main blocker stopping companies from building MCP servers is not technical \u2014 it is refusing to be reduced to a textual database and lose brand identity.\", \"talk\": \"mcp-apps-extending-the-frontier\", \"timestamp_sec\": 55}, {\"claim\": \"For infrastructure vendors the product stops being the server implementation and becomes the specification itself, with bespoke implementations synthesized on demand from an abstract spec plus a deterministic simulation.\", \"talk\": \"the-prompt-is-the-platform\", \"timestamp_sec\": 122}, {\"claim\": \"Protocol minimalism is a finish line, not a starting point \u2014 three years of deliberately removing abstractions was the precondition for an agent being able to synthesize a correct implementation.\", \"talk\": \"the-prompt-is-the-platform\", \"timestamp_sec\": 478}, {\"claim\": \"Agents are never fully detached principals \u2014 every agent token always reports to a user \u2014 but the v1 assumption that agents are ephemeral is already outdated, and long-lived organizational agents need their own policy model.\", \"talk\": \"full-workshop-better-auth\", \"timestamp_sec\": 1232}, {\"claim\": \"Servers should not ETL warehouse data into a graph for most agent use cases; pull only metadata, partly because security posture often forbids moving sensitive data across systems at all.\", \"talk\": \"ai-on-your-lakehouse-context-comes-in-shapes-not-queries\", \"timestamp_sec\": 2250}], \"maturity\": \"contested\", \"maturity_rationale\": \"The diagnosis is unanimous across four independent security talks \u2014 agents are over-permissioned, approval clicks are not access control, and servers do not scope their surface per caller \u2014 but the remedy is actively disputed: existing RFC 8693 token exchange versus new agent-native capability protocols, and enforcement inside the server versus in an external broker or local hooks. Meanwhile the protocol's own async-task surface has zero client implementations and is mid-rewrite, and the UI extension is a months-old standard, so even the ground the debate stands on is still moving.\"}",
+  "ttft_ms": 86903,
+  "ttft_stream_ms": 1167,
+  "time_to_request_ms": 38,
+  "type": "result",
+  "duration_ms": 146573,
+  "uuid": "8538296d-18fa-4e58-98a6-db69eb5f2c76",
+  "passC": {
+    "concept": "mcp server design",
+    "state_of_practice": "The dominant question about MCP servers at this conference was not how to expose tools but who is allowed to call them and with what authority. Four independent security talks converged on the same diagnosis: today's servers are reached with a human's own credential or a kitchen-sink API key, they return the same tool surface regardless of which user authorized the agent, and they lean on a human approval click as the actual access control. The emerging pattern is that the agent is a distinct principal bound to a user, that grants are minted per tool call \u2014 audience-bound to one target server, minutes-long, never stored \u2014 and that policy is evaluated before a credential exists rather than after. Underneath the security layer, the protocol itself is still moving: MCP tasks (async, long-running) has zero client implementations and a V1-to-V2 rewrite that removes tasks/list and makes the protocol stateless, while MCP Apps extends servers to return host-controlled UI instead of text. Server-surface design is also being treated as a context-budget problem \u2014 every tool, relationship type, and re-rendered view spends client tokens \u2014 so the advice trends toward fewer, higher-level, per-caller-scoped surfaces. Servers are also now treated as attack surface in their own right: one Snyk cohort found one in twelve developers running an MCP server with a high or critical finding inside the server itself.",
+    "consensus": [
+      {
+        "claim": "The agent must be its own principal with its own identity, bound to the user it acts for \u2014 not operate by holding the user's credentials or impersonating the user.",
+        "support_count": 3,
+        "supporting_talks": [
+          "full-workshop-better-auth",
+          "its-10pm-do-you-know-where-your-agents-are",
+          "you-didnt-ship-a-bug-you-just-wrote-it-for-a-human"
+        ],
+        "evidence_quote": "the actor, in this case, an agent, has to be bound to the principal at all times. And the agent should have its own identity.",
+        "evidence_talk": "you-didnt-ship-a-bug-you-just-wrote-it-for-a-human",
+        "evidence_timestamp_sec": 548
+      },
+      {
+        "claim": "Human-in-the-loop approval is not an access control; enforcement must be deterministic policy, because approvers are consent-fatigued and background/cloud agents have no human present at all.",
+        "support_count": 4,
+        "supporting_talks": [
+          "its-10pm-do-you-know-where-your-agents-are",
+          "you-didnt-ship-a-bug-you-just-wrote-it-for-a-human",
+          "agentic-development-security",
+          "full-workshop-better-auth"
+        ],
+        "evidence_quote": "And we can't just solve this with human in the loop. We spent decades solving access management for humans. So just blindly trusting a human who might be a little bit consent fatigued uh or who might be tired enough at night, this isn't really going to be enough.",
+        "evidence_talk": "its-10pm-do-you-know-where-your-agents-are",
+        "evidence_timestamp_sec": 315
+      },
+      {
+        "claim": "Authority granted to an agent must be narrowed to the specific action and time window it is currently performing \u2014 per tool call, least privilege by default, just-in-time elevation \u2014 because an agent will use every permission it holds.",
+        "support_count": 3,
+        "supporting_talks": [
+          "its-10pm-do-you-know-where-your-agents-are",
+          "you-didnt-ship-a-bug-you-just-wrote-it-for-a-human",
+          "full-workshop-better-auth"
+        ],
+        "evidence_quote": "this request is asking for permissions to access the MCP server for that tool call but only that tool call.",
+        "evidence_talk": "its-10pm-do-you-know-where-your-agents-are",
+        "evidence_timestamp_sec": 567
+      },
+      {
+        "claim": "A server's surface is a context budget: every tool, schema, relationship type, scan result, and re-rendered view costs client tokens, so servers should hand agents a small number of high-level things rather than everything they could expose.",
+        "support_count": 4,
+        "supporting_talks": [
+          "agents-need-receipts-not-more-tool-calls",
+          "ai-on-your-lakehouse-context-comes-in-shapes-not-queries",
+          "agentic-development-security",
+          "mcp-apps-extending-the-frontier"
+        ],
+        "evidence_quote": "it packages a lot of um underlying protocols and underlying tools where now you're not shoving everything into a uh LLM context. It just has a services that it needs to interact.",
+        "evidence_talk": "agents-need-receipts-not-more-tool-calls",
+        "evidence_timestamp_sec": 1068
+      }
+    ],
+    "disagreements": [
+      {
+        "question": "Can agent-to-MCP-server access control be built on existing OAuth machinery, or does it require new agent-native protocol primitives?",
+        "position_a": "No new spec is needed: RFC 8693 token exchange, an existing OAuth 2 extension, already provides delegation, agent identity, audience binding and per-tool-call token minting \u2014 start from the scopes your resource server already exposes and layer tool-call scopes on top.",
+        "position_a_talks": [
+          "its-10pm-do-you-know-where-your-agents-are"
+        ],
+        "position_b": "OAuth is only a starting point and is structurally inadequate: scopes like 'read' are too coarse, and even fine-grained OAuth still mints the token for the user rather than the agent \u2014 so agents need their own keypairs, a capability directory, and attribute/context/principal-level scoping that OAuth does not express.",
+        "position_b_talks": [
+          "full-workshop-better-auth",
+          "you-didnt-ship-a-bug-you-just-wrote-it-for-a-human"
+        ],
+        "why_it_matters": "If existing standards suffice, teams can ship agent access control today on their current IdP; if not, every service must adopt new endpoints and a new principal model before agents can be safely authorized, and the interim depends on translating OpenAPI specs into capabilities."
+      },
+      {
+        "question": "Where should the enforcement point for agent actions live \u2014 inside the MCP server/service, or in an external layer between the agent runtime and the server?",
+        "position_a": "In the service itself: the server declares fine-grained capabilities that agents discover and scope down against, and MCP servers must limit the tool surface they return based on which user authorized the agent. A data-handling proxy is explicitly rejected as unscalable \u2014 the intermediary should only be a directory.",
+        "position_a_talks": [
+          "full-workshop-better-auth",
+          "you-didnt-ship-a-bug-you-just-wrote-it-for-a-human"
+        ],
+        "position_b": "Outside the server: put the chokepoint where the credential is requested (between runtime and MCP server, evaluating policy before minting a token) or in local deterministic hooks that fire asynchronously on tool calls \u2014 Snyk explicitly moved off an MCP-server-plus-rule-files integration because agents ignored rule files and scans burned context.",
+        "position_b_talks": [
+          "its-10pm-do-you-know-where-your-agents-are",
+          "agentic-development-security"
+        ],
+        "why_it_matters": "It decides who has to change: thousands of MCP server authors implementing per-user tool filtering and capability declarations, versus a single broker or hook layer that works with servers as they exist today. It also determines whether coverage extends to servers you do not control."
+      },
+      {
+        "question": "Should a server expose narrow, purpose-built, per-caller-scoped tools, or a broad general-purpose surface the agent composes itself?",
+        "position_a": "Narrow and curated: package underlying protocols behind a small set of high-level services so the agent is not carrying everything in context, and filter the exposed tool list per authorizing user \u2014 a full surface makes agents pick the wrong tools.",
+        "position_a_talks": [
+          "agents-need-receipts-not-more-tool-calls",
+          "you-didnt-ship-a-bug-you-just-wrote-it-for-a-human"
+        ],
+        "position_b": "Broad and general: text-to-Cypher via CLI plus skills is now dramatically better than a year ago, and as that improves agents will increasingly prefer writing free-form queries over calling prebuilt shape scripts \u2014 so expose the query surface and the schema rather than pre-baked tools.",
+        "position_b_talks": [
+          "ai-on-your-lakehouse-context-comes-in-shapes-not-queries"
+        ],
+        "why_it_matters": "It sets whether server maintainers invest in a growing catalog of curated tools or in schema/semantic-layer quality plus guardrails \u2014 and a general query surface makes per-user permission scoping much harder to express as tool-level scopes."
+      }
+    ],
+    "practical_guidance": {
+      "do": [
+        "Audience-bind every downstream access token to a single target MCP server, expire it within a few minutes, and never persist it",
+        "Request a token per tool call rather than per session, so the agent holds permissions only for the action it is currently proposing",
+        "Start scope design from the scopes your resource server already exposes, then layer tool-call-level scopes on top or pass them through",
+        "Filter the tool list an MCP server returns based on which user authorized the agent, instead of returning every tool the application supports",
+        "Give each agent its own private key and identity so actions are attributable per agent, per host, and per user",
+        "Grant read-type capabilities by default per host so approval prompts stay rare enough that users don't reflexively accept everything",
+        "Time-bound agent permissions to the agent's operating window and default to least privilege with just-in-time elevation",
+        "Check the human's approval itself against policy and the approver's role \u2014 an approval from someone lacking the role should be overridden",
+        "Batch high-frequency writes triggered by agent traffic (Scalekit batched 'last seen' at one-second granularity after seeing 60x human write rates)",
+        "Run security scanning in asynchronous hooks on tool calls rather than through the model's context window, which adds latency and burns tokens",
+        "For long-running work, return a handle and make the task durable across client, server, and network failure \u2014 and persist the task ID, since an unpersisted ID is permanently unrecoverable",
+        "Use graph as a metadata semantic layer over the warehouse; ETL data into the graph only when you need recursive-join performance, graph algorithms, embeddings, or clustering",
+        "Prefer deterministic, structure-based document ingest over LLM entity extraction when the documents already have structure \u2014 it is idempotent and faster",
+        "Use one generic containment relationship name across hierarchy levels rather than per-level names, to keep generated Cypher simple",
+        "Return host-rendered UI resources for dense results instead of walls of text, and let the host keep control of what happens on user interaction",
+        "Build agent-facing infrastructure on open standards so it stays compatible with runtimes and protocols that don't exist yet"
+      ],
+      "avoid": [
+        "Handing an agent a .env file or a long-lived kitchen-sink API key that can renew a certificate and drop a database with the same credential",
+        "Treating a human approval click as the access control \u2014 approvers are consent-fatigued and background/cloud agents have no human watching",
+        "Relying on model-level refusal as a safety boundary: Claude refused to read a .env file but complied when asked for a specific secret key",
+        "Coarse OAuth scopes like 'read' or 'send email on your behalf' that cannot express time-of-day, sender, or recipient restrictions",
+        "Stateful protocol surfaces \u2014 MCP tasks V1's tasks/list had no filter, making it unusable when a million tasks are in flight",
+        "Tunneling input_required through a long-lived tasks/result connection with server-to-client elicitation; the V1 reference client handled these FIFO, so only the first task in flight could be answered",
+        "A per-client polling model for task status, which will not scale to millions of concurrent tasks even under V2",
+        "A proxy that handles the data in the authorization path \u2014 it does not scale; make the intermediary a directory instead",
+        "Re-rendering heavy app views on every conversational turn instead of persisting and updating one identified view",
+        "Shipping or installing MCP servers without auditing them \u2014 one in twelve developers in Snyk's cohort had a high or critical finding in the server itself",
+        "Defining hundreds of distinct relationship types in a production data model \u2014 they stop fitting the model's context window and degrade query generation",
+        "Asking an agent to go straight from an abstract specification to a production distributed implementation; it passes basic tests and breaks on concurrency, process failure, and network failure"
+      ]
+    },
+    "notable_outliers": [
+      {
+        "claim": "No agent should ever be permitted to drop a database, even when the documented recovery runbook calls for it \u2014 the policy should deny it outright rather than escalate.",
+        "talk": "its-10pm-do-you-know-where-your-agents-are",
+        "timestamp_sec": 807
+      },
+      {
+        "claim": "One in 12 developers observed had an MCP server with a high or critical severity finding in the server itself; more than half of the group were using MCP servers.",
+        "talk": "agentic-development-security",
+        "timestamp_sec": 509
+      },
+      {
+        "claim": "The reason no MCP client implements tasks is that client authors are being smart \u2014 the spec shipped experimental and is about to change substantially, so not implementing it was the correct call.",
+        "talk": "mcp-tasks-async-why-arent-any-agents-supporting-them",
+        "timestamp_sec": 1
+      },
+      {
+        "claim": "The main blocker stopping companies from building MCP servers is not technical \u2014 it is refusing to be reduced to a textual database and lose brand identity.",
+        "talk": "mcp-apps-extending-the-frontier",
+        "timestamp_sec": 55
+      },
+      {
+        "claim": "For infrastructure vendors the product stops being the server implementation and becomes the specification itself, with bespoke implementations synthesized on demand from an abstract spec plus a deterministic simulation.",
+        "talk": "the-prompt-is-the-platform",
+        "timestamp_sec": 122
+      },
+      {
+        "claim": "Protocol minimalism is a finish line, not a starting point \u2014 three years of deliberately removing abstractions was the precondition for an agent being able to synthesize a correct implementation.",
+        "talk": "the-prompt-is-the-platform",
+        "timestamp_sec": 478
+      },
+      {
+        "claim": "Agents are never fully detached principals \u2014 every agent token always reports to a user \u2014 but the v1 assumption that agents are ephemeral is already outdated, and long-lived organizational agents need their own policy model.",
+        "talk": "full-workshop-better-auth",
+        "timestamp_sec": 1232
+      },
+      {
+        "claim": "Servers should not ETL warehouse data into a graph for most agent use cases; pull only metadata, partly because security posture often forbids moving sensitive data across systems at all.",
+        "talk": "ai-on-your-lakehouse-context-comes-in-shapes-not-queries",
+        "timestamp_sec": 2250
+      }
+    ],
+    "maturity": "contested",
+    "maturity_rationale": "The diagnosis is unanimous across four independent security talks \u2014 agents are over-permissioned, approval clicks are not access control, and servers do not scope their surface per caller \u2014 but the remedy is actively disputed: existing RFC 8693 token exchange versus new agent-native capability protocols, and enforcement inside the server versus in an external broker or local hooks. Meanwhile the protocol's own async-task surface has zero client implementations and is mid-rewrite, and the UI extension is a months-old standard, so even the ground the debate stands on is still moving."
+  },
+  "_meta": {
+    "concept": "mcp server design",
+    "slug": "mcp-server-design",
+    "talk_count": 9,
+    "missing_talks": [],
+    "wall_sec": 147.8,
+    "run_at": "2026-08-13T20:56:01Z"
+  }
+}

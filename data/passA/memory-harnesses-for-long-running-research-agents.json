@@ -1,0 +1,268 @@
+{
+  "is_error": false,
+  "duration_api_ms": 48323,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "1faeaedc-5c20-472e-a1a7-431ff7bd064e",
+  "total_cost_usd": 0.184207,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 7356,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 4049,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 7356,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 4049,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 7356,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 7356
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 4173,
+      "outputTokens": 17,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.004258,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 4049,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 7356,
+      "webSearchRequests": 0,
+      "costUSD": 0.179949,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Stefania Druga, a research scientist at Sakana AI, presents experiments on building memory harnesses for long-horizon research agents running entirely on local models on a single M3 Ultra Mac. She frames memory not as a database but as a write-manage-read control loop wrapped around a stateless agent, and tests a ladder of recall policies \u2014 no memory, vector RAG, a ranked decisions ledger, and an oracle ground-truth condition \u2014 across X-Bench and Spider V2. The headline findings: when a task fits in context, memory adds cost without adding capability; when it doesn't, a ranked ledger beats both vector RAG and simple gating, and it costs fewer tokens than bad memory. She also argues that running the whole pipeline locally is a form of sovereignty \u2014 you control the data, the traces, and every step of evaluation \u2014 at the price of serial-only inference and very slow eval runs. Worth watching if you are designing recall policies and want empirical, reproducible evidence rather than architecture diagrams.\",\n  \"key_points\": [\n    \"Context rot \u2014 models contradicting themselves, redoing finished work, or drifting from the original question \u2014 is becoming more urgent as task horizons lengthen while model release cadence slows, converging later this year per METR projections.\",\n    \"Memory should be modeled as a write-manage-read control loop around the model rather than as a passive database store.\",\n    \"The harness design starts from agents with zero durable memory so that all memory behavior is attributable to the harness, with a core always-visible trace block, a recall block, and an archival block across sessions.\",\n    \"The recall ladder tested four modes \u2014 no memory, vector RAG, a ranked decisions ledger, and an oracle that supplies ground-truth memory \u2014 with the model held fixed so only the recall variable changes.\",\n    \"On a literature-review task where the entire corpus fit in context, memory produced identical performance with and without it while adding cost, showing harnesses only pay off past the context boundary.\",\n    \"On X-Bench, where the answer sat at step 124 but the question was asked at step 500, the rank-only ledger performed best across 68 questions with multiple cells and seeds, beating gated memory.\",\n    \"The oracle condition does not reach maximum performance because supplying the correct memory does not force the model to use it \u2014 it can still ignore or misread it.\",\n    \"Ranked recall generalizes across models (Qwen 27B 4-bit, Deep Seek V4 Flash) and benchmarks (X-Bench, Spider V2), and reduces token spend rather than increasing it.\",\n    \"Local-only evaluation gives full control over data, compute traces, and evals \u2014 Druga's framing of sovereignty \u2014 but Deep Seek V4 Flash lacks batch querying, forcing serial runs that take days.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"if you work with long horizon tasks, you probably run into this issue of context blow. Right? Like when the model starts contradicting itself, or it has to redo the work because it forgot it did that task in the first place, or it starts to drift from your questions because it forgot them.\",\n      \"timestamp_sec\": 1,\n      \"why\": \"Defines the failure mode the whole talk is organized around, in concrete symptoms rather than abstraction.\"\n    },\n    {\n      \"text\": \"we see that the trend is to solve longer and longer uh horizon tasks, and also that we're getting fewer and fewer model releases. So, at some point later this year, we're going to have this convergence\",\n      \"timestamp_sec\": 61,\n      \"why\": \"States the timing argument for why harness work matters now, a claim other speakers might contest.\"\n    },\n    {\n      \"text\": \"the CEO of Coinbase actually shared how their company managed to reduce their AI spent while actually increasing uh the AI usage.\",\n      \"timestamp_sec\": 61,\n      \"why\": \"The industry data point motivating the local-model framing.\"\n    },\n    {\n      \"text\": \"the way they did that was by transitioning to use many more local models, but also having better practices, like using better routing, better caching, keeping the context clean\",\n      \"timestamp_sec\": 116,\n      \"why\": \"Names the specific practices credited with the cost reduction.\"\n    },\n    {\n      \"text\": \"these local models are starting to be useful for agentic tasks and for tool use.\",\n      \"timestamp_sec\": 116,\n      \"why\": \"A compact statement of the talk's premise about local model viability.\"\n    },\n    {\n      \"text\": \"on this M3 Ultra with 96 GB and 28 core CPUs, I'm using two models. I'm using the Qwen 27B quantized at 4-bit and the Deep Seek V4 Flash.\",\n      \"timestamp_sec\": 162,\n      \"why\": \"Full hardware and model spec, which makes the results reproducible.\"\n    },\n    {\n      \"text\": \"you can think of memory as a write-manage-read loop. So, it's not just a database store. It's actually this control loop around the model.\",\n      \"timestamp_sec\": 205,\n      \"why\": \"The core conceptual reframing the talk offers.\"\n    },\n    {\n      \"text\": \"I started with research agents that are the small agents because they have zero durable memory, and I wanted all the memory to come from the harness.\",\n      \"timestamp_sec\": 205,\n      \"why\": \"Explains the experimental control that makes the ablations meaningful.\"\n    },\n    {\n      \"text\": \"this is a nature paper where they said they discovered 742,000 promising materials. Like, it was a very big claim, which got retracted later. But, the retraction to it's a much smaller like haystack needle in that corpus than the headlines and the citations.\",\n      \"timestamp_sec\": 343,\n      \"why\": \"A well-chosen task design where the correct answer is deliberately outweighed by louder distractors.\"\n    },\n    {\n      \"text\": \"the memory actually didn't add more capability. It was the same performance with memory and without memory, and it only added more cost. So, when your task fits in context, the harness doesn't add much.\",\n      \"timestamp_sec\": 343,\n      \"why\": \"The negative result, and the most actionable boundary condition in the talk.\"\n    },\n    {\n      \"text\": \"if I start to run tasks that are longer term horizon, and the entire task and the relevant context doesn't uh fit, then having a good memory harness really starts to pay off.\",\n      \"timestamp_sec\": 396,\n      \"why\": \"States the complementary positive condition.\"\n    },\n    {\n      \"text\": \"the right answer is in a like step 124, but the moment when I ask the question, I'm asking it like at step 500. So, it's completely outside of the context window\",\n      \"timestamp_sec\": 396,\n      \"why\": \"Concrete illustration of what a long-horizon memory benchmark item looks like.\"\n    },\n    {\n      \"text\": \"I ran over 68 questions and for each of these questions there were like multiple cells and lots of different seeds. And what I found was that the rank only ledger performed the best.\",\n      \"timestamp_sec\": 451,\n      \"why\": \"The headline empirical result with its sample size.\"\n    },\n    {\n      \"text\": \"it performed better than like just gating the harness by saying do you need to use memory or do you not need to use memory.\",\n      \"timestamp_sec\": 451,\n      \"why\": \"Directly rejects the common gating heuristic in favor of ranking.\"\n    },\n    {\n      \"text\": \"The Oracle what it does, it provides the right information, the right memory to the model but it doesn't force it to use it. So the model can get the right memory but still retrieve the wrong information or choose to ignore it or be confused.\",\n      \"timestamp_sec\": 509,\n      \"why\": \"Explains why perfect retrieval is not a performance ceiling \u2014 a subtle point many memory pitches miss.\"\n    },\n    {\n      \"text\": \"this actually works on several models, not only on the Qwen 27B but also on the DS4 flash and it also works across different benchmarks. I also tried it on the Spider V2 benchmark.\",\n      \"timestamp_sec\": 550,\n      \"why\": \"Generalization evidence beyond a single model and benchmark.\"\n    },\n    {\n      \"text\": \"bad memory is expensive because it spends more token and it can send the agent the wrong way. But having like a good structural policy for recall can save you a lot of tokens and uh budget.\",\n      \"timestamp_sec\": 550,\n      \"why\": \"The talk's compressed heuristic, tying recall quality directly to cost.\"\n    },\n    {\n      \"text\": \"one thing that I want to encourage you from this experiment is to consider the recall policy as a first-class metric\",\n      \"timestamp_sec\": 601,\n      \"why\": \"The explicit prescriptive takeaway for practitioners.\"\n    },\n    {\n      \"text\": \"going from simple file system retrieval to training memory models um there's there's a wide spectrum of solutions from less structural to completely structured.\",\n      \"timestamp_sec\": 654,\n      \"why\": \"Situates the experiment within the broader design space.\"\n    },\n    {\n      \"text\": \"these local models I can only what run them in serial, like they don't support batch querying for the deep seed 4 flash. So, that's why I am still running evaluations back on my computer in Tokyo\",\n      \"timestamp_sec\": 708,\n      \"why\": \"Honest accounting of the cost of the local-only approach.\"\n    },\n    {\n      \"text\": \"it's a very good test for what memory can do when you can control every single step of the pipeline. And this sovereign capability is part of a bigger ecosystem that is very important for us at Sakana AI in Japan.\",\n      \"timestamp_sec\": 708,\n      \"why\": \"Connects the technical choice to the organizational thesis about sovereign AI.\"\n    }\n  ],\n  \"concepts\": [\n    \"context rot\",\n    \"memory harness design\",\n    \"recall policy\",\n    \"write-manage-read loop\",\n    \"vector rag\",\n    \"decision ledger\",\n    \"oracle ground-truth evaluation\",\n    \"long-horizon agent benchmarks\",\n    \"local model inference\",\n    \"sovereign ai\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Memory is best understood as a write-manage-read control loop around the model, not as a database store.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 205\n    },\n    {\n      \"claim\": \"When a task and its relevant context fit inside the context window, a memory harness adds no capability and only adds cost.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 343\n    },\n    {\n      \"claim\": \"A rank-only decisions ledger outperforms vector RAG and binary memory gating on long-horizon recall tasks.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 451\n    },\n    {\n      \"claim\": \"Providing an agent with the correct memory does not guarantee it will use it, so oracle retrieval does not reach maximum task performance.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 509\n    },\n    {\n      \"claim\": \"Good recall policy reduces total token spend, so memory quality is a cost lever and not just an accuracy lever.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 550\n    },\n    {\n      \"claim\": \"Recall policy should be treated as a first-class metric in agent system design.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 601\n    },\n    {\n      \"claim\": \"Lengthening task horizons combined with a slowing model release cadence will make context management a critical bottleneck later this year.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 61\n    },\n    {\n      \"claim\": \"Local open-weight models such as Qwen 27B and Deep Seek V4 Flash are now capable enough for real agentic and tool-use workloads.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 116\n    },\n    {\n      \"claim\": \"Running the full evaluation pipeline locally is worth its serial-execution cost because controlling data, traces, and compute constitutes sovereignty.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 708\n    },\n    {\n      \"claim\": \"Shifting workloads to local models alongside better routing, caching, and context hygiene can cut AI spend while increasing AI usage.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 116\n    }\n  ],\n  \"speaker_org\": \"Sakana AI\"\n}",
+  "ttft_ms": 47372,
+  "ttft_stream_ms": 1375,
+  "time_to_request_ms": 339,
+  "type": "result",
+  "duration_ms": 49232,
+  "uuid": "13e4934f-3ec3-44ae-9155-00fa63cbda46",
+  "passA": {
+    "summary": "Stefania Druga, a research scientist at Sakana AI, presents experiments on building memory harnesses for long-horizon research agents running entirely on local models on a single M3 Ultra Mac. She frames memory not as a database but as a write-manage-read control loop wrapped around a stateless agent, and tests a ladder of recall policies \u2014 no memory, vector RAG, a ranked decisions ledger, and an oracle ground-truth condition \u2014 across X-Bench and Spider V2. The headline findings: when a task fits in context, memory adds cost without adding capability; when it doesn't, a ranked ledger beats both vector RAG and simple gating, and it costs fewer tokens than bad memory. She also argues that running the whole pipeline locally is a form of sovereignty \u2014 you control the data, the traces, and every step of evaluation \u2014 at the price of serial-only inference and very slow eval runs. Worth watching if you are designing recall policies and want empirical, reproducible evidence rather than architecture diagrams.",
+    "key_points": [
+      "Context rot \u2014 models contradicting themselves, redoing finished work, or drifting from the original question \u2014 is becoming more urgent as task horizons lengthen while model release cadence slows, converging later this year per METR projections.",
+      "Memory should be modeled as a write-manage-read control loop around the model rather than as a passive database store.",
+      "The harness design starts from agents with zero durable memory so that all memory behavior is attributable to the harness, with a core always-visible trace block, a recall block, and an archival block across sessions.",
+      "The recall ladder tested four modes \u2014 no memory, vector RAG, a ranked decisions ledger, and an oracle that supplies ground-truth memory \u2014 with the model held fixed so only the recall variable changes.",
+      "On a literature-review task where the entire corpus fit in context, memory produced identical performance with and without it while adding cost, showing harnesses only pay off past the context boundary.",
+      "On X-Bench, where the answer sat at step 124 but the question was asked at step 500, the rank-only ledger performed best across 68 questions with multiple cells and seeds, beating gated memory.",
+      "The oracle condition does not reach maximum performance because supplying the correct memory does not force the model to use it \u2014 it can still ignore or misread it.",
+      "Ranked recall generalizes across models (Qwen 27B 4-bit, Deep Seek V4 Flash) and benchmarks (X-Bench, Spider V2), and reduces token spend rather than increasing it.",
+      "Local-only evaluation gives full control over data, compute traces, and evals \u2014 Druga's framing of sovereignty \u2014 but Deep Seek V4 Flash lacks batch querying, forcing serial runs that take days."
+    ],
+    "notable_quotes": [
+      {
+        "text": "if you work with long horizon tasks, you probably run into this issue of context blow. Right? Like when the model starts contradicting itself, or it has to redo the work because it forgot it did that task in the first place, or it starts to drift from your questions because it forgot them.",
+        "timestamp_sec": 1,
+        "why": "Defines the failure mode the whole talk is organized around, in concrete symptoms rather than abstraction."
+      },
+      {
+        "text": "we see that the trend is to solve longer and longer uh horizon tasks, and also that we're getting fewer and fewer model releases. So, at some point later this year, we're going to have this convergence",
+        "timestamp_sec": 61,
+        "why": "States the timing argument for why harness work matters now, a claim other speakers might contest."
+      },
+      {
+        "text": "the CEO of Coinbase actually shared how their company managed to reduce their AI spent while actually increasing uh the AI usage.",
+        "timestamp_sec": 61,
+        "why": "The industry data point motivating the local-model framing."
+      },
+      {
+        "text": "the way they did that was by transitioning to use many more local models, but also having better practices, like using better routing, better caching, keeping the context clean",
+        "timestamp_sec": 116,
+        "why": "Names the specific practices credited with the cost reduction."
+      },
+      {
+        "text": "these local models are starting to be useful for agentic tasks and for tool use.",
+        "timestamp_sec": 116,
+        "why": "A compact statement of the talk's premise about local model viability."
+      },
+      {
+        "text": "on this M3 Ultra with 96 GB and 28 core CPUs, I'm using two models. I'm using the Qwen 27B quantized at 4-bit and the Deep Seek V4 Flash.",
+        "timestamp_sec": 162,
+        "why": "Full hardware and model spec, which makes the results reproducible."
+      },
+      {
+        "text": "you can think of memory as a write-manage-read loop. So, it's not just a database store. It's actually this control loop around the model.",
+        "timestamp_sec": 205,
+        "why": "The core conceptual reframing the talk offers."
+      },
+      {
+        "text": "I started with research agents that are the small agents because they have zero durable memory, and I wanted all the memory to come from the harness.",
+        "timestamp_sec": 205,
+        "why": "Explains the experimental control that makes the ablations meaningful."
+      },
+      {
+        "text": "the memory actually didn't add more capability. It was the same performance with memory and without memory, and it only added more cost. So, when your task fits in context, the harness doesn't add much.",
+        "timestamp_sec": 343,
+        "why": "The negative result, and the most actionable boundary condition in the talk."
+      },
+      {
+        "text": "if I start to run tasks that are longer term horizon, and the entire task and the relevant context doesn't uh fit, then having a good memory harness really starts to pay off.",
+        "timestamp_sec": 396,
+        "why": "States the complementary positive condition."
+      },
+      {
+        "text": "the right answer is in a like step 124, but the moment when I ask the question, I'm asking it like at step 500. So, it's completely outside of the context window",
+        "timestamp_sec": 396,
+        "why": "Concrete illustration of what a long-horizon memory benchmark item looks like."
+      },
+      {
+        "text": "I ran over 68 questions and for each of these questions there were like multiple cells and lots of different seeds. And what I found was that the rank only ledger performed the best.",
+        "timestamp_sec": 451,
+        "why": "The headline empirical result with its sample size."
+      },
+      {
+        "text": "it performed better than like just gating the harness by saying do you need to use memory or do you not need to use memory.",
+        "timestamp_sec": 451,
+        "why": "Directly rejects the common gating heuristic in favor of ranking."
+      },
+      {
+        "text": "The Oracle what it does, it provides the right information, the right memory to the model but it doesn't force it to use it. So the model can get the right memory but still retrieve the wrong information or choose to ignore it or be confused.",
+        "timestamp_sec": 509,
+        "why": "Explains why perfect retrieval is not a performance ceiling \u2014 a subtle point many memory pitches miss."
+      },
+      {
+        "text": "this actually works on several models, not only on the Qwen 27B but also on the DS4 flash and it also works across different benchmarks. I also tried it on the Spider V2 benchmark.",
+        "timestamp_sec": 550,
+        "why": "Generalization evidence beyond a single model and benchmark."
+      },
+      {
+        "text": "bad memory is expensive because it spends more token and it can send the agent the wrong way. But having like a good structural policy for recall can save you a lot of tokens and uh budget.",
+        "timestamp_sec": 550,
+        "why": "The talk's compressed heuristic, tying recall quality directly to cost."
+      },
+      {
+        "text": "one thing that I want to encourage you from this experiment is to consider the recall policy as a first-class metric",
+        "timestamp_sec": 601,
+        "why": "The explicit prescriptive takeaway for practitioners."
+      },
+      {
+        "text": "going from simple file system retrieval to training memory models um there's there's a wide spectrum of solutions from less structural to completely structured.",
+        "timestamp_sec": 654,
+        "why": "Situates the experiment within the broader design space."
+      },
+      {
+        "text": "these local models I can only what run them in serial, like they don't support batch querying for the deep seed 4 flash. So, that's why I am still running evaluations back on my computer in Tokyo",
+        "timestamp_sec": 708,
+        "why": "Honest accounting of the cost of the local-only approach."
+      },
+      {
+        "text": "it's a very good test for what memory can do when you can control every single step of the pipeline. And this sovereign capability is part of a bigger ecosystem that is very important for us at Sakana AI in Japan.",
+        "timestamp_sec": 708,
+        "why": "Connects the technical choice to the organizational thesis about sovereign AI."
+      }
+    ],
+    "concepts": [
+      "context rot",
+      "memory harness design",
+      "recall policy",
+      "write-manage-read loop",
+      "vector rag",
+      "decision ledger",
+      "oracle ground-truth evaluation",
+      "long-horizon agent benchmarks",
+      "local model inference",
+      "sovereign ai"
+    ],
+    "positions": [
+      {
+        "claim": "Memory is best understood as a write-manage-read control loop around the model, not as a database store.",
+        "confidence": "stated",
+        "timestamp_sec": 205
+      },
+      {
+        "claim": "When a task and its relevant context fit inside the context window, a memory harness adds no capability and only adds cost.",
+        "confidence": "stated",
+        "timestamp_sec": 343
+      },
+      {
+        "claim": "A rank-only decisions ledger outperforms vector RAG and binary memory gating on long-horizon recall tasks.",
+        "confidence": "stated",
+        "timestamp_sec": 451
+      },
+      {
+        "claim": "Providing an agent with the correct memory does not guarantee it will use it, so oracle retrieval does not reach maximum task performance.",
+        "confidence": "stated",
+        "timestamp_sec": 509
+      },
+      {
+        "claim": "Good recall policy reduces total token spend, so memory quality is a cost lever and not just an accuracy lever.",
+        "confidence": "stated",
+        "timestamp_sec": 550
+      },
+      {
+        "claim": "Recall policy should be treated as a first-class metric in agent system design.",
+        "confidence": "stated",
+        "timestamp_sec": 601
+      },
+      {
+        "claim": "Lengthening task horizons combined with a slowing model release cadence will make context management a critical bottleneck later this year.",
+        "confidence": "stated",
+        "timestamp_sec": 61
+      },
+      {
+        "claim": "Local open-weight models such as Qwen 27B and Deep Seek V4 Flash are now capable enough for real agentic and tool-use workloads.",
+        "confidence": "stated",
+        "timestamp_sec": 116
+      },
+      {
+        "claim": "Running the full evaluation pipeline locally is worth its serial-execution cost because controlling data, traces, and compute constitutes sovereignty.",
+        "confidence": "implied",
+        "timestamp_sec": 708
+      },
+      {
+        "claim": "Shifting workloads to local models alongside better routing, caching, and context hygiene can cut AI spend while increasing AI usage.",
+        "confidence": "stated",
+        "timestamp_sec": 116
+      }
+    ],
+    "speaker_org": "Sakana AI"
+  },
+  "_meta": {
+    "slug": "memory-harnesses-for-long-running-research-agents",
+    "video_id": "R3-anFK1YM8",
+    "url": "https://www.youtube.com/watch?v=R3-anFK1YM8",
+    "word_count": 1919,
+    "wall_sec": 50.3,
+    "run_at": "2026-08-12T20:03:21Z",
+    "effort": "medium",
+    "quotes_dropped": 0
+  }
+}

@@ -1,0 +1,302 @@
+{
+  "is_error": false,
+  "duration_api_ms": 70020,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "fc1b288e-bd8f-43b0-90a4-edc62585d910",
+  "total_cost_usd": 0.30440400000000006,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 13805,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 6073,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 13805,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 6073,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 13805,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 13805
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 9290,
+      "outputTokens": 15,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.009365,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 6073,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 13805,
+      "webSearchRequests": 0,
+      "costUSD": 0.29503900000000005,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Rajat Shah, a staff software engineer on Netflix's AI platform team, argues that AI coding agents have made code authoring ~10x faster while quietly inflating compute cost, because agents optimize for shipping, not for performance, and don't know your internal frameworks. His fix is to put agents on the other side of the ledger: feed production profiler output (call stacks, self/inclusive CPU) directly to a coding agent, which recognizes common anti-patterns like O(n\u00b2) loops and per-iteration object allocation, checks out the exact production commit, traces the call path, and opens a code review \u2014 in under five minutes for a large codebase. The talk's central artifact is a central, ever-growing pattern/anti-pattern catalog stored as plain markdown in a Git repo (not a vector DB), which acts as fleet-wide long-term memory so later agents don't redo earlier discovery work, and which can be shifted left from post-hoc profiling into code review and even code authoring. Shah is emphatic that the non-AI foundations \u2014 test coverage, canary automation, observability \u2014 matter more than the agent, and that a human must still approve every merge. Worth watching if you run production services at scale and want a concrete, deliberately unglamorous playbook for level-2 agentic automation with real Netflix numbers attached.\",\n  \"key_points\": [\n    \"Faster AI-authored code is driving up infrastructure compute cost, because coding agents are tuned to ship working code fast and don't know your platform, framework, or internal codebase patterns.\",\n    \"Profiler output is effectively a universal, well-structured format across Java, Python, and Go runtimes, which makes it unusually good input for an LLM without any language-specific tooling.\",\n    \"The agent can identify a quadratic algorithm purely from the call stack in the profiling data, before ever looking at the source code.\",\n    \"Given the right instructions, the agent completes the full loop \u2014 code search, checkout at the exact production commit, call-path trace, code review \u2014 in under 5 minutes on a large codebase.\",\n    \"The biggest leverage is fan-out: one confirmed anti-pattern (a per-iteration Spectator counter allocation) was found in seven services via cross-repo search, worth 0.5\u20134.6% of CPU cycles each.\",\n    \"Long-term memory is implemented as a centralized Git repo of markdown pattern/anti-pattern entries with symbols, confirmed services, and a confidence level \u2014 a stateful catalog plus a stateless LLM equals fleet-wide memory.\",\n    \"Noise control before requesting human attention is layered: existing unit/integration tests must pass, then an automated canary compares CPU, latency, and error rate between old and new code on identical traffic.\",\n    \"The maturity path runs reactive-to-proactive: start by profiling production, then shift left into reviewer-agent inline comments, then into the authoring agent consulting the catalog before it emits inefficient code.\",\n    \"Shah deliberately stops at level-2 automation (fixed workflow, tools and hooks) and caps agent authority at opening a code review, since level-3 autonomy demands heavy investment in evaluation, sandboxing, and prompt-injection defenses.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"the compute cost also uh is increasing at a similar pace uh because uh it doesn't always uh write the fastest code\",\n      \"timestamp_sec\": 48,\n      \"why\": \"States the talk's core premise \u2014 the hidden cost side of 10x code authoring.\"\n    },\n    {\n      \"text\": \"Your um agent doesn't know specific details about your platforms and your frameworks uh and your internal code base patterns.\",\n      \"timestamp_sec\": 92,\n      \"why\": \"Rebuts the 'newer models will just write performant code' objection head-on.\"\n    },\n    {\n      \"text\": \"People typically end up looking at profiling data only when something is going wrong at 2:00 a.m. and somebody needs to fix a problem because your CPU is unbearable.\",\n      \"timestamp_sec\": 249,\n      \"why\": \"Names the status quo the whole system is designed to replace.\"\n    },\n    {\n      \"text\": \"irrespective of which language, which runtime you're using in production, the output of a profiling data is actually very similar and very well-structured for an LLM agent to use\",\n      \"timestamp_sec\": 350,\n      \"why\": \"The key enabling assumption that makes the approach language-agnostic.\"\n    },\n    {\n      \"text\": \"it knows that this is consuming 8.8% of the CPU time during that uh uh period of profiling\",\n      \"timestamp_sec\": 620,\n      \"why\": \"Concrete number from the first production finding.\"\n    },\n    {\n      \"text\": \"This is purely by looking at the call stack that the profiling uh uh data produced.\",\n      \"timestamp_sec\": 533,\n      \"why\": \"Marks the 'aha' \u2014 pattern detection happens before any source inspection.\"\n    },\n    {\n      \"text\": \"All of it could be done uh in a very large code base with powerful enough code agents in less than 5 minutes.\",\n      \"timestamp_sec\": 680,\n      \"why\": \"The headline throughput claim against a 20-minute-plus manual baseline.\"\n    },\n    {\n      \"text\": \"we found that same bad pattern were actually implemented in seven different services uh through cross repo code searches\",\n      \"timestamp_sec\": 779,\n      \"why\": \"Quantifies the fan-out effect that makes the catalog worth building.\"\n    },\n    {\n      \"text\": \"if fixed across all of those different code repos, it could have savings between 0.5 to 4.6% of CPU cycles\",\n      \"timestamp_sec\": 828,\n      \"why\": \"Reports the actual production savings range.\"\n    },\n    {\n      \"text\": \"And together a stateful catalog and a state stateless LLM can become a full fleet-wide memory um for for a coding agent to use.\",\n      \"timestamp_sec\": 926,\n      \"why\": \"Compact statement of the memory architecture.\"\n    },\n    {\n      \"text\": \"The solution that I mentioned so far of a memory is not very fancy vector search or or a vector database that needs to store all the catalog of patterns and anti-patterns. Rather, you can start with just a markdown files in a in a centralized Git repo.\",\n      \"timestamp_sec\": 1024,\n      \"why\": \"Takes a contrarian side against vector-DB-first agent memory designs.\"\n    },\n    {\n      \"text\": \"I'm still keeping the confidence uh bar to just send a code review and not directly uh push it to production. That's by intent.\",\n      \"timestamp_sec\": 1191,\n      \"why\": \"Explicit autonomy ceiling, stated as a deliberate design choice.\"\n    },\n    {\n      \"text\": \"there is still need for a human approval because you're modifying an existing code that is running just fine in in production in order to optimize it, which is which is very risky\",\n      \"timestamp_sec\": 1191,\n      \"why\": \"Gives the reasoning behind the human-in-the-loop guardrail.\"\n    },\n    {\n      \"text\": \"And what I mentioned here is that this is not an AI problem. The observability, canary, verify logic, these are all standard checks that you need need to have in your system.\",\n      \"timestamp_sec\": 1367,\n      \"why\": \"The talk's main dissent from AI-first framing of this workflow.\"\n    },\n    {\n      \"text\": \"Here's a mental model. Profiler gives the estimate, canary gives ground truth.\",\n      \"timestamp_sec\": 1410,\n      \"why\": \"The most quotable compression of the verification design.\"\n    },\n    {\n      \"text\": \"You want that reactive path to be your initial guide to build that initial catalog.\",\n      \"timestamp_sec\": 1466,\n      \"why\": \"Names the sequencing \u2014 reactive first, proactive later.\"\n    },\n    {\n      \"text\": \"This could sometimes slow down the uh speed of uh newer code uh being written and might end up consuming more tokens.\",\n      \"timestamp_sec\": 1565,\n      \"why\": \"Acknowledges the cost tradeoff of shifting the catalog into authoring.\"\n    },\n    {\n      \"text\": \"You still want these foundations very, very right. Your test coverage needs to be rock solid.\",\n      \"timestamp_sec\": 1615,\n      \"why\": \"Sets the prerequisite bar before any of this is safe.\"\n    },\n    {\n      \"text\": \"You can't simply run AI agents without the right level of security guardrails so that prompt injection and other security attacks that a typical agent infrastructure currently cannot always solve for.\",\n      \"timestamp_sec\": 1938,\n      \"why\": \"Why he stops short of full autonomy.\"\n    },\n    {\n      \"text\": \"start with level one. Try to move to level two and you get maximum benefits\",\n      \"timestamp_sec\": 1938,\n      \"why\": \"The closing prescriptive recommendation on automation level.\"\n    }\n  ],\n  \"concepts\": [\n    \"performance engineering automation\",\n    \"cpu profiling\",\n    \"flame graph analysis\",\n    \"anti-pattern catalog\",\n    \"agent long-term memory\",\n    \"canary deployment verification\",\n    \"shift-left code review\",\n    \"human-in-the-loop approval\",\n    \"agent autonomy levels\",\n    \"cross-repo code search\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"AI coding agents increase infrastructure compute cost at roughly the same pace they increase code authoring speed, because they do not write the fastest code.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 48\n    },\n    {\n      \"claim\": \"Newer, better models will not solve performance by themselves, because they lack knowledge of your internal platforms, frameworks, and codebase patterns.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 92\n    },\n    {\n      \"claim\": \"A human performance engineer spends roughly 20 minutes just identifying hot paths from profiling data.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 249\n    },\n    {\n      \"claim\": \"Profiler output is structurally similar enough across languages and runtimes that a single LLM workflow works regardless of whether the service is Java, Python, or Go.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 350\n    },\n    {\n      \"claim\": \"An agent can identify an O(n\u00b2) pattern from the call stack alone, without reading the source code first.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 533\n    },\n    {\n      \"claim\": \"The full pipeline from profile to opened code review completes in under 5 minutes on a large codebase.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 680\n    },\n    {\n      \"claim\": \"One anti-pattern (repeated Spectator counter object creation in a hot path) appeared in seven Netflix services and was worth 0.5\u20134.6% of CPU cycles per service.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 828\n    },\n    {\n      \"claim\": \"Agent memory for this use case should be plain markdown in a central Git repo, not a vector database or vector search.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1024\n    },\n    {\n      \"claim\": \"The pattern catalog must be centralized rather than team- or product-specific to be useful across the fleet.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 973\n    },\n    {\n      \"claim\": \"Agents should never push performance fixes directly to production; a human must approve the code review because modifying working production code is risky.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1191\n    },\n    {\n      \"claim\": \"Passing tests are insufficient verification; an automated canary comparing CPU, latency, and error rate should be a prerequisite before a code review reaches a human.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1317\n    },\n    {\n      \"claim\": \"The hard prerequisites \u2014 observability, canary, verification logic \u2014 are ordinary engineering foundations, not AI problems, and matter more than the agent itself.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1367\n    },\n    {\n      \"claim\": \"Teams should begin with the reactive post-production path to bootstrap the catalog, then shift left toward review-time and authoring-time prevention.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1466\n    },\n    {\n      \"claim\": \"Consulting the pattern catalog during code authoring slows generation and consumes more tokens, so the catalog must be hierarchically structured and indexed to avoid filling agent context.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1565\n    },\n    {\n      \"claim\": \"A fixed, predefined workflow with no LLM planning or reasoning is sufficient for this use case and can be run on a weekly schedule per service.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1892\n    },\n    {\n      \"claim\": \"Level-3 autonomy (agent plans and acts freely) requires heavy investment in evaluation, sandboxing, and prompt-injection defenses that current agent infrastructure cannot always provide, so level 2 is where most teams should stop.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1938\n    },\n    {\n      \"claim\": \"Without solid integration points and foundations, introducing agents into the performance workflow will cause more friction and more production bugs than it removes.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1744\n    }\n  ],\n  \"speaker_org\": \"Netflix\"\n}",
+  "ttft_ms": 22600,
+  "ttft_stream_ms": 3135,
+  "time_to_request_ms": 34,
+  "type": "result",
+  "duration_ms": 69992,
+  "uuid": "37f01e56-8595-4ff8-86d1-466a03c4d96f",
+  "passA": {
+    "summary": "Rajat Shah, a staff software engineer on Netflix's AI platform team, argues that AI coding agents have made code authoring ~10x faster while quietly inflating compute cost, because agents optimize for shipping, not for performance, and don't know your internal frameworks. His fix is to put agents on the other side of the ledger: feed production profiler output (call stacks, self/inclusive CPU) directly to a coding agent, which recognizes common anti-patterns like O(n\u00b2) loops and per-iteration object allocation, checks out the exact production commit, traces the call path, and opens a code review \u2014 in under five minutes for a large codebase. The talk's central artifact is a central, ever-growing pattern/anti-pattern catalog stored as plain markdown in a Git repo (not a vector DB), which acts as fleet-wide long-term memory so later agents don't redo earlier discovery work, and which can be shifted left from post-hoc profiling into code review and even code authoring. Shah is emphatic that the non-AI foundations \u2014 test coverage, canary automation, observability \u2014 matter more than the agent, and that a human must still approve every merge. Worth watching if you run production services at scale and want a concrete, deliberately unglamorous playbook for level-2 agentic automation with real Netflix numbers attached.",
+    "key_points": [
+      "Faster AI-authored code is driving up infrastructure compute cost, because coding agents are tuned to ship working code fast and don't know your platform, framework, or internal codebase patterns.",
+      "Profiler output is effectively a universal, well-structured format across Java, Python, and Go runtimes, which makes it unusually good input for an LLM without any language-specific tooling.",
+      "The agent can identify a quadratic algorithm purely from the call stack in the profiling data, before ever looking at the source code.",
+      "Given the right instructions, the agent completes the full loop \u2014 code search, checkout at the exact production commit, call-path trace, code review \u2014 in under 5 minutes on a large codebase.",
+      "The biggest leverage is fan-out: one confirmed anti-pattern (a per-iteration Spectator counter allocation) was found in seven services via cross-repo search, worth 0.5\u20134.6% of CPU cycles each.",
+      "Long-term memory is implemented as a centralized Git repo of markdown pattern/anti-pattern entries with symbols, confirmed services, and a confidence level \u2014 a stateful catalog plus a stateless LLM equals fleet-wide memory.",
+      "Noise control before requesting human attention is layered: existing unit/integration tests must pass, then an automated canary compares CPU, latency, and error rate between old and new code on identical traffic.",
+      "The maturity path runs reactive-to-proactive: start by profiling production, then shift left into reviewer-agent inline comments, then into the authoring agent consulting the catalog before it emits inefficient code.",
+      "Shah deliberately stops at level-2 automation (fixed workflow, tools and hooks) and caps agent authority at opening a code review, since level-3 autonomy demands heavy investment in evaluation, sandboxing, and prompt-injection defenses."
+    ],
+    "notable_quotes": [
+      {
+        "text": "the compute cost also uh is increasing at a similar pace uh because uh it doesn't always uh write the fastest code",
+        "timestamp_sec": 48,
+        "why": "States the talk's core premise \u2014 the hidden cost side of 10x code authoring."
+      },
+      {
+        "text": "Your um agent doesn't know specific details about your platforms and your frameworks uh and your internal code base patterns.",
+        "timestamp_sec": 92,
+        "why": "Rebuts the 'newer models will just write performant code' objection head-on."
+      },
+      {
+        "text": "People typically end up looking at profiling data only when something is going wrong at 2:00 a.m. and somebody needs to fix a problem because your CPU is unbearable.",
+        "timestamp_sec": 249,
+        "why": "Names the status quo the whole system is designed to replace."
+      },
+      {
+        "text": "irrespective of which language, which runtime you're using in production, the output of a profiling data is actually very similar and very well-structured for an LLM agent to use",
+        "timestamp_sec": 350,
+        "why": "The key enabling assumption that makes the approach language-agnostic."
+      },
+      {
+        "text": "it knows that this is consuming 8.8% of the CPU time during that uh uh period of profiling",
+        "timestamp_sec": 620,
+        "why": "Concrete number from the first production finding."
+      },
+      {
+        "text": "This is purely by looking at the call stack that the profiling uh uh data produced.",
+        "timestamp_sec": 533,
+        "why": "Marks the 'aha' \u2014 pattern detection happens before any source inspection."
+      },
+      {
+        "text": "All of it could be done uh in a very large code base with powerful enough code agents in less than 5 minutes.",
+        "timestamp_sec": 680,
+        "why": "The headline throughput claim against a 20-minute-plus manual baseline."
+      },
+      {
+        "text": "we found that same bad pattern were actually implemented in seven different services uh through cross repo code searches",
+        "timestamp_sec": 779,
+        "why": "Quantifies the fan-out effect that makes the catalog worth building."
+      },
+      {
+        "text": "if fixed across all of those different code repos, it could have savings between 0.5 to 4.6% of CPU cycles",
+        "timestamp_sec": 828,
+        "why": "Reports the actual production savings range."
+      },
+      {
+        "text": "And together a stateful catalog and a state stateless LLM can become a full fleet-wide memory um for for a coding agent to use.",
+        "timestamp_sec": 926,
+        "why": "Compact statement of the memory architecture."
+      },
+      {
+        "text": "The solution that I mentioned so far of a memory is not very fancy vector search or or a vector database that needs to store all the catalog of patterns and anti-patterns. Rather, you can start with just a markdown files in a in a centralized Git repo.",
+        "timestamp_sec": 1024,
+        "why": "Takes a contrarian side against vector-DB-first agent memory designs."
+      },
+      {
+        "text": "I'm still keeping the confidence uh bar to just send a code review and not directly uh push it to production. That's by intent.",
+        "timestamp_sec": 1191,
+        "why": "Explicit autonomy ceiling, stated as a deliberate design choice."
+      },
+      {
+        "text": "there is still need for a human approval because you're modifying an existing code that is running just fine in in production in order to optimize it, which is which is very risky",
+        "timestamp_sec": 1191,
+        "why": "Gives the reasoning behind the human-in-the-loop guardrail."
+      },
+      {
+        "text": "And what I mentioned here is that this is not an AI problem. The observability, canary, verify logic, these are all standard checks that you need need to have in your system.",
+        "timestamp_sec": 1367,
+        "why": "The talk's main dissent from AI-first framing of this workflow."
+      },
+      {
+        "text": "Here's a mental model. Profiler gives the estimate, canary gives ground truth.",
+        "timestamp_sec": 1410,
+        "why": "The most quotable compression of the verification design."
+      },
+      {
+        "text": "You want that reactive path to be your initial guide to build that initial catalog.",
+        "timestamp_sec": 1466,
+        "why": "Names the sequencing \u2014 reactive first, proactive later."
+      },
+      {
+        "text": "This could sometimes slow down the uh speed of uh newer code uh being written and might end up consuming more tokens.",
+        "timestamp_sec": 1565,
+        "why": "Acknowledges the cost tradeoff of shifting the catalog into authoring."
+      },
+      {
+        "text": "You still want these foundations very, very right. Your test coverage needs to be rock solid.",
+        "timestamp_sec": 1615,
+        "why": "Sets the prerequisite bar before any of this is safe."
+      },
+      {
+        "text": "You can't simply run AI agents without the right level of security guardrails so that prompt injection and other security attacks that a typical agent infrastructure currently cannot always solve for.",
+        "timestamp_sec": 1938,
+        "why": "Why he stops short of full autonomy."
+      },
+      {
+        "text": "start with level one. Try to move to level two and you get maximum benefits",
+        "timestamp_sec": 1938,
+        "why": "The closing prescriptive recommendation on automation level."
+      }
+    ],
+    "concepts": [
+      "performance engineering automation",
+      "cpu profiling",
+      "flame graph analysis",
+      "anti-pattern catalog",
+      "agent long-term memory",
+      "canary deployment verification",
+      "shift-left code review",
+      "human-in-the-loop approval",
+      "agent autonomy levels",
+      "cross-repo code search"
+    ],
+    "positions": [
+      {
+        "claim": "AI coding agents increase infrastructure compute cost at roughly the same pace they increase code authoring speed, because they do not write the fastest code.",
+        "confidence": "stated",
+        "timestamp_sec": 48
+      },
+      {
+        "claim": "Newer, better models will not solve performance by themselves, because they lack knowledge of your internal platforms, frameworks, and codebase patterns.",
+        "confidence": "stated",
+        "timestamp_sec": 92
+      },
+      {
+        "claim": "A human performance engineer spends roughly 20 minutes just identifying hot paths from profiling data.",
+        "confidence": "stated",
+        "timestamp_sec": 249
+      },
+      {
+        "claim": "Profiler output is structurally similar enough across languages and runtimes that a single LLM workflow works regardless of whether the service is Java, Python, or Go.",
+        "confidence": "stated",
+        "timestamp_sec": 350
+      },
+      {
+        "claim": "An agent can identify an O(n\u00b2) pattern from the call stack alone, without reading the source code first.",
+        "confidence": "stated",
+        "timestamp_sec": 533
+      },
+      {
+        "claim": "The full pipeline from profile to opened code review completes in under 5 minutes on a large codebase.",
+        "confidence": "stated",
+        "timestamp_sec": 680
+      },
+      {
+        "claim": "One anti-pattern (repeated Spectator counter object creation in a hot path) appeared in seven Netflix services and was worth 0.5\u20134.6% of CPU cycles per service.",
+        "confidence": "stated",
+        "timestamp_sec": 828
+      },
+      {
+        "claim": "Agent memory for this use case should be plain markdown in a central Git repo, not a vector database or vector search.",
+        "confidence": "stated",
+        "timestamp_sec": 1024
+      },
+      {
+        "claim": "The pattern catalog must be centralized rather than team- or product-specific to be useful across the fleet.",
+        "confidence": "stated",
+        "timestamp_sec": 973
+      },
+      {
+        "claim": "Agents should never push performance fixes directly to production; a human must approve the code review because modifying working production code is risky.",
+        "confidence": "stated",
+        "timestamp_sec": 1191
+      },
+      {
+        "claim": "Passing tests are insufficient verification; an automated canary comparing CPU, latency, and error rate should be a prerequisite before a code review reaches a human.",
+        "confidence": "stated",
+        "timestamp_sec": 1317
+      },
+      {
+        "claim": "The hard prerequisites \u2014 observability, canary, verification logic \u2014 are ordinary engineering foundations, not AI problems, and matter more than the agent itself.",
+        "confidence": "stated",
+        "timestamp_sec": 1367
+      },
+      {
+        "claim": "Teams should begin with the reactive post-production path to bootstrap the catalog, then shift left toward review-time and authoring-time prevention.",
+        "confidence": "stated",
+        "timestamp_sec": 1466
+      },
+      {
+        "claim": "Consulting the pattern catalog during code authoring slows generation and consumes more tokens, so the catalog must be hierarchically structured and indexed to avoid filling agent context.",
+        "confidence": "stated",
+        "timestamp_sec": 1565
+      },
+      {
+        "claim": "A fixed, predefined workflow with no LLM planning or reasoning is sufficient for this use case and can be run on a weekly schedule per service.",
+        "confidence": "stated",
+        "timestamp_sec": 1892
+      },
+      {
+        "claim": "Level-3 autonomy (agent plans and acts freely) requires heavy investment in evaluation, sandboxing, and prompt-injection defenses that current agent infrastructure cannot always provide, so level 2 is where most teams should stop.",
+        "confidence": "stated",
+        "timestamp_sec": 1938
+      },
+      {
+        "claim": "Without solid integration points and foundations, introducing agents into the performance workflow will cause more friction and more production bugs than it removes.",
+        "confidence": "stated",
+        "timestamp_sec": 1744
+      }
+    ],
+    "speaker_org": "Netflix"
+  },
+  "_meta": {
+    "slug": "ai-agents-for-performance-ship-faster-pay-less",
+    "video_id": "CgsWxRUY5Eo",
+    "url": "https://www.youtube.com/watch?v=CgsWxRUY5Eo",
+    "word_count": 5357,
+    "wall_sec": 71.0,
+    "run_at": "2026-08-12T19:30:12Z",
+    "effort": "medium"
+  }
+}

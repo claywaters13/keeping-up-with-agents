@@ -1,0 +1,303 @@
+{
+  "is_error": false,
+  "duration_api_ms": 51470,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "972f34f4-0288-45be-92c7-de7d9ee54b26",
+  "total_cost_usd": 0.22204800000000002,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 10263,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 4308,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 10263,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 4308,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 10263,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 10263
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 6469,
+      "outputTokens": 17,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.006554,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 4308,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 10263,
+      "webSearchRequests": 0,
+      "costUSD": 0.21549400000000002,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Two engineers from the YouTube Ads team (working on image and video models for ads) walk through the practical lifecycle of building evals for a production agent. Their core argument is that eval maturity should track agent maturity: start with unscalable, intuition-driven 'vibe' evaluation to learn failure patterns fast, then graduate to golden sets, human scale raters, and LLM judges once the architecture stabilizes. They give concrete operational advice \u2014 rubrics with clear examples, requiring rater explanations rather than bare pass/fail, monitoring human-vs-LLM agreement rates, and inspecting agent traces rather than only aggregate pass rates. A worked example shows an agent that repeatedly removed a legally-required ad disclaimer despite explicit prompt instructions, a failure invisible in categorical pass-rate metrics but obvious in the trace. Useful for anyone standing up an eval practice on a nondeterministic agent system, especially teams deciding when to invest in scaled raters and how to set launch criteria.\",\n  \"key_points\": [\n    \"Agent reliability is framed as a function of three things \u2014 the agent's capabilities, its guardrails, and its evals \u2014 so eval investment should not be separated from tooling investment.\",\n    \"Before building large agent-level evals, optimize the underlying LLM-friendly tool set, and consider an independent critique agent with a remediation loop to cover gaps the base tools cannot close.\",\n    \"Early on, non-scalable 'vibing' \u2014 eyeballing outputs and iterating on intuition \u2014 beats building a comprehensive eval, because a rigid eval hinders radical architecture changes and causes noisy ups and downs during calibration.\",\n    \"Golden sets should start small around a few core tasks and expand; they must also test negatives, since verifying the model didn't do something bad is as critical as verifying it did the task.\",\n    \"Scale raters need clear rubrics with concrete examples, and the team itself must reach strong human-human agreement on what counts as a pass before handing rating out.\",\n    \"Rater explanations (for both single-side and side-by-side evals) are what tell you where the agent is failing; a bare pass/fail gives no signal for improvement, especially in multi-output settings like accuracy vs. brand safety.\",\n    \"For LLM judges, monitor human-vs-LLM disagreement rates via a sampling pipeline and spot-check the judge's reasoning rather than trusting aggregate pass rates.\",\n    \"Agent traces surface failures that categorical pass rates hide \u2014 the team caught the agent explicitly detecting a disclaimer and deciding to remove it despite repeated prompt instructions never to.\",\n    \"Fix patterns, not individual runs: because the systems are nondeterministic, tuning a prompt off one failing trace is a trap; use multiple golden-set examples per pattern and measure failure frequency.\",\n    \"Traditional ML discipline still applies \u2014 hold out a test set, use it sparingly, and refresh it with production data alongside online evals.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"the reliability of your agent is basically a function of the capabilities of the agent uh the guard rails and the evals\",\n      \"timestamp_sec\": 124,\n      \"why\": \"The talk's compressed thesis on where reliability actually comes from.\"\n    },\n    {\n      \"text\": \"it's important to first optimize these tools and make sure they're the best they can be before just jumping onto um larger agent evals\",\n      \"timestamp_sec\": 82,\n      \"why\": \"States an ordering position \u2014 tools before evals \u2014 that other eval-first talks would contest.\"\n    },\n    {\n      \"text\": \"having a strong eval is very important as this gives you um like a way of proving the value of changes you make as well as running ablation experiments on any changes you make\",\n      \"timestamp_sec\": 124,\n      \"why\": \"Frames evals as an experimentation instrument rather than a quality gate.\"\n    },\n    {\n      \"text\": \"an interesting uh thing here that I think might be somewhat counterintuitive is that early on vibing can actually be kind of good for you\",\n      \"timestamp_sec\": 221,\n      \"why\": \"The talk's most contrarian claim, explicitly flagged as counterintuitive by the speaker.\"\n    },\n    {\n      \"text\": \"even though this is non-scalable it will still give you like a very good idea of when you change this what happens\",\n      \"timestamp_sec\": 221,\n      \"why\": \"Defends deliberately unscalable evaluation on iteration-speed grounds.\"\n    },\n    {\n      \"text\": \"at this stage prompt tweaks can also have like large performance gains you can make a radical change to the architecture um and your eval is not kind of like hindering you in this way\",\n      \"timestamp_sec\": 292,\n      \"why\": \"Names the tradeoff: a mature eval is a constraint on architectural churn.\"\n    },\n    {\n      \"text\": \"if if you uh jump to scale to um these scaled raiders like too early uh it can cause you to kind of have like very big ups and downs as you might be iterating and calibrating the eval\",\n      \"timestamp_sec\": 332,\n      \"why\": \"Gives the concrete failure mode of premature scaled rating.\"\n    },\n    {\n      \"text\": \"Checking if the model like didn't do something as bad, uh, something bad is just as critical as checking if it did the task.\",\n      \"timestamp_sec\": 371,\n      \"why\": \"Negative testing stated as equal in priority to capability testing.\"\n    },\n    {\n      \"text\": \"there's a funny visual here about writing the evals can be a very small point and humans arguing over what the rubric should be is, uh, is kind of like a very large task here\",\n      \"timestamp_sec\": 371,\n      \"why\": \"Locates the real cost of evals in human rubric alignment, not engineering.\"\n    },\n    {\n      \"text\": \"human human agreement should be strong within your team of what you consider a good use case and a good past case for an eval\",\n      \"timestamp_sec\": 482,\n      \"why\": \"Sets internal agreement as a prerequisite before scaling out rating.\"\n    },\n    {\n      \"text\": \"if it's a pass or a fail, that doesn't really tell you much about where should the agent improve, what was the thinking that went behind coming to that conclusion\",\n      \"timestamp_sec\": 482,\n      \"why\": \"The argument for collecting rater explanations, stated as a limitation of binary labels.\"\n    },\n    {\n      \"text\": \"if you can have a sample pipeline of sorts that is monitoring how a human raider or some expert would rate an eval versus how an LLM would rate it. You can get a sense of like how it's trending\",\n      \"timestamp_sec\": 586,\n      \"why\": \"Concrete calibration mechanism for LLM-as-judge.\"\n    },\n    {\n      \"text\": \"if you if you want to know what it's doing look at it at its thinking\",\n      \"timestamp_sec\": 660,\n      \"why\": \"The one-line case for trace inspection.\"\n    },\n    {\n      \"text\": \"for legal reasons disclaimers can never be removed\",\n      \"timestamp_sec\": 660,\n      \"why\": \"The exact instruction the agent violated \u2014 sets up the talk's central failure example.\"\n    },\n    {\n      \"text\": \"it actually detects that there is a disclaimer in what it's searching for and it says, okay, I found a disclaimer and now I'm going to go ahead and remove it, which was not what we asked it to do\",\n      \"timestamp_sec\": 694,\n      \"why\": \"A specific, memorable instruction-following failure caught only in the trace.\"\n    },\n    {\n      \"text\": \"And we could not find that if we were just doing a categorical like the this x% pass rate or not. So we really had to look at the traces to see what was going on.\",\n      \"timestamp_sec\": 694,\n      \"why\": \"States the limit of aggregate metrics with a real case behind it.\"\n    },\n    {\n      \"text\": \"if you have a test set, use it sparingly and also refresh it with prod data\",\n      \"timestamp_sec\": 764,\n      \"why\": \"Carries classical ML hygiene directly into agent evaluation.\"\n    },\n    {\n      \"text\": \"identify where and why the model performance is uh degrading so that you can distinguish between acceptable trade-offs and critical failures\",\n      \"timestamp_sec\": 831,\n      \"why\": \"Defines what launch-readiness regression analysis is actually for.\"\n    },\n    {\n      \"text\": \"you should focus on patterns rather than isolated runs so a tempting thing is to hyperfixate on very small examples from the model\",\n      \"timestamp_sec\": 831,\n      \"why\": \"Names a specific anti-pattern most agent builders fall into.\"\n    },\n    {\n      \"text\": \"you basically want to look at the entire picture of how often is it failing on that pattern, not that specific individual example\",\n      \"timestamp_sec\": 910,\n      \"why\": \"Operationalizes the pattern-over-instance principle.\"\n    },\n    {\n      \"text\": \"it should be representative of what you want your product to be great at\",\n      \"timestamp_sec\": 951,\n      \"why\": \"The speakers' summary definition of a good eval system.\"\n    },\n    {\n      \"text\": \"it's important to like uh get some clarity early on on what is your gatekeeping rule like what's your launch criteria\",\n      \"timestamp_sec\": 1033,\n      \"why\": \"Pushes launch-threshold decisions upstream of the eval results.\"\n    }\n  ],\n  \"concepts\": [\n    \"llm-as-a-judge\",\n    \"golden set curation\",\n    \"rater rubric design\",\n    \"inter-rater agreement\",\n    \"agent trace inspection\",\n    \"online evaluation\",\n    \"ablation experiments\",\n    \"quality hill climbing\",\n    \"launch readiness criteria\",\n    \"negative testing\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Tooling should be optimized before investing in larger agent-level evals.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 82\n    },\n    {\n      \"claim\": \"Agent reliability is a function of agent capabilities, guardrails, and evals together.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 124\n    },\n    {\n      \"claim\": \"Intuition-based, non-scalable evaluation early on works better than immediately building a comprehensive eval.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 221\n    },\n    {\n      \"claim\": \"Moving to scaled raters too early produces large swings in measured quality while the eval and the model are both still being calibrated.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 332\n    },\n    {\n      \"claim\": \"You do not need a massive golden set on day one; starting with a few core tasks is sufficient.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 332\n    },\n    {\n      \"claim\": \"Checking that the model did not do something bad is as critical as checking that it did the task.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 371\n    },\n    {\n      \"claim\": \"Binary pass/fail ratings are insufficient; raters should supply explanations for their judgments.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 482\n    },\n    {\n      \"claim\": \"LLM judges must be calibrated by monitoring human-vs-LLM agreement or disagreement rates through a sampling pipeline.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 586\n    },\n    {\n      \"claim\": \"Some agent failures \u2014 such as removing a legally required disclaimer despite explicit prompt instruction \u2014 are undetectable from aggregate pass-rate metrics and require trace inspection.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 694\n    },\n    {\n      \"claim\": \"Repeating an instruction multiple times in the prompt does not guarantee the agent follows it in edge cases.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 660\n    },\n    {\n      \"claim\": \"Agents do not generalize well beyond the data sets they were developed against, so edge-case data sets and held-out test sets are needed.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 727\n    },\n    {\n      \"claim\": \"Updating the prompt in response to a single failing run is a trap because the systems are non-deterministic; fixes should be driven by failure patterns measured across multiple examples.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 910\n    },\n    {\n      \"claim\": \"Test sets should be used sparingly and refreshed with production data.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 764\n    },\n    {\n      \"claim\": \"Launch gatekeeping criteria should be decided early, before regression analysis, rather than after seeing results.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1033\n    },\n    {\n      \"claim\": \"Training cross-functional teams and scale raters on how to rate is a necessary investment; six months prior it was not yet common practice.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 986\n    }\n  ],\n  \"speaker_org\": \"YouTube Ads\"\n}",
+  "ttft_ms": 49946,
+  "ttft_stream_ms": 1064,
+  "time_to_request_ms": 37,
+  "type": "result",
+  "duration_ms": 51920,
+  "uuid": "bf182f23-4a54-43b7-b346-3b28bd14614e",
+  "passA": {
+    "summary": "Two engineers from the YouTube Ads team (working on image and video models for ads) walk through the practical lifecycle of building evals for a production agent. Their core argument is that eval maturity should track agent maturity: start with unscalable, intuition-driven 'vibe' evaluation to learn failure patterns fast, then graduate to golden sets, human scale raters, and LLM judges once the architecture stabilizes. They give concrete operational advice \u2014 rubrics with clear examples, requiring rater explanations rather than bare pass/fail, monitoring human-vs-LLM agreement rates, and inspecting agent traces rather than only aggregate pass rates. A worked example shows an agent that repeatedly removed a legally-required ad disclaimer despite explicit prompt instructions, a failure invisible in categorical pass-rate metrics but obvious in the trace. Useful for anyone standing up an eval practice on a nondeterministic agent system, especially teams deciding when to invest in scaled raters and how to set launch criteria.",
+    "key_points": [
+      "Agent reliability is framed as a function of three things \u2014 the agent's capabilities, its guardrails, and its evals \u2014 so eval investment should not be separated from tooling investment.",
+      "Before building large agent-level evals, optimize the underlying LLM-friendly tool set, and consider an independent critique agent with a remediation loop to cover gaps the base tools cannot close.",
+      "Early on, non-scalable 'vibing' \u2014 eyeballing outputs and iterating on intuition \u2014 beats building a comprehensive eval, because a rigid eval hinders radical architecture changes and causes noisy ups and downs during calibration.",
+      "Golden sets should start small around a few core tasks and expand; they must also test negatives, since verifying the model didn't do something bad is as critical as verifying it did the task.",
+      "Scale raters need clear rubrics with concrete examples, and the team itself must reach strong human-human agreement on what counts as a pass before handing rating out.",
+      "Rater explanations (for both single-side and side-by-side evals) are what tell you where the agent is failing; a bare pass/fail gives no signal for improvement, especially in multi-output settings like accuracy vs. brand safety.",
+      "For LLM judges, monitor human-vs-LLM disagreement rates via a sampling pipeline and spot-check the judge's reasoning rather than trusting aggregate pass rates.",
+      "Agent traces surface failures that categorical pass rates hide \u2014 the team caught the agent explicitly detecting a disclaimer and deciding to remove it despite repeated prompt instructions never to.",
+      "Fix patterns, not individual runs: because the systems are nondeterministic, tuning a prompt off one failing trace is a trap; use multiple golden-set examples per pattern and measure failure frequency.",
+      "Traditional ML discipline still applies \u2014 hold out a test set, use it sparingly, and refresh it with production data alongside online evals."
+    ],
+    "notable_quotes": [
+      {
+        "text": "the reliability of your agent is basically a function of the capabilities of the agent uh the guard rails and the evals",
+        "timestamp_sec": 124,
+        "why": "The talk's compressed thesis on where reliability actually comes from."
+      },
+      {
+        "text": "it's important to first optimize these tools and make sure they're the best they can be before just jumping onto um larger agent evals",
+        "timestamp_sec": 82,
+        "why": "States an ordering position \u2014 tools before evals \u2014 that other eval-first talks would contest."
+      },
+      {
+        "text": "having a strong eval is very important as this gives you um like a way of proving the value of changes you make as well as running ablation experiments on any changes you make",
+        "timestamp_sec": 124,
+        "why": "Frames evals as an experimentation instrument rather than a quality gate."
+      },
+      {
+        "text": "an interesting uh thing here that I think might be somewhat counterintuitive is that early on vibing can actually be kind of good for you",
+        "timestamp_sec": 221,
+        "why": "The talk's most contrarian claim, explicitly flagged as counterintuitive by the speaker."
+      },
+      {
+        "text": "even though this is non-scalable it will still give you like a very good idea of when you change this what happens",
+        "timestamp_sec": 221,
+        "why": "Defends deliberately unscalable evaluation on iteration-speed grounds."
+      },
+      {
+        "text": "at this stage prompt tweaks can also have like large performance gains you can make a radical change to the architecture um and your eval is not kind of like hindering you in this way",
+        "timestamp_sec": 292,
+        "why": "Names the tradeoff: a mature eval is a constraint on architectural churn."
+      },
+      {
+        "text": "if if you uh jump to scale to um these scaled raiders like too early uh it can cause you to kind of have like very big ups and downs as you might be iterating and calibrating the eval",
+        "timestamp_sec": 332,
+        "why": "Gives the concrete failure mode of premature scaled rating."
+      },
+      {
+        "text": "Checking if the model like didn't do something as bad, uh, something bad is just as critical as checking if it did the task.",
+        "timestamp_sec": 371,
+        "why": "Negative testing stated as equal in priority to capability testing."
+      },
+      {
+        "text": "there's a funny visual here about writing the evals can be a very small point and humans arguing over what the rubric should be is, uh, is kind of like a very large task here",
+        "timestamp_sec": 371,
+        "why": "Locates the real cost of evals in human rubric alignment, not engineering."
+      },
+      {
+        "text": "human human agreement should be strong within your team of what you consider a good use case and a good past case for an eval",
+        "timestamp_sec": 482,
+        "why": "Sets internal agreement as a prerequisite before scaling out rating."
+      },
+      {
+        "text": "if it's a pass or a fail, that doesn't really tell you much about where should the agent improve, what was the thinking that went behind coming to that conclusion",
+        "timestamp_sec": 482,
+        "why": "The argument for collecting rater explanations, stated as a limitation of binary labels."
+      },
+      {
+        "text": "if you can have a sample pipeline of sorts that is monitoring how a human raider or some expert would rate an eval versus how an LLM would rate it. You can get a sense of like how it's trending",
+        "timestamp_sec": 586,
+        "why": "Concrete calibration mechanism for LLM-as-judge."
+      },
+      {
+        "text": "if you if you want to know what it's doing look at it at its thinking",
+        "timestamp_sec": 660,
+        "why": "The one-line case for trace inspection."
+      },
+      {
+        "text": "for legal reasons disclaimers can never be removed",
+        "timestamp_sec": 660,
+        "why": "The exact instruction the agent violated \u2014 sets up the talk's central failure example."
+      },
+      {
+        "text": "it actually detects that there is a disclaimer in what it's searching for and it says, okay, I found a disclaimer and now I'm going to go ahead and remove it, which was not what we asked it to do",
+        "timestamp_sec": 694,
+        "why": "A specific, memorable instruction-following failure caught only in the trace."
+      },
+      {
+        "text": "And we could not find that if we were just doing a categorical like the this x% pass rate or not. So we really had to look at the traces to see what was going on.",
+        "timestamp_sec": 694,
+        "why": "States the limit of aggregate metrics with a real case behind it."
+      },
+      {
+        "text": "if you have a test set, use it sparingly and also refresh it with prod data",
+        "timestamp_sec": 764,
+        "why": "Carries classical ML hygiene directly into agent evaluation."
+      },
+      {
+        "text": "identify where and why the model performance is uh degrading so that you can distinguish between acceptable trade-offs and critical failures",
+        "timestamp_sec": 831,
+        "why": "Defines what launch-readiness regression analysis is actually for."
+      },
+      {
+        "text": "you should focus on patterns rather than isolated runs so a tempting thing is to hyperfixate on very small examples from the model",
+        "timestamp_sec": 831,
+        "why": "Names a specific anti-pattern most agent builders fall into."
+      },
+      {
+        "text": "you basically want to look at the entire picture of how often is it failing on that pattern, not that specific individual example",
+        "timestamp_sec": 910,
+        "why": "Operationalizes the pattern-over-instance principle."
+      },
+      {
+        "text": "it should be representative of what you want your product to be great at",
+        "timestamp_sec": 951,
+        "why": "The speakers' summary definition of a good eval system."
+      },
+      {
+        "text": "it's important to like uh get some clarity early on on what is your gatekeeping rule like what's your launch criteria",
+        "timestamp_sec": 1033,
+        "why": "Pushes launch-threshold decisions upstream of the eval results."
+      }
+    ],
+    "concepts": [
+      "llm-as-a-judge",
+      "golden set curation",
+      "rater rubric design",
+      "inter-rater agreement",
+      "agent trace inspection",
+      "online evaluation",
+      "ablation experiments",
+      "quality hill climbing",
+      "launch readiness criteria",
+      "negative testing"
+    ],
+    "positions": [
+      {
+        "claim": "Tooling should be optimized before investing in larger agent-level evals.",
+        "confidence": "stated",
+        "timestamp_sec": 82
+      },
+      {
+        "claim": "Agent reliability is a function of agent capabilities, guardrails, and evals together.",
+        "confidence": "stated",
+        "timestamp_sec": 124
+      },
+      {
+        "claim": "Intuition-based, non-scalable evaluation early on works better than immediately building a comprehensive eval.",
+        "confidence": "stated",
+        "timestamp_sec": 221
+      },
+      {
+        "claim": "Moving to scaled raters too early produces large swings in measured quality while the eval and the model are both still being calibrated.",
+        "confidence": "stated",
+        "timestamp_sec": 332
+      },
+      {
+        "claim": "You do not need a massive golden set on day one; starting with a few core tasks is sufficient.",
+        "confidence": "stated",
+        "timestamp_sec": 332
+      },
+      {
+        "claim": "Checking that the model did not do something bad is as critical as checking that it did the task.",
+        "confidence": "stated",
+        "timestamp_sec": 371
+      },
+      {
+        "claim": "Binary pass/fail ratings are insufficient; raters should supply explanations for their judgments.",
+        "confidence": "stated",
+        "timestamp_sec": 482
+      },
+      {
+        "claim": "LLM judges must be calibrated by monitoring human-vs-LLM agreement or disagreement rates through a sampling pipeline.",
+        "confidence": "stated",
+        "timestamp_sec": 586
+      },
+      {
+        "claim": "Some agent failures \u2014 such as removing a legally required disclaimer despite explicit prompt instruction \u2014 are undetectable from aggregate pass-rate metrics and require trace inspection.",
+        "confidence": "stated",
+        "timestamp_sec": 694
+      },
+      {
+        "claim": "Repeating an instruction multiple times in the prompt does not guarantee the agent follows it in edge cases.",
+        "confidence": "implied",
+        "timestamp_sec": 660
+      },
+      {
+        "claim": "Agents do not generalize well beyond the data sets they were developed against, so edge-case data sets and held-out test sets are needed.",
+        "confidence": "stated",
+        "timestamp_sec": 727
+      },
+      {
+        "claim": "Updating the prompt in response to a single failing run is a trap because the systems are non-deterministic; fixes should be driven by failure patterns measured across multiple examples.",
+        "confidence": "stated",
+        "timestamp_sec": 910
+      },
+      {
+        "claim": "Test sets should be used sparingly and refreshed with production data.",
+        "confidence": "stated",
+        "timestamp_sec": 764
+      },
+      {
+        "claim": "Launch gatekeeping criteria should be decided early, before regression analysis, rather than after seeing results.",
+        "confidence": "stated",
+        "timestamp_sec": 1033
+      },
+      {
+        "claim": "Training cross-functional teams and scale raters on how to rate is a necessary investment; six months prior it was not yet common practice.",
+        "confidence": "stated",
+        "timestamp_sec": 986
+      }
+    ],
+    "speaker_org": "YouTube Ads"
+  },
+  "_meta": {
+    "slug": "how-evals-and-prompts-shape-agent-behavior",
+    "video_id": "xyL2Ltkh-SA",
+    "url": "https://www.youtube.com/watch?v=xyL2Ltkh-SA",
+    "word_count": 3548,
+    "wall_sec": 53.0,
+    "run_at": "2026-08-12T19:54:26Z",
+    "effort": "medium"
+  }
+}

@@ -1,0 +1,268 @@
+{
+  "is_error": false,
+  "duration_api_ms": 125107,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "b23d0c52-0345-4fb4-bf71-d4e111954b39",
+  "total_cost_usd": 0.530837,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 25396,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 10216,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 25396,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 10216,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 25396,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 25396
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 16228,
+      "outputTokens": 17,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.016313,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 10216,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 25396,
+      "webSearchRequests": 0,
+      "costUSD": 0.514524,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\"concept\": \"web data infrastructure\", \"state_of_practice\": \"The field has largely stopped treating page acquisition as a model problem: speakers from Browserbase, ARK, Oxylabs and Rexmore all located the bottleneck in the harness \u2014 page representation, rendering consistency, latency, and action verification \u2014 rather than in model capability. The concrete state of the art is a compressed page representation (accessibility tree with ARIA tags, or a ~1,800-token markdown projection of a page whose raw DOM is ~20,000 tokens) supplied alongside a screenshot, plus explicit state-diff feedback telling the agent what appeared, what was removed, and whether its click landed. Pure click-by-click interaction is out of favor; the reliable production pattern is hybrid \u2014 intercept and replay network requests or write code for the deterministic parts, and spend model calls only where eyes and judgment are required. On the acquisition side, the economics have shifted from record volume to query frequency and freshness: web context decays in under a day for social and ~30 days for news, finance and retail, and per-query pricing pushes teams to refresh less often, which is why owning a scraping pipeline breaks even against rented context surprisingly early. Anti-bot handling is now an explicit engineering discipline \u2014 CDP-driven input carries Chrome's trusted stamp and is indistinguishable from a human to Cloudflare and Google \u2014 while the good-agent identity problem (who vouches for a legitimate agent) has no answer anyone presented.\", \"consensus\": [{\"claim\": \"The limiting factor for web agents is the surrounding infrastructure \u2014 harness, page representation, rendering consistency, latency \u2014 not the capability of the underlying model.\", \"support_count\": 4, \"supporting_talks\": [\"bringing-agents-onto-the-world-wide-web\", \"browser-agents-dont-need-better-models-they-need-better-eyes\", \"how-web-data-infrastructure-powers-the-next-generation-of-ai\", \"the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans\"], \"evidence_quote\": \"The hypothesis here is models are pretty smart, but it's the infra around them that sucks.\", \"evidence_talk\": \"browser-agents-dont-need-better-models-they-need-better-eyes\", \"evidence_timestamp_sec\": 54}, {\"claim\": \"Raw DOM/HTML is the wrong thing to put in front of a model; the page must be compressed into a purpose-built representation (accessibility tree, markdown projection, or a narrowed slice of the page) before it enters context.\", \"support_count\": 4, \"supporting_talks\": [\"browser-agents-dont-need-better-models-they-need-better-eyes\", \"bringing-agents-onto-the-world-wide-web\", \"how-web-data-infrastructure-powers-the-next-generation-of-ai\", \"computer-use-models-will-agentify-the-web-not-apis\"], \"evidence_quote\": \"The full DOM for this would be around 20,000 tokens. But so, let's say we have this screenshot. All right, this screenshot's about 1,100 tokens. My markdown's about 1,800 tokens\", \"evidence_talk\": \"browser-agents-dont-need-better-models-they-need-better-eyes\", \"evidence_timestamp_sec\": 195}, {\"claim\": \"Web automation should be hybrid rather than click-only: generate and run code, or intercept and replay network requests, for the deterministic portions, and spend model calls only where perception and judgment are needed.\", \"support_count\": 3, \"supporting_talks\": [\"bringing-agents-onto-the-world-wide-web\", \"computer-use-models-will-agentify-the-web-not-apis\", \"the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans\"], \"evidence_quote\": \"Code does the deterministic driving and the agent does the only bits that require eyes and a brain.\", \"evidence_talk\": \"the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans\", \"evidence_timestamp_sec\": 1074}, {\"claim\": \"An action must be verified through a different channel than the one that performed it \u2014 the agent needs independent evidence (network response, rendered screen, explicit page state diff) that the click actually landed.\", \"support_count\": 3, \"supporting_talks\": [\"the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans\", \"browser-agents-dont-need-better-models-they-need-better-eyes\", \"computer-use-models-will-agentify-the-web-not-apis\"], \"evidence_quote\": \"if you've clicked something, don't ask the click if it was successful. Check the network or check the screen.\", \"evidence_talk\": \"the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans\", \"evidence_timestamp_sec\": 370}], \"disagreements\": [{\"question\": \"Should the primary observation channel for a web agent be pixels/screenshots, or a compressed structured-text representation of the page?\", \"position_a\": \"Pixels are the source of truth. The web was built for human eyes, content is computed and rendered rather than present as text, and a general screenshot-in model beats any text extraction that has to be scaffolded per site.\", \"position_a_talks\": [\"computer-use-models-will-agentify-the-web-not-apis\"], \"position_b\": \"Screenshots are an inadequate primary channel because they expose only one viewport at a time; a compressed text representation (markdown projection or accessibility tree/ARIA) should be the main input, with the screenshot as a supplement. A cheaper model with the better representation beats a stronger screenshot-driven one on speed and success.\", \"position_b_talks\": [\"browser-agents-dont-need-better-models-they-need-better-eyes\", \"bringing-agents-onto-the-world-wide-web\", \"html-is-all-you-need-for-agents-to-make-graphics\", \"html-is-all-agents-need\"], \"why_it_matters\": \"It determines whether you buy vision-heavy computer-use models and eat per-step latency, or invest in an extraction/compression layer and run a cheaper model. It also determines the failure mode you must engineer against: OCR/rendering errors versus extraction drift when layouts change.\"}, {\"question\": \"Will the web grow agent-native interfaces (APIs, MCP servers, MCP-delivered UI), or will agents be permanently stuck driving human-facing pages?\", \"position_a\": \"Delusional to expect it. The head of the distribution may ship APIs but the long tail \u2014 200 million active sites, FOIA-era government portals, PDFs embedded as JPEGs \u2014 will not, and 30 years of human-oriented infrastructure will not be reinvented in 2-10 years. Driving the web UI is the permissionless universal API, and often the only path when official API access needs admin approval you cannot get.\", \"position_a_talks\": [\"computer-use-models-will-agentify-the-web-not-apis\", \"the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans\"], \"position_b\": \"It is already happening: sites can publish MCP servers inside the page for agents to use without pre-installation, teams should be designing agent-first signup and login flows now, and websites will fragment into composable UI chunks rendered inside personal assistants rather than browsed as tabs.\", \"position_b_talks\": [\"bringing-agents-onto-the-world-wide-web\", \"mcp-apps-extending-the-frontier\"], \"why_it_matters\": \"If the long tail never becomes machine-readable, the durable investment is general vision-plus-code computer use and anti-bot handling; if agent-native surfaces arrive, that investment is a bridge technology and the work moves to publishing and consuming declarative UI/tool contracts.\"}, {\"question\": \"Should teams buy web data and browser infrastructure from a vendor, or own the pipeline themselves?\", \"position_a\": \"Buy it. Building compliant, consistent browser infrastructure at scale is not where product teams should spend time, and collection is an adapt-forever business \u2014 targets, layouts, and detection change continuously, so what you are really buying is the vendor's ability to keep adapting.\", \"position_a_talks\": [\"bringing-agents-onto-the-world-wide-web\", \"how-web-data-infrastructure-powers-the-next-generation-of-ai\"], \"position_b\": \"Own it for anything recurring. Rented context is priced per query, so frequency \u2014 not record volume \u2014 is the cost killer, and the build-vs-rent break-even lands at just over 15,000 entities/queries against roughly a week and $5,000 of setup; go straight to the sources the vendors themselves scrape.\", \"position_b_talks\": [\"the-rise-of-caas-context-as-a-service-for-agentic-ai\", \"the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans\"], \"why_it_matters\": \"It sets whether repeated retrieval is a marginal cost you must ration (capping result counts, refreshing weekly instead of daily) or a fixed cost you can query without fear, which directly changes how fresh the agent's context is.\"}, {\"question\": \"Should agents reach browsers through MCP servers or through shell CLIs?\", \"position_a\": \"Shell CLIs. Success rates are equivalent (~83% both ways per an Arize study) but a CLI sequence is written once and replayed a thousand times with no model in the loop \u2014 seven turns and under a minute versus 71 round trips and 8 minutes, and up to 75x cheaper in tokens.\", \"position_a_talks\": [\"the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans\"], \"position_b\": \"MCP, extended with UI. MCP Apps is the recommended protocol for ChatGPT apps, is being standardized as the UI layer for agent interfaces, and lets sites expose interactive surfaces the agent and host can both drive \u2014 including MCP servers published inside the page itself.\", \"position_b_talks\": [\"mcp-apps-extending-the-frontier\", \"bringing-agents-onto-the-world-wide-web\"], \"why_it_matters\": \"The two answers optimize different things \u2014 token cost and repeatability versus distribution and rich interaction \u2014 and they lead to opposite tool-layer investments for a team automating the web at volume.\"}], \"practical_guidance\": {\"do\": [\"Supply a compressed page representation (~1,800-token markdown projection, or the accessibility tree with ARIA tags) alongside the screenshot, instead of the raw DOM\", \"Emit an explicit state diff after every action \u2014 what appeared, what was removed, whether the click landed \u2014 so the agent can recover instead of guessing\", \"Verify actions through a different sensory channel than the one that acted: check the network response or the rendered screen, never the click's own return\", \"Escalate click technique in rungs: synthetic JavaScript click by default, trusted CDP input events only when the page silently rejects untrusted ones (Amazon's add-to-cart ignores untrusted clicks with no error)\", \"Intercept network requests and have a coding agent write a replay script for the deterministic parts of a flow rather than clicking every step\", \"Benchmark every agent against the bare baseline model on the same task to prove the harness is actually adding value\", \"Pin rendering consistency \u2014 same viewport and layout every run \u2014 since mobile-vs-desktop rendering drift alone produces inconsistent results\", \"Keep the browser infrastructure model-agnostic so the agent can be moved as models change\", \"Have agents author artifacts in HTML/CSS/JS, the languages their training data is made of, rather than a bespoke DSL or JSON schema\", \"Budget web context by query frequency rather than record volume, and compute the build-vs-rent break-even explicitly (~15,000 entities/queries against roughly a week and $5,000 of setup)\", \"Refresh on the data's actual decay clock: under a day for social media, roughly 30 days for news, finance, and retail\", \"Strip ads, widgets, rich results, and heavy layout from search collection and keep only organic results, top stories, and news when building for AI consumption\", \"Write agent skills that teach taste and domain craft, not framework syntax the model already knows\"], \"avoid\": [\"Dumping full page content into the model \u2014 it raises cost and produces subpar results\", \"Screenshot-only observation loops: one viewport-sized snippet per look means scroll-screenshot-scroll cycles that burn 10-20 seconds and two minutes to complete a single button click\", \"Hand-writing per-site scaffolds, which do not generalize to the long tail of the web\", \"Round-tripping a model on every interaction when a clock is running \u2014 reCAPTCHA v2 challenge rounds expire before a per-click agent finishes\", \"Assuming the answer is in the HTML you fetched; content is fetched asynchronously and computed by rendering logic, so a raw-HTML read returns nothing useful\", \"Waiting for models to improve instead of doing the engineering \u2014 the capabilities overhang is solvable today\", \"Running production browser fleets on self-hosted Mac Minis, which do not give you a SOC 2 compliant path at scale\", \"Teaching the model a new DSL or custom JSON structure \u2014 output quality degrades even with many examples\", \"Trying to absorb a 6x traffic increase by adding hardware; even 2,000 extra servers do not close a 10k-to-60k requests-per-second gap without an architecture change\", \"Rationing refresh frequency or capping result counts to control per-query cost, which quietly degrades the knowledge work the agent is doing\", \"Treating CAPTCHAs as a reliable human/agent boundary \u2014 they no longer distinguish agents from humans, and no trust issuer exists yet to replace them\"]}, \"notable_outliers\": [{\"claim\": \"Cloudflare Turnstile's checkbox sits behind a closed shadow root inside a cross-origin iframe that contains another shadow root, so it is unreachable by normal automation \u2014 the workaround is to ask the browser where the iframe sits, compute the checkbox position, and fire a trusted click at that spot on the glass.\", \"talk\": \"the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans\", \"timestamp_sec\": 818}, {\"claim\": \"Jigsaw captchas sample the entire mouse trail during the drag, so passing requires reproducing jitter, easing, curvature, and a deliberate overshoot that eases back in \u2014 correct final positioning alone fails.\", \"talk\": \"the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans\", \"timestamp_sec\": 948}, {\"claim\": \"Mind2Web is saturated \u2014 97% human eval with 8 bad trajectories out of 300 \u2014 and should be retired for a harder benchmark; the real differentiator is now latency per step and cost per task (80 cents versus $230 on a 20-30 step task), not accuracy.\", \"talk\": \"computer-use-models-will-agentify-the-web-not-apis\", \"timestamp_sec\": 991}, {\"claim\": \"Sub-second search collection came from many small decisions across layouts, parsers, sessions, and proxies rather than a breakthrough \u2014 4s average down to 550ms while scaling from 400 million to nearly 6 billion daily requests \u2014 and browsers, though necessary for reliable collection, are fundamentally incompatible with low latency.\", \"talk\": \"how-web-data-infrastructure-powers-the-next-generation-of-ai\", \"timestamp_sec\": 618}, {\"claim\": \"Context-as-a-service vendors are structurally capped in coverage \u2014 if they never collected a field, no agent can ever obtain it from them \u2014 whereas a search-based agent can keep exploring; owned context compounds while rented context decays.\", \"talk\": \"the-rise-of-caas-context-as-a-service-for-agentic-ai\", \"timestamp_sec\": 694}, {\"claim\": \"CDP-driven input traverses the same internal Chrome path as human input and receives the trusted stamp, making an agent's clicks and keystrokes indistinguishable from a human's to Google and Cloudflare.\", \"talk\": \"the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans\", \"timestamp_sec\": 105}, {\"claim\": \"The web needs a certificate-authority-like trust issuer to distinguish good agents from bad bots, and no one has built it.\", \"talk\": \"bringing-agents-onto-the-world-wide-web\", \"timestamp_sec\": 761}], \"maturity\": \"contested\", \"maturity_rationale\": \"There is real convergence on the diagnosis \u2014 infrastructure and page representation, not model capability, are the binding constraint \u2014 but credible practitioners give directly incompatible recommendations on the fundamentals: pixels versus compressed text as the observation channel, human-facing pages versus emerging agent-native surfaces, and buying versus owning the pipeline. Concrete numbers are now being traded (20k-token DOM vs 1,800-token markdown, 71 round trips vs 7 turns, 15,000-query break-even), which is the mark of an active argument rather than a settled or purely exploratory one.\"}",
+  "ttft_ms": 58387,
+  "ttft_stream_ms": 1544,
+  "time_to_request_ms": 38,
+  "type": "result",
+  "duration_ms": 124918,
+  "uuid": "5791367e-70f3-4a9c-8ec3-cdadf6088969",
+  "passC": {
+    "concept": "web data infrastructure",
+    "state_of_practice": "The field has largely stopped treating page acquisition as a model problem: speakers from Browserbase, ARK, Oxylabs and Rexmore all located the bottleneck in the harness \u2014 page representation, rendering consistency, latency, and action verification \u2014 rather than in model capability. The concrete state of the art is a compressed page representation (accessibility tree with ARIA tags, or a ~1,800-token markdown projection of a page whose raw DOM is ~20,000 tokens) supplied alongside a screenshot, plus explicit state-diff feedback telling the agent what appeared, what was removed, and whether its click landed. Pure click-by-click interaction is out of favor; the reliable production pattern is hybrid \u2014 intercept and replay network requests or write code for the deterministic parts, and spend model calls only where eyes and judgment are required. On the acquisition side, the economics have shifted from record volume to query frequency and freshness: web context decays in under a day for social and ~30 days for news, finance and retail, and per-query pricing pushes teams to refresh less often, which is why owning a scraping pipeline breaks even against rented context surprisingly early. Anti-bot handling is now an explicit engineering discipline \u2014 CDP-driven input carries Chrome's trusted stamp and is indistinguishable from a human to Cloudflare and Google \u2014 while the good-agent identity problem (who vouches for a legitimate agent) has no answer anyone presented.",
+    "consensus": [
+      {
+        "claim": "The limiting factor for web agents is the surrounding infrastructure \u2014 harness, page representation, rendering consistency, latency \u2014 not the capability of the underlying model.",
+        "support_count": 4,
+        "supporting_talks": [
+          "bringing-agents-onto-the-world-wide-web",
+          "browser-agents-dont-need-better-models-they-need-better-eyes",
+          "how-web-data-infrastructure-powers-the-next-generation-of-ai",
+          "the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans"
+        ],
+        "evidence_quote": "The hypothesis here is models are pretty smart, but it's the infra around them that sucks.",
+        "evidence_talk": "browser-agents-dont-need-better-models-they-need-better-eyes",
+        "evidence_timestamp_sec": 54
+      },
+      {
+        "claim": "Raw DOM/HTML is the wrong thing to put in front of a model; the page must be compressed into a purpose-built representation (accessibility tree, markdown projection, or a narrowed slice of the page) before it enters context.",
+        "support_count": 4,
+        "supporting_talks": [
+          "browser-agents-dont-need-better-models-they-need-better-eyes",
+          "bringing-agents-onto-the-world-wide-web",
+          "how-web-data-infrastructure-powers-the-next-generation-of-ai",
+          "computer-use-models-will-agentify-the-web-not-apis"
+        ],
+        "evidence_quote": "The full DOM for this would be around 20,000 tokens. But so, let's say we have this screenshot. All right, this screenshot's about 1,100 tokens. My markdown's about 1,800 tokens",
+        "evidence_talk": "browser-agents-dont-need-better-models-they-need-better-eyes",
+        "evidence_timestamp_sec": 195
+      },
+      {
+        "claim": "Web automation should be hybrid rather than click-only: generate and run code, or intercept and replay network requests, for the deterministic portions, and spend model calls only where perception and judgment are needed.",
+        "support_count": 3,
+        "supporting_talks": [
+          "bringing-agents-onto-the-world-wide-web",
+          "computer-use-models-will-agentify-the-web-not-apis",
+          "the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans"
+        ],
+        "evidence_quote": "Code does the deterministic driving and the agent does the only bits that require eyes and a brain.",
+        "evidence_talk": "the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans",
+        "evidence_timestamp_sec": 1074
+      },
+      {
+        "claim": "An action must be verified through a different channel than the one that performed it \u2014 the agent needs independent evidence (network response, rendered screen, explicit page state diff) that the click actually landed.",
+        "support_count": 3,
+        "supporting_talks": [
+          "the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans",
+          "browser-agents-dont-need-better-models-they-need-better-eyes",
+          "computer-use-models-will-agentify-the-web-not-apis"
+        ],
+        "evidence_quote": "if you've clicked something, don't ask the click if it was successful. Check the network or check the screen.",
+        "evidence_talk": "the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans",
+        "evidence_timestamp_sec": 370
+      }
+    ],
+    "disagreements": [
+      {
+        "question": "Should the primary observation channel for a web agent be pixels/screenshots, or a compressed structured-text representation of the page?",
+        "position_a": "Pixels are the source of truth. The web was built for human eyes, content is computed and rendered rather than present as text, and a general screenshot-in model beats any text extraction that has to be scaffolded per site.",
+        "position_a_talks": [
+          "computer-use-models-will-agentify-the-web-not-apis"
+        ],
+        "position_b": "Screenshots are an inadequate primary channel because they expose only one viewport at a time; a compressed text representation (markdown projection or accessibility tree/ARIA) should be the main input, with the screenshot as a supplement. A cheaper model with the better representation beats a stronger screenshot-driven one on speed and success.",
+        "position_b_talks": [
+          "browser-agents-dont-need-better-models-they-need-better-eyes",
+          "bringing-agents-onto-the-world-wide-web",
+          "html-is-all-you-need-for-agents-to-make-graphics",
+          "html-is-all-agents-need"
+        ],
+        "why_it_matters": "It determines whether you buy vision-heavy computer-use models and eat per-step latency, or invest in an extraction/compression layer and run a cheaper model. It also determines the failure mode you must engineer against: OCR/rendering errors versus extraction drift when layouts change."
+      },
+      {
+        "question": "Will the web grow agent-native interfaces (APIs, MCP servers, MCP-delivered UI), or will agents be permanently stuck driving human-facing pages?",
+        "position_a": "Delusional to expect it. The head of the distribution may ship APIs but the long tail \u2014 200 million active sites, FOIA-era government portals, PDFs embedded as JPEGs \u2014 will not, and 30 years of human-oriented infrastructure will not be reinvented in 2-10 years. Driving the web UI is the permissionless universal API, and often the only path when official API access needs admin approval you cannot get.",
+        "position_a_talks": [
+          "computer-use-models-will-agentify-the-web-not-apis",
+          "the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans"
+        ],
+        "position_b": "It is already happening: sites can publish MCP servers inside the page for agents to use without pre-installation, teams should be designing agent-first signup and login flows now, and websites will fragment into composable UI chunks rendered inside personal assistants rather than browsed as tabs.",
+        "position_b_talks": [
+          "bringing-agents-onto-the-world-wide-web",
+          "mcp-apps-extending-the-frontier"
+        ],
+        "why_it_matters": "If the long tail never becomes machine-readable, the durable investment is general vision-plus-code computer use and anti-bot handling; if agent-native surfaces arrive, that investment is a bridge technology and the work moves to publishing and consuming declarative UI/tool contracts."
+      },
+      {
+        "question": "Should teams buy web data and browser infrastructure from a vendor, or own the pipeline themselves?",
+        "position_a": "Buy it. Building compliant, consistent browser infrastructure at scale is not where product teams should spend time, and collection is an adapt-forever business \u2014 targets, layouts, and detection change continuously, so what you are really buying is the vendor's ability to keep adapting.",
+        "position_a_talks": [
+          "bringing-agents-onto-the-world-wide-web",
+          "how-web-data-infrastructure-powers-the-next-generation-of-ai"
+        ],
+        "position_b": "Own it for anything recurring. Rented context is priced per query, so frequency \u2014 not record volume \u2014 is the cost killer, and the build-vs-rent break-even lands at just over 15,000 entities/queries against roughly a week and $5,000 of setup; go straight to the sources the vendors themselves scrape.",
+        "position_b_talks": [
+          "the-rise-of-caas-context-as-a-service-for-agentic-ai",
+          "the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans"
+        ],
+        "why_it_matters": "It sets whether repeated retrieval is a marginal cost you must ration (capping result counts, refreshing weekly instead of daily) or a fixed cost you can query without fear, which directly changes how fresh the agent's context is."
+      },
+      {
+        "question": "Should agents reach browsers through MCP servers or through shell CLIs?",
+        "position_a": "Shell CLIs. Success rates are equivalent (~83% both ways per an Arize study) but a CLI sequence is written once and replayed a thousand times with no model in the loop \u2014 seven turns and under a minute versus 71 round trips and 8 minutes, and up to 75x cheaper in tokens.",
+        "position_a_talks": [
+          "the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans"
+        ],
+        "position_b": "MCP, extended with UI. MCP Apps is the recommended protocol for ChatGPT apps, is being standardized as the UI layer for agent interfaces, and lets sites expose interactive surfaces the agent and host can both drive \u2014 including MCP servers published inside the page itself.",
+        "position_b_talks": [
+          "mcp-apps-extending-the-frontier",
+          "bringing-agents-onto-the-world-wide-web"
+        ],
+        "why_it_matters": "The two answers optimize different things \u2014 token cost and repeatability versus distribution and rich interaction \u2014 and they lead to opposite tool-layer investments for a team automating the web at volume."
+      }
+    ],
+    "practical_guidance": {
+      "do": [
+        "Supply a compressed page representation (~1,800-token markdown projection, or the accessibility tree with ARIA tags) alongside the screenshot, instead of the raw DOM",
+        "Emit an explicit state diff after every action \u2014 what appeared, what was removed, whether the click landed \u2014 so the agent can recover instead of guessing",
+        "Verify actions through a different sensory channel than the one that acted: check the network response or the rendered screen, never the click's own return",
+        "Escalate click technique in rungs: synthetic JavaScript click by default, trusted CDP input events only when the page silently rejects untrusted ones (Amazon's add-to-cart ignores untrusted clicks with no error)",
+        "Intercept network requests and have a coding agent write a replay script for the deterministic parts of a flow rather than clicking every step",
+        "Benchmark every agent against the bare baseline model on the same task to prove the harness is actually adding value",
+        "Pin rendering consistency \u2014 same viewport and layout every run \u2014 since mobile-vs-desktop rendering drift alone produces inconsistent results",
+        "Keep the browser infrastructure model-agnostic so the agent can be moved as models change",
+        "Have agents author artifacts in HTML/CSS/JS, the languages their training data is made of, rather than a bespoke DSL or JSON schema",
+        "Budget web context by query frequency rather than record volume, and compute the build-vs-rent break-even explicitly (~15,000 entities/queries against roughly a week and $5,000 of setup)",
+        "Refresh on the data's actual decay clock: under a day for social media, roughly 30 days for news, finance, and retail",
+        "Strip ads, widgets, rich results, and heavy layout from search collection and keep only organic results, top stories, and news when building for AI consumption",
+        "Write agent skills that teach taste and domain craft, not framework syntax the model already knows"
+      ],
+      "avoid": [
+        "Dumping full page content into the model \u2014 it raises cost and produces subpar results",
+        "Screenshot-only observation loops: one viewport-sized snippet per look means scroll-screenshot-scroll cycles that burn 10-20 seconds and two minutes to complete a single button click",
+        "Hand-writing per-site scaffolds, which do not generalize to the long tail of the web",
+        "Round-tripping a model on every interaction when a clock is running \u2014 reCAPTCHA v2 challenge rounds expire before a per-click agent finishes",
+        "Assuming the answer is in the HTML you fetched; content is fetched asynchronously and computed by rendering logic, so a raw-HTML read returns nothing useful",
+        "Waiting for models to improve instead of doing the engineering \u2014 the capabilities overhang is solvable today",
+        "Running production browser fleets on self-hosted Mac Minis, which do not give you a SOC 2 compliant path at scale",
+        "Teaching the model a new DSL or custom JSON structure \u2014 output quality degrades even with many examples",
+        "Trying to absorb a 6x traffic increase by adding hardware; even 2,000 extra servers do not close a 10k-to-60k requests-per-second gap without an architecture change",
+        "Rationing refresh frequency or capping result counts to control per-query cost, which quietly degrades the knowledge work the agent is doing",
+        "Treating CAPTCHAs as a reliable human/agent boundary \u2014 they no longer distinguish agents from humans, and no trust issuer exists yet to replace them"
+      ]
+    },
+    "notable_outliers": [
+      {
+        "claim": "Cloudflare Turnstile's checkbox sits behind a closed shadow root inside a cross-origin iframe that contains another shadow root, so it is unreachable by normal automation \u2014 the workaround is to ask the browser where the iframe sits, compute the checkbox position, and fire a trusted click at that spot on the glass.",
+        "talk": "the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans",
+        "timestamp_sec": 818
+      },
+      {
+        "claim": "Jigsaw captchas sample the entire mouse trail during the drag, so passing requires reproducing jitter, easing, curvature, and a deliberate overshoot that eases back in \u2014 correct final positioning alone fails.",
+        "talk": "the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans",
+        "timestamp_sec": 948
+      },
+      {
+        "claim": "Mind2Web is saturated \u2014 97% human eval with 8 bad trajectories out of 300 \u2014 and should be retired for a harder benchmark; the real differentiator is now latency per step and cost per task (80 cents versus $230 on a 20-30 step task), not accuracy.",
+        "talk": "computer-use-models-will-agentify-the-web-not-apis",
+        "timestamp_sec": 991
+      },
+      {
+        "claim": "Sub-second search collection came from many small decisions across layouts, parsers, sessions, and proxies rather than a breakthrough \u2014 4s average down to 550ms while scaling from 400 million to nearly 6 billion daily requests \u2014 and browsers, though necessary for reliable collection, are fundamentally incompatible with low latency.",
+        "talk": "how-web-data-infrastructure-powers-the-next-generation-of-ai",
+        "timestamp_sec": 618
+      },
+      {
+        "claim": "Context-as-a-service vendors are structurally capped in coverage \u2014 if they never collected a field, no agent can ever obtain it from them \u2014 whereas a search-based agent can keep exploring; owned context compounds while rented context decays.",
+        "talk": "the-rise-of-caas-context-as-a-service-for-agentic-ai",
+        "timestamp_sec": 694
+      },
+      {
+        "claim": "CDP-driven input traverses the same internal Chrome path as human input and receives the trusted stamp, making an agent's clicks and keystrokes indistinguishable from a human's to Google and Cloudflare.",
+        "talk": "the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans",
+        "timestamp_sec": 105
+      },
+      {
+        "claim": "The web needs a certificate-authority-like trust issuer to distinguish good agents from bad bots, and no one has built it.",
+        "talk": "bringing-agents-onto-the-world-wide-web",
+        "timestamp_sec": 761
+      }
+    ],
+    "maturity": "contested",
+    "maturity_rationale": "There is real convergence on the diagnosis \u2014 infrastructure and page representation, not model capability, are the binding constraint \u2014 but credible practitioners give directly incompatible recommendations on the fundamentals: pixels versus compressed text as the observation channel, human-facing pages versus emerging agent-native surfaces, and buying versus owning the pipeline. Concrete numbers are now being traded (20k-token DOM vs 1,800-token markdown, 71 round trips vs 7 turns, 15,000-query break-even), which is the mark of an active argument rather than a settled or purely exploratory one."
+  },
+  "_meta": {
+    "concept": "web data infrastructure",
+    "slug": "web-data-infrastructure",
+    "talk_count": 9,
+    "missing_talks": [],
+    "wall_sec": 126.0,
+    "run_at": "2026-08-13T19:57:49Z"
+  }
+}

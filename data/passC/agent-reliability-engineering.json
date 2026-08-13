@@ -1,0 +1,308 @@
+{
+  "is_error": false,
+  "duration_api_ms": 148056,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "77544f0f-d209-4274-bdc5-19e2dbdef253",
+  "total_cost_usd": 0.6989749999999999,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 35323,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 12698,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 35323,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 12698,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 35323,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 35323
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 23066,
+      "outputTokens": 13,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.023131,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 12698,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 35323,
+      "webSearchRequests": 0,
+      "costUSD": 0.6758439999999999,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\"concept\": \"agent reliability engineering\", \"state_of_practice\": \"The field has converged on reliability \u2014 not model capability \u2014 as the binding constraint on shipping agents, and has largely stopped treating hallucination as the main failure mode; the failures that hurt in production are infrastructure failures, distributed-state inconsistency, uncontrolled retries turning a single API error into a compute incident, unrenderable outputs crashing unpatchable mobile clients, and slow reliability drift that no single change makes catastrophic. The dominant architectural answer is to strip execution authority from the model: the model emits proposals (a next action, a UI intent from a fixed catalog, a decomposition), and a harness or control plane validates them, applies policy, advances workflow state, and enforces execution \u2014 several teams report that a sufficiently strong harness lets a much smaller model hit the same reliability bar (Haiku 4.5 replacing Opus 4.7 in a live voice tutor). Reliability is measured like SRE work, not research work: scenario-driven evals over production telemetry, agent traces of reasoning paths and state transitions rather than logs, and evaluation running continuously after deploy rather than as a pre-ship gate. Where practitioners still disagree is on where the reliability actually gets encoded \u2014 in harness scaffolding that stays permanent, or in model weights via post-training and RL with the harness deliberately thinning over time \u2014 and on whether a second non-deterministic layer (agent-as-a-judge, self-verifying perception agents) improves correctness or compounds the problem. Verifiability remains the field's stated frontier: coding got reliable first because it can be run and tested, and nobody has a good answer for the majority of knowledge work where there is no unit test.\", \"consensus\": [{\"claim\": \"Reliability, not model intelligence, is the binding constraint on production agents; models are already capable enough for most deployed use cases.\", \"support_count\": 8, \"supporting_talks\": [\"deterministic-infra-for-non-deterministic-ai-agents\", \"perception-agents\", \"recursive-coding-agents\", \"data-and-environment-curation-for-post-training-llms\", \"the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in\", \"dont-let-the-llm-drive\", \"agent-output-is-not-ux-rendering-layer-your-llm-pipeline-is-missing\", \"from-systems-of-record-to-systems-of-context\"], \"evidence_quote\": \"The challenge is no longer in intelligence. The challenge is is reliability.\", \"evidence_talk\": \"deterministic-infra-for-non-deterministic-ai-agents\", \"evidence_timestamp_sec\": 3}, {\"claim\": \"The model should only propose; control flow, workflow state, and execution authority belong to the harness, gateway, or platform around it.\", \"support_count\": 4, \"supporting_talks\": [\"dont-let-the-llm-drive\", \"deterministic-infra-for-non-deterministic-ai-agents\", \"agent-output-is-not-ux-rendering-layer-your-llm-pipeline-is-missing\", \"the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in\"], \"evidence_quote\": \"the model never really um has to think. It proposes, but ultimately it is the harness that decides.\", \"evidence_talk\": \"dont-let-the-llm-drive\", \"evidence_timestamp_sec\": 244}, {\"claim\": \"Failure must be treated as persistent rather than self-clearing: systems need explicit recovery policies and graceful degradation, because agents fire actions and move on without checking what happened.\", \"support_count\": 5, \"supporting_talks\": [\"from-rl-to-irl\", \"perception-agents\", \"deterministic-infra-for-non-deterministic-ai-agents\", \"from-systems-of-record-to-systems-of-context\", \"agent-output-is-not-ux-rendering-layer-your-llm-pipeline-is-missing\"], \"evidence_quote\": \"The assumption is that failure resets. the reality is that failure is often persistent. So we have to focus on recovery policies.\", \"evidence_talk\": \"from-rl-to-irl\", \"evidence_timestamp_sec\": 857}, {\"claim\": \"Benchmarks and demos do not predict production reliability; the highest-value signal comes from real deployment traces, and the gap widens as systems get more autonomous.\", \"support_count\": 4, \"supporting_talks\": [\"production-evals-for-agentic-ai-systems\", \"deterministic-infra-for-non-deterministic-ai-agents\", \"the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge\", \"from-rl-to-irl\"], \"evidence_quote\": \"Production is the largest and the most representative evaluation data any organization will ever have.\", \"evidence_talk\": \"production-evals-for-agentic-ai-systems\", \"evidence_timestamp_sec\": 238}, {\"claim\": \"Human involvement is a permanent structural component of reliable agent systems \u2014 as evaluator, approver, and liability anchor \u2014 not a temporary crutch that better models remove.\", \"support_count\": 5, \"supporting_talks\": [\"deterministic-infra-for-non-deterministic-ai-agents\", \"production-evals-for-agentic-ai-systems\", \"the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in\", \"how-forward-deployed-engineering-is-done-at-ramp\", \"from-rl-to-irl\"], \"evidence_quote\": \"Many people frame human involvement as temporarily temporary necessity. I don't think that's correct. The most successful systems are likely to remain human supervised.\", \"evidence_talk\": \"deterministic-infra-for-non-deterministic-ai-agents\", \"evidence_timestamp_sec\": 290}, {\"claim\": \"Agents become reliable exactly where their output is cheaply verifiable; domains without a verification mechanism are the open problem.\", \"support_count\": 3, \"supporting_talks\": [\"perception-agents\", \"the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in\", \"from-rl-to-irl\"], \"evidence_quote\": \"why was coding first solved? It's because code is verifiable. You can run it, you can test it, you can check it and you can be for sure that it worked. So reliability showed up in the first place you can actually verify the answer.\", \"evidence_talk\": \"perception-agents\", \"evidence_timestamp_sec\": 355}], \"disagreements\": [{\"question\": \"Should reliability be engineered into the surrounding harness and infrastructure, or trained into the model weights via post-training and RL?\", \"position_a\": \"Reliability is a systems property that lives outside the model permanently: a control plane, a state machine, a policy engine, and an execution gateway constrain a stochastic model that can never be trusted. Prompts and models are commoditizing; infrastructure is the durable differentiator.\", \"position_a_talks\": [\"deterministic-infra-for-non-deterministic-ai-agents\", \"dont-let-the-llm-drive\", \"agent-output-is-not-ux-rendering-layer-your-llm-pipeline-is-missing\", \"the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in\"], \"position_b\": \"Reliability should be pushed into the model itself. Post-training (mostly SFT, with RL for the last few points) is a more powerful lever than prompting or harness changes, and harness guardrails are explicitly transitional scaffolding that should get thinner as the model gets better \u2014 including making error recovery a native model action instead of an infrastructure reset.\", \"position_b_talks\": [\"data-and-environment-curation-for-post-training-llms\", \"from-rl-to-irl\"], \"why_it_matters\": \"It determines whether your reliability budget buys orchestration engineers and a control plane or buys data curation and RL environments \u2014 and whether the scaffolding you write this quarter is a permanent asset or a write-off once the next model lands.\", \"position_a_talks_count\": 4}, {\"question\": \"Who should decide how a task is decomposed \u2014 the model, or a pre-specified workflow?\", \"position_a\": \"The harness fixes the decomposition. A lesson is a six-state machine; the model never tracks which step it is on, never judges whether the task is complete, and picks only from a fixed catalog of components or actions supplied in context. When reliability approaches a coin flip, that is the signal to remove control flow from the model entirely.\", \"position_a_talks\": [\"dont-let-the-llm-drive\", \"agent-output-is-not-ux-rendering-layer-your-llm-pipeline-is-missing\", \"deterministic-infra-for-non-deterministic-ai-agents\"], \"position_b\": \"Model-chosen decomposition is the point. A system only qualifies as an RLM if the model itself picks how to break the problem into sub-calls; hardcoded map-reduce pipelines do not count, and it is model-driven recursion over symbolic state that lets a 9B model beat frontier models on long-horizon tasks.\", \"position_b_talks\": [\"recursive-coding-agents\", \"from-rl-to-irl\"], \"why_it_matters\": \"Fixed decomposition caps an agent at the workflows you enumerated in advance but makes failures diagnosable and bounded; model-chosen decomposition generalizes to unseen tasks but makes every failure a novel one, which changes what you can trace, test, and certify.\", \"position_a_talks_count\": 3}, {\"question\": \"Does adding another LLM or agent as a verification layer improve correctness, or compound the failure?\", \"position_a\": \"Yes \u2014 the best way to evaluate an agent is another agent. Fixed-rubric LLM-as-a-judge cannot catch multi-step trajectory failures like silent looping; an evaluation agent with full trace access finds them and can even open the fixing PR. Perception agents similarly verify their own rendered output against design rules and user flows.\", \"position_a_talks\": [\"the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge\", \"perception-agents\", \"production-evals-for-agentic-ai-systems\"], \"position_b\": \"No \u2014 stacking a non-deterministic verifier on non-deterministic output makes correctness worse. Verification should be pushed toward static and deterministic checks (types as verification, tests, security scanners), and the only reliable defense against compounding slop is a human reading the output.\", \"position_b_talks\": [\"the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in\"], \"why_it_matters\": \"One path scales oversight with tokens and lets you run 100M evals a month; the other caps throughput at human reading speed and forces investment in static analysis and typed languages instead of judge fleets.\", \"position_a_talks_count\": 3}, {\"question\": \"Is running agents in loops until they succeed a sound reliability strategy?\", \"position_a\": \"Loops are the mechanism. Run the agent in a loop at roughly $10.42/hour, prevent the loop from closing until it satisfies your engineering certification, and accept that the model is unreliable but engineer away its failure domains.\", \"position_a_talks\": [\"the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in\"], \"position_b\": \"Uncontrolled retries are among the biggest risks in agentic systems \u2014 a minor API error becomes a compute incident through exponential resource growth \u2014 and buying quality with more tokens does not survive company-scale budgets. Building a tighter harness so a smaller model suffices is the cheaper reliability path.\", \"position_b_talks\": [\"deterministic-infra-for-non-deterministic-ai-agents\", \"dont-let-the-llm-drive\"], \"why_it_matters\": \"This is the difference between an unbounded token budget as your reliability mechanism and a hard retry/resource ceiling as your safety mechanism; the loops camp itself concedes the current pattern of loops-on-loops is economically unsustainable at scale.\", \"position_b_talks_count\": 2}], \"practical_guidance\": {\"do\": [\"Model multi-step workflows as an explicit state machine the harness owns: the harness validates what comes back, advances state, and decides what is next \u2014 the model never records which step it is on.\", \"Route every model action through proposal \u2192 infrastructure validation \u2192 policy approval \u2192 execution gateway; never let the model touch production systems directly.\", \"Give the model a closed catalog to select from (e.g. UI components gated by client app version, so a 2.0 flight card is only offered to 2.0+ clients) rather than letting it emit free-form structures a client must interpret.\", \"Pass infrastructure errors back to the model as observations and expect recovery via native tool use, instead of resetting the environment on infra failure.\", \"Detect and penalize dangerous intermediate actions during training \u2014 outcome-only reward accepts trajectories that reach 'done' by, for example, sending a resignation letter to the CEO.\", \"Make handoff-to-human a first-class agent action gated on calibrated confidence about risk, reversibility, authorization, and visibility.\", \"Instrument agent traces over reasoning paths, tool calls, memory access, and state transitions; for autonomous workflows the chain of decisions matters more than the final output.\", \"Run evaluation continuously as an always-on service in the control plane after deploy, since reliability degrades by drift rather than by any single catastrophic change.\", \"Drive offline evaluation from simulated scenarios rather than individual prompts, and treat humans as evaluators of those traces rather than as fallback handlers.\", \"Isolate data sources and fall back to last-verified context at serve time so a bad feed degrades the system gracefully instead of breaking it.\", \"Keep agent context under roughly 100k tokens (under 60k for the hardest problems) and deterministically re-allocate a fresh context each iteration rather than compacting.\", \"Push verification toward static and deterministic checks \u2014 statically typed languages, tests, and AI security scanning on PRs both before and after merge.\", \"Design object-storage-backed agent infrastructure against P99/P999 rather than P50, since one logical operation fans out into many ~200ms requests.\", \"Hard-crash on invariant violations (e.g. mismatched weight hashes across data-parallel replicas) instead of letting a run continue silently corrupted.\"], \"avoid\": [\"Fixing multi-step unreliability by adding more prompt rules \u2014 it is a control problem, not a prompting problem, and long compliance rule lists also blow up latency.\", \"Letting the LLM decide whether the task is complete, whether the user succeeded, or what step comes next.\", \"Unbounded or uncontrolled retries, which turn a minor API error into a compute incident through exponential resource growth.\", \"Treating hallucination as the primary production failure mode; in production it is one category among tool failures, API outages, state inconsistency, and context changes.\", \"Assuming an agent failure resets cleanly \u2014 in real environments the account stays blocked and the tab stays stale.\", \"Reading benchmark scores as evidence of production reliability; benchmarks measure model capability, production measures system behavior.\", \"Layering another non-deterministic verifier on top of non-deterministic output and expecting correctness to improve.\", \"Relying on compaction to manage long contexts \u2014 it is lossy and degrades fidelity across iterations.\", \"Emitting content types the client has never seen: mobile clients cannot be meaningfully patched, so the crash persists for days or weeks.\", \"Framing human review as a fallback queue rather than as the evaluation layer.\", \"Shipping demo-tuned agents without adversarial and messy-environment testing (layout shift, slow loads, missing labels, pop-ups, focus stealing, random account states).\"]}, \"notable_outliers\": [{\"claim\": \"Many multi-agent failures blamed on reasoning are actually distributed-state consistency failures in disguise.\", \"talk\": \"deterministic-infra-for-non-deterministic-ai-agents\", \"timestamp_sec\": 238}, {\"claim\": \"With a strong enough harness, Haiku 4.5 replaced Opus 4.7 in a live voice tutor at the expected performance level while cutting cost and latency.\", \"talk\": \"dont-let-the-llm-drive\", \"timestamp_sec\": 147}, {\"claim\": \"Qwen 3.5 9B run as a recursive language model beats Opus and GPT-5.4 run as plain LLMs on long-reasoning tasks \u2014 reliability from orchestration, not scale.\", \"talk\": \"recursive-coding-agents\", \"timestamp_sec\": 395}, {\"claim\": \"Harness guardrails are transitional scaffolding: they should be strong early and get progressively thinner as model capability improves.\", \"talk\": \"from-rl-to-irl\", \"timestamp_sec\": 1032}, {\"claim\": \"Open-source FP8 kernels contained a race condition silently corrupting ~0.5% of gradients, and replica hash checking cannot detect it because real training runs lack the redundancy to compare forward/backward passes.\", \"talk\": \"the-messy-reality-of-scale-synthetic-data-and-pre-training\", \"timestamp_sec\": 872}, {\"claim\": \"Adding non-deterministic verification on top of agent output makes correctness worse, not better.\", \"talk\": \"the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in\", \"timestamp_sec\": 1538}, {\"claim\": \"Targeting 100x speedup traps teams in meta-optimization; 2-3x from small incremental loops is the realistic target and still transforms every company.\", \"talk\": \"the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in\", \"timestamp_sec\": 2942}], \"maturity\": \"consolidating\", \"maturity_rationale\": \"Eight independent talks agree on the frame \u2014 reliability is the constraint, the model must not hold execution authority, failure is persistent, and production traces are the measurement \u2014 and concrete patterns (state machines, proposal/validation gateways, scenario evals, recovery policies) are being described the same way across orgs. The edges are still actively argued: whether reliability lives in the harness or the weights, who owns decomposition, and whether agentic verification helps or compounds error.\"}",
+  "ttft_ms": 79353,
+  "ttft_stream_ms": 1472,
+  "time_to_request_ms": 40,
+  "type": "result",
+  "duration_ms": 147782,
+  "uuid": "70b76197-b9dd-4013-af30-fbd11f5b9999",
+  "passC": {
+    "concept": "agent reliability engineering",
+    "state_of_practice": "The field has converged on reliability \u2014 not model capability \u2014 as the binding constraint on shipping agents, and has largely stopped treating hallucination as the main failure mode; the failures that hurt in production are infrastructure failures, distributed-state inconsistency, uncontrolled retries turning a single API error into a compute incident, unrenderable outputs crashing unpatchable mobile clients, and slow reliability drift that no single change makes catastrophic. The dominant architectural answer is to strip execution authority from the model: the model emits proposals (a next action, a UI intent from a fixed catalog, a decomposition), and a harness or control plane validates them, applies policy, advances workflow state, and enforces execution \u2014 several teams report that a sufficiently strong harness lets a much smaller model hit the same reliability bar (Haiku 4.5 replacing Opus 4.7 in a live voice tutor). Reliability is measured like SRE work, not research work: scenario-driven evals over production telemetry, agent traces of reasoning paths and state transitions rather than logs, and evaluation running continuously after deploy rather than as a pre-ship gate. Where practitioners still disagree is on where the reliability actually gets encoded \u2014 in harness scaffolding that stays permanent, or in model weights via post-training and RL with the harness deliberately thinning over time \u2014 and on whether a second non-deterministic layer (agent-as-a-judge, self-verifying perception agents) improves correctness or compounds the problem. Verifiability remains the field's stated frontier: coding got reliable first because it can be run and tested, and nobody has a good answer for the majority of knowledge work where there is no unit test.",
+    "consensus": [
+      {
+        "claim": "Reliability, not model intelligence, is the binding constraint on production agents; models are already capable enough for most deployed use cases.",
+        "support_count": 8,
+        "supporting_talks": [
+          "deterministic-infra-for-non-deterministic-ai-agents",
+          "perception-agents",
+          "recursive-coding-agents",
+          "data-and-environment-curation-for-post-training-llms",
+          "the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in",
+          "dont-let-the-llm-drive",
+          "agent-output-is-not-ux-rendering-layer-your-llm-pipeline-is-missing",
+          "from-systems-of-record-to-systems-of-context"
+        ],
+        "evidence_quote": "The challenge is no longer in intelligence. The challenge is is reliability.",
+        "evidence_talk": "deterministic-infra-for-non-deterministic-ai-agents",
+        "evidence_timestamp_sec": 3
+      },
+      {
+        "claim": "The model should only propose; control flow, workflow state, and execution authority belong to the harness, gateway, or platform around it.",
+        "support_count": 4,
+        "supporting_talks": [
+          "dont-let-the-llm-drive",
+          "deterministic-infra-for-non-deterministic-ai-agents",
+          "agent-output-is-not-ux-rendering-layer-your-llm-pipeline-is-missing",
+          "the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in"
+        ],
+        "evidence_quote": "the model never really um has to think. It proposes, but ultimately it is the harness that decides.",
+        "evidence_talk": "dont-let-the-llm-drive",
+        "evidence_timestamp_sec": 244
+      },
+      {
+        "claim": "Failure must be treated as persistent rather than self-clearing: systems need explicit recovery policies and graceful degradation, because agents fire actions and move on without checking what happened.",
+        "support_count": 5,
+        "supporting_talks": [
+          "from-rl-to-irl",
+          "perception-agents",
+          "deterministic-infra-for-non-deterministic-ai-agents",
+          "from-systems-of-record-to-systems-of-context",
+          "agent-output-is-not-ux-rendering-layer-your-llm-pipeline-is-missing"
+        ],
+        "evidence_quote": "The assumption is that failure resets. the reality is that failure is often persistent. So we have to focus on recovery policies.",
+        "evidence_talk": "from-rl-to-irl",
+        "evidence_timestamp_sec": 857
+      },
+      {
+        "claim": "Benchmarks and demos do not predict production reliability; the highest-value signal comes from real deployment traces, and the gap widens as systems get more autonomous.",
+        "support_count": 4,
+        "supporting_talks": [
+          "production-evals-for-agentic-ai-systems",
+          "deterministic-infra-for-non-deterministic-ai-agents",
+          "the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge",
+          "from-rl-to-irl"
+        ],
+        "evidence_quote": "Production is the largest and the most representative evaluation data any organization will ever have.",
+        "evidence_talk": "production-evals-for-agentic-ai-systems",
+        "evidence_timestamp_sec": 238
+      },
+      {
+        "claim": "Human involvement is a permanent structural component of reliable agent systems \u2014 as evaluator, approver, and liability anchor \u2014 not a temporary crutch that better models remove.",
+        "support_count": 5,
+        "supporting_talks": [
+          "deterministic-infra-for-non-deterministic-ai-agents",
+          "production-evals-for-agentic-ai-systems",
+          "the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in",
+          "how-forward-deployed-engineering-is-done-at-ramp",
+          "from-rl-to-irl"
+        ],
+        "evidence_quote": "Many people frame human involvement as temporarily temporary necessity. I don't think that's correct. The most successful systems are likely to remain human supervised.",
+        "evidence_talk": "deterministic-infra-for-non-deterministic-ai-agents",
+        "evidence_timestamp_sec": 290
+      },
+      {
+        "claim": "Agents become reliable exactly where their output is cheaply verifiable; domains without a verification mechanism are the open problem.",
+        "support_count": 3,
+        "supporting_talks": [
+          "perception-agents",
+          "the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in",
+          "from-rl-to-irl"
+        ],
+        "evidence_quote": "why was coding first solved? It's because code is verifiable. You can run it, you can test it, you can check it and you can be for sure that it worked. So reliability showed up in the first place you can actually verify the answer.",
+        "evidence_talk": "perception-agents",
+        "evidence_timestamp_sec": 355
+      }
+    ],
+    "disagreements": [
+      {
+        "question": "Should reliability be engineered into the surrounding harness and infrastructure, or trained into the model weights via post-training and RL?",
+        "position_a": "Reliability is a systems property that lives outside the model permanently: a control plane, a state machine, a policy engine, and an execution gateway constrain a stochastic model that can never be trusted. Prompts and models are commoditizing; infrastructure is the durable differentiator.",
+        "position_a_talks": [
+          "deterministic-infra-for-non-deterministic-ai-agents",
+          "dont-let-the-llm-drive",
+          "agent-output-is-not-ux-rendering-layer-your-llm-pipeline-is-missing",
+          "the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in"
+        ],
+        "position_b": "Reliability should be pushed into the model itself. Post-training (mostly SFT, with RL for the last few points) is a more powerful lever than prompting or harness changes, and harness guardrails are explicitly transitional scaffolding that should get thinner as the model gets better \u2014 including making error recovery a native model action instead of an infrastructure reset.",
+        "position_b_talks": [
+          "data-and-environment-curation-for-post-training-llms",
+          "from-rl-to-irl"
+        ],
+        "why_it_matters": "It determines whether your reliability budget buys orchestration engineers and a control plane or buys data curation and RL environments \u2014 and whether the scaffolding you write this quarter is a permanent asset or a write-off once the next model lands.",
+        "position_a_talks_count": 4
+      },
+      {
+        "question": "Who should decide how a task is decomposed \u2014 the model, or a pre-specified workflow?",
+        "position_a": "The harness fixes the decomposition. A lesson is a six-state machine; the model never tracks which step it is on, never judges whether the task is complete, and picks only from a fixed catalog of components or actions supplied in context. When reliability approaches a coin flip, that is the signal to remove control flow from the model entirely.",
+        "position_a_talks": [
+          "dont-let-the-llm-drive",
+          "agent-output-is-not-ux-rendering-layer-your-llm-pipeline-is-missing",
+          "deterministic-infra-for-non-deterministic-ai-agents"
+        ],
+        "position_b": "Model-chosen decomposition is the point. A system only qualifies as an RLM if the model itself picks how to break the problem into sub-calls; hardcoded map-reduce pipelines do not count, and it is model-driven recursion over symbolic state that lets a 9B model beat frontier models on long-horizon tasks.",
+        "position_b_talks": [
+          "recursive-coding-agents",
+          "from-rl-to-irl"
+        ],
+        "why_it_matters": "Fixed decomposition caps an agent at the workflows you enumerated in advance but makes failures diagnosable and bounded; model-chosen decomposition generalizes to unseen tasks but makes every failure a novel one, which changes what you can trace, test, and certify.",
+        "position_a_talks_count": 3
+      },
+      {
+        "question": "Does adding another LLM or agent as a verification layer improve correctness, or compound the failure?",
+        "position_a": "Yes \u2014 the best way to evaluate an agent is another agent. Fixed-rubric LLM-as-a-judge cannot catch multi-step trajectory failures like silent looping; an evaluation agent with full trace access finds them and can even open the fixing PR. Perception agents similarly verify their own rendered output against design rules and user flows.",
+        "position_a_talks": [
+          "the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge",
+          "perception-agents",
+          "production-evals-for-agentic-ai-systems"
+        ],
+        "position_b": "No \u2014 stacking a non-deterministic verifier on non-deterministic output makes correctness worse. Verification should be pushed toward static and deterministic checks (types as verification, tests, security scanners), and the only reliable defense against compounding slop is a human reading the output.",
+        "position_b_talks": [
+          "the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in"
+        ],
+        "why_it_matters": "One path scales oversight with tokens and lets you run 100M evals a month; the other caps throughput at human reading speed and forces investment in static analysis and typed languages instead of judge fleets.",
+        "position_a_talks_count": 3
+      },
+      {
+        "question": "Is running agents in loops until they succeed a sound reliability strategy?",
+        "position_a": "Loops are the mechanism. Run the agent in a loop at roughly $10.42/hour, prevent the loop from closing until it satisfies your engineering certification, and accept that the model is unreliable but engineer away its failure domains.",
+        "position_a_talks": [
+          "the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in"
+        ],
+        "position_b": "Uncontrolled retries are among the biggest risks in agentic systems \u2014 a minor API error becomes a compute incident through exponential resource growth \u2014 and buying quality with more tokens does not survive company-scale budgets. Building a tighter harness so a smaller model suffices is the cheaper reliability path.",
+        "position_b_talks": [
+          "deterministic-infra-for-non-deterministic-ai-agents",
+          "dont-let-the-llm-drive"
+        ],
+        "why_it_matters": "This is the difference between an unbounded token budget as your reliability mechanism and a hard retry/resource ceiling as your safety mechanism; the loops camp itself concedes the current pattern of loops-on-loops is economically unsustainable at scale.",
+        "position_b_talks_count": 2
+      }
+    ],
+    "practical_guidance": {
+      "do": [
+        "Model multi-step workflows as an explicit state machine the harness owns: the harness validates what comes back, advances state, and decides what is next \u2014 the model never records which step it is on.",
+        "Route every model action through proposal \u2192 infrastructure validation \u2192 policy approval \u2192 execution gateway; never let the model touch production systems directly.",
+        "Give the model a closed catalog to select from (e.g. UI components gated by client app version, so a 2.0 flight card is only offered to 2.0+ clients) rather than letting it emit free-form structures a client must interpret.",
+        "Pass infrastructure errors back to the model as observations and expect recovery via native tool use, instead of resetting the environment on infra failure.",
+        "Detect and penalize dangerous intermediate actions during training \u2014 outcome-only reward accepts trajectories that reach 'done' by, for example, sending a resignation letter to the CEO.",
+        "Make handoff-to-human a first-class agent action gated on calibrated confidence about risk, reversibility, authorization, and visibility.",
+        "Instrument agent traces over reasoning paths, tool calls, memory access, and state transitions; for autonomous workflows the chain of decisions matters more than the final output.",
+        "Run evaluation continuously as an always-on service in the control plane after deploy, since reliability degrades by drift rather than by any single catastrophic change.",
+        "Drive offline evaluation from simulated scenarios rather than individual prompts, and treat humans as evaluators of those traces rather than as fallback handlers.",
+        "Isolate data sources and fall back to last-verified context at serve time so a bad feed degrades the system gracefully instead of breaking it.",
+        "Keep agent context under roughly 100k tokens (under 60k for the hardest problems) and deterministically re-allocate a fresh context each iteration rather than compacting.",
+        "Push verification toward static and deterministic checks \u2014 statically typed languages, tests, and AI security scanning on PRs both before and after merge.",
+        "Design object-storage-backed agent infrastructure against P99/P999 rather than P50, since one logical operation fans out into many ~200ms requests.",
+        "Hard-crash on invariant violations (e.g. mismatched weight hashes across data-parallel replicas) instead of letting a run continue silently corrupted."
+      ],
+      "avoid": [
+        "Fixing multi-step unreliability by adding more prompt rules \u2014 it is a control problem, not a prompting problem, and long compliance rule lists also blow up latency.",
+        "Letting the LLM decide whether the task is complete, whether the user succeeded, or what step comes next.",
+        "Unbounded or uncontrolled retries, which turn a minor API error into a compute incident through exponential resource growth.",
+        "Treating hallucination as the primary production failure mode; in production it is one category among tool failures, API outages, state inconsistency, and context changes.",
+        "Assuming an agent failure resets cleanly \u2014 in real environments the account stays blocked and the tab stays stale.",
+        "Reading benchmark scores as evidence of production reliability; benchmarks measure model capability, production measures system behavior.",
+        "Layering another non-deterministic verifier on top of non-deterministic output and expecting correctness to improve.",
+        "Relying on compaction to manage long contexts \u2014 it is lossy and degrades fidelity across iterations.",
+        "Emitting content types the client has never seen: mobile clients cannot be meaningfully patched, so the crash persists for days or weeks.",
+        "Framing human review as a fallback queue rather than as the evaluation layer.",
+        "Shipping demo-tuned agents without adversarial and messy-environment testing (layout shift, slow loads, missing labels, pop-ups, focus stealing, random account states)."
+      ]
+    },
+    "notable_outliers": [
+      {
+        "claim": "Many multi-agent failures blamed on reasoning are actually distributed-state consistency failures in disguise.",
+        "talk": "deterministic-infra-for-non-deterministic-ai-agents",
+        "timestamp_sec": 238
+      },
+      {
+        "claim": "With a strong enough harness, Haiku 4.5 replaced Opus 4.7 in a live voice tutor at the expected performance level while cutting cost and latency.",
+        "talk": "dont-let-the-llm-drive",
+        "timestamp_sec": 147
+      },
+      {
+        "claim": "Qwen 3.5 9B run as a recursive language model beats Opus and GPT-5.4 run as plain LLMs on long-reasoning tasks \u2014 reliability from orchestration, not scale.",
+        "talk": "recursive-coding-agents",
+        "timestamp_sec": 395
+      },
+      {
+        "claim": "Harness guardrails are transitional scaffolding: they should be strong early and get progressively thinner as model capability improves.",
+        "talk": "from-rl-to-irl",
+        "timestamp_sec": 1032
+      },
+      {
+        "claim": "Open-source FP8 kernels contained a race condition silently corrupting ~0.5% of gradients, and replica hash checking cannot detect it because real training runs lack the redundancy to compare forward/backward passes.",
+        "talk": "the-messy-reality-of-scale-synthetic-data-and-pre-training",
+        "timestamp_sec": 872
+      },
+      {
+        "claim": "Adding non-deterministic verification on top of agent output makes correctness worse, not better.",
+        "talk": "the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in",
+        "timestamp_sec": 1538
+      },
+      {
+        "claim": "Targeting 100x speedup traps teams in meta-optimization; 2-3x from small incremental loops is the realistic target and still transforms every company.",
+        "talk": "the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in",
+        "timestamp_sec": 2942
+      }
+    ],
+    "maturity": "consolidating",
+    "maturity_rationale": "Eight independent talks agree on the frame \u2014 reliability is the constraint, the model must not hold execution authority, failure is persistent, and production traces are the measurement \u2014 and concrete patterns (state machines, proposal/validation gateways, scenario evals, recovery policies) are being described the same way across orgs. The edges are still actively argued: whether reliability lives in the harness or the weights, who owns decomposition, and whether agentic verification helps or compounds error."
+  },
+  "_meta": {
+    "concept": "agent reliability engineering",
+    "slug": "agent-reliability-engineering",
+    "talk_count": 14,
+    "missing_talks": [],
+    "wall_sec": 149.1,
+    "run_at": "2026-08-13T17:47:21Z"
+  }
+}

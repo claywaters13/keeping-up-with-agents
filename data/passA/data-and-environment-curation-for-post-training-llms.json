@@ -1,0 +1,319 @@
+{
+  "is_error": false,
+  "duration_api_ms": 53902,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "b0de4cf6-f05e-40ea-a33f-dca3c24b9103",
+  "total_cost_usd": 0.216586,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 9006,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 4631,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 9006,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 4631,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 9006,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 9006
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 5497,
+      "outputTokens": 18,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.005587,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 4631,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 9006,
+      "webSearchRequests": 0,
+      "costUSD": 0.210999,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Mahesh Sathiamoorthy, co-founder and CEO of Bespoke Labs, argues that data and RL environments \u2014 not compute, models, or training infrastructure \u2014 are the binding constraint on post-training LLMs and agents today. He traces the field's shift from evaluating what models know to whether agents can act autonomously for long durations, and identifies reliability as the blocker, with post-training as a powerful lever on it. The bulk of the talk walks through Bespoke's open-source curation recipes: Open Thoughts (reasoning data) and Open Thoughts Agents (agentic trajectories and environments), including counterintuitive ablation findings like sampling many answers per question beating more unique questions, and stronger models not necessarily making better teachers. He closes with a production case study at Intuit's Credit Karma where a tag-based curation recipe fixed hallucinated APR numbers and improved compliance, latency, and throughput, plus a proposed reference stack for building RL environments and post-training agents. Worth watching if you want concrete, ablation-backed curation heuristics rather than theory.\",\n  \"key_points\": [\n    \"Data and RL environments are the bottleneck for post-training, since compute, base models, and training infrastructure (Fireworks, Tinker, slime) are all comparatively well-defined and available.\",\n    \"The field has moved from evaluating what models know (knowledge benchmarks) to whether agents can do things autonomously over long horizons, and the thing blocking that autonomy is reliability.\",\n    \"Prompting and harness/tool changes can improve agent reliability, but post-training is the mechanism frontier labs primarily rely on for capability gains.\",\n    \"Open Thoughts established a reasoning-data curation recipe with a demonstrated scaling law: as dataset size grows under the recipe, benchmark metrics keep improving.\",\n    \"Sampling multiple answers per question (e.g. 16 completions on one question) outperforms collecting many more questions answered once, likely because diversity of reasoning traces helps during fine-tuning.\",\n    \"Stronger models are not always better teachers \u2014 this held in both the reasoning and the agents work, where some Qwen models outperformed larger frontier models as teachers.\",\n    \"Techniques that intuitively should work often don't: answer filtering, synthetic rewriting, and task augmentation underperformed, while synthetic question generation did work.\",\n    \"In the Open Thoughts Agents work, SFT contributed most of the gains and RL was compute-intensive and mainly bought the last few percent, so SFT is often sufficient in enterprise settings.\",\n    \"In the Credit Karma deployment, imbalanced data caused the fine-tuned model to hallucinate numbers like 0% APR; replacing plain-language prompt-response pairs with tagged structure made the model focus on form over specific numbers and gave a large improvement in compliance, latency, and throughput.\",\n    \"The emerging reference stack has three layers: RL environment building/quality measurement/versioning on top, sandbox and rollout orchestration with checkpointing and rollback below, and SFT/RL/GEPA-style prompt optimization as the training methods.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"bespoke is an applied data research lab with a mission to help enterprises and frontier labs access high quality data and RL environments for their post training needs\",\n      \"timestamp_sec\": 12,\n      \"why\": \"States the org's thesis and framing for everything that follows.\"\n    },\n    {\n      \"text\": \"there are a lot of people who create data uh create RL environments and then there are the uh researchers who consume this. But I feel like there is this slight mismatch and it's kind of beneficial for someone to kind of go do both at the same time.\",\n      \"timestamp_sec\": 85,\n      \"why\": \"Names a structural gap between data producers and model researchers.\"\n    },\n    {\n      \"text\": \"as you're curating data you want to put yourself in the shoes of the researcher to see what what does it take to you know uh actually move the metrics on the models\",\n      \"timestamp_sec\": 126,\n      \"why\": \"The talk's methodological stance: curation judged by downstream metric movement.\"\n    },\n    {\n      \"text\": \"early on we used to think about and evaluate models on what they know\",\n      \"timestamp_sec\": 126,\n      \"why\": \"Sets up the knowing-to-doing framing of the field's evolution.\"\n    },\n    {\n      \"text\": \"we have moved on from knowing to doing right so that's the idea of agents\",\n      \"timestamp_sec\": 162,\n      \"why\": \"Compact statement of the benchmark shift.\"\n    },\n    {\n      \"text\": \"what is it that's blocking the uh autonomy of agents. It's basically reliability, right?\",\n      \"timestamp_sec\": 162,\n      \"why\": \"The central diagnosis that motivates post-training as the lever.\"\n    },\n    {\n      \"text\": \"postraining is a very powerful tool to improve reliability or or maybe even pre-train good models right so if you think of frontier labs this is one of their primary mechanisms of improving agents\",\n      \"timestamp_sec\": 227,\n      \"why\": \"Positions post-training against prompting and harness fixes.\"\n    },\n    {\n      \"text\": \"ultimately for post training be it SFT or or uh reinforcement learning data is the bottleneck\",\n      \"timestamp_sec\": 227,\n      \"why\": \"The thesis sentence of the talk.\"\n    },\n    {\n      \"text\": \"when I talk about data RLNs are also something I'm calling it as data it's just the data is now in a very different shape\",\n      \"timestamp_sec\": 227,\n      \"why\": \"Explicitly folds RL environments into the category of data.\"\n    },\n    {\n      \"text\": \"Most of the places where people struggle especially enterprises is that they don't have access to good quality data and RLNs\",\n      \"timestamp_sec\": 336,\n      \"why\": \"Locates the constraint at enterprises specifically, not just labs.\"\n    },\n    {\n      \"text\": \"there are many other benefits of post- training for example you can reduce latency or improve cost throughput\",\n      \"timestamp_sec\": 336,\n      \"why\": \"Non-capability motivations for post-training that the case study later confirms.\"\n    },\n    {\n      \"text\": \"we figured out a curation recipe and it shows the scaling law right. So again this is last year when Amy uh and and uh live codebench and these these were some of the popular benchmarks.\",\n      \"timestamp_sec\": 430,\n      \"why\": \"The empirical claim underpinning Open Thoughts.\"\n    },\n    {\n      \"text\": \"if you keep you know scaling up the data set size the the you know the the it's a scalable recipe right the the metrics also improve\",\n      \"timestamp_sec\": 470,\n      \"why\": \"States the scaling result in the speaker's own terms.\"\n    },\n    {\n      \"text\": \"the systematic way of doing this is like you run ablations and figure out which uh you know in each of these stages what works and you kind of proceed to the next\",\n      \"timestamp_sec\": 578,\n      \"why\": \"The methodology behind every finding in the talk.\"\n    },\n    {\n      \"text\": \"sampling um multiple answers per question works pretty well. This is something that uh we it's it's kind of counterintuitive.\",\n      \"timestamp_sec\": 629,\n      \"why\": \"Headline counterintuitive curation finding.\"\n    },\n    {\n      \"text\": \"we could have had more much many more questions and then just answered them exactly once versus taking one question and answering them 16 times\",\n      \"timestamp_sec\": 629,\n      \"why\": \"Names the concrete tradeoff and the sampling ratio involved.\"\n    },\n    {\n      \"text\": \"the stronger teachers are not always the best uh uh stronger models are not always the better teachers\",\n      \"timestamp_sec\": 676,\n      \"why\": \"Directly contradicts a common distillation assumption; replicated in the agents work.\"\n    },\n    {\n      \"text\": \"synthetic rewriting and task augmentation um is something we thought will work but it didn't very work work very well\",\n      \"timestamp_sec\": 732,\n      \"why\": \"Negative result that saves others wasted effort.\"\n    },\n    {\n      \"text\": \"SFT still contributed a lot to the gains um RL was kind of you know it's very comput inensive and for for the last few few percentages it really helped\",\n      \"timestamp_sec\": 732,\n      \"why\": \"Takes a side in the SFT-vs-RL debate with a cost argument.\"\n    },\n    {\n      \"text\": \"you have to have a long list of rules to make sure the responses are compliant and that actually blows up the latency\",\n      \"timestamp_sec\": 868,\n      \"why\": \"The concrete failure mode that motivated post-training over prompting at Credit Karma.\"\n    },\n    {\n      \"text\": \"the data set can be quite impa imbalance and lot lots and lots of places for example you will have 0% APR and the model after fine-tuning can kind of hallucinate the these uh numbers\",\n      \"timestamp_sec\": 868,\n      \"why\": \"Specific, transferable failure mode of naive fine-tuning data.\"\n    },\n    {\n      \"text\": \"we added these uh tags which helped the model to focus on you know uh the the kind of form rather than the specific numbers itself and that gave a big boost\",\n      \"timestamp_sec\": 868,\n      \"why\": \"The actual fix, stated as a reusable curation technique.\"\n    },\n    {\n      \"text\": \"as frontier models improve they don't need to kind of go and u um uh update it and also as we see now the uh frontier models are also getting more and more expensive\",\n      \"timestamp_sec\": 868,\n      \"why\": \"Model-ownership argument for enterprises against frontier-API dependence.\"\n    },\n    {\n      \"text\": \"you can use LLMs itself to uh to to kind of optimize the prompts based on reflection. Um so that also works pretty well for updating the system prompts and also the harnesses.\",\n      \"timestamp_sec\": 1091,\n      \"why\": \"Places prompt optimization alongside SFT and RL in the post-training stack.\"\n    }\n  ],\n  \"concepts\": [\n    \"post-training data curation\",\n    \"rl environments\",\n    \"synthetic data generation\",\n    \"reasoning trace distillation\",\n    \"teacher model selection\",\n    \"data scaling laws\",\n    \"curation ablations\",\n    \"agent reliability\",\n    \"long-horizon autonomy\",\n    \"prompt optimization\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Data and RL environments are the bottleneck for post-training, not compute, models, or training infrastructure.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 227\n    },\n    {\n      \"claim\": \"Reliability is what blocks agents from being autonomous over long durations.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 162\n    },\n    {\n      \"claim\": \"Post-training is a more powerful lever on agent reliability than prompting or harness changes.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 227\n    },\n    {\n      \"claim\": \"RL environments should be treated as a form of data, just in a different shape.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 227\n    },\n    {\n      \"claim\": \"Sampling multiple answers per question (e.g. 16x) beats collecting proportionally more questions answered once.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 629\n    },\n    {\n      \"claim\": \"Stronger models are not always better teachers for distillation.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 676\n    },\n    {\n      \"claim\": \"Some Qwen models outperformed Claude models as teachers in the Open Thoughts Agents work.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 732\n    },\n    {\n      \"claim\": \"Answer filtering, synthetic rewriting, and task augmentation did not work well as curation steps, while synthetic question generation did.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 676\n    },\n    {\n      \"claim\": \"SFT contributed most of the gains in agent post-training; RL is compute-intensive and only worth it for the last few percentage points.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 732\n    },\n    {\n      \"claim\": \"SFT alone is sufficient for many enterprise post-training situations.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 732\n    },\n    {\n      \"claim\": \"Enforcing compliance via a long list of prompt rules blows up latency, making post-training the better path.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 868\n    },\n    {\n      \"claim\": \"Adding structural tags to prompt-response pairs prevents fine-tuned models from hallucinating numbers in imbalanced datasets.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 868\n    },\n    {\n      \"claim\": \"The Credit Karma post-training deployment improved compliance metrics, latency, and throughput simultaneously.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 868\n    },\n    {\n      \"claim\": \"Owning a post-trained model is increasingly attractive because frontier models are getting more expensive.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 868\n    },\n    {\n      \"claim\": \"Open Thoughts demonstrates a scaling law where metrics improve as curated dataset size increases under the recipe.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 470\n    },\n    {\n      \"claim\": \"Long-horizon rollouts require checkpointing plus snapshot/rollback support in the environment infrastructure layer.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1057\n    },\n    {\n      \"claim\": \"The people creating data/RL environments and the researchers consuming them are mismatched, and doing both is beneficial.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 85\n    }\n  ],\n  \"speaker_org\": \"Bespoke Labs\"\n}",
+  "ttft_ms": 52526,
+  "ttft_stream_ms": 1299,
+  "time_to_request_ms": 33,
+  "type": "result",
+  "duration_ms": 54103,
+  "uuid": "ae3c318c-8960-46ff-9304-a5dfbc6db1fe",
+  "passA": {
+    "summary": "Mahesh Sathiamoorthy, co-founder and CEO of Bespoke Labs, argues that data and RL environments \u2014 not compute, models, or training infrastructure \u2014 are the binding constraint on post-training LLMs and agents today. He traces the field's shift from evaluating what models know to whether agents can act autonomously for long durations, and identifies reliability as the blocker, with post-training as a powerful lever on it. The bulk of the talk walks through Bespoke's open-source curation recipes: Open Thoughts (reasoning data) and Open Thoughts Agents (agentic trajectories and environments), including counterintuitive ablation findings like sampling many answers per question beating more unique questions, and stronger models not necessarily making better teachers. He closes with a production case study at Intuit's Credit Karma where a tag-based curation recipe fixed hallucinated APR numbers and improved compliance, latency, and throughput, plus a proposed reference stack for building RL environments and post-training agents. Worth watching if you want concrete, ablation-backed curation heuristics rather than theory.",
+    "key_points": [
+      "Data and RL environments are the bottleneck for post-training, since compute, base models, and training infrastructure (Fireworks, Tinker, slime) are all comparatively well-defined and available.",
+      "The field has moved from evaluating what models know (knowledge benchmarks) to whether agents can do things autonomously over long horizons, and the thing blocking that autonomy is reliability.",
+      "Prompting and harness/tool changes can improve agent reliability, but post-training is the mechanism frontier labs primarily rely on for capability gains.",
+      "Open Thoughts established a reasoning-data curation recipe with a demonstrated scaling law: as dataset size grows under the recipe, benchmark metrics keep improving.",
+      "Sampling multiple answers per question (e.g. 16 completions on one question) outperforms collecting many more questions answered once, likely because diversity of reasoning traces helps during fine-tuning.",
+      "Stronger models are not always better teachers \u2014 this held in both the reasoning and the agents work, where some Qwen models outperformed larger frontier models as teachers.",
+      "Techniques that intuitively should work often don't: answer filtering, synthetic rewriting, and task augmentation underperformed, while synthetic question generation did work.",
+      "In the Open Thoughts Agents work, SFT contributed most of the gains and RL was compute-intensive and mainly bought the last few percent, so SFT is often sufficient in enterprise settings.",
+      "In the Credit Karma deployment, imbalanced data caused the fine-tuned model to hallucinate numbers like 0% APR; replacing plain-language prompt-response pairs with tagged structure made the model focus on form over specific numbers and gave a large improvement in compliance, latency, and throughput.",
+      "The emerging reference stack has three layers: RL environment building/quality measurement/versioning on top, sandbox and rollout orchestration with checkpointing and rollback below, and SFT/RL/GEPA-style prompt optimization as the training methods."
+    ],
+    "notable_quotes": [
+      {
+        "text": "bespoke is an applied data research lab with a mission to help enterprises and frontier labs access high quality data and RL environments for their post training needs",
+        "timestamp_sec": 12,
+        "why": "States the org's thesis and framing for everything that follows."
+      },
+      {
+        "text": "there are a lot of people who create data uh create RL environments and then there are the uh researchers who consume this. But I feel like there is this slight mismatch and it's kind of beneficial for someone to kind of go do both at the same time.",
+        "timestamp_sec": 85,
+        "why": "Names a structural gap between data producers and model researchers."
+      },
+      {
+        "text": "as you're curating data you want to put yourself in the shoes of the researcher to see what what does it take to you know uh actually move the metrics on the models",
+        "timestamp_sec": 126,
+        "why": "The talk's methodological stance: curation judged by downstream metric movement."
+      },
+      {
+        "text": "early on we used to think about and evaluate models on what they know",
+        "timestamp_sec": 126,
+        "why": "Sets up the knowing-to-doing framing of the field's evolution."
+      },
+      {
+        "text": "we have moved on from knowing to doing right so that's the idea of agents",
+        "timestamp_sec": 162,
+        "why": "Compact statement of the benchmark shift."
+      },
+      {
+        "text": "what is it that's blocking the uh autonomy of agents. It's basically reliability, right?",
+        "timestamp_sec": 162,
+        "why": "The central diagnosis that motivates post-training as the lever."
+      },
+      {
+        "text": "postraining is a very powerful tool to improve reliability or or maybe even pre-train good models right so if you think of frontier labs this is one of their primary mechanisms of improving agents",
+        "timestamp_sec": 227,
+        "why": "Positions post-training against prompting and harness fixes."
+      },
+      {
+        "text": "ultimately for post training be it SFT or or uh reinforcement learning data is the bottleneck",
+        "timestamp_sec": 227,
+        "why": "The thesis sentence of the talk."
+      },
+      {
+        "text": "when I talk about data RLNs are also something I'm calling it as data it's just the data is now in a very different shape",
+        "timestamp_sec": 227,
+        "why": "Explicitly folds RL environments into the category of data."
+      },
+      {
+        "text": "Most of the places where people struggle especially enterprises is that they don't have access to good quality data and RLNs",
+        "timestamp_sec": 336,
+        "why": "Locates the constraint at enterprises specifically, not just labs."
+      },
+      {
+        "text": "there are many other benefits of post- training for example you can reduce latency or improve cost throughput",
+        "timestamp_sec": 336,
+        "why": "Non-capability motivations for post-training that the case study later confirms."
+      },
+      {
+        "text": "we figured out a curation recipe and it shows the scaling law right. So again this is last year when Amy uh and and uh live codebench and these these were some of the popular benchmarks.",
+        "timestamp_sec": 430,
+        "why": "The empirical claim underpinning Open Thoughts."
+      },
+      {
+        "text": "if you keep you know scaling up the data set size the the you know the the it's a scalable recipe right the the metrics also improve",
+        "timestamp_sec": 470,
+        "why": "States the scaling result in the speaker's own terms."
+      },
+      {
+        "text": "the systematic way of doing this is like you run ablations and figure out which uh you know in each of these stages what works and you kind of proceed to the next",
+        "timestamp_sec": 578,
+        "why": "The methodology behind every finding in the talk."
+      },
+      {
+        "text": "sampling um multiple answers per question works pretty well. This is something that uh we it's it's kind of counterintuitive.",
+        "timestamp_sec": 629,
+        "why": "Headline counterintuitive curation finding."
+      },
+      {
+        "text": "we could have had more much many more questions and then just answered them exactly once versus taking one question and answering them 16 times",
+        "timestamp_sec": 629,
+        "why": "Names the concrete tradeoff and the sampling ratio involved."
+      },
+      {
+        "text": "the stronger teachers are not always the best uh uh stronger models are not always the better teachers",
+        "timestamp_sec": 676,
+        "why": "Directly contradicts a common distillation assumption; replicated in the agents work."
+      },
+      {
+        "text": "synthetic rewriting and task augmentation um is something we thought will work but it didn't very work work very well",
+        "timestamp_sec": 732,
+        "why": "Negative result that saves others wasted effort."
+      },
+      {
+        "text": "SFT still contributed a lot to the gains um RL was kind of you know it's very comput inensive and for for the last few few percentages it really helped",
+        "timestamp_sec": 732,
+        "why": "Takes a side in the SFT-vs-RL debate with a cost argument."
+      },
+      {
+        "text": "you have to have a long list of rules to make sure the responses are compliant and that actually blows up the latency",
+        "timestamp_sec": 868,
+        "why": "The concrete failure mode that motivated post-training over prompting at Credit Karma."
+      },
+      {
+        "text": "the data set can be quite impa imbalance and lot lots and lots of places for example you will have 0% APR and the model after fine-tuning can kind of hallucinate the these uh numbers",
+        "timestamp_sec": 868,
+        "why": "Specific, transferable failure mode of naive fine-tuning data."
+      },
+      {
+        "text": "we added these uh tags which helped the model to focus on you know uh the the kind of form rather than the specific numbers itself and that gave a big boost",
+        "timestamp_sec": 868,
+        "why": "The actual fix, stated as a reusable curation technique."
+      },
+      {
+        "text": "you can use LLMs itself to uh to to kind of optimize the prompts based on reflection. Um so that also works pretty well for updating the system prompts and also the harnesses.",
+        "timestamp_sec": 1091,
+        "why": "Places prompt optimization alongside SFT and RL in the post-training stack."
+      }
+    ],
+    "concepts": [
+      "post-training data curation",
+      "rl environments",
+      "synthetic data generation",
+      "reasoning trace distillation",
+      "teacher model selection",
+      "data scaling laws",
+      "curation ablations",
+      "agent reliability",
+      "long-horizon autonomy",
+      "prompt optimization"
+    ],
+    "positions": [
+      {
+        "claim": "Data and RL environments are the bottleneck for post-training, not compute, models, or training infrastructure.",
+        "confidence": "stated",
+        "timestamp_sec": 227
+      },
+      {
+        "claim": "Reliability is what blocks agents from being autonomous over long durations.",
+        "confidence": "stated",
+        "timestamp_sec": 162
+      },
+      {
+        "claim": "Post-training is a more powerful lever on agent reliability than prompting or harness changes.",
+        "confidence": "implied",
+        "timestamp_sec": 227
+      },
+      {
+        "claim": "RL environments should be treated as a form of data, just in a different shape.",
+        "confidence": "stated",
+        "timestamp_sec": 227
+      },
+      {
+        "claim": "Sampling multiple answers per question (e.g. 16x) beats collecting proportionally more questions answered once.",
+        "confidence": "stated",
+        "timestamp_sec": 629
+      },
+      {
+        "claim": "Stronger models are not always better teachers for distillation.",
+        "confidence": "stated",
+        "timestamp_sec": 676
+      },
+      {
+        "claim": "Some Qwen models outperformed Claude models as teachers in the Open Thoughts Agents work.",
+        "confidence": "stated",
+        "timestamp_sec": 732
+      },
+      {
+        "claim": "Answer filtering, synthetic rewriting, and task augmentation did not work well as curation steps, while synthetic question generation did.",
+        "confidence": "stated",
+        "timestamp_sec": 676
+      },
+      {
+        "claim": "SFT contributed most of the gains in agent post-training; RL is compute-intensive and only worth it for the last few percentage points.",
+        "confidence": "stated",
+        "timestamp_sec": 732
+      },
+      {
+        "claim": "SFT alone is sufficient for many enterprise post-training situations.",
+        "confidence": "stated",
+        "timestamp_sec": 732
+      },
+      {
+        "claim": "Enforcing compliance via a long list of prompt rules blows up latency, making post-training the better path.",
+        "confidence": "stated",
+        "timestamp_sec": 868
+      },
+      {
+        "claim": "Adding structural tags to prompt-response pairs prevents fine-tuned models from hallucinating numbers in imbalanced datasets.",
+        "confidence": "stated",
+        "timestamp_sec": 868
+      },
+      {
+        "claim": "The Credit Karma post-training deployment improved compliance metrics, latency, and throughput simultaneously.",
+        "confidence": "stated",
+        "timestamp_sec": 868
+      },
+      {
+        "claim": "Owning a post-trained model is increasingly attractive because frontier models are getting more expensive.",
+        "confidence": "stated",
+        "timestamp_sec": 868
+      },
+      {
+        "claim": "Open Thoughts demonstrates a scaling law where metrics improve as curated dataset size increases under the recipe.",
+        "confidence": "stated",
+        "timestamp_sec": 470
+      },
+      {
+        "claim": "Long-horizon rollouts require checkpointing plus snapshot/rollback support in the environment infrastructure layer.",
+        "confidence": "stated",
+        "timestamp_sec": 1057
+      },
+      {
+        "claim": "The people creating data/RL environments and the researchers consuming them are mismatched, and doing both is beneficial.",
+        "confidence": "stated",
+        "timestamp_sec": 85
+      }
+    ],
+    "speaker_org": "Bespoke Labs"
+  },
+  "_meta": {
+    "slug": "data-and-environment-curation-for-post-training-llms",
+    "video_id": "ewtOo0scUh0",
+    "url": "https://www.youtube.com/watch?v=ewtOo0scUh0",
+    "word_count": 3085,
+    "wall_sec": 55.5,
+    "run_at": "2026-08-12T19:42:22Z",
+    "effort": "medium",
+    "quotes_dropped": 0
+  }
+}

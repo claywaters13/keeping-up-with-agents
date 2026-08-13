@@ -1,0 +1,318 @@
+{
+  "is_error": false,
+  "duration_api_ms": 161117,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "7e8d0fa8-0ec1-453f-bab8-a4e386ec26a4",
+  "total_cost_usd": 0.70605,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 33169,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 13904,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 33169,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 13904,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 33169,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 33169
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 21516,
+      "outputTokens": 16,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.021596,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 13904,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 33169,
+      "webSearchRequests": 0,
+      "costUSD": 0.684454,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\"concept\": \"eval-driven development\", \"state_of_practice\": \"The field has moved past \\\"do evals\\\" to a fairly specific operating discipline: an eval is only real if some score blocks something, the dataset comes from your own production traces rather than public benchmarks or LLM-generated test queries, and the judge is itself a model that must be validated like a classifier against roughly a hundred hand-labeled examples. Practitioners now insist the criteria cannot be written before looking at data \\u2014 rubrics are discovered by grading traces, and the eval suite is a product of discovery from production failures, not an upfront spec. Evaluation targets the whole trajectory (context completeness, every tool output, final environment state, the harness itself), because aggregate pass rate demonstrably hides failures like an agent removing a legally required disclaimer or claiming edits it never made. There is strong agreement that an eval too easy to fail is worse than none: unrealistically polite simulated users produced a 90%+ pass rate at Lyft, naively generated training pairs taught a video judge to score \\\"the vibe\\\" and rate a static shot 9.2 on camera work, and simulation environments distinguishable from production get reward-hacked. The live arguments are about where evaluation runs (pre-release gate versus inside the generation/inner agentic loop), what the judge should emit (binary pass/fail versus explanations or pairwise comparisons), and how much of the loop a human must still own.\", \"consensus\": [{\"claim\": \"An eval only counts if its score gates a decision \\u2014 a judge or check that merely reports, logs, or warns is worthless.\", \"support_count\": 6, \"supporting_talks\": [\"build-evals-that-actually-matter\", \"every-solo-agent-builder-eventually-reinvents-a-worse-version-of-cicd\", \"from-agent-traces-to-agent-simulations\", \"how-evals-and-prompts-shape-agent-behavior\", \"evals-driven-development-for-a-mental-health-ai-coach\", \"the-agentic-ai-engineer\"], \"evidence_quote\": \"A gate which logs only warnings is not a gate. It's a suggestion. The gate needs to block the artifact from moving forward.\", \"evidence_talk\": \"every-solo-agent-builder-eventually-reinvents-a-worse-version-of-cicd\", \"evidence_timestamp_sec\": 601}, {\"claim\": \"Evaluation criteria and the eval suite cannot be fully specified upfront; they are discovered by grading real traces and accumulating production failures.\", \"support_count\": 5, \"supporting_talks\": [\"build-evals-that-actually-matter\", \"the-agentic-ai-engineer\", \"how-evals-and-prompts-shape-agent-behavior\", \"evals-driven-development-for-a-mental-health-ai-coach\", \"from-agent-traces-to-agent-simulations\"], \"evidence_quote\": \"But essentially, the real and the complete eval suite is a product of discovery.\", \"evidence_talk\": \"the-agentic-ai-engineer\", \"evidence_timestamp_sec\": 760}, {\"claim\": \"The LLM judge is itself an artifact that must be validated and continuously recalibrated against human or expert labels before its scores can be trusted.\", \"support_count\": 5, \"supporting_talks\": [\"build-evals-that-actually-matter\", \"how-evals-and-prompts-shape-agent-behavior\", \"the-agentic-ai-engineer\", \"evaling-video-slop\", \"evals-driven-development-for-a-mental-health-ai-coach\"], \"evidence_quote\": \"we can hand label around 100 examples with pass fail labels and then split the data into train, dev, and validation sets like how we used to do with machine learning models\", \"evidence_talk\": \"build-evals-that-actually-matter\", \"evidence_timestamp_sec\": 1277}, {\"claim\": \"Scoring the final output is insufficient for agents; the trajectory, tool outputs, environment state, and process must be verified, because aggregate pass rates conceal specific catastrophic failures.\", \"support_count\": 5, \"supporting_talks\": [\"respect-the-process\", \"from-agent-traces-to-agent-simulations\", \"the-agentic-ai-engineer\", \"how-evals-and-prompts-shape-agent-behavior\", \"morgan-stanleys-alphalab-multi-agent-research-across-optimization-domains\"], \"evidence_quote\": \"you have to verify the process in addition to the answer because the answer is really only justified in so far as it the process that produced that answer is correct\", \"evidence_talk\": \"respect-the-process\", \"evidence_timestamp_sec\": 33}, {\"claim\": \"An eval that is too easy \\u2014 unrealistically cooperative simulated users, naively generated judge-training data, happy-path-only cases, or a simulation the agent can tell is a simulation \\u2014 is actively misleading, and a falling score after making it harder is progress, not regression.\", \"support_count\": 4, \"supporting_talks\": [\"build-evals-that-actually-matter\", \"from-agent-traces-to-agent-simulations\", \"evaling-video-slop\", \"every-solo-agent-builder-eventually-reinvents-a-worse-version-of-cicd\"], \"evidence_quote\": \"If you have an eval that's too easy, that doesn't give you any real uh, production insights into how your AI agent is actually going to perform.\", \"evidence_talk\": \"build-evals-that-actually-matter\", \"evidence_timestamp_sec\": 930}, {\"claim\": \"When an eval fails, the fix belongs in the harness, skills, tooling, or a deterministic execution layer \\u2014 patching the prompt with another prohibition is an anti-pattern.\", \"support_count\": 4, \"supporting_talks\": [\"from-agent-traces-to-agent-simulations\", \"respect-the-process\", \"skills-are-new-features-building-skill-centric-harness\", \"user-signal-dies-at-the-retrieval-boundary\"], \"evidence_quote\": \"There is a bit of an anti-pattern in the industry where like folks try to fix things in the prompt.\", \"evidence_talk\": \"from-agent-traces-to-agent-simulations\", \"evidence_timestamp_sec\": 855}, {\"claim\": \"Public benchmarks and off-the-shelf metrics are useful only as orientation or baseline; shipping requires a private benchmark whose metrics are tied to your own business outcomes.\", \"support_count\": 3, \"supporting_talks\": [\"from-agent-traces-to-agent-simulations\", \"build-evals-that-actually-matter\", \"morgan-stanleys-alphalab-multi-agent-research-across-optimization-domains\"], \"evidence_quote\": \"we can use these pre-built eval metrics as a baseline, but we shouldn't use them as our core eval metrics because we want eval metrics to be actionable and tied to the business outcome\", \"evidence_talk\": \"build-evals-that-actually-matter\", \"evidence_timestamp_sec\": 1127}], \"disagreements\": [{\"question\": \"Should evaluation primarily run as an offline pre-release gate, or inline inside the generation / inner agentic loop?\", \"position_a\": \"The core mechanism is an offline eval gate: build a private benchmark or simulator, run the agent against it before exposure to users, and use the result as a release gate in CI. Rigor lives outside the runtime path so it can be slow, statistical, and repeatable.\", \"position_a_talks\": [\"build-evals-that-actually-matter\", \"from-agent-traces-to-agent-simulations\", \"how-evals-and-prompts-shape-agent-behavior\"], \"position_b\": \"A pre-release gate is insufficient. Verification must run inside the inner loop \\u2014 as guardrail judge calls at request time, as quality checks inside the generation loop, as verification in the agentic coding loop before defects propagate, or as eval outcomes fed back into retrieval at runtime.\", \"position_b_talks\": [\"evals-driven-development-for-a-mental-health-ai-coach\", \"guide-verify-solve\", \"evaling-video-slop\", \"user-signal-dies-at-the-retrieval-boundary\"], \"why_it_matters\": \"It determines whether your evaluator can be a slow frontier model or must be a distilled 3-second scorer, and whether eval results terminate in a dashboard or become a live control signal. Character.ai distilled a small VLM specifically to move eval into the generation loop; SonderMind accepted per-request latency and cost for separate guardrail judge calls.\"}, {\"question\": \"What should an LLM judge actually emit \\u2014 a binary label, a rationale, or a pairwise preference?\", \"position_a\": \"Binary pass/fail tied to task success is best: it is easy to calibrate, easy to train a consistent judge on, and produces an actionable call to action. Continuous 1-10 or 0-1 quality scores tell you nothing you can fix.\", \"position_a_talks\": [\"build-evals-that-actually-matter\", \"the-agentic-ai-engineer\"], \"position_b\": \"A bare pass/fail is not enough signal. Raters and judges should supply explanations of their reasoning, or judges should be trained on A-vs-B comparisons rather than any absolute scale, because humans do not agree on absolute scores but do agree on comparisons.\", \"position_b_talks\": [\"how-evals-and-prompts-shape-agent-behavior\", \"evaling-video-slop\"], \"why_it_matters\": \"The output format determines your labeling protocol and judge-training data: binary labels support precision/recall validation on ~100 examples, while pairwise preference requires manufacturing matched good/bad pairs and carries its own overfitting risk (Character.ai's human-vs-AI pairing produced an AI detector rather than a quality detector).\"}, {\"question\": \"How early in a project should rigorous eval infrastructure be built?\", \"position_a\": \"The eval comes first and must be right before anything is optimized against it, because optimizing against a bad eval collapses the whole system; every company needs its own benchmark and it is an engineering discipline with its own CI pipeline.\", \"position_a_talks\": [\"morgan-stanleys-alphalab-multi-agent-research-across-optimization-domains\", \"from-agent-traces-to-agent-simulations\"], \"position_b\": \"Early on, intuition-based non-scalable evaluation is genuinely better \\u2014 a few core tasks, no massive golden set, no scaled raters \\u2014 because the eval and the model are both still being calibrated and a heavy eval hinders radical architecture changes; expensive statistical rigor should be reserved for shipping decisions and leadership reporting.\", \"position_b_talks\": [\"how-evals-and-prompts-shape-agent-behavior\", \"build-evals-that-actually-matter\"], \"why_it_matters\": \"This decides whether a team spends its first month building simulation infrastructure or shipping and grading by hand. Get it wrong toward rigor and the eval ossifies an architecture you should have thrown away; get it wrong toward vibes and you hill-climb on noise or ship an unsafe agent.\"}, {\"question\": \"Can the eval-and-improve loop be closed automatically, or must a human own the definition of correct and approve each change?\", \"position_a\": \"Automate it. Once an optimized variant hits target eval scores it can ship to production without human review, and even harness architecture decisions should be meta-optimized by an LLM rather than hand-designed, since manual human-in-the-loop iteration stops scaling past a certain number of agents.\", \"position_a_talks\": [\"the-agentic-ai-engineer\", \"morgan-stanleys-alphalab-multi-agent-research-across-optimization-domains\"], \"position_b\": \"A human owns the definition of good and the admission gate. A licensed clinician \\u2014 not the engineering team, not the system \\u2014 decides correct behavior in edge cases; skill changes need PR-style admission gates with a human in the loop; and not looking at raw data yourself is the single most damaging eval anti-pattern.\", \"position_b_talks\": [\"evals-driven-development-for-a-mental-health-ai-coach\", \"skills-are-new-features-building-skill-centric-harness\", \"build-evals-that-actually-matter\"], \"why_it_matters\": \"It sets where the throughput ceiling and the accountability sit. Auto-shipping on eval scores makes the eval the entire safety argument, which only holds if the judge is calibrated and the criteria were derived from expert-labeled data \\u2014 exactly the step the automated path is trying to remove.\"}], \"practical_guidance\": {\"do\": [\"Sample eval datasets from production traffic and mutate them to cover golden paths and edge cases, rather than prompting an LLM to generate ~50 test queries\", \"Hand-label ~100 traces with binary pass/fail, split train/dev/test, and score the judge on precision and recall before trusting it\", \"Report confidence intervals on eval scores \\u2014 84% vs 88% alignment on 50 traces is not a demonstrable gain\", \"Fine-tune your user simulator on real user verbatims until the evaluation score goes down, and treat the drop as evidence the eval got realistic\", \"Construct an Oracle solution for every benchmark task to prove it is solvable, and run a separate CI pipeline over the benchmark itself (pinned dependencies, base images, missing fixtures, Oracle passes)\", \"Verify final environment state, trace, and artifacts \\u2014 not just the agent's final message \\u2014 and independently confirm that claimed edits actually landed\", \"Run evals locally, at pre-commit, and in CI as a regression suite, with a config-driven (YAML) harness so analysts and non-engineers can contribute cases\", \"Decide launch gatekeeping criteria before running the regression analysis, not after seeing the results\", \"Instrument the most expensive handoff first \\u2014 the one where bad data costs the most \\u2014 not the most technically complex one\", \"Re-run skill and prompt evals on every model upgrade; skills are contracts versioned against a specific model, and instruction placement inside the file can silently stop working\", \"Route only cases where the agent and the verifiers disagree to subject-matter experts, instead of having SMEs review everything\", \"Decompose long-horizon tasks into steps with a separate prompt and verifier per step so a run can terminate early at the first failure\", \"Keep a held-out test set the agent has never seen during experimentation, use it sparingly, and refresh it with production data\"], \"avoid\": [\"Shipping a judge whose score gates nothing, or a check that only logs a warning\", \"Using pre-built helpfulness/toxicity/conciseness metrics as core metrics \\u2014 a 0.5 helpfulness score is not actionable\", \"Fixing a failure by adding another prohibition to the prompt instead of the harness, skill, or structured output\", \"Hyperfixating on a single failing run; drive fixes from failure patterns measured across many examples, since the systems are non-deterministic\", \"Using off-the-shelf frontier models as user simulators for support \\u2014 they are trained to be helpful and produce unrealistically polite, articulate complaints\", \"Training a quality judge on human-footage-good vs AI-footage-bad pairs, which yields an AI detector rather than a quality detector\", \"Reading only aggregate pass rate \\u2014 failures like removing a legally required disclaimer are invisible there and only show up in traces\", \"Using the same AI that wrote the code to verify the code; verification needs a different methodology than generation\", \"Letting the agent detect that it is in a simulation \\u2014 it will reward-hack the environment\", \"Skipping looking at raw data, which breaks the chain from labels to criteria to judge validation to knowing whether the pipeline works\", \"Chasing perfect benchmark scores, which drifts focus away from the humans the benchmarks exist to protect\", \"Jumping to scaled raters too early, which produces large swings in measured quality while eval and model are both still being calibrated\"]}, \"notable_outliers\": [{\"claim\": \"Fine-tune the user simulator until the evaluation score goes down \\u2014 a falling number is the success criterion for eval realism, not a quality regression.\", \"talk\": \"build-evals-that-actually-matter\", \"timestamp_sec\": 1015}, {\"claim\": \"Evals and environments are the same thing \\u2014 you just train in environments \\u2014 so an enterprise's durable value is in building 10-20 careful environments, not harnesses, which will commoditize.\", \"talk\": \"morgan-stanleys-alphalab-multi-agent-research-across-optimization-domains\", \"timestamp_sec\": 981}, {\"claim\": \"A larger evaluator model was measurably more accurate and was still rejected: a distilled small VLM scoring a 15-second video in ~3 seconds won because the added accuracy did not justify the slowness, and the tradeoff only flips at thousands to tens of thousands of videos per day.\", \"talk\": \"evaling-video-slop\", \"timestamp_sec\": 542}, {\"claim\": \"If an optimized agent variant meets its target eval scores, it can be shipped to production automatically with no human review.\", \"talk\": \"the-agentic-ai-engineer\", \"timestamp_sec\": 1367}, {\"claim\": \"Day one they had to turn off the frontier providers' built-in guardrails because general-purpose LLMs are over-calibrated for mental health, and an inappropriate guardrail trigger is itself a harm \\u2014 the objective is more correct triggers, not more triggers.\", \"talk\": \"evals-driven-development-for-a-mental-health-ai-coach\", \"timestamp_sec\": 1184}, {\"claim\": \"Constraining the agent's effects rather than its reasoning \\u2014 forcing all graph-editing code through a typed SDK as the only door, with a deterministic validation script on completion \\u2014 moved internal eval outcomes from about 43% to 92%.\", \"talk\": \"respect-the-process\", \"timestamp_sec\": 800}, {\"claim\": \"Human code review is not a viable backstop: participants followed AI advice nearly 80% of the time even when the AI was wrong.\", \"talk\": \"guide-verify-solve\", \"timestamp_sec\": 395}], \"maturity\": \"consolidating\", \"maturity_rationale\": \"Across 13 independent talks there is durable agreement on the core mechanics \\u2014 gate on the score, build a private benchmark from production traces, validate the judge, score the trajectory, distrust an eval that is too easy \\u2014 and these are now stated as settled practice rather than argued for. The contested edges are real but narrower: where evaluation runs (pre-release gate vs. inside the generation loop), what the judge emits (binary vs. rationale vs. pairwise), and how much of the loop can close without a human owning the definition of correct.\"}",
+  "ttft_ms": 91578,
+  "ttft_stream_ms": 1606,
+  "time_to_request_ms": 35,
+  "type": "result",
+  "duration_ms": 159732,
+  "uuid": "77143537-52eb-4239-a2e7-2f61a6b9d5b3",
+  "passC": {
+    "concept": "eval-driven development",
+    "state_of_practice": "The field has moved past \"do evals\" to a fairly specific operating discipline: an eval is only real if some score blocks something, the dataset comes from your own production traces rather than public benchmarks or LLM-generated test queries, and the judge is itself a model that must be validated like a classifier against roughly a hundred hand-labeled examples. Practitioners now insist the criteria cannot be written before looking at data \u2014 rubrics are discovered by grading traces, and the eval suite is a product of discovery from production failures, not an upfront spec. Evaluation targets the whole trajectory (context completeness, every tool output, final environment state, the harness itself), because aggregate pass rate demonstrably hides failures like an agent removing a legally required disclaimer or claiming edits it never made. There is strong agreement that an eval too easy to fail is worse than none: unrealistically polite simulated users produced a 90%+ pass rate at Lyft, naively generated training pairs taught a video judge to score \"the vibe\" and rate a static shot 9.2 on camera work, and simulation environments distinguishable from production get reward-hacked. The live arguments are about where evaluation runs (pre-release gate versus inside the generation/inner agentic loop), what the judge should emit (binary pass/fail versus explanations or pairwise comparisons), and how much of the loop a human must still own.",
+    "consensus": [
+      {
+        "claim": "An eval only counts if its score gates a decision \u2014 a judge or check that merely reports, logs, or warns is worthless.",
+        "support_count": 6,
+        "supporting_talks": [
+          "build-evals-that-actually-matter",
+          "every-solo-agent-builder-eventually-reinvents-a-worse-version-of-cicd",
+          "from-agent-traces-to-agent-simulations",
+          "how-evals-and-prompts-shape-agent-behavior",
+          "evals-driven-development-for-a-mental-health-ai-coach",
+          "the-agentic-ai-engineer"
+        ],
+        "evidence_quote": "A gate which logs only warnings is not a gate. It's a suggestion. The gate needs to block the artifact from moving forward.",
+        "evidence_talk": "every-solo-agent-builder-eventually-reinvents-a-worse-version-of-cicd",
+        "evidence_timestamp_sec": 601
+      },
+      {
+        "claim": "Evaluation criteria and the eval suite cannot be fully specified upfront; they are discovered by grading real traces and accumulating production failures.",
+        "support_count": 5,
+        "supporting_talks": [
+          "build-evals-that-actually-matter",
+          "the-agentic-ai-engineer",
+          "how-evals-and-prompts-shape-agent-behavior",
+          "evals-driven-development-for-a-mental-health-ai-coach",
+          "from-agent-traces-to-agent-simulations"
+        ],
+        "evidence_quote": "But essentially, the real and the complete eval suite is a product of discovery.",
+        "evidence_talk": "the-agentic-ai-engineer",
+        "evidence_timestamp_sec": 760
+      },
+      {
+        "claim": "The LLM judge is itself an artifact that must be validated and continuously recalibrated against human or expert labels before its scores can be trusted.",
+        "support_count": 5,
+        "supporting_talks": [
+          "build-evals-that-actually-matter",
+          "how-evals-and-prompts-shape-agent-behavior",
+          "the-agentic-ai-engineer",
+          "evaling-video-slop",
+          "evals-driven-development-for-a-mental-health-ai-coach"
+        ],
+        "evidence_quote": "we can hand label around 100 examples with pass fail labels and then split the data into train, dev, and validation sets like how we used to do with machine learning models",
+        "evidence_talk": "build-evals-that-actually-matter",
+        "evidence_timestamp_sec": 1277
+      },
+      {
+        "claim": "Scoring the final output is insufficient for agents; the trajectory, tool outputs, environment state, and process must be verified, because aggregate pass rates conceal specific catastrophic failures.",
+        "support_count": 5,
+        "supporting_talks": [
+          "respect-the-process",
+          "from-agent-traces-to-agent-simulations",
+          "the-agentic-ai-engineer",
+          "how-evals-and-prompts-shape-agent-behavior",
+          "morgan-stanleys-alphalab-multi-agent-research-across-optimization-domains"
+        ],
+        "evidence_quote": "you have to verify the process in addition to the answer because the answer is really only justified in so far as it the process that produced that answer is correct",
+        "evidence_talk": "respect-the-process",
+        "evidence_timestamp_sec": 33
+      },
+      {
+        "claim": "An eval that is too easy \u2014 unrealistically cooperative simulated users, naively generated judge-training data, happy-path-only cases, or a simulation the agent can tell is a simulation \u2014 is actively misleading, and a falling score after making it harder is progress, not regression.",
+        "support_count": 4,
+        "supporting_talks": [
+          "build-evals-that-actually-matter",
+          "from-agent-traces-to-agent-simulations",
+          "evaling-video-slop",
+          "every-solo-agent-builder-eventually-reinvents-a-worse-version-of-cicd"
+        ],
+        "evidence_quote": "If you have an eval that's too easy, that doesn't give you any real uh, production insights into how your AI agent is actually going to perform.",
+        "evidence_talk": "build-evals-that-actually-matter",
+        "evidence_timestamp_sec": 930
+      },
+      {
+        "claim": "When an eval fails, the fix belongs in the harness, skills, tooling, or a deterministic execution layer \u2014 patching the prompt with another prohibition is an anti-pattern.",
+        "support_count": 4,
+        "supporting_talks": [
+          "from-agent-traces-to-agent-simulations",
+          "respect-the-process",
+          "skills-are-new-features-building-skill-centric-harness",
+          "user-signal-dies-at-the-retrieval-boundary"
+        ],
+        "evidence_quote": "There is a bit of an anti-pattern in the industry where like folks try to fix things in the prompt.",
+        "evidence_talk": "from-agent-traces-to-agent-simulations",
+        "evidence_timestamp_sec": 855
+      },
+      {
+        "claim": "Public benchmarks and off-the-shelf metrics are useful only as orientation or baseline; shipping requires a private benchmark whose metrics are tied to your own business outcomes.",
+        "support_count": 3,
+        "supporting_talks": [
+          "from-agent-traces-to-agent-simulations",
+          "build-evals-that-actually-matter",
+          "morgan-stanleys-alphalab-multi-agent-research-across-optimization-domains"
+        ],
+        "evidence_quote": "we can use these pre-built eval metrics as a baseline, but we shouldn't use them as our core eval metrics because we want eval metrics to be actionable and tied to the business outcome",
+        "evidence_talk": "build-evals-that-actually-matter",
+        "evidence_timestamp_sec": 1127
+      }
+    ],
+    "disagreements": [
+      {
+        "question": "Should evaluation primarily run as an offline pre-release gate, or inline inside the generation / inner agentic loop?",
+        "position_a": "The core mechanism is an offline eval gate: build a private benchmark or simulator, run the agent against it before exposure to users, and use the result as a release gate in CI. Rigor lives outside the runtime path so it can be slow, statistical, and repeatable.",
+        "position_a_talks": [
+          "build-evals-that-actually-matter",
+          "from-agent-traces-to-agent-simulations",
+          "how-evals-and-prompts-shape-agent-behavior"
+        ],
+        "position_b": "A pre-release gate is insufficient. Verification must run inside the inner loop \u2014 as guardrail judge calls at request time, as quality checks inside the generation loop, as verification in the agentic coding loop before defects propagate, or as eval outcomes fed back into retrieval at runtime.",
+        "position_b_talks": [
+          "evals-driven-development-for-a-mental-health-ai-coach",
+          "guide-verify-solve",
+          "evaling-video-slop",
+          "user-signal-dies-at-the-retrieval-boundary"
+        ],
+        "why_it_matters": "It determines whether your evaluator can be a slow frontier model or must be a distilled 3-second scorer, and whether eval results terminate in a dashboard or become a live control signal. Character.ai distilled a small VLM specifically to move eval into the generation loop; SonderMind accepted per-request latency and cost for separate guardrail judge calls."
+      },
+      {
+        "question": "What should an LLM judge actually emit \u2014 a binary label, a rationale, or a pairwise preference?",
+        "position_a": "Binary pass/fail tied to task success is best: it is easy to calibrate, easy to train a consistent judge on, and produces an actionable call to action. Continuous 1-10 or 0-1 quality scores tell you nothing you can fix.",
+        "position_a_talks": [
+          "build-evals-that-actually-matter",
+          "the-agentic-ai-engineer"
+        ],
+        "position_b": "A bare pass/fail is not enough signal. Raters and judges should supply explanations of their reasoning, or judges should be trained on A-vs-B comparisons rather than any absolute scale, because humans do not agree on absolute scores but do agree on comparisons.",
+        "position_b_talks": [
+          "how-evals-and-prompts-shape-agent-behavior",
+          "evaling-video-slop"
+        ],
+        "why_it_matters": "The output format determines your labeling protocol and judge-training data: binary labels support precision/recall validation on ~100 examples, while pairwise preference requires manufacturing matched good/bad pairs and carries its own overfitting risk (Character.ai's human-vs-AI pairing produced an AI detector rather than a quality detector)."
+      },
+      {
+        "question": "How early in a project should rigorous eval infrastructure be built?",
+        "position_a": "The eval comes first and must be right before anything is optimized against it, because optimizing against a bad eval collapses the whole system; every company needs its own benchmark and it is an engineering discipline with its own CI pipeline.",
+        "position_a_talks": [
+          "morgan-stanleys-alphalab-multi-agent-research-across-optimization-domains",
+          "from-agent-traces-to-agent-simulations"
+        ],
+        "position_b": "Early on, intuition-based non-scalable evaluation is genuinely better \u2014 a few core tasks, no massive golden set, no scaled raters \u2014 because the eval and the model are both still being calibrated and a heavy eval hinders radical architecture changes; expensive statistical rigor should be reserved for shipping decisions and leadership reporting.",
+        "position_b_talks": [
+          "how-evals-and-prompts-shape-agent-behavior",
+          "build-evals-that-actually-matter"
+        ],
+        "why_it_matters": "This decides whether a team spends its first month building simulation infrastructure or shipping and grading by hand. Get it wrong toward rigor and the eval ossifies an architecture you should have thrown away; get it wrong toward vibes and you hill-climb on noise or ship an unsafe agent."
+      },
+      {
+        "question": "Can the eval-and-improve loop be closed automatically, or must a human own the definition of correct and approve each change?",
+        "position_a": "Automate it. Once an optimized variant hits target eval scores it can ship to production without human review, and even harness architecture decisions should be meta-optimized by an LLM rather than hand-designed, since manual human-in-the-loop iteration stops scaling past a certain number of agents.",
+        "position_a_talks": [
+          "the-agentic-ai-engineer",
+          "morgan-stanleys-alphalab-multi-agent-research-across-optimization-domains"
+        ],
+        "position_b": "A human owns the definition of good and the admission gate. A licensed clinician \u2014 not the engineering team, not the system \u2014 decides correct behavior in edge cases; skill changes need PR-style admission gates with a human in the loop; and not looking at raw data yourself is the single most damaging eval anti-pattern.",
+        "position_b_talks": [
+          "evals-driven-development-for-a-mental-health-ai-coach",
+          "skills-are-new-features-building-skill-centric-harness",
+          "build-evals-that-actually-matter"
+        ],
+        "why_it_matters": "It sets where the throughput ceiling and the accountability sit. Auto-shipping on eval scores makes the eval the entire safety argument, which only holds if the judge is calibrated and the criteria were derived from expert-labeled data \u2014 exactly the step the automated path is trying to remove."
+      }
+    ],
+    "practical_guidance": {
+      "do": [
+        "Sample eval datasets from production traffic and mutate them to cover golden paths and edge cases, rather than prompting an LLM to generate ~50 test queries",
+        "Hand-label ~100 traces with binary pass/fail, split train/dev/test, and score the judge on precision and recall before trusting it",
+        "Report confidence intervals on eval scores \u2014 84% vs 88% alignment on 50 traces is not a demonstrable gain",
+        "Fine-tune your user simulator on real user verbatims until the evaluation score goes down, and treat the drop as evidence the eval got realistic",
+        "Construct an Oracle solution for every benchmark task to prove it is solvable, and run a separate CI pipeline over the benchmark itself (pinned dependencies, base images, missing fixtures, Oracle passes)",
+        "Verify final environment state, trace, and artifacts \u2014 not just the agent's final message \u2014 and independently confirm that claimed edits actually landed",
+        "Run evals locally, at pre-commit, and in CI as a regression suite, with a config-driven (YAML) harness so analysts and non-engineers can contribute cases",
+        "Decide launch gatekeeping criteria before running the regression analysis, not after seeing the results",
+        "Instrument the most expensive handoff first \u2014 the one where bad data costs the most \u2014 not the most technically complex one",
+        "Re-run skill and prompt evals on every model upgrade; skills are contracts versioned against a specific model, and instruction placement inside the file can silently stop working",
+        "Route only cases where the agent and the verifiers disagree to subject-matter experts, instead of having SMEs review everything",
+        "Decompose long-horizon tasks into steps with a separate prompt and verifier per step so a run can terminate early at the first failure",
+        "Keep a held-out test set the agent has never seen during experimentation, use it sparingly, and refresh it with production data"
+      ],
+      "avoid": [
+        "Shipping a judge whose score gates nothing, or a check that only logs a warning",
+        "Using pre-built helpfulness/toxicity/conciseness metrics as core metrics \u2014 a 0.5 helpfulness score is not actionable",
+        "Fixing a failure by adding another prohibition to the prompt instead of the harness, skill, or structured output",
+        "Hyperfixating on a single failing run; drive fixes from failure patterns measured across many examples, since the systems are non-deterministic",
+        "Using off-the-shelf frontier models as user simulators for support \u2014 they are trained to be helpful and produce unrealistically polite, articulate complaints",
+        "Training a quality judge on human-footage-good vs AI-footage-bad pairs, which yields an AI detector rather than a quality detector",
+        "Reading only aggregate pass rate \u2014 failures like removing a legally required disclaimer are invisible there and only show up in traces",
+        "Using the same AI that wrote the code to verify the code; verification needs a different methodology than generation",
+        "Letting the agent detect that it is in a simulation \u2014 it will reward-hack the environment",
+        "Skipping looking at raw data, which breaks the chain from labels to criteria to judge validation to knowing whether the pipeline works",
+        "Chasing perfect benchmark scores, which drifts focus away from the humans the benchmarks exist to protect",
+        "Jumping to scaled raters too early, which produces large swings in measured quality while eval and model are both still being calibrated"
+      ]
+    },
+    "notable_outliers": [
+      {
+        "claim": "Fine-tune the user simulator until the evaluation score goes down \u2014 a falling number is the success criterion for eval realism, not a quality regression.",
+        "talk": "build-evals-that-actually-matter",
+        "timestamp_sec": 1015
+      },
+      {
+        "claim": "Evals and environments are the same thing \u2014 you just train in environments \u2014 so an enterprise's durable value is in building 10-20 careful environments, not harnesses, which will commoditize.",
+        "talk": "morgan-stanleys-alphalab-multi-agent-research-across-optimization-domains",
+        "timestamp_sec": 981
+      },
+      {
+        "claim": "A larger evaluator model was measurably more accurate and was still rejected: a distilled small VLM scoring a 15-second video in ~3 seconds won because the added accuracy did not justify the slowness, and the tradeoff only flips at thousands to tens of thousands of videos per day.",
+        "talk": "evaling-video-slop",
+        "timestamp_sec": 542
+      },
+      {
+        "claim": "If an optimized agent variant meets its target eval scores, it can be shipped to production automatically with no human review.",
+        "talk": "the-agentic-ai-engineer",
+        "timestamp_sec": 1367
+      },
+      {
+        "claim": "Day one they had to turn off the frontier providers' built-in guardrails because general-purpose LLMs are over-calibrated for mental health, and an inappropriate guardrail trigger is itself a harm \u2014 the objective is more correct triggers, not more triggers.",
+        "talk": "evals-driven-development-for-a-mental-health-ai-coach",
+        "timestamp_sec": 1184
+      },
+      {
+        "claim": "Constraining the agent's effects rather than its reasoning \u2014 forcing all graph-editing code through a typed SDK as the only door, with a deterministic validation script on completion \u2014 moved internal eval outcomes from about 43% to 92%.",
+        "talk": "respect-the-process",
+        "timestamp_sec": 800
+      },
+      {
+        "claim": "Human code review is not a viable backstop: participants followed AI advice nearly 80% of the time even when the AI was wrong.",
+        "talk": "guide-verify-solve",
+        "timestamp_sec": 395
+      }
+    ],
+    "maturity": "consolidating",
+    "maturity_rationale": "Across 13 independent talks there is durable agreement on the core mechanics \u2014 gate on the score, build a private benchmark from production traces, validate the judge, score the trajectory, distrust an eval that is too easy \u2014 and these are now stated as settled practice rather than argued for. The contested edges are real but narrower: where evaluation runs (pre-release gate vs. inside the generation loop), what the judge emits (binary vs. rationale vs. pairwise), and how much of the loop can close without a human owning the definition of correct."
+  },
+  "_meta": {
+    "concept": "eval-driven development",
+    "slug": "eval-driven-development",
+    "talk_count": 13,
+    "missing_talks": [],
+    "wall_sec": 160.9,
+    "run_at": "2026-08-13T17:52:21Z"
+  }
+}

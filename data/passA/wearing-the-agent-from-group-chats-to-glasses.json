@@ -1,0 +1,312 @@
+{
+  "is_error": false,
+  "duration_api_ms": 52482,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "f2bc055e-db59-44c1-8bb0-d7e5d4da6539",
+  "total_cost_usd": 0.21138,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 9197,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 4342,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 9197,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 4342,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 9197,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 9197
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 5616,
+      "outputTokens": 16,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.0056960000000000005,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 4342,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 9197,
+      "webSearchRequests": 0,
+      "costUSD": 0.205684,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Sai Krishna Rallabandi argues that the agent stack we've collectively built assumes a 'customer of size one,' and that the next wave \u2014 agents living in group chats and always-on wearables like glasses \u2014 breaks those assumptions in three specific places: security, memory, and routing. Drawing on Judith, an agent he deployed among friends and family for eight months, he shows examples of an agent DMing a user instead of answering in the group, syncing calendars across a household, and speaking through glasses rather than a car's speakers to preserve privacy. His central technical claims: guard at the action surface rather than the input (because you cannot gate everything an all-day agent reads), treat memory as atomic fact extraction with continual relevance scoring rather than store-everything-then-compact, and bake per-user permissions into per-user LoRA adapters over a shared memory layer instead of into code. He also cites work showing that two individually benign skills can combine into a malicious runtime behavior, so static scanning is insufficient. Worth watching if you're designing multi-user or ambient agents and want a concrete checklist of what changes versus the single-user case.\",\n  \"key_points\": [\n    \"Nearly every agent built today has a 'customer of size one,' and the next generation will serve groups and run all day on wearables, which changes the engineering problem rather than merely scaling it.\",\n    \"Agentic systems cannot be secured the way an LLM is secured, because the agent acts on the world and its surface area \u2014 web pages, group messages, GitHub issues, promotional emails \u2014 is far larger and is amplified in group settings.\",\n    \"Static scanning is insufficient: cited papers found that code surviving a static scan can break at runtime, and that two individually benign skills can become malignant when run together, with around 90% of observed attacks fitting this pattern.\",\n    \"The recommended defense is to let the agent read everything but place a fast deterministic guard at the action surface (bash variables, exports, secret configs), classifying actions into allow, require-approval, and block.\",\n    \"Regex and traditional NLP guards fail on evasion like text interspersed with dots ('L.I.K.E'), which motivates training a LoRA-fine-tuned small language model to separate the data channel from the instruction channel; on the inspect agent benchmark the naive baseline is a coin flip at 50%.\",\n    \"In a group setting the model is just the engine while memory is what the agent becomes, so storage, curation, and forgetting matter more than in single-user deployments.\",\n    \"Rather than storing full conversations and compacting later, extract atomic high-value facts and build autoraters that check extraction quality, relevance, hierarchical relationships, temporal decay, and retrieval accuracy.\",\n    \"A continually-adapting relevance scorer enables knowledge-based compaction and real token savings, and any memory injection engine should be KV-cache-aware since cache reuse breaks when you get clever with the model.\",\n    \"Privacy in a shared assistant is contextual \u2014 the same fact is benign or sensitive depending on the room \u2014 and permissions can be baked in via per-user LoRA adapters over a shared memory layer plus a classifier that decides when the agent should speak at all.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"almost every agent we build today has the customer of size one\",\n      \"timestamp_sec\": 85,\n      \"why\": \"The one-line framing the entire talk hangs on.\"\n    },\n    {\n      \"text\": \"you work hard as an engineer to solve a problem and then the moment you solve it, you realize that the question itself has slightly changed\",\n      \"timestamp_sec\": 132,\n      \"why\": \"Names the structural reason single-user agent engineering may already be obsolete.\"\n    },\n    {\n      \"text\": \"group settings pose uniquely different challenges compared to settings where we have single users\",\n      \"timestamp_sec\": 132,\n      \"why\": \"The talk's core thesis stated plainly.\"\n    },\n    {\n      \"text\": \"an agent called Judith which is deployed in a group setting among friends and family for a period of 8 months\",\n      \"timestamp_sec\": 132,\n      \"why\": \"Establishes the production deployment the examples come from.\"\n    },\n    {\n      \"text\": \"the agent didn't chose to not answer in the group but DM' me because of the privacy issue\",\n      \"timestamp_sec\": 177,\n      \"why\": \"Concrete instance of routing-as-privacy, the talk's third pillar.\"\n    },\n    {\n      \"text\": \"we can't secure an agentic system like we secure a large language model\",\n      \"timestamp_sec\": 332,\n      \"why\": \"The security section's thesis in one sentence.\"\n    },\n    {\n      \"text\": \"the surface area that the agentic system touches is much more richer and more vast compared to a large language model and it is amplified in a group setting\",\n      \"timestamp_sec\": 378,\n      \"why\": \"States why agent security is categorically harder, with the group multiplier.\"\n    },\n    {\n      \"text\": \"we can't guard everything and remove everything from entering there has to be a balance between how we design the security layer\",\n      \"timestamp_sec\": 378,\n      \"why\": \"The tradeoff that justifies action-surface guarding over input filtering.\"\n    },\n    {\n      \"text\": \"a static scan surviving code can break at runtime\",\n      \"timestamp_sec\": 456,\n      \"why\": \"The empirical result undercutting static-analysis-based skill vetting.\"\n    },\n    {\n      \"text\": \"two skills which are benign at the surface when they run together they can be malignant\",\n      \"timestamp_sec\": 456,\n      \"why\": \"Names the compositional attack class most skill marketplaces don't model.\"\n    },\n    {\n      \"text\": \"The the papers have observed that around 90% of the attacks have this.\",\n      \"timestamp_sec\": 511,\n      \"why\": \"The only hard frequency number offered for the compositional attack pattern.\"\n    },\n    {\n      \"text\": \"Instead of guarding whatever the agent reads, we let the agent read everything and then design a guard which is deterministic.\",\n      \"timestamp_sec\": 562,\n      \"why\": \"The talk's central architectural recommendation for agent security.\"\n    },\n    {\n      \"text\": \"the naive approach here is basically at 50% which is a coin flip and it improves on top of that\",\n      \"timestamp_sec\": 655,\n      \"why\": \"Reports the benchmark baseline the learned guard is measured against.\"\n    },\n    {\n      \"text\": \"if you write it interspersed with dots like I do. LIi. K. The regax based approaches and most of the static approaches fail at that.\",\n      \"timestamp_sec\": 655,\n      \"why\": \"Concrete evasion that motivates replacing regex guards with a learned model.\"\n    },\n    {\n      \"text\": \"we want to be able to build a system not at the input because that is going to gate everything but at the action surface where the agent actually is performing some task\",\n      \"timestamp_sec\": 655,\n      \"why\": \"The clearest statement of the input-vs-action-surface tradeoff.\"\n    },\n    {\n      \"text\": \"the model is just the engine especially when it comes to a group chat\",\n      \"timestamp_sec\": 749,\n      \"why\": \"Sets up the claim that memory, not the model, defines a group agent.\"\n    },\n    {\n      \"text\": \"The memory is what the agent becomes and it's becoming in real time it's evolving in real time.\",\n      \"timestamp_sec\": 749,\n      \"why\": \"The memoir line of the memory section; frames memory as identity rather than storage.\"\n    },\n    {\n      \"text\": \"A probably smarter way would be to ex extract some form of atomic information, atomic bits from this conversation.\",\n      \"timestamp_sec\": 830,\n      \"why\": \"States the alternative to store-everything-and-compact.\"\n    },\n    {\n      \"text\": \"once we have a relevant scorer which is continuously adapting we can save much more on the tokens because now we are doing knowledge based compaction\",\n      \"timestamp_sec\": 923,\n      \"why\": \"Ties continual relevance scoring to a measurable cost benefit.\"\n    },\n    {\n      \"text\": \"we all of us use KV caches and KV caches break when we try to do something cute with respect to the model\",\n      \"timestamp_sec\": 923,\n      \"why\": \"A practical serving constraint most memory-architecture talks omit.\"\n    },\n    {\n      \"text\": \"a shared assistant is not just a large model which is shared between different people but it's almost a new social contract\",\n      \"timestamp_sec\": 966,\n      \"why\": \"Reframes multi-user agents as a social rather than purely technical problem.\"\n    },\n    {\n      \"text\": \"the data has not changed the room in which it is deployed has changed\",\n      \"timestamp_sec\": 966,\n      \"why\": \"Crisp formulation of contextual privacy \u2014 sensitivity is a property of context, not content.\"\n    },\n    {\n      \"text\": \"Therefore the permissions are baked in. Now this is baking the permissions not by using code but by using machine learning itself.\",\n      \"timestamp_sec\": 1032,\n      \"why\": \"The most contestable design claim in the talk: permissions enforced by adapters rather than access control code.\"\n    },\n    {\n      \"text\": \"A typical observation from where agents are deployed in group setting is they tend to o be over proact be over uh articulative when they are not asked questions.\",\n      \"timestamp_sec\": 1032,\n      \"why\": \"Names the dominant failure mode of group-deployed agents from real usage.\"\n    }\n  ],\n  \"concepts\": [\n    \"multi-user agents\",\n    \"prompt injection defense\",\n    \"action-surface guarding\",\n    \"compositional skill attacks\",\n    \"agent memory architecture\",\n    \"atomic fact extraction\",\n    \"knowledge-based compaction\",\n    \"kv cache aware serving\",\n    \"contextual privacy\",\n    \"per-user lora adapters\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Almost every agent built today serves a single user, and the next generation will serve groups and run all day on wearables.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 85\n    },\n    {\n      \"claim\": \"Agentic systems require a fundamentally different security approach than LLMs because they act on the world, giving them a far larger attack surface.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 332\n    },\n    {\n      \"claim\": \"Static scanning of agent skills is insufficient; code that passes a static scan can break at runtime, and two benign skills can be malignant in combination.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 456\n    },\n    {\n      \"claim\": \"Around 90% of observed attacks involve the pattern where individually benign skills combine to exfiltrate data.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 511\n    },\n    {\n      \"claim\": \"Security should be enforced at the action surface with a fast deterministic guard, not by filtering everything the agent reads.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 562\n    },\n    {\n      \"claim\": \"Regex and static approaches fail against character-interspersed obfuscation, so a learned model is needed as a guard.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 655\n    },\n    {\n      \"claim\": \"On the inspect agent benchmark, the naive guard baseline performs at 50% \u2014 a coin flip \u2014 and the trained model improves on it.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 655\n    },\n    {\n      \"claim\": \"In group deployments memory, not the model, is what determines the agent's behavior and identity.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 749\n    },\n    {\n      \"claim\": \"Extracting atomic facts from conversations is superior to storing everything and compacting when context overflows.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 830\n    },\n    {\n      \"claim\": \"A continually adapting relevance scorer enables knowledge-based compaction that saves substantially more tokens than naive compaction.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 923\n    },\n    {\n      \"claim\": \"Memory injection engines must be KV-cache-aware, because clever model-side manipulation breaks cache reuse.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 923\n    },\n    {\n      \"claim\": \"Whether information is public or private depends on the room it is shared in, not on the data itself.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 966\n    },\n    {\n      \"claim\": \"Per-user LoRA adapters over a shared memory layer are a better way to enforce permissions than implementing access control in code.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1032\n    },\n    {\n      \"claim\": \"Agents deployed in group settings tend to be over-proactive and speak when not asked, which a small classifier trained to predict turn-taking could fix.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1082\n    },\n    {\n      \"claim\": \"Group agent harnesses need three components beyond the standard single-user stack: a security gate, a curated memory layer, and information routing.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1126\n    }\n  ],\n  \"speaker_org\": null\n}",
+  "ttft_ms": 51178,
+  "ttft_stream_ms": 940,
+  "time_to_request_ms": 37,
+  "type": "result",
+  "duration_ms": 53174,
+  "uuid": "03731422-0b8f-4019-a6fa-7d0125eefa16",
+  "passA": {
+    "summary": "Sai Krishna Rallabandi argues that the agent stack we've collectively built assumes a 'customer of size one,' and that the next wave \u2014 agents living in group chats and always-on wearables like glasses \u2014 breaks those assumptions in three specific places: security, memory, and routing. Drawing on Judith, an agent he deployed among friends and family for eight months, he shows examples of an agent DMing a user instead of answering in the group, syncing calendars across a household, and speaking through glasses rather than a car's speakers to preserve privacy. His central technical claims: guard at the action surface rather than the input (because you cannot gate everything an all-day agent reads), treat memory as atomic fact extraction with continual relevance scoring rather than store-everything-then-compact, and bake per-user permissions into per-user LoRA adapters over a shared memory layer instead of into code. He also cites work showing that two individually benign skills can combine into a malicious runtime behavior, so static scanning is insufficient. Worth watching if you're designing multi-user or ambient agents and want a concrete checklist of what changes versus the single-user case.",
+    "key_points": [
+      "Nearly every agent built today has a 'customer of size one,' and the next generation will serve groups and run all day on wearables, which changes the engineering problem rather than merely scaling it.",
+      "Agentic systems cannot be secured the way an LLM is secured, because the agent acts on the world and its surface area \u2014 web pages, group messages, GitHub issues, promotional emails \u2014 is far larger and is amplified in group settings.",
+      "Static scanning is insufficient: cited papers found that code surviving a static scan can break at runtime, and that two individually benign skills can become malignant when run together, with around 90% of observed attacks fitting this pattern.",
+      "The recommended defense is to let the agent read everything but place a fast deterministic guard at the action surface (bash variables, exports, secret configs), classifying actions into allow, require-approval, and block.",
+      "Regex and traditional NLP guards fail on evasion like text interspersed with dots ('L.I.K.E'), which motivates training a LoRA-fine-tuned small language model to separate the data channel from the instruction channel; on the inspect agent benchmark the naive baseline is a coin flip at 50%.",
+      "In a group setting the model is just the engine while memory is what the agent becomes, so storage, curation, and forgetting matter more than in single-user deployments.",
+      "Rather than storing full conversations and compacting later, extract atomic high-value facts and build autoraters that check extraction quality, relevance, hierarchical relationships, temporal decay, and retrieval accuracy.",
+      "A continually-adapting relevance scorer enables knowledge-based compaction and real token savings, and any memory injection engine should be KV-cache-aware since cache reuse breaks when you get clever with the model.",
+      "Privacy in a shared assistant is contextual \u2014 the same fact is benign or sensitive depending on the room \u2014 and permissions can be baked in via per-user LoRA adapters over a shared memory layer plus a classifier that decides when the agent should speak at all."
+    ],
+    "notable_quotes": [
+      {
+        "text": "almost every agent we build today has the customer of size one",
+        "timestamp_sec": 85,
+        "why": "The one-line framing the entire talk hangs on."
+      },
+      {
+        "text": "you work hard as an engineer to solve a problem and then the moment you solve it, you realize that the question itself has slightly changed",
+        "timestamp_sec": 132,
+        "why": "Names the structural reason single-user agent engineering may already be obsolete."
+      },
+      {
+        "text": "group settings pose uniquely different challenges compared to settings where we have single users",
+        "timestamp_sec": 132,
+        "why": "The talk's core thesis stated plainly."
+      },
+      {
+        "text": "an agent called Judith which is deployed in a group setting among friends and family for a period of 8 months",
+        "timestamp_sec": 132,
+        "why": "Establishes the production deployment the examples come from."
+      },
+      {
+        "text": "the agent didn't chose to not answer in the group but DM' me because of the privacy issue",
+        "timestamp_sec": 177,
+        "why": "Concrete instance of routing-as-privacy, the talk's third pillar."
+      },
+      {
+        "text": "we can't secure an agentic system like we secure a large language model",
+        "timestamp_sec": 332,
+        "why": "The security section's thesis in one sentence."
+      },
+      {
+        "text": "the surface area that the agentic system touches is much more richer and more vast compared to a large language model and it is amplified in a group setting",
+        "timestamp_sec": 378,
+        "why": "States why agent security is categorically harder, with the group multiplier."
+      },
+      {
+        "text": "we can't guard everything and remove everything from entering there has to be a balance between how we design the security layer",
+        "timestamp_sec": 378,
+        "why": "The tradeoff that justifies action-surface guarding over input filtering."
+      },
+      {
+        "text": "a static scan surviving code can break at runtime",
+        "timestamp_sec": 456,
+        "why": "The empirical result undercutting static-analysis-based skill vetting."
+      },
+      {
+        "text": "two skills which are benign at the surface when they run together they can be malignant",
+        "timestamp_sec": 456,
+        "why": "Names the compositional attack class most skill marketplaces don't model."
+      },
+      {
+        "text": "The the papers have observed that around 90% of the attacks have this.",
+        "timestamp_sec": 511,
+        "why": "The only hard frequency number offered for the compositional attack pattern."
+      },
+      {
+        "text": "Instead of guarding whatever the agent reads, we let the agent read everything and then design a guard which is deterministic.",
+        "timestamp_sec": 562,
+        "why": "The talk's central architectural recommendation for agent security."
+      },
+      {
+        "text": "the naive approach here is basically at 50% which is a coin flip and it improves on top of that",
+        "timestamp_sec": 655,
+        "why": "Reports the benchmark baseline the learned guard is measured against."
+      },
+      {
+        "text": "if you write it interspersed with dots like I do. LIi. K. The regax based approaches and most of the static approaches fail at that.",
+        "timestamp_sec": 655,
+        "why": "Concrete evasion that motivates replacing regex guards with a learned model."
+      },
+      {
+        "text": "we want to be able to build a system not at the input because that is going to gate everything but at the action surface where the agent actually is performing some task",
+        "timestamp_sec": 655,
+        "why": "The clearest statement of the input-vs-action-surface tradeoff."
+      },
+      {
+        "text": "the model is just the engine especially when it comes to a group chat",
+        "timestamp_sec": 749,
+        "why": "Sets up the claim that memory, not the model, defines a group agent."
+      },
+      {
+        "text": "The memory is what the agent becomes and it's becoming in real time it's evolving in real time.",
+        "timestamp_sec": 749,
+        "why": "The memoir line of the memory section; frames memory as identity rather than storage."
+      },
+      {
+        "text": "A probably smarter way would be to ex extract some form of atomic information, atomic bits from this conversation.",
+        "timestamp_sec": 830,
+        "why": "States the alternative to store-everything-and-compact."
+      },
+      {
+        "text": "once we have a relevant scorer which is continuously adapting we can save much more on the tokens because now we are doing knowledge based compaction",
+        "timestamp_sec": 923,
+        "why": "Ties continual relevance scoring to a measurable cost benefit."
+      },
+      {
+        "text": "we all of us use KV caches and KV caches break when we try to do something cute with respect to the model",
+        "timestamp_sec": 923,
+        "why": "A practical serving constraint most memory-architecture talks omit."
+      },
+      {
+        "text": "a shared assistant is not just a large model which is shared between different people but it's almost a new social contract",
+        "timestamp_sec": 966,
+        "why": "Reframes multi-user agents as a social rather than purely technical problem."
+      },
+      {
+        "text": "the data has not changed the room in which it is deployed has changed",
+        "timestamp_sec": 966,
+        "why": "Crisp formulation of contextual privacy \u2014 sensitivity is a property of context, not content."
+      },
+      {
+        "text": "Therefore the permissions are baked in. Now this is baking the permissions not by using code but by using machine learning itself.",
+        "timestamp_sec": 1032,
+        "why": "The most contestable design claim in the talk: permissions enforced by adapters rather than access control code."
+      },
+      {
+        "text": "A typical observation from where agents are deployed in group setting is they tend to o be over proact be over uh articulative when they are not asked questions.",
+        "timestamp_sec": 1032,
+        "why": "Names the dominant failure mode of group-deployed agents from real usage."
+      }
+    ],
+    "concepts": [
+      "multi-user agents",
+      "prompt injection defense",
+      "action-surface guarding",
+      "compositional skill attacks",
+      "agent memory architecture",
+      "atomic fact extraction",
+      "knowledge-based compaction",
+      "kv cache aware serving",
+      "contextual privacy",
+      "per-user lora adapters"
+    ],
+    "positions": [
+      {
+        "claim": "Almost every agent built today serves a single user, and the next generation will serve groups and run all day on wearables.",
+        "confidence": "stated",
+        "timestamp_sec": 85
+      },
+      {
+        "claim": "Agentic systems require a fundamentally different security approach than LLMs because they act on the world, giving them a far larger attack surface.",
+        "confidence": "stated",
+        "timestamp_sec": 332
+      },
+      {
+        "claim": "Static scanning of agent skills is insufficient; code that passes a static scan can break at runtime, and two benign skills can be malignant in combination.",
+        "confidence": "stated",
+        "timestamp_sec": 456
+      },
+      {
+        "claim": "Around 90% of observed attacks involve the pattern where individually benign skills combine to exfiltrate data.",
+        "confidence": "stated",
+        "timestamp_sec": 511
+      },
+      {
+        "claim": "Security should be enforced at the action surface with a fast deterministic guard, not by filtering everything the agent reads.",
+        "confidence": "stated",
+        "timestamp_sec": 562
+      },
+      {
+        "claim": "Regex and static approaches fail against character-interspersed obfuscation, so a learned model is needed as a guard.",
+        "confidence": "stated",
+        "timestamp_sec": 655
+      },
+      {
+        "claim": "On the inspect agent benchmark, the naive guard baseline performs at 50% \u2014 a coin flip \u2014 and the trained model improves on it.",
+        "confidence": "stated",
+        "timestamp_sec": 655
+      },
+      {
+        "claim": "In group deployments memory, not the model, is what determines the agent's behavior and identity.",
+        "confidence": "stated",
+        "timestamp_sec": 749
+      },
+      {
+        "claim": "Extracting atomic facts from conversations is superior to storing everything and compacting when context overflows.",
+        "confidence": "stated",
+        "timestamp_sec": 830
+      },
+      {
+        "claim": "A continually adapting relevance scorer enables knowledge-based compaction that saves substantially more tokens than naive compaction.",
+        "confidence": "stated",
+        "timestamp_sec": 923
+      },
+      {
+        "claim": "Memory injection engines must be KV-cache-aware, because clever model-side manipulation breaks cache reuse.",
+        "confidence": "stated",
+        "timestamp_sec": 923
+      },
+      {
+        "claim": "Whether information is public or private depends on the room it is shared in, not on the data itself.",
+        "confidence": "stated",
+        "timestamp_sec": 966
+      },
+      {
+        "claim": "Per-user LoRA adapters over a shared memory layer are a better way to enforce permissions than implementing access control in code.",
+        "confidence": "stated",
+        "timestamp_sec": 1032
+      },
+      {
+        "claim": "Agents deployed in group settings tend to be over-proactive and speak when not asked, which a small classifier trained to predict turn-taking could fix.",
+        "confidence": "stated",
+        "timestamp_sec": 1082
+      },
+      {
+        "claim": "Group agent harnesses need three components beyond the standard single-user stack: a security gate, a curated memory layer, and information routing.",
+        "confidence": "stated",
+        "timestamp_sec": 1126
+      }
+    ],
+    "speaker_org": null
+  },
+  "_meta": {
+    "slug": "wearing-the-agent-from-group-chats-to-glasses",
+    "video_id": "s67bE2Ur3bY",
+    "url": "https://www.youtube.com/watch?v=s67bE2Ur3bY",
+    "word_count": 3089,
+    "wall_sec": 54.2,
+    "run_at": "2026-08-12T20:30:46Z",
+    "effort": "medium"
+  }
+}

@@ -1,0 +1,42 @@
+<!DOCTYPE html><html><head><meta charset="utf-8">
+<script src="lib/d3.min.js"></script><script src="lib/d3.layout.cloud.js"></script>
+<style>
+body{margin:0;background:#fcfcfb;font-family:-apple-system,'Segoe UI',Inter,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+.card{width:1200px;padding:56px 64px 48px;background:#fcfcfb}
+h1{font-size:38px;margin:0 0 8px;color:#0b0b0b;letter-spacing:-0.02em;line-height:1.15}
+.sub{font-size:18px;color:#52514e;margin:0 0 10px;line-height:1.5}
+.foot{margin-top:10px;font-size:15px;color:#52514e;border-top:1px solid #e6e5e1;padding-top:16px}
+</style></head><body>
+<div class="card" id="cloud">
+<h1>What 228 AI Engineer World's Fair 2026 talks were actually about</h1>
+<p class="sub">The 30 most-engaged concepts, sized by how many of the 228 talks substantively cover each one.</p>
+<div id="viz"></div>
+<p class="foot">1,011,341 words of transcript &middot; 4,582 verbatim quotes &middot; 134 concepts &middot; 1,784 concept&ndash;talk links</p>
+</div>
+<script>
+const data = [{"text": "agent harness design", "n": 47}, {"text": "agent memory", "n": 36}, {"text": "agentic loop design", "n": 30}, {"text": "agent observability and tracing", "n": 30}, {"text": "context engineering", "n": 29}, {"text": "human-in-the-loop approval", "n": 29}, {"text": "verifier design", "n": 28}, {"text": "llm-as-a-judge", "n": 27}, {"text": "agent skills", "n": 26}, {"text": "agentic coding workflows", "n": 26}, {"text": "multi-agent orchestration", "n": 25}, {"text": "inference cost optimization", "n": 25}, {"text": "rl environment design", "n": 24}, {"text": "eval harness design", "n": 24}, {"text": "reward hacking", "n": 24}, {"text": "agent execution infrastructure", "n": 21}, {"text": "agent sandboxing", "n": 21}, {"text": "least-privilege agent permissions", "n": 21}, {"text": "self-improving agent loops", "n": 20}, {"text": "context compaction", "n": 20}, {"text": "post-training", "n": 20}, {"text": "model portability", "n": 19}, {"text": "deterministic versus probabilistic system design", "n": 19}, {"text": "model routing", "n": 19}, {"text": "human-ai interaction design", "n": 18}, {"text": "context window management", "n": 18}, {"text": "benchmark design", "n": 18}, {"text": "durable execution", "n": 17}, {"text": "prompt injection defense", "n": 17}, {"text": "knowledge graph construction", "n": 16}], RAMP = ["#256abf", "#1c5cab", "#184f95", "#104281", "#0d366b"];
+const W=1072, H=600, FONT="-apple-system, 'Segoe UI', Inter, Helvetica, Arial, sans-serif";
+const mx=d3.max(data,d=>d.n), mn=d3.min(data,d=>d.n);
+const col=d3.scaleQuantize().domain([mn,mx]).range(RAMP);
+// d3-cloud silently DROPS words that do not fit. Shrink until all of them place.
+function attempt(maxFont, tries){
+  const size=d3.scalePow().exponent(0.85).domain([mn,mx]).range([maxFont*0.26, maxFont]);
+  d3.layout.cloud().size([W,H])
+    .words(data.map(d=>({text:d.text,n:d.n,size:size(d.n)})))
+    .padding(4).rotate(()=>0).spiral('archimedean')
+    .font(FONT).fontWeight(660).fontSize(d=>d.size)
+    .on('end', words=>{
+      if(words.length < data.length && tries>0){ attempt(maxFont*0.94, tries-1); return; }
+      d3.select('#viz').selectAll('*').remove();
+      const svg=d3.select('#viz').append('svg').attr('width',W).attr('height',H);
+      const g=svg.append('g').attr('transform',`translate(${W/2},${H/2})`);
+      g.selectAll('text').data(words).enter().append('text')
+        .style('font-size',d=>d.size+'px').style('font-family',FONT).style('font-weight',660)
+        .style('letter-spacing','-0.02em')
+        .attr('fill',d=>col(d.n)).attr('text-anchor','middle')
+        .attr('transform',d=>`translate(${d.x},${d.y})`).text(d=>d.text);
+      window.__placed=words.length; window.__maxFont=maxFont; window.__done=true;
+    }).start();
+}
+attempt(76, 14);
+</script></body></html>

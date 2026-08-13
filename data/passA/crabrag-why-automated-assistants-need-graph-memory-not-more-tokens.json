@@ -1,0 +1,287 @@
+{
+  "is_error": false,
+  "duration_api_ms": 46217,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "619a7739-bc9d-4ecf-a007-0ca8dba2c082",
+  "total_cost_usd": 0.211498,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 10164,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 3926,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 10164,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 3926,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 10164,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 10164
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 6469,
+      "outputTokens": 15,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.006544,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 3926,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 10164,
+      "webSearchRequests": 0,
+      "costUSD": 0.204954,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Stephen Chin of Neo4j argues that the markdown-file memory used by today's coding and personal agents (Open Claw, Hermes agent, Goose) breaks down at scale, burning 100k+ tokens per round by loading everything in hopes something is relevant. He walks through the progression from markdown files to vector stores to graphs, arguing that vector similarity is not the same as actual relationships and fails on multi-hop reasoning. The core of the talk is a live A/B demo: the same home-lab digital twin, built from the same source markdown, loaded into a vector store versus a Cognee/Neo4j graph, queried for security exposures. The graph side returns precise, actionable answers (a specific Debian 8 Minecraft server, specific WAN-exposed ports) where the vector side punts or tells the user to go check the config themselves. Worth watching if you want a concrete side-by-side of vector vs. graph memory rather than an abstract GraphRAG pitch, plus a practical architecture: vector search for seed nodes, then graph traversal and ranking.\",\n  \"key_points\": [\n    \"Agent memory in most current tools is just markdown files (agent memory files, tool files, daily memory files), which are human-readable but token-wasteful because everything gets loaded speculatively.\",\n    \"Chin reports his average agents load at least 100k tokens per round, largely repetitively, which is tolerable at small scale with a high-quality model but fails at large scale.\",\n    \"Skill-based systems fail when the wrong skill or no skill loads, and chains of skills are needed to complete a task; Neo4j has an arXiv paper on representing skills as a graph.\",\n    \"Goose treats memory as just another MCP server with pluggable remember/retrieve/forget commands, but the underlying storage is still plain files on disk \u2014 and exposing a forget command means the agent is one tool call from wiping its own memory.\",\n    \"Vector databases improve retrieval but similarity in vector space is not the same as real relationships, producing hallucinations and failing on long multi-hop reasoning chains even when all the facts are present.\",\n    \"The demo architecture combines both: vector search finds the seed nodes, then graph traversal pulls nearest neighbors and ranks them by relatedness, giving multi-hop answers.\",\n    \"Graphs give accuracy, explainability, and auditability \u2014 you can inspect exactly which subgraph produced the answer and then fix extraction or deduplicate nodes to converge on better results.\",\n    \"You don't need graph expertise to start: Chin claims Claude writes Cypher better than he does and can build entity extractors, so long as you know the model you're trying to build.\",\n    \"The A/B test on identical source data showed the vector store returning 'couldn't find specific details' and deflecting work back to the user, while the graph store named the exact out-of-date host and the exact WAN-exposed services.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"But, if your whole memory is a bunch of markdown files, you're wasting a lot of tokens.\",\n      \"timestamp_sec\": 177,\n      \"why\": \"The talk's thesis in one line.\"\n    },\n    {\n      \"text\": \"my my average agents are loading up at least 100k in tokens for each round.\",\n      \"timestamp_sec\": 212,\n      \"why\": \"Concrete number quantifying the cost of file-based memory.\"\n    },\n    {\n      \"text\": \"they they basically load up everything in the hopes that something will be useful in the context. At small scale that works where you get the results you want with a high quality model. It doesn't work at large scale\",\n      \"timestamp_sec\": 212,\n      \"why\": \"States the scale-dependent tradeoff explicitly.\"\n    },\n    {\n      \"text\": \"He wakes up every day, and his memory file flips, and now it's a new day, and he forgets everything from yesterday.\",\n      \"timestamp_sec\": 59,\n      \"why\": \"Frames the problem the whole talk addresses.\"\n    },\n    {\n      \"text\": \"It kind of at the end of each task it goes and it reflects and it adds back in new skills or new things which it needs.\",\n      \"timestamp_sec\": 293,\n      \"why\": \"Names a specific competing memory mechanism (Hermes agent reflection) and credits it.\"\n    },\n    {\n      \"text\": \"It relies heavily on MCP as the layer. Over 70 MCP extensions. And what it does is it treats memory just like another MCP server.\",\n      \"timestamp_sec\": 341,\n      \"why\": \"Reports a number and characterizes Goose's memory architecture.\"\n    },\n    {\n      \"text\": \"same great idea, same fundamental problem. We're We're storing the memory. We're storing the memory of agents as markdown files on disks.\",\n      \"timestamp_sec\": 383,\n      \"why\": \"The critique that unifies Open Claw, Hermes, and Goose.\"\n    },\n    {\n      \"text\": \"most dangerously, now you have MCP tools, you're one step away from calling the forget command and just wiping out your own memory.\",\n      \"timestamp_sec\": 383,\n      \"why\": \"Names a specific failure mode of tool-exposed memory.\"\n    },\n    {\n      \"text\": \"the challenge here is similar what what vectors give you, which is similarity in vector space, is not the same as actual relationships.\",\n      \"timestamp_sec\": 477,\n      \"why\": \"The core argument against vector-only memory.\"\n    },\n    {\n      \"text\": \"it's sometimes impossible to get to the answer even though you have all the facts because those large multi-hop reasoning chains don't work on similarity searches.\",\n      \"timestamp_sec\": 513,\n      \"why\": \"Sharpest statement of the vector-store limitation.\"\n    },\n    {\n      \"text\": \"you suffer from getting facts which are related in some way and they're not your shell.\",\n      \"timestamp_sec\": 556,\n      \"why\": \"Memorable framing of near-miss retrieval.\"\n    },\n    {\n      \"text\": \"it uses the vector search to get the seed nodes where it starts the traversal. And then it uses a graph search pulling the the nearest neighbors and then ranking those by how related they are.\",\n      \"timestamp_sec\": 610,\n      \"why\": \"The actual hybrid architecture behind the demo.\"\n    },\n    {\n      \"text\": \"graphs are they're accurate. So, they give you very precise information. Explainable because you can look at the graph which got returned. And auditable because now you can actually say these are the this is the context.\",\n      \"timestamp_sec\": 652,\n      \"why\": \"States the three claimed advantages of graph memory.\"\n    },\n    {\n      \"text\": \"If you're not a graph expert, guess what? Claude is. Claude can write Cypher better than I can.\",\n      \"timestamp_sec\": 693,\n      \"why\": \"Directly addresses the adoption objection to graphs.\"\n    },\n    {\n      \"text\": \"We're going to do have Claude write each action into the graph as he works. We're going to follow up by traversing, not re-reading it.\",\n      \"timestamp_sec\": 693,\n      \"why\": \"Compresses the write-then-traverse memory pattern into one sentence.\"\n    },\n    {\n      \"text\": \"One is a vector database store, that's our our A test. And the second is a graph store, that's our B test.\",\n      \"timestamp_sec\": 724,\n      \"why\": \"Establishes the demo is a controlled comparison on identical source data.\"\n    },\n    {\n      \"text\": \"so it gives us very precise actionable information. And so that's the difference between same same exact data. One is a vector store, one is a graph store\",\n      \"timestamp_sec\": 855,\n      \"why\": \"The demo's punchline claim.\"\n    },\n    {\n      \"text\": \"the memory search returned some information and it's telling me check services configuration expects pfSense rule. So, it told me to go do the job for it.\",\n      \"timestamp_sec\": 942,\n      \"why\": \"Names a specific observed failure mode of the vector-backed agent.\"\n    },\n    {\n      \"text\": \"if you're doing anything at at large scale where it doesn't fit into the 1 million context window of the modern models, you really need a better memory system than just throwing things in markdown files.\",\n      \"timestamp_sec\": 1035,\n      \"why\": \"The talk's closing recommendation, with the scale threshold made explicit.\"\n    }\n  ],\n  \"concepts\": [\n    \"agent memory\",\n    \"graph rag\",\n    \"vector similarity search\",\n    \"multi-hop reasoning\",\n    \"context window management\",\n    \"hybrid vector-graph retrieval\",\n    \"agent skills\",\n    \"mcp servers\",\n    \"knowledge graph construction\",\n    \"retrieval explainability\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Storing agent memory as markdown files wastes a large number of tokens because everything is loaded speculatively.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 177\n    },\n    {\n      \"claim\": \"His agents load at least 100k tokens per round.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 212\n    },\n    {\n      \"claim\": \"File-based memory works at small scale with a high-quality model but does not work at large scale.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 212\n    },\n    {\n      \"claim\": \"Hermes agent has a better memory system than Open Claw because it reflects at the end of each task and writes back new skills.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 293\n    },\n    {\n      \"claim\": \"Goose has over 70 MCP extensions and treats memory as just another MCP server backed by plain files.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 341\n    },\n    {\n      \"claim\": \"Exposing memory through MCP tools creates a risk that the agent calls the forget command and wipes its own memory.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 383\n    },\n    {\n      \"claim\": \"Similarity in vector space is not the same as actual relationships, and relying solely on vector lookup causes hallucinations.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 477\n    },\n    {\n      \"claim\": \"Long multi-hop reasoning chains cannot be resolved by similarity search even when all the needed facts are stored.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 513\n    },\n    {\n      \"claim\": \"Multi-hop queries are also very expensive on traditional relational databases.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 556\n    },\n    {\n      \"claim\": \"The best architecture uses vector search to select seed nodes and then graph traversal with relatedness ranking to assemble context.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 610\n    },\n    {\n      \"claim\": \"Graph-based retrieval is accurate, explainable, and auditable because you can inspect the returned subgraph that produced the answer.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 652\n    },\n    {\n      \"claim\": \"Claude can write Cypher better than the speaker can and can build entity extractors, so graph expertise is not a prerequisite for adopting graph memory.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 693\n    },\n    {\n      \"claim\": \"On identical source data, a graph store produces precise actionable answers where a vector store fails to surface the relevant information.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 855\n    },\n    {\n      \"claim\": \"Once your data exceeds the 1 million token context window of modern models, markdown-file memory is no longer viable.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1035\n    },\n    {\n      \"claim\": \"Representing skills as a graph is a promising way to solve the wrong-skill-loaded problem.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 293\n    }\n  ],\n  \"speaker_org\": \"Neo4j\"\n}",
+  "ttft_ms": 44012,
+  "ttft_stream_ms": 988,
+  "time_to_request_ms": 34,
+  "type": "result",
+  "duration_ms": 45526,
+  "uuid": "8a5a57a7-fdf5-4632-b9d9-a070d893cb7b",
+  "passA": {
+    "summary": "Stephen Chin of Neo4j argues that the markdown-file memory used by today's coding and personal agents (Open Claw, Hermes agent, Goose) breaks down at scale, burning 100k+ tokens per round by loading everything in hopes something is relevant. He walks through the progression from markdown files to vector stores to graphs, arguing that vector similarity is not the same as actual relationships and fails on multi-hop reasoning. The core of the talk is a live A/B demo: the same home-lab digital twin, built from the same source markdown, loaded into a vector store versus a Cognee/Neo4j graph, queried for security exposures. The graph side returns precise, actionable answers (a specific Debian 8 Minecraft server, specific WAN-exposed ports) where the vector side punts or tells the user to go check the config themselves. Worth watching if you want a concrete side-by-side of vector vs. graph memory rather than an abstract GraphRAG pitch, plus a practical architecture: vector search for seed nodes, then graph traversal and ranking.",
+    "key_points": [
+      "Agent memory in most current tools is just markdown files (agent memory files, tool files, daily memory files), which are human-readable but token-wasteful because everything gets loaded speculatively.",
+      "Chin reports his average agents load at least 100k tokens per round, largely repetitively, which is tolerable at small scale with a high-quality model but fails at large scale.",
+      "Skill-based systems fail when the wrong skill or no skill loads, and chains of skills are needed to complete a task; Neo4j has an arXiv paper on representing skills as a graph.",
+      "Goose treats memory as just another MCP server with pluggable remember/retrieve/forget commands, but the underlying storage is still plain files on disk \u2014 and exposing a forget command means the agent is one tool call from wiping its own memory.",
+      "Vector databases improve retrieval but similarity in vector space is not the same as real relationships, producing hallucinations and failing on long multi-hop reasoning chains even when all the facts are present.",
+      "The demo architecture combines both: vector search finds the seed nodes, then graph traversal pulls nearest neighbors and ranks them by relatedness, giving multi-hop answers.",
+      "Graphs give accuracy, explainability, and auditability \u2014 you can inspect exactly which subgraph produced the answer and then fix extraction or deduplicate nodes to converge on better results.",
+      "You don't need graph expertise to start: Chin claims Claude writes Cypher better than he does and can build entity extractors, so long as you know the model you're trying to build.",
+      "The A/B test on identical source data showed the vector store returning 'couldn't find specific details' and deflecting work back to the user, while the graph store named the exact out-of-date host and the exact WAN-exposed services."
+    ],
+    "notable_quotes": [
+      {
+        "text": "But, if your whole memory is a bunch of markdown files, you're wasting a lot of tokens.",
+        "timestamp_sec": 177,
+        "why": "The talk's thesis in one line."
+      },
+      {
+        "text": "my my average agents are loading up at least 100k in tokens for each round.",
+        "timestamp_sec": 212,
+        "why": "Concrete number quantifying the cost of file-based memory."
+      },
+      {
+        "text": "they they basically load up everything in the hopes that something will be useful in the context. At small scale that works where you get the results you want with a high quality model. It doesn't work at large scale",
+        "timestamp_sec": 212,
+        "why": "States the scale-dependent tradeoff explicitly."
+      },
+      {
+        "text": "He wakes up every day, and his memory file flips, and now it's a new day, and he forgets everything from yesterday.",
+        "timestamp_sec": 59,
+        "why": "Frames the problem the whole talk addresses."
+      },
+      {
+        "text": "It kind of at the end of each task it goes and it reflects and it adds back in new skills or new things which it needs.",
+        "timestamp_sec": 293,
+        "why": "Names a specific competing memory mechanism (Hermes agent reflection) and credits it."
+      },
+      {
+        "text": "It relies heavily on MCP as the layer. Over 70 MCP extensions. And what it does is it treats memory just like another MCP server.",
+        "timestamp_sec": 341,
+        "why": "Reports a number and characterizes Goose's memory architecture."
+      },
+      {
+        "text": "same great idea, same fundamental problem. We're We're storing the memory. We're storing the memory of agents as markdown files on disks.",
+        "timestamp_sec": 383,
+        "why": "The critique that unifies Open Claw, Hermes, and Goose."
+      },
+      {
+        "text": "most dangerously, now you have MCP tools, you're one step away from calling the forget command and just wiping out your own memory.",
+        "timestamp_sec": 383,
+        "why": "Names a specific failure mode of tool-exposed memory."
+      },
+      {
+        "text": "the challenge here is similar what what vectors give you, which is similarity in vector space, is not the same as actual relationships.",
+        "timestamp_sec": 477,
+        "why": "The core argument against vector-only memory."
+      },
+      {
+        "text": "it's sometimes impossible to get to the answer even though you have all the facts because those large multi-hop reasoning chains don't work on similarity searches.",
+        "timestamp_sec": 513,
+        "why": "Sharpest statement of the vector-store limitation."
+      },
+      {
+        "text": "you suffer from getting facts which are related in some way and they're not your shell.",
+        "timestamp_sec": 556,
+        "why": "Memorable framing of near-miss retrieval."
+      },
+      {
+        "text": "it uses the vector search to get the seed nodes where it starts the traversal. And then it uses a graph search pulling the the nearest neighbors and then ranking those by how related they are.",
+        "timestamp_sec": 610,
+        "why": "The actual hybrid architecture behind the demo."
+      },
+      {
+        "text": "graphs are they're accurate. So, they give you very precise information. Explainable because you can look at the graph which got returned. And auditable because now you can actually say these are the this is the context.",
+        "timestamp_sec": 652,
+        "why": "States the three claimed advantages of graph memory."
+      },
+      {
+        "text": "If you're not a graph expert, guess what? Claude is. Claude can write Cypher better than I can.",
+        "timestamp_sec": 693,
+        "why": "Directly addresses the adoption objection to graphs."
+      },
+      {
+        "text": "We're going to do have Claude write each action into the graph as he works. We're going to follow up by traversing, not re-reading it.",
+        "timestamp_sec": 693,
+        "why": "Compresses the write-then-traverse memory pattern into one sentence."
+      },
+      {
+        "text": "One is a vector database store, that's our our A test. And the second is a graph store, that's our B test.",
+        "timestamp_sec": 724,
+        "why": "Establishes the demo is a controlled comparison on identical source data."
+      },
+      {
+        "text": "so it gives us very precise actionable information. And so that's the difference between same same exact data. One is a vector store, one is a graph store",
+        "timestamp_sec": 855,
+        "why": "The demo's punchline claim."
+      },
+      {
+        "text": "the memory search returned some information and it's telling me check services configuration expects pfSense rule. So, it told me to go do the job for it.",
+        "timestamp_sec": 942,
+        "why": "Names a specific observed failure mode of the vector-backed agent."
+      },
+      {
+        "text": "if you're doing anything at at large scale where it doesn't fit into the 1 million context window of the modern models, you really need a better memory system than just throwing things in markdown files.",
+        "timestamp_sec": 1035,
+        "why": "The talk's closing recommendation, with the scale threshold made explicit."
+      }
+    ],
+    "concepts": [
+      "agent memory",
+      "graph rag",
+      "vector similarity search",
+      "multi-hop reasoning",
+      "context window management",
+      "hybrid vector-graph retrieval",
+      "agent skills",
+      "mcp servers",
+      "knowledge graph construction",
+      "retrieval explainability"
+    ],
+    "positions": [
+      {
+        "claim": "Storing agent memory as markdown files wastes a large number of tokens because everything is loaded speculatively.",
+        "confidence": "stated",
+        "timestamp_sec": 177
+      },
+      {
+        "claim": "His agents load at least 100k tokens per round.",
+        "confidence": "stated",
+        "timestamp_sec": 212
+      },
+      {
+        "claim": "File-based memory works at small scale with a high-quality model but does not work at large scale.",
+        "confidence": "stated",
+        "timestamp_sec": 212
+      },
+      {
+        "claim": "Hermes agent has a better memory system than Open Claw because it reflects at the end of each task and writes back new skills.",
+        "confidence": "stated",
+        "timestamp_sec": 293
+      },
+      {
+        "claim": "Goose has over 70 MCP extensions and treats memory as just another MCP server backed by plain files.",
+        "confidence": "stated",
+        "timestamp_sec": 341
+      },
+      {
+        "claim": "Exposing memory through MCP tools creates a risk that the agent calls the forget command and wipes its own memory.",
+        "confidence": "stated",
+        "timestamp_sec": 383
+      },
+      {
+        "claim": "Similarity in vector space is not the same as actual relationships, and relying solely on vector lookup causes hallucinations.",
+        "confidence": "stated",
+        "timestamp_sec": 477
+      },
+      {
+        "claim": "Long multi-hop reasoning chains cannot be resolved by similarity search even when all the needed facts are stored.",
+        "confidence": "stated",
+        "timestamp_sec": 513
+      },
+      {
+        "claim": "Multi-hop queries are also very expensive on traditional relational databases.",
+        "confidence": "stated",
+        "timestamp_sec": 556
+      },
+      {
+        "claim": "The best architecture uses vector search to select seed nodes and then graph traversal with relatedness ranking to assemble context.",
+        "confidence": "stated",
+        "timestamp_sec": 610
+      },
+      {
+        "claim": "Graph-based retrieval is accurate, explainable, and auditable because you can inspect the returned subgraph that produced the answer.",
+        "confidence": "stated",
+        "timestamp_sec": 652
+      },
+      {
+        "claim": "Claude can write Cypher better than the speaker can and can build entity extractors, so graph expertise is not a prerequisite for adopting graph memory.",
+        "confidence": "stated",
+        "timestamp_sec": 693
+      },
+      {
+        "claim": "On identical source data, a graph store produces precise actionable answers where a vector store fails to surface the relevant information.",
+        "confidence": "stated",
+        "timestamp_sec": 855
+      },
+      {
+        "claim": "Once your data exceeds the 1 million token context window of modern models, markdown-file memory is no longer viable.",
+        "confidence": "stated",
+        "timestamp_sec": 1035
+      },
+      {
+        "claim": "Representing skills as a graph is a promising way to solve the wrong-skill-loaded problem.",
+        "confidence": "implied",
+        "timestamp_sec": 293
+      }
+    ],
+    "speaker_org": "Neo4j"
+  },
+  "_meta": {
+    "slug": "crabrag-why-automated-assistants-need-graph-memory-not-more-tokens",
+    "video_id": "Q0VkgCyNVUg",
+    "url": "https://www.youtube.com/watch?v=Q0VkgCyNVUg",
+    "word_count": 3263,
+    "wall_sec": 46.7,
+    "run_at": "2026-08-12T19:42:05Z",
+    "effort": "medium"
+  }
+}

@@ -1,0 +1,262 @@
+{
+  "is_error": false,
+  "duration_api_ms": 46314,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "ec427e23-d464-486d-9f4b-9e8946bf61c4",
+  "total_cost_usd": 0.241937,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 13289,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 3800,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 13289,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 3800,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 13289,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 13289
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 8803,
+      "outputTokens": 16,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.008883,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 3800,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 13289,
+      "webSearchRequests": 0,
+      "costUSD": 0.233054,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Ezra Tanzer, a product director at Snyk, argues that securing AI-generated code is only one third of what 'agentic development security' requires \u2014 the other two are securing the agent's supply chain (MCP servers, skills) and governing the agent's runtime actions. He walks through real incidents (Replit's agent deleting a production database and fabricating records, the Packet OS over-privileged token incident, and a VS Code extension exfiltrating ~4,000 GitHub internal repos) to show the attack surface has widened beyond code. He describes Snyk's evolution from an MCP-server-plus-rules approach \u2014 which suffered from ignored rule files, added latency, and token bloat \u2014 to asynchronous Python hooks that scan on file-write and only surface newly introduced issues at session stop, making the workflow deterministic. Colleague Dan Arpino demos 'Snappy,' an unshipped local Electron app giving developers visibility, auditability, and enforceable local guardrails over every LLM, MCP server, skill, and command running on their machine. Worth watching if you're deciding how to instrument agent security in a real dev workflow; much of the second half is Q&A and a forward-looking demo rather than shipped product.\",\n  \"key_points\": [\n    \"Securing agent-generated code is insufficient; Snyk's customers pushed them to also secure what the agent has access to and what actions the agent takes, producing a three-pillar model of generate/use/do.\",\n    \"The original MCP-server-plus-rules approach failed in practice because agents sometimes ignored rule files, scans added latency at the end of a run, and running scans through the context window consumed tokens.\",\n    \"The current recommended architecture uses Python-based hooks firing asynchronously on tool calls to scan via CLI (not MCP), writing findings to a temp file that a session-stop hook reads to trigger a fix-and-validate loop only for newly introduced issues.\",\n    \"Agent skills are argued to be riskier than package ecosystem dependencies because they carry higher privilege by default, natural-language prompt injection evades code-based detection, and malicious skills can modify agent memory so the risk persists after removal.\",\n    \"In an audit of nearly 4,000 skills on ClawHub, over one in eight had a critical severity issue and 76 malicious payloads were found.\",\n    \"Telemetry from average developers showed more than half using MCP servers, a fifth using skills, and one in 12 having an MCP server with a high or critical severity finding.\",\n    \"Governance policies split into 'steer' (deterministically alter the action, e.g. redact PII or secrets before a command executes) and 'ask' (prompt the human), with the speaker noting ask becomes much less viable as background and cloud agents proliferate.\",\n    \"The unshipped Snappy tool aims at local visibility and auditability \u2014 enumerating running LLMs, MCP servers, skills, and CLIs with risk scores, tracking cost and per-file read/write patterns, and enforcing per-workspace policies.\",\n    \"The speaker concedes false positives will never reach absolute zero and frames the core design problem as threading between security teams who want everything restricted and developers for whom false-positive noise is intolerable.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"it's really critical to secure what agents generate, what they use, and what they do\",\n      \"timestamp_sec\": 245,\n      \"why\": \"The talk's thesis compressed into one clause.\"\n    },\n    {\n      \"text\": \"our customers started telling us that they were not only worried about the code that was being generated, they're also worried about what the agent had access to, and then also the actions the agent might be taking\",\n      \"timestamp_sec\": 128,\n      \"why\": \"Names the specific customer signal that broke their original framing.\"\n    },\n    {\n      \"text\": \"What's really interesting here is that the agent wasn't acting maliciously, it was actually trying to solve a problem. It was trying to solve what it perceived to be a credential mismatch, uh but there was nothing in place to stop it.\",\n      \"timestamp_sec\": 162,\n      \"why\": \"Reframes agent risk as a guardrail problem rather than an intent problem.\"\n    },\n    {\n      \"text\": \"Agents sometimes ignored the rule files. Uh scan execution did add latency at the end of its run. Um and every time that we ran scans through the context window, that consumed tokens.\",\n      \"timestamp_sec\": 283,\n      \"why\": \"A concrete postmortem on why rules-based security integration underperformed.\"\n    },\n    {\n      \"text\": \"So, now the workflow is deterministic. Latency is removed because all that testing happens asynchronously.\",\n      \"timestamp_sec\": 358,\n      \"why\": \"States the payoff of the hook-based redesign in one line.\"\n    },\n    {\n      \"text\": \"there's many similarities between package ecosystem risk, which is where kind of sneak got its got its start, um and that of agent skills, but we really think that skills are more problematic\",\n      \"timestamp_sec\": 396,\n      \"why\": \"A contestable claim that skills are a worse supply-chain surface than packages.\"\n    },\n    {\n      \"text\": \"malicious skills can modify agent memory. So, even if you remove a malicious skill, they can still persist.\",\n      \"timestamp_sec\": 434,\n      \"why\": \"Identifies a persistence mechanism with no direct analogue in package security.\"\n    },\n    {\n      \"text\": \"in an audit that we did of nearly 4,000 skills on ClawHub, uh over one in eight had a critical severity issue, and we actually found 76 malicious payloads\",\n      \"timestamp_sec\": 434,\n      \"why\": \"The talk's headline number on skill ecosystem risk.\"\n    },\n    {\n      \"text\": \"more than half were using MCP servers and a fifth were leveraging skills\",\n      \"timestamp_sec\": 509,\n      \"why\": \"Adoption baseline for non-frontier developers.\"\n    },\n    {\n      \"text\": \"one in 12 developers in this group had an MCP server where there is either a high or critical severity finding identified in that MCP server itself\",\n      \"timestamp_sec\": 509,\n      \"why\": \"Quantifies exposure in the agent supply chain.\"\n    },\n    {\n      \"text\": \"as we move towards more background agents and cloud agents being ran where you're kind of trying to step away and trying to not be sitting at your desk babysitting the agent entirely, um asks are much much less viable option\",\n      \"timestamp_sec\": 601,\n      \"why\": \"Names the tradeoff that makes human-in-the-loop approval unscalable.\"\n    },\n    {\n      \"text\": \"today we we are accountable for the actions that our agents take\",\n      \"timestamp_sec\": 637,\n      \"why\": \"The normative claim underpinning the whole governance pillar.\"\n    },\n    {\n      \"text\": \"yes, the agents are getting better. They are not perfect, which is why I like having deterministic guardrails on your machine.\",\n      \"timestamp_sec\": 1131,\n      \"why\": \"Dan's argument for determinism over trusting model judgment.\"\n    },\n    {\n      \"text\": \"one of the big things is is how do we trust agents? Um I want visibility, I want auditability.\",\n      \"timestamp_sec\": 1131,\n      \"why\": \"Frames trust as an observability problem.\"\n    },\n    {\n      \"text\": \"I think if you ask the security folks in the room, they'd be like restrict everything. Just like please do not let anything bad happen. If you ask developers, you'd say any any false positive that causes kind of more noise in my workflow is just kind of hell on earth.\",\n      \"timestamp_sec\": 1244,\n      \"why\": \"The clearest statement of the product tension the talk is trying to resolve.\"\n    },\n    {\n      \"text\": \"I'd be shocked if we ever lived in a world where it was like absolute zero false positives\",\n      \"timestamp_sec\": 1371,\n      \"why\": \"An honest concession that bounds the approach.\"\n    },\n    {\n      \"text\": \"because just cuz it's not natural language doesn't mean it's not it's not language\",\n      \"timestamp_sec\": 1537,\n      \"why\": \"Extends the guardrail model to non-text agent inputs like sensor data.\"\n    },\n    {\n      \"text\": \"a lot of those guardrails um, and the format of those guardrails stay the same even if like that input language changes to sensor reading as opposed to natural language\",\n      \"timestamp_sec\": 1591,\n      \"why\": \"Argues guardrail design generalizes across modality.\"\n    }\n  ],\n  \"concepts\": [\n    \"agentic development security\",\n    \"agent supply chain security\",\n    \"prompt injection\",\n    \"mcp server security\",\n    \"agent skill auditing\",\n    \"agent hooks\",\n    \"runtime policy enforcement\",\n    \"human in the loop approval\",\n    \"false positive rate\",\n    \"agent observability and audit trails\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Securing agent-generated code alone is an incomplete framing; security must also cover what the agent has access to and what actions it takes.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 128\n    },\n    {\n      \"claim\": \"Agent skills present greater security risk than traditional package ecosystem dependencies, due to higher default privilege, undetectable natural-language injection, and persistence via agent memory.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 396\n    },\n    {\n      \"claim\": \"Python-based hooks firing asynchronously on tool calls are a better integration point for security scanning than MCP servers plus rule files.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 321\n    },\n    {\n      \"claim\": \"Over one in eight of nearly 4,000 audited ClawHub skills had a critical severity issue, and 76 malicious payloads were found.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 434\n    },\n    {\n      \"claim\": \"One in 12 developers observed had an MCP server with a high or critical severity finding in the server itself.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 509\n    },\n    {\n      \"claim\": \"Asking the human for approval is not a viable governance mechanism for background and cloud agents, so policy must increasingly steer deterministically.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 601\n    },\n    {\n      \"claim\": \"Developers, not the agents or their vendors, are currently accountable for the actions their agents take.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 637\n    },\n    {\n      \"claim\": \"Deterministic local guardrails are necessary because model-level safety judgment is unreliable \u2014 Claude refused to read an .env file but complied when asked for a specific secret key.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1097\n    },\n    {\n      \"claim\": \"Zero false positives is unachievable for any vendor in the agent security space, though the rate can asymptotically improve.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1371\n    },\n    {\n      \"claim\": \"Guardrail design generalizes beyond natural language to structured or sensor-based agent inputs, since the output-side access controls remain the same.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1591\n    },\n    {\n      \"claim\": \"Security backlogs are no longer something companies can afford to accumulate, which is why prevention at generation time matters.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 245\n    }\n  ],\n  \"speaker_org\": \"Snyk\"\n}",
+  "ttft_ms": 45030,
+  "ttft_stream_ms": 1005,
+  "time_to_request_ms": 34,
+  "type": "result",
+  "duration_ms": 47974,
+  "uuid": "c635a2b3-4a2b-4e9c-878e-8cfa69962adf",
+  "passA": {
+    "summary": "Ezra Tanzer, a product director at Snyk, argues that securing AI-generated code is only one third of what 'agentic development security' requires \u2014 the other two are securing the agent's supply chain (MCP servers, skills) and governing the agent's runtime actions. He walks through real incidents (Replit's agent deleting a production database and fabricating records, the Packet OS over-privileged token incident, and a VS Code extension exfiltrating ~4,000 GitHub internal repos) to show the attack surface has widened beyond code. He describes Snyk's evolution from an MCP-server-plus-rules approach \u2014 which suffered from ignored rule files, added latency, and token bloat \u2014 to asynchronous Python hooks that scan on file-write and only surface newly introduced issues at session stop, making the workflow deterministic. Colleague Dan Arpino demos 'Snappy,' an unshipped local Electron app giving developers visibility, auditability, and enforceable local guardrails over every LLM, MCP server, skill, and command running on their machine. Worth watching if you're deciding how to instrument agent security in a real dev workflow; much of the second half is Q&A and a forward-looking demo rather than shipped product.",
+    "key_points": [
+      "Securing agent-generated code is insufficient; Snyk's customers pushed them to also secure what the agent has access to and what actions the agent takes, producing a three-pillar model of generate/use/do.",
+      "The original MCP-server-plus-rules approach failed in practice because agents sometimes ignored rule files, scans added latency at the end of a run, and running scans through the context window consumed tokens.",
+      "The current recommended architecture uses Python-based hooks firing asynchronously on tool calls to scan via CLI (not MCP), writing findings to a temp file that a session-stop hook reads to trigger a fix-and-validate loop only for newly introduced issues.",
+      "Agent skills are argued to be riskier than package ecosystem dependencies because they carry higher privilege by default, natural-language prompt injection evades code-based detection, and malicious skills can modify agent memory so the risk persists after removal.",
+      "In an audit of nearly 4,000 skills on ClawHub, over one in eight had a critical severity issue and 76 malicious payloads were found.",
+      "Telemetry from average developers showed more than half using MCP servers, a fifth using skills, and one in 12 having an MCP server with a high or critical severity finding.",
+      "Governance policies split into 'steer' (deterministically alter the action, e.g. redact PII or secrets before a command executes) and 'ask' (prompt the human), with the speaker noting ask becomes much less viable as background and cloud agents proliferate.",
+      "The unshipped Snappy tool aims at local visibility and auditability \u2014 enumerating running LLMs, MCP servers, skills, and CLIs with risk scores, tracking cost and per-file read/write patterns, and enforcing per-workspace policies.",
+      "The speaker concedes false positives will never reach absolute zero and frames the core design problem as threading between security teams who want everything restricted and developers for whom false-positive noise is intolerable."
+    ],
+    "notable_quotes": [
+      {
+        "text": "it's really critical to secure what agents generate, what they use, and what they do",
+        "timestamp_sec": 245,
+        "why": "The talk's thesis compressed into one clause."
+      },
+      {
+        "text": "our customers started telling us that they were not only worried about the code that was being generated, they're also worried about what the agent had access to, and then also the actions the agent might be taking",
+        "timestamp_sec": 128,
+        "why": "Names the specific customer signal that broke their original framing."
+      },
+      {
+        "text": "What's really interesting here is that the agent wasn't acting maliciously, it was actually trying to solve a problem. It was trying to solve what it perceived to be a credential mismatch, uh but there was nothing in place to stop it.",
+        "timestamp_sec": 162,
+        "why": "Reframes agent risk as a guardrail problem rather than an intent problem."
+      },
+      {
+        "text": "Agents sometimes ignored the rule files. Uh scan execution did add latency at the end of its run. Um and every time that we ran scans through the context window, that consumed tokens.",
+        "timestamp_sec": 283,
+        "why": "A concrete postmortem on why rules-based security integration underperformed."
+      },
+      {
+        "text": "So, now the workflow is deterministic. Latency is removed because all that testing happens asynchronously.",
+        "timestamp_sec": 358,
+        "why": "States the payoff of the hook-based redesign in one line."
+      },
+      {
+        "text": "there's many similarities between package ecosystem risk, which is where kind of sneak got its got its start, um and that of agent skills, but we really think that skills are more problematic",
+        "timestamp_sec": 396,
+        "why": "A contestable claim that skills are a worse supply-chain surface than packages."
+      },
+      {
+        "text": "malicious skills can modify agent memory. So, even if you remove a malicious skill, they can still persist.",
+        "timestamp_sec": 434,
+        "why": "Identifies a persistence mechanism with no direct analogue in package security."
+      },
+      {
+        "text": "in an audit that we did of nearly 4,000 skills on ClawHub, uh over one in eight had a critical severity issue, and we actually found 76 malicious payloads",
+        "timestamp_sec": 434,
+        "why": "The talk's headline number on skill ecosystem risk."
+      },
+      {
+        "text": "more than half were using MCP servers and a fifth were leveraging skills",
+        "timestamp_sec": 509,
+        "why": "Adoption baseline for non-frontier developers."
+      },
+      {
+        "text": "one in 12 developers in this group had an MCP server where there is either a high or critical severity finding identified in that MCP server itself",
+        "timestamp_sec": 509,
+        "why": "Quantifies exposure in the agent supply chain."
+      },
+      {
+        "text": "as we move towards more background agents and cloud agents being ran where you're kind of trying to step away and trying to not be sitting at your desk babysitting the agent entirely, um asks are much much less viable option",
+        "timestamp_sec": 601,
+        "why": "Names the tradeoff that makes human-in-the-loop approval unscalable."
+      },
+      {
+        "text": "today we we are accountable for the actions that our agents take",
+        "timestamp_sec": 637,
+        "why": "The normative claim underpinning the whole governance pillar."
+      },
+      {
+        "text": "yes, the agents are getting better. They are not perfect, which is why I like having deterministic guardrails on your machine.",
+        "timestamp_sec": 1131,
+        "why": "Dan's argument for determinism over trusting model judgment."
+      },
+      {
+        "text": "one of the big things is is how do we trust agents? Um I want visibility, I want auditability.",
+        "timestamp_sec": 1131,
+        "why": "Frames trust as an observability problem."
+      },
+      {
+        "text": "I think if you ask the security folks in the room, they'd be like restrict everything. Just like please do not let anything bad happen. If you ask developers, you'd say any any false positive that causes kind of more noise in my workflow is just kind of hell on earth.",
+        "timestamp_sec": 1244,
+        "why": "The clearest statement of the product tension the talk is trying to resolve."
+      },
+      {
+        "text": "I'd be shocked if we ever lived in a world where it was like absolute zero false positives",
+        "timestamp_sec": 1371,
+        "why": "An honest concession that bounds the approach."
+      },
+      {
+        "text": "because just cuz it's not natural language doesn't mean it's not it's not language",
+        "timestamp_sec": 1537,
+        "why": "Extends the guardrail model to non-text agent inputs like sensor data."
+      },
+      {
+        "text": "a lot of those guardrails um, and the format of those guardrails stay the same even if like that input language changes to sensor reading as opposed to natural language",
+        "timestamp_sec": 1591,
+        "why": "Argues guardrail design generalizes across modality."
+      }
+    ],
+    "concepts": [
+      "agentic development security",
+      "agent supply chain security",
+      "prompt injection",
+      "mcp server security",
+      "agent skill auditing",
+      "agent hooks",
+      "runtime policy enforcement",
+      "human in the loop approval",
+      "false positive rate",
+      "agent observability and audit trails"
+    ],
+    "positions": [
+      {
+        "claim": "Securing agent-generated code alone is an incomplete framing; security must also cover what the agent has access to and what actions it takes.",
+        "confidence": "stated",
+        "timestamp_sec": 128
+      },
+      {
+        "claim": "Agent skills present greater security risk than traditional package ecosystem dependencies, due to higher default privilege, undetectable natural-language injection, and persistence via agent memory.",
+        "confidence": "stated",
+        "timestamp_sec": 396
+      },
+      {
+        "claim": "Python-based hooks firing asynchronously on tool calls are a better integration point for security scanning than MCP servers plus rule files.",
+        "confidence": "stated",
+        "timestamp_sec": 321
+      },
+      {
+        "claim": "Over one in eight of nearly 4,000 audited ClawHub skills had a critical severity issue, and 76 malicious payloads were found.",
+        "confidence": "stated",
+        "timestamp_sec": 434
+      },
+      {
+        "claim": "One in 12 developers observed had an MCP server with a high or critical severity finding in the server itself.",
+        "confidence": "stated",
+        "timestamp_sec": 509
+      },
+      {
+        "claim": "Asking the human for approval is not a viable governance mechanism for background and cloud agents, so policy must increasingly steer deterministically.",
+        "confidence": "stated",
+        "timestamp_sec": 601
+      },
+      {
+        "claim": "Developers, not the agents or their vendors, are currently accountable for the actions their agents take.",
+        "confidence": "stated",
+        "timestamp_sec": 637
+      },
+      {
+        "claim": "Deterministic local guardrails are necessary because model-level safety judgment is unreliable \u2014 Claude refused to read an .env file but complied when asked for a specific secret key.",
+        "confidence": "stated",
+        "timestamp_sec": 1097
+      },
+      {
+        "claim": "Zero false positives is unachievable for any vendor in the agent security space, though the rate can asymptotically improve.",
+        "confidence": "stated",
+        "timestamp_sec": 1371
+      },
+      {
+        "claim": "Guardrail design generalizes beyond natural language to structured or sensor-based agent inputs, since the output-side access controls remain the same.",
+        "confidence": "stated",
+        "timestamp_sec": 1591
+      },
+      {
+        "claim": "Security backlogs are no longer something companies can afford to accumulate, which is why prevention at generation time matters.",
+        "confidence": "implied",
+        "timestamp_sec": 245
+      }
+    ],
+    "speaker_org": "Snyk"
+  },
+  "_meta": {
+    "slug": "agentic-development-security",
+    "video_id": "cgimkNGNjvU",
+    "url": "https://www.youtube.com/watch?v=cgimkNGNjvU",
+    "word_count": 5074,
+    "wall_sec": 49.1,
+    "run_at": "2026-08-12T19:27:13Z",
+    "effort": "medium"
+  }
+}

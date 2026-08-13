@@ -1,0 +1,292 @@
+{
+  "is_error": false,
+  "duration_api_ms": 62019,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "656e4e10-76be-4c4a-aa67-e29c410f2eda",
+  "total_cost_usd": 0.251359,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 9539,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 5793,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 9539,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 5793,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 9539,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 9539
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 5910,
+      "outputTokens": 14,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.00598,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 5793,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 9539,
+      "webSearchRequests": 0,
+      "costUSD": 0.245379,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Dan Farrelly (CTO of Inngest) argues that agent architectures decay fast because teams couple layers that change at wildly different rates, and offers a three-layer mental model as the fix: an execution layer (the brain: flow, state, durability, retries), a context layer (models, prompts, tools, memory \u2014 the fastest-changing), and a compute layer (sandboxes, browsers, runtimes). His thesis is that prompts have a half-life of weeks and models of months, but a well-designed execution layer can last years \u2014 so that's the layer worth investing in and the one to keep decoupled from everything else. He specifies what an execution layer must provide: resumability with durable state stored outside the work, flexible invocation primitives (crons, events, APIs, human-in-the-loop, sub-agents, sync/async/delayed), and full-session observability from trigger through the whole stack. He walks through a concrete three-function self-improving loop (cron health check \u2192 triage agent \u2192 weekly reviewer) to show why emerging patterns like background agents and autonomous loops break frameworks designed even three months ago. Worth watching if you're deciding how much orchestration to build yourself versus inherit from a framework, or wondering where to instrument outcome-based agent scoring \u2014 though the last few minutes are an Inngest pitch.\",\n  \"key_points\": [\n    \"Agent architectures should be reasoned about as three conceptual layers \u2014 execution (brain), context (knowledge), and compute (hands) \u2014 rather than as component diagrams.\",\n    \"Each layer has a different half-life: prompts decay in weeks, models in months, but execution can last years if designed correctly, and coupling them lets the fastest-decaying layer drag the rest down.\",\n    \"The execution layer is defined as the system responsible for running code reliably and managing how, when, and whether each piece of work completes, independent of underlying infrastructure.\",\n    \"Resumability requires that state be durable and external \u2014 a three-hour agent run cannot hold state in memory or on disk, or a failure at step 38 forces a restart that burns tokens, cost, and completed work.\",\n    \"An execution layer must support mixed invocation patterns (crons, events, APIs, human-in-the-loop, sub-agents, synchronous, asynchronous, delayed), otherwise harness logic starts absorbing queues, workers, polling, backoff, and scheduling.\",\n    \"Using sandboxes for durability, snapshots, or state is an anti-pattern because sandboxes are ephemeral and stateless by design; the execution layer should supply the sandbox's context, sequence, and durability.\",\n    \"Observability must cover the entire session trace \u2014 database errors, permission issues, triggers, performance \u2014 not just LLM and tool calls, and traces must be inspectable by both humans and agents.\",\n    \"Because user input, feedback, actions, and session results all flow through the execution layer, it is the natural hub for instrumenting outcome-based scores (did a PR get opened, was the research report saved) rather than thumbs up/thumbs down.\",\n    \"Emerging patterns \u2014 background agents, dynamic workflows, autonomous loops, agent factories \u2014 are all long-running, asynchronous, and delegated, and frameworks from three months ago were not designed for them.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"So speaking of building agents if you've been building agents for more than 6 months, you've likely rewritten something, maybe more than once.\",\n      \"timestamp_sec\": 64,\n      \"why\": \"States the talk's premise in one line.\"\n    },\n    {\n      \"text\": \"Some parts of your code likely survives. But did they survive by accident?\",\n      \"timestamp_sec\": 64,\n      \"why\": \"The framing question that sets up intentional architecture versus drift.\"\n    },\n    {\n      \"text\": \"So, in my opinion, there are three discrete layers. First, the execution layer. I think of this as the brain. It's where flow, state, durability, retries happen.\",\n      \"timestamp_sec\": 162,\n      \"why\": \"The core mental model of the talk.\"\n    },\n    {\n      \"text\": \"This is models, prompts, tools, memory. This is the layer that changes the most.\",\n      \"timestamp_sec\": 162,\n      \"why\": \"Identifies the context layer as the volatile one.\"\n    },\n    {\n      \"text\": \"So, prompts last weeks, if you're lucky, maybe maybe a single week. Uh the models that you use, months, again, if you're lucky. Uh but I think that execution can last years, if you do it right.\",\n      \"timestamp_sec\": 217,\n      \"why\": \"The half-life numbers the entire argument rests on.\"\n    },\n    {\n      \"text\": \"And what happens then is that one layer's half-life kind of leaks and drags the other components down. You're building it's technical debt by another name.\",\n      \"timestamp_sec\": 217,\n      \"why\": \"Names the failure mode of coupling layers.\"\n    },\n    {\n      \"text\": \"So, my thesis is think in layers. Decouple them. So, let's talk about what I mean.\",\n      \"timestamp_sec\": 264,\n      \"why\": \"The thesis stated explicitly.\"\n    },\n    {\n      \"text\": \"But I think in a lot of these situations, the abstractions either are not there at all or they're too high-level or the layers merge.\",\n      \"timestamp_sec\": 264,\n      \"why\": \"A direct critique of frameworks, pre-built harnesses, and custom rolls alike.\"\n    },\n    {\n      \"text\": \"And I define it as the execution layer as being the system responsible for running your code reliably, managing how, when, or whether each piece of work completes.\",\n      \"timestamp_sec\": 349,\n      \"why\": \"The talk's working definition of its central term.\"\n    },\n    {\n      \"text\": \"You can swap the model, swap the context, swap the sandbox, the execution layer should be able to remain the same.\",\n      \"timestamp_sec\": 401,\n      \"why\": \"The decoupling test in one sentence.\"\n    },\n    {\n      \"text\": \"So, for this this to work, a 3-hour run cannot hold state in memory or in disk. The state must live outside of the work.\",\n      \"timestamp_sec\": 401,\n      \"why\": \"A concrete, checkable engineering constraint.\"\n    },\n    {\n      \"text\": \"So, if you can't see the entirety of a trace from the trigger through the whole stack, it's really hard to debug it, let alone improve your agent and keep evolving it.\",\n      \"timestamp_sec\": 548,\n      \"why\": \"Ties observability scope to iteration speed, not just debugging.\"\n    },\n    {\n      \"text\": \"So, using it for durability, snapshots, or something in state, I think is an anti-pattern.\",\n      \"timestamp_sec\": 597,\n      \"why\": \"A clear, contestable stance on sandbox usage.\"\n    },\n    {\n      \"text\": \"So, I think of the sandbox as the hands and execution as the brain.\",\n      \"timestamp_sec\": 597,\n      \"why\": \"Compact statement of the compute/execution division of labor.\"\n    },\n    {\n      \"text\": \"They're all long-running. They're asynchronous. They're delegated. That means that you need to be able to observe them all uh down to the core.\",\n      \"timestamp_sec\": 646,\n      \"why\": \"Characterizes what the emerging architectures have in common.\"\n    },\n    {\n      \"text\": \"It's going to have maybe hundreds of calls to you know, maybe 200 tool calls. You're going to probably guarantee to have at least one failure in that.\",\n      \"timestamp_sec\": 695,\n      \"why\": \"Puts a number on why resumability is not optional for background agents.\"\n    },\n    {\n      \"text\": \"So, the frameworks of 3 months ago were not designed to handle this. Right? Like you're going to need to design these systems yourself.\",\n      \"timestamp_sec\": 747,\n      \"why\": \"The talk's sharpest claim against existing frameworks.\"\n    },\n    {\n      \"text\": \"the middle of the execution layer, when your agent is running, is a key place to instrument and score your agents\",\n      \"timestamp_sec\": 988,\n      \"why\": \"Locates evaluation instrumentation at a specific architectural layer.\"\n    },\n    {\n      \"text\": \"Instead of a thumbs up, thumbs down, it's like did we open the PR, right? If it's a research agent, was this research saved? Was it a good report?\",\n      \"timestamp_sec\": 1082,\n      \"why\": \"Concrete alternative to explicit-feedback scoring.\"\n    },\n    {\n      \"text\": \"And I think if you can get your execution layer right and think about the right primitives, everything else can quickly evolve around it.\",\n      \"timestamp_sec\": 1082,\n      \"why\": \"The closing summary of the investment argument.\"\n    }\n  ],\n  \"concepts\": [\n    \"durable execution\",\n    \"agent harness architecture\",\n    \"layered architecture\",\n    \"external state management\",\n    \"resumability and checkpointing\",\n    \"session tracing\",\n    \"sandbox isolation\",\n    \"background agents\",\n    \"autonomous loop architectures\",\n    \"outcome-based scoring\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Prompts have a useful lifetime of weeks, models of months, but a well-designed execution layer can last years.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 217\n    },\n    {\n      \"claim\": \"Most teams couple their execution, context, and compute layers together, which causes the shortest-lived layer to force rewrites of the others.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 217\n    },\n    {\n      \"claim\": \"The execution layer is the stable layer worth investing engineering effort in, and getting it right prevents rewriting large components every six months.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 310\n    },\n    {\n      \"claim\": \"A correctly architected system lets you swap the model, context, or sandbox without changing the execution layer.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 401\n    },\n    {\n      \"claim\": \"A three-hour agent run cannot keep its state in memory or on disk; state must be durable and external to the work.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 401\n    },\n    {\n      \"claim\": \"Manual checkpointing and log-based state rehydration are inadequate because those abstractions leak into other layers of the harness.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 452\n    },\n    {\n      \"claim\": \"Without flexible orchestration primitives, harness logic ends up absorbing queues, workers, polling, backoff, and scheduling, producing bad abstractions.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 493\n    },\n    {\n      \"claim\": \"Observability must span the full session trace including database errors, permissions issues, triggers, and performance \u2014 not just LLM and tool calls.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 548\n    },\n    {\n      \"claim\": \"Using a sandbox for durability, snapshots, or state is an anti-pattern because sandboxes are ephemeral and stateless by design.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 597\n    },\n    {\n      \"claim\": \"A background agent making on the order of 200 tool calls will almost certainly experience at least one failure.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 695\n    },\n    {\n      \"claim\": \"Agent execution traces need to be inspectable by agents, not only by humans, so that reviewer functions can evaluate what was executed.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 646\n    },\n    {\n      \"claim\": \"Frameworks from three months ago were not designed for loop and background-agent architectures, so teams must design these systems themselves.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 747\n    },\n    {\n      \"claim\": \"The execution layer is the ideal hub for observability and agent scoring because user input, feedback, actions, and session results all flow through it.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 943\n    },\n    {\n      \"claim\": \"Outcome-based signals such as whether a PR was opened or a report was saved are better evaluation data than thumbs up/thumbs down feedback.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 1082\n    },\n    {\n      \"claim\": \"A useful self-improving agent loop can be built from as few as three functions: a scheduled health check, a triage agent, and a periodic reviewer.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 899\n    }\n  ],\n  \"speaker_org\": \"Inngest\"\n}",
+  "ttft_ms": 20946,
+  "ttft_stream_ms": 1097,
+  "time_to_request_ms": 33,
+  "type": "result",
+  "duration_ms": 62762,
+  "uuid": "8c1dc5e4-7587-4cdb-8bf8-02678ede36b4",
+  "passA": {
+    "summary": "Dan Farrelly (CTO of Inngest) argues that agent architectures decay fast because teams couple layers that change at wildly different rates, and offers a three-layer mental model as the fix: an execution layer (the brain: flow, state, durability, retries), a context layer (models, prompts, tools, memory \u2014 the fastest-changing), and a compute layer (sandboxes, browsers, runtimes). His thesis is that prompts have a half-life of weeks and models of months, but a well-designed execution layer can last years \u2014 so that's the layer worth investing in and the one to keep decoupled from everything else. He specifies what an execution layer must provide: resumability with durable state stored outside the work, flexible invocation primitives (crons, events, APIs, human-in-the-loop, sub-agents, sync/async/delayed), and full-session observability from trigger through the whole stack. He walks through a concrete three-function self-improving loop (cron health check \u2192 triage agent \u2192 weekly reviewer) to show why emerging patterns like background agents and autonomous loops break frameworks designed even three months ago. Worth watching if you're deciding how much orchestration to build yourself versus inherit from a framework, or wondering where to instrument outcome-based agent scoring \u2014 though the last few minutes are an Inngest pitch.",
+    "key_points": [
+      "Agent architectures should be reasoned about as three conceptual layers \u2014 execution (brain), context (knowledge), and compute (hands) \u2014 rather than as component diagrams.",
+      "Each layer has a different half-life: prompts decay in weeks, models in months, but execution can last years if designed correctly, and coupling them lets the fastest-decaying layer drag the rest down.",
+      "The execution layer is defined as the system responsible for running code reliably and managing how, when, and whether each piece of work completes, independent of underlying infrastructure.",
+      "Resumability requires that state be durable and external \u2014 a three-hour agent run cannot hold state in memory or on disk, or a failure at step 38 forces a restart that burns tokens, cost, and completed work.",
+      "An execution layer must support mixed invocation patterns (crons, events, APIs, human-in-the-loop, sub-agents, synchronous, asynchronous, delayed), otherwise harness logic starts absorbing queues, workers, polling, backoff, and scheduling.",
+      "Using sandboxes for durability, snapshots, or state is an anti-pattern because sandboxes are ephemeral and stateless by design; the execution layer should supply the sandbox's context, sequence, and durability.",
+      "Observability must cover the entire session trace \u2014 database errors, permission issues, triggers, performance \u2014 not just LLM and tool calls, and traces must be inspectable by both humans and agents.",
+      "Because user input, feedback, actions, and session results all flow through the execution layer, it is the natural hub for instrumenting outcome-based scores (did a PR get opened, was the research report saved) rather than thumbs up/thumbs down.",
+      "Emerging patterns \u2014 background agents, dynamic workflows, autonomous loops, agent factories \u2014 are all long-running, asynchronous, and delegated, and frameworks from three months ago were not designed for them."
+    ],
+    "notable_quotes": [
+      {
+        "text": "So speaking of building agents if you've been building agents for more than 6 months, you've likely rewritten something, maybe more than once.",
+        "timestamp_sec": 64,
+        "why": "States the talk's premise in one line."
+      },
+      {
+        "text": "Some parts of your code likely survives. But did they survive by accident?",
+        "timestamp_sec": 64,
+        "why": "The framing question that sets up intentional architecture versus drift."
+      },
+      {
+        "text": "So, in my opinion, there are three discrete layers. First, the execution layer. I think of this as the brain. It's where flow, state, durability, retries happen.",
+        "timestamp_sec": 162,
+        "why": "The core mental model of the talk."
+      },
+      {
+        "text": "This is models, prompts, tools, memory. This is the layer that changes the most.",
+        "timestamp_sec": 162,
+        "why": "Identifies the context layer as the volatile one."
+      },
+      {
+        "text": "So, prompts last weeks, if you're lucky, maybe maybe a single week. Uh the models that you use, months, again, if you're lucky. Uh but I think that execution can last years, if you do it right.",
+        "timestamp_sec": 217,
+        "why": "The half-life numbers the entire argument rests on."
+      },
+      {
+        "text": "And what happens then is that one layer's half-life kind of leaks and drags the other components down. You're building it's technical debt by another name.",
+        "timestamp_sec": 217,
+        "why": "Names the failure mode of coupling layers."
+      },
+      {
+        "text": "So, my thesis is think in layers. Decouple them. So, let's talk about what I mean.",
+        "timestamp_sec": 264,
+        "why": "The thesis stated explicitly."
+      },
+      {
+        "text": "But I think in a lot of these situations, the abstractions either are not there at all or they're too high-level or the layers merge.",
+        "timestamp_sec": 264,
+        "why": "A direct critique of frameworks, pre-built harnesses, and custom rolls alike."
+      },
+      {
+        "text": "And I define it as the execution layer as being the system responsible for running your code reliably, managing how, when, or whether each piece of work completes.",
+        "timestamp_sec": 349,
+        "why": "The talk's working definition of its central term."
+      },
+      {
+        "text": "You can swap the model, swap the context, swap the sandbox, the execution layer should be able to remain the same.",
+        "timestamp_sec": 401,
+        "why": "The decoupling test in one sentence."
+      },
+      {
+        "text": "So, for this this to work, a 3-hour run cannot hold state in memory or in disk. The state must live outside of the work.",
+        "timestamp_sec": 401,
+        "why": "A concrete, checkable engineering constraint."
+      },
+      {
+        "text": "So, if you can't see the entirety of a trace from the trigger through the whole stack, it's really hard to debug it, let alone improve your agent and keep evolving it.",
+        "timestamp_sec": 548,
+        "why": "Ties observability scope to iteration speed, not just debugging."
+      },
+      {
+        "text": "So, using it for durability, snapshots, or something in state, I think is an anti-pattern.",
+        "timestamp_sec": 597,
+        "why": "A clear, contestable stance on sandbox usage."
+      },
+      {
+        "text": "So, I think of the sandbox as the hands and execution as the brain.",
+        "timestamp_sec": 597,
+        "why": "Compact statement of the compute/execution division of labor."
+      },
+      {
+        "text": "They're all long-running. They're asynchronous. They're delegated. That means that you need to be able to observe them all uh down to the core.",
+        "timestamp_sec": 646,
+        "why": "Characterizes what the emerging architectures have in common."
+      },
+      {
+        "text": "It's going to have maybe hundreds of calls to you know, maybe 200 tool calls. You're going to probably guarantee to have at least one failure in that.",
+        "timestamp_sec": 695,
+        "why": "Puts a number on why resumability is not optional for background agents."
+      },
+      {
+        "text": "So, the frameworks of 3 months ago were not designed to handle this. Right? Like you're going to need to design these systems yourself.",
+        "timestamp_sec": 747,
+        "why": "The talk's sharpest claim against existing frameworks."
+      },
+      {
+        "text": "the middle of the execution layer, when your agent is running, is a key place to instrument and score your agents",
+        "timestamp_sec": 988,
+        "why": "Locates evaluation instrumentation at a specific architectural layer."
+      },
+      {
+        "text": "Instead of a thumbs up, thumbs down, it's like did we open the PR, right? If it's a research agent, was this research saved? Was it a good report?",
+        "timestamp_sec": 1082,
+        "why": "Concrete alternative to explicit-feedback scoring."
+      },
+      {
+        "text": "And I think if you can get your execution layer right and think about the right primitives, everything else can quickly evolve around it.",
+        "timestamp_sec": 1082,
+        "why": "The closing summary of the investment argument."
+      }
+    ],
+    "concepts": [
+      "durable execution",
+      "agent harness architecture",
+      "layered architecture",
+      "external state management",
+      "resumability and checkpointing",
+      "session tracing",
+      "sandbox isolation",
+      "background agents",
+      "autonomous loop architectures",
+      "outcome-based scoring"
+    ],
+    "positions": [
+      {
+        "claim": "Prompts have a useful lifetime of weeks, models of months, but a well-designed execution layer can last years.",
+        "confidence": "stated",
+        "timestamp_sec": 217
+      },
+      {
+        "claim": "Most teams couple their execution, context, and compute layers together, which causes the shortest-lived layer to force rewrites of the others.",
+        "confidence": "stated",
+        "timestamp_sec": 217
+      },
+      {
+        "claim": "The execution layer is the stable layer worth investing engineering effort in, and getting it right prevents rewriting large components every six months.",
+        "confidence": "stated",
+        "timestamp_sec": 310
+      },
+      {
+        "claim": "A correctly architected system lets you swap the model, context, or sandbox without changing the execution layer.",
+        "confidence": "stated",
+        "timestamp_sec": 401
+      },
+      {
+        "claim": "A three-hour agent run cannot keep its state in memory or on disk; state must be durable and external to the work.",
+        "confidence": "stated",
+        "timestamp_sec": 401
+      },
+      {
+        "claim": "Manual checkpointing and log-based state rehydration are inadequate because those abstractions leak into other layers of the harness.",
+        "confidence": "stated",
+        "timestamp_sec": 452
+      },
+      {
+        "claim": "Without flexible orchestration primitives, harness logic ends up absorbing queues, workers, polling, backoff, and scheduling, producing bad abstractions.",
+        "confidence": "stated",
+        "timestamp_sec": 493
+      },
+      {
+        "claim": "Observability must span the full session trace including database errors, permissions issues, triggers, and performance \u2014 not just LLM and tool calls.",
+        "confidence": "stated",
+        "timestamp_sec": 548
+      },
+      {
+        "claim": "Using a sandbox for durability, snapshots, or state is an anti-pattern because sandboxes are ephemeral and stateless by design.",
+        "confidence": "stated",
+        "timestamp_sec": 597
+      },
+      {
+        "claim": "A background agent making on the order of 200 tool calls will almost certainly experience at least one failure.",
+        "confidence": "stated",
+        "timestamp_sec": 695
+      },
+      {
+        "claim": "Agent execution traces need to be inspectable by agents, not only by humans, so that reviewer functions can evaluate what was executed.",
+        "confidence": "stated",
+        "timestamp_sec": 646
+      },
+      {
+        "claim": "Frameworks from three months ago were not designed for loop and background-agent architectures, so teams must design these systems themselves.",
+        "confidence": "stated",
+        "timestamp_sec": 747
+      },
+      {
+        "claim": "The execution layer is the ideal hub for observability and agent scoring because user input, feedback, actions, and session results all flow through it.",
+        "confidence": "stated",
+        "timestamp_sec": 943
+      },
+      {
+        "claim": "Outcome-based signals such as whether a PR was opened or a report was saved are better evaluation data than thumbs up/thumbs down feedback.",
+        "confidence": "implied",
+        "timestamp_sec": 1082
+      },
+      {
+        "claim": "A useful self-improving agent loop can be built from as few as three functions: a scheduled health check, a triage agent, and a periodic reviewer.",
+        "confidence": "stated",
+        "timestamp_sec": 899
+      }
+    ],
+    "speaker_org": "Inngest"
+  },
+  "_meta": {
+    "slug": "your-agent-architecture-has-a-half-life-of-6-months",
+    "video_id": "X1kp-ABIIxQ",
+    "url": "https://www.youtube.com/watch?v=X1kp-ABIIxQ",
+    "word_count": 2919,
+    "wall_sec": 63.8,
+    "run_at": "2026-08-12T20:35:19Z",
+    "effort": "medium"
+  }
+}

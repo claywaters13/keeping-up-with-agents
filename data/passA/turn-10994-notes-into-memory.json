@@ -1,0 +1,292 @@
+{
+  "is_error": false,
+  "duration_api_ms": 66545,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "e5d34d64-d6de-41ab-9ca1-4ef5d49983be",
+  "total_cost_usd": 0.324856,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 16177,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 5866,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 16177,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 5866,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 16177,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 16177
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 11187,
+      "outputTokens": 17,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.011272,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 5866,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 16177,
+      "webSearchRequests": 0,
+      "costUSD": 0.313584,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Paul Iusztin (Decoding AI) and Louis-Fran\u00e7ois Bouchard (Towards AI) walk through an 18-month effort to turn ~10,000 personal notes across Obsidian, Readwise, Notion and Google Drive into a queryable research memory that coding agents can use. The core argument is that ChatGPT, Codex/Claude Code, NotebookLM and vector-DB RAG each fail a personal research workflow \u2014 context evaporates between sessions, you don't own the tool, or the infra is too heavy and not human-inspectable \u2014 so you need a thin system sitting between the agent harness and your second brain. They show three versions of that system, ending in an architecture with no database at all: immutable raw files, an `index.yaml` catalog of sources and summaries, and an LLM-generated wiki layer of concepts, entities, comparisons and notes, traversed in a hierarchy so the agent usually stops at an executive summary instead of reading a full source. The wiki is 'alive' \u2014 every question the agent can't answer leaves a new file or log entry behind. Worth watching if you want a concrete, files-only memory design and a working Claude Code plugin (the AI Research OS repo) to fork; skip it if you want a polished product or production-scale retrieval.\",\n  \"key_points\": [\n    \"The bottleneck in agentic research is not how much context you can feed a model but whether that context survives to the next session, since the agent's context window is simultaneously its database, file system, memory and reasoning space.\",\n    \"The speakers deliberately reject vector databases, knowledge graphs and semantic search for personal research, arguing the added infrastructure isn't human-inspectable and isn't worth it below production scale.\",\n    \"The architecture is three layers of plain files: an immutable `raw/` folder the LLM never edits, an `index.yaml` catalog holding per-source links, metadata and summaries, and a `wiki/` folder of LLM-generated derivatives (concepts, entities, comparisons, notes, open questions).\",\n    \"Retrieval is a token-efficiency hierarchy \u2014 the agent reads the index first, then the per-source executive summary, then wiki derivatives, and only reads the full raw source if it still hasn't found the answer.\",\n    \"V1 was a classic deep-research loop over the public web seeded with hand-picked 'golden links'; V2 pointed the same loop at their own second brain, on the theory that a curated second brain *is* the golden-link set; V3 added the persistent wiki on top because a flat research.md is static and re-running the loop is expensive.\",\n    \"The deep research loop uses an orchestrator that fans out questions to sub-agents (Gemini grounded in Google), summarizes each returned link, then ranks sources against the original topic and only fully scrapes the top-K \u2014 three rounds of six queries yields 40\u201350 links, most of which are noise.\",\n    \"The wiki evolves from conversation, not just ingestion: every question can spawn a new concept, note or comparison file and is written to a log, so the store reflects what you didn't understand as much as what you read.\",\n    \"The wiki is deliberately project-scoped rather than sitting on top of the whole vault \u2014 Obsidian (organized with Tiago Forte's PARA method) stays an immutable snapshot, and each project pulls a scoped slice from it via the research skill.\",\n    \"Known gaps the authors accept by design: missing connectors (Drive, Notion, Slack), no good source provenance or staleness ranking, memory compaction still weak, and no UI \u2014 because the project's goal is to teach memory and context management, not to be a product.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"I spent 18 months turning my second brain into my living research memory.\",\n      \"timestamp_sec\": 0,\n      \"why\": \"The thesis and the scale of investment in one line.\"\n    },\n    {\n      \"text\": \"within my second brain, I currently have over 5,000 notes in Obsidian and another 5,000 notes in Readwise and some scattered in Notion and Google Drive\",\n      \"timestamp_sec\": 0,\n      \"why\": \"Concrete numbers that define the problem size.\"\n    },\n    {\n      \"text\": \"you need a system that sits between those harnesses and your second brain\",\n      \"timestamp_sec\": 34,\n      \"why\": \"States the architectural position against using Codex/NotebookLM directly.\"\n    },\n    {\n      \"text\": \"how can we make research better, but more specifically, how can we better leverage what we have?\",\n      \"timestamp_sec\": 196,\n      \"why\": \"Reframes the goal from acquisition to reuse.\"\n    },\n    {\n      \"text\": \"It's not agent native. And it's obviously weak for coding tasks since it's just browser based.\",\n      \"timestamp_sec\": 328,\n      \"why\": \"The specific, checkable objection to NotebookLM.\"\n    },\n    {\n      \"text\": \"But, this needs an infrastructure. It's not really human-friendly to be able to digest quickly, to check notes, to make edits. It's hard to inspect by hand.\",\n      \"timestamp_sec\": 381,\n      \"why\": \"The tradeoff case against vector-DB RAG for personal use.\"\n    },\n    {\n      \"text\": \"the next session you use Codex, you have to paste it all again or ask it to use skills.\",\n      \"timestamp_sec\": 477,\n      \"why\": \"Names the concrete failure mode motivating the whole system.\"\n    },\n    {\n      \"text\": \"The bottleneck is how can you leverage it in the future? Meaning that with an agent, the context window becomes everything, the database, the file system, the memory, the reasoning space.\",\n      \"timestamp_sec\": 516,\n      \"why\": \"The sharpest framing of why context windows aren't memory.\"\n    },\n    {\n      \"text\": \"we don't need necessarily to provide more and more and more context for a better research. You need a proper memory and context management\",\n      \"timestamp_sec\": 516,\n      \"why\": \"Takes a side against the more-context-is-better default.\"\n    },\n    {\n      \"text\": \"So basically after three rounds of generating six queries per round, we ended up with like 40-50 links in total.\",\n      \"timestamp_sec\": 872,\n      \"why\": \"Reports the actual fan-out numbers behind the deep research loop.\"\n    },\n    {\n      \"text\": \"For the course, it worked great right away. We generated 35 lessons really quick, but we wanted more.\",\n      \"timestamp_sec\": 925,\n      \"why\": \"Quantifies what V1 actually delivered before they scaled ambition.\"\n    },\n    {\n      \"text\": \"this research MD file is static. It's a pile of static data. And usually research is not static, right?\",\n      \"timestamp_sec\": 1063,\n      \"why\": \"The motivation for adding the wiki layer.\"\n    },\n    {\n      \"text\": \"It consumes a lot of tokens and it takes a lot of time.\",\n      \"timestamp_sec\": 1063,\n      \"why\": \"Names the cost that makes persistence necessary.\"\n    },\n    {\n      \"text\": \"that's why V3 of this system is actually a deep research algorithm plus an LM knowledge base on top of it, aka the wiki layer.\",\n      \"timestamp_sec\": 1100,\n      \"why\": \"One-sentence definition of the final architecture.\"\n    },\n    {\n      \"text\": \"you should forget the infra structure you think you need, such as vector databases, knowledge graphs, semantic search, text search.\",\n      \"timestamp_sec\": 1144,\n      \"why\": \"The most contrarian claim in the talk.\"\n    },\n    {\n      \"text\": \"So, no database, just a simple index based on references.\",\n      \"timestamp_sec\": 1185,\n      \"why\": \"The design decision stated at its most compressed.\"\n    },\n    {\n      \"text\": \"And sometimes the agent just looks into this, gets what it needs, and goes back. Which is very token efficient, right?\",\n      \"timestamp_sec\": 1371,\n      \"why\": \"Explains why the summary hierarchy pays off.\"\n    },\n    {\n      \"text\": \"the beautiful part is that this wiki is actually alive, right? For example, every question leaves a trace into your wiki.\",\n      \"timestamp_sec\": 1418,\n      \"why\": \"The idea that distinguishes this from a static research artifact.\"\n    },\n    {\n      \"text\": \"Obsidian is just an immutable snapshot that a LLM never touches, right? So, this is my data. I don't really want the LLM to touch my personal notes that I manually write\",\n      \"timestamp_sec\": 1499,\n      \"why\": \"A firm boundary between human-authored source and machine-generated derivative.\"\n    },\n    {\n      \"text\": \"The project is the work, and your second brain is the research.\",\n      \"timestamp_sec\": 1596,\n      \"why\": \"The organizing metaphor for how scoping works.\"\n    },\n    {\n      \"text\": \"usually light or fast is more than enough because remember this process consumes a lot of tokens.\",\n      \"timestamp_sec\": 1723,\n      \"why\": \"Practical operating guidance with a stated cost reason.\"\n    },\n    {\n      \"text\": \"the other main goal of this project is to teach memory and context management\",\n      \"timestamp_sec\": 2222,\n      \"why\": \"Explains why missing connectors are not treated as bugs.\"\n    },\n    {\n      \"text\": \"our goal is to teach AI engineering. It's not to build the next best product.\",\n      \"timestamp_sec\": 2257,\n      \"why\": \"Sets expectations for anyone considering adopting the repo.\"\n    }\n  ],\n  \"concepts\": [\n    \"agent memory\",\n    \"context management\",\n    \"second brain systems\",\n    \"deep research loops\",\n    \"file-based knowledge bases\",\n    \"source ranking and retrieval\",\n    \"context compaction\",\n    \"agent skills and plugins\",\n    \"harness engineering\",\n    \"source provenance\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Personal research memory should be built on plain markdown files and a reference index rather than vector databases, knowledge graphs, or semantic search.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1144\n    },\n    {\n      \"claim\": \"The limiting factor in agentic research is not how much context you can supply but whether it persists across sessions.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 516\n    },\n    {\n      \"claim\": \"NotebookLM is unsuitable as a research OS because you don't own it, it isn't agent-native, and it's weak at coding tasks.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 328\n    },\n    {\n      \"claim\": \"Vector-DB RAG pipelines are the right answer for production products but the wrong answer for a personal, daily-use research system.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 381\n    },\n    {\n      \"claim\": \"A curated second brain functions as an organically generated set of 'golden links', removing the need to hand-pick seed sources for deep research.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 974\n    },\n    {\n      \"claim\": \"A hierarchy of index \u2192 executive summary \u2192 wiki derivative \u2192 raw source makes agent retrieval substantially more token-efficient than reading full sources.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1418\n    },\n    {\n      \"claim\": \"The LLM should never write to your hand-authored notes; generated content belongs in a separate derivative layer.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1499\n    },\n    {\n      \"claim\": \"A knowledge base should update from questions asked of it, not only from ingestion events.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1460\n    },\n    {\n      \"claim\": \"Running the deep research loop at its deepest setting is rarely worth the token cost; light or fast settings suffice for most topics.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1766\n    },\n    {\n      \"claim\": \"For one-off tasks or quick lookups, ChatGPT or a coding agent is the correct tool and building a research OS is overkill.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 196\n    },\n    {\n      \"claim\": \"Memory compaction remains an unsolved, rapidly moving problem even in their own system.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 2257\n    },\n    {\n      \"claim\": \"Adding new connectors to such a system is cheap enough that users should extend it themselves rather than wait for maintainers.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 698\n    }\n  ],\n  \"speaker_org\": \"Decoding AI (Paul Iusztin) and Towards AI (Louis-Fran\u00e7ois Bouchard)\"\n}",
+  "ttft_ms": 20856,
+  "ttft_stream_ms": 989,
+  "time_to_request_ms": 34,
+  "type": "result",
+  "duration_ms": 66975,
+  "uuid": "e958075c-a6f9-4073-8307-88ed569c514a",
+  "passA": {
+    "summary": "Paul Iusztin (Decoding AI) and Louis-Fran\u00e7ois Bouchard (Towards AI) walk through an 18-month effort to turn ~10,000 personal notes across Obsidian, Readwise, Notion and Google Drive into a queryable research memory that coding agents can use. The core argument is that ChatGPT, Codex/Claude Code, NotebookLM and vector-DB RAG each fail a personal research workflow \u2014 context evaporates between sessions, you don't own the tool, or the infra is too heavy and not human-inspectable \u2014 so you need a thin system sitting between the agent harness and your second brain. They show three versions of that system, ending in an architecture with no database at all: immutable raw files, an `index.yaml` catalog of sources and summaries, and an LLM-generated wiki layer of concepts, entities, comparisons and notes, traversed in a hierarchy so the agent usually stops at an executive summary instead of reading a full source. The wiki is 'alive' \u2014 every question the agent can't answer leaves a new file or log entry behind. Worth watching if you want a concrete, files-only memory design and a working Claude Code plugin (the AI Research OS repo) to fork; skip it if you want a polished product or production-scale retrieval.",
+    "key_points": [
+      "The bottleneck in agentic research is not how much context you can feed a model but whether that context survives to the next session, since the agent's context window is simultaneously its database, file system, memory and reasoning space.",
+      "The speakers deliberately reject vector databases, knowledge graphs and semantic search for personal research, arguing the added infrastructure isn't human-inspectable and isn't worth it below production scale.",
+      "The architecture is three layers of plain files: an immutable `raw/` folder the LLM never edits, an `index.yaml` catalog holding per-source links, metadata and summaries, and a `wiki/` folder of LLM-generated derivatives (concepts, entities, comparisons, notes, open questions).",
+      "Retrieval is a token-efficiency hierarchy \u2014 the agent reads the index first, then the per-source executive summary, then wiki derivatives, and only reads the full raw source if it still hasn't found the answer.",
+      "V1 was a classic deep-research loop over the public web seeded with hand-picked 'golden links'; V2 pointed the same loop at their own second brain, on the theory that a curated second brain *is* the golden-link set; V3 added the persistent wiki on top because a flat research.md is static and re-running the loop is expensive.",
+      "The deep research loop uses an orchestrator that fans out questions to sub-agents (Gemini grounded in Google), summarizes each returned link, then ranks sources against the original topic and only fully scrapes the top-K \u2014 three rounds of six queries yields 40\u201350 links, most of which are noise.",
+      "The wiki evolves from conversation, not just ingestion: every question can spawn a new concept, note or comparison file and is written to a log, so the store reflects what you didn't understand as much as what you read.",
+      "The wiki is deliberately project-scoped rather than sitting on top of the whole vault \u2014 Obsidian (organized with Tiago Forte's PARA method) stays an immutable snapshot, and each project pulls a scoped slice from it via the research skill.",
+      "Known gaps the authors accept by design: missing connectors (Drive, Notion, Slack), no good source provenance or staleness ranking, memory compaction still weak, and no UI \u2014 because the project's goal is to teach memory and context management, not to be a product."
+    ],
+    "notable_quotes": [
+      {
+        "text": "I spent 18 months turning my second brain into my living research memory.",
+        "timestamp_sec": 0,
+        "why": "The thesis and the scale of investment in one line."
+      },
+      {
+        "text": "within my second brain, I currently have over 5,000 notes in Obsidian and another 5,000 notes in Readwise and some scattered in Notion and Google Drive",
+        "timestamp_sec": 0,
+        "why": "Concrete numbers that define the problem size."
+      },
+      {
+        "text": "you need a system that sits between those harnesses and your second brain",
+        "timestamp_sec": 34,
+        "why": "States the architectural position against using Codex/NotebookLM directly."
+      },
+      {
+        "text": "how can we make research better, but more specifically, how can we better leverage what we have?",
+        "timestamp_sec": 196,
+        "why": "Reframes the goal from acquisition to reuse."
+      },
+      {
+        "text": "It's not agent native. And it's obviously weak for coding tasks since it's just browser based.",
+        "timestamp_sec": 328,
+        "why": "The specific, checkable objection to NotebookLM."
+      },
+      {
+        "text": "But, this needs an infrastructure. It's not really human-friendly to be able to digest quickly, to check notes, to make edits. It's hard to inspect by hand.",
+        "timestamp_sec": 381,
+        "why": "The tradeoff case against vector-DB RAG for personal use."
+      },
+      {
+        "text": "the next session you use Codex, you have to paste it all again or ask it to use skills.",
+        "timestamp_sec": 477,
+        "why": "Names the concrete failure mode motivating the whole system."
+      },
+      {
+        "text": "The bottleneck is how can you leverage it in the future? Meaning that with an agent, the context window becomes everything, the database, the file system, the memory, the reasoning space.",
+        "timestamp_sec": 516,
+        "why": "The sharpest framing of why context windows aren't memory."
+      },
+      {
+        "text": "we don't need necessarily to provide more and more and more context for a better research. You need a proper memory and context management",
+        "timestamp_sec": 516,
+        "why": "Takes a side against the more-context-is-better default."
+      },
+      {
+        "text": "So basically after three rounds of generating six queries per round, we ended up with like 40-50 links in total.",
+        "timestamp_sec": 872,
+        "why": "Reports the actual fan-out numbers behind the deep research loop."
+      },
+      {
+        "text": "For the course, it worked great right away. We generated 35 lessons really quick, but we wanted more.",
+        "timestamp_sec": 925,
+        "why": "Quantifies what V1 actually delivered before they scaled ambition."
+      },
+      {
+        "text": "this research MD file is static. It's a pile of static data. And usually research is not static, right?",
+        "timestamp_sec": 1063,
+        "why": "The motivation for adding the wiki layer."
+      },
+      {
+        "text": "It consumes a lot of tokens and it takes a lot of time.",
+        "timestamp_sec": 1063,
+        "why": "Names the cost that makes persistence necessary."
+      },
+      {
+        "text": "that's why V3 of this system is actually a deep research algorithm plus an LM knowledge base on top of it, aka the wiki layer.",
+        "timestamp_sec": 1100,
+        "why": "One-sentence definition of the final architecture."
+      },
+      {
+        "text": "you should forget the infra structure you think you need, such as vector databases, knowledge graphs, semantic search, text search.",
+        "timestamp_sec": 1144,
+        "why": "The most contrarian claim in the talk."
+      },
+      {
+        "text": "So, no database, just a simple index based on references.",
+        "timestamp_sec": 1185,
+        "why": "The design decision stated at its most compressed."
+      },
+      {
+        "text": "And sometimes the agent just looks into this, gets what it needs, and goes back. Which is very token efficient, right?",
+        "timestamp_sec": 1371,
+        "why": "Explains why the summary hierarchy pays off."
+      },
+      {
+        "text": "the beautiful part is that this wiki is actually alive, right? For example, every question leaves a trace into your wiki.",
+        "timestamp_sec": 1418,
+        "why": "The idea that distinguishes this from a static research artifact."
+      },
+      {
+        "text": "Obsidian is just an immutable snapshot that a LLM never touches, right? So, this is my data. I don't really want the LLM to touch my personal notes that I manually write",
+        "timestamp_sec": 1499,
+        "why": "A firm boundary between human-authored source and machine-generated derivative."
+      },
+      {
+        "text": "The project is the work, and your second brain is the research.",
+        "timestamp_sec": 1596,
+        "why": "The organizing metaphor for how scoping works."
+      },
+      {
+        "text": "usually light or fast is more than enough because remember this process consumes a lot of tokens.",
+        "timestamp_sec": 1723,
+        "why": "Practical operating guidance with a stated cost reason."
+      },
+      {
+        "text": "the other main goal of this project is to teach memory and context management",
+        "timestamp_sec": 2222,
+        "why": "Explains why missing connectors are not treated as bugs."
+      },
+      {
+        "text": "our goal is to teach AI engineering. It's not to build the next best product.",
+        "timestamp_sec": 2257,
+        "why": "Sets expectations for anyone considering adopting the repo."
+      }
+    ],
+    "concepts": [
+      "agent memory",
+      "context management",
+      "second brain systems",
+      "deep research loops",
+      "file-based knowledge bases",
+      "source ranking and retrieval",
+      "context compaction",
+      "agent skills and plugins",
+      "harness engineering",
+      "source provenance"
+    ],
+    "positions": [
+      {
+        "claim": "Personal research memory should be built on plain markdown files and a reference index rather than vector databases, knowledge graphs, or semantic search.",
+        "confidence": "stated",
+        "timestamp_sec": 1144
+      },
+      {
+        "claim": "The limiting factor in agentic research is not how much context you can supply but whether it persists across sessions.",
+        "confidence": "stated",
+        "timestamp_sec": 516
+      },
+      {
+        "claim": "NotebookLM is unsuitable as a research OS because you don't own it, it isn't agent-native, and it's weak at coding tasks.",
+        "confidence": "stated",
+        "timestamp_sec": 328
+      },
+      {
+        "claim": "Vector-DB RAG pipelines are the right answer for production products but the wrong answer for a personal, daily-use research system.",
+        "confidence": "stated",
+        "timestamp_sec": 381
+      },
+      {
+        "claim": "A curated second brain functions as an organically generated set of 'golden links', removing the need to hand-pick seed sources for deep research.",
+        "confidence": "stated",
+        "timestamp_sec": 974
+      },
+      {
+        "claim": "A hierarchy of index \u2192 executive summary \u2192 wiki derivative \u2192 raw source makes agent retrieval substantially more token-efficient than reading full sources.",
+        "confidence": "stated",
+        "timestamp_sec": 1418
+      },
+      {
+        "claim": "The LLM should never write to your hand-authored notes; generated content belongs in a separate derivative layer.",
+        "confidence": "stated",
+        "timestamp_sec": 1499
+      },
+      {
+        "claim": "A knowledge base should update from questions asked of it, not only from ingestion events.",
+        "confidence": "stated",
+        "timestamp_sec": 1460
+      },
+      {
+        "claim": "Running the deep research loop at its deepest setting is rarely worth the token cost; light or fast settings suffice for most topics.",
+        "confidence": "stated",
+        "timestamp_sec": 1766
+      },
+      {
+        "claim": "For one-off tasks or quick lookups, ChatGPT or a coding agent is the correct tool and building a research OS is overkill.",
+        "confidence": "stated",
+        "timestamp_sec": 196
+      },
+      {
+        "claim": "Memory compaction remains an unsolved, rapidly moving problem even in their own system.",
+        "confidence": "stated",
+        "timestamp_sec": 2257
+      },
+      {
+        "claim": "Adding new connectors to such a system is cheap enough that users should extend it themselves rather than wait for maintainers.",
+        "confidence": "implied",
+        "timestamp_sec": 698
+      }
+    ],
+    "speaker_org": "Decoding AI (Paul Iusztin) and Towards AI (Louis-Fran\u00e7ois Bouchard)"
+  },
+  "_meta": {
+    "slug": "turn-10994-notes-into-memory",
+    "video_id": "ZRM_TfEZcIo",
+    "url": "https://www.youtube.com/watch?v=ZRM_TfEZcIo",
+    "word_count": 6559,
+    "wall_sec": 68.0,
+    "run_at": "2026-08-12T20:26:38Z",
+    "effort": "medium"
+  }
+}

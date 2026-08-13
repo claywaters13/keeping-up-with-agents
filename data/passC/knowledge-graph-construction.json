@@ -1,0 +1,335 @@
+{
+  "is_error": false,
+  "duration_api_ms": 187064,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "3aa6bc08-53f3-4ef8-8f17-b00c3e63321b",
+  "total_cost_usd": 0.8422470000000001,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 40831,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 16074,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 40831,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 16074,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 40831,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 40831
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 26843,
+      "outputTokens": 16,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.026923,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 16074,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 40831,
+      "webSearchRequests": 0,
+      "costUSD": 0.815324,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\"concept\": \"knowledge graph construction\", \"state_of_practice\": \"The field has converged on the diagnosis and split on the treatment. Practitioners across tracks now agree that similarity search over embeddings is structurally incapable of multi-hop traversal, aggregation/counting, and negative or coverage questions, and that bigger models and million-token context windows do not fix it \u2014 so some explicit structure over entities, relations, and business semantics is required. Where they diverge is construction: one camp builds the graph with schema-guided LLM extraction (agents now write Cypher and entity extractors well enough that graph expertise is no longer a prerequisite), while another argues for deterministic, idempotent loading from existing document structure and metadata, or for keeping data in the warehouse and using the graph only as a metadata/semantic layer over it. The most consistent enterprise finding is that the durable asset is not the graph technology but the modeled tacit knowledge \u2014 metric definitions, join logic, reporting conventions, data limitations \u2014 which cannot be inferred from the data and must be extracted from data owners. Nearly every production account also insists the graph is a live artifact: runtime execution traces, correction events, eval failures, and closed-won/closed-lost outcomes must flow back into it, because hand-maintained markdown and skills files go stale faster than enterprise definitions change. Notably, several graph advocates volunteered that graphs are often the wrong tool, that their efficiency claims were never benchmarked, and that hybrid vector-plus-graph retrieval \u2014 not graph replacement \u2014 is what actually ships.\", \"consensus\": [{\"claim\": \"Vector/similarity retrieval is structurally insufficient for relationship, aggregation, and negative questions \u2014 it always returns something, only sees top-k, and cannot traverse or count across the full dataset.\", \"support_count\": 6, \"supporting_talks\": [\"stop-ai-agent-hallucinations-5-techniques-production-patterns\", \"crabrag-why-automated-assistants-need-graph-memory-not-more-tokens\", \"ai-on-your-lakehouse-context-comes-in-shapes-not-queries\", \"a-practitioners-guide-to-graphs\", \"video-has-no-memory-heres-how-we-built-one\", \"when-all-context-matters-extended-cache-augmented-generation\"], \"evidence_quote\": \"Vector search always returns something even when nothing is truly relevant. And the agent only sees the top end chunks of your all data at a time. It cannot aggregate, count, or traverse relationship across all the full data set. So, it estimates.\", \"evidence_talk\": \"stop-ai-agent-hallucinations-5-techniques-production-patterns\", \"evidence_timestamp_sec\": 1130}, {\"claim\": \"A graph is a complement to, not a replacement for, semantic search \u2014 production systems seed traversal from vector hits or run hybrid retrieval.\", \"support_count\": 3, \"supporting_talks\": [\"ai-on-your-lakehouse-context-comes-in-shapes-not-queries\", \"crabrag-why-automated-assistants-need-graph-memory-not-more-tokens\", \"a-practitioners-guide-to-graphs\"], \"evidence_quote\": \"I think it would be naive to call it a replacement because most of the people that I see using this will eventually incorporate some sort of hybrid vector retrieval or full text search\", \"evidence_talk\": \"ai-on-your-lakehouse-context-comes-in-shapes-not-queries\", \"evidence_timestamp_sec\": 3899}, {\"claim\": \"Hand-maintained markdown files and skills are not a sufficient context substrate at enterprise scale \u2014 they go stale, load speculatively, and burn tokens.\", \"support_count\": 4, \"supporting_talks\": [\"thinner-agents-on-a-smarter-substrate-the-ontology-based-semantic-layer\", \"crabrag-why-automated-assistants-need-graph-memory-not-more-tokens\", \"enterprise-agents-have-a-structure-problem\", \"the-factory-that-dreams-39-ai-agents-no-framework\"], \"evidence_quote\": \"we've seen a ton of team that tried to solve this problem using just Markdown files. And the summary is it is part of the solution, but it is not the solution.\", \"evidence_talk\": \"thinner-agents-on-a-smarter-substrate-the-ontology-based-semantic-layer\", \"evidence_timestamp_sec\": 211}, {\"claim\": \"Unconstrained extraction \u2014 letting a model infer entities and relationships from raw text or raw tables \u2014 produces relationships that do not exist; a domain schema or ontology must bound what gets written.\", \"support_count\": 4, \"supporting_talks\": [\"why-we-killed-our-multi-agent-pipeline\", \"a-practitioners-guide-to-graphs\", \"why-agentic-systems-need-ontologies\", \"thinner-agents-on-a-smarter-substrate-the-ontology-based-semantic-layer\"], \"evidence_quote\": \"the agent was looking at data, looking at tables, then trying to infer the relationship. That which was not scalable. And it often produce relationship which which is not actually exist in the data.\", \"evidence_talk\": \"why-we-killed-our-multi-agent-pipeline\", \"evidence_timestamp_sec\": 551}, {\"claim\": \"A bigger model or a longer context window does not fix a structure problem; overfilling context degrades answer quality independently of hitting the token limit.\", \"support_count\": 4, \"supporting_talks\": [\"enterprise-agents-have-a-structure-problem\", \"crabrag-why-automated-assistants-need-graph-memory-not-more-tokens\", \"video-has-no-memory-heres-how-we-built-one\", \"when-all-context-matters-extended-cache-augmented-generation\"], \"evidence_quote\": \"The problem here is that the context window is limited, and if you fill the context window too much, the quality of the answer gets degraded, too.\", \"evidence_talk\": \"when-all-context-matters-extended-cache-augmented-generation\", \"evidence_timestamp_sec\": 192}, {\"claim\": \"The valuable content of the graph is modeled business semantics and tacit process knowledge \u2014 metric definitions, reporting conventions, join logic \u2014 not the raw data or the graph technology.\", \"support_count\": 5, \"supporting_talks\": [\"your-moat-is-your-data-model\", \"thinner-agents-on-a-smarter-substrate-the-ontology-based-semantic-layer\", \"enterprise-agents-have-a-structure-problem\", \"why-we-killed-our-multi-agent-pipeline\", \"how-forward-deployed-engineering-is-done-at-kepler\"], \"evidence_quote\": \"but our moat here was our understanding of our internal processes the tacet knowledge that you need to to run successful AI and this is true I think no matter how good AI gets how good models get\", \"evidence_talk\": \"your-moat-is-your-data-model\", \"evidence_timestamp_sec\": 69}, {\"claim\": \"Graph retrieval's decisive advantage over embedding retrieval is auditability: the returned subgraph or traversal path is inspectable evidence for the answer.\", \"support_count\": 4, \"supporting_talks\": [\"crabrag-why-automated-assistants-need-graph-memory-not-more-tokens\", \"video-has-no-memory-heres-how-we-built-one\", \"ai-on-your-lakehouse-context-comes-in-shapes-not-queries\", \"why-agentic-systems-need-ontologies\"], \"evidence_quote\": \"graphs are they're accurate. So, they give you very precise information. Explainable because you can look at the graph which got returned. And auditable because now you can actually say these are the this is the context.\", \"evidence_talk\": \"crabrag-why-automated-assistants-need-graph-memory-not-more-tokens\", \"evidence_timestamp_sec\": 652}, {\"claim\": \"The graph must be fed by a runtime feedback loop \u2014 execution traces, user corrections, eval failures, and closed outcomes \u2014 or it decays into another stale document store.\", \"support_count\": 5, \"supporting_talks\": [\"enterprise-agents-have-a-structure-problem\", \"thinner-agents-on-a-smarter-substrate-the-ontology-based-semantic-layer\", \"build-the-ai-gtm-agent-that-knows-the-buyer\", \"the-factory-that-dreams-39-ai-agents-no-framework\", \"your-moat-is-your-data-model\"], \"evidence_quote\": \"All of these events need to be captured, logged, and used to update your data agent context.\", \"evidence_talk\": \"enterprise-agents-have-a-structure-problem\", \"evidence_timestamp_sec\": 414}], \"disagreements\": [{\"question\": \"Should a knowledge graph be built by LLM entity extraction, or by deterministic structural loading (or not built at all)?\", \"position_a\": \"Use schema-guided LLM extraction as the primary build path \u2014 modern agents write Cypher and entity extractors well enough that graph expertise is no longer a prerequisite, and pipelines can construct the graph from raw text files.\", \"position_a_talks\": [\"crabrag-why-automated-assistants-need-graph-memory-not-more-tokens\", \"stop-ai-agent-hallucinations-5-techniques-production-patterns\", \"a-practitioners-guide-to-graphs\"], \"position_b\": \"Prefer a deterministic, idempotent load derived from existing document structure, links, and metadata \u2014 LLM extraction is slower, costlier, and non-reproducible across runs, and re-extraction on every corpus refresh disqualifies graph construction outright for churning data; build the semantic layer and canonical queries first and treat the graph as the last, highest-effort tier.\", \"position_b_talks\": [\"ai-on-your-lakehouse-context-comes-in-shapes-not-queries\", \"when-all-context-matters-extended-cache-augmented-generation\", \"enterprise-agents-have-a-structure-problem\"], \"why_it_matters\": \"It determines whether your ingest is reproducible and cheap enough to re-run on every data refresh, and whether graph build cost scales with corpus churn or stays fixed. Teams that pick LLM extraction for a fast-changing corpus discover the rebuild cost only after the graph is load-bearing.\"}, {\"question\": \"Should the graph impose one canonical vocabulary across the enterprise, or model the fact that teams legitimately mean different things by the same term?\", \"position_a\": \"Normalize to a single shared ontology expressed in business language \u2014 standardize names and units at extraction, collapse variants with embedding-based entity matching, reuse public ontologies, and treat the historically-conventional answer as the correct one.\", \"position_a_talks\": [\"thinner-agents-on-a-smarter-substrate-the-ontology-based-semantic-layer\", \"why-agentic-systems-need-ontologies\", \"your-moat-is-your-data-model\", \"a-practitioners-guide-to-graphs\"], \"position_b\": \"Terminology divergence across teams is a feature of how humans work, not a defect to be schema'd away; two teams can compute the same metric differently and both be right, so the system should route to the right definition based on who is asking rather than pick a winner \u2014 and what counts as public or private depends on the room, not the data.\", \"position_b_talks\": [\"how-forward-deployed-engineering-is-done-at-kepler\", \"enterprise-agents-have-a-structure-problem\", \"wearing-the-agent-from-group-chats-to-glasses\"], \"why_it_matters\": \"It decides whether normalization happens once at ingest (one node per concept) or per-request at query time (identity-conditioned views over the same graph), and whether 'correct' is a global property of the answer or relative to the requester. Getting this wrong shows up as an agent that is factually right and organizationally useless.\"}, {\"question\": \"Should source data be materialized into the graph, or should the graph hold only metadata pointing at systems of record?\", \"position_a\": \"Do not ETL into the graph for most agent use cases \u2014 pull metadata only and use the graph as a semantic layer over the warehouse, because continuous sync at terabyte scale, custom ETL, and security policies that forbid cross-system data movement make copying untenable; ETL is justified only for recursive-join performance, graph algorithms, embeddings, or clustering.\", \"position_a_talks\": [\"ai-on-your-lakehouse-context-comes-in-shapes-not-queries\", \"thinner-agents-on-a-smarter-substrate-the-ontology-based-semantic-layer\", \"enterprise-agents-have-a-structure-problem\"], \"position_b\": \"Materialize: ingest once and reason many times, consolidating multiple systems of record into a single graph and storing primitives rather than answers, because owned context compounds while rented or federated context decays and re-query costs recur on every access.\", \"position_b_talks\": [\"your-moat-is-your-data-model\", \"video-has-no-memory-heres-how-we-built-one\", \"the-rise-of-caas-context-as-a-service-for-agentic-ai\", \"crabrag-why-automated-assistants-need-graph-memory-not-more-tokens\"], \"why_it_matters\": \"Materializing unlocks graph algorithms, embeddings, and traversal performance but takes on sync and compliance burden; the metadata-only path stays cheap and secure but forecloses anything that needs the data resident in the graph. The break-even is empirical \u2014 one speaker put it at roughly 15,000 entities or queries for a scraping pipeline.\"}, {\"question\": \"Should the graph constrain the agent's search space, or serve as an open substrate the agent queries freely?\", \"position_a\": \"Treat the graph as a control plane: it dictates which paths the agent may take and which hypotheses it may evaluate \u2014 every edge is a hypothesis and the agent does not go outside it \u2014 with ontology reasoners validating results before any side effect is committed.\", \"position_a_talks\": [\"why-we-killed-our-multi-agent-pipeline\", \"why-agentic-systems-need-ontologies\"], \"position_b\": \"Agents are now capable enough to be trusted with free-form querying: entity nodes that used to be required in the data model can often be omitted, and as text-to-Cypher and skills improve, agents will increasingly write their own queries rather than call prebuilt shape scripts.\", \"position_b_talks\": [\"ai-on-your-lakehouse-context-comes-in-shapes-not-queries\", \"crabrag-why-automated-assistants-need-graph-memory-not-more-tokens\"], \"why_it_matters\": \"It sets how much modeling effort is required up front: a control-plane graph needs every valid investigation path encoded, while an open substrate pushes correctness onto model capability and eval. The constrained design bounds hallucinated reasoning paths; the open design gets cheaper every model generation.\"}], \"practical_guidance\": {\"do\": [\"Give the extractor a domain schema plus explicit ontology instructions for naming and unit standardization, then run a separate embedding-based entity-matching pass \u2014 prompt-level standardization alone is not reliable, and hand-curated mapping requires knowing every entity in advance.\", \"Seed traversal from vector search, then walk the graph and rank neighbors by relatedness to assemble context, rather than choosing between vector and graph retrieval.\", \"Use one generic containment relationship name across hierarchy levels instead of per-level names; hundreds of distinct relationship types stop fitting the model's context window and degrade Cypher generation.\", \"Prefer a deterministic, regex/structure-based loader when documents already carry inherent structure and interlinking \u2014 it is idempotent and faster than LLM extraction.\", \"Build the semantic layer and canonical query tiers first (roughly 80% of enterprise data-agent problems) before attempting the database graph, which is the highest-effort and hardest-to-maintain tier.\", \"Engage data owners directly to capture field semantics, join logic, data limitations, safeguards, and security trimming \u2014 none of it is inferable from the data itself.\", \"Store a graph query alongside each eval question and compute ground truth against the live graph at eval time, since structured data changes constantly and frozen expected answers rot.\", \"Route eval failures back into the data model, domain rules, and schema descriptions \u2014 treat evals as a data-modeling feedback loop, not a scorecard.\", \"Ingest once and reason many times: pay for expensive understanding at ingest, store primitives (moments, entities, appearances) rather than pre-computed answers, and ground every claim to a specific source location.\", \"Pull deterministic work out of the agentic system entirely \u2014 detect signals with statistical methods and hand the agent an investigation task, not an identification task.\", \"Keep end-to-end judgment in exactly one agent; sub-agents may return investigation results but never reasoning or judgment, because context is lost at every handoff.\", \"Layer validation: Pydantic type checks at the door, ontology/OWL semantic checks at the ledger, and keep agents side-effect-free until validation passes.\", \"Adopt existing public ontologies (schema.org, FOAF, Dublin Core) rather than inventing a domain vocabulary from scratch.\", \"Serve the graph into tools users already have via MCP instead of building another chat UI \u2014 the interface is not defensible, the model is.\"], \"avoid\": [\"Free-form subject-predicate-object triple extraction with no schema \u2014 the resulting graph is one you 'wouldn't get very far with'.\", \"ETLing warehouse data into a graph by default; continuous sync at terabyte scale, custom ETL, and security policies that forbid cross-system movement usually outweigh the benefit unless you specifically need recursive-join performance, graph algorithms, embeddings, or clustering.\", \"LLM-generated community summaries when document metadata already implies the themes \u2014 they cost more, run slower, and return different results across runs; reserve LLM assistance for corpora with poorly labeled titles and links.\", \"Bucketing documents by domain when relationships between documents are dense \u2014 the supervisor skips domains that look irrelevant at first glance; distribute in no particular order and balance only for bucket size.\", \"Treating the graph as a lookup layer; if it does not constrain which paths and hypotheses the agent can pursue, you have not bought navigation, only storage.\", \"Storing agent memory as markdown files once the corpus exceeds the model's context window \u2014 everything gets loaded speculatively, at 100k+ tokens per round.\", \"Exposing memory mutation through MCP tools without guardrails; the agent is one call away from invoking forget and wiping its own memory.\", \"Recomputing the whole knowledge graph every time the underlying corpus is replaced \u2014 for frequently refreshed collections this alone disqualifies the approach.\", \"Weighting all knowledge bases equally; rank sources of truth and consult cleanest-first, or the agent cannot tell which table, column, or definition is authoritative.\", \"Conflating fit score and intent score in a GTM context graph \u2014 it sends the wrong message to the wrong person, and if everything reads as hot, reps stop trusting the system.\", \"Deleting nothing: contacts and records failing ICP criteria should be removed, not retained as noise in the graph.\", \"Adding more knowledge bases and MCP servers as the remedy for bad answers \u2014 the failure is structural, not a coverage gap.\"]}, \"notable_outliers\": [{\"claim\": \"A Neo4j speaker demoing an entire lakehouse graph architecture stated outright that none of the efficiency or accuracy claims in the workshop had been benchmarked.\", \"talk\": \"ai-on-your-lakehouse-context-comes-in-shapes-not-queries\", \"timestamp_sec\": 6896}, {\"claim\": \"Graph-based subgraph retrieval cut tool calls for code search by 40% on a .NET codebase, surfacing intermediate nodes that neither vector search nor symbol/reference lookups could reach.\", \"talk\": \"a-practitioners-guide-to-graphs\", \"timestamp_sec\": 628}, {\"claim\": \"Two years ago the data model would have needed a dedicated entity node; agents are now smart enough that you often don't need it \u2014 with life-sciences ontologies as the counterexample.\", \"talk\": \"ai-on-your-lakehouse-context-comes-in-shapes-not-queries\", \"timestamp_sec\": 4073}, {\"claim\": \"Hallucination is a feature of LLMs rather than a defect, which is why the fix is a neuro-symbolic reasoner over a formal ontology rather than better prompting.\", \"talk\": \"why-agentic-systems-need-ontologies\", \"timestamp_sec\": 244}, {\"claim\": \"Whoever controls the enterprise's vocabulary through their ontology becomes the linguistic foundation and is locked in \u2014 terms like 'skills' and 'MCPs' are being contested in real time right now.\", \"talk\": \"how-forward-deployed-engineering-is-done-at-kepler\", \"timestamp_sec\": 920}, {\"claim\": \"A 100-person factory with no data scientists built a 39-agent company brain for ~$30k against a $230k agency quote, with a values file derived from three generations of a Jain family business running as production guardrails.\", \"talk\": \"the-factory-that-dreams-39-ai-agents-no-framework\", \"timestamp_sec\": 508}, {\"claim\": \"Self-built scraping to own context reached break-even against rented context-as-a-service at just over 15,000 entities or queries, assuming roughly a week and $5,000 of setup.\", \"talk\": \"the-rise-of-caas-context-as-a-service-for-agentic-ai\", \"timestamp_sec\": 1139}], \"maturity\": \"consolidating\", \"maturity_rationale\": \"The diagnosis has converged across 16 independent talks \u2014 vector-only retrieval fails on multi-hop, aggregation, and negation, and bigger models don't fix it \u2014 and the enterprise pattern of a semantics-bearing substrate fed by runtime feedback is repeated by Neo4j, Tesla, Gates Foundation, ZS, and Berkeley alike. But construction remains genuinely argued: LLM extraction versus deterministic structural loading, materialize versus metadata-only, one canonical ontology versus identity-based routing, and at least one graph advocate opening with the claim that graphs are often the wrong tool while another admitted running no benchmarks.\"}",
+  "ttft_ms": 104519,
+  "ttft_stream_ms": 1918,
+  "time_to_request_ms": 35,
+  "type": "result",
+  "duration_ms": 187322,
+  "uuid": "896a1c07-1510-4e06-b656-afe248a5a3cb",
+  "passC": {
+    "concept": "knowledge graph construction",
+    "state_of_practice": "The field has converged on the diagnosis and split on the treatment. Practitioners across tracks now agree that similarity search over embeddings is structurally incapable of multi-hop traversal, aggregation/counting, and negative or coverage questions, and that bigger models and million-token context windows do not fix it \u2014 so some explicit structure over entities, relations, and business semantics is required. Where they diverge is construction: one camp builds the graph with schema-guided LLM extraction (agents now write Cypher and entity extractors well enough that graph expertise is no longer a prerequisite), while another argues for deterministic, idempotent loading from existing document structure and metadata, or for keeping data in the warehouse and using the graph only as a metadata/semantic layer over it. The most consistent enterprise finding is that the durable asset is not the graph technology but the modeled tacit knowledge \u2014 metric definitions, join logic, reporting conventions, data limitations \u2014 which cannot be inferred from the data and must be extracted from data owners. Nearly every production account also insists the graph is a live artifact: runtime execution traces, correction events, eval failures, and closed-won/closed-lost outcomes must flow back into it, because hand-maintained markdown and skills files go stale faster than enterprise definitions change. Notably, several graph advocates volunteered that graphs are often the wrong tool, that their efficiency claims were never benchmarked, and that hybrid vector-plus-graph retrieval \u2014 not graph replacement \u2014 is what actually ships.",
+    "consensus": [
+      {
+        "claim": "Vector/similarity retrieval is structurally insufficient for relationship, aggregation, and negative questions \u2014 it always returns something, only sees top-k, and cannot traverse or count across the full dataset.",
+        "support_count": 6,
+        "supporting_talks": [
+          "stop-ai-agent-hallucinations-5-techniques-production-patterns",
+          "crabrag-why-automated-assistants-need-graph-memory-not-more-tokens",
+          "ai-on-your-lakehouse-context-comes-in-shapes-not-queries",
+          "a-practitioners-guide-to-graphs",
+          "video-has-no-memory-heres-how-we-built-one",
+          "when-all-context-matters-extended-cache-augmented-generation"
+        ],
+        "evidence_quote": "Vector search always returns something even when nothing is truly relevant. And the agent only sees the top end chunks of your all data at a time. It cannot aggregate, count, or traverse relationship across all the full data set. So, it estimates.",
+        "evidence_talk": "stop-ai-agent-hallucinations-5-techniques-production-patterns",
+        "evidence_timestamp_sec": 1130
+      },
+      {
+        "claim": "A graph is a complement to, not a replacement for, semantic search \u2014 production systems seed traversal from vector hits or run hybrid retrieval.",
+        "support_count": 3,
+        "supporting_talks": [
+          "ai-on-your-lakehouse-context-comes-in-shapes-not-queries",
+          "crabrag-why-automated-assistants-need-graph-memory-not-more-tokens",
+          "a-practitioners-guide-to-graphs"
+        ],
+        "evidence_quote": "I think it would be naive to call it a replacement because most of the people that I see using this will eventually incorporate some sort of hybrid vector retrieval or full text search",
+        "evidence_talk": "ai-on-your-lakehouse-context-comes-in-shapes-not-queries",
+        "evidence_timestamp_sec": 3899
+      },
+      {
+        "claim": "Hand-maintained markdown files and skills are not a sufficient context substrate at enterprise scale \u2014 they go stale, load speculatively, and burn tokens.",
+        "support_count": 4,
+        "supporting_talks": [
+          "thinner-agents-on-a-smarter-substrate-the-ontology-based-semantic-layer",
+          "crabrag-why-automated-assistants-need-graph-memory-not-more-tokens",
+          "enterprise-agents-have-a-structure-problem",
+          "the-factory-that-dreams-39-ai-agents-no-framework"
+        ],
+        "evidence_quote": "we've seen a ton of team that tried to solve this problem using just Markdown files. And the summary is it is part of the solution, but it is not the solution.",
+        "evidence_talk": "thinner-agents-on-a-smarter-substrate-the-ontology-based-semantic-layer",
+        "evidence_timestamp_sec": 211
+      },
+      {
+        "claim": "Unconstrained extraction \u2014 letting a model infer entities and relationships from raw text or raw tables \u2014 produces relationships that do not exist; a domain schema or ontology must bound what gets written.",
+        "support_count": 4,
+        "supporting_talks": [
+          "why-we-killed-our-multi-agent-pipeline",
+          "a-practitioners-guide-to-graphs",
+          "why-agentic-systems-need-ontologies",
+          "thinner-agents-on-a-smarter-substrate-the-ontology-based-semantic-layer"
+        ],
+        "evidence_quote": "the agent was looking at data, looking at tables, then trying to infer the relationship. That which was not scalable. And it often produce relationship which which is not actually exist in the data.",
+        "evidence_talk": "why-we-killed-our-multi-agent-pipeline",
+        "evidence_timestamp_sec": 551
+      },
+      {
+        "claim": "A bigger model or a longer context window does not fix a structure problem; overfilling context degrades answer quality independently of hitting the token limit.",
+        "support_count": 4,
+        "supporting_talks": [
+          "enterprise-agents-have-a-structure-problem",
+          "crabrag-why-automated-assistants-need-graph-memory-not-more-tokens",
+          "video-has-no-memory-heres-how-we-built-one",
+          "when-all-context-matters-extended-cache-augmented-generation"
+        ],
+        "evidence_quote": "The problem here is that the context window is limited, and if you fill the context window too much, the quality of the answer gets degraded, too.",
+        "evidence_talk": "when-all-context-matters-extended-cache-augmented-generation",
+        "evidence_timestamp_sec": 192
+      },
+      {
+        "claim": "The valuable content of the graph is modeled business semantics and tacit process knowledge \u2014 metric definitions, reporting conventions, join logic \u2014 not the raw data or the graph technology.",
+        "support_count": 5,
+        "supporting_talks": [
+          "your-moat-is-your-data-model",
+          "thinner-agents-on-a-smarter-substrate-the-ontology-based-semantic-layer",
+          "enterprise-agents-have-a-structure-problem",
+          "why-we-killed-our-multi-agent-pipeline",
+          "how-forward-deployed-engineering-is-done-at-kepler"
+        ],
+        "evidence_quote": "but our moat here was our understanding of our internal processes the tacet knowledge that you need to to run successful AI and this is true I think no matter how good AI gets how good models get",
+        "evidence_talk": "your-moat-is-your-data-model",
+        "evidence_timestamp_sec": 69
+      },
+      {
+        "claim": "Graph retrieval's decisive advantage over embedding retrieval is auditability: the returned subgraph or traversal path is inspectable evidence for the answer.",
+        "support_count": 4,
+        "supporting_talks": [
+          "crabrag-why-automated-assistants-need-graph-memory-not-more-tokens",
+          "video-has-no-memory-heres-how-we-built-one",
+          "ai-on-your-lakehouse-context-comes-in-shapes-not-queries",
+          "why-agentic-systems-need-ontologies"
+        ],
+        "evidence_quote": "graphs are they're accurate. So, they give you very precise information. Explainable because you can look at the graph which got returned. And auditable because now you can actually say these are the this is the context.",
+        "evidence_talk": "crabrag-why-automated-assistants-need-graph-memory-not-more-tokens",
+        "evidence_timestamp_sec": 652
+      },
+      {
+        "claim": "The graph must be fed by a runtime feedback loop \u2014 execution traces, user corrections, eval failures, and closed outcomes \u2014 or it decays into another stale document store.",
+        "support_count": 5,
+        "supporting_talks": [
+          "enterprise-agents-have-a-structure-problem",
+          "thinner-agents-on-a-smarter-substrate-the-ontology-based-semantic-layer",
+          "build-the-ai-gtm-agent-that-knows-the-buyer",
+          "the-factory-that-dreams-39-ai-agents-no-framework",
+          "your-moat-is-your-data-model"
+        ],
+        "evidence_quote": "All of these events need to be captured, logged, and used to update your data agent context.",
+        "evidence_talk": "enterprise-agents-have-a-structure-problem",
+        "evidence_timestamp_sec": 414
+      }
+    ],
+    "disagreements": [
+      {
+        "question": "Should a knowledge graph be built by LLM entity extraction, or by deterministic structural loading (or not built at all)?",
+        "position_a": "Use schema-guided LLM extraction as the primary build path \u2014 modern agents write Cypher and entity extractors well enough that graph expertise is no longer a prerequisite, and pipelines can construct the graph from raw text files.",
+        "position_a_talks": [
+          "crabrag-why-automated-assistants-need-graph-memory-not-more-tokens",
+          "stop-ai-agent-hallucinations-5-techniques-production-patterns",
+          "a-practitioners-guide-to-graphs"
+        ],
+        "position_b": "Prefer a deterministic, idempotent load derived from existing document structure, links, and metadata \u2014 LLM extraction is slower, costlier, and non-reproducible across runs, and re-extraction on every corpus refresh disqualifies graph construction outright for churning data; build the semantic layer and canonical queries first and treat the graph as the last, highest-effort tier.",
+        "position_b_talks": [
+          "ai-on-your-lakehouse-context-comes-in-shapes-not-queries",
+          "when-all-context-matters-extended-cache-augmented-generation",
+          "enterprise-agents-have-a-structure-problem"
+        ],
+        "why_it_matters": "It determines whether your ingest is reproducible and cheap enough to re-run on every data refresh, and whether graph build cost scales with corpus churn or stays fixed. Teams that pick LLM extraction for a fast-changing corpus discover the rebuild cost only after the graph is load-bearing."
+      },
+      {
+        "question": "Should the graph impose one canonical vocabulary across the enterprise, or model the fact that teams legitimately mean different things by the same term?",
+        "position_a": "Normalize to a single shared ontology expressed in business language \u2014 standardize names and units at extraction, collapse variants with embedding-based entity matching, reuse public ontologies, and treat the historically-conventional answer as the correct one.",
+        "position_a_talks": [
+          "thinner-agents-on-a-smarter-substrate-the-ontology-based-semantic-layer",
+          "why-agentic-systems-need-ontologies",
+          "your-moat-is-your-data-model",
+          "a-practitioners-guide-to-graphs"
+        ],
+        "position_b": "Terminology divergence across teams is a feature of how humans work, not a defect to be schema'd away; two teams can compute the same metric differently and both be right, so the system should route to the right definition based on who is asking rather than pick a winner \u2014 and what counts as public or private depends on the room, not the data.",
+        "position_b_talks": [
+          "how-forward-deployed-engineering-is-done-at-kepler",
+          "enterprise-agents-have-a-structure-problem",
+          "wearing-the-agent-from-group-chats-to-glasses"
+        ],
+        "why_it_matters": "It decides whether normalization happens once at ingest (one node per concept) or per-request at query time (identity-conditioned views over the same graph), and whether 'correct' is a global property of the answer or relative to the requester. Getting this wrong shows up as an agent that is factually right and organizationally useless."
+      },
+      {
+        "question": "Should source data be materialized into the graph, or should the graph hold only metadata pointing at systems of record?",
+        "position_a": "Do not ETL into the graph for most agent use cases \u2014 pull metadata only and use the graph as a semantic layer over the warehouse, because continuous sync at terabyte scale, custom ETL, and security policies that forbid cross-system data movement make copying untenable; ETL is justified only for recursive-join performance, graph algorithms, embeddings, or clustering.",
+        "position_a_talks": [
+          "ai-on-your-lakehouse-context-comes-in-shapes-not-queries",
+          "thinner-agents-on-a-smarter-substrate-the-ontology-based-semantic-layer",
+          "enterprise-agents-have-a-structure-problem"
+        ],
+        "position_b": "Materialize: ingest once and reason many times, consolidating multiple systems of record into a single graph and storing primitives rather than answers, because owned context compounds while rented or federated context decays and re-query costs recur on every access.",
+        "position_b_talks": [
+          "your-moat-is-your-data-model",
+          "video-has-no-memory-heres-how-we-built-one",
+          "the-rise-of-caas-context-as-a-service-for-agentic-ai",
+          "crabrag-why-automated-assistants-need-graph-memory-not-more-tokens"
+        ],
+        "why_it_matters": "Materializing unlocks graph algorithms, embeddings, and traversal performance but takes on sync and compliance burden; the metadata-only path stays cheap and secure but forecloses anything that needs the data resident in the graph. The break-even is empirical \u2014 one speaker put it at roughly 15,000 entities or queries for a scraping pipeline."
+      },
+      {
+        "question": "Should the graph constrain the agent's search space, or serve as an open substrate the agent queries freely?",
+        "position_a": "Treat the graph as a control plane: it dictates which paths the agent may take and which hypotheses it may evaluate \u2014 every edge is a hypothesis and the agent does not go outside it \u2014 with ontology reasoners validating results before any side effect is committed.",
+        "position_a_talks": [
+          "why-we-killed-our-multi-agent-pipeline",
+          "why-agentic-systems-need-ontologies"
+        ],
+        "position_b": "Agents are now capable enough to be trusted with free-form querying: entity nodes that used to be required in the data model can often be omitted, and as text-to-Cypher and skills improve, agents will increasingly write their own queries rather than call prebuilt shape scripts.",
+        "position_b_talks": [
+          "ai-on-your-lakehouse-context-comes-in-shapes-not-queries",
+          "crabrag-why-automated-assistants-need-graph-memory-not-more-tokens"
+        ],
+        "why_it_matters": "It sets how much modeling effort is required up front: a control-plane graph needs every valid investigation path encoded, while an open substrate pushes correctness onto model capability and eval. The constrained design bounds hallucinated reasoning paths; the open design gets cheaper every model generation."
+      }
+    ],
+    "practical_guidance": {
+      "do": [
+        "Give the extractor a domain schema plus explicit ontology instructions for naming and unit standardization, then run a separate embedding-based entity-matching pass \u2014 prompt-level standardization alone is not reliable, and hand-curated mapping requires knowing every entity in advance.",
+        "Seed traversal from vector search, then walk the graph and rank neighbors by relatedness to assemble context, rather than choosing between vector and graph retrieval.",
+        "Use one generic containment relationship name across hierarchy levels instead of per-level names; hundreds of distinct relationship types stop fitting the model's context window and degrade Cypher generation.",
+        "Prefer a deterministic, regex/structure-based loader when documents already carry inherent structure and interlinking \u2014 it is idempotent and faster than LLM extraction.",
+        "Build the semantic layer and canonical query tiers first (roughly 80% of enterprise data-agent problems) before attempting the database graph, which is the highest-effort and hardest-to-maintain tier.",
+        "Engage data owners directly to capture field semantics, join logic, data limitations, safeguards, and security trimming \u2014 none of it is inferable from the data itself.",
+        "Store a graph query alongside each eval question and compute ground truth against the live graph at eval time, since structured data changes constantly and frozen expected answers rot.",
+        "Route eval failures back into the data model, domain rules, and schema descriptions \u2014 treat evals as a data-modeling feedback loop, not a scorecard.",
+        "Ingest once and reason many times: pay for expensive understanding at ingest, store primitives (moments, entities, appearances) rather than pre-computed answers, and ground every claim to a specific source location.",
+        "Pull deterministic work out of the agentic system entirely \u2014 detect signals with statistical methods and hand the agent an investigation task, not an identification task.",
+        "Keep end-to-end judgment in exactly one agent; sub-agents may return investigation results but never reasoning or judgment, because context is lost at every handoff.",
+        "Layer validation: Pydantic type checks at the door, ontology/OWL semantic checks at the ledger, and keep agents side-effect-free until validation passes.",
+        "Adopt existing public ontologies (schema.org, FOAF, Dublin Core) rather than inventing a domain vocabulary from scratch.",
+        "Serve the graph into tools users already have via MCP instead of building another chat UI \u2014 the interface is not defensible, the model is."
+      ],
+      "avoid": [
+        "Free-form subject-predicate-object triple extraction with no schema \u2014 the resulting graph is one you 'wouldn't get very far with'.",
+        "ETLing warehouse data into a graph by default; continuous sync at terabyte scale, custom ETL, and security policies that forbid cross-system movement usually outweigh the benefit unless you specifically need recursive-join performance, graph algorithms, embeddings, or clustering.",
+        "LLM-generated community summaries when document metadata already implies the themes \u2014 they cost more, run slower, and return different results across runs; reserve LLM assistance for corpora with poorly labeled titles and links.",
+        "Bucketing documents by domain when relationships between documents are dense \u2014 the supervisor skips domains that look irrelevant at first glance; distribute in no particular order and balance only for bucket size.",
+        "Treating the graph as a lookup layer; if it does not constrain which paths and hypotheses the agent can pursue, you have not bought navigation, only storage.",
+        "Storing agent memory as markdown files once the corpus exceeds the model's context window \u2014 everything gets loaded speculatively, at 100k+ tokens per round.",
+        "Exposing memory mutation through MCP tools without guardrails; the agent is one call away from invoking forget and wiping its own memory.",
+        "Recomputing the whole knowledge graph every time the underlying corpus is replaced \u2014 for frequently refreshed collections this alone disqualifies the approach.",
+        "Weighting all knowledge bases equally; rank sources of truth and consult cleanest-first, or the agent cannot tell which table, column, or definition is authoritative.",
+        "Conflating fit score and intent score in a GTM context graph \u2014 it sends the wrong message to the wrong person, and if everything reads as hot, reps stop trusting the system.",
+        "Deleting nothing: contacts and records failing ICP criteria should be removed, not retained as noise in the graph.",
+        "Adding more knowledge bases and MCP servers as the remedy for bad answers \u2014 the failure is structural, not a coverage gap."
+      ]
+    },
+    "notable_outliers": [
+      {
+        "claim": "A Neo4j speaker demoing an entire lakehouse graph architecture stated outright that none of the efficiency or accuracy claims in the workshop had been benchmarked.",
+        "talk": "ai-on-your-lakehouse-context-comes-in-shapes-not-queries",
+        "timestamp_sec": 6896
+      },
+      {
+        "claim": "Graph-based subgraph retrieval cut tool calls for code search by 40% on a .NET codebase, surfacing intermediate nodes that neither vector search nor symbol/reference lookups could reach.",
+        "talk": "a-practitioners-guide-to-graphs",
+        "timestamp_sec": 628
+      },
+      {
+        "claim": "Two years ago the data model would have needed a dedicated entity node; agents are now smart enough that you often don't need it \u2014 with life-sciences ontologies as the counterexample.",
+        "talk": "ai-on-your-lakehouse-context-comes-in-shapes-not-queries",
+        "timestamp_sec": 4073
+      },
+      {
+        "claim": "Hallucination is a feature of LLMs rather than a defect, which is why the fix is a neuro-symbolic reasoner over a formal ontology rather than better prompting.",
+        "talk": "why-agentic-systems-need-ontologies",
+        "timestamp_sec": 244
+      },
+      {
+        "claim": "Whoever controls the enterprise's vocabulary through their ontology becomes the linguistic foundation and is locked in \u2014 terms like 'skills' and 'MCPs' are being contested in real time right now.",
+        "talk": "how-forward-deployed-engineering-is-done-at-kepler",
+        "timestamp_sec": 920
+      },
+      {
+        "claim": "A 100-person factory with no data scientists built a 39-agent company brain for ~$30k against a $230k agency quote, with a values file derived from three generations of a Jain family business running as production guardrails.",
+        "talk": "the-factory-that-dreams-39-ai-agents-no-framework",
+        "timestamp_sec": 508
+      },
+      {
+        "claim": "Self-built scraping to own context reached break-even against rented context-as-a-service at just over 15,000 entities or queries, assuming roughly a week and $5,000 of setup.",
+        "talk": "the-rise-of-caas-context-as-a-service-for-agentic-ai",
+        "timestamp_sec": 1139
+      }
+    ],
+    "maturity": "consolidating",
+    "maturity_rationale": "The diagnosis has converged across 16 independent talks \u2014 vector-only retrieval fails on multi-hop, aggregation, and negation, and bigger models don't fix it \u2014 and the enterprise pattern of a semantics-bearing substrate fed by runtime feedback is repeated by Neo4j, Tesla, Gates Foundation, ZS, and Berkeley alike. But construction remains genuinely argued: LLM extraction versus deterministic structural loading, materialize versus metadata-only, one canonical ontology versus identity-based routing, and at least one graph advocate opening with the claim that graphs are often the wrong tool while another admitted running no benchmarks."
+  },
+  "_meta": {
+    "concept": "knowledge graph construction",
+    "slug": "knowledge-graph-construction",
+    "talk_count": 16,
+    "missing_talks": [],
+    "wall_sec": 188.5,
+    "run_at": "2026-08-13T17:30:54Z"
+  }
+}

@@ -1,0 +1,289 @@
+{
+  "is_error": false,
+  "duration_api_ms": 65341,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "443b1661-a186-4c21-8408-43db4d041102",
+  "total_cost_usd": 0.246321,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 9172,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 5752,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 9172,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 5752,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 9172,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 9172
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 5552,
+      "outputTokens": 17,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.005637,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 5752,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 9172,
+      "webSearchRequests": 0,
+      "costUSD": 0.240684,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Lovina Dmello, a senior software developer on NVIDIA's deep learning infrastructure team, argues that production ML security failures are overwhelmingly ordinary infrastructure mistakes rather than exotic AI attacks \u2014 the same misconfigurations the industry supposedly solved years ago. She anchors the argument in the 2023 Ray cluster exposure (thousands of dashboards and job APIs open because authentication was off by default) and an audit of 50 production ML setups where 78% had at least one critical security mistake. The talk offers three organizing ideas: misconfiguration beats missing features as the top failure mode; the defenses in research papers rarely survive contact with latency and throughput SLAs; and ML must be secured like infrastructure, not like a model. She gives a four-tier defense-in-depth map, a NIST-AI-RMF-aligned maturity model where each level is tied to an overhead budget, and a fix list covering over-privileged accounts, flat networks, and exposed secrets. Worth watching if you own ML platform or deployment security and want a prioritization argument rather than a new attack taxonomy.\",\n  \"key_points\": [\n    \"The 2023 Ray cluster exposure \u2014 thousands of clusters with open dashboards and job APIs, over a billion dollars of exposure \u2014 happened because authentication was off by default and nobody turned it on, not because of any novel attack.\",\n    \"Moving to ML quietly broke three assumptions of the classic 2008 application model: deterministic behavior became probabilistic, fixed parameters became copyable weights that leak through the serving API, and single tenancy became shared multi-tenant GPUs.\",\n    \"An audit of 50 real production ML setups found at least one critical security mistake in 78% of them, with the same three problems recurring: wide-open access controls, no separation between system components, and passwords and trained models sitting in reachable storage.\",\n    \"Misconfigurations persist because protections are built by security experts for security experts and then handed to ML teams whose job is model accuracy, not infrastructure configuration.\",\n    \"Security controls have measurable performance costs that determine whether they ship: basic controls like logins and input checking run under ~8% overhead, heavier workload isolation 10\u201320%, and real-time malicious-input detection 15\u201330% \u2014 the last being what researchers love most and what teams can least afford to run on every request.\",\n    \"The real question for teams is not whether to apply a control but how to implement it without slowing everything down, since the same check done sloppily can double response time.\",\n    \"Three gaps make the ecosystem non-production-ready: ML security tooling lags general software tooling by years, expertise is siloed between security, ML, and operations teams, and research defends against invisible perturbations while real breaches involve stolen credentials and misused access across dozens of models on shared systems.\",\n    \"Dmello's maturity model ties each level to an overhead budget \u2014 under 5% is test-only, 5\u201310% is the production baseline, level three adds controls for regulated industries \u2014 and she claims most teams believe they are at level three while actually sitting at level one or two.\",\n    \"Her forward-looking watch list is prompt injection, RAG corpus poisoning, GPU side channels from multi-tenant packing, and unverified model and add-on supply chains, offered explicitly as direction rather than settled guidance.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"almost everything that is breaking in the production ML security isn't some exotic AI attack. It's the same boring infrastructure mistakes that we supposedly fixed years ago.\",\n      \"timestamp_sec\": 1,\n      \"why\": \"The thesis of the talk, stated in one sentence.\"\n    },\n    {\n      \"text\": \"what they found out over there was there were thousands of clusters that were sitting open on the internet. What that means is the dashboards were open and there were job APIs that were open.\",\n      \"timestamp_sec\": 59,\n      \"why\": \"Concrete scale of the Ray incident that anchors the argument.\"\n    },\n    {\n      \"text\": \"So, what happened was somebody just forgot to turn the default setting on while putting them into the production environment.\",\n      \"timestamp_sec\": 120,\n      \"why\": \"Reduces a billion-dollar exposure to a config default.\"\n    },\n    {\n      \"text\": \"We changed everything about the stack when we moved to machine learning, but we forgot to change the security assumptions. So we are running a 2028 playbook on a 2026 system.\",\n      \"timestamp_sec\": 267,\n      \"why\": \"The framing device behind the talk's title (the year is a verbal slip for 2008).\"\n    },\n    {\n      \"text\": \"if we have a perfect access control policy, it's just a decoration if the cluster underneath is wide open.\",\n      \"timestamp_sec\": 356,\n      \"why\": \"States the layering priority: infrastructure failures cascade upward.\"\n    },\n    {\n      \"text\": \"the green ones, infrastructure compromise and insiders, those are exactly where the real breaches keep landing. And they are the cheapest to get wrong by accident\",\n      \"timestamp_sec\": 461,\n      \"why\": \"Names where budget should go, against the research field's focus.\"\n    },\n    {\n      \"text\": \"In 78% of them, what the researchers found out was at least one critical security mistake.\",\n      \"timestamp_sec\": 512,\n      \"why\": \"The single hardest number in the talk.\"\n    },\n    {\n      \"text\": \"this production protections are built by security experts for security experts and then they get handed to the ML teams.\",\n      \"timestamp_sec\": 567,\n      \"why\": \"Explains the organizational root cause rather than blaming engineers.\"\n    },\n    {\n      \"text\": \"Every control costs us something. And in ML that something is latency and throughput. The two things that SLA is made up of.\",\n      \"timestamp_sec\": 615,\n      \"why\": \"Frames security as a performance-budget tradeoff, the talk's second core idea.\"\n    },\n    {\n      \"text\": \"the purple ones is catching malicious input in real time. So, this is the most expensive one. Over here, it can cost like I don't know, 15 to 30% and it's one of the thing that researchers love the most.\",\n      \"timestamp_sec\": 673,\n      \"why\": \"Direct tension between what research favors and what production can afford.\"\n    },\n    {\n      \"text\": \"the guidance team actually need isn't should I do this, it's like how do I do it without slowing everything down.\",\n      \"timestamp_sec\": 721,\n      \"why\": \"Reframes the practitioner question from whether to how.\"\n    },\n    {\n      \"text\": \"The security tooling for ML is years behind the rest of the software.\",\n      \"timestamp_sec\": 721,\n      \"why\": \"Checkable claim about ecosystem maturity.\"\n    },\n    {\n      \"text\": \"security team don't speak ML, ML teams don't speak security, and the operation teams don't know how the model behaves.\",\n      \"timestamp_sec\": 780,\n      \"why\": \"Crisp statement of the expertise-silo gap.\"\n    },\n    {\n      \"text\": \"most of teams teams believe that they are at level three, but uh they are actually either at level one or two\",\n      \"timestamp_sec\": 888,\n      \"why\": \"A self-assessment gap teams can test themselves against.\"\n    },\n    {\n      \"text\": \"the model can't reliably tell the difference between our instructions and someone else's input. So, a cleverly worded message can quickly hijack the whole system.\",\n      \"timestamp_sec\": 1037,\n      \"why\": \"Compact statement of why prompt injection is structural, not a bug.\"\n    },\n    {\n      \"text\": \"where we can pack multiple customers on one GPU in order to save money. That time information can leak from one customer to the other.\",\n      \"timestamp_sec\": 1091,\n      \"why\": \"Names the cost-driven origin of multi-tenant GPU side channels.\"\n    },\n    {\n      \"text\": \"the field has enough defenses. It just need deployable ones. The frontier isn't a new attack defense pair. It's making the existing controls run with proper production overhead.\",\n      \"timestamp_sec\": 1134,\n      \"why\": \"The clearest contrarian position: deployment, not discovery, is the frontier.\"\n    },\n    {\n      \"text\": \"your LLM stack really is a 2008 database with better marketing. So, secure it like a database, lock down accesses, segment the network, and protect the data at rest.\",\n      \"timestamp_sec\": 1185,\n      \"why\": \"The title paid off as an actionable prescription.\"\n    }\n  ],\n  \"concepts\": [\n    \"ml infrastructure security\",\n    \"security misconfiguration\",\n    \"defense in depth\",\n    \"multi-tenant gpu isolation\",\n    \"prompt injection\",\n    \"rag corpus poisoning\",\n    \"model supply chain provenance\",\n    \"security maturity models\",\n    \"security overhead budgets\",\n    \"least privilege and credential rotation\",\n    \"network segmentation\",\n    \"secrets management\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Production ML breaches are caused overwhelmingly by ordinary infrastructure misconfiguration, not by novel adversarial or model-specific attacks.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1\n    },\n    {\n      \"claim\": \"The Ray cluster exposure resulted from authentication being off by default and represented over a billion dollars of exposure.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 120\n    },\n    {\n      \"claim\": \"An audit of 50 real production ML setups found at least one critical security mistake in 78% of them.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 512\n    },\n    {\n      \"claim\": \"Access control policy is worthless if the underlying cluster is exposed, so infrastructure security must be secured first.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 356\n    },\n    {\n      \"claim\": \"Basic security controls cost under about 8% overhead, workload isolation 10\u201320%, and real-time malicious input detection 15\u201330%.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 615\n    },\n    {\n      \"claim\": \"Real-time malicious-input detection is a non-starter as a blanket control because you cannot slow every request down; it should be reserved for higher-risk systems.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 673\n    },\n    {\n      \"claim\": \"A security control's overhead depends almost entirely on implementation quality \u2014 the same check done sloppily can double response time.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 721\n    },\n    {\n      \"claim\": \"ML security tooling is years behind mainstream software security tooling, which solved scanning and secrets management decades ago.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 721\n    },\n    {\n      \"claim\": \"Academic ML security research is misaligned with reality: it studies imperceptible input perturbations on single models while real attacks use stolen credentials and existing access against fleets on shared infrastructure.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 780\n    },\n    {\n      \"claim\": \"5\u201310% security overhead is the minimum acceptable bar for production; under 5% is only appropriate for test environments.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 888\n    },\n    {\n      \"claim\": \"Most teams overestimate their security maturity, believing they are at level three when they are at level one or two.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 888\n    },\n    {\n      \"claim\": \"Services should require verified identity between each other rather than relying on network access as the trust boundary.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 990\n    },\n    {\n      \"claim\": \"Models cannot reliably distinguish operator instructions from third-party input, so prompt injection is not solvable at the model layer alone.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1037\n    },\n    {\n      \"claim\": \"The field already has enough defenses; the open problem is engineering them to run within acceptable production overhead.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1134\n    },\n    {\n      \"claim\": \"Security budget should be allocated to infrastructure compromise and insider threats rather than model-level attack research.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1134\n    },\n    {\n      \"claim\": \"Current defenses against prompt injection, RAG poisoning, GPU side channels, and model supply chain risk are immature and should not be treated as settled.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1091\n    }\n  ],\n  \"speaker_org\": \"NVIDIA\"\n}",
+  "ttft_ms": 20705,
+  "ttft_stream_ms": 882,
+  "time_to_request_ms": 34,
+  "type": "result",
+  "duration_ms": 66094,
+  "uuid": "70275793-7246-4b7a-a1a1-760377be8327",
+  "passA": {
+    "summary": "Lovina Dmello, a senior software developer on NVIDIA's deep learning infrastructure team, argues that production ML security failures are overwhelmingly ordinary infrastructure mistakes rather than exotic AI attacks \u2014 the same misconfigurations the industry supposedly solved years ago. She anchors the argument in the 2023 Ray cluster exposure (thousands of dashboards and job APIs open because authentication was off by default) and an audit of 50 production ML setups where 78% had at least one critical security mistake. The talk offers three organizing ideas: misconfiguration beats missing features as the top failure mode; the defenses in research papers rarely survive contact with latency and throughput SLAs; and ML must be secured like infrastructure, not like a model. She gives a four-tier defense-in-depth map, a NIST-AI-RMF-aligned maturity model where each level is tied to an overhead budget, and a fix list covering over-privileged accounts, flat networks, and exposed secrets. Worth watching if you own ML platform or deployment security and want a prioritization argument rather than a new attack taxonomy.",
+    "key_points": [
+      "The 2023 Ray cluster exposure \u2014 thousands of clusters with open dashboards and job APIs, over a billion dollars of exposure \u2014 happened because authentication was off by default and nobody turned it on, not because of any novel attack.",
+      "Moving to ML quietly broke three assumptions of the classic 2008 application model: deterministic behavior became probabilistic, fixed parameters became copyable weights that leak through the serving API, and single tenancy became shared multi-tenant GPUs.",
+      "An audit of 50 real production ML setups found at least one critical security mistake in 78% of them, with the same three problems recurring: wide-open access controls, no separation between system components, and passwords and trained models sitting in reachable storage.",
+      "Misconfigurations persist because protections are built by security experts for security experts and then handed to ML teams whose job is model accuracy, not infrastructure configuration.",
+      "Security controls have measurable performance costs that determine whether they ship: basic controls like logins and input checking run under ~8% overhead, heavier workload isolation 10\u201320%, and real-time malicious-input detection 15\u201330% \u2014 the last being what researchers love most and what teams can least afford to run on every request.",
+      "The real question for teams is not whether to apply a control but how to implement it without slowing everything down, since the same check done sloppily can double response time.",
+      "Three gaps make the ecosystem non-production-ready: ML security tooling lags general software tooling by years, expertise is siloed between security, ML, and operations teams, and research defends against invisible perturbations while real breaches involve stolen credentials and misused access across dozens of models on shared systems.",
+      "Dmello's maturity model ties each level to an overhead budget \u2014 under 5% is test-only, 5\u201310% is the production baseline, level three adds controls for regulated industries \u2014 and she claims most teams believe they are at level three while actually sitting at level one or two.",
+      "Her forward-looking watch list is prompt injection, RAG corpus poisoning, GPU side channels from multi-tenant packing, and unverified model and add-on supply chains, offered explicitly as direction rather than settled guidance."
+    ],
+    "notable_quotes": [
+      {
+        "text": "almost everything that is breaking in the production ML security isn't some exotic AI attack. It's the same boring infrastructure mistakes that we supposedly fixed years ago.",
+        "timestamp_sec": 1,
+        "why": "The thesis of the talk, stated in one sentence."
+      },
+      {
+        "text": "what they found out over there was there were thousands of clusters that were sitting open on the internet. What that means is the dashboards were open and there were job APIs that were open.",
+        "timestamp_sec": 59,
+        "why": "Concrete scale of the Ray incident that anchors the argument."
+      },
+      {
+        "text": "So, what happened was somebody just forgot to turn the default setting on while putting them into the production environment.",
+        "timestamp_sec": 120,
+        "why": "Reduces a billion-dollar exposure to a config default."
+      },
+      {
+        "text": "We changed everything about the stack when we moved to machine learning, but we forgot to change the security assumptions. So we are running a 2028 playbook on a 2026 system.",
+        "timestamp_sec": 267,
+        "why": "The framing device behind the talk's title (the year is a verbal slip for 2008)."
+      },
+      {
+        "text": "if we have a perfect access control policy, it's just a decoration if the cluster underneath is wide open.",
+        "timestamp_sec": 356,
+        "why": "States the layering priority: infrastructure failures cascade upward."
+      },
+      {
+        "text": "the green ones, infrastructure compromise and insiders, those are exactly where the real breaches keep landing. And they are the cheapest to get wrong by accident",
+        "timestamp_sec": 461,
+        "why": "Names where budget should go, against the research field's focus."
+      },
+      {
+        "text": "In 78% of them, what the researchers found out was at least one critical security mistake.",
+        "timestamp_sec": 512,
+        "why": "The single hardest number in the talk."
+      },
+      {
+        "text": "this production protections are built by security experts for security experts and then they get handed to the ML teams.",
+        "timestamp_sec": 567,
+        "why": "Explains the organizational root cause rather than blaming engineers."
+      },
+      {
+        "text": "Every control costs us something. And in ML that something is latency and throughput. The two things that SLA is made up of.",
+        "timestamp_sec": 615,
+        "why": "Frames security as a performance-budget tradeoff, the talk's second core idea."
+      },
+      {
+        "text": "the purple ones is catching malicious input in real time. So, this is the most expensive one. Over here, it can cost like I don't know, 15 to 30% and it's one of the thing that researchers love the most.",
+        "timestamp_sec": 673,
+        "why": "Direct tension between what research favors and what production can afford."
+      },
+      {
+        "text": "the guidance team actually need isn't should I do this, it's like how do I do it without slowing everything down.",
+        "timestamp_sec": 721,
+        "why": "Reframes the practitioner question from whether to how."
+      },
+      {
+        "text": "The security tooling for ML is years behind the rest of the software.",
+        "timestamp_sec": 721,
+        "why": "Checkable claim about ecosystem maturity."
+      },
+      {
+        "text": "security team don't speak ML, ML teams don't speak security, and the operation teams don't know how the model behaves.",
+        "timestamp_sec": 780,
+        "why": "Crisp statement of the expertise-silo gap."
+      },
+      {
+        "text": "most of teams teams believe that they are at level three, but uh they are actually either at level one or two",
+        "timestamp_sec": 888,
+        "why": "A self-assessment gap teams can test themselves against."
+      },
+      {
+        "text": "the model can't reliably tell the difference between our instructions and someone else's input. So, a cleverly worded message can quickly hijack the whole system.",
+        "timestamp_sec": 1037,
+        "why": "Compact statement of why prompt injection is structural, not a bug."
+      },
+      {
+        "text": "where we can pack multiple customers on one GPU in order to save money. That time information can leak from one customer to the other.",
+        "timestamp_sec": 1091,
+        "why": "Names the cost-driven origin of multi-tenant GPU side channels."
+      },
+      {
+        "text": "the field has enough defenses. It just need deployable ones. The frontier isn't a new attack defense pair. It's making the existing controls run with proper production overhead.",
+        "timestamp_sec": 1134,
+        "why": "The clearest contrarian position: deployment, not discovery, is the frontier."
+      },
+      {
+        "text": "your LLM stack really is a 2008 database with better marketing. So, secure it like a database, lock down accesses, segment the network, and protect the data at rest.",
+        "timestamp_sec": 1185,
+        "why": "The title paid off as an actionable prescription."
+      }
+    ],
+    "concepts": [
+      "ml infrastructure security",
+      "security misconfiguration",
+      "defense in depth",
+      "multi-tenant gpu isolation",
+      "prompt injection",
+      "rag corpus poisoning",
+      "model supply chain provenance",
+      "security maturity models",
+      "security overhead budgets",
+      "least privilege and credential rotation",
+      "network segmentation",
+      "secrets management"
+    ],
+    "positions": [
+      {
+        "claim": "Production ML breaches are caused overwhelmingly by ordinary infrastructure misconfiguration, not by novel adversarial or model-specific attacks.",
+        "confidence": "stated",
+        "timestamp_sec": 1
+      },
+      {
+        "claim": "The Ray cluster exposure resulted from authentication being off by default and represented over a billion dollars of exposure.",
+        "confidence": "stated",
+        "timestamp_sec": 120
+      },
+      {
+        "claim": "An audit of 50 real production ML setups found at least one critical security mistake in 78% of them.",
+        "confidence": "stated",
+        "timestamp_sec": 512
+      },
+      {
+        "claim": "Access control policy is worthless if the underlying cluster is exposed, so infrastructure security must be secured first.",
+        "confidence": "stated",
+        "timestamp_sec": 356
+      },
+      {
+        "claim": "Basic security controls cost under about 8% overhead, workload isolation 10\u201320%, and real-time malicious input detection 15\u201330%.",
+        "confidence": "stated",
+        "timestamp_sec": 615
+      },
+      {
+        "claim": "Real-time malicious-input detection is a non-starter as a blanket control because you cannot slow every request down; it should be reserved for higher-risk systems.",
+        "confidence": "stated",
+        "timestamp_sec": 673
+      },
+      {
+        "claim": "A security control's overhead depends almost entirely on implementation quality \u2014 the same check done sloppily can double response time.",
+        "confidence": "stated",
+        "timestamp_sec": 721
+      },
+      {
+        "claim": "ML security tooling is years behind mainstream software security tooling, which solved scanning and secrets management decades ago.",
+        "confidence": "stated",
+        "timestamp_sec": 721
+      },
+      {
+        "claim": "Academic ML security research is misaligned with reality: it studies imperceptible input perturbations on single models while real attacks use stolen credentials and existing access against fleets on shared infrastructure.",
+        "confidence": "stated",
+        "timestamp_sec": 780
+      },
+      {
+        "claim": "5\u201310% security overhead is the minimum acceptable bar for production; under 5% is only appropriate for test environments.",
+        "confidence": "stated",
+        "timestamp_sec": 888
+      },
+      {
+        "claim": "Most teams overestimate their security maturity, believing they are at level three when they are at level one or two.",
+        "confidence": "stated",
+        "timestamp_sec": 888
+      },
+      {
+        "claim": "Services should require verified identity between each other rather than relying on network access as the trust boundary.",
+        "confidence": "stated",
+        "timestamp_sec": 990
+      },
+      {
+        "claim": "Models cannot reliably distinguish operator instructions from third-party input, so prompt injection is not solvable at the model layer alone.",
+        "confidence": "stated",
+        "timestamp_sec": 1037
+      },
+      {
+        "claim": "The field already has enough defenses; the open problem is engineering them to run within acceptable production overhead.",
+        "confidence": "stated",
+        "timestamp_sec": 1134
+      },
+      {
+        "claim": "Security budget should be allocated to infrastructure compromise and insider threats rather than model-level attack research.",
+        "confidence": "stated",
+        "timestamp_sec": 1134
+      },
+      {
+        "claim": "Current defenses against prompt injection, RAG poisoning, GPU side channels, and model supply chain risk are immature and should not be treated as settled.",
+        "confidence": "stated",
+        "timestamp_sec": 1091
+      }
+    ],
+    "speaker_org": "NVIDIA"
+  },
+  "_meta": {
+    "slug": "your-llm-stack-is-a-2008-database-with-better-marketing",
+    "video_id": "XjI-AR4pt7Y",
+    "url": "https://www.youtube.com/watch?v=XjI-AR4pt7Y",
+    "word_count": 2770,
+    "wall_sec": 69.9,
+    "run_at": "2026-08-12T20:38:16Z",
+    "effort": "medium"
+  }
+}

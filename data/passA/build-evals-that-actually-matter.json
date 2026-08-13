@@ -1,0 +1,301 @@
+{
+  "is_error": false,
+  "duration_api_ms": 50845,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "4806982d-5679-49bd-b932-37e1240619fc",
+  "total_cost_usd": 0.266121,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 14187,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 4377,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 14187,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 4377,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 14187,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 14187
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 9592,
+      "outputTokens": 14,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.009662,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 4377,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 14187,
+      "webSearchRequests": 0,
+      "costUSD": 0.256459,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Two Lyft data scientists describe the end-to-end evaluation system they built over roughly two years for Lyft's multi-agent customer support AI. They argue that offline evaluation must gate production launches the way traditional ML model validation does, and that the hard parts are making the simulated user realistic and making the LLM judge actionable. Their most concrete lesson: using a frontier model to role-play users produced unrealistically polite, verbose transcripts and a 90%+ pass rate, so they fine-tuned a user LLM on real Lyft user verbatims plus defined personas \u2014 scores dropped, which they treat as the correct outcome. On the judge side, they advocate binary pass/fail metrics tied to business outcomes, hand-labeling ~100 examples, and scoring judge precision/recall against human ground truth with train/dev/test splits. Worth watching if you're building user-facing agents and need a practical template for user simulation, judge validation, error-analysis loops, and a config-driven eval harness.\",\n  \"key_points\": [\n    \"Offline evaluation should be a hard launch gate before an agent reaches production, on the principle that live users should not serve as test data for your AI agent.\",\n    \"For multi-turn agents, offline eval requires a simulated conversation loop \u2014 an agent LLM talking to a user LLM \u2014 rather than static input/output pairs, an approach they adapted from Sierra AI's TauBench paper.\",\n    \"Frontier models role-playing users are trained to be helpful assistants and produce unrealistically patient, verbose complaints, which inflated Lyft's first-pass eval results to a 90%+ pass rate.\",\n    \"Lyft fine-tuned a user-simulator LLM on real Lyft user verbatims and grounded it in personas (escalation-seeking bypasser, refund seeker, AI skeptic), which lowered eval scores \u2014 the intended and correct signal that the eval got harder and more realistic.\",\n    \"Off-the-shelf metrics like response helpfulness, toxicity, and conversation naturalness are usable as a baseline but too generic to act on: a helpfulness score of 0.5 tells you nothing about what to fix.\",\n    \"Judges should emit binary pass/fail on task-specific rubrics co-designed with domain experts, because binary outcomes are easier to calibrate and let you systematically analyze error patterns.\",\n    \"Validate the judge like a classifier: hand-label ~100 examples, split into train/dev/test (train supplies few-shot examples, dev tunes the prompt, test checks for overfitting), and report precision and recall against human ground truth.\",\n    \"Evaluation criteria drift \u2014 you discover the real criteria by looking at data, so evals must be co-developed with the model rather than fixed up front \u2014 and reported alignment rates need confidence intervals, since an 84% vs 88% difference on 50 traces proves nothing.\",\n    \"Lyft's next steps are a config-driven (YAML) eval harness runnable locally, at pre-commit, and in CI/CD, plus post-training and reward modeling using accumulated real user signals.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"the real imperative here really is that it we don't want to use our live user as, you know, test data for our AI agents\",\n      \"timestamp_sec\": 263,\n      \"why\": \"States the core justification for gating launches on offline eval.\"\n    },\n    {\n      \"text\": \"If your LM as a judge is just floating out there, that there's a score, but no one is really using that score as a meaningful gate uh for your development and production environment, then that LM as a judge is not not available.\",\n      \"timestamp_sec\": 364,\n      \"why\": \"Names the first and most common failure mode: ungated scores.\"\n    },\n    {\n      \"text\": \"in our first pass at running our offline evaluation, what we noticed is that our LM user sounds almost too nice\",\n      \"timestamp_sec\": 820,\n      \"why\": \"The talk's central empirical finding about simulated users.\"\n    },\n    {\n      \"text\": \"our first attempt at our offline evaluation gave us 90 plus pass rate or accuracy rate, right? Uh this almost sounds too good to be true, and I think it indeed is the too good to be true.\",\n      \"timestamp_sec\": 820,\n      \"why\": \"Reports the specific number that exposed the broken simulator.\"\n    },\n    {\n      \"text\": \"most user, they are they're impatient, they're already frustrated. So, the verbatim they they they they don't want to explain their issues like a l- LM user well.\",\n      \"timestamp_sec\": 867,\n      \"why\": \"Contrasts production reality against synthetic user behavior.\"\n    },\n    {\n      \"text\": \"we fine-tune a LLM model with Lyft user verbatim\",\n      \"timestamp_sec\": 867,\n      \"why\": \"The concrete intervention that fixed the simulator.\"\n    },\n    {\n      \"text\": \"If you have an eval that's too easy, that doesn't give you any real uh, production insights into how your AI agent is actually going to perform.\",\n      \"timestamp_sec\": 930,\n      \"why\": \"Frames falling scores as a feature, not a regression.\"\n    },\n    {\n      \"text\": \"They fine-tune a uh, user LLM model until evaluation score goes down.\",\n      \"timestamp_sec\": 1015,\n      \"why\": \"Cites external corroboration for the counterintuitive tuning target.\"\n    },\n    {\n      \"text\": \"the problem with this approach is uh that these metrics are too generic and not actionable\",\n      \"timestamp_sec\": 1074,\n      \"why\": \"The thesis of the LLM-judge half of the talk.\"\n    },\n    {\n      \"text\": \"If something if let's say a response helpfulness is 0.5, then what do we do with it?\",\n      \"timestamp_sec\": 1127,\n      \"why\": \"Makes the actionability critique concrete in one line.\"\n    },\n    {\n      \"text\": \"we can use these pre-built eval metrics as a baseline, but we shouldn't use them as our core eval metrics because we want eval metrics to be actionable and tied to the business outcome\",\n      \"timestamp_sec\": 1127,\n      \"why\": \"A clear tradeoff position on off-the-shelf metric libraries.\"\n    },\n    {\n      \"text\": \"eval should be framed around a task success or failure. And a binary outcome is very easy to calibrate and train um LLM judge that can consistently score your agent trajectory.\",\n      \"timestamp_sec\": 1172,\n      \"why\": \"The prescriptive alternative to continuous scores.\"\n    },\n    {\n      \"text\": \"we can hand label around 100 examples with pass fail labels and then split the data into train, dev, and validation sets like how we used to do with machine learning models\",\n      \"timestamp_sec\": 1277,\n      \"why\": \"Gives an actionable sample size and method for judge validation.\"\n    },\n    {\n      \"text\": \"we are not actually training models. So, we are just using the data to inform judges prompt.\",\n      \"timestamp_sec\": 1329,\n      \"why\": \"Clarifies how the ML-splitting analogy differs in practice.\"\n    },\n    {\n      \"text\": \"The key idea is that we actually discover what our evaluation criteria is by looking at the data and grading our outputs.\",\n      \"timestamp_sec\": 1382,\n      \"why\": \"Core statement of the criteria-drift argument.\"\n    },\n    {\n      \"text\": \"We cannot define the criteria beforehand and then evaluate agents against them.\",\n      \"timestamp_sec\": 1445,\n      \"why\": \"A sharp, contestable position on eval design order.\"\n    },\n    {\n      \"text\": \"every score needs an interval\",\n      \"timestamp_sec\": 1501,\n      \"why\": \"Compresses the statistical-rigor argument into a rule.\"\n    },\n    {\n      \"text\": \"If you don't look at the data, you won't be able to create meaningful criteria uh or labels. And if you don't have labels, you won't be able to evaluate your judges. And if you're not evaluating your judges, you don't know if your uh agentic pipeline is working as as expected.\",\n      \"timestamp_sec\": 1618,\n      \"why\": \"Chains the whole argument from raw data to pipeline confidence.\"\n    },\n    {\n      \"text\": \"it is important to know that this loop is something which runs continuously. It's not uh not a one-off audit.\",\n      \"timestamp_sec\": 1662,\n      \"why\": \"Positions error analysis as ongoing process, not a milestone.\"\n    },\n    {\n      \"text\": \"our eval harness is config driven and these are typically stored as YAML file that's easily editable by different contributor and not just by engineers\",\n      \"timestamp_sec\": 2082,\n      \"why\": \"Describes the design choice that opens eval authoring to non-engineers.\"\n    }\n  ],\n  \"concepts\": [\n    \"llm-as-a-judge\",\n    \"user simulation\",\n    \"multi-turn agent evaluation\",\n    \"synthetic data generation\",\n    \"offline evaluation\",\n    \"online evaluation\",\n    \"launch gates\",\n    \"judge validation with precision and recall\",\n    \"criteria drift\",\n    \"error analysis loops\",\n    \"eval harness design\",\n    \"agent tracing and annotation queues\",\n    \"user personas\",\n    \"continual learning for agents\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Agents should pass a rigorous offline evaluation gate before being exposed to live users, just as ML models are validated before production.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 157\n    },\n    {\n      \"claim\": \"An LLM judge whose score does not gate any decision is worthless.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 364\n    },\n    {\n      \"claim\": \"Prompting an LLM to generate ~50 test queries is an inadequate way to build an offline eval dataset; datasets should be sampled from production traffic and mutated to cover golden paths and edge cases.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 709\n    },\n    {\n      \"claim\": \"Off-the-shelf frontier models make poor user simulators for customer support because they are trained to be helpful and produce unrealistically polite, articulate complaints.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 761\n    },\n    {\n      \"claim\": \"Lyft's initial offline eval reported a 90%+ pass rate, which was an artifact of an unrealistically nice simulated user.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 820\n    },\n    {\n      \"claim\": \"A user simulator should be fine-tuned on real user language until evaluation scores go down; a falling score is evidence the eval got more realistic, not that quality dropped.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 930\n    },\n    {\n      \"claim\": \"Pre-built eval metrics (DeepEval-style helpfulness, toxicity, conciseness) are acceptable as a baseline but should not be core metrics.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1127\n    },\n    {\n      \"claim\": \"Binary pass/fail rubrics tied to business outcomes are more calibratable and more actionable than continuous quality scores.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1172\n    },\n    {\n      \"claim\": \"Judges should be validated like binary classifiers, using roughly 100 hand-labeled examples split into train/dev/test and scored on precision and recall.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1277\n    },\n    {\n      \"claim\": \"Evaluation criteria cannot be fully specified before looking at data; they must be co-developed with the model as more examples are graded.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1445\n    },\n    {\n      \"claim\": \"A difference between 84% and 88% alignment on 50 traces is not a demonstrably real gain; reported scores need confidence intervals.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1564\n    },\n    {\n      \"claim\": \"Expensive statistical rigor should be reserved for high-stakes moments such as shipping decisions or reporting to leadership, not applied uniformly.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1501\n    },\n    {\n      \"claim\": \"Not looking at raw data is the single most damaging eval anti-pattern, because labels, criteria, and judge validation all depend on it.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1618\n    },\n    {\n      \"claim\": \"Eval harnesses should be config-driven (YAML) so analysts and data scientists, not only engineers, can contribute test cases.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 2082\n    },\n    {\n      \"claim\": \"Evals should run at multiple points in development \u2014 locally, at pre-commit hooks, and in CI/CD as a regression suite.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 2133\n    },\n    {\n      \"claim\": \"Lyft's current offline simulator is not yet repeatable, existing as scattered scripts across notebooks and analysis repos.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1918\n    }\n  ],\n  \"speaker_org\": \"Lyft\"\n}",
+  "ttft_ms": 48773,
+  "ttft_stream_ms": 895,
+  "time_to_request_ms": 50,
+  "type": "result",
+  "duration_ms": 50415,
+  "uuid": "73a3b573-2522-47b0-9ec6-0abc5d6e4313",
+  "passA": {
+    "summary": "Two Lyft data scientists describe the end-to-end evaluation system they built over roughly two years for Lyft's multi-agent customer support AI. They argue that offline evaluation must gate production launches the way traditional ML model validation does, and that the hard parts are making the simulated user realistic and making the LLM judge actionable. Their most concrete lesson: using a frontier model to role-play users produced unrealistically polite, verbose transcripts and a 90%+ pass rate, so they fine-tuned a user LLM on real Lyft user verbatims plus defined personas \u2014 scores dropped, which they treat as the correct outcome. On the judge side, they advocate binary pass/fail metrics tied to business outcomes, hand-labeling ~100 examples, and scoring judge precision/recall against human ground truth with train/dev/test splits. Worth watching if you're building user-facing agents and need a practical template for user simulation, judge validation, error-analysis loops, and a config-driven eval harness.",
+    "key_points": [
+      "Offline evaluation should be a hard launch gate before an agent reaches production, on the principle that live users should not serve as test data for your AI agent.",
+      "For multi-turn agents, offline eval requires a simulated conversation loop \u2014 an agent LLM talking to a user LLM \u2014 rather than static input/output pairs, an approach they adapted from Sierra AI's TauBench paper.",
+      "Frontier models role-playing users are trained to be helpful assistants and produce unrealistically patient, verbose complaints, which inflated Lyft's first-pass eval results to a 90%+ pass rate.",
+      "Lyft fine-tuned a user-simulator LLM on real Lyft user verbatims and grounded it in personas (escalation-seeking bypasser, refund seeker, AI skeptic), which lowered eval scores \u2014 the intended and correct signal that the eval got harder and more realistic.",
+      "Off-the-shelf metrics like response helpfulness, toxicity, and conversation naturalness are usable as a baseline but too generic to act on: a helpfulness score of 0.5 tells you nothing about what to fix.",
+      "Judges should emit binary pass/fail on task-specific rubrics co-designed with domain experts, because binary outcomes are easier to calibrate and let you systematically analyze error patterns.",
+      "Validate the judge like a classifier: hand-label ~100 examples, split into train/dev/test (train supplies few-shot examples, dev tunes the prompt, test checks for overfitting), and report precision and recall against human ground truth.",
+      "Evaluation criteria drift \u2014 you discover the real criteria by looking at data, so evals must be co-developed with the model rather than fixed up front \u2014 and reported alignment rates need confidence intervals, since an 84% vs 88% difference on 50 traces proves nothing.",
+      "Lyft's next steps are a config-driven (YAML) eval harness runnable locally, at pre-commit, and in CI/CD, plus post-training and reward modeling using accumulated real user signals."
+    ],
+    "notable_quotes": [
+      {
+        "text": "the real imperative here really is that it we don't want to use our live user as, you know, test data for our AI agents",
+        "timestamp_sec": 263,
+        "why": "States the core justification for gating launches on offline eval."
+      },
+      {
+        "text": "If your LM as a judge is just floating out there, that there's a score, but no one is really using that score as a meaningful gate uh for your development and production environment, then that LM as a judge is not not available.",
+        "timestamp_sec": 364,
+        "why": "Names the first and most common failure mode: ungated scores."
+      },
+      {
+        "text": "in our first pass at running our offline evaluation, what we noticed is that our LM user sounds almost too nice",
+        "timestamp_sec": 820,
+        "why": "The talk's central empirical finding about simulated users."
+      },
+      {
+        "text": "our first attempt at our offline evaluation gave us 90 plus pass rate or accuracy rate, right? Uh this almost sounds too good to be true, and I think it indeed is the too good to be true.",
+        "timestamp_sec": 820,
+        "why": "Reports the specific number that exposed the broken simulator."
+      },
+      {
+        "text": "most user, they are they're impatient, they're already frustrated. So, the verbatim they they they they don't want to explain their issues like a l- LM user well.",
+        "timestamp_sec": 867,
+        "why": "Contrasts production reality against synthetic user behavior."
+      },
+      {
+        "text": "we fine-tune a LLM model with Lyft user verbatim",
+        "timestamp_sec": 867,
+        "why": "The concrete intervention that fixed the simulator."
+      },
+      {
+        "text": "If you have an eval that's too easy, that doesn't give you any real uh, production insights into how your AI agent is actually going to perform.",
+        "timestamp_sec": 930,
+        "why": "Frames falling scores as a feature, not a regression."
+      },
+      {
+        "text": "They fine-tune a uh, user LLM model until evaluation score goes down.",
+        "timestamp_sec": 1015,
+        "why": "Cites external corroboration for the counterintuitive tuning target."
+      },
+      {
+        "text": "the problem with this approach is uh that these metrics are too generic and not actionable",
+        "timestamp_sec": 1074,
+        "why": "The thesis of the LLM-judge half of the talk."
+      },
+      {
+        "text": "If something if let's say a response helpfulness is 0.5, then what do we do with it?",
+        "timestamp_sec": 1127,
+        "why": "Makes the actionability critique concrete in one line."
+      },
+      {
+        "text": "we can use these pre-built eval metrics as a baseline, but we shouldn't use them as our core eval metrics because we want eval metrics to be actionable and tied to the business outcome",
+        "timestamp_sec": 1127,
+        "why": "A clear tradeoff position on off-the-shelf metric libraries."
+      },
+      {
+        "text": "eval should be framed around a task success or failure. And a binary outcome is very easy to calibrate and train um LLM judge that can consistently score your agent trajectory.",
+        "timestamp_sec": 1172,
+        "why": "The prescriptive alternative to continuous scores."
+      },
+      {
+        "text": "we can hand label around 100 examples with pass fail labels and then split the data into train, dev, and validation sets like how we used to do with machine learning models",
+        "timestamp_sec": 1277,
+        "why": "Gives an actionable sample size and method for judge validation."
+      },
+      {
+        "text": "we are not actually training models. So, we are just using the data to inform judges prompt.",
+        "timestamp_sec": 1329,
+        "why": "Clarifies how the ML-splitting analogy differs in practice."
+      },
+      {
+        "text": "The key idea is that we actually discover what our evaluation criteria is by looking at the data and grading our outputs.",
+        "timestamp_sec": 1382,
+        "why": "Core statement of the criteria-drift argument."
+      },
+      {
+        "text": "We cannot define the criteria beforehand and then evaluate agents against them.",
+        "timestamp_sec": 1445,
+        "why": "A sharp, contestable position on eval design order."
+      },
+      {
+        "text": "every score needs an interval",
+        "timestamp_sec": 1501,
+        "why": "Compresses the statistical-rigor argument into a rule."
+      },
+      {
+        "text": "If you don't look at the data, you won't be able to create meaningful criteria uh or labels. And if you don't have labels, you won't be able to evaluate your judges. And if you're not evaluating your judges, you don't know if your uh agentic pipeline is working as as expected.",
+        "timestamp_sec": 1618,
+        "why": "Chains the whole argument from raw data to pipeline confidence."
+      },
+      {
+        "text": "it is important to know that this loop is something which runs continuously. It's not uh not a one-off audit.",
+        "timestamp_sec": 1662,
+        "why": "Positions error analysis as ongoing process, not a milestone."
+      },
+      {
+        "text": "our eval harness is config driven and these are typically stored as YAML file that's easily editable by different contributor and not just by engineers",
+        "timestamp_sec": 2082,
+        "why": "Describes the design choice that opens eval authoring to non-engineers."
+      }
+    ],
+    "concepts": [
+      "llm-as-a-judge",
+      "user simulation",
+      "multi-turn agent evaluation",
+      "synthetic data generation",
+      "offline evaluation",
+      "online evaluation",
+      "launch gates",
+      "judge validation with precision and recall",
+      "criteria drift",
+      "error analysis loops",
+      "eval harness design",
+      "agent tracing and annotation queues",
+      "user personas",
+      "continual learning for agents"
+    ],
+    "positions": [
+      {
+        "claim": "Agents should pass a rigorous offline evaluation gate before being exposed to live users, just as ML models are validated before production.",
+        "confidence": "stated",
+        "timestamp_sec": 157
+      },
+      {
+        "claim": "An LLM judge whose score does not gate any decision is worthless.",
+        "confidence": "stated",
+        "timestamp_sec": 364
+      },
+      {
+        "claim": "Prompting an LLM to generate ~50 test queries is an inadequate way to build an offline eval dataset; datasets should be sampled from production traffic and mutated to cover golden paths and edge cases.",
+        "confidence": "stated",
+        "timestamp_sec": 709
+      },
+      {
+        "claim": "Off-the-shelf frontier models make poor user simulators for customer support because they are trained to be helpful and produce unrealistically polite, articulate complaints.",
+        "confidence": "stated",
+        "timestamp_sec": 761
+      },
+      {
+        "claim": "Lyft's initial offline eval reported a 90%+ pass rate, which was an artifact of an unrealistically nice simulated user.",
+        "confidence": "stated",
+        "timestamp_sec": 820
+      },
+      {
+        "claim": "A user simulator should be fine-tuned on real user language until evaluation scores go down; a falling score is evidence the eval got more realistic, not that quality dropped.",
+        "confidence": "stated",
+        "timestamp_sec": 930
+      },
+      {
+        "claim": "Pre-built eval metrics (DeepEval-style helpfulness, toxicity, conciseness) are acceptable as a baseline but should not be core metrics.",
+        "confidence": "stated",
+        "timestamp_sec": 1127
+      },
+      {
+        "claim": "Binary pass/fail rubrics tied to business outcomes are more calibratable and more actionable than continuous quality scores.",
+        "confidence": "stated",
+        "timestamp_sec": 1172
+      },
+      {
+        "claim": "Judges should be validated like binary classifiers, using roughly 100 hand-labeled examples split into train/dev/test and scored on precision and recall.",
+        "confidence": "stated",
+        "timestamp_sec": 1277
+      },
+      {
+        "claim": "Evaluation criteria cannot be fully specified before looking at data; they must be co-developed with the model as more examples are graded.",
+        "confidence": "stated",
+        "timestamp_sec": 1445
+      },
+      {
+        "claim": "A difference between 84% and 88% alignment on 50 traces is not a demonstrably real gain; reported scores need confidence intervals.",
+        "confidence": "stated",
+        "timestamp_sec": 1564
+      },
+      {
+        "claim": "Expensive statistical rigor should be reserved for high-stakes moments such as shipping decisions or reporting to leadership, not applied uniformly.",
+        "confidence": "stated",
+        "timestamp_sec": 1501
+      },
+      {
+        "claim": "Not looking at raw data is the single most damaging eval anti-pattern, because labels, criteria, and judge validation all depend on it.",
+        "confidence": "stated",
+        "timestamp_sec": 1618
+      },
+      {
+        "claim": "Eval harnesses should be config-driven (YAML) so analysts and data scientists, not only engineers, can contribute test cases.",
+        "confidence": "stated",
+        "timestamp_sec": 2082
+      },
+      {
+        "claim": "Evals should run at multiple points in development \u2014 locally, at pre-commit hooks, and in CI/CD as a regression suite.",
+        "confidence": "stated",
+        "timestamp_sec": 2133
+      },
+      {
+        "claim": "Lyft's current offline simulator is not yet repeatable, existing as scattered scripts across notebooks and analysis repos.",
+        "confidence": "stated",
+        "timestamp_sec": 1918
+      }
+    ],
+    "speaker_org": "Lyft"
+  },
+  "_meta": {
+    "slug": "build-evals-that-actually-matter",
+    "video_id": "3z2uT5aDx_Y",
+    "url": "https://www.youtube.com/watch?v=3z2uT5aDx_Y",
+    "word_count": 5291,
+    "wall_sec": 51.7,
+    "run_at": "2026-08-12T19:35:19Z",
+    "effort": "medium"
+  }
+}

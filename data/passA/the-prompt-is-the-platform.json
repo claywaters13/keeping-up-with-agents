@@ -1,0 +1,303 @@
+{
+  "is_error": false,
+  "duration_api_ms": 60703,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "6e0529a0-4db8-4cb7-b86e-faa0a3d18b2e",
+  "total_cost_usd": 0.226257,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 8016,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 5452,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 8016,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 5452,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 8016,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 8016
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 4553,
+      "outputTokens": 16,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.004633,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 5452,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 8016,
+      "webSearchRequests": 0,
+      "costUSD": 0.22162400000000002,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Dominik Tornow, founder/CEO of Resonate, argues that as coding agents make implementations cheap to generate, reuse moves upstream: the durable product becomes the abstract specification (the protocol), and target-specific implementations get synthesized on demand onto whatever infrastructure a customer already runs. He reports a concrete failure \u2014 asking an agent to jump straight from an abstract spec to a production Rust/Postgres server produced a happy-path prototype that broke under concurrency, process failure, and network failure \u2014 and two successive fixes. The first fix inserted a human-driven concrete specification (schema, indices, queries, transaction boundaries), which worked but left the agent doing implementation rather than design. The second fix, used for Resonate on NATS.io, gave the agent a deterministic simulation environment where it first builds an executable design, discovers the correct algorithm under partial failure via fuzz testing, then writes the concrete spec and only then the production code. Worth watching if you care about how to structure agentic engineering for distributed-systems correctness, and specifically for the 'forbidden fruit' trick of exposing simulation-only facts (was this read stale? what was the value you missed?) to the agent as debugging signal.\",\n  \"key_points\": [\n    \"Resonate's working theory is that general-purpose implementations will be replaced by bespoke implementations generated on demand as minimal extensions of infrastructure a customer already has in place.\",\n    \"If implementations become generatable, a vendor's value migrates from implementation to specification \u2014 Resonate now treats the protocol, not the server, as the product, with the reference server as just one derived implementation.\",\n    \"To support many target-specific implementations, the abstract specification must assume nothing about the target: no schema, no indices, not even whether there is a relational database, a key-value store, weak consistency, or strong consistency.\",\n    \"The naive one-shot prompt ('build a Resonate server in Rust on top of Postgres') failed: the generated system passed basic tests but broke on concurrency, process failure, and network failure.\",\n    \"Inserting a human-driven concrete specification (data schema, indices, SQL queries, transaction boundaries) let the agent produce a production system, but the agent was only building, not designing.\",\n    \"The NATS approach moves the agent upstream: it first builds a simulated implementation as 'executable design' to discover the correct algorithm under partial order and partial failure, then writes the concrete spec, then the production implementation.\",\n    \"Correctness must hold whenever the target behaves legally, not merely conveniently \u2014 the NATS KV store's versioned reads may legitimately return stale values, discovered only when the optimistic-concurrency write fails.\",\n    \"Deterministic simulation is what makes agents effective here: it is repeatable and inspectable, so a failing execution can be reproduced exactly and repaired against the trace.\",\n    \"The 'forbidden fruit' is simulation-only trace data (fresh vs. stale read, and the latest value the algorithm was not allowed to see) that the algorithm may not depend on but the agent can use to explain why its design was wrong.\",\n    \"Minimalism and simplicity are prerequisites, not defaults: three years of removing abstractions, properties, and relationships reduced the protocol to two objects, a durable promise and a durable task.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"In 2026, coding agents will quietly retire their first software platform. Not because it's bad, simply because the platform is unnecessary.\",\n      \"timestamp_sec\": 2,\n      \"why\": \"the thesis, stated as a dated prediction\"\n    },\n    {\n      \"text\": \"General-purpose implementations will increasingly be replaced by bespoke implementations generated on demand.\",\n      \"timestamp_sec\": 2,\n      \"why\": \"the core industry claim the rest of the talk is downstream of\"\n    },\n    {\n      \"text\": \"Instead of reusing a general-purpose implementation, we will reuse a specification, and we will derive a bespoke implementation from it.\",\n      \"timestamp_sec\": 60,\n      \"why\": \"defines what 'reuse moves upstream' concretely means\"\n    },\n    {\n      \"text\": \"If implementations become generatable, where does our value live? And our answer? Our value moves from implementation to specification.\",\n      \"timestamp_sec\": 60,\n      \"why\": \"frames the business consequence for infrastructure vendors\"\n    },\n    {\n      \"text\": \"The product is no longer the implementation. The product is the specification, the protocol.\",\n      \"timestamp_sec\": 122,\n      \"why\": \"the sharpest statement of the strategic bet\"\n    },\n    {\n      \"text\": \"The question is, can we repeatedly synthesize trusted servers from the same specification?\",\n      \"timestamp_sec\": 122,\n      \"why\": \"reframes the engineering problem from capability to repeatability and trust\"\n    },\n    {\n      \"text\": \"The specification must be abstract. Only the implementation must be concrete.\",\n      \"timestamp_sec\": 292,\n      \"why\": \"the design constraint that makes multi-target synthesis possible\"\n    },\n    {\n      \"text\": \"And the agent failed. The gap between the abstract specification and the concrete implementation was too large.\",\n      \"timestamp_sec\": 292,\n      \"why\": \"reports a negative result rather than a demo success\"\n    },\n    {\n      \"text\": \"It passed the basic tests, but it was not correct. It broke on the concurrency. It broke on the process failure. It broke on the network failure.\",\n      \"timestamp_sec\": 292,\n      \"why\": \"specifies exactly how agent-generated distributed code fails\"\n    },\n    {\n      \"text\": \"The agent helped us build the system, but the agent did not help us design the system.\",\n      \"timestamp_sec\": 346,\n      \"why\": \"names the limitation that motivates the whole simulation approach\"\n    },\n    {\n      \"text\": \"Do not build the production system. Build a simulated implementation. The simulated implementation is not the product. It is executable design.\",\n      \"timestamp_sec\": 410,\n      \"why\": \"the central methodological move, in one line\"\n    },\n    {\n      \"text\": \"Unfortunately, minimalism and simplicity are not the starting point. They are the finish line. We spent 3 years making the protocol smaller and simpler.\",\n      \"timestamp_sec\": 478,\n      \"why\": \"a cost number attached to the precondition others will want to skip\"\n    },\n    {\n      \"text\": \"Every time we ran into a problem, we asked, what can we take away? What abstraction can we erase? What property can we remove? What relationship can we break?\",\n      \"timestamp_sec\": 478,\n      \"why\": \"an actionable heuristic for shrinking a protocol\"\n    },\n    {\n      \"text\": \"our implementation cannot be correct only when the target behaves conveniently. The implementation has to be correct when the target behaves legally.\",\n      \"timestamp_sec\": 604,\n      \"why\": \"the correctness standard, stated as a tradeoff against happy-path testing\"\n    },\n    {\n      \"text\": \"Building always correct applications on top of a concurrency model that allows occasional stale reads is not simple. Not for humans.\",\n      \"timestamp_sec\": 662,\n      \"why\": \"concedes the difficulty is intrinsic, not an agent deficiency\"\n    },\n    {\n      \"text\": \"Agents thrive on feedback. Immediate unambiguous feedback. Not just feedback that shows this went wrong. Feedback that shows why and how this went wrong.\",\n      \"timestamp_sec\": 717,\n      \"why\": \"the design principle behind the simulation tooling\"\n    },\n    {\n      \"text\": \"unlike the real target, the simulation is deterministic, it's repeatable, and it's inspectable. So, when the agent writes the wrong algorithm, we can reproduce the exact execution that broke it.\",\n      \"timestamp_sec\": 775,\n      \"why\": \"states why determinism specifically matters for agent-driven debugging\"\n    },\n    {\n      \"text\": \"That information is forbidden to the algorithm, but it is incredibly useful to the agent.\",\n      \"timestamp_sec\": 836,\n      \"why\": \"the 'forbidden fruit' idea compressed to one sentence\"\n    },\n    {\n      \"text\": \"Not just the invariant failed, but the invariant failed because the algorithm made a decision from a stale view of the world.\",\n      \"timestamp_sec\": 895,\n      \"why\": \"shows the granularity of feedback an agent needs on distributed bugs\"\n    },\n    {\n      \"text\": \"The agent does not just learn that the system is wrong, it learns why the system is wrong.\",\n      \"timestamp_sec\": 951,\n      \"why\": \"the payoff claim for the whole tracing approach\"\n    },\n    {\n      \"text\": \"Deterministic simulation lets agents participate in the design, not just in the implementation.\",\n      \"timestamp_sec\": 1009,\n      \"why\": \"the talk's conclusion about where agents can move\"\n    },\n    {\n      \"text\": \"The prompt is the platform and the specification is the product.\",\n      \"timestamp_sec\": 1009,\n      \"why\": \"the title thesis in final form\"\n    }\n  ],\n  \"concepts\": [\n    \"specification-driven development\",\n    \"deterministic simulation testing\",\n    \"durable execution\",\n    \"agentic code generation\",\n    \"distributed systems correctness\",\n    \"optimistic concurrency control\",\n    \"stale reads and consistency models\",\n    \"protocol minimalism\",\n    \"fuzz testing\",\n    \"agent feedback loops\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"General-purpose software platforms will increasingly be displaced by bespoke implementations generated on demand as minimal extensions of existing infrastructure.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 2\n    },\n    {\n      \"claim\": \"For infrastructure vendors, value shifts from the implementation to the specification/protocol, which becomes the actual product.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 60\n    },\n    {\n      \"claim\": \"A specification intended to yield multiple target-specific implementations must not assume any storage model at all \u2014 not a relational database, not a key-value store, not weak or strong consistency.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 240\n    },\n    {\n      \"claim\": \"Asking an agent to go directly from an abstract specification to a production distributed system does not work; the result passes basic tests but breaks under concurrency, process failure, and network failure.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 292\n    },\n    {\n      \"claim\": \"Inserting a human-driven concrete specification is sufficient to get a production implementation out of an agent, but insufficient if the specification itself is meant to be the reusable product.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 346\n    },\n    {\n      \"claim\": \"Agents should be moved upstream into design, with humans still involved but the agent as driver.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 478\n    },\n    {\n      \"claim\": \"The correct pipeline is abstract specification \u2192 simulation implementation \u2192 concrete specification \u2192 concrete implementation.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 478\n    },\n    {\n      \"claim\": \"Protocol minimalism and simplicity are prerequisites for agent-driven synthesis, and they take years of deliberate removal to reach rather than being available up front.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 478\n    },\n    {\n      \"claim\": \"Even simple protocols built on a few simple primitives have complex state and behavior spaces, making them hard to implement correctly.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 541\n    },\n    {\n      \"claim\": \"Implementations must be correct under every legal behavior of the target platform, not just its convenient behaviors.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 604\n    },\n    {\n      \"claim\": \"Agents need feedback that explains why and how something failed, not merely that it failed; generic test failures are insufficient for distributed algorithm design.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 717\n    },\n    {\n      \"claim\": \"Simulations should deliberately expose information the real platform hides (whether a read was stale, and the latest value missed) to the agent, even though production algorithms must not depend on it.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 836\n    },\n    {\n      \"claim\": \"A simulation only needs to reproduce the parts of the target platform that matter for correctness, not the full system.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 775\n    },\n    {\n      \"claim\": \"With deterministic simulation plus fuzz testing, an agent can design and build a correct distributed platform implementation from a single abstract specification.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 951\n    },\n    {\n      \"claim\": \"Discussion of agentic engineering overweights verification and underweights how agents can participate in specification.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 122\n    }\n  ],\n  \"speaker_org\": \"Resonate HQ\"\n}",
+  "ttft_ms": 14706,
+  "ttft_stream_ms": 1282,
+  "time_to_request_ms": 34,
+  "type": "result",
+  "duration_ms": 61314,
+  "uuid": "f649a471-8496-4a71-adc3-a9f0014c6904",
+  "passA": {
+    "summary": "Dominik Tornow, founder/CEO of Resonate, argues that as coding agents make implementations cheap to generate, reuse moves upstream: the durable product becomes the abstract specification (the protocol), and target-specific implementations get synthesized on demand onto whatever infrastructure a customer already runs. He reports a concrete failure \u2014 asking an agent to jump straight from an abstract spec to a production Rust/Postgres server produced a happy-path prototype that broke under concurrency, process failure, and network failure \u2014 and two successive fixes. The first fix inserted a human-driven concrete specification (schema, indices, queries, transaction boundaries), which worked but left the agent doing implementation rather than design. The second fix, used for Resonate on NATS.io, gave the agent a deterministic simulation environment where it first builds an executable design, discovers the correct algorithm under partial failure via fuzz testing, then writes the concrete spec and only then the production code. Worth watching if you care about how to structure agentic engineering for distributed-systems correctness, and specifically for the 'forbidden fruit' trick of exposing simulation-only facts (was this read stale? what was the value you missed?) to the agent as debugging signal.",
+    "key_points": [
+      "Resonate's working theory is that general-purpose implementations will be replaced by bespoke implementations generated on demand as minimal extensions of infrastructure a customer already has in place.",
+      "If implementations become generatable, a vendor's value migrates from implementation to specification \u2014 Resonate now treats the protocol, not the server, as the product, with the reference server as just one derived implementation.",
+      "To support many target-specific implementations, the abstract specification must assume nothing about the target: no schema, no indices, not even whether there is a relational database, a key-value store, weak consistency, or strong consistency.",
+      "The naive one-shot prompt ('build a Resonate server in Rust on top of Postgres') failed: the generated system passed basic tests but broke on concurrency, process failure, and network failure.",
+      "Inserting a human-driven concrete specification (data schema, indices, SQL queries, transaction boundaries) let the agent produce a production system, but the agent was only building, not designing.",
+      "The NATS approach moves the agent upstream: it first builds a simulated implementation as 'executable design' to discover the correct algorithm under partial order and partial failure, then writes the concrete spec, then the production implementation.",
+      "Correctness must hold whenever the target behaves legally, not merely conveniently \u2014 the NATS KV store's versioned reads may legitimately return stale values, discovered only when the optimistic-concurrency write fails.",
+      "Deterministic simulation is what makes agents effective here: it is repeatable and inspectable, so a failing execution can be reproduced exactly and repaired against the trace.",
+      "The 'forbidden fruit' is simulation-only trace data (fresh vs. stale read, and the latest value the algorithm was not allowed to see) that the algorithm may not depend on but the agent can use to explain why its design was wrong.",
+      "Minimalism and simplicity are prerequisites, not defaults: three years of removing abstractions, properties, and relationships reduced the protocol to two objects, a durable promise and a durable task."
+    ],
+    "notable_quotes": [
+      {
+        "text": "In 2026, coding agents will quietly retire their first software platform. Not because it's bad, simply because the platform is unnecessary.",
+        "timestamp_sec": 2,
+        "why": "the thesis, stated as a dated prediction"
+      },
+      {
+        "text": "General-purpose implementations will increasingly be replaced by bespoke implementations generated on demand.",
+        "timestamp_sec": 2,
+        "why": "the core industry claim the rest of the talk is downstream of"
+      },
+      {
+        "text": "Instead of reusing a general-purpose implementation, we will reuse a specification, and we will derive a bespoke implementation from it.",
+        "timestamp_sec": 60,
+        "why": "defines what 'reuse moves upstream' concretely means"
+      },
+      {
+        "text": "If implementations become generatable, where does our value live? And our answer? Our value moves from implementation to specification.",
+        "timestamp_sec": 60,
+        "why": "frames the business consequence for infrastructure vendors"
+      },
+      {
+        "text": "The product is no longer the implementation. The product is the specification, the protocol.",
+        "timestamp_sec": 122,
+        "why": "the sharpest statement of the strategic bet"
+      },
+      {
+        "text": "The question is, can we repeatedly synthesize trusted servers from the same specification?",
+        "timestamp_sec": 122,
+        "why": "reframes the engineering problem from capability to repeatability and trust"
+      },
+      {
+        "text": "The specification must be abstract. Only the implementation must be concrete.",
+        "timestamp_sec": 292,
+        "why": "the design constraint that makes multi-target synthesis possible"
+      },
+      {
+        "text": "And the agent failed. The gap between the abstract specification and the concrete implementation was too large.",
+        "timestamp_sec": 292,
+        "why": "reports a negative result rather than a demo success"
+      },
+      {
+        "text": "It passed the basic tests, but it was not correct. It broke on the concurrency. It broke on the process failure. It broke on the network failure.",
+        "timestamp_sec": 292,
+        "why": "specifies exactly how agent-generated distributed code fails"
+      },
+      {
+        "text": "The agent helped us build the system, but the agent did not help us design the system.",
+        "timestamp_sec": 346,
+        "why": "names the limitation that motivates the whole simulation approach"
+      },
+      {
+        "text": "Do not build the production system. Build a simulated implementation. The simulated implementation is not the product. It is executable design.",
+        "timestamp_sec": 410,
+        "why": "the central methodological move, in one line"
+      },
+      {
+        "text": "Unfortunately, minimalism and simplicity are not the starting point. They are the finish line. We spent 3 years making the protocol smaller and simpler.",
+        "timestamp_sec": 478,
+        "why": "a cost number attached to the precondition others will want to skip"
+      },
+      {
+        "text": "Every time we ran into a problem, we asked, what can we take away? What abstraction can we erase? What property can we remove? What relationship can we break?",
+        "timestamp_sec": 478,
+        "why": "an actionable heuristic for shrinking a protocol"
+      },
+      {
+        "text": "our implementation cannot be correct only when the target behaves conveniently. The implementation has to be correct when the target behaves legally.",
+        "timestamp_sec": 604,
+        "why": "the correctness standard, stated as a tradeoff against happy-path testing"
+      },
+      {
+        "text": "Building always correct applications on top of a concurrency model that allows occasional stale reads is not simple. Not for humans.",
+        "timestamp_sec": 662,
+        "why": "concedes the difficulty is intrinsic, not an agent deficiency"
+      },
+      {
+        "text": "Agents thrive on feedback. Immediate unambiguous feedback. Not just feedback that shows this went wrong. Feedback that shows why and how this went wrong.",
+        "timestamp_sec": 717,
+        "why": "the design principle behind the simulation tooling"
+      },
+      {
+        "text": "unlike the real target, the simulation is deterministic, it's repeatable, and it's inspectable. So, when the agent writes the wrong algorithm, we can reproduce the exact execution that broke it.",
+        "timestamp_sec": 775,
+        "why": "states why determinism specifically matters for agent-driven debugging"
+      },
+      {
+        "text": "That information is forbidden to the algorithm, but it is incredibly useful to the agent.",
+        "timestamp_sec": 836,
+        "why": "the 'forbidden fruit' idea compressed to one sentence"
+      },
+      {
+        "text": "Not just the invariant failed, but the invariant failed because the algorithm made a decision from a stale view of the world.",
+        "timestamp_sec": 895,
+        "why": "shows the granularity of feedback an agent needs on distributed bugs"
+      },
+      {
+        "text": "The agent does not just learn that the system is wrong, it learns why the system is wrong.",
+        "timestamp_sec": 951,
+        "why": "the payoff claim for the whole tracing approach"
+      },
+      {
+        "text": "Deterministic simulation lets agents participate in the design, not just in the implementation.",
+        "timestamp_sec": 1009,
+        "why": "the talk's conclusion about where agents can move"
+      },
+      {
+        "text": "The prompt is the platform and the specification is the product.",
+        "timestamp_sec": 1009,
+        "why": "the title thesis in final form"
+      }
+    ],
+    "concepts": [
+      "specification-driven development",
+      "deterministic simulation testing",
+      "durable execution",
+      "agentic code generation",
+      "distributed systems correctness",
+      "optimistic concurrency control",
+      "stale reads and consistency models",
+      "protocol minimalism",
+      "fuzz testing",
+      "agent feedback loops"
+    ],
+    "positions": [
+      {
+        "claim": "General-purpose software platforms will increasingly be displaced by bespoke implementations generated on demand as minimal extensions of existing infrastructure.",
+        "confidence": "stated",
+        "timestamp_sec": 2
+      },
+      {
+        "claim": "For infrastructure vendors, value shifts from the implementation to the specification/protocol, which becomes the actual product.",
+        "confidence": "stated",
+        "timestamp_sec": 60
+      },
+      {
+        "claim": "A specification intended to yield multiple target-specific implementations must not assume any storage model at all \u2014 not a relational database, not a key-value store, not weak or strong consistency.",
+        "confidence": "stated",
+        "timestamp_sec": 240
+      },
+      {
+        "claim": "Asking an agent to go directly from an abstract specification to a production distributed system does not work; the result passes basic tests but breaks under concurrency, process failure, and network failure.",
+        "confidence": "stated",
+        "timestamp_sec": 292
+      },
+      {
+        "claim": "Inserting a human-driven concrete specification is sufficient to get a production implementation out of an agent, but insufficient if the specification itself is meant to be the reusable product.",
+        "confidence": "stated",
+        "timestamp_sec": 346
+      },
+      {
+        "claim": "Agents should be moved upstream into design, with humans still involved but the agent as driver.",
+        "confidence": "stated",
+        "timestamp_sec": 478
+      },
+      {
+        "claim": "The correct pipeline is abstract specification \u2192 simulation implementation \u2192 concrete specification \u2192 concrete implementation.",
+        "confidence": "stated",
+        "timestamp_sec": 478
+      },
+      {
+        "claim": "Protocol minimalism and simplicity are prerequisites for agent-driven synthesis, and they take years of deliberate removal to reach rather than being available up front.",
+        "confidence": "stated",
+        "timestamp_sec": 478
+      },
+      {
+        "claim": "Even simple protocols built on a few simple primitives have complex state and behavior spaces, making them hard to implement correctly.",
+        "confidence": "stated",
+        "timestamp_sec": 541
+      },
+      {
+        "claim": "Implementations must be correct under every legal behavior of the target platform, not just its convenient behaviors.",
+        "confidence": "stated",
+        "timestamp_sec": 604
+      },
+      {
+        "claim": "Agents need feedback that explains why and how something failed, not merely that it failed; generic test failures are insufficient for distributed algorithm design.",
+        "confidence": "stated",
+        "timestamp_sec": 717
+      },
+      {
+        "claim": "Simulations should deliberately expose information the real platform hides (whether a read was stale, and the latest value missed) to the agent, even though production algorithms must not depend on it.",
+        "confidence": "stated",
+        "timestamp_sec": 836
+      },
+      {
+        "claim": "A simulation only needs to reproduce the parts of the target platform that matter for correctness, not the full system.",
+        "confidence": "implied",
+        "timestamp_sec": 775
+      },
+      {
+        "claim": "With deterministic simulation plus fuzz testing, an agent can design and build a correct distributed platform implementation from a single abstract specification.",
+        "confidence": "stated",
+        "timestamp_sec": 951
+      },
+      {
+        "claim": "Discussion of agentic engineering overweights verification and underweights how agents can participate in specification.",
+        "confidence": "stated",
+        "timestamp_sec": 122
+      }
+    ],
+    "speaker_org": "Resonate HQ"
+  },
+  "_meta": {
+    "slug": "the-prompt-is-the-platform",
+    "video_id": "DqtmZE6Hl0g",
+    "url": "https://www.youtube.com/watch?v=DqtmZE6Hl0g",
+    "word_count": 2075,
+    "wall_sec": 62.4,
+    "run_at": "2026-08-12T20:23:42Z",
+    "effort": "medium"
+  }
+}

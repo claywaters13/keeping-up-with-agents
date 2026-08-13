@@ -1,0 +1,258 @@
+{
+  "is_error": false,
+  "duration_api_ms": 52382,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "22fa0139-64e9-4dd5-ae22-f5a3e8b924ff",
+  "total_cost_usd": 0.20147700000000002,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 7969,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 4473,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 7969,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 4473,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 7969,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 7969
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 4713,
+      "outputTokens": 17,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.004798,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 4473,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 7969,
+      "webSearchRequests": 0,
+      "costUSD": 0.19667900000000002,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Shashi, founder of Superagentic AI, explains MIT's Recursive Language Models (RLM) pattern and argues it is the right context-management strategy for large monorepos, where coding-agent performance degrades as context grows. The core thesis he relays is that context management should be externalized into a programmable execution environment: the repository is treated as data, the model writes REPL code to inspect and slice it, and when it needs more it recursively calls another model via an LLM query, returning bounded observations until a final synthesized answer. He frames this with an analogy to a lead engineer joining a huge codebase \u2014 inspecting, note-taking, and asking a specialist \u2014 and distinguishes codebases from books because they are structured data with imports, tests, configs, and dependencies. The talk includes a live demo of RLM Code, Superagentic's open-source reference harness (CLI plus an experimental coding-agent TUI) running against Gemini in a Docker sandbox, showing REPL code, sub-calls, budgets, token counts, and JSONL traces. He closes by claiming RLM-shaped patterns already appear in proprietary harnesses like Codex and managed cloud agents. Worth watching if you want a concrete, implementation-level picture of the RLM loop rather than the paper itself.\",\n  \"key_points\": [\n    \"Coding agents work well on small repos but degrade on monorepos, because performance falls as the context window fills up.\",\n    \"The RLM core thesis is to externalize context management into a separate programmable execution environment rather than stuffing everything into the model's context window.\",\n    \"In RLM the repository is treated as data the model operates on: it writes REPL code to inspect, slice, and compute the relevant chunks that get fed into the main context.\",\n    \"Recursion enters via an LLM query \u2014 the model asks another model or system one or more questions, gets a bounded observation back, and continues the loop until a final result.\",\n    \"Shashi frames RLM through a lead-engineer analogy: inspect the codebase, keep notes in a programmable REPL notebook, ask a specialist when stuck, and return a clean synthesized note.\",\n    \"Codebases are a deliberately chosen test case because they are structured data \u2014 directories, imports, tests, configs, dependencies \u2014 not just long text.\",\n    \"RLM is a pattern, not a library: the official authors shipped RLM and RLM-minimal implementations and a DSPy integration, and Superagentic built RLM Code as an independent open-source reference harness.\",\n    \"RLM Code is provider-agnostic (local or cloud models), sandboxed in Docker, supports step/recursion-depth and spend budgets, and emits JSONL traces importable into any observability platform.\",\n    \"Practical use cases named are root-cause analysis and onboarding onto large or unfamiliar repositories, where you design your own harness capturing planning, coding, observation, sub-call budget, and final output.\",\n    \"Shashi claims RLM-style patterns are already inside proprietary systems \u2014 Codex writing Python in a REPL to curate context, and managed Claude/Gemini agents spawning sub-agents with separate sandboxes.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"If you're using the coding agents for smaller repos or monor repos, they works exceptionally well.\",\n      \"timestamp_sec\": 45,\n      \"why\": \"Sets up the scoping premise: the problem is size, not capability.\"\n    },\n    {\n      \"text\": \"as the context grows the performance degrade and if you're working with the monor repose this problem get worse\",\n      \"timestamp_sec\": 45,\n      \"why\": \"States the failure mode the whole talk is organized around.\"\n    },\n    {\n      \"text\": \"Core thesis of the RLM is you need to externalize the context management into programmable execution environment.\",\n      \"timestamp_sec\": 87,\n      \"why\": \"The single-sentence statement of the pattern.\"\n    },\n    {\n      \"text\": \"In this case for example your whole repository is treated as a data that model can operate on.\",\n      \"timestamp_sec\": 134,\n      \"why\": \"The key reframe \u2014 repo as data, not as context.\"\n    },\n    {\n      \"text\": \"Then model can write the code to inspect slice and compute the relevant chunks value you can then feed into the main context window.\",\n      \"timestamp_sec\": 134,\n      \"why\": \"Describes the mechanism concretely.\"\n    },\n    {\n      \"text\": \"So basically rather than putting everything into the model's context create a separate dedicated environment give them a coding agent or ripple and then model write the code to curate the context that can be used into the main.\",\n      \"timestamp_sec\": 134,\n      \"why\": \"Contrasts RLM directly against the stuff-the-window default.\"\n    },\n    {\n      \"text\": \"So it's another context management technique proved to be very effective. Could be also be used as a memory layer for your coding agents.\",\n      \"timestamp_sec\": 134,\n      \"why\": \"Positions RLM relative to memory solutions, a claim others might contest.\"\n    },\n    {\n      \"text\": \"So the recussion part here is engineer ask another specialist using LLM query that can be one question or that can be number of questions.\",\n      \"timestamp_sec\": 277,\n      \"why\": \"Pins down exactly where recursion lives in the loop.\"\n    },\n    {\n      \"text\": \"So the codebase is not only just um the text, it is a structured data and the model need to understand and reason over the text.\",\n      \"timestamp_sec\": 337,\n      \"why\": \"Justifies why codebases, not books, are the chosen stress test.\"\n    },\n    {\n      \"text\": \"RLM itself is a concept and a pattern and you can implement that concept and pattern in your own way.\",\n      \"timestamp_sec\": 396,\n      \"why\": \"The talk's stance that RLM is not a framework dependency.\"\n    },\n    {\n      \"text\": \"So Omar is author of RLM and he is also author of another popular framework called DSP.\",\n      \"timestamp_sec\": 396,\n      \"why\": \"Attributes the ecosystem lineage and the DSPy connection.\"\n    },\n    {\n      \"text\": \"RLM code is just a reference implementation to demonstrate how the RLM concepts works under the hood.\",\n      \"timestamp_sec\": 466,\n      \"why\": \"Sets honest expectations about the demoed library.\"\n    },\n    {\n      \"text\": \"We are using RLM as it is. We are not adding anything on top of RLM's ideas and RLM's paper.\",\n      \"timestamp_sec\": 466,\n      \"why\": \"Explicit fidelity claim distinguishing implementation from invention.\"\n    },\n    {\n      \"text\": \"However, you can run it with the local model. You can run with run it with cloud-based model. You can plug into any observability framework of your choice.\",\n      \"timestamp_sec\": 466,\n      \"why\": \"Names the portability tradeoff the harness is designed for.\"\n    },\n    {\n      \"text\": \"Recently I saw that the codeex harness is writing the Python Python code in the ripple that you can see to curate the context that is one form of RLM I have seen myself\",\n      \"timestamp_sec\": 955,\n      \"why\": \"Concrete evidence claim that shipped products already use the pattern.\"\n    },\n    {\n      \"text\": \"A lot of software factories concepts are probably using the RLMs but we are not sure yet. However, some of the cloud code engineers from anthropic has accepted on X that they have used concepts of RLM.\",\n      \"timestamp_sec\": 1011,\n      \"why\": \"Rare moment of explicit uncertainty paired with a sourced claim.\"\n    }\n  ],\n  \"concepts\": [\n    \"recursive language models\",\n    \"context management\",\n    \"context window degradation\",\n    \"programmable execution environment\",\n    \"repl-based code execution\",\n    \"agent harness design\",\n    \"recursive llm sub-calls\",\n    \"codebase as structured data\",\n    \"sandboxed agent execution\",\n    \"agent trace observability\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Coding agents perform well on small repos but degrade measurably on monorepos as context grows.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 45\n    },\n    {\n      \"claim\": \"Context management should be externalized into a separate programmable execution environment rather than loading everything into the model's context window.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 87\n    },\n    {\n      \"claim\": \"RLM is an effective context-management technique and can also serve as a memory layer for coding agents.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 134\n    },\n    {\n      \"claim\": \"Codebases are a harder and more revealing test of long-context handling than plain text like books or dictionaries, because they are structured data with imports, tests, configs, and dependencies.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 337\n    },\n    {\n      \"claim\": \"RLM is a pattern rather than a framework, so DSPy's RLM implementation and other implementations should be treated as completely different things.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 396\n    },\n    {\n      \"claim\": \"RLM Code adds nothing on top of the RLM paper's ideas; it is a faithful reference implementation.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 466\n    },\n    {\n      \"claim\": \"An RLM harness should be model-agnostic and observability-agnostic, runnable against local or cloud models and pluggable into frameworks like Pydantic AI or Google ADK.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 466\n    },\n    {\n      \"claim\": \"AI engineers should design their own harness capturing planning, coding, observation, sub-call budget, and final output, targeting use cases like root cause analysis and repo onboarding.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 903\n    },\n    {\n      \"claim\": \"The Codex harness writes Python in a REPL to curate context, which is one form of RLM.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 955\n    },\n    {\n      \"claim\": \"Managed cloud agents and dynamic multi-agent workflows with separate sandboxes are applications of RLM concepts.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 955\n    },\n    {\n      \"claim\": \"Anthropic Claude Code engineers have publicly acknowledged on X that they use RLM concepts.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1011\n    },\n    {\n      \"claim\": \"Existing approaches \u2014 grep-style search, semantic search, context compression, and memory products \u2014 are insufficient for large monorepos.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 87\n    }\n  ],\n  \"speaker_org\": \"Superagentic AI\"\n}",
+  "ttft_ms": 15205,
+  "ttft_stream_ms": 2332,
+  "time_to_request_ms": 34,
+  "type": "result",
+  "duration_ms": 53114,
+  "uuid": "1f447fba-8811-418d-9620-515f517d80f6",
+  "passA": {
+    "summary": "Shashi, founder of Superagentic AI, explains MIT's Recursive Language Models (RLM) pattern and argues it is the right context-management strategy for large monorepos, where coding-agent performance degrades as context grows. The core thesis he relays is that context management should be externalized into a programmable execution environment: the repository is treated as data, the model writes REPL code to inspect and slice it, and when it needs more it recursively calls another model via an LLM query, returning bounded observations until a final synthesized answer. He frames this with an analogy to a lead engineer joining a huge codebase \u2014 inspecting, note-taking, and asking a specialist \u2014 and distinguishes codebases from books because they are structured data with imports, tests, configs, and dependencies. The talk includes a live demo of RLM Code, Superagentic's open-source reference harness (CLI plus an experimental coding-agent TUI) running against Gemini in a Docker sandbox, showing REPL code, sub-calls, budgets, token counts, and JSONL traces. He closes by claiming RLM-shaped patterns already appear in proprietary harnesses like Codex and managed cloud agents. Worth watching if you want a concrete, implementation-level picture of the RLM loop rather than the paper itself.",
+    "key_points": [
+      "Coding agents work well on small repos but degrade on monorepos, because performance falls as the context window fills up.",
+      "The RLM core thesis is to externalize context management into a separate programmable execution environment rather than stuffing everything into the model's context window.",
+      "In RLM the repository is treated as data the model operates on: it writes REPL code to inspect, slice, and compute the relevant chunks that get fed into the main context.",
+      "Recursion enters via an LLM query \u2014 the model asks another model or system one or more questions, gets a bounded observation back, and continues the loop until a final result.",
+      "Shashi frames RLM through a lead-engineer analogy: inspect the codebase, keep notes in a programmable REPL notebook, ask a specialist when stuck, and return a clean synthesized note.",
+      "Codebases are a deliberately chosen test case because they are structured data \u2014 directories, imports, tests, configs, dependencies \u2014 not just long text.",
+      "RLM is a pattern, not a library: the official authors shipped RLM and RLM-minimal implementations and a DSPy integration, and Superagentic built RLM Code as an independent open-source reference harness.",
+      "RLM Code is provider-agnostic (local or cloud models), sandboxed in Docker, supports step/recursion-depth and spend budgets, and emits JSONL traces importable into any observability platform.",
+      "Practical use cases named are root-cause analysis and onboarding onto large or unfamiliar repositories, where you design your own harness capturing planning, coding, observation, sub-call budget, and final output.",
+      "Shashi claims RLM-style patterns are already inside proprietary systems \u2014 Codex writing Python in a REPL to curate context, and managed Claude/Gemini agents spawning sub-agents with separate sandboxes."
+    ],
+    "notable_quotes": [
+      {
+        "text": "If you're using the coding agents for smaller repos or monor repos, they works exceptionally well.",
+        "timestamp_sec": 45,
+        "why": "Sets up the scoping premise: the problem is size, not capability."
+      },
+      {
+        "text": "as the context grows the performance degrade and if you're working with the monor repose this problem get worse",
+        "timestamp_sec": 45,
+        "why": "States the failure mode the whole talk is organized around."
+      },
+      {
+        "text": "Core thesis of the RLM is you need to externalize the context management into programmable execution environment.",
+        "timestamp_sec": 87,
+        "why": "The single-sentence statement of the pattern."
+      },
+      {
+        "text": "In this case for example your whole repository is treated as a data that model can operate on.",
+        "timestamp_sec": 134,
+        "why": "The key reframe \u2014 repo as data, not as context."
+      },
+      {
+        "text": "Then model can write the code to inspect slice and compute the relevant chunks value you can then feed into the main context window.",
+        "timestamp_sec": 134,
+        "why": "Describes the mechanism concretely."
+      },
+      {
+        "text": "So basically rather than putting everything into the model's context create a separate dedicated environment give them a coding agent or ripple and then model write the code to curate the context that can be used into the main.",
+        "timestamp_sec": 134,
+        "why": "Contrasts RLM directly against the stuff-the-window default."
+      },
+      {
+        "text": "So it's another context management technique proved to be very effective. Could be also be used as a memory layer for your coding agents.",
+        "timestamp_sec": 134,
+        "why": "Positions RLM relative to memory solutions, a claim others might contest."
+      },
+      {
+        "text": "So the recussion part here is engineer ask another specialist using LLM query that can be one question or that can be number of questions.",
+        "timestamp_sec": 277,
+        "why": "Pins down exactly where recursion lives in the loop."
+      },
+      {
+        "text": "So the codebase is not only just um the text, it is a structured data and the model need to understand and reason over the text.",
+        "timestamp_sec": 337,
+        "why": "Justifies why codebases, not books, are the chosen stress test."
+      },
+      {
+        "text": "RLM itself is a concept and a pattern and you can implement that concept and pattern in your own way.",
+        "timestamp_sec": 396,
+        "why": "The talk's stance that RLM is not a framework dependency."
+      },
+      {
+        "text": "So Omar is author of RLM and he is also author of another popular framework called DSP.",
+        "timestamp_sec": 396,
+        "why": "Attributes the ecosystem lineage and the DSPy connection."
+      },
+      {
+        "text": "RLM code is just a reference implementation to demonstrate how the RLM concepts works under the hood.",
+        "timestamp_sec": 466,
+        "why": "Sets honest expectations about the demoed library."
+      },
+      {
+        "text": "We are using RLM as it is. We are not adding anything on top of RLM's ideas and RLM's paper.",
+        "timestamp_sec": 466,
+        "why": "Explicit fidelity claim distinguishing implementation from invention."
+      },
+      {
+        "text": "However, you can run it with the local model. You can run with run it with cloud-based model. You can plug into any observability framework of your choice.",
+        "timestamp_sec": 466,
+        "why": "Names the portability tradeoff the harness is designed for."
+      },
+      {
+        "text": "Recently I saw that the codeex harness is writing the Python Python code in the ripple that you can see to curate the context that is one form of RLM I have seen myself",
+        "timestamp_sec": 955,
+        "why": "Concrete evidence claim that shipped products already use the pattern."
+      },
+      {
+        "text": "A lot of software factories concepts are probably using the RLMs but we are not sure yet. However, some of the cloud code engineers from anthropic has accepted on X that they have used concepts of RLM.",
+        "timestamp_sec": 1011,
+        "why": "Rare moment of explicit uncertainty paired with a sourced claim."
+      }
+    ],
+    "concepts": [
+      "recursive language models",
+      "context management",
+      "context window degradation",
+      "programmable execution environment",
+      "repl-based code execution",
+      "agent harness design",
+      "recursive llm sub-calls",
+      "codebase as structured data",
+      "sandboxed agent execution",
+      "agent trace observability"
+    ],
+    "positions": [
+      {
+        "claim": "Coding agents perform well on small repos but degrade measurably on monorepos as context grows.",
+        "confidence": "stated",
+        "timestamp_sec": 45
+      },
+      {
+        "claim": "Context management should be externalized into a separate programmable execution environment rather than loading everything into the model's context window.",
+        "confidence": "stated",
+        "timestamp_sec": 87
+      },
+      {
+        "claim": "RLM is an effective context-management technique and can also serve as a memory layer for coding agents.",
+        "confidence": "stated",
+        "timestamp_sec": 134
+      },
+      {
+        "claim": "Codebases are a harder and more revealing test of long-context handling than plain text like books or dictionaries, because they are structured data with imports, tests, configs, and dependencies.",
+        "confidence": "stated",
+        "timestamp_sec": 337
+      },
+      {
+        "claim": "RLM is a pattern rather than a framework, so DSPy's RLM implementation and other implementations should be treated as completely different things.",
+        "confidence": "stated",
+        "timestamp_sec": 396
+      },
+      {
+        "claim": "RLM Code adds nothing on top of the RLM paper's ideas; it is a faithful reference implementation.",
+        "confidence": "stated",
+        "timestamp_sec": 466
+      },
+      {
+        "claim": "An RLM harness should be model-agnostic and observability-agnostic, runnable against local or cloud models and pluggable into frameworks like Pydantic AI or Google ADK.",
+        "confidence": "stated",
+        "timestamp_sec": 466
+      },
+      {
+        "claim": "AI engineers should design their own harness capturing planning, coding, observation, sub-call budget, and final output, targeting use cases like root cause analysis and repo onboarding.",
+        "confidence": "stated",
+        "timestamp_sec": 903
+      },
+      {
+        "claim": "The Codex harness writes Python in a REPL to curate context, which is one form of RLM.",
+        "confidence": "stated",
+        "timestamp_sec": 955
+      },
+      {
+        "claim": "Managed cloud agents and dynamic multi-agent workflows with separate sandboxes are applications of RLM concepts.",
+        "confidence": "stated",
+        "timestamp_sec": 955
+      },
+      {
+        "claim": "Anthropic Claude Code engineers have publicly acknowledged on X that they use RLM concepts.",
+        "confidence": "stated",
+        "timestamp_sec": 1011
+      },
+      {
+        "claim": "Existing approaches \u2014 grep-style search, semantic search, context compression, and memory products \u2014 are insufficient for large monorepos.",
+        "confidence": "implied",
+        "timestamp_sec": 87
+      }
+    ],
+    "speaker_org": "Superagentic AI"
+  },
+  "_meta": {
+    "slug": "rlm-recursive-language-models-for-large-codebases",
+    "video_id": "8oyalrfwgjw",
+    "url": "https://www.youtube.com/watch?v=8oyalrfwgjw",
+    "word_count": 2433,
+    "wall_sec": 54.2,
+    "run_at": "2026-08-12T20:09:52Z",
+    "effort": "medium"
+  }
+}

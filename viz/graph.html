@@ -1,0 +1,108 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><script src="lib/d3.min.js"></script>
+<style>
+body{margin:0;background:#14140f;font-family:-apple-system,'Segoe UI',Inter,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+.card{width:1200px;padding:52px 60px 44px;background:#14140f}
+h1{font-size:37px;margin:0 0 8px;color:#fff;letter-spacing:-0.02em;line-height:1.15}
+.sub{font-size:17.5px;color:#c3c2b7;margin:0 0 4px;line-height:1.5}
+.foot{margin-top:4px;font-size:15px;color:#c3c2b7;border-top:1px solid #33332e;padding-top:15px}
+svg text{font-family:-apple-system,'Segoe UI',Inter,Helvetica,Arial,sans-serif}
+</style></head><body>
+<div class="card" id="gr">
+<h1>228 conference talks, linked by what they actually talk about</h1>
+<p class="sub">Each dot is a concept, sized by how many talks cover it. A line means two concepts were
+substantively discussed together in at least four of the same talks.</p>
+<div id="viz"></div>
+<p class="foot">AI Engineer World's Fair 2026 &middot; 1,011,341 words of transcript &middot; 134 concepts &middot; 4,582 verbatim quotes</p>
+</div>
+<script>
+const W=1080,H=650;
+fetch('graph_data.json').then(r=>r.json()).then(G=>{
+ const mx=d3.max(G.nodes,d=>d.n), mn=d3.min(G.nodes,d=>d.n);
+ const r=d3.scalePow().exponent(0.62).domain([mn,mx]).range([4.5,27]);
+ const RAMP=["#1c5cab","#256abf","#2a78d6","#3987e5","#5598e7","#6da7ec","#86b6ef"];
+ const col=d3.scaleQuantize().domain([mn,mx]).range(RAMP);
+ const svg=d3.select('#viz').append('svg').attr('width',W).attr('height',H);
+ d3.forceSimulation(G.nodes)
+  .force('link',d3.forceLink(G.links).id(d=>d.id).distance(d=>118-d.w*4).strength(d=>0.05+d.w*0.011))
+  .force('charge',d3.forceManyBody().strength(-460))
+  .force('collide',d3.forceCollide(d=>r(d.n)+15).iterations(4))
+  .force('x',d3.forceX(W/2).strength(0.016)).force('y',d3.forceY(H/2).strength(0.105))
+  .stop().tick(700);
+ // fit the laid-out graph to the frame instead of leaving dead margins
+ const pad=30;
+ const xs=d3.extent(G.nodes,d=>d.x), ys=d3.extent(G.nodes,d=>d.y);
+ const s=Math.min((W-pad*2)/(xs[1]-xs[0]),(H-pad*2)/(ys[1]-ys[0]));
+ const ox=(W-(xs[1]-xs[0])*s)/2-xs[0]*s, oy=(H-(ys[1]-ys[0])*s)/2-ys[0]*s;
+ G.nodes.forEach(d=>{ d.x=d.x*s+ox; d.y=d.y*s+oy; });
+ svg.append('g').attr('stroke','#4a7fc0').attr('stroke-opacity',0.28)
+  .selectAll('line').data(G.links).enter().append('line')
+  .attr('stroke-width',d=>0.5+d.w*0.26)
+  .attr('x1',d=>d.source.x).attr('y1',d=>d.source.y)
+  .attr('x2',d=>d.target.x).attr('y2',d=>d.target.y);
+ svg.append('g').selectAll('circle').data(G.nodes).enter().append('circle')
+  .attr('cx',d=>d.x).attr('cy',d=>d.y).attr('r',d=>r(d.n)).attr('fill',d=>col(d.n))
+  .attr('stroke','#14140f').attr('stroke-width',2);
+ // ---- label placement with real collision avoidance ----
+ const meas=svg.append('text').attr('visibility','hidden');
+ const fsOf=d=>Math.max(12.5,Math.min(17.5,10+d.n*0.15));
+ function wOf(t,fs){ meas.style('font-size',fs+'px').style('font-weight',650)
+   .style('letter-spacing','-0.01em').text(t); return meas.node().getComputedTextLength(); }
+ // labels may sit over edges and small dots (the halo keeps them legible);
+ // they may NOT sit over other labels or over a large node.
+ const bigBoxes=G.nodes.filter(d=>r(d.n)>=9)
+   .map(d=>({x0:d.x-r(d.n)-2,x1:d.x+r(d.n)+2,y0:d.y-r(d.n)-2,y1:d.y+r(d.n)+2}));
+ const ov=(a,b)=>!(a.x1<b.x0||a.x0>b.x1||a.y1<b.y0||a.y0>b.y1);
+ const placed=[];
+ function candidates(d,tw,fs){
+   const h1=fs*1.05, out=[];
+   for(const dist of [6,16,28,42,58]){
+     const rad=r(d.n)+dist;
+     out.push({x:d.x,y:d.y-rad-3,a:'middle'},{x:d.x,y:d.y+rad+h1,a:'middle'},
+              {x:d.x+rad+4,y:d.y+h1*0.34,a:'start'},{x:d.x-rad-4,y:d.y+h1*0.34,a:'end'},
+              {x:d.x+rad*0.72,y:d.y-rad*0.72,a:'start'},{x:d.x-rad*0.72,y:d.y-rad*0.72,a:'end'},
+              {x:d.x+rad*0.72,y:d.y+rad*0.72+h1*0.5,a:'start'},
+              {x:d.x-rad*0.72,y:d.y+rad*0.72+h1*0.5,a:'end'});
+   }
+   return out.map(p=>({...p,box:{
+     x0:p.a==='middle'?p.x-tw/2:(p.a==='start'?p.x:p.x-tw),
+     x1:p.a==='middle'?p.x+tw/2:(p.a==='start'?p.x+tw:p.x),
+     y0:p.y-fs*0.92, y1:p.y+3}}));
+ }
+ let labeled=0, skipped=0;
+ [...G.nodes].sort((a,b)=>b.n-a.n).slice(0,20).forEach(d=>{
+   const fs=fsOf(d), tw=wOf(d.id,fs);
+   const own={x0:d.x-r(d.n)-2,x1:d.x+r(d.n)+2,y0:d.y-r(d.n)-2,y1:d.y+r(d.n)+2};
+   const opt=candidates(d,tw,fs).find(p=>
+     p.box.x0>2 && p.box.x1<W-2 && p.box.y0>2 && p.box.y1<H-2 &&
+     !placed.some(o=>ov(p.box,o)) &&
+     !bigBoxes.some(o=>o!==own && ov(p.box,o)) && !ov(p.box,own));
+   if(!opt){
+     // a hub with no free space must still be labeled: place it on the node itself
+     if(r(d.n)>=18){
+       const g2=svg.append('g');
+       [['#14140f',5,'none'],['none',0,'#ffffff']].forEach(([st,sw,f])=>{
+         g2.append('text').attr('x',d.x).attr('y',d.y-r(d.n)-9).attr('text-anchor','middle')
+           .style('font-size',fs+'px').style('font-weight',650).style('letter-spacing','-0.01em')
+           .attr('stroke',st).attr('stroke-width',sw).attr('stroke-linejoin','round')
+           .attr('fill',f).text(d.id);
+       });
+       placed.push({x0:d.x-tw/2,x1:d.x+tw/2,y0:d.y-r(d.n)-9-fs,y1:d.y-r(d.n)-5});
+       labeled++; return;
+     }
+     skipped++; return;
+   }
+   placed.push(opt.box); labeled++;
+   const g=svg.append('g');
+   [['#14140f',5,'none'],['none',0,'#ffffff']].forEach(([st,sw,f])=>{
+     g.append('text').attr('x',opt.x).attr('y',opt.y).attr('text-anchor',opt.a)
+      .style('font-size',fs+'px').style('font-weight',650).style('letter-spacing','-0.01em')
+      .attr('stroke',st).attr('stroke-width',sw).attr('stroke-linejoin','round')
+      .attr('fill',f).text(d.id);
+   });
+ });
+ meas.remove();
+ window.__topLabeled=labeled>0 && placed.length>0;
+ window.__labeled=labeled; window.__skipped=skipped;
+ window.__nodes=G.nodes.length; window.__links=G.links.length; window.__done=true;
+});
+</script></body></html>

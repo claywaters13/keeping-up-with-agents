@@ -1,0 +1,284 @@
+{
+  "is_error": false,
+  "duration_api_ms": 46252,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "d1c6ebc8-45d2-4a4a-9e3c-68d64f0367e1",
+  "total_cost_usd": 0.20969,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 9906,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 3968,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 9906,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 3968,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 9906,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 9906
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 6176,
+      "outputTokens": 18,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.006266,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 3968,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 9906,
+      "webSearchRequests": 0,
+      "costUSD": 0.203424,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Two SonderMind engineers describe how they built and validated Sonder, a clinically grounded AI mental health coach, with safety architecture and evals as the organizing principle. The technical core is an agent harness that sandwiches the model between separate LLM-as-judge input and output guardrails, chosen for modularity and jailbreak resistance despite latency and cost overhead. The central argument is that general-purpose LLM guardrails are over-calibrated for this use case \u2014 an inappropriate refusal to a vulnerable user is a 'door slam to the face' \u2014 so the goal is more correct triggers, not more triggers. To decide what 'correct' means, a licensed clinician annotates traced conversations in a rubric-driven queue, and a script converts those annotations into typed evals that gate every prompt, model, and guardrail change in CI. They close by open-sourcing 200 input and 100 output guardrail scenarios as a shared clinical baseline for others building in the space.\",\n  \"key_points\": [\n    \"SonderMind built Sonder as a purpose-built mental health coach because general-purpose LLMs are not designed for mental health care, and an APA survey found 77% of psychologists report patients using AI for mental health support of some kind.\",\n    \"The architecture sandwiches the core model between separate input guardrails (which inspect the incoming user message) and output guardrails (which inspect the AI response and the conversation as a whole).\",\n    \"Keeping guardrails as separate LLM-as-judge calls rather than folding them into the main prompt makes them more robust, harder to jailbreak conversationally, and easier to evaluate in isolation \u2014 accepted as a deliberate latency and cost tradeoff.\",\n    \"Guardrail behavior is tiered by clinical nuance: present-tense danger triggers resource surfacing plus full disengagement, past-tense distress surfaces resources but continues the conversation, and ordinary relationship difficulty passes straight through invisibly.\",\n    \"Over-triggering is treated as a real harm, not a safe default, because an inappropriate guardrail can make an isolated person feel a door slammed in their face and prevent them from getting care.\",\n    \"The 'sentence underneath the sentence' problem \u2014 indirect, coded risk language \u2014 is unsolvable by regexes, verbose prompt rules, or broad moderation APIs, and requires clinician-defined ground truth.\",\n    \"A licensed clinician annotates flagged traces with a small rubric (expected observation, turn index, category note), and an extraction script normalizes those into typed evals so clinical judgment lives in CI and gates releases.\",\n    \"Fixing one flagged conversation lifts the entire category rather than patching a single case, and the team explicitly rejects chasing benchmark perfection in favor of benchmarks built from real failure modes on real data.\",\n    \"SonderMind open-sourced 200 input guardrail scenarios and 100 output guardrail scenarios, clinically reviewed and calibrated, single and multi-turn, as a shared baseline \u2014 not a replacement for building your own learning loop.\",\n    \"In Q&A they confirm they had to turn off frontier providers' built-in guardrails on day one because those filters rejected essentially their entire dataset.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"General purpose LLMs however are not built for mental health care which has resulted in some very tragic events.\",\n      \"timestamp_sec\": 57,\n      \"why\": \"States the premise justifying the entire purpose-built system.\"\n    },\n    {\n      \"text\": \"77% of psychologists said that said that their patients are using um are using AI for mental health support of some kind\",\n      \"timestamp_sec\": 102,\n      \"why\": \"The one hard external number sizing the problem.\"\n    },\n    {\n      \"text\": \"keeping the out keeping the guardrails as separate LM as a judge calls makes them more rob more robust and harder to circumvent\",\n      \"timestamp_sec\": 238,\n      \"why\": \"The core architectural claim other builders might contest.\"\n    },\n    {\n      \"text\": \"even though this is a a trade-off in latency and in cost of course we believe that the sensitivity of this use case warrants uh warrants those separate separate pieces\",\n      \"timestamp_sec\": 284,\n      \"why\": \"Names the cost of the architecture and why they pay it.\"\n    },\n    {\n      \"text\": \"every architectural decision was made with safety as a primary objective\",\n      \"timestamp_sec\": 331,\n      \"why\": \"The stated design principle in one line.\"\n    },\n    {\n      \"text\": \"most general purpose LLMs are far too conservative\",\n      \"timestamp_sec\": 331,\n      \"why\": \"The contrarian position at the heart of the talk.\"\n    },\n    {\n      \"text\": \"when you inappropriately guardrail on somebody, then that can often feel like a door slam to the face and make that person feel more isolated\",\n      \"timestamp_sec\": 384,\n      \"why\": \"The memorable framing of false positives as real harm.\"\n    },\n    {\n      \"text\": \"we didn't we were not going for more triggers here. We're going for more correct triggers.\",\n      \"timestamp_sec\": 384,\n      \"why\": \"The talk's thesis, stated twice.\"\n    },\n    {\n      \"text\": \"we all know that a simple eval gate does not make a system safe.\",\n      \"timestamp_sec\": 552,\n      \"why\": \"Pivots the talk from evals-as-checkpoint to evals-as-loop.\"\n    },\n    {\n      \"text\": \"I packed a box today. just one to feel what it would be like to be gone.\",\n      \"timestamp_sec\": 600,\n      \"why\": \"The concrete clinician-sourced example that motivates the whole learning loop.\"\n    },\n    {\n      \"text\": \"All of these things are not going to catch the clinical nuance here\",\n      \"timestamp_sec\": 653,\n      \"why\": \"Dismisses regex, prompt rules, and moderation APIs in one stroke.\"\n    },\n    {\n      \"text\": \"our system isn't deciding what correct is in a clinical edge case like this one. A licensed professional is.\",\n      \"timestamp_sec\": 687,\n      \"why\": \"The governance claim about who owns ground truth.\"\n    },\n    {\n      \"text\": \"every prompt change, every model change, every guardrail change has to get scored once against what the clinician taught us.\",\n      \"timestamp_sec\": 687,\n      \"why\": \"Defines the release gate concretely.\"\n    },\n    {\n      \"text\": \"once that's committed along with any other calibration changes, a clinician's judgment is living in CI\",\n      \"timestamp_sec\": 774,\n      \"why\": \"The clearest statement of the annotation-to-CI pipeline's payoff.\"\n    },\n    {\n      \"text\": \"the win isn't that this one box sentence got fixed. It's that the entire self harm category got lifted.\",\n      \"timestamp_sec\": 774,\n      \"why\": \"Explains why category-level evals beat case-by-case patching.\"\n    },\n    {\n      \"text\": \"the clinical theme owns the definition of good. So vibes don't count here. An accountable judgment from a licensed expert does.\",\n      \"timestamp_sec\": 830,\n      \"why\": \"First of the three named design choices, and a jab at vibes-based evals.\"\n    },\n    {\n      \"text\": \"We're not pursuing perfection with these benchmarks because that can actually cause us to drift our focus away from the human those benchmarks are supposed to protect\",\n      \"timestamp_sec\": 884,\n      \"why\": \"An unusual argument against benchmark maximization.\"\n    },\n    {\n      \"text\": \"We can't just promise safety. We need to deliver the most rigorous systems we can, especially in mental health.\",\n      \"timestamp_sec\": 948,\n      \"why\": \"The accountability call to the audience.\"\n    },\n    {\n      \"text\": \"Today you can get 200 input guardrail scenarios and 100 output guardrail scenarios.\",\n      \"timestamp_sec\": 948,\n      \"why\": \"The concrete artifact the talk ships.\"\n    },\n    {\n      \"text\": \"day one we had to turn off the like uh built-in guardrails because general purpose LLMs are overc calibrated\",\n      \"timestamp_sec\": 1184,\n      \"why\": \"Q&A admission that provider-level safety filters were unusable for this domain.\"\n    },\n    {\n      \"text\": \"overc calibration is a compassionate choice from both the frontier model uh providers and also on our side\",\n      \"timestamp_sec\": 1184,\n      \"why\": \"A generous reading of provider over-refusal while still rejecting it for their use case.\"\n    }\n  ],\n  \"concepts\": [\n    \"llm-as-judge guardrails\",\n    \"input and output guardrails\",\n    \"guardrail over-calibration\",\n    \"false positive and false negative tradeoffs\",\n    \"expert-annotated evals\",\n    \"trace annotation workflow\",\n    \"evals in ci as release gates\",\n    \"clinical safety taxonomy\",\n    \"open-source eval datasets\",\n    \"agent harness architecture\",\n    \"human-in-the-loop escalation\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"General-purpose LLMs are far too conservative and their built-in guardrails are unusable for mental health support, requiring providers' safety filters to be turned off and replaced.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1184\n    },\n    {\n      \"claim\": \"Implementing guardrails as separate LLM-as-judge calls, rather than embedding safety rules in the main system prompt, makes them more robust and harder to jailbreak.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 238\n    },\n    {\n      \"claim\": \"The added latency and cost of separate guardrail model calls is justified by the sensitivity of the mental health use case.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 284\n    },\n    {\n      \"claim\": \"Inappropriately triggering a guardrail is a genuine harm that can prevent people from getting needed care, so the objective is trigger accuracy rather than trigger frequency.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 384\n    },\n    {\n      \"claim\": \"Regexes, verbose prompt instructions, and broad moderation APIs cannot catch clinically coded indirect risk language.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 653\n    },\n    {\n      \"claim\": \"A licensed clinician, not the engineering team or the system itself, should define the correct behavior in clinical edge cases.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 687\n    },\n    {\n      \"claim\": \"An eval gate alone is insufficient for safety; only a continuous learning loop from real traces can make a system safe.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 552\n    },\n    {\n      \"claim\": \"Pursuing perfect benchmark scores is counterproductive because it shifts focus away from the humans the benchmarks exist to protect.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 884\n    },\n    {\n      \"claim\": \"Modular guardrail design allows the core agent to be iterated on without compromising user safety.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 238\n    },\n    {\n      \"claim\": \"Fixing a single flagged scenario through the annotation-to-eval loop improves the whole risk category, not just that case.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 774\n    },\n    {\n      \"claim\": \"Guardrail responses should be tiered by whether risk is present-tense (disengage) or past-tense (surface resources but continue), rather than applying a single blocking policy.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 474\n    },\n    {\n      \"claim\": \"A shared, clinically reviewed open baseline dataset is valuable because the safety problems SonderMind faces are not unique to them and others' learning curves have real human cost.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1005\n    }\n  ],\n  \"speaker_org\": \"SonderMind\"\n}",
+  "ttft_ms": 44919,
+  "ttft_stream_ms": 1818,
+  "time_to_request_ms": 33,
+  "type": "result",
+  "duration_ms": 46711,
+  "uuid": "63a5a930-1fff-466a-86b7-3570afceeadc",
+  "passA": {
+    "summary": "Two SonderMind engineers describe how they built and validated Sonder, a clinically grounded AI mental health coach, with safety architecture and evals as the organizing principle. The technical core is an agent harness that sandwiches the model between separate LLM-as-judge input and output guardrails, chosen for modularity and jailbreak resistance despite latency and cost overhead. The central argument is that general-purpose LLM guardrails are over-calibrated for this use case \u2014 an inappropriate refusal to a vulnerable user is a 'door slam to the face' \u2014 so the goal is more correct triggers, not more triggers. To decide what 'correct' means, a licensed clinician annotates traced conversations in a rubric-driven queue, and a script converts those annotations into typed evals that gate every prompt, model, and guardrail change in CI. They close by open-sourcing 200 input and 100 output guardrail scenarios as a shared clinical baseline for others building in the space.",
+    "key_points": [
+      "SonderMind built Sonder as a purpose-built mental health coach because general-purpose LLMs are not designed for mental health care, and an APA survey found 77% of psychologists report patients using AI for mental health support of some kind.",
+      "The architecture sandwiches the core model between separate input guardrails (which inspect the incoming user message) and output guardrails (which inspect the AI response and the conversation as a whole).",
+      "Keeping guardrails as separate LLM-as-judge calls rather than folding them into the main prompt makes them more robust, harder to jailbreak conversationally, and easier to evaluate in isolation \u2014 accepted as a deliberate latency and cost tradeoff.",
+      "Guardrail behavior is tiered by clinical nuance: present-tense danger triggers resource surfacing plus full disengagement, past-tense distress surfaces resources but continues the conversation, and ordinary relationship difficulty passes straight through invisibly.",
+      "Over-triggering is treated as a real harm, not a safe default, because an inappropriate guardrail can make an isolated person feel a door slammed in their face and prevent them from getting care.",
+      "The 'sentence underneath the sentence' problem \u2014 indirect, coded risk language \u2014 is unsolvable by regexes, verbose prompt rules, or broad moderation APIs, and requires clinician-defined ground truth.",
+      "A licensed clinician annotates flagged traces with a small rubric (expected observation, turn index, category note), and an extraction script normalizes those into typed evals so clinical judgment lives in CI and gates releases.",
+      "Fixing one flagged conversation lifts the entire category rather than patching a single case, and the team explicitly rejects chasing benchmark perfection in favor of benchmarks built from real failure modes on real data.",
+      "SonderMind open-sourced 200 input guardrail scenarios and 100 output guardrail scenarios, clinically reviewed and calibrated, single and multi-turn, as a shared baseline \u2014 not a replacement for building your own learning loop.",
+      "In Q&A they confirm they had to turn off frontier providers' built-in guardrails on day one because those filters rejected essentially their entire dataset."
+    ],
+    "notable_quotes": [
+      {
+        "text": "General purpose LLMs however are not built for mental health care which has resulted in some very tragic events.",
+        "timestamp_sec": 57,
+        "why": "States the premise justifying the entire purpose-built system."
+      },
+      {
+        "text": "77% of psychologists said that said that their patients are using um are using AI for mental health support of some kind",
+        "timestamp_sec": 102,
+        "why": "The one hard external number sizing the problem."
+      },
+      {
+        "text": "keeping the out keeping the guardrails as separate LM as a judge calls makes them more rob more robust and harder to circumvent",
+        "timestamp_sec": 238,
+        "why": "The core architectural claim other builders might contest."
+      },
+      {
+        "text": "even though this is a a trade-off in latency and in cost of course we believe that the sensitivity of this use case warrants uh warrants those separate separate pieces",
+        "timestamp_sec": 284,
+        "why": "Names the cost of the architecture and why they pay it."
+      },
+      {
+        "text": "every architectural decision was made with safety as a primary objective",
+        "timestamp_sec": 331,
+        "why": "The stated design principle in one line."
+      },
+      {
+        "text": "most general purpose LLMs are far too conservative",
+        "timestamp_sec": 331,
+        "why": "The contrarian position at the heart of the talk."
+      },
+      {
+        "text": "when you inappropriately guardrail on somebody, then that can often feel like a door slam to the face and make that person feel more isolated",
+        "timestamp_sec": 384,
+        "why": "The memorable framing of false positives as real harm."
+      },
+      {
+        "text": "we didn't we were not going for more triggers here. We're going for more correct triggers.",
+        "timestamp_sec": 384,
+        "why": "The talk's thesis, stated twice."
+      },
+      {
+        "text": "we all know that a simple eval gate does not make a system safe.",
+        "timestamp_sec": 552,
+        "why": "Pivots the talk from evals-as-checkpoint to evals-as-loop."
+      },
+      {
+        "text": "I packed a box today. just one to feel what it would be like to be gone.",
+        "timestamp_sec": 600,
+        "why": "The concrete clinician-sourced example that motivates the whole learning loop."
+      },
+      {
+        "text": "All of these things are not going to catch the clinical nuance here",
+        "timestamp_sec": 653,
+        "why": "Dismisses regex, prompt rules, and moderation APIs in one stroke."
+      },
+      {
+        "text": "our system isn't deciding what correct is in a clinical edge case like this one. A licensed professional is.",
+        "timestamp_sec": 687,
+        "why": "The governance claim about who owns ground truth."
+      },
+      {
+        "text": "every prompt change, every model change, every guardrail change has to get scored once against what the clinician taught us.",
+        "timestamp_sec": 687,
+        "why": "Defines the release gate concretely."
+      },
+      {
+        "text": "once that's committed along with any other calibration changes, a clinician's judgment is living in CI",
+        "timestamp_sec": 774,
+        "why": "The clearest statement of the annotation-to-CI pipeline's payoff."
+      },
+      {
+        "text": "the win isn't that this one box sentence got fixed. It's that the entire self harm category got lifted.",
+        "timestamp_sec": 774,
+        "why": "Explains why category-level evals beat case-by-case patching."
+      },
+      {
+        "text": "the clinical theme owns the definition of good. So vibes don't count here. An accountable judgment from a licensed expert does.",
+        "timestamp_sec": 830,
+        "why": "First of the three named design choices, and a jab at vibes-based evals."
+      },
+      {
+        "text": "We're not pursuing perfection with these benchmarks because that can actually cause us to drift our focus away from the human those benchmarks are supposed to protect",
+        "timestamp_sec": 884,
+        "why": "An unusual argument against benchmark maximization."
+      },
+      {
+        "text": "We can't just promise safety. We need to deliver the most rigorous systems we can, especially in mental health.",
+        "timestamp_sec": 948,
+        "why": "The accountability call to the audience."
+      },
+      {
+        "text": "Today you can get 200 input guardrail scenarios and 100 output guardrail scenarios.",
+        "timestamp_sec": 948,
+        "why": "The concrete artifact the talk ships."
+      },
+      {
+        "text": "day one we had to turn off the like uh built-in guardrails because general purpose LLMs are overc calibrated",
+        "timestamp_sec": 1184,
+        "why": "Q&A admission that provider-level safety filters were unusable for this domain."
+      },
+      {
+        "text": "overc calibration is a compassionate choice from both the frontier model uh providers and also on our side",
+        "timestamp_sec": 1184,
+        "why": "A generous reading of provider over-refusal while still rejecting it for their use case."
+      }
+    ],
+    "concepts": [
+      "llm-as-judge guardrails",
+      "input and output guardrails",
+      "guardrail over-calibration",
+      "false positive and false negative tradeoffs",
+      "expert-annotated evals",
+      "trace annotation workflow",
+      "evals in ci as release gates",
+      "clinical safety taxonomy",
+      "open-source eval datasets",
+      "agent harness architecture",
+      "human-in-the-loop escalation"
+    ],
+    "positions": [
+      {
+        "claim": "General-purpose LLMs are far too conservative and their built-in guardrails are unusable for mental health support, requiring providers' safety filters to be turned off and replaced.",
+        "confidence": "stated",
+        "timestamp_sec": 1184
+      },
+      {
+        "claim": "Implementing guardrails as separate LLM-as-judge calls, rather than embedding safety rules in the main system prompt, makes them more robust and harder to jailbreak.",
+        "confidence": "stated",
+        "timestamp_sec": 238
+      },
+      {
+        "claim": "The added latency and cost of separate guardrail model calls is justified by the sensitivity of the mental health use case.",
+        "confidence": "stated",
+        "timestamp_sec": 284
+      },
+      {
+        "claim": "Inappropriately triggering a guardrail is a genuine harm that can prevent people from getting needed care, so the objective is trigger accuracy rather than trigger frequency.",
+        "confidence": "stated",
+        "timestamp_sec": 384
+      },
+      {
+        "claim": "Regexes, verbose prompt instructions, and broad moderation APIs cannot catch clinically coded indirect risk language.",
+        "confidence": "stated",
+        "timestamp_sec": 653
+      },
+      {
+        "claim": "A licensed clinician, not the engineering team or the system itself, should define the correct behavior in clinical edge cases.",
+        "confidence": "stated",
+        "timestamp_sec": 687
+      },
+      {
+        "claim": "An eval gate alone is insufficient for safety; only a continuous learning loop from real traces can make a system safe.",
+        "confidence": "stated",
+        "timestamp_sec": 552
+      },
+      {
+        "claim": "Pursuing perfect benchmark scores is counterproductive because it shifts focus away from the humans the benchmarks exist to protect.",
+        "confidence": "stated",
+        "timestamp_sec": 884
+      },
+      {
+        "claim": "Modular guardrail design allows the core agent to be iterated on without compromising user safety.",
+        "confidence": "stated",
+        "timestamp_sec": 238
+      },
+      {
+        "claim": "Fixing a single flagged scenario through the annotation-to-eval loop improves the whole risk category, not just that case.",
+        "confidence": "stated",
+        "timestamp_sec": 774
+      },
+      {
+        "claim": "Guardrail responses should be tiered by whether risk is present-tense (disengage) or past-tense (surface resources but continue), rather than applying a single blocking policy.",
+        "confidence": "implied",
+        "timestamp_sec": 474
+      },
+      {
+        "claim": "A shared, clinically reviewed open baseline dataset is valuable because the safety problems SonderMind faces are not unique to them and others' learning curves have real human cost.",
+        "confidence": "stated",
+        "timestamp_sec": 1005
+      }
+    ],
+    "speaker_org": "SonderMind"
+  },
+  "_meta": {
+    "slug": "evals-driven-development-for-a-mental-health-ai-coach",
+    "video_id": "O72p-rBb2bA",
+    "url": "https://www.youtube.com/watch?v=O72p-rBb2bA",
+    "word_count": 3219,
+    "wall_sec": 47.8,
+    "run_at": "2026-08-12T19:45:55Z",
+    "effort": "medium"
+  }
+}

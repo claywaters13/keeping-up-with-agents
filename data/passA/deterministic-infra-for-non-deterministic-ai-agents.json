@@ -1,0 +1,314 @@
+{
+  "is_error": false,
+  "duration_api_ms": 47801,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "656489bf-2754-41fe-8045-1ad72840563d",
+  "total_cost_usd": 0.181499,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 6264,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 4424,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 6264,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 4424,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 6264,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 6264
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 3000,
+      "outputTokens": 19,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.003095,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 4424,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 6264,
+      "webSearchRequests": 0,
+      "costUSD": 0.178404,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Nishant Gupta, a tech lead on Meta's training and inference infrastructure, argues that the hard problem in agentic AI has shifted from model intelligence to system reliability. His core thesis is a 'great mismatch': cloud infrastructure was designed for short-lived, deterministic, bounded requests, while autonomous agents are stateful, long-running, and may execute different workflows for the same input. He contends the most damaging failure modes are not hallucinations but infrastructure pathologies \u2014 retry amplification that turns an API error into a compute incident, workflow deadlocks, context corruption, memory poisoning, cost explosions. His prescription is architectural: never let the model directly control production systems; instead build an 'agentic control plane' where the model proposes and the platform validates, approves, and executes, borrowing proven distributed-systems patterns (circuit breakers, rate limits, quotas, tracing). Worth watching as a compact, opinionated architecture talk \u2014 it's principles and analogies rather than benchmarks or code, and at seven minutes it makes its case quickly.\",\n  \"key_points\": [\n    \"Autonomous agents violate the core assumptions of modern cloud infrastructure \u2014 that requests are short-lived, services are deterministic, execution paths are known, and failures are bounded \u2014 creating what Gupta calls 'the great mismatch.'\",\n    \"Hallucinations are the least interesting failure mode in production; the real damage comes from recursive reasoning loops, workflow deadlocks, retry amplification, context corruption, memory poisoning, and cost explosions.\",\n    \"Retry amplification is singled out as one of the biggest risks: an agent retries a malformed tool call with slightly different but still invalid requests, reasoning depth and GPU consumption climb, and a minor API error escalates into a compute incident.\",\n    \"The central architectural principle is separation of proposal from execution \u2014 the model generates proposals, infrastructure validates, a policy engine approves, and an execution gateway enforces \u2014 which allows reliable systems on top of a probabilistic model.\",\n    \"Just as containers produced Kubernetes and microservices produced service meshes, agents are producing an 'agentic control plane' handling scheduling, memory coordination, policy enforcement, evaluation, monitoring, and workload routing.\",\n    \"Observability must capture the chain of reasoning \u2014 planning decisions, tool calls, memory lookups, state transitions \u2014 because in agentic debugging the decision chain matters more than the final output.\",\n    \"Shared memory across multiple agents reintroduces classic distributed-systems consistency problems, and many multi-agent failures are consistency failures misdiagnosed as reasoning failures.\",\n    \"Human oversight is a permanent architectural role, not a transitional crutch: humans become exception handlers and calibration sources, and the goal is allocating human attention where it adds the most value.\",\n    \"Most of these problems have known solutions \u2014 circuit breakers map to tool isolation, rate limits to agent limits, resource quotas to cost governance \u2014 so the work is adapting existing reliability patterns rather than inventing new infrastructure.\",\n    \"With prompts and models both commoditizing, Gupta argues infrastructure is the next frontier and the durable competitive advantage.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"The challenge is no longer in intelligence. The challenge is is reliability.\",\n      \"timestamp_sec\": 3,\n      \"why\": \"States the talk's thesis in one line.\"\n    },\n    {\n      \"text\": \"These systems are fundamentally probabilistic. Infrastructure is not allowed to be.\",\n      \"timestamp_sec\": 44,\n      \"why\": \"The tension the entire architecture is designed to resolve.\"\n    },\n    {\n      \"text\": \"This is what I call the great mismatch. We're trying to run autonomous systems on infrastructure that was designed for deterministic workflows.\",\n      \"timestamp_sec\": 44,\n      \"why\": \"Names the framing device the rest of the talk hangs on.\"\n    },\n    {\n      \"text\": \"Most AI demos showcase capability.\",\n      \"timestamp_sec\": 44,\n      \"why\": \"Sets up the demo-versus-production contrast that drives the reliability argument.\"\n    },\n    {\n      \"text\": \"Production systems be have a different objective. Can it do it reliably? Can it do it 10,000 times, 100,000 times, million times?\",\n      \"timestamp_sec\": 94,\n      \"why\": \"Quantifies what 'production' means as a bar demos never clear.\"\n    },\n    {\n      \"text\": \"The majority of the engineering effort moves below the model layer into orchestration, monitoring, safety evaluation, and recovery systems.\",\n      \"timestamp_sec\": 94,\n      \"why\": \"A concrete claim about where engineering time actually goes.\"\n    },\n    {\n      \"text\": \"When people hear AI failures, they immediately think hallucinations. In reality In reality, hallucinations are often the least interesting failure mode.\",\n      \"timestamp_sec\": 94,\n      \"why\": \"The talk's most contrarian position, likely to draw disagreement.\"\n    },\n    {\n      \"text\": \"The model makes a mistake, but however, the infrastructure turns that mistake into an outage. That's the real challenge.\",\n      \"timestamp_sec\": 143,\n      \"why\": \"Relocates responsibility for agent failures from the model to the platform.\"\n    },\n    {\n      \"text\": \"What started as a minor API error became a compute incident. This is why unco- uncontrolled retries are one of the biggest risk in agentic systems.\",\n      \"timestamp_sec\": 143,\n      \"why\": \"Names a specific, recognizable failure mode and ranks its severity.\"\n    },\n    {\n      \"text\": \"Never let the model directly control production systems. The model should generate proposals, infrastructure validates them, policy engine approves them, execution gateway enforces them.\",\n      \"timestamp_sec\": 189,\n      \"why\": \"The talk's single strongest architectural prescription, stated as a rule.\"\n    },\n    {\n      \"text\": \"The model just suggests, the platform decides.\",\n      \"timestamp_sec\": 189,\n      \"why\": \"The prescription compressed to a memorable slogan.\"\n    },\n    {\n      \"text\": \"containers gave rise to Kubernetes, microservices created service meshes. AI agents are creating something new, an agentic control plane.\",\n      \"timestamp_sec\": 189,\n      \"why\": \"The historical analogy behind the control-plane prediction.\"\n    },\n    {\n      \"text\": \"The organizations that build this layer will have significantly more competitive advantages.\",\n      \"timestamp_sec\": 189,\n      \"why\": \"A falsifiable strategic bet on where value accrues.\"\n    },\n    {\n      \"text\": \"traditional logs tell us what happened.\",\n      \"timestamp_sec\": 189,\n      \"why\": \"Sets up the shift from logging outcomes to tracing reasoning.\"\n    },\n    {\n      \"text\": \"When debugging an autonomous workflow, understanding the chain of decisions and reasoning is often more important than the final output.\",\n      \"timestamp_sec\": 238,\n      \"why\": \"Concrete guidance on what agentic observability must capture.\"\n    },\n    {\n      \"text\": \"Many multi-agent failures are actually consistency failures masquerading as reasoning failures.\",\n      \"timestamp_sec\": 238,\n      \"why\": \"Reframes a common multi-agent debugging trap in distributed-systems terms.\"\n    },\n    {\n      \"text\": \"Many people frame human involvement as temporarily temporary necessity. I don't think that's correct. The most successful systems are likely to remain human supervised.\",\n      \"timestamp_sec\": 290,\n      \"why\": \"Explicit dissent from the full-autonomy consensus.\"\n    },\n    {\n      \"text\": \"The goal is not to remove humans. The goal is allocating human attention where it provides the maximum value.\",\n      \"timestamp_sec\": 290,\n      \"why\": \"Restates human-in-the-loop as an optimization problem rather than a stopgap.\"\n    },\n    {\n      \"text\": \"Inference is no longer just a model problem. It becomes a resource orchestration problem.\",\n      \"timestamp_sec\": 339,\n      \"why\": \"Ties the scheduling section back to the infrastructure thesis.\"\n    },\n    {\n      \"text\": \"Instead of inventing entirely new infrastructure, we can adapt to reliability patterns for autonomous systems.\",\n      \"timestamp_sec\": 339,\n      \"why\": \"The talk's practical reassurance \u2014 the toolkit already exists.\"\n    },\n    {\n      \"text\": \"The initially prompts were the differentiator. Then the models became the differentiator. And both are rapid rapidly commoditizing. The next frontier is infrastructure.\",\n      \"timestamp_sec\": 389,\n      \"why\": \"The commoditization argument that justifies the whole talk.\"\n    },\n    {\n      \"text\": \"Models are stochastic. Infrastructures must be deterministic.\",\n      \"timestamp_sec\": 389,\n      \"why\": \"The title thesis in its final, compressed form.\"\n    },\n    {\n      \"text\": \"the future of the AI AI won't be won by better prompts. It will be won by better systems.\",\n      \"timestamp_sec\": 389,\n      \"why\": \"Closing line and clearest statement of the strategic claim.\"\n    }\n  ],\n  \"concepts\": [\n    \"agentic control plane\",\n    \"retry amplification\",\n    \"agent observability and tracing\",\n    \"policy enforcement layer\",\n    \"human-in-the-loop supervision\",\n    \"distributed systems reliability patterns\",\n    \"multi-agent memory consistency\",\n    \"defense in depth\",\n    \"gpu scheduling and workload placement\",\n    \"cost governance for agents\",\n    \"agent failure modes\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"The binding constraint on production agents is reliability, not model intelligence.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 3\n    },\n    {\n      \"claim\": \"Autonomous agents violate nearly every assumption of modern cloud infrastructure (short-lived requests, determinism, known execution paths, bounded failures).\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 44\n    },\n    {\n      \"claim\": \"Hallucinations are often the least interesting failure mode in production agent systems compared to infrastructure failures.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 94\n    },\n    {\n      \"claim\": \"The majority of engineering effort for agents moves below the model layer into orchestration, monitoring, safety evaluation, and recovery.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 94\n    },\n    {\n      \"claim\": \"Uncontrolled retries are one of the biggest risks in agentic systems because they cause exponential resource growth.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 143\n    },\n    {\n      \"claim\": \"Models should never directly control production systems; they should only emit proposals that infrastructure validates, policy approves, and a gateway enforces.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 189\n    },\n    {\n      \"claim\": \"An agentic control plane will emerge as a distinct infrastructure layer, analogous to Kubernetes for containers and service meshes for microservices.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 189\n    },\n    {\n      \"claim\": \"Organizations that build the agentic control plane layer will gain significant competitive advantage.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 189\n    },\n    {\n      \"claim\": \"For debugging autonomous workflows, the chain of decisions matters more than the final output, so tracing planning steps and state transitions is mandatory.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 238\n    },\n    {\n      \"claim\": \"Many multi-agent failures attributed to reasoning are actually distributed-state consistency failures.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 238\n    },\n    {\n      \"claim\": \"Safety must be layered across prompt controls, tool permissions, policy validation, human approval, and audit rather than implemented as a single component.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 290\n    },\n    {\n      \"claim\": \"Human supervision of agent systems is permanent, not a temporary necessity that better models will eliminate.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 290\n    },\n    {\n      \"claim\": \"Inference has become a resource orchestration and cluster scheduling problem rather than purely a model problem.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 339\n    },\n    {\n      \"claim\": \"Existing distributed systems reliability patterns can be adapted to agents rather than requiring entirely new infrastructure.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 339\n    },\n    {\n      \"claim\": \"Prompts and models are both rapidly commoditizing, making infrastructure the next source of differentiation.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 389\n    },\n    {\n      \"claim\": \"AI agents should be architected and treated as distributed systems.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 389\n    }\n  ],\n  \"speaker_org\": \"Meta Superintelligence Labs\"\n}",
+  "ttft_ms": 46755,
+  "ttft_stream_ms": 1328,
+  "time_to_request_ms": 33,
+  "type": "result",
+  "duration_ms": 48494,
+  "uuid": "8755e617-5212-4fd9-8bcc-15bbbc736bd5",
+  "passA": {
+    "summary": "Nishant Gupta, a tech lead on Meta's training and inference infrastructure, argues that the hard problem in agentic AI has shifted from model intelligence to system reliability. His core thesis is a 'great mismatch': cloud infrastructure was designed for short-lived, deterministic, bounded requests, while autonomous agents are stateful, long-running, and may execute different workflows for the same input. He contends the most damaging failure modes are not hallucinations but infrastructure pathologies \u2014 retry amplification that turns an API error into a compute incident, workflow deadlocks, context corruption, memory poisoning, cost explosions. His prescription is architectural: never let the model directly control production systems; instead build an 'agentic control plane' where the model proposes and the platform validates, approves, and executes, borrowing proven distributed-systems patterns (circuit breakers, rate limits, quotas, tracing). Worth watching as a compact, opinionated architecture talk \u2014 it's principles and analogies rather than benchmarks or code, and at seven minutes it makes its case quickly.",
+    "key_points": [
+      "Autonomous agents violate the core assumptions of modern cloud infrastructure \u2014 that requests are short-lived, services are deterministic, execution paths are known, and failures are bounded \u2014 creating what Gupta calls 'the great mismatch.'",
+      "Hallucinations are the least interesting failure mode in production; the real damage comes from recursive reasoning loops, workflow deadlocks, retry amplification, context corruption, memory poisoning, and cost explosions.",
+      "Retry amplification is singled out as one of the biggest risks: an agent retries a malformed tool call with slightly different but still invalid requests, reasoning depth and GPU consumption climb, and a minor API error escalates into a compute incident.",
+      "The central architectural principle is separation of proposal from execution \u2014 the model generates proposals, infrastructure validates, a policy engine approves, and an execution gateway enforces \u2014 which allows reliable systems on top of a probabilistic model.",
+      "Just as containers produced Kubernetes and microservices produced service meshes, agents are producing an 'agentic control plane' handling scheduling, memory coordination, policy enforcement, evaluation, monitoring, and workload routing.",
+      "Observability must capture the chain of reasoning \u2014 planning decisions, tool calls, memory lookups, state transitions \u2014 because in agentic debugging the decision chain matters more than the final output.",
+      "Shared memory across multiple agents reintroduces classic distributed-systems consistency problems, and many multi-agent failures are consistency failures misdiagnosed as reasoning failures.",
+      "Human oversight is a permanent architectural role, not a transitional crutch: humans become exception handlers and calibration sources, and the goal is allocating human attention where it adds the most value.",
+      "Most of these problems have known solutions \u2014 circuit breakers map to tool isolation, rate limits to agent limits, resource quotas to cost governance \u2014 so the work is adapting existing reliability patterns rather than inventing new infrastructure.",
+      "With prompts and models both commoditizing, Gupta argues infrastructure is the next frontier and the durable competitive advantage."
+    ],
+    "notable_quotes": [
+      {
+        "text": "The challenge is no longer in intelligence. The challenge is is reliability.",
+        "timestamp_sec": 3,
+        "why": "States the talk's thesis in one line."
+      },
+      {
+        "text": "These systems are fundamentally probabilistic. Infrastructure is not allowed to be.",
+        "timestamp_sec": 44,
+        "why": "The tension the entire architecture is designed to resolve."
+      },
+      {
+        "text": "This is what I call the great mismatch. We're trying to run autonomous systems on infrastructure that was designed for deterministic workflows.",
+        "timestamp_sec": 44,
+        "why": "Names the framing device the rest of the talk hangs on."
+      },
+      {
+        "text": "Most AI demos showcase capability.",
+        "timestamp_sec": 44,
+        "why": "Sets up the demo-versus-production contrast that drives the reliability argument."
+      },
+      {
+        "text": "Production systems be have a different objective. Can it do it reliably? Can it do it 10,000 times, 100,000 times, million times?",
+        "timestamp_sec": 94,
+        "why": "Quantifies what 'production' means as a bar demos never clear."
+      },
+      {
+        "text": "The majority of the engineering effort moves below the model layer into orchestration, monitoring, safety evaluation, and recovery systems.",
+        "timestamp_sec": 94,
+        "why": "A concrete claim about where engineering time actually goes."
+      },
+      {
+        "text": "When people hear AI failures, they immediately think hallucinations. In reality In reality, hallucinations are often the least interesting failure mode.",
+        "timestamp_sec": 94,
+        "why": "The talk's most contrarian position, likely to draw disagreement."
+      },
+      {
+        "text": "The model makes a mistake, but however, the infrastructure turns that mistake into an outage. That's the real challenge.",
+        "timestamp_sec": 143,
+        "why": "Relocates responsibility for agent failures from the model to the platform."
+      },
+      {
+        "text": "What started as a minor API error became a compute incident. This is why unco- uncontrolled retries are one of the biggest risk in agentic systems.",
+        "timestamp_sec": 143,
+        "why": "Names a specific, recognizable failure mode and ranks its severity."
+      },
+      {
+        "text": "Never let the model directly control production systems. The model should generate proposals, infrastructure validates them, policy engine approves them, execution gateway enforces them.",
+        "timestamp_sec": 189,
+        "why": "The talk's single strongest architectural prescription, stated as a rule."
+      },
+      {
+        "text": "The model just suggests, the platform decides.",
+        "timestamp_sec": 189,
+        "why": "The prescription compressed to a memorable slogan."
+      },
+      {
+        "text": "containers gave rise to Kubernetes, microservices created service meshes. AI agents are creating something new, an agentic control plane.",
+        "timestamp_sec": 189,
+        "why": "The historical analogy behind the control-plane prediction."
+      },
+      {
+        "text": "The organizations that build this layer will have significantly more competitive advantages.",
+        "timestamp_sec": 189,
+        "why": "A falsifiable strategic bet on where value accrues."
+      },
+      {
+        "text": "traditional logs tell us what happened.",
+        "timestamp_sec": 189,
+        "why": "Sets up the shift from logging outcomes to tracing reasoning."
+      },
+      {
+        "text": "When debugging an autonomous workflow, understanding the chain of decisions and reasoning is often more important than the final output.",
+        "timestamp_sec": 238,
+        "why": "Concrete guidance on what agentic observability must capture."
+      },
+      {
+        "text": "Many multi-agent failures are actually consistency failures masquerading as reasoning failures.",
+        "timestamp_sec": 238,
+        "why": "Reframes a common multi-agent debugging trap in distributed-systems terms."
+      },
+      {
+        "text": "Many people frame human involvement as temporarily temporary necessity. I don't think that's correct. The most successful systems are likely to remain human supervised.",
+        "timestamp_sec": 290,
+        "why": "Explicit dissent from the full-autonomy consensus."
+      },
+      {
+        "text": "The goal is not to remove humans. The goal is allocating human attention where it provides the maximum value.",
+        "timestamp_sec": 290,
+        "why": "Restates human-in-the-loop as an optimization problem rather than a stopgap."
+      },
+      {
+        "text": "Inference is no longer just a model problem. It becomes a resource orchestration problem.",
+        "timestamp_sec": 339,
+        "why": "Ties the scheduling section back to the infrastructure thesis."
+      },
+      {
+        "text": "Instead of inventing entirely new infrastructure, we can adapt to reliability patterns for autonomous systems.",
+        "timestamp_sec": 339,
+        "why": "The talk's practical reassurance \u2014 the toolkit already exists."
+      },
+      {
+        "text": "The initially prompts were the differentiator. Then the models became the differentiator. And both are rapid rapidly commoditizing. The next frontier is infrastructure.",
+        "timestamp_sec": 389,
+        "why": "The commoditization argument that justifies the whole talk."
+      },
+      {
+        "text": "Models are stochastic. Infrastructures must be deterministic.",
+        "timestamp_sec": 389,
+        "why": "The title thesis in its final, compressed form."
+      },
+      {
+        "text": "the future of the AI AI won't be won by better prompts. It will be won by better systems.",
+        "timestamp_sec": 389,
+        "why": "Closing line and clearest statement of the strategic claim."
+      }
+    ],
+    "concepts": [
+      "agentic control plane",
+      "retry amplification",
+      "agent observability and tracing",
+      "policy enforcement layer",
+      "human-in-the-loop supervision",
+      "distributed systems reliability patterns",
+      "multi-agent memory consistency",
+      "defense in depth",
+      "gpu scheduling and workload placement",
+      "cost governance for agents",
+      "agent failure modes"
+    ],
+    "positions": [
+      {
+        "claim": "The binding constraint on production agents is reliability, not model intelligence.",
+        "confidence": "stated",
+        "timestamp_sec": 3
+      },
+      {
+        "claim": "Autonomous agents violate nearly every assumption of modern cloud infrastructure (short-lived requests, determinism, known execution paths, bounded failures).",
+        "confidence": "stated",
+        "timestamp_sec": 44
+      },
+      {
+        "claim": "Hallucinations are often the least interesting failure mode in production agent systems compared to infrastructure failures.",
+        "confidence": "stated",
+        "timestamp_sec": 94
+      },
+      {
+        "claim": "The majority of engineering effort for agents moves below the model layer into orchestration, monitoring, safety evaluation, and recovery.",
+        "confidence": "stated",
+        "timestamp_sec": 94
+      },
+      {
+        "claim": "Uncontrolled retries are one of the biggest risks in agentic systems because they cause exponential resource growth.",
+        "confidence": "stated",
+        "timestamp_sec": 143
+      },
+      {
+        "claim": "Models should never directly control production systems; they should only emit proposals that infrastructure validates, policy approves, and a gateway enforces.",
+        "confidence": "stated",
+        "timestamp_sec": 189
+      },
+      {
+        "claim": "An agentic control plane will emerge as a distinct infrastructure layer, analogous to Kubernetes for containers and service meshes for microservices.",
+        "confidence": "stated",
+        "timestamp_sec": 189
+      },
+      {
+        "claim": "Organizations that build the agentic control plane layer will gain significant competitive advantage.",
+        "confidence": "stated",
+        "timestamp_sec": 189
+      },
+      {
+        "claim": "For debugging autonomous workflows, the chain of decisions matters more than the final output, so tracing planning steps and state transitions is mandatory.",
+        "confidence": "stated",
+        "timestamp_sec": 238
+      },
+      {
+        "claim": "Many multi-agent failures attributed to reasoning are actually distributed-state consistency failures.",
+        "confidence": "stated",
+        "timestamp_sec": 238
+      },
+      {
+        "claim": "Safety must be layered across prompt controls, tool permissions, policy validation, human approval, and audit rather than implemented as a single component.",
+        "confidence": "stated",
+        "timestamp_sec": 290
+      },
+      {
+        "claim": "Human supervision of agent systems is permanent, not a temporary necessity that better models will eliminate.",
+        "confidence": "stated",
+        "timestamp_sec": 290
+      },
+      {
+        "claim": "Inference has become a resource orchestration and cluster scheduling problem rather than purely a model problem.",
+        "confidence": "stated",
+        "timestamp_sec": 339
+      },
+      {
+        "claim": "Existing distributed systems reliability patterns can be adapted to agents rather than requiring entirely new infrastructure.",
+        "confidence": "stated",
+        "timestamp_sec": 339
+      },
+      {
+        "claim": "Prompts and models are both rapidly commoditizing, making infrastructure the next source of differentiation.",
+        "confidence": "stated",
+        "timestamp_sec": 389
+      },
+      {
+        "claim": "AI agents should be architected and treated as distributed systems.",
+        "confidence": "stated",
+        "timestamp_sec": 389
+      }
+    ],
+    "speaker_org": "Meta Superintelligence Labs"
+  },
+  "_meta": {
+    "slug": "deterministic-infra-for-non-deterministic-ai-agents",
+    "video_id": "APh1Vx0oLmQ",
+    "url": "https://www.youtube.com/watch?v=APh1Vx0oLmQ",
+    "word_count": 1045,
+    "wall_sec": 49.6,
+    "run_at": "2026-08-12T19:44:00Z",
+    "effort": "medium"
+  }
+}

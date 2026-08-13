@@ -1,0 +1,300 @@
+{
+  "is_error": false,
+  "duration_api_ms": 73244,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "8eb47741-6b8f-4828-88fa-7c3130b8ccbe",
+  "total_cost_usd": 0.275054,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 10313,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 6406,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 10313,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 6406,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 10313,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 10313
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 6525,
+      "outputTokens": 17,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.00661,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 6406,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 10313,
+      "webSearchRequests": 0,
+      "costUSD": 0.268444,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Two poolside team members walk through what broke as they scaled their Laguna code models from one generation to the next, and how they fixed it on both the data and systems sides. Marah Abdin argues synthetic data is a complement to organic data rather than a replacement \u2014 a way to surface implicit rationale, planning, and structure, and to break the token-uniqueness wall you hit when a high-quality-only mix gets repeated too often at larger training budgets. She gives a modular six-component framing of synthetic pipelines (seeds, primary/secondary inputs, metadata, generator, supplementary functions) and shapes like rephrasing, multi-stage decomposition, cross-domain porting, and multi-turn loops, plus their agent-orchestration infra, Hive. Robert McHardy then shows previously unpublished failure modes from real large runs: a broken GPU causing silent data corruption, BF16 accumulation before the unembedding losing precision as activations grew and stalling convergence, and a race condition in open-source FP8 kernels silently corrupting ~0.5% of gradients. Worth watching if you want concrete, numbers-backed war stories about pre-training at thousands-of-GPU scale and a practical taxonomy for building synthetic data pipelines.\",\n  \"key_points\": [\n    \"Synthetic data at poolside is positioned as a complement to organic data, used to extract implicitly hidden features \u2014 rationale, planning, structure \u2014 and project them into forms that teach the model more directly.\",\n    \"Over-optimizing for quality over quantity at small scale backfired when training budgets grew: high-quality data had to be repeated, saturating the model too early, which rephrasing-based synthetic data was used to fix.\",\n    \"Synthetic data made up 13% of the pre-training mix for their XS.2 model, and their continuously growing synthetic corpus now stands at roughly six trillion tokens.\",\n    \"Every synthetic pipeline is treated as the same six modular components \u2014 seeds, primary inputs, metadata, secondary inputs, a generator function, and supplementary filters/validators \u2014 which lets a single configurable infrastructure (Hive, with agent queues, orchestrators, and a supervisor) span cheap seed-heavy jobs to complex orchestrated workflows.\",\n    \"The design rule is to decompose any task that is too hard for the teacher model, since an overloaded generator loses both correctness and diversity; multi-stage generation (e.g. plot and characters before chapters) yields better output than one-shot generation.\",\n    \"Data quality and training-code correctness must be treated holistically \u2014 a bad codebase ruins a run just as surely as bad data.\",\n    \"Periodic weight hashing across distributed data-parallel replicas catches silent corruption: a single broken GPU produced spiky loss and huge gradient norms on an otherwise identical run.\",\n    \"BF16 accumulation before the tensor-parallel unembedding ran out of numerical precision as activations grew around 50k steps, flattening the loss curve; moving the accumulation to FP32 from that checkpoint restored convergence.\",\n    \"Their unreleased Laguna S \u2014 118B total / 8B active parameters, 30 trillion tokens, 4,000 GPUs \u2014 beats their larger previous model on coding benchmarks and leads on their agentic proxy eval, while conceding a knowledge-benchmark gap they attribute to data choices.\",\n    \"Race conditions in FP8 kernels are a blind spot for hash checking, because real training runs have no replica redundancy over identical weights and data to compare forward/backward passes against.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"at least at Pulsar we don't see it as a way to replace organic data\",\n      \"timestamp_sec\": 130,\n      \"why\": \"states the talk's core position on synthetic data's role\"\n    },\n    {\n      \"text\": \"organic data has a lot in it that is basically kind of implicitly hidden. A lot of things that could teach the model or not very presented in the most optimal way sometimes.\",\n      \"timestamp_sec\": 130,\n      \"why\": \"gives the underlying justification for generating synthetic data at all\"\n    },\n    {\n      \"text\": \"for access point two in particular, we settled on 13% of the mix. This is only pre-training stages before post-training.\",\n      \"timestamp_sec\": 164,\n      \"why\": \"a concrete, comparable mix number\"\n    },\n    {\n      \"text\": \"Now we have a six trillion token uh corpus that's continuously growing.\",\n      \"timestamp_sec\": 164,\n      \"why\": \"sizes the synthetic data effort\"\n    },\n    {\n      \"text\": \"we were basically focusing on quality versus quantity um maybe a little too much\",\n      \"timestamp_sec\": 201,\n      \"why\": \"an admission that the standard quality-first heuristic broke at scale\"\n    },\n    {\n      \"text\": \"we started hitting repetition uh like non-optimal repetition on some of our high-quality data which saturated the model a little too early\",\n      \"timestamp_sec\": 201,\n      \"why\": \"names the specific failure mode motivating rephrasing\"\n    },\n    {\n      \"text\": \"the rule of thumb is if task is too hard for your model, then your model will start to fall on its face. Lose correctness, lose diversity. So break down the task, make it simpler.\",\n      \"timestamp_sec\": 358,\n      \"why\": \"the design heuristic for generator pipelines, with the named tradeoff\"\n    },\n    {\n      \"text\": \"And then and then from there go into generate the chapters one by one. You will absolutely get a better novel.\",\n      \"timestamp_sec\": 397,\n      \"why\": \"concrete payoff claim for multi-stage generation\"\n    },\n    {\n      \"text\": \"If you've got data that sucks, you can't train a good model. If you've got a training code base that sucks, you also can't.\",\n      \"timestamp_sec\": 537,\n      \"why\": \"the thesis of the second half in one line\"\n    },\n    {\n      \"text\": \"the way we we look at things in my team is uh we don't trust anything. There's so many things that can go wrong when you scale models to billions of parameters to hundreds of billions of parameters um training on thousands of GPUs and so on.\",\n      \"timestamp_sec\": 571,\n      \"why\": \"states the operating philosophy behind the verification tooling\"\n    },\n    {\n      \"text\": \"If they're not identical, we know something has gone seriously wrong uh because that should never happen. And we crash the training.\",\n      \"timestamp_sec\": 607,\n      \"why\": \"describes the replica-hash invariant and the hard-fail policy\"\n    },\n    {\n      \"text\": \"They're exactly the same run. Just in one of them we were got unlucky and we had a broken GPU included.\",\n      \"timestamp_sec\": 634,\n      \"why\": \"the punchline of the broken-GPU loss-curve comparison\"\n    },\n    {\n      \"text\": \"That broken GPU caused silent data corruption and um therefore made the training behave the way it did.\",\n      \"timestamp_sec\": 669,\n      \"why\": \"names silent hardware corruption as a real, observed cause of bad loss curves\"\n    },\n    {\n      \"text\": \"we have to perform some sort of accumulation here uh because we use tensor parallel for the uh unembedding. And that accumulation um was performed in BF16 by default.\",\n      \"timestamp_sec\": 702,\n      \"why\": \"pinpoints the exact numerical defect that stalled the run\"\n    },\n    {\n      \"text\": \"We moved that accumulation into FP32 and from there on the model started converging again.\",\n      \"timestamp_sec\": 741,\n      \"why\": \"the actionable fix, verified by resuming from the failed checkpoint\"\n    },\n    {\n      \"text\": \"with Laguna S we scaled this to a model that's 118 billion uh total parameters and 8B active parameters. Again, we trained it on 30 trillion tokens on 4,000 GPUs.\",\n      \"timestamp_sec\": 804,\n      \"why\": \"the headline scale numbers for the unreleased model\"\n    },\n    {\n      \"text\": \"we had a race condition because we added FP8 training uh based on Deep Chem FP8 kernels that are also like open source\",\n      \"timestamp_sec\": 836,\n      \"why\": \"identifies a bug in a widely used open-source dependency\"\n    },\n    {\n      \"text\": \"in our case, we noticed about 0.5% of the gradient gets silently corrupted, essentially replaced by random values\",\n      \"timestamp_sec\": 836,\n      \"why\": \"quantifies an otherwise invisible failure\"\n    },\n    {\n      \"text\": \"In real training runs, you don't have any redundancy where you have the same model weights and the same data, so you can never check if forward and backward actually behave the same across different model replicas.\",\n      \"timestamp_sec\": 872,\n      \"why\": \"explains the structural limit of hash-based verification\"\n    },\n    {\n      \"text\": \"these are base model evals, right? They are partly indicative of how the final model will look, but also not perfectly, right?\",\n      \"timestamp_sec\": 902,\n      \"why\": \"an explicit caveat on how to read the benchmark slide\"\n    },\n    {\n      \"text\": \"MMLU pro knowledge benchmark is something we don't care about that much compared to coding because we want to build the strongest agentic coding models\",\n      \"timestamp_sec\": 980,\n      \"why\": \"a deliberate benchmark tradeoff most labs would not state so plainly\"\n    },\n    {\n      \"text\": \"The recipe held, it scaled, and we will continue scaling it from here.\",\n      \"timestamp_sec\": 1009,\n      \"why\": \"the talk's closing verdict on the generation-to-generation transfer\"\n    }\n  ],\n  \"concepts\": [\n    \"synthetic data generation\",\n    \"pre-training data mixture\",\n    \"data rephrasing\",\n    \"token uniqueness and repetition\",\n    \"multi-stage generation pipelines\",\n    \"cross-domain data porting\",\n    \"agent orchestration infrastructure\",\n    \"distributed training verification\",\n    \"numerical precision in training\",\n    \"fp8 training kernels\",\n    \"silent data corruption\",\n    \"base model evaluation\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Synthetic data should complement organic data rather than replace it, at least given the current state of the field.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 130\n    },\n    {\n      \"claim\": \"Optimizing pre-training data too heavily for quality over quantity causes harmful repetition and early model saturation once training budgets scale up.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 201\n    },\n    {\n      \"claim\": \"Replacing repeated high-quality tokens with rephrased variants consistently improves results over repeating the seeds.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 243\n    },\n    {\n      \"claim\": \"Every synthetic data pipeline, cheap or expensive, can be composed from the same six components.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 288\n    },\n    {\n      \"claim\": \"Decomposing a task into simpler steps lets you exceed what the teacher model could produce in one shot, avoiding losses in correctness and diversity.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 358\n    },\n    {\n      \"claim\": \"Data quality and training-codebase correctness must be treated holistically; either one being bad prevents a good model.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 537\n    },\n    {\n      \"claim\": \"Weight hashes across data-parallel replicas must always match, so mismatches should hard-crash the run.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 607\n    },\n    {\n      \"claim\": \"A single broken GPU can produce spiky loss curves and exploding gradient norms with no configuration, data, or implementation difference.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 634\n    },\n    {\n      \"claim\": \"BF16 accumulation for the tensor-parallel unembedding loses enough precision as activations grow to halt convergence, and moving it to FP32 fixes it.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 702\n    },\n    {\n      \"claim\": \"A 33-billion-parameter model is too small to reliably surface these scale-related numerical issues, requiring a much larger test run to validate the recipe.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 772\n    },\n    {\n      \"claim\": \"The DeepGEMM-style open-source FP8 kernels contain a race condition that silently corrupts about 0.5% of gradients; poolside has an unmerged public PR fixing it.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 872\n    },\n    {\n      \"claim\": \"Replica hash checking cannot detect race conditions in forward/backward passes because real runs lack the required redundancy.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 872\n    },\n    {\n      \"claim\": \"Laguna S outperforms both poolside's previous smaller model and its much larger M.1 model on coding benchmarks, and beats all tested open-weight comparisons on their agentic proxy eval.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 942\n    },\n    {\n      \"claim\": \"The model's weakness on MMLU-Pro relative to Nemotron and DeepSeek is purely a data gap that poolside could close if it chose to.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 980\n    }\n  ],\n  \"speaker_org\": \"poolside\"\n}",
+  "ttft_ms": 25338,
+  "ttft_stream_ms": 1032,
+  "time_to_request_ms": 35,
+  "type": "result",
+  "duration_ms": 73952,
+  "uuid": "e6d1e55f-2523-4462-8216-e30bb0cfe036",
+  "passA": {
+    "summary": "Two poolside team members walk through what broke as they scaled their Laguna code models from one generation to the next, and how they fixed it on both the data and systems sides. Marah Abdin argues synthetic data is a complement to organic data rather than a replacement \u2014 a way to surface implicit rationale, planning, and structure, and to break the token-uniqueness wall you hit when a high-quality-only mix gets repeated too often at larger training budgets. She gives a modular six-component framing of synthetic pipelines (seeds, primary/secondary inputs, metadata, generator, supplementary functions) and shapes like rephrasing, multi-stage decomposition, cross-domain porting, and multi-turn loops, plus their agent-orchestration infra, Hive. Robert McHardy then shows previously unpublished failure modes from real large runs: a broken GPU causing silent data corruption, BF16 accumulation before the unembedding losing precision as activations grew and stalling convergence, and a race condition in open-source FP8 kernels silently corrupting ~0.5% of gradients. Worth watching if you want concrete, numbers-backed war stories about pre-training at thousands-of-GPU scale and a practical taxonomy for building synthetic data pipelines.",
+    "key_points": [
+      "Synthetic data at poolside is positioned as a complement to organic data, used to extract implicitly hidden features \u2014 rationale, planning, structure \u2014 and project them into forms that teach the model more directly.",
+      "Over-optimizing for quality over quantity at small scale backfired when training budgets grew: high-quality data had to be repeated, saturating the model too early, which rephrasing-based synthetic data was used to fix.",
+      "Synthetic data made up 13% of the pre-training mix for their XS.2 model, and their continuously growing synthetic corpus now stands at roughly six trillion tokens.",
+      "Every synthetic pipeline is treated as the same six modular components \u2014 seeds, primary inputs, metadata, secondary inputs, a generator function, and supplementary filters/validators \u2014 which lets a single configurable infrastructure (Hive, with agent queues, orchestrators, and a supervisor) span cheap seed-heavy jobs to complex orchestrated workflows.",
+      "The design rule is to decompose any task that is too hard for the teacher model, since an overloaded generator loses both correctness and diversity; multi-stage generation (e.g. plot and characters before chapters) yields better output than one-shot generation.",
+      "Data quality and training-code correctness must be treated holistically \u2014 a bad codebase ruins a run just as surely as bad data.",
+      "Periodic weight hashing across distributed data-parallel replicas catches silent corruption: a single broken GPU produced spiky loss and huge gradient norms on an otherwise identical run.",
+      "BF16 accumulation before the tensor-parallel unembedding ran out of numerical precision as activations grew around 50k steps, flattening the loss curve; moving the accumulation to FP32 from that checkpoint restored convergence.",
+      "Their unreleased Laguna S \u2014 118B total / 8B active parameters, 30 trillion tokens, 4,000 GPUs \u2014 beats their larger previous model on coding benchmarks and leads on their agentic proxy eval, while conceding a knowledge-benchmark gap they attribute to data choices.",
+      "Race conditions in FP8 kernels are a blind spot for hash checking, because real training runs have no replica redundancy over identical weights and data to compare forward/backward passes against."
+    ],
+    "notable_quotes": [
+      {
+        "text": "at least at Pulsar we don't see it as a way to replace organic data",
+        "timestamp_sec": 130,
+        "why": "states the talk's core position on synthetic data's role"
+      },
+      {
+        "text": "organic data has a lot in it that is basically kind of implicitly hidden. A lot of things that could teach the model or not very presented in the most optimal way sometimes.",
+        "timestamp_sec": 130,
+        "why": "gives the underlying justification for generating synthetic data at all"
+      },
+      {
+        "text": "for access point two in particular, we settled on 13% of the mix. This is only pre-training stages before post-training.",
+        "timestamp_sec": 164,
+        "why": "a concrete, comparable mix number"
+      },
+      {
+        "text": "Now we have a six trillion token uh corpus that's continuously growing.",
+        "timestamp_sec": 164,
+        "why": "sizes the synthetic data effort"
+      },
+      {
+        "text": "we were basically focusing on quality versus quantity um maybe a little too much",
+        "timestamp_sec": 201,
+        "why": "an admission that the standard quality-first heuristic broke at scale"
+      },
+      {
+        "text": "we started hitting repetition uh like non-optimal repetition on some of our high-quality data which saturated the model a little too early",
+        "timestamp_sec": 201,
+        "why": "names the specific failure mode motivating rephrasing"
+      },
+      {
+        "text": "the rule of thumb is if task is too hard for your model, then your model will start to fall on its face. Lose correctness, lose diversity. So break down the task, make it simpler.",
+        "timestamp_sec": 358,
+        "why": "the design heuristic for generator pipelines, with the named tradeoff"
+      },
+      {
+        "text": "And then and then from there go into generate the chapters one by one. You will absolutely get a better novel.",
+        "timestamp_sec": 397,
+        "why": "concrete payoff claim for multi-stage generation"
+      },
+      {
+        "text": "If you've got data that sucks, you can't train a good model. If you've got a training code base that sucks, you also can't.",
+        "timestamp_sec": 537,
+        "why": "the thesis of the second half in one line"
+      },
+      {
+        "text": "the way we we look at things in my team is uh we don't trust anything. There's so many things that can go wrong when you scale models to billions of parameters to hundreds of billions of parameters um training on thousands of GPUs and so on.",
+        "timestamp_sec": 571,
+        "why": "states the operating philosophy behind the verification tooling"
+      },
+      {
+        "text": "If they're not identical, we know something has gone seriously wrong uh because that should never happen. And we crash the training.",
+        "timestamp_sec": 607,
+        "why": "describes the replica-hash invariant and the hard-fail policy"
+      },
+      {
+        "text": "They're exactly the same run. Just in one of them we were got unlucky and we had a broken GPU included.",
+        "timestamp_sec": 634,
+        "why": "the punchline of the broken-GPU loss-curve comparison"
+      },
+      {
+        "text": "That broken GPU caused silent data corruption and um therefore made the training behave the way it did.",
+        "timestamp_sec": 669,
+        "why": "names silent hardware corruption as a real, observed cause of bad loss curves"
+      },
+      {
+        "text": "we have to perform some sort of accumulation here uh because we use tensor parallel for the uh unembedding. And that accumulation um was performed in BF16 by default.",
+        "timestamp_sec": 702,
+        "why": "pinpoints the exact numerical defect that stalled the run"
+      },
+      {
+        "text": "We moved that accumulation into FP32 and from there on the model started converging again.",
+        "timestamp_sec": 741,
+        "why": "the actionable fix, verified by resuming from the failed checkpoint"
+      },
+      {
+        "text": "with Laguna S we scaled this to a model that's 118 billion uh total parameters and 8B active parameters. Again, we trained it on 30 trillion tokens on 4,000 GPUs.",
+        "timestamp_sec": 804,
+        "why": "the headline scale numbers for the unreleased model"
+      },
+      {
+        "text": "we had a race condition because we added FP8 training uh based on Deep Chem FP8 kernels that are also like open source",
+        "timestamp_sec": 836,
+        "why": "identifies a bug in a widely used open-source dependency"
+      },
+      {
+        "text": "in our case, we noticed about 0.5% of the gradient gets silently corrupted, essentially replaced by random values",
+        "timestamp_sec": 836,
+        "why": "quantifies an otherwise invisible failure"
+      },
+      {
+        "text": "In real training runs, you don't have any redundancy where you have the same model weights and the same data, so you can never check if forward and backward actually behave the same across different model replicas.",
+        "timestamp_sec": 872,
+        "why": "explains the structural limit of hash-based verification"
+      },
+      {
+        "text": "these are base model evals, right? They are partly indicative of how the final model will look, but also not perfectly, right?",
+        "timestamp_sec": 902,
+        "why": "an explicit caveat on how to read the benchmark slide"
+      },
+      {
+        "text": "MMLU pro knowledge benchmark is something we don't care about that much compared to coding because we want to build the strongest agentic coding models",
+        "timestamp_sec": 980,
+        "why": "a deliberate benchmark tradeoff most labs would not state so plainly"
+      },
+      {
+        "text": "The recipe held, it scaled, and we will continue scaling it from here.",
+        "timestamp_sec": 1009,
+        "why": "the talk's closing verdict on the generation-to-generation transfer"
+      }
+    ],
+    "concepts": [
+      "synthetic data generation",
+      "pre-training data mixture",
+      "data rephrasing",
+      "token uniqueness and repetition",
+      "multi-stage generation pipelines",
+      "cross-domain data porting",
+      "agent orchestration infrastructure",
+      "distributed training verification",
+      "numerical precision in training",
+      "fp8 training kernels",
+      "silent data corruption",
+      "base model evaluation"
+    ],
+    "positions": [
+      {
+        "claim": "Synthetic data should complement organic data rather than replace it, at least given the current state of the field.",
+        "confidence": "stated",
+        "timestamp_sec": 130
+      },
+      {
+        "claim": "Optimizing pre-training data too heavily for quality over quantity causes harmful repetition and early model saturation once training budgets scale up.",
+        "confidence": "stated",
+        "timestamp_sec": 201
+      },
+      {
+        "claim": "Replacing repeated high-quality tokens with rephrased variants consistently improves results over repeating the seeds.",
+        "confidence": "stated",
+        "timestamp_sec": 243
+      },
+      {
+        "claim": "Every synthetic data pipeline, cheap or expensive, can be composed from the same six components.",
+        "confidence": "stated",
+        "timestamp_sec": 288
+      },
+      {
+        "claim": "Decomposing a task into simpler steps lets you exceed what the teacher model could produce in one shot, avoiding losses in correctness and diversity.",
+        "confidence": "stated",
+        "timestamp_sec": 358
+      },
+      {
+        "claim": "Data quality and training-codebase correctness must be treated holistically; either one being bad prevents a good model.",
+        "confidence": "stated",
+        "timestamp_sec": 537
+      },
+      {
+        "claim": "Weight hashes across data-parallel replicas must always match, so mismatches should hard-crash the run.",
+        "confidence": "stated",
+        "timestamp_sec": 607
+      },
+      {
+        "claim": "A single broken GPU can produce spiky loss curves and exploding gradient norms with no configuration, data, or implementation difference.",
+        "confidence": "stated",
+        "timestamp_sec": 634
+      },
+      {
+        "claim": "BF16 accumulation for the tensor-parallel unembedding loses enough precision as activations grow to halt convergence, and moving it to FP32 fixes it.",
+        "confidence": "stated",
+        "timestamp_sec": 702
+      },
+      {
+        "claim": "A 33-billion-parameter model is too small to reliably surface these scale-related numerical issues, requiring a much larger test run to validate the recipe.",
+        "confidence": "stated",
+        "timestamp_sec": 772
+      },
+      {
+        "claim": "The DeepGEMM-style open-source FP8 kernels contain a race condition that silently corrupts about 0.5% of gradients; poolside has an unmerged public PR fixing it.",
+        "confidence": "stated",
+        "timestamp_sec": 872
+      },
+      {
+        "claim": "Replica hash checking cannot detect race conditions in forward/backward passes because real runs lack the required redundancy.",
+        "confidence": "stated",
+        "timestamp_sec": 872
+      },
+      {
+        "claim": "Laguna S outperforms both poolside's previous smaller model and its much larger M.1 model on coding benchmarks, and beats all tested open-weight comparisons on their agentic proxy eval.",
+        "confidence": "stated",
+        "timestamp_sec": 942
+      },
+      {
+        "claim": "The model's weakness on MMLU-Pro relative to Nemotron and DeepSeek is purely a data gap that poolside could close if it chose to.",
+        "confidence": "stated",
+        "timestamp_sec": 980
+      }
+    ],
+    "speaker_org": "poolside"
+  },
+  "_meta": {
+    "slug": "the-messy-reality-of-scale-synthetic-data-and-pre-training",
+    "video_id": "KhYifX22yhE",
+    "url": "https://www.youtube.com/watch?v=KhYifX22yhE",
+    "word_count": 3454,
+    "wall_sec": 75.0,
+    "run_at": "2026-08-12T20:22:25Z",
+    "effort": "medium"
+  }
+}

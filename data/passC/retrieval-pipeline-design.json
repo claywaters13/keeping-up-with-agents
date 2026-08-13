@@ -1,0 +1,293 @@
+{
+  "is_error": false,
+  "duration_api_ms": 128122,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "b8d32604-4b5b-4de6-b95a-067b8fa3ebf8",
+  "total_cost_usd": 0.607198,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 30964,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 10885,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 30964,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 10885,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 30964,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 30964
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 20184,
+      "outputTokens": 17,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.020269000000000002,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 10885,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 30964,
+      "webSearchRequests": 0,
+      "costUSD": 0.586929,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\"concept\":\"retrieval pipeline design\",\"state_of_practice\":\"The field has stopped treating retrieval as a solved commodity layer (\\\"chunk it, embed it, top-k it\\\") and now treats every stage between corpus and context as a measurable engineering decision. The dominant diagnosis is that pure embedding similarity is not a retrieval strategy: it misses about one in four relevant items on its own (we-cut-94), collapses entirely on near-identical entity names (semantic-blindness), and cannot express \\\"return everything\\\" or multi-hop traversal at all (when-all-context-matters, a-practitioners-guide-to-graphs). Practitioners are responding by pushing work in two directions \u2014 upstream into ingestion (layout-aware parsing, heading-based chunking, insert-time tokenization, precomputed hierarchies and graphs) and sideways into deterministic code (BM25 + reciprocal-rank fusion, weighted heuristic rerankers, set operations) \u2014 while shrinking what actually reaches the model. The economics are now explicit and quantified: ~90% of AI coding spend is input tokens, 73% of agent pipeline failures trace to retrieval and context stuffing, a 741-tool catalog costs 127k tokens per request, and a naive full-context validation pass burned 116M tokens where a structured one used 390k. What is genuinely unsettled is the substrate \u2014 several credible teams now ship retrieval systems with no vector database at all (markdown outlines, reference indexes, parallel KV caches), while others treat the embedding index as the boring, adequate default and put their effort into what gets ranked and why.\",\"consensus\":[{\"claim\":\"Pure vector/semantic similarity is insufficient as a retrieval strategy on its own and must be combined with keyword matching, structural traversal, or deterministic set logic.\",\"support_count\":6,\"supporting_talks\":[\"we-cut-94-of-ai-coding-tokens-with-a-local-code-index\",\"bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry\",\"semantic-blindness-500000-sensors-confused-an-llm\",\"when-all-context-matters-extended-cache-augmented-generation\",\"a-practitioners-guide-to-graphs\",\"video-has-no-memory-heres-how-we-built-one\"],\"evidence_quote\":\"By themselves, both searches miss about one in four results. Together, they miss about one in 10.\",\"evidence_talk\":\"we-cut-94-of-ai-coding-tokens-with-a-local-code-index\",\"evidence_timestamp_sec\":275},{\"claim\":\"The size of the model's working set, not the size of the corpus, is the thing to optimize \u2014 retrieval pipelines should aim for order-of-magnitude token reductions rather than better recall at any cost.\",\"support_count\":6,\"supporting_talks\":[\"the-100-tool-agent-is-a-trap\",\"we-cut-94-of-ai-coding-tokens-with-a-local-code-index\",\"semantic-blindness-500000-sensors-confused-an-llm\",\"user-signal-dies-at-the-retrieval-boundary\",\"when-all-context-matters-extended-cache-augmented-generation\",\"turn-10994-notes-into-memory\"],\"evidence_quote\":\"This is the core lesson from the benchmark. The catalog can grow, but the model's working set should stay small.\",\"evidence_talk\":\"the-100-tool-agent-is-a-trap\",\"evidence_timestamp_sec\":932},{\"claim\":\"Answer correctness is determined upstream by how source data is parsed, chunked, and modeled \u2014 far more than by model choice or retriever tuning.\",\"support_count\":6,\"supporting_talks\":[\"structuring-the-unstructured\",\"bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry\",\"we-cut-94-of-ai-coding-tokens-with-a-local-code-index\",\"your-moat-is-your-data-model\",\"a-practitioners-guide-to-graphs\",\"semantic-blindness-500000-sensors-confused-an-llm\"],\"evidence_quote\":\"that data and the way you process it is the key determining factor in whether your answer is going to be correct or incorrect for the user or customer at the end of the day\",\"evidence_talk\":\"structuring-the-unstructured\",\"evidence_timestamp_sec\":157},{\"claim\":\"Anything in the retrieval path that can be expressed as deterministic code \u2014 reranking formulas, set operations, dedup, counting, filters, guardrails \u2014 should be code rather than an LLM call, for cost, latency, testability, and hallucination reasons.\",\"support_count\":4,\"supporting_talks\":[\"we-cut-94-of-ai-coding-tokens-with-a-local-code-index\",\"semantic-blindness-500000-sensors-confused-an-llm\",\"bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry\",\"structuring-the-unstructured\"],\"evidence_quote\":\"It runs 0.4 milliseconds, no extra AI calls needed. The lesson we learned, simple formula beats the complex model most of the time.\",\"evidence_talk\":\"we-cut-94-of-ai-coding-tokens-with-a-local-code-index\",\"evidence_timestamp_sec\":333},{\"claim\":\"Expensive understanding work belongs at ingestion/index time, paid once, rather than at query time per request.\",\"support_count\":5,\"supporting_talks\":[\"video-has-no-memory-heres-how-we-built-one\",\"serving-2-million-models-without-melting-scaling-the-hugging-face-hub\",\"structuring-the-unstructured\",\"turn-10994-notes-into-memory\",\"we-cut-94-of-ai-coding-tokens-with-a-local-code-index\"],\"evidence_quote\":\"Number one is to ingest once and reason many times.\",\"evidence_talk\":\"video-has-no-memory-heres-how-we-built-one\",\"evidence_timestamp_sec\":533},{\"claim\":\"Retrieval must stay traceable back to a specific source unit (chunk, section, timestamp) so failures are debuggable and answers are citable; designs that break that chain are a regression.\",\"support_count\":3,\"supporting_talks\":[\"bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry\",\"video-has-no-memory-heres-how-we-built-one\",\"structuring-the-unstructured\"],\"evidence_quote\":\"Then you can go track it why this right chunk hasn't been retrieved. So, in this way you have more uh more uh clear path towards how you can debug it.\",\"evidence_talk\":\"bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry\",\"evidence_timestamp_sec\":988}],\"disagreements\":[{\"question\":\"Does a serious retrieval pipeline need a vector database and embedding index at all?\",\"position_a\":\"No \u2014 drop the vector DB. Use plain files with a reference index, the document's own markdown section outline, or parallel KV-cached context buckets as the retrieval substrate; embeddings add infrastructure that is opaque, hard to inspect by hand, and unnecessary for the actual access patterns.\",\"position_a_talks\":[\"turn-10994-notes-into-memory\",\"structuring-the-unstructured\",\"when-all-context-matters-extended-cache-augmented-generation\"],\"position_b\":\"Yes \u2014 the embedding index is the boring, adequate default. Postgres + pgvector with BM25 fusion, or an embedding call plus one vector search, is cheap enough that the choice of embedding model and vector DB is nearly immaterial; the leverage is in what you index and how you rank it.\",\"position_b_talks\":[\"bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry\",\"the-100-tool-agent-is-a-trap\",\"we-cut-94-of-ai-coding-tokens-with-a-local-code-index\",\"user-signal-dies-at-the-retrieval-boundary\"],\"why_it_matters\":\"This decides whether a team stands up and operates embedding infrastructure at all, and whether retrieval quality work happens in ranking code or in document structuring. The no-vector-DB camp is mostly describing corpora that are small, hierarchical, or personally curated; the pro camp is describing heterogeneous corpora where users query in words that never appear in the source.\"},{\"question\":\"Should retrieval run as a fixed, bounded pipeline or as an agentic loop that iterates until satisfied?\",\"position_a\":\"Fixed and bounded. A direct-RAG path (embed query \u2192 hybrid retrieve \u2192 answer) or a two-to-three-step plan-then-resolve pipeline keeps the execution path predictable, cost flat, latency under control, and the citation chain intact; three or four agent loops add 20-30 seconds and lose the user.\",\"position_a_talks\":[\"bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry\",\"semantic-blindness-500000-sensors-confused-an-llm\"],\"position_b\":\"Agentic iteration is the mechanism. Let the model search the document outline over multiple turns (418-section annual report), or let a supervisor progressively explore context buckets and ask follow-up questions, or run a multi-round deep-research loop \u2014 iteration is what makes a structure-only index work without embeddings.\",\"position_b_talks\":[\"structuring-the-unstructured\",\"when-all-context-matters-extended-cache-augmented-generation\",\"turn-10994-notes-into-memory\"],\"why_it_matters\":\"It sets the cost and latency profile of every query and determines whether the system is auditable for compliance. Notably the two camps split on corpus dynamics: the bounded camp serves high-volume user-facing queries, the iterative camp serves low-volume, high-value research and analysis queries.\"},{\"question\":\"Is building an explicit graph or hierarchy over the corpus worth its construction and maintenance cost?\",\"position_a\":\"Yes \u2014 structure is the enabling capability, not an optimization. Shortest-path traversal surfaces intermediate nodes vector search and symbol lookup cannot find (40% fewer tool calls on a .NET codebase); a property graph lets an agent discover and traverse schema at query time; growing context with tree depth instead of instance count held 100% correctness from 64 to 460,000 GPUs.\",\"position_a_talks\":[\"a-practitioners-guide-to-graphs\",\"your-moat-is-your-data-model\",\"video-has-no-memory-heres-how-we-built-one\",\"semantic-blindness-500000-sensors-confused-an-llm\"],\"position_b\":\"Usually not. Recomputing a knowledge graph every time the corpus is replaced is prohibitively slow, and for personal or document-shaped corpora the graph is infrastructure you should explicitly forget you need \u2014 a reference index or the document's existing outline gets you there.\",\"position_b_talks\":[\"when-all-context-matters-extended-cache-augmented-generation\",\"turn-10994-notes-into-memory\",\"structuring-the-unstructured\"],\"why_it_matters\":\"Graph construction is the single largest upfront investment in a retrieval pipeline and the one hardest to reverse. The dividing variable that emerged is corpus churn and intrinsic structure: graphs pay off on stable, densely-linked, hierarchical data and lose badly on frequently-replaced document collections \u2014 even the graph advocate opens by warning that graphs are often not the right tool.\"}],\"practical_guidance\":{\"do\":[\"Combine BM25 keyword search with semantic search and fuse the rankings \u2014 exact-match domains (SKUs, brand names, medications, near-identical equipment names) fail catastrophically on embeddings alone.\",\"Chunk on document structure (headings, question-answer pairs, sections) rather than fixed 512-character windows with overlap, so every chunk is clean, referenceable, and debuggable.\",\"Rerank with a cheap weighted heuristic \u2014 one team used 50% semantic, 30% keyword, 20% recency with an adaptive threshold, running in 0.4ms \u2014 instead of an LLM judge that adds 2-3 seconds per query.\",\"Tune top-k per domain rather than globally: retrieve more for product catalogs (unretrieved products are unsellable), fewer for medical answers where accuracy and liability dominate.\",\"Run your test set at K=3, 5, and 10 and pick the smallest K that hits your accuracy target; K=5 is a reasonable starting default for tool/schema retrieval.\",\"Route tools through the same retrieval pattern as documents once you pass ~50 tools \u2014 just-in-time schema injection cut tool context from ~127k to ~1,000 tokens while holding selection accuracy above 83%.\",\"Tokenize at insert time, not query time, and serve reads and listings from a denormalized collection separate from the source-of-truth store.\",\"Scale context with hierarchy depth rather than instance count, and use deterministic set operations for counting, dedup, and exact set logic over near-identical names.\",\"Use a layout-aware local document converter (CPU-only, open source) rather than a frontier VLM for bulk PDF conversion \u2014 roughly 50x cost savings and deterministic output that survives model deprecation.\",\"Measure savings by instrumenting real queries against a stated baseline, and be explicit about what the baseline is (94% was against worst-case full-file reads, not against a modern agentic tool).\",\"Give an extraction model a domain schema plus ontology instructions (naming and unit standardization), then add a separate embedding-based matching step \u2014 prompt-level standardization alone is not reliable.\",\"Block prompt injection and out-of-scope requests in code before the LLM call, rather than via system-prompt instructions.\"],\"avoid\":[\"Bulk-uploading unstructured documents into a hosted chatbot \u2014 you pay tokens before any question is asked, you cannot see how it chunked, and accuracy drops while hallucination rises.\",\"Assuming semantic similarity suffices for entity resolution: near-identical names produce indistinguishable embeddings, and sharding those names across parallel LLM calls yields phantom equipment and silent omissions.\",\"Sending hundreds of tool schemas or documents in a single prompt \u2014 accuracy fell from ~78% at 10 tools to 13.6% at 741 tools, driven by lost-in-the-middle attention, not by badly written tools.\",\"Filling the context window as full as it will go; answer quality degrades well before the hard token limit.\",\"Bucketing documents by domain and letting a supervisor pick buckets \u2014 with dense inter-document relationships it skips domains that look irrelevant at first glance; distribute documents in no particular order instead.\",\"Optimizing output length, max tokens, or temperature to control spend when ~90% of the cost is input, or instructing the model to 'send less context' after the context has already been transmitted and billed.\",\"Adding agent mode or extra tools to a RAG chatbot without checking what it costs you \u2014 agent-driven search breaks the citation chain back to source chunks.\",\"Free-form subject-predicate-object triple extraction with no schema; the resulting graph is not something you get very far with.\",\"Assuming a single-file-per-concept code index generalizes \u2014 recall dropped to nearly zero at 396 files when individual files carried many responsibilities.\",\"Treating eval results and observability traces as a dashboard artifact \u2014 with no path back into retrieval, the pipeline cannot learn from yesterday's failures.\"]},\"notable_outliers\":[{\"claim\":\"You can do RAG with no chunker, no embedding model, and no vector database \u2014 the index is just the markdown outline of the document, searched by the agent over multiple turns, and it worked on a 418-section annual report.\",\"talk\":\"structuring-the-unstructured\",\"timestamp_sec\":872},{\"claim\":\"Retrieval context should grow with tree depth, not instance count: describing all root-to-leaf paths is a small finite list, so a 64-GPU and a 460,000-GPU system cost about the same 9,000 tokens per query.\",\"talk\":\"semantic-blindness-500000-sensors-confused-an-llm\",\"timestamp_sec\":339},{\"claim\":\"Organizing documents into domain buckets actively hurts recall; distribute them in no particular order, balanced only so the fewest documents per bucket are needed.\",\"talk\":\"when-all-context-matters-extended-cache-augmented-generation\",\"timestamp_sec\":230},{\"claim\":\"A 0.5B-parameter model (~400MB, CPU-only) is sufficient for an FAQ assistant and hallucinates less than larger models, provided the retrieved context is well-vetted first.\",\"talk\":\"bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry\",\"timestamp_sec\":2550},{\"claim\":\"Retrieval ranking should be weighted by whether a memory historically helped or hurt task outcomes, not by similarity alone \u2014 66% to 76% on tau-bench policy following, 80% once memories are consolidated into skills.\",\"talk\":\"user-signal-dies-at-the-retrieval-boundary\",\"timestamp_sec\":383},{\"claim\":\"AI-native systems should start as pure software 3.0 (throw everything in the context window to find out what is worth building) and migrate toward deterministic 1.0 as they mature \u2014 the reverse of legacy software's drift.\",\"talk\":\"semantic-blindness-500000-sensors-confused-an-llm\",\"timestamp_sec\":892},{\"claim\":\"Enterprise retrieval correctness is defined socially, not factually: an answer is only correct if it matches how the question has historically been answered under existing reporting conventions.\",\"talk\":\"your-moat-is-your-data-model\",\"timestamp_sec\":392}],\"maturity\":\"consolidating\",\"maturity_rationale\":\"There is broad, independently-arrived-at agreement on the diagnosis (pure similarity is insufficient, context bloat is the dominant cost and failure driver, structure and determinism beat model upgrades) and on several checkable practices (hybrid retrieval, structural chunking, cheap heuristic reranking, ingest-once). What remains actively argued is the substrate and control flow \u2014 vector DB versus files versus KV caches, graph versus no graph, fixed pipeline versus agentic loop \u2014 with multiple credible production teams on each side and the dividing variables (corpus churn, query volume, intrinsic structure) only just being named.\"}",
+  "ttft_ms": 56721,
+  "ttft_stream_ms": 1431,
+  "time_to_request_ms": 34,
+  "type": "result",
+  "duration_ms": 127925,
+  "uuid": "806bd14c-3b63-441e-8b6e-f1b8c1287da1",
+  "passC": {
+    "concept": "retrieval pipeline design",
+    "state_of_practice": "The field has stopped treating retrieval as a solved commodity layer (\"chunk it, embed it, top-k it\") and now treats every stage between corpus and context as a measurable engineering decision. The dominant diagnosis is that pure embedding similarity is not a retrieval strategy: it misses about one in four relevant items on its own (we-cut-94), collapses entirely on near-identical entity names (semantic-blindness), and cannot express \"return everything\" or multi-hop traversal at all (when-all-context-matters, a-practitioners-guide-to-graphs). Practitioners are responding by pushing work in two directions \u2014 upstream into ingestion (layout-aware parsing, heading-based chunking, insert-time tokenization, precomputed hierarchies and graphs) and sideways into deterministic code (BM25 + reciprocal-rank fusion, weighted heuristic rerankers, set operations) \u2014 while shrinking what actually reaches the model. The economics are now explicit and quantified: ~90% of AI coding spend is input tokens, 73% of agent pipeline failures trace to retrieval and context stuffing, a 741-tool catalog costs 127k tokens per request, and a naive full-context validation pass burned 116M tokens where a structured one used 390k. What is genuinely unsettled is the substrate \u2014 several credible teams now ship retrieval systems with no vector database at all (markdown outlines, reference indexes, parallel KV caches), while others treat the embedding index as the boring, adequate default and put their effort into what gets ranked and why.",
+    "consensus": [
+      {
+        "claim": "Pure vector/semantic similarity is insufficient as a retrieval strategy on its own and must be combined with keyword matching, structural traversal, or deterministic set logic.",
+        "support_count": 6,
+        "supporting_talks": [
+          "we-cut-94-of-ai-coding-tokens-with-a-local-code-index",
+          "bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry",
+          "semantic-blindness-500000-sensors-confused-an-llm",
+          "when-all-context-matters-extended-cache-augmented-generation",
+          "a-practitioners-guide-to-graphs",
+          "video-has-no-memory-heres-how-we-built-one"
+        ],
+        "evidence_quote": "By themselves, both searches miss about one in four results. Together, they miss about one in 10.",
+        "evidence_talk": "we-cut-94-of-ai-coding-tokens-with-a-local-code-index",
+        "evidence_timestamp_sec": 275
+      },
+      {
+        "claim": "The size of the model's working set, not the size of the corpus, is the thing to optimize \u2014 retrieval pipelines should aim for order-of-magnitude token reductions rather than better recall at any cost.",
+        "support_count": 6,
+        "supporting_talks": [
+          "the-100-tool-agent-is-a-trap",
+          "we-cut-94-of-ai-coding-tokens-with-a-local-code-index",
+          "semantic-blindness-500000-sensors-confused-an-llm",
+          "user-signal-dies-at-the-retrieval-boundary",
+          "when-all-context-matters-extended-cache-augmented-generation",
+          "turn-10994-notes-into-memory"
+        ],
+        "evidence_quote": "This is the core lesson from the benchmark. The catalog can grow, but the model's working set should stay small.",
+        "evidence_talk": "the-100-tool-agent-is-a-trap",
+        "evidence_timestamp_sec": 932
+      },
+      {
+        "claim": "Answer correctness is determined upstream by how source data is parsed, chunked, and modeled \u2014 far more than by model choice or retriever tuning.",
+        "support_count": 6,
+        "supporting_talks": [
+          "structuring-the-unstructured",
+          "bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry",
+          "we-cut-94-of-ai-coding-tokens-with-a-local-code-index",
+          "your-moat-is-your-data-model",
+          "a-practitioners-guide-to-graphs",
+          "semantic-blindness-500000-sensors-confused-an-llm"
+        ],
+        "evidence_quote": "that data and the way you process it is the key determining factor in whether your answer is going to be correct or incorrect for the user or customer at the end of the day",
+        "evidence_talk": "structuring-the-unstructured",
+        "evidence_timestamp_sec": 157
+      },
+      {
+        "claim": "Anything in the retrieval path that can be expressed as deterministic code \u2014 reranking formulas, set operations, dedup, counting, filters, guardrails \u2014 should be code rather than an LLM call, for cost, latency, testability, and hallucination reasons.",
+        "support_count": 4,
+        "supporting_talks": [
+          "we-cut-94-of-ai-coding-tokens-with-a-local-code-index",
+          "semantic-blindness-500000-sensors-confused-an-llm",
+          "bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry",
+          "structuring-the-unstructured"
+        ],
+        "evidence_quote": "It runs 0.4 milliseconds, no extra AI calls needed. The lesson we learned, simple formula beats the complex model most of the time.",
+        "evidence_talk": "we-cut-94-of-ai-coding-tokens-with-a-local-code-index",
+        "evidence_timestamp_sec": 333
+      },
+      {
+        "claim": "Expensive understanding work belongs at ingestion/index time, paid once, rather than at query time per request.",
+        "support_count": 5,
+        "supporting_talks": [
+          "video-has-no-memory-heres-how-we-built-one",
+          "serving-2-million-models-without-melting-scaling-the-hugging-face-hub",
+          "structuring-the-unstructured",
+          "turn-10994-notes-into-memory",
+          "we-cut-94-of-ai-coding-tokens-with-a-local-code-index"
+        ],
+        "evidence_quote": "Number one is to ingest once and reason many times.",
+        "evidence_talk": "video-has-no-memory-heres-how-we-built-one",
+        "evidence_timestamp_sec": 533
+      },
+      {
+        "claim": "Retrieval must stay traceable back to a specific source unit (chunk, section, timestamp) so failures are debuggable and answers are citable; designs that break that chain are a regression.",
+        "support_count": 3,
+        "supporting_talks": [
+          "bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry",
+          "video-has-no-memory-heres-how-we-built-one",
+          "structuring-the-unstructured"
+        ],
+        "evidence_quote": "Then you can go track it why this right chunk hasn't been retrieved. So, in this way you have more uh more uh clear path towards how you can debug it.",
+        "evidence_talk": "bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry",
+        "evidence_timestamp_sec": 988
+      }
+    ],
+    "disagreements": [
+      {
+        "question": "Does a serious retrieval pipeline need a vector database and embedding index at all?",
+        "position_a": "No \u2014 drop the vector DB. Use plain files with a reference index, the document's own markdown section outline, or parallel KV-cached context buckets as the retrieval substrate; embeddings add infrastructure that is opaque, hard to inspect by hand, and unnecessary for the actual access patterns.",
+        "position_a_talks": [
+          "turn-10994-notes-into-memory",
+          "structuring-the-unstructured",
+          "when-all-context-matters-extended-cache-augmented-generation"
+        ],
+        "position_b": "Yes \u2014 the embedding index is the boring, adequate default. Postgres + pgvector with BM25 fusion, or an embedding call plus one vector search, is cheap enough that the choice of embedding model and vector DB is nearly immaterial; the leverage is in what you index and how you rank it.",
+        "position_b_talks": [
+          "bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry",
+          "the-100-tool-agent-is-a-trap",
+          "we-cut-94-of-ai-coding-tokens-with-a-local-code-index",
+          "user-signal-dies-at-the-retrieval-boundary"
+        ],
+        "why_it_matters": "This decides whether a team stands up and operates embedding infrastructure at all, and whether retrieval quality work happens in ranking code or in document structuring. The no-vector-DB camp is mostly describing corpora that are small, hierarchical, or personally curated; the pro camp is describing heterogeneous corpora where users query in words that never appear in the source."
+      },
+      {
+        "question": "Should retrieval run as a fixed, bounded pipeline or as an agentic loop that iterates until satisfied?",
+        "position_a": "Fixed and bounded. A direct-RAG path (embed query \u2192 hybrid retrieve \u2192 answer) or a two-to-three-step plan-then-resolve pipeline keeps the execution path predictable, cost flat, latency under control, and the citation chain intact; three or four agent loops add 20-30 seconds and lose the user.",
+        "position_a_talks": [
+          "bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry",
+          "semantic-blindness-500000-sensors-confused-an-llm"
+        ],
+        "position_b": "Agentic iteration is the mechanism. Let the model search the document outline over multiple turns (418-section annual report), or let a supervisor progressively explore context buckets and ask follow-up questions, or run a multi-round deep-research loop \u2014 iteration is what makes a structure-only index work without embeddings.",
+        "position_b_talks": [
+          "structuring-the-unstructured",
+          "when-all-context-matters-extended-cache-augmented-generation",
+          "turn-10994-notes-into-memory"
+        ],
+        "why_it_matters": "It sets the cost and latency profile of every query and determines whether the system is auditable for compliance. Notably the two camps split on corpus dynamics: the bounded camp serves high-volume user-facing queries, the iterative camp serves low-volume, high-value research and analysis queries."
+      },
+      {
+        "question": "Is building an explicit graph or hierarchy over the corpus worth its construction and maintenance cost?",
+        "position_a": "Yes \u2014 structure is the enabling capability, not an optimization. Shortest-path traversal surfaces intermediate nodes vector search and symbol lookup cannot find (40% fewer tool calls on a .NET codebase); a property graph lets an agent discover and traverse schema at query time; growing context with tree depth instead of instance count held 100% correctness from 64 to 460,000 GPUs.",
+        "position_a_talks": [
+          "a-practitioners-guide-to-graphs",
+          "your-moat-is-your-data-model",
+          "video-has-no-memory-heres-how-we-built-one",
+          "semantic-blindness-500000-sensors-confused-an-llm"
+        ],
+        "position_b": "Usually not. Recomputing a knowledge graph every time the corpus is replaced is prohibitively slow, and for personal or document-shaped corpora the graph is infrastructure you should explicitly forget you need \u2014 a reference index or the document's existing outline gets you there.",
+        "position_b_talks": [
+          "when-all-context-matters-extended-cache-augmented-generation",
+          "turn-10994-notes-into-memory",
+          "structuring-the-unstructured"
+        ],
+        "why_it_matters": "Graph construction is the single largest upfront investment in a retrieval pipeline and the one hardest to reverse. The dividing variable that emerged is corpus churn and intrinsic structure: graphs pay off on stable, densely-linked, hierarchical data and lose badly on frequently-replaced document collections \u2014 even the graph advocate opens by warning that graphs are often not the right tool."
+      }
+    ],
+    "practical_guidance": {
+      "do": [
+        "Combine BM25 keyword search with semantic search and fuse the rankings \u2014 exact-match domains (SKUs, brand names, medications, near-identical equipment names) fail catastrophically on embeddings alone.",
+        "Chunk on document structure (headings, question-answer pairs, sections) rather than fixed 512-character windows with overlap, so every chunk is clean, referenceable, and debuggable.",
+        "Rerank with a cheap weighted heuristic \u2014 one team used 50% semantic, 30% keyword, 20% recency with an adaptive threshold, running in 0.4ms \u2014 instead of an LLM judge that adds 2-3 seconds per query.",
+        "Tune top-k per domain rather than globally: retrieve more for product catalogs (unretrieved products are unsellable), fewer for medical answers where accuracy and liability dominate.",
+        "Run your test set at K=3, 5, and 10 and pick the smallest K that hits your accuracy target; K=5 is a reasonable starting default for tool/schema retrieval.",
+        "Route tools through the same retrieval pattern as documents once you pass ~50 tools \u2014 just-in-time schema injection cut tool context from ~127k to ~1,000 tokens while holding selection accuracy above 83%.",
+        "Tokenize at insert time, not query time, and serve reads and listings from a denormalized collection separate from the source-of-truth store.",
+        "Scale context with hierarchy depth rather than instance count, and use deterministic set operations for counting, dedup, and exact set logic over near-identical names.",
+        "Use a layout-aware local document converter (CPU-only, open source) rather than a frontier VLM for bulk PDF conversion \u2014 roughly 50x cost savings and deterministic output that survives model deprecation.",
+        "Measure savings by instrumenting real queries against a stated baseline, and be explicit about what the baseline is (94% was against worst-case full-file reads, not against a modern agentic tool).",
+        "Give an extraction model a domain schema plus ontology instructions (naming and unit standardization), then add a separate embedding-based matching step \u2014 prompt-level standardization alone is not reliable.",
+        "Block prompt injection and out-of-scope requests in code before the LLM call, rather than via system-prompt instructions."
+      ],
+      "avoid": [
+        "Bulk-uploading unstructured documents into a hosted chatbot \u2014 you pay tokens before any question is asked, you cannot see how it chunked, and accuracy drops while hallucination rises.",
+        "Assuming semantic similarity suffices for entity resolution: near-identical names produce indistinguishable embeddings, and sharding those names across parallel LLM calls yields phantom equipment and silent omissions.",
+        "Sending hundreds of tool schemas or documents in a single prompt \u2014 accuracy fell from ~78% at 10 tools to 13.6% at 741 tools, driven by lost-in-the-middle attention, not by badly written tools.",
+        "Filling the context window as full as it will go; answer quality degrades well before the hard token limit.",
+        "Bucketing documents by domain and letting a supervisor pick buckets \u2014 with dense inter-document relationships it skips domains that look irrelevant at first glance; distribute documents in no particular order instead.",
+        "Optimizing output length, max tokens, or temperature to control spend when ~90% of the cost is input, or instructing the model to 'send less context' after the context has already been transmitted and billed.",
+        "Adding agent mode or extra tools to a RAG chatbot without checking what it costs you \u2014 agent-driven search breaks the citation chain back to source chunks.",
+        "Free-form subject-predicate-object triple extraction with no schema; the resulting graph is not something you get very far with.",
+        "Assuming a single-file-per-concept code index generalizes \u2014 recall dropped to nearly zero at 396 files when individual files carried many responsibilities.",
+        "Treating eval results and observability traces as a dashboard artifact \u2014 with no path back into retrieval, the pipeline cannot learn from yesterday's failures."
+      ]
+    },
+    "notable_outliers": [
+      {
+        "claim": "You can do RAG with no chunker, no embedding model, and no vector database \u2014 the index is just the markdown outline of the document, searched by the agent over multiple turns, and it worked on a 418-section annual report.",
+        "talk": "structuring-the-unstructured",
+        "timestamp_sec": 872
+      },
+      {
+        "claim": "Retrieval context should grow with tree depth, not instance count: describing all root-to-leaf paths is a small finite list, so a 64-GPU and a 460,000-GPU system cost about the same 9,000 tokens per query.",
+        "talk": "semantic-blindness-500000-sensors-confused-an-llm",
+        "timestamp_sec": 339
+      },
+      {
+        "claim": "Organizing documents into domain buckets actively hurts recall; distribute them in no particular order, balanced only so the fewest documents per bucket are needed.",
+        "talk": "when-all-context-matters-extended-cache-augmented-generation",
+        "timestamp_sec": 230
+      },
+      {
+        "claim": "A 0.5B-parameter model (~400MB, CPU-only) is sufficient for an FAQ assistant and hallucinates less than larger models, provided the retrieved context is well-vetted first.",
+        "talk": "bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry",
+        "timestamp_sec": 2550
+      },
+      {
+        "claim": "Retrieval ranking should be weighted by whether a memory historically helped or hurt task outcomes, not by similarity alone \u2014 66% to 76% on tau-bench policy following, 80% once memories are consolidated into skills.",
+        "talk": "user-signal-dies-at-the-retrieval-boundary",
+        "timestamp_sec": 383
+      },
+      {
+        "claim": "AI-native systems should start as pure software 3.0 (throw everything in the context window to find out what is worth building) and migrate toward deterministic 1.0 as they mature \u2014 the reverse of legacy software's drift.",
+        "talk": "semantic-blindness-500000-sensors-confused-an-llm",
+        "timestamp_sec": 892
+      },
+      {
+        "claim": "Enterprise retrieval correctness is defined socially, not factually: an answer is only correct if it matches how the question has historically been answered under existing reporting conventions.",
+        "talk": "your-moat-is-your-data-model",
+        "timestamp_sec": 392
+      }
+    ],
+    "maturity": "consolidating",
+    "maturity_rationale": "There is broad, independently-arrived-at agreement on the diagnosis (pure similarity is insufficient, context bloat is the dominant cost and failure driver, structure and determinism beat model upgrades) and on several checkable practices (hybrid retrieval, structural chunking, cheap heuristic reranking, ingest-once). What remains actively argued is the substrate and control flow \u2014 vector DB versus files versus KV caches, graph versus no graph, fixed pipeline versus agentic loop \u2014 with multiple credible production teams on each side and the dividing variables (corpus churn, query volume, intrinsic structure) only just being named."
+  },
+  "_meta": {
+    "concept": "retrieval pipeline design",
+    "slug": "retrieval-pipeline-design",
+    "talk_count": 12,
+    "missing_talks": [],
+    "wall_sec": 129.1,
+    "run_at": "2026-08-13T19:15:56Z"
+  }
+}

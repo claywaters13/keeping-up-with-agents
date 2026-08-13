@@ -1,0 +1,244 @@
+{
+  "is_error": false,
+  "duration_api_ms": 136075,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "586feeff-5262-4c37-9c0e-42b648631976",
+  "total_cost_usd": 0.573653,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 27866,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 10870,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 27866,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 10870,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 27866,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 27866
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 17994,
+      "outputTokens": 17,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.018078999999999998,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 10870,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 27866,
+      "webSearchRequests": 0,
+      "costUSD": 0.555574,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\"concept\": \"vision-language models\", \"state_of_practice\": \"Vision-language capability is no longer the interesting part \u2014 cost, latency, and evaluation are. Practitioners deploying visual understanding at production volume (Uber Eats image editing, Character.ai video generation, Yutori browser agents, Red Hat's Docling) have converged on routing away from frontier VLMs toward small, distilled, or task-specialized models: a distilled VLM scores a 15-second video in ~3 seconds, Docling claims ~50x cost savings versus naive VLM/OCR document pipelines, and a smaller computer-use model runs a 20-30 step browser task for ~$0.80 against ~$230 for a frontier model at statistically indistinguishable accuracy. The second consensus is that the pixel is the ground truth and text extraction destroys the signal \u2014 rendered web content is not in the HTML, PDF text extractors linearize tables and drop figures, and a video reduced to sampled frames plus a transcript loses the spatiotemporal continuity that defines the event. The third, hardest-won lesson is that VLM judges are unreliable by default: they score surface gloss rather than the axes you asked for (9.2 on camera work for a static camera; \\\"physics look great\\\" on flying people), and both Uber and Character.ai report agents reward-hacking multimodal quality gates. The live architectural fight is whether visual understanding should be a general model consuming pixels at query time, or expensive structure extracted once at ingest by specialized layout/parsing models and queried as text.\", \"consensus\": [{\"claim\": \"At production volume, cost and latency \u2014 not accuracy \u2014 are the binding constraint on visual workloads, so smaller distilled or task-specialized models beat frontier VLMs even when the frontier model scores better.\", \"support_count\": 5, \"supporting_talks\": [\"evaling-video-slop\", \"structuring-the-unstructured\", \"computer-use-models-will-agentify-the-web-not-apis\", \"building-closed-loop-evals-for-a-multimodal-agent-at-scale\", \"how-web-data-infrastructure-powers-the-next-generation-of-ai\"], \"evidence_quote\": \"if you have something like on these data sets something like 20 30 steps of interaction, you're looking at 80 cents per task versus $230. And that makes a big difference.\", \"evidence_talk\": \"computer-use-models-will-agentify-the-web-not-apis\", \"evidence_timestamp_sec\": 1087}, {\"claim\": \"Rendered pixels are the source of truth; flattening visual media into extracted text (raw HTML, PDF text layers, frame stacks plus transcripts) destroys the information the task actually depends on.\", \"support_count\": 4, \"supporting_talks\": [\"computer-use-models-will-agentify-the-web-not-apis\", \"video-has-no-memory-heres-how-we-built-one\", \"structuring-the-unstructured\", \"evaling-video-slop\"], \"evidence_quote\": \"Fundamentally the web was built for human eyes. Pixels are the source of the truth because the consumers of the websites are humans.\", \"evidence_talk\": \"computer-use-models-will-agentify-the-web-not-apis\", \"evidence_timestamp_sec\": 712}, {\"claim\": \"VLM judges of visual quality are unreliable out of the box \u2014 they score overall 'vibe' instead of the requested axes and get reward-hacked \u2014 so they must be trained on axis-specific data, anchored to human labels, and validated rather than trusted on their terminal verdict.\", \"support_count\": 4, \"supporting_talks\": [\"evaling-video-slop\", \"building-closed-loop-evals-for-a-multimodal-agent-at-scale\", \"agents-at-scale-inside-minimaxs-model-and-the-infrastructure-behind-it\", \"video-has-no-memory-heres-how-we-built-one\"], \"evidence_quote\": \"the frame you see here is from from a video that the model scored 9.2 on the camera work, and the camera didn't move.\", \"evidence_talk\": \"evaling-video-slop\", \"evidence_timestamp_sec\": 632}, {\"claim\": \"Visual reasoning has to be native to the model or the system rather than bolted onto a text-first pipeline, because text-sequence representations cannot carry motion, causality, or spatial structure.\", \"support_count\": 3, \"supporting_talks\": [\"agents-at-scale-inside-minimaxs-model-and-the-infrastructure-behind-it\", \"video-has-no-memory-heres-how-we-built-one\", \"software-engineering-is-not-about-writing-code\"], \"evidence_quote\": \"if you look at the attention map, it actually the visual of the the text tokens would attend to the visual tokens\", \"evidence_talk\": \"agents-at-scale-inside-minimaxs-model-and-the-infrastructure-behind-it\", \"evidence_timestamp_sec\": 644}], \"disagreements\": [{\"question\": \"Should visual understanding be performed by a general model consuming pixels at query time, or should structure be extracted once by specialized non-VLM pipelines and queried as text?\", \"position_a\": \"Point a general vision model at the rendered artifact. Per-site scaffolds and deterministic rules are the losing move \u2014 they don't generalize to the long tail of websites or to a globally diverse image marketplace \u2014 so take a screenshot in, and let agentic workflows with validation tools handle the variety that fixed pipelines can't.\", \"position_a_talks\": [\"computer-use-models-will-agentify-the-web-not-apis\", \"building-closed-loop-evals-for-a-multimodal-agent-at-scale\", \"evaling-video-slop\"], \"position_b\": \"Running a frontier VLM per request is too expensive, too slow, and too non-deterministic to be a production dependency. Extract structure once with cheap specialized models (CPU-only layout models, narrow parsers, ingest-time video primitives), store it, and reason over the stored structure many times \u2014 browsers and VLMs are fundamentally incompatible with sub-second, high-throughput serving.\", \"position_b_talks\": [\"structuring-the-unstructured\", \"how-web-data-infrastructure-powers-the-next-generation-of-ai\", \"video-has-no-memory-heres-how-we-built-one\"], \"why_it_matters\": \"It decides whether your unit cost scales with queries or with corpus size, and whether a model-version bump silently changes your extraction output. Choosing pixels-at-query-time buys long-tail generality at 1-2 orders of magnitude more compute per request; choosing ingest-time extraction buys sub-second latency but re-ingestion whenever the required primitives change.\"}, {\"question\": \"When a multimodal system produces a bad visual output, is the fix upstream in the model or downstream in the harness?\", \"position_a\": \"The harness is the lever. A bare model is stateless and unconstrained, so wrap it in memory, retrieval, output contracts, layered gates, and infrastructure \u2014 the next generation of capability comes from what surrounds the model, not from a better model.\", \"position_a_talks\": [\"how-web-data-infrastructure-powers-the-next-generation-of-ai\", \"video-has-no-memory-heres-how-we-built-one\", \"structuring-the-unstructured\"], \"position_b\": \"Some failure classes are model-level and cannot be patched downstream: object coherence and physics implausibility in image editing should be reported back to the frontier model teams, joint text-image training must happen from step zero to get cross-modal attention, and the real ceiling comes from better training regimes rather than scaffolding.\", \"position_b_talks\": [\"building-closed-loop-evals-for-a-multimodal-agent-at-scale\", \"agents-at-scale-inside-minimaxs-model-and-the-infrastructure-behind-it\", \"software-engineering-is-not-about-writing-code\"], \"why_it_matters\": \"It determines where an applied team spends its engineering budget \u2014 building redundant Swiss-cheese QA gates and retrieval structure, versus training or fine-tuning models and pushing defects upstream to a vendor whose fix timeline you don't control.\"}], \"practical_guidance\": {\"do\": [\"Distill a committee of frontier visual judges into one small model once you're scoring thousands to tens of thousands of items per day; below that, the expensive committee is fine \u2014 it's a unit-economics decision.\", \"Train visual evaluators on A-vs-B pairs rather than absolute 1-10 scores, because humans agree on comparisons but not on absolute scales.\", \"Score the specific axes you care about (narrative, pacing, physics, character consistency) and manufacture bad examples deliberately \u2014 those axes will not emerge on their own.\", \"Put evaluation inside the generation loop, catching defects at starting frames and individual clips rather than after assembly.\", \"Use recall as the guardrail metric on any visual routing step, so no bad image slips through.\", \"Reject rather than publish when a multimodal judge is not confident about a checkable property such as item count.\", \"Ground every claim a video system makes to a specific timestamp in the source.\", \"Pay expensive visual understanding once at ingestion and store primitives (moments, entities, appearances), not pre-computed answers.\", \"Call the existing API when a structured aggregator-backed one exists (flight search); reserve pixel-driven computer use for the long tail.\", \"Let computer-use agents write and execute code when useful, verifying the outcome through pixels rather than restricting them to human-like clicking.\", \"Log every stage of a multimodal orchestration in one flat, human-readable JSON structure before attempting any optimization or self-learning loop.\", \"Slice production visual evals by geography, device type, and content type so tuning can target specific underperforming segments.\"], \"avoid\": [\"Frame-level metrics like CLIP score and LPIPS as your video quality signal \u2014 they cannot judge whether the intended story was told.\", \"Frontier LLM judges as the primary video evaluator: too slow, and the same model responds very differently to differently-phrased prompts.\", \"Building quality-training pairs as human-footage-good / AI-footage-bad \u2014 you will train an AI detector instead of a quality detector unless encoding and annotation are matched on both sides.\", \"Naive PDF parsers for AI inputs: they truncate text, linearize tables, drop image content, and leak page headers into the extraction.\", \"Depending on frontier-model structured output for high-volume document conversion \u2014 a 5.1-to-5.2 version deprecation breaks consistency, and non-determinism produces hallucinated fields at scale.\", \"Writing per-site scaffolds around individual websites; it's the bitter lesson for web agents, and it never reaches the long tail.\", \"Reading raw HTML to get page content \u2014 the information on screen is computed and rendered, not written anywhere as text.\", \"Enhancing an already-high-quality image: you pay compute for zero quality lift and risk degrading it.\", \"Assuming a statically tuned offline visual model will hold in production; every component needs a retuning mechanism against online drift.\", \"Modeling video as a stack of frames plus a transcript, which throws away the continuity that makes video video.\"]}, \"notable_outliers\": [{\"claim\": \"Training on image data from step zero normally collapses the model \u2014 MiniMax claims to have solved that, and the resulting attention maps show text tokens attending to visual tokens.\", \"talk\": \"agents-at-scale-inside-minimaxs-model-and-the-infrastructure-behind-it\", \"timestamp_sec\": 644}, {\"claim\": \"Mind2Web is saturated at 97% human eval (8 bad trajectories out of 300) and should simply be retired in favor of something harder.\", \"talk\": \"computer-use-models-will-agentify-the-web-not-apis\", \"timestamp_sec\": 991}, {\"claim\": \"You can do RAG over documents with no chunker, no embedding model, and no vector database \u2014 the markdown section outline of the parsed document becomes the entire index, scaling to a 418-section annual report via multi-turn agentic iteration.\", \"talk\": \"structuring-the-unstructured\", \"timestamp_sec\": 872}, {\"claim\": \"Audio-visual sync can be evaluated without any semantic sound recognition, by correlating prompt-derived key frames against amplitude spikes at matching timestamps \u2014 but lip sync remains unsolved, especially for stylized characters whose mouth animation has no real correlation to speech.\", \"talk\": \"evaling-video-slop\", \"timestamp_sec\": 1002}, {\"claim\": \"Treating code purely as a chain of emitted tokens has limits; spatial and dynamic multimodal representations will become a must-have for software reasoning.\", \"talk\": \"software-engineering-is-not-about-writing-code\", \"timestamp_sec\": 949}, {\"claim\": \"Once computer-use agents cost under a penny, run in under 100ms, and return structured output, the distinction between a vision agent and an API stops mattering.\", \"talk\": \"computer-use-models-will-agentify-the-web-not-apis\", \"timestamp_sec\": 1220}, {\"claim\": \"There is no universal video index \u2014 the same footage requires different primitives for sports, brand safety, and compliance review, so the memory layer must be developer-configurable by intent.\", \"talk\": \"video-has-no-memory-heres-how-we-built-one\", \"timestamp_sec\": 607}], \"maturity\": \"consolidating\", \"maturity_rationale\": \"Practitioners across independent domains \u2014 browser agents, food-delivery imagery, generated video, document parsing \u2014 have independently landed on the same operating rules (small distilled models over frontier VLMs, pixels as ground truth, axis-specific judges anchored to human labels), which is real convergence rather than coincidence. What remains genuinely argued is architecture: whether to run vision at query time or precompute structure at ingest, and whether residual visual failures belong to the model or the harness.\"}",
+  "ttft_ms": 84426,
+  "ttft_stream_ms": 1018,
+  "time_to_request_ms": 35,
+  "type": "result",
+  "duration_ms": 135794,
+  "uuid": "c43560cd-a9a3-4c6e-8860-cfdbb85fb603",
+  "passC": {
+    "concept": "vision-language models",
+    "state_of_practice": "Vision-language capability is no longer the interesting part \u2014 cost, latency, and evaluation are. Practitioners deploying visual understanding at production volume (Uber Eats image editing, Character.ai video generation, Yutori browser agents, Red Hat's Docling) have converged on routing away from frontier VLMs toward small, distilled, or task-specialized models: a distilled VLM scores a 15-second video in ~3 seconds, Docling claims ~50x cost savings versus naive VLM/OCR document pipelines, and a smaller computer-use model runs a 20-30 step browser task for ~$0.80 against ~$230 for a frontier model at statistically indistinguishable accuracy. The second consensus is that the pixel is the ground truth and text extraction destroys the signal \u2014 rendered web content is not in the HTML, PDF text extractors linearize tables and drop figures, and a video reduced to sampled frames plus a transcript loses the spatiotemporal continuity that defines the event. The third, hardest-won lesson is that VLM judges are unreliable by default: they score surface gloss rather than the axes you asked for (9.2 on camera work for a static camera; \"physics look great\" on flying people), and both Uber and Character.ai report agents reward-hacking multimodal quality gates. The live architectural fight is whether visual understanding should be a general model consuming pixels at query time, or expensive structure extracted once at ingest by specialized layout/parsing models and queried as text.",
+    "consensus": [
+      {
+        "claim": "At production volume, cost and latency \u2014 not accuracy \u2014 are the binding constraint on visual workloads, so smaller distilled or task-specialized models beat frontier VLMs even when the frontier model scores better.",
+        "support_count": 5,
+        "supporting_talks": [
+          "evaling-video-slop",
+          "structuring-the-unstructured",
+          "computer-use-models-will-agentify-the-web-not-apis",
+          "building-closed-loop-evals-for-a-multimodal-agent-at-scale",
+          "how-web-data-infrastructure-powers-the-next-generation-of-ai"
+        ],
+        "evidence_quote": "if you have something like on these data sets something like 20 30 steps of interaction, you're looking at 80 cents per task versus $230. And that makes a big difference.",
+        "evidence_talk": "computer-use-models-will-agentify-the-web-not-apis",
+        "evidence_timestamp_sec": 1087
+      },
+      {
+        "claim": "Rendered pixels are the source of truth; flattening visual media into extracted text (raw HTML, PDF text layers, frame stacks plus transcripts) destroys the information the task actually depends on.",
+        "support_count": 4,
+        "supporting_talks": [
+          "computer-use-models-will-agentify-the-web-not-apis",
+          "video-has-no-memory-heres-how-we-built-one",
+          "structuring-the-unstructured",
+          "evaling-video-slop"
+        ],
+        "evidence_quote": "Fundamentally the web was built for human eyes. Pixels are the source of the truth because the consumers of the websites are humans.",
+        "evidence_talk": "computer-use-models-will-agentify-the-web-not-apis",
+        "evidence_timestamp_sec": 712
+      },
+      {
+        "claim": "VLM judges of visual quality are unreliable out of the box \u2014 they score overall 'vibe' instead of the requested axes and get reward-hacked \u2014 so they must be trained on axis-specific data, anchored to human labels, and validated rather than trusted on their terminal verdict.",
+        "support_count": 4,
+        "supporting_talks": [
+          "evaling-video-slop",
+          "building-closed-loop-evals-for-a-multimodal-agent-at-scale",
+          "agents-at-scale-inside-minimaxs-model-and-the-infrastructure-behind-it",
+          "video-has-no-memory-heres-how-we-built-one"
+        ],
+        "evidence_quote": "the frame you see here is from from a video that the model scored 9.2 on the camera work, and the camera didn't move.",
+        "evidence_talk": "evaling-video-slop",
+        "evidence_timestamp_sec": 632
+      },
+      {
+        "claim": "Visual reasoning has to be native to the model or the system rather than bolted onto a text-first pipeline, because text-sequence representations cannot carry motion, causality, or spatial structure.",
+        "support_count": 3,
+        "supporting_talks": [
+          "agents-at-scale-inside-minimaxs-model-and-the-infrastructure-behind-it",
+          "video-has-no-memory-heres-how-we-built-one",
+          "software-engineering-is-not-about-writing-code"
+        ],
+        "evidence_quote": "if you look at the attention map, it actually the visual of the the text tokens would attend to the visual tokens",
+        "evidence_talk": "agents-at-scale-inside-minimaxs-model-and-the-infrastructure-behind-it",
+        "evidence_timestamp_sec": 644
+      }
+    ],
+    "disagreements": [
+      {
+        "question": "Should visual understanding be performed by a general model consuming pixels at query time, or should structure be extracted once by specialized non-VLM pipelines and queried as text?",
+        "position_a": "Point a general vision model at the rendered artifact. Per-site scaffolds and deterministic rules are the losing move \u2014 they don't generalize to the long tail of websites or to a globally diverse image marketplace \u2014 so take a screenshot in, and let agentic workflows with validation tools handle the variety that fixed pipelines can't.",
+        "position_a_talks": [
+          "computer-use-models-will-agentify-the-web-not-apis",
+          "building-closed-loop-evals-for-a-multimodal-agent-at-scale",
+          "evaling-video-slop"
+        ],
+        "position_b": "Running a frontier VLM per request is too expensive, too slow, and too non-deterministic to be a production dependency. Extract structure once with cheap specialized models (CPU-only layout models, narrow parsers, ingest-time video primitives), store it, and reason over the stored structure many times \u2014 browsers and VLMs are fundamentally incompatible with sub-second, high-throughput serving.",
+        "position_b_talks": [
+          "structuring-the-unstructured",
+          "how-web-data-infrastructure-powers-the-next-generation-of-ai",
+          "video-has-no-memory-heres-how-we-built-one"
+        ],
+        "why_it_matters": "It decides whether your unit cost scales with queries or with corpus size, and whether a model-version bump silently changes your extraction output. Choosing pixels-at-query-time buys long-tail generality at 1-2 orders of magnitude more compute per request; choosing ingest-time extraction buys sub-second latency but re-ingestion whenever the required primitives change."
+      },
+      {
+        "question": "When a multimodal system produces a bad visual output, is the fix upstream in the model or downstream in the harness?",
+        "position_a": "The harness is the lever. A bare model is stateless and unconstrained, so wrap it in memory, retrieval, output contracts, layered gates, and infrastructure \u2014 the next generation of capability comes from what surrounds the model, not from a better model.",
+        "position_a_talks": [
+          "how-web-data-infrastructure-powers-the-next-generation-of-ai",
+          "video-has-no-memory-heres-how-we-built-one",
+          "structuring-the-unstructured"
+        ],
+        "position_b": "Some failure classes are model-level and cannot be patched downstream: object coherence and physics implausibility in image editing should be reported back to the frontier model teams, joint text-image training must happen from step zero to get cross-modal attention, and the real ceiling comes from better training regimes rather than scaffolding.",
+        "position_b_talks": [
+          "building-closed-loop-evals-for-a-multimodal-agent-at-scale",
+          "agents-at-scale-inside-minimaxs-model-and-the-infrastructure-behind-it",
+          "software-engineering-is-not-about-writing-code"
+        ],
+        "why_it_matters": "It determines where an applied team spends its engineering budget \u2014 building redundant Swiss-cheese QA gates and retrieval structure, versus training or fine-tuning models and pushing defects upstream to a vendor whose fix timeline you don't control."
+      }
+    ],
+    "practical_guidance": {
+      "do": [
+        "Distill a committee of frontier visual judges into one small model once you're scoring thousands to tens of thousands of items per day; below that, the expensive committee is fine \u2014 it's a unit-economics decision.",
+        "Train visual evaluators on A-vs-B pairs rather than absolute 1-10 scores, because humans agree on comparisons but not on absolute scales.",
+        "Score the specific axes you care about (narrative, pacing, physics, character consistency) and manufacture bad examples deliberately \u2014 those axes will not emerge on their own.",
+        "Put evaluation inside the generation loop, catching defects at starting frames and individual clips rather than after assembly.",
+        "Use recall as the guardrail metric on any visual routing step, so no bad image slips through.",
+        "Reject rather than publish when a multimodal judge is not confident about a checkable property such as item count.",
+        "Ground every claim a video system makes to a specific timestamp in the source.",
+        "Pay expensive visual understanding once at ingestion and store primitives (moments, entities, appearances), not pre-computed answers.",
+        "Call the existing API when a structured aggregator-backed one exists (flight search); reserve pixel-driven computer use for the long tail.",
+        "Let computer-use agents write and execute code when useful, verifying the outcome through pixels rather than restricting them to human-like clicking.",
+        "Log every stage of a multimodal orchestration in one flat, human-readable JSON structure before attempting any optimization or self-learning loop.",
+        "Slice production visual evals by geography, device type, and content type so tuning can target specific underperforming segments."
+      ],
+      "avoid": [
+        "Frame-level metrics like CLIP score and LPIPS as your video quality signal \u2014 they cannot judge whether the intended story was told.",
+        "Frontier LLM judges as the primary video evaluator: too slow, and the same model responds very differently to differently-phrased prompts.",
+        "Building quality-training pairs as human-footage-good / AI-footage-bad \u2014 you will train an AI detector instead of a quality detector unless encoding and annotation are matched on both sides.",
+        "Naive PDF parsers for AI inputs: they truncate text, linearize tables, drop image content, and leak page headers into the extraction.",
+        "Depending on frontier-model structured output for high-volume document conversion \u2014 a 5.1-to-5.2 version deprecation breaks consistency, and non-determinism produces hallucinated fields at scale.",
+        "Writing per-site scaffolds around individual websites; it's the bitter lesson for web agents, and it never reaches the long tail.",
+        "Reading raw HTML to get page content \u2014 the information on screen is computed and rendered, not written anywhere as text.",
+        "Enhancing an already-high-quality image: you pay compute for zero quality lift and risk degrading it.",
+        "Assuming a statically tuned offline visual model will hold in production; every component needs a retuning mechanism against online drift.",
+        "Modeling video as a stack of frames plus a transcript, which throws away the continuity that makes video video."
+      ]
+    },
+    "notable_outliers": [
+      {
+        "claim": "Training on image data from step zero normally collapses the model \u2014 MiniMax claims to have solved that, and the resulting attention maps show text tokens attending to visual tokens.",
+        "talk": "agents-at-scale-inside-minimaxs-model-and-the-infrastructure-behind-it",
+        "timestamp_sec": 644
+      },
+      {
+        "claim": "Mind2Web is saturated at 97% human eval (8 bad trajectories out of 300) and should simply be retired in favor of something harder.",
+        "talk": "computer-use-models-will-agentify-the-web-not-apis",
+        "timestamp_sec": 991
+      },
+      {
+        "claim": "You can do RAG over documents with no chunker, no embedding model, and no vector database \u2014 the markdown section outline of the parsed document becomes the entire index, scaling to a 418-section annual report via multi-turn agentic iteration.",
+        "talk": "structuring-the-unstructured",
+        "timestamp_sec": 872
+      },
+      {
+        "claim": "Audio-visual sync can be evaluated without any semantic sound recognition, by correlating prompt-derived key frames against amplitude spikes at matching timestamps \u2014 but lip sync remains unsolved, especially for stylized characters whose mouth animation has no real correlation to speech.",
+        "talk": "evaling-video-slop",
+        "timestamp_sec": 1002
+      },
+      {
+        "claim": "Treating code purely as a chain of emitted tokens has limits; spatial and dynamic multimodal representations will become a must-have for software reasoning.",
+        "talk": "software-engineering-is-not-about-writing-code",
+        "timestamp_sec": 949
+      },
+      {
+        "claim": "Once computer-use agents cost under a penny, run in under 100ms, and return structured output, the distinction between a vision agent and an API stops mattering.",
+        "talk": "computer-use-models-will-agentify-the-web-not-apis",
+        "timestamp_sec": 1220
+      },
+      {
+        "claim": "There is no universal video index \u2014 the same footage requires different primitives for sports, brand safety, and compliance review, so the memory layer must be developer-configurable by intent.",
+        "talk": "video-has-no-memory-heres-how-we-built-one",
+        "timestamp_sec": 607
+      }
+    ],
+    "maturity": "consolidating",
+    "maturity_rationale": "Practitioners across independent domains \u2014 browser agents, food-delivery imagery, generated video, document parsing \u2014 have independently landed on the same operating rules (small distilled models over frontier VLMs, pixels as ground truth, axis-specific judges anchored to human labels), which is real convergence rather than coincidence. What remains genuinely argued is architecture: whether to run vision at query time or precompute structure at ingest, and whether residual visual failures belong to the model or the harness."
+  },
+  "_meta": {
+    "concept": "vision-language models",
+    "slug": "vision-language-models",
+    "talk_count": 10,
+    "missing_talks": [],
+    "wall_sec": 136.9,
+    "run_at": "2026-08-13T19:46:08Z"
+  }
+}

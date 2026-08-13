@@ -1,0 +1,334 @@
+{
+  "is_error": false,
+  "duration_api_ms": 199688,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "f39387d3-1035-40c2-bcaa-b489d9746c2e",
+  "total_cost_usd": 1.1992369999999999,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 71785,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 17097,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 71785,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 17097,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 71785,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 71785
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 48708,
+      "outputTokens": 18,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.048798,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 17097,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 71785,
+      "webSearchRequests": 0,
+      "costUSD": 1.150439,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\"concept\": \"agentic loop design\", \"state_of_practice\": \"The field has stopped treating the loop as a thin while-loop around a chat completion and started treating it as an engineered control system with its own state, sensors, budgets, and gates. The consensus mechanics are: the runtime \u2014 not the model \u2014 owns workflow state and control flow; every loop needs an explicit termination gate (max iterations, a numeric threshold, a stop_reason branch, or an eval/grader that must pass) because the model's own claim of 'done' is a bundle of unverified claims; context is a budgeted resource inside each iteration (Codex caps the skill-description block at 2% of the window, panelists recommend staying under ~100k tokens even with million-token windows, tool schemas get filtered by semantic search to the top three); and the thing that closes the loop must be structurally separate from the thing that produced the work \u2014 a different model, a different sensory channel, or deterministic code. Speakers now routinely report that harness design, not model capability, is the binding constraint: one controlled experiment held model and eval fixed across 106 tasks and moved the score from 52.4% to 76.2% by changing only the harness, and a Microsoft team replaced Opus 4.7 with Haiku 4.5 at expected quality by moving control flow out of the model. Infrastructure concerns that used to sit outside the loop are now loop-design decisions: decoupling the agent loop from the tool-execution container bought Anthropic 60% faster time-to-first-token at P50 and >90% at P95, and at 1,000 tokens/sec the bottleneck moved from inference to network round-trips, pushing OpenAI to a persistent WebSocket. The live arguments are about how much scaffolding survives the next model release, whether compaction or fresh context is the right response to a full window, and whether a loop is ever allowed to close without a human in it.\", \"consensus\": [{\"claim\": \"Multi-step control flow and workflow state belong in deterministic harness code; the model proposes actions, the runtime decides what happens next and where the process is.\", \"support_count\": 6, \"supporting_talks\": [\"dont-let-the-llm-drive\", \"agents-in-production-how-opengov-built-and-scaled-og-assist\", \"stop-ai-agent-hallucinations-5-techniques-production-patterns\", \"loop-engineering-from-first-principles\", \"lets-integrate-ai-agents-in-event-sourced-systems\", \"the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans\"], \"evidence_quote\": \"the model never really um has to think. It proposes, but ultimately it is the harness that decides.\", \"evidence_talk\": \"dont-let-the-llm-drive\", \"evidence_timestamp_sec\": 244}, {\"claim\": \"Every loop needs an explicit, engineered termination condition \u2014 an iteration cap, a numeric threshold, a stop_reason branch, or an eval gate \u2014 because the model's own report of completion is not a stopping condition.\", \"support_count\": 7, \"supporting_talks\": [\"the-agentic-ai-engineer\", \"your-agent-is-wasting-tokens-and-you-dont-know-it\", \"lets-integrate-ai-agents-in-event-sourced-systems\", \"what-does-done-even-mean-agents-and-paperclips-liveness-model\", \"anthropics-cca-exam-as-a-field-guide-for-agentic-engineering\", \"codex-behind-the-harness\", \"why-agentic-systems-need-ontologies\"], \"evidence_quote\": \"you design loops for your agent so then they can autonomously work as many of these things in the background. Uh and then your job becomes designing these loops with a clear eval or termination gate.\", \"evidence_talk\": \"the-agentic-ai-engineer\", \"evidence_timestamp_sec\": 878}, {\"claim\": \"Whatever closes the loop must be structurally separate from whatever produced the work \u2014 a different model, a different methodology, or a different observation channel; an agent that acts and validates in the same loop provides no check.\", \"support_count\": 5, \"supporting_talks\": [\"what-does-done-even-mean-agents-and-paperclips-liveness-model\", \"guide-verify-solve\", \"stop-ai-agent-hallucinations-5-techniques-production-patterns\", \"should-ai-engineers-still-read-code-in-2026-the-zl-continuum\", \"the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans\"], \"evidence_quote\": \"But if the builder grades itself, you didn't remove the review, you hid it.\", \"evidence_talk\": \"should-ai-engineers-still-read-code-in-2026-the-zl-continuum\", \"evidence_timestamp_sec\": 1157}, {\"claim\": \"Context must be actively budgeted per iteration rather than maximized; filling a large window degrades answer quality, not just cost, so tools, skills, and history are filtered, deferred, or summarized before each turn.\", \"support_count\": 10, \"supporting_talks\": [\"codex-behind-the-harness\", \"anthropics-cca-exam-as-a-field-guide-for-agentic-engineering\", \"guide-verify-solve\", \"the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in\", \"agents-in-production-how-opengov-built-and-scaled-og-assist\", \"your-agent-is-wasting-tokens-and-you-dont-know-it\", \"stop-ai-agent-hallucinations-5-techniques-production-patterns\", \"what-if-the-harness-mattered-more-than-the-model\", \"browser-agents-dont-need-better-models-they-need-better-eyes\", \"loop-engineering-from-first-principles\"], \"evidence_quote\": \"the more context you have in your in your context, the higher it is that you have contradicting information and it causes confusion for the model.\", \"evidence_talk\": \"codex-behind-the-harness\", \"evidence_timestamp_sec\": 245}, {\"claim\": \"The harness, not model capability, is now the limiting factor on agent performance \u2014 the same model swings tens of points depending on the loop around it.\", \"support_count\": 8, \"supporting_talks\": [\"what-if-the-harness-mattered-more-than-the-model\", \"evolution-of-agentic-surfaces\", \"browser-agents-dont-need-better-models-they-need-better-eyes\", \"the-golden-age-of-ai-engineering\", \"the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in\", \"beyond-the-harness-a-journey-towards-adaptative-engineering\", \"from-blind-spots-to-merged-prs-continuous-agentic-performance-optimization\", \"dont-let-the-llm-drive\"], \"evidence_quote\": \"So, scores range from 52.4% to 76.2%. So, more than a 20-point difference, and only the harness changed.\", \"evidence_talk\": \"what-if-the-harness-mattered-more-than-the-model\", \"evidence_timestamp_sec\": 143}, {\"claim\": \"Mutating and irreversible tool calls should be gated by the runtime \u2014 a deterministic interrupt, a policy check before credential issuance, or locked tool arguments \u2014 rather than by the model's judgment about whether an action is safe.\", \"support_count\": 5, \"supporting_talks\": [\"agents-in-production-how-opengov-built-and-scaled-og-assist\", \"its-10pm-do-you-know-where-your-agents-are\", \"what-if-the-harness-mattered-more-than-the-model\", \"codex-behind-the-harness\", \"should-ai-engineers-still-read-code-in-2026-the-zl-continuum\"], \"evidence_quote\": \"we deterministically interrupt the agent loop if there is a tool call approval required\", \"evidence_talk\": \"agents-in-production-how-opengov-built-and-scaled-og-assist\", \"evidence_timestamp_sec\": 628}], \"disagreements\": [{\"question\": \"When a long-running loop exhausts its context window, should it compact and continue the same session, or discard and re-allocate a fresh context each iteration?\", \"position_a\": \"Compact and continue: use server-side auto-compaction in the form the model was trained on, or rolling summarization plus recall over the summary, so one session can run for hours without losing the thread. OpenAI names server-side compaction as one of three changes that made a persistent manager-agent workflow viable at all.\", \"position_a_talks\": [\"codex-behind-the-harness\", \"the-golden-age-of-ai-engineering\", \"agents-in-production-how-opengov-built-and-scaled-og-assist\", \"your-agent-is-wasting-tokens-and-you-dont-know-it\"], \"position_b\": \"Don't compact: compaction is a lossy operation that degrades fidelity, so deterministically re-allocate a fresh context for each iteration or unit of work \u2014 e.g. give each of 150 RPC migrations its own context window in a separate implementation phase, which is both cheaper and more reliable than batching.\", \"position_b_talks\": [\"the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in\", \"loop-engineering-from-first-principles\"], \"why_it_matters\": \"This determines whether a long task is one continuous session or many short bounded ones, which in turn dictates where durable state lives (conversation history vs. an external execution layer) and whether quality silently decays as a run gets longer.\"}, {\"question\": \"Should the harness take control flow away from the model, or stay thin and defer to model judgment?\", \"position_a\": \"Stay thin and design for tomorrow's model: harnesses encode assumptions about what the model cannot do, and those fixes become pure overhead \u2014 added latency and cache-invalidation bugs \u2014 the moment the limitation disappears. A carefully built harness can be irrelevant within a month, so keep it composed of small swappable primitives and let the model cook.\", \"position_a_talks\": [\"evolution-of-agentic-surfaces\", \"beyond-the-harness-a-journey-towards-adaptative-engineering\", \"the-golden-age-of-ai-engineering\"], \"position_b\": \"Take control away from the model: prompts are probabilistic suggestions, not constraints, so state transitions, rules, and stopping conditions belong in code. Doing this well is what let a team drop from Opus 4.7 to Haiku 4.5 at the same expected performance, and what makes a local open-source model reach proprietary-model performance.\", \"position_b_talks\": [\"dont-let-the-llm-drive\", \"stop-ai-agent-hallucinations-5-techniques-production-patterns\", \"what-if-the-harness-mattered-more-than-the-model\", \"what-does-done-even-mean-agents-and-paperclips-liveness-model\", \"loop-engineering-from-first-principles\"], \"why_it_matters\": \"It decides where engineering effort goes: scaffolding that may be obsoleted by the next release, versus scaffolding that makes cheap or local models viable and caps your inference bill. It also sets your model-migration cost \u2014 a thick harness tuned to one model can take weeks to move.\"}, {\"question\": \"Should in-loop verification be deterministic and static, or performed by other agents?\", \"position_a\": \"Push verification toward deterministic checks: adding non-deterministic verification on top of non-deterministic output makes correctness worse. Use AST-grep sensors (language-agnostic and out-of-band from configs agents can disable with inline comments), types, ontology reasoners, and code-executed rules; never send an agent to do deterministic code's job.\", \"position_a_talks\": [\"the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in\", \"loop-engineering-from-first-principles\", \"why-agentic-systems-need-ontologies\"], \"position_b\": \"Use agent verifiers inside the loop: a separate verifier model, a rubric-based grader that keeps the agent retrying until success criteria are met, or an executor/validator/critic chain that catches fabricated tool-success confirmations a single agent reports as done. Calibrated LLM judges become the loop's termination gate.\", \"position_b_talks\": [\"what-does-done-even-mean-agents-and-paperclips-liveness-model\", \"evolution-of-agentic-surfaces\", \"stop-ai-agent-hallucinations-5-techniques-production-patterns\", \"the-agentic-ai-engineer\"], \"why_it_matters\": \"The verifier is what the stopping condition is made of, so its reliability bounds the whole loop's. It also decides cost shape: deterministic sensors are near-free per iteration, while grader agents multiply token spend on every retry \u2014 the panel's $10.42/hour loop economics assume one, not both.\"}, {\"question\": \"Can an agentic loop close and ship without a human inside it?\", \"position_a\": \"Yes, once the gate is good enough: if an optimized variant meets its target eval scores it can ship to production automatically, and a grader agent should keep the loop running until defined success criteria are hit. The human moves to the outer loop \u2014 setting direction, managing a small company of agents \u2014 rather than watching code get generated.\", \"position_a_talks\": [\"the-agentic-ai-engineer\", \"evolution-of-agentic-surfaces\", \"the-golden-age-of-ai-engineering\"], \"position_b\": \"No: the loop must throttle on human attention. Cap it at one open PR at a time and never open a new one while the previous is unreviewed; surface one high-ROI finding rather than a rain of 80 PRs; require 80-90% trust before any autonomous automation; and accept that the only way to stop loops compounding slop is to read the output. Merging with no review at all \u2014 human or agentic \u2014 is not acceptable practice.\", \"position_b_talks\": [\"loop-engineering-from-first-principles\", \"from-blind-spots-to-merged-prs-continuous-agentic-performance-optimization\", \"should-ai-engineers-still-read-code-in-2026-the-zl-continuum\", \"the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in\", \"the-engineer-of-the-future-is-the-person-who-is-able-to-choose-what-is-worth-doi\"], \"why_it_matters\": \"This sets the throughput ceiling of the whole system \u2014 human review bandwidth becomes the hard limit if position B holds \u2014 and determines where liability lands, since a loop that closes autonomously still grounds out in a human or corporation that has to answer for what it shipped.\"}], \"practical_guidance\": {\"do\": [\"Branch on stop_reason rather than consuming the model's first response, so a token-exhausted, truncated answer isn't silently accepted as complete\", \"Set an explicit max-iteration cap on every tool loop, and a domain-specific numeric threshold for breaking out (e.g. a fraud-score metric) where iteration count alone isn't meaningful\", \"Cap the available-skills/tool-description block at a fixed fraction of the context window (Codex uses 2%) and progressively truncate beyond it; mark rarely-used tools as deferred so they're reachable via tool search instead of preloaded\", \"Filter tools by semantic search to the top ~3 per query \u2014 this drops per-query tool context from thousands of tokens to under 300 and improves selection accuracy \u2014 and actively clear/re-add the registry each invocation in multi-turn conversations, since filtering alone doesn't bound growth\", \"Keep working context under ~100k tokens even with million-token windows; under 60k for the hardest problems\", \"Give each unit of work its own context window: run three-to-five migrations as separate implementation phases rather than batching 150 into one run\", \"Deterministically interrupt the loop for approval on mutating operations, and evaluate policy before minting the credential rather than issuing a broad one and restricting its use\", \"Request per-tool-call tokens that are audience-bound to a single MCP server, expire in minutes, and are never stored, instead of handing the loop a long-lived API key\", \"Constrain tool capability structurally \u2014 lock arguments via partial function application so the model can't change (or even see) the directory it operates in \u2014 to get safety without a human approval round-trip\", \"Separate the verifier from the author, usually meaning a different model (code with Claude, verify with Codex), and give the verifier real tools \u2014 browser harnesses, screenshots, hooks \u2014 to produce evidence\", \"Verify an action through a different channel than the one that performed it: if you clicked something, check the network or the screen, don't ask the click\", \"Feed the agent explicit state diffs after each action \u2014 what appeared, what was removed, whether the click landed \u2014 instead of leaving it to infer success\", \"Model 'done' as a structured object (artifact, scope, rubric, evidence, verifier, approver, residual risk, next action) rather than a boolean green checkmark\", \"Write concrete, verifiable goal prompts rather than essays, since the loop only terminates when the model can detect the goal was achieved\", \"Decouple the agent loop from the tool-execution container so first-token reasoning isn't blocked on container setup (60% faster TTFT at P50, >90% at P95)\", \"Keep durable run state outside the work \u2014 a three-hour run cannot hold state in memory or on disk \u2014 and treat the sandbox as ephemeral hands, not storage\", \"Only build a control loop for a task where you can measure the property, apply changes incrementally, and get feedback on the quality of each change; use AST-grep-style out-of-band sensors rather than lint/tsconfig that agents can disable with inline comments\", \"Cap the loop at one open PR at a time \u2014 never open a new one while the previous output is unreviewed\", \"Run loops on existing CI (GitHub Actions, GitLab, CircleCI) rather than standing up a dedicated cluster\", \"Use batch mode for non-urgent loop work: 50% fewer token costs with results inside 24 hours\", \"Route by difficulty across models, including a cheap model as the router, rather than paying frontier prices for every step in the loop\"], \"avoid\": [\"Letting the model hold multi-step workflow state \u2014 it is terrible at remembering whether it's on step three of six, and asking it to is where step-skipping and looping failures come from\", \"Blind prompt-in-a-bash-loop setups on team or critical-systems work, even with verifier and code-review agents stacked on top \u2014 you still get 40,000-line PRs nobody reads\", \"Letting an agent act and validate in the same loop: it rationalizes tool errors into confident success responses that nobody surfaces\", \"Putting rules in the prompt and expecting them to constrain behavior \u2014 prompts are processed as probabilistic text; moving the same rule into a pre-tool-call hook flips the outcome from wrong to correct\", \"Using hooks for soft rules \u2014 they block unconditionally and force the user to retry; use runtime steering for soft rules and hooks only for hard constraints\", \"Filling a large context window because you have one; and letting subtask output dump into the primary thread, which crowds out the main context\", \"Passing a subagent the reasoning that produced a claim rather than just the claim and evidence \u2014 shared reasoning collapses multiple agents into groupthink\", \"Leaving interactive permission prompts enabled when running a coding agent in a CI pipeline\", \"Running in full-access mode on the theory that better models are safer \u2014 pushing a model toward high agency produces creative workarounds that diverge from intent (uploading a file to a share when it can't attach it to email)\", \"Keeping harness workarounds written for a model limitation after the limitation is gone \u2014 they become pure overhead, adding latency and causing incorrect cache discards\", \"Using the sandbox for durability, snapshots, or state; sandboxes are ephemeral and stateless by design\", \"Storing secrets as files in the agent's environment \u2014 the single most effective concrete step is simply not having them there\", \"Auto-opening large volumes of PRs from a loop; nobody wants to wake up to a rain of 80 pull requests, however small\", \"Merging PRs with no review at all, human or agentic (up 31% year over year, alongside a 242% rise in incidents per PR)\", \"Re-sending large tool results and full conversation history on every iteration \u2014 store results out of context and summarize, and summarize what a sliding window drops rather than losing the start of the conversation\", \"Giving one agent a large tool inventory instead of one or two tools and a single job\"]}, \"notable_outliers\": [{\"claim\": \"Running a coding agent in a loop works out to roughly $10.42 per hour \u2014 but stacking loops on loops and buying quality with more tokens is economically unsustainable at company scale, where you have to ask whether an engineer's token budget is $10k, $100k, or $1M a month.\", \"talk\": \"the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in\", \"timestamp_sec\": 1242}, {\"claim\": \"Loops are not a new idea: B\u00f6hm and Jacopini proved in 1966 that sequence, conditionals, and loops are all you need for Turing completeness \u2014 the agentic loop is that result applied to a probabilistic next-word predictor that can't execute anything itself.\", \"talk\": \"anthropics-cca-exam-as-a-field-guide-for-agentic-engineering\", \"timestamp_sec\": 403}, {\"claim\": \"An on-device game agent's entire perceive-plan-act cycle must fit inside a 16 ms frame at 60 Hz or the player sees jank, and the loop must be tuned for minimum energy or it drains the battery \u2014 a hard real-time constraint absent from every server-side agent design.\", \"talk\": \"local-agentic-theory-for-mobile-games\", \"timestamp_sec\": 524}, {\"claim\": \"At 1,000 tokens/sec inference, the bottleneck stops being inference and becomes the network: a stateful WebSocket that transmits only changed items materially outperforms server-sent events over HTTP for agent loops.\", \"talk\": \"codex-behind-the-harness\", \"timestamp_sec\": 933}, {\"claim\": \"reCAPTCHA v2 cannot be beaten by any architecture that round-trips a model on every interaction, because challenge rounds expire on a clock \u2014 the only reliable approach is deterministic code driving at machine speed with exactly one AI vision call per round.\", \"talk\": \"the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans\", \"timestamp_sec\": 1116}, {\"claim\": \"The harness should be the output of the engineering process rather than its input: agent identity, roles, and governance should emerge from position relative to other agents and environmental pressure, with the rate of coupling between agents as the engineer's primary control lever.\", \"talk\": \"beyond-the-harness-a-journey-towards-adaptative-engineering\", \"timestamp_sec\": 1272}], \"maturity\": \"consolidating\", \"maturity_rationale\": \"There is a broad, independently-converged mechanical core \u2014 runtime owns control flow and state, explicit termination gates, per-iteration context budgets, verifier separated from author, runtime-enforced approval on mutating calls \u2014 reported from production systems at Anthropic, OpenAI, Microsoft, OpenGov, AWS, and Etsy rather than from prototypes. What remains actively argued is at the edges and is genuinely incompatible: compaction versus fresh context, thin versus thick harness, deterministic versus agentic verification, and whether a loop may close without a human, with 2+ credible talks on each side.\"}",
+  "ttft_ms": 108418,
+  "ttft_stream_ms": 1393,
+  "time_to_request_ms": 42,
+  "type": "result",
+  "duration_ms": 198972,
+  "uuid": "fb3a4457-0e28-46d5-944e-412495d4e92c",
+  "passC": {
+    "concept": "agentic loop design",
+    "state_of_practice": "The field has stopped treating the loop as a thin while-loop around a chat completion and started treating it as an engineered control system with its own state, sensors, budgets, and gates. The consensus mechanics are: the runtime \u2014 not the model \u2014 owns workflow state and control flow; every loop needs an explicit termination gate (max iterations, a numeric threshold, a stop_reason branch, or an eval/grader that must pass) because the model's own claim of 'done' is a bundle of unverified claims; context is a budgeted resource inside each iteration (Codex caps the skill-description block at 2% of the window, panelists recommend staying under ~100k tokens even with million-token windows, tool schemas get filtered by semantic search to the top three); and the thing that closes the loop must be structurally separate from the thing that produced the work \u2014 a different model, a different sensory channel, or deterministic code. Speakers now routinely report that harness design, not model capability, is the binding constraint: one controlled experiment held model and eval fixed across 106 tasks and moved the score from 52.4% to 76.2% by changing only the harness, and a Microsoft team replaced Opus 4.7 with Haiku 4.5 at expected quality by moving control flow out of the model. Infrastructure concerns that used to sit outside the loop are now loop-design decisions: decoupling the agent loop from the tool-execution container bought Anthropic 60% faster time-to-first-token at P50 and >90% at P95, and at 1,000 tokens/sec the bottleneck moved from inference to network round-trips, pushing OpenAI to a persistent WebSocket. The live arguments are about how much scaffolding survives the next model release, whether compaction or fresh context is the right response to a full window, and whether a loop is ever allowed to close without a human in it.",
+    "consensus": [
+      {
+        "claim": "Multi-step control flow and workflow state belong in deterministic harness code; the model proposes actions, the runtime decides what happens next and where the process is.",
+        "support_count": 6,
+        "supporting_talks": [
+          "dont-let-the-llm-drive",
+          "agents-in-production-how-opengov-built-and-scaled-og-assist",
+          "stop-ai-agent-hallucinations-5-techniques-production-patterns",
+          "loop-engineering-from-first-principles",
+          "lets-integrate-ai-agents-in-event-sourced-systems",
+          "the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans"
+        ],
+        "evidence_quote": "the model never really um has to think. It proposes, but ultimately it is the harness that decides.",
+        "evidence_talk": "dont-let-the-llm-drive",
+        "evidence_timestamp_sec": 244
+      },
+      {
+        "claim": "Every loop needs an explicit, engineered termination condition \u2014 an iteration cap, a numeric threshold, a stop_reason branch, or an eval gate \u2014 because the model's own report of completion is not a stopping condition.",
+        "support_count": 7,
+        "supporting_talks": [
+          "the-agentic-ai-engineer",
+          "your-agent-is-wasting-tokens-and-you-dont-know-it",
+          "lets-integrate-ai-agents-in-event-sourced-systems",
+          "what-does-done-even-mean-agents-and-paperclips-liveness-model",
+          "anthropics-cca-exam-as-a-field-guide-for-agentic-engineering",
+          "codex-behind-the-harness",
+          "why-agentic-systems-need-ontologies"
+        ],
+        "evidence_quote": "you design loops for your agent so then they can autonomously work as many of these things in the background. Uh and then your job becomes designing these loops with a clear eval or termination gate.",
+        "evidence_talk": "the-agentic-ai-engineer",
+        "evidence_timestamp_sec": 878
+      },
+      {
+        "claim": "Whatever closes the loop must be structurally separate from whatever produced the work \u2014 a different model, a different methodology, or a different observation channel; an agent that acts and validates in the same loop provides no check.",
+        "support_count": 5,
+        "supporting_talks": [
+          "what-does-done-even-mean-agents-and-paperclips-liveness-model",
+          "guide-verify-solve",
+          "stop-ai-agent-hallucinations-5-techniques-production-patterns",
+          "should-ai-engineers-still-read-code-in-2026-the-zl-continuum",
+          "the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans"
+        ],
+        "evidence_quote": "But if the builder grades itself, you didn't remove the review, you hid it.",
+        "evidence_talk": "should-ai-engineers-still-read-code-in-2026-the-zl-continuum",
+        "evidence_timestamp_sec": 1157
+      },
+      {
+        "claim": "Context must be actively budgeted per iteration rather than maximized; filling a large window degrades answer quality, not just cost, so tools, skills, and history are filtered, deferred, or summarized before each turn.",
+        "support_count": 10,
+        "supporting_talks": [
+          "codex-behind-the-harness",
+          "anthropics-cca-exam-as-a-field-guide-for-agentic-engineering",
+          "guide-verify-solve",
+          "the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in",
+          "agents-in-production-how-opengov-built-and-scaled-og-assist",
+          "your-agent-is-wasting-tokens-and-you-dont-know-it",
+          "stop-ai-agent-hallucinations-5-techniques-production-patterns",
+          "what-if-the-harness-mattered-more-than-the-model",
+          "browser-agents-dont-need-better-models-they-need-better-eyes",
+          "loop-engineering-from-first-principles"
+        ],
+        "evidence_quote": "the more context you have in your in your context, the higher it is that you have contradicting information and it causes confusion for the model.",
+        "evidence_talk": "codex-behind-the-harness",
+        "evidence_timestamp_sec": 245
+      },
+      {
+        "claim": "The harness, not model capability, is now the limiting factor on agent performance \u2014 the same model swings tens of points depending on the loop around it.",
+        "support_count": 8,
+        "supporting_talks": [
+          "what-if-the-harness-mattered-more-than-the-model",
+          "evolution-of-agentic-surfaces",
+          "browser-agents-dont-need-better-models-they-need-better-eyes",
+          "the-golden-age-of-ai-engineering",
+          "the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in",
+          "beyond-the-harness-a-journey-towards-adaptative-engineering",
+          "from-blind-spots-to-merged-prs-continuous-agentic-performance-optimization",
+          "dont-let-the-llm-drive"
+        ],
+        "evidence_quote": "So, scores range from 52.4% to 76.2%. So, more than a 20-point difference, and only the harness changed.",
+        "evidence_talk": "what-if-the-harness-mattered-more-than-the-model",
+        "evidence_timestamp_sec": 143
+      },
+      {
+        "claim": "Mutating and irreversible tool calls should be gated by the runtime \u2014 a deterministic interrupt, a policy check before credential issuance, or locked tool arguments \u2014 rather than by the model's judgment about whether an action is safe.",
+        "support_count": 5,
+        "supporting_talks": [
+          "agents-in-production-how-opengov-built-and-scaled-og-assist",
+          "its-10pm-do-you-know-where-your-agents-are",
+          "what-if-the-harness-mattered-more-than-the-model",
+          "codex-behind-the-harness",
+          "should-ai-engineers-still-read-code-in-2026-the-zl-continuum"
+        ],
+        "evidence_quote": "we deterministically interrupt the agent loop if there is a tool call approval required",
+        "evidence_talk": "agents-in-production-how-opengov-built-and-scaled-og-assist",
+        "evidence_timestamp_sec": 628
+      }
+    ],
+    "disagreements": [
+      {
+        "question": "When a long-running loop exhausts its context window, should it compact and continue the same session, or discard and re-allocate a fresh context each iteration?",
+        "position_a": "Compact and continue: use server-side auto-compaction in the form the model was trained on, or rolling summarization plus recall over the summary, so one session can run for hours without losing the thread. OpenAI names server-side compaction as one of three changes that made a persistent manager-agent workflow viable at all.",
+        "position_a_talks": [
+          "codex-behind-the-harness",
+          "the-golden-age-of-ai-engineering",
+          "agents-in-production-how-opengov-built-and-scaled-og-assist",
+          "your-agent-is-wasting-tokens-and-you-dont-know-it"
+        ],
+        "position_b": "Don't compact: compaction is a lossy operation that degrades fidelity, so deterministically re-allocate a fresh context for each iteration or unit of work \u2014 e.g. give each of 150 RPC migrations its own context window in a separate implementation phase, which is both cheaper and more reliable than batching.",
+        "position_b_talks": [
+          "the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in",
+          "loop-engineering-from-first-principles"
+        ],
+        "why_it_matters": "This determines whether a long task is one continuous session or many short bounded ones, which in turn dictates where durable state lives (conversation history vs. an external execution layer) and whether quality silently decays as a run gets longer."
+      },
+      {
+        "question": "Should the harness take control flow away from the model, or stay thin and defer to model judgment?",
+        "position_a": "Stay thin and design for tomorrow's model: harnesses encode assumptions about what the model cannot do, and those fixes become pure overhead \u2014 added latency and cache-invalidation bugs \u2014 the moment the limitation disappears. A carefully built harness can be irrelevant within a month, so keep it composed of small swappable primitives and let the model cook.",
+        "position_a_talks": [
+          "evolution-of-agentic-surfaces",
+          "beyond-the-harness-a-journey-towards-adaptative-engineering",
+          "the-golden-age-of-ai-engineering"
+        ],
+        "position_b": "Take control away from the model: prompts are probabilistic suggestions, not constraints, so state transitions, rules, and stopping conditions belong in code. Doing this well is what let a team drop from Opus 4.7 to Haiku 4.5 at the same expected performance, and what makes a local open-source model reach proprietary-model performance.",
+        "position_b_talks": [
+          "dont-let-the-llm-drive",
+          "stop-ai-agent-hallucinations-5-techniques-production-patterns",
+          "what-if-the-harness-mattered-more-than-the-model",
+          "what-does-done-even-mean-agents-and-paperclips-liveness-model",
+          "loop-engineering-from-first-principles"
+        ],
+        "why_it_matters": "It decides where engineering effort goes: scaffolding that may be obsoleted by the next release, versus scaffolding that makes cheap or local models viable and caps your inference bill. It also sets your model-migration cost \u2014 a thick harness tuned to one model can take weeks to move."
+      },
+      {
+        "question": "Should in-loop verification be deterministic and static, or performed by other agents?",
+        "position_a": "Push verification toward deterministic checks: adding non-deterministic verification on top of non-deterministic output makes correctness worse. Use AST-grep sensors (language-agnostic and out-of-band from configs agents can disable with inline comments), types, ontology reasoners, and code-executed rules; never send an agent to do deterministic code's job.",
+        "position_a_talks": [
+          "the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in",
+          "loop-engineering-from-first-principles",
+          "why-agentic-systems-need-ontologies"
+        ],
+        "position_b": "Use agent verifiers inside the loop: a separate verifier model, a rubric-based grader that keeps the agent retrying until success criteria are met, or an executor/validator/critic chain that catches fabricated tool-success confirmations a single agent reports as done. Calibrated LLM judges become the loop's termination gate.",
+        "position_b_talks": [
+          "what-does-done-even-mean-agents-and-paperclips-liveness-model",
+          "evolution-of-agentic-surfaces",
+          "stop-ai-agent-hallucinations-5-techniques-production-patterns",
+          "the-agentic-ai-engineer"
+        ],
+        "why_it_matters": "The verifier is what the stopping condition is made of, so its reliability bounds the whole loop's. It also decides cost shape: deterministic sensors are near-free per iteration, while grader agents multiply token spend on every retry \u2014 the panel's $10.42/hour loop economics assume one, not both."
+      },
+      {
+        "question": "Can an agentic loop close and ship without a human inside it?",
+        "position_a": "Yes, once the gate is good enough: if an optimized variant meets its target eval scores it can ship to production automatically, and a grader agent should keep the loop running until defined success criteria are hit. The human moves to the outer loop \u2014 setting direction, managing a small company of agents \u2014 rather than watching code get generated.",
+        "position_a_talks": [
+          "the-agentic-ai-engineer",
+          "evolution-of-agentic-surfaces",
+          "the-golden-age-of-ai-engineering"
+        ],
+        "position_b": "No: the loop must throttle on human attention. Cap it at one open PR at a time and never open a new one while the previous is unreviewed; surface one high-ROI finding rather than a rain of 80 PRs; require 80-90% trust before any autonomous automation; and accept that the only way to stop loops compounding slop is to read the output. Merging with no review at all \u2014 human or agentic \u2014 is not acceptable practice.",
+        "position_b_talks": [
+          "loop-engineering-from-first-principles",
+          "from-blind-spots-to-merged-prs-continuous-agentic-performance-optimization",
+          "should-ai-engineers-still-read-code-in-2026-the-zl-continuum",
+          "the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in",
+          "the-engineer-of-the-future-is-the-person-who-is-able-to-choose-what-is-worth-doi"
+        ],
+        "why_it_matters": "This sets the throughput ceiling of the whole system \u2014 human review bandwidth becomes the hard limit if position B holds \u2014 and determines where liability lands, since a loop that closes autonomously still grounds out in a human or corporation that has to answer for what it shipped."
+      }
+    ],
+    "practical_guidance": {
+      "do": [
+        "Branch on stop_reason rather than consuming the model's first response, so a token-exhausted, truncated answer isn't silently accepted as complete",
+        "Set an explicit max-iteration cap on every tool loop, and a domain-specific numeric threshold for breaking out (e.g. a fraud-score metric) where iteration count alone isn't meaningful",
+        "Cap the available-skills/tool-description block at a fixed fraction of the context window (Codex uses 2%) and progressively truncate beyond it; mark rarely-used tools as deferred so they're reachable via tool search instead of preloaded",
+        "Filter tools by semantic search to the top ~3 per query \u2014 this drops per-query tool context from thousands of tokens to under 300 and improves selection accuracy \u2014 and actively clear/re-add the registry each invocation in multi-turn conversations, since filtering alone doesn't bound growth",
+        "Keep working context under ~100k tokens even with million-token windows; under 60k for the hardest problems",
+        "Give each unit of work its own context window: run three-to-five migrations as separate implementation phases rather than batching 150 into one run",
+        "Deterministically interrupt the loop for approval on mutating operations, and evaluate policy before minting the credential rather than issuing a broad one and restricting its use",
+        "Request per-tool-call tokens that are audience-bound to a single MCP server, expire in minutes, and are never stored, instead of handing the loop a long-lived API key",
+        "Constrain tool capability structurally \u2014 lock arguments via partial function application so the model can't change (or even see) the directory it operates in \u2014 to get safety without a human approval round-trip",
+        "Separate the verifier from the author, usually meaning a different model (code with Claude, verify with Codex), and give the verifier real tools \u2014 browser harnesses, screenshots, hooks \u2014 to produce evidence",
+        "Verify an action through a different channel than the one that performed it: if you clicked something, check the network or the screen, don't ask the click",
+        "Feed the agent explicit state diffs after each action \u2014 what appeared, what was removed, whether the click landed \u2014 instead of leaving it to infer success",
+        "Model 'done' as a structured object (artifact, scope, rubric, evidence, verifier, approver, residual risk, next action) rather than a boolean green checkmark",
+        "Write concrete, verifiable goal prompts rather than essays, since the loop only terminates when the model can detect the goal was achieved",
+        "Decouple the agent loop from the tool-execution container so first-token reasoning isn't blocked on container setup (60% faster TTFT at P50, >90% at P95)",
+        "Keep durable run state outside the work \u2014 a three-hour run cannot hold state in memory or on disk \u2014 and treat the sandbox as ephemeral hands, not storage",
+        "Only build a control loop for a task where you can measure the property, apply changes incrementally, and get feedback on the quality of each change; use AST-grep-style out-of-band sensors rather than lint/tsconfig that agents can disable with inline comments",
+        "Cap the loop at one open PR at a time \u2014 never open a new one while the previous output is unreviewed",
+        "Run loops on existing CI (GitHub Actions, GitLab, CircleCI) rather than standing up a dedicated cluster",
+        "Use batch mode for non-urgent loop work: 50% fewer token costs with results inside 24 hours",
+        "Route by difficulty across models, including a cheap model as the router, rather than paying frontier prices for every step in the loop"
+      ],
+      "avoid": [
+        "Letting the model hold multi-step workflow state \u2014 it is terrible at remembering whether it's on step three of six, and asking it to is where step-skipping and looping failures come from",
+        "Blind prompt-in-a-bash-loop setups on team or critical-systems work, even with verifier and code-review agents stacked on top \u2014 you still get 40,000-line PRs nobody reads",
+        "Letting an agent act and validate in the same loop: it rationalizes tool errors into confident success responses that nobody surfaces",
+        "Putting rules in the prompt and expecting them to constrain behavior \u2014 prompts are processed as probabilistic text; moving the same rule into a pre-tool-call hook flips the outcome from wrong to correct",
+        "Using hooks for soft rules \u2014 they block unconditionally and force the user to retry; use runtime steering for soft rules and hooks only for hard constraints",
+        "Filling a large context window because you have one; and letting subtask output dump into the primary thread, which crowds out the main context",
+        "Passing a subagent the reasoning that produced a claim rather than just the claim and evidence \u2014 shared reasoning collapses multiple agents into groupthink",
+        "Leaving interactive permission prompts enabled when running a coding agent in a CI pipeline",
+        "Running in full-access mode on the theory that better models are safer \u2014 pushing a model toward high agency produces creative workarounds that diverge from intent (uploading a file to a share when it can't attach it to email)",
+        "Keeping harness workarounds written for a model limitation after the limitation is gone \u2014 they become pure overhead, adding latency and causing incorrect cache discards",
+        "Using the sandbox for durability, snapshots, or state; sandboxes are ephemeral and stateless by design",
+        "Storing secrets as files in the agent's environment \u2014 the single most effective concrete step is simply not having them there",
+        "Auto-opening large volumes of PRs from a loop; nobody wants to wake up to a rain of 80 pull requests, however small",
+        "Merging PRs with no review at all, human or agentic (up 31% year over year, alongside a 242% rise in incidents per PR)",
+        "Re-sending large tool results and full conversation history on every iteration \u2014 store results out of context and summarize, and summarize what a sliding window drops rather than losing the start of the conversation",
+        "Giving one agent a large tool inventory instead of one or two tools and a single job"
+      ]
+    },
+    "notable_outliers": [
+      {
+        "claim": "Running a coding agent in a loop works out to roughly $10.42 per hour \u2014 but stacking loops on loops and buying quality with more tokens is economically unsustainable at company scale, where you have to ask whether an engineer's token budget is $10k, $100k, or $1M a month.",
+        "talk": "the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in",
+        "timestamp_sec": 1242
+      },
+      {
+        "claim": "Loops are not a new idea: B\u00f6hm and Jacopini proved in 1966 that sequence, conditionals, and loops are all you need for Turing completeness \u2014 the agentic loop is that result applied to a probabilistic next-word predictor that can't execute anything itself.",
+        "talk": "anthropics-cca-exam-as-a-field-guide-for-agentic-engineering",
+        "timestamp_sec": 403
+      },
+      {
+        "claim": "An on-device game agent's entire perceive-plan-act cycle must fit inside a 16 ms frame at 60 Hz or the player sees jank, and the loop must be tuned for minimum energy or it drains the battery \u2014 a hard real-time constraint absent from every server-side agent design.",
+        "talk": "local-agentic-theory-for-mobile-games",
+        "timestamp_sec": 524
+      },
+      {
+        "claim": "At 1,000 tokens/sec inference, the bottleneck stops being inference and becomes the network: a stateful WebSocket that transmits only changed items materially outperforms server-sent events over HTTP for agent loops.",
+        "talk": "codex-behind-the-harness",
+        "timestamp_sec": 933
+      },
+      {
+        "claim": "reCAPTCHA v2 cannot be beaten by any architecture that round-trips a model on every interaction, because challenge rounds expire on a clock \u2014 the only reliable approach is deterministic code driving at machine speed with exactly one AI vision call per round.",
+        "talk": "the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans",
+        "timestamp_sec": 1116
+      },
+      {
+        "claim": "The harness should be the output of the engineering process rather than its input: agent identity, roles, and governance should emerge from position relative to other agents and environmental pressure, with the rate of coupling between agents as the engineer's primary control lever.",
+        "talk": "beyond-the-harness-a-journey-towards-adaptative-engineering",
+        "timestamp_sec": 1272
+      }
+    ],
+    "maturity": "consolidating",
+    "maturity_rationale": "There is a broad, independently-converged mechanical core \u2014 runtime owns control flow and state, explicit termination gates, per-iteration context budgets, verifier separated from author, runtime-enforced approval on mutating calls \u2014 reported from production systems at Anthropic, OpenAI, Microsoft, OpenGov, AWS, and Etsy rather than from prototypes. What remains actively argued is at the edges and is genuinely incompatible: compaction versus fresh context, thin versus thick harness, deterministic versus agentic verification, and whether a loop may close without a human, with 2+ credible talks on each side."
+  },
+  "_meta": {
+    "concept": "agentic loop design",
+    "slug": "agentic-loop-design",
+    "talk_count": 30,
+    "missing_talks": [],
+    "wall_sec": 200.2,
+    "run_at": "2026-08-13T16:58:19Z"
+  }
+}

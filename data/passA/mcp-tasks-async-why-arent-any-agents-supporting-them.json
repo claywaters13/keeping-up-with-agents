@@ -1,0 +1,258 @@
+{
+  "is_error": false,
+  "duration_api_ms": 45701,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "3d972e8e-f8b0-4194-b613-f5e1e4c73f91",
+  "total_cost_usd": 0.22166399999999997,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 11236,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 3866,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 11236,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 3866,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 11236,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 11236
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 7395,
+      "outputTokens": 19,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.007489999999999999,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 3866,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 11236,
+      "webSearchRequests": 0,
+      "costUSD": 0.21417399999999998,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Cornelia Davis of Temporal explains why, despite MCP tasks (async, long-running tool calls) being specified in November, essentially no MCP clients support them \u2014 the V1 spec was marked experimental, is genuinely complex, and had two design flaws that made it painful to implement. She grounds the talk in a concrete purchase-order example where invoice processing runs as a long-running MCP tool with human-in-the-loop approval steps, and demos her own hand-built MCP client (a 'task tracker workflow') surviving servers being down mid-flight. She walks through the V1 protocol's stateful `tasks/list` endpoint (unfilterable, doesn't scale past a million tasks) and its awkward long-lived-connection tunneling of `input_required` via `tasks/result`, then covers the July V2 changes: a stateless core, MCP restructured into core plus extensions with tasks as an extension, `tasks/list` removed, and a client-initiated update endpoint replacing elicitation-over-session. Useful if you're building async or durable MCP tooling and want a concrete read on what the spec demands, what changed, and what's still missing. She flags that even V2 doesn't scale to millions without the notifications protocol, and says she's working to land an implementation in FastMCP.\",\n  \"key_points\": [\n    \"MCP tasks let a client invoke a tool and receive a handle instead of a response, so the tool can run long in the background and be interacted with over time.\",\n    \"The spec requires launched tasks to be durable: they must survive client crashes, server crashes, network drops, and humans disappearing on vacation, and remain interactable when infrastructure returns.\",\n    \"V1's `tasks/list` endpoint made the protocol stateful and shipped with no filter, so recovering a task ID from a server holding a million tasks means paging through all of them.\",\n    \"V1 tunneled `input_required` through `tasks/result` over a long-lived connection where the server elicits from the client, which is hard to implement and hard to resume after the connection dies.\",\n    \"The July V2 spec goes stateless, restructures MCP into a core plus extensions with tasks as an extension, drops `tasks/list`, and adds a client-side update endpoint that behaves like a signal into a long-running process.\",\n    \"Because `tasks/list` is gone, clients must persist task IDs themselves \u2014 the spec only says 'should', which Davis argues should be a MUST since an unpersisted ID is unrecoverable.\",\n    \"Task lifecycle management (working \u2192 input_required \u2192 working \u2192 completed/canceled/failed) is unchanged between V1 and V2, and Davis considers that part of the design sound.\",\n    \"Implementing a server means mapping the task lifecycle states onto your own domain state machine, which is where most of the real work sits.\",\n    \"Even V2 doesn't scale to millions of tasks because every client polls its own tasks; the spec's unimplemented notifications protocol, offering a single 'has anything changed' endpoint, is the promising fix.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"the first answer to that question is, well, cuz they're smart. The people who are building those clients are smart. What I mean by that is that the MCP tasks specification that came out in November was marked as experimental.\",\n      \"timestamp_sec\": 1,\n      \"why\": \"The talk's thesis in one breath: non-adoption is a rational response, not laziness.\"\n    },\n    {\n      \"text\": \"MCP tasks are allowing you to have an MCP tool that you can invoke and then it is long-running in the background, and then eventually you can get back some response.\",\n      \"timestamp_sec\": 210,\n      \"why\": \"Cleanest one-sentence definition of the feature.\"\n    },\n    {\n      \"text\": \"You're going to invoke a tool, and instead of getting back a response, you're going to get a handle.\",\n      \"timestamp_sec\": 255,\n      \"why\": \"Names the core protocol shift precisely.\"\n    },\n    {\n      \"text\": \"the longer something runs, the more likely there's going to be some kind of infrastructure blip that's going to cause a problem in that long-running task\",\n      \"timestamp_sec\": 255,\n      \"why\": \"States the durability motivation as a general distributed-systems principle.\"\n    },\n    {\n      \"text\": \"This is verbage from the spec itself that says once you've locked launched a task it has to be durable.\",\n      \"timestamp_sec\": 351,\n      \"why\": \"Anchors the durability requirement in the spec rather than opinion.\"\n    },\n    {\n      \"text\": \"Remember I said nobody's implemented this on the client side? Well, I created my own implementation here.\",\n      \"timestamp_sec\": 567,\n      \"why\": \"Establishes that the demo is a from-scratch client, the talk's main artifact.\"\n    },\n    {\n      \"text\": \"Task list. This is a stateful protocol.\",\n      \"timestamp_sec\": 742,\n      \"why\": \"Identifies the first of the two V1 flaws.\"\n    },\n    {\n      \"text\": \"Spoiler alert, there is no filter on that endpoint. So, you would have to go through a million tasks to find the one that you're looking for that you want to interact with.\",\n      \"timestamp_sec\": 830,\n      \"why\": \"Concrete, checkable criticism of the V1 API surface.\"\n    },\n    {\n      \"text\": \"Just because you can doesn't mean you should.\",\n      \"timestamp_sec\": 830,\n      \"why\": \"Compact verdict on the tasks/list design.\"\n    },\n    {\n      \"text\": \"this middle section has this weird protocol where you open a long-running connection and then the server elicits a response from the client. That gets super tricky.\",\n      \"timestamp_sec\": 787,\n      \"why\": \"Names the second V1 flaw and why it blocks client implementers.\"\n    },\n    {\n      \"text\": \"back to the question of why the heck aren't there any clients that are supporting this protocol? Yeah. That's why. Super involved. It's still involved with V2, but it gets better.\",\n      \"timestamp_sec\": 914,\n      \"why\": \"Answers the title question directly and refuses to oversell V2.\"\n    },\n    {\n      \"text\": \"one of the things that made me jump up and celebrate a little bit is that the protocol is going stateless. So, as somebody who's been working in the microservices world for a long time, stateful protocols are the absolute worst thing in large-scale distributed systems.\",\n      \"timestamp_sec\": 956,\n      \"why\": \"Her strongest stated position, with the distributed-systems reasoning behind it.\"\n    },\n    {\n      \"text\": \"Task list has gone away. Good. Wasn't particularly useful anyway, especially at large scale.\",\n      \"timestamp_sec\": 1004,\n      \"why\": \"Concrete V1\u2192V2 delta plus her judgment on it.\"\n    },\n    {\n      \"text\": \"if you remember a while ago, I showed you that screenshot that said Temporal has this notion of a signal. That's effectively what this is. It's a way of signaling into this long-running task.\",\n      \"timestamp_sec\": 1043,\n      \"why\": \"Frames the new V2 update endpoint against durable-execution primitives.\"\n    },\n    {\n      \"text\": \"I put the picture on the right-hand side here to emphasize the fact that the life cycle management of these tasks is unchanged. That's actually sound.\",\n      \"timestamp_sec\": 1043,\n      \"why\": \"Marks what she thinks the spec got right, balancing the critique.\"\n    },\n    {\n      \"text\": \"The spec right now says that clients should persist task IDs, but it also points out that if you don't persist task IDs, there is no way to get it back. So, I'm not quite sure why this doesn't have a an all caps must.\",\n      \"timestamp_sec\": 1145,\n      \"why\": \"A specific, actionable objection to V2's normative wording.\"\n    },\n    {\n      \"text\": \"with the V1 protocol, the reference implementation, if you had input required on multiple even though you can see that there's many of them in flight, on the client side they were FIFO. So, you could only respond to the first one.\",\n      \"timestamp_sec\": 1226,\n      \"why\": \"Reports a concrete limitation found in the reference implementation, not just the spec.\"\n    },\n    {\n      \"text\": \"even though this is better, it still doesn't scale to the millions. Why? Because if I've got a million tasks running, I've got a million clients that are doing gets against each and every one of those tasks. That does not scale.\",\n      \"timestamp_sec\": 1311,\n      \"why\": \"The main open problem she leaves the audience with.\"\n    },\n    {\n      \"text\": \"My goal is to actually implement it in in fast MCP so that you can use the same protocol the same framework that you're using probably for your MCP servers today.\",\n      \"timestamp_sec\": 1376,\n      \"why\": \"States her concrete roadmap commitment with a timeframe.\"\n    }\n  ],\n  \"concepts\": [\n    \"mcp tasks\",\n    \"asynchronous tool invocation\",\n    \"durable execution\",\n    \"human-in-the-loop approval\",\n    \"stateless protocol design\",\n    \"task lifecycle state machine\",\n    \"protocol extensions\",\n    \"client-side task id persistence\",\n    \"polling versus notification protocols\",\n    \"mcp client implementation\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"No MCP clients currently support MCP tasks, and that is a reasonable decision given the spec was marked experimental and is about to change substantially.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1\n    },\n    {\n      \"claim\": \"The MCP tasks specification requires that once a task is launched it must be durable and survive client, server, and network failures.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 351\n    },\n    {\n      \"claim\": \"V1's tasks/list endpoint made the protocol stateful and, lacking any filter, is unusable at scales of a million tasks.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 830\n    },\n    {\n      \"claim\": \"Stateful protocols are the worst thing you can have in large-scale distributed systems, so V2 going stateless is a major improvement.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 956\n    },\n    {\n      \"claim\": \"V1's mechanism of tunneling input_required through a long-lived tasks/result connection with server-to-client elicitation is a major barrier to client implementation.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 787\n    },\n    {\n      \"claim\": \"The task lifecycle model (working, input_required, completed, canceled, failed) is well designed and correctly left unchanged in V2.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1093\n    },\n    {\n      \"claim\": \"The V2 spec's 'should persist task IDs' ought to be a normative MUST, because an unpersisted task ID is permanently unrecoverable.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1145\n    },\n    {\n      \"claim\": \"The V1 reference client implementation handles input_required FIFO, so with multiple tasks in flight only the first can be responded to.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1226\n    },\n    {\n      \"claim\": \"Even the V2 protocol will not scale to millions of concurrent tasks under a per-client polling model; the notifications protocol is needed instead.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1311\n    },\n    {\n      \"claim\": \"Implementing MCP tasks correctly requires a durable workflow engine on both server and client sides, not just request/response handlers.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 1265\n    }\n  ],\n  \"speaker_org\": \"Temporal\"\n}",
+  "ttft_ms": 44492,
+  "ttft_stream_ms": 1121,
+  "time_to_request_ms": 34,
+  "type": "result",
+  "duration_ms": 46216,
+  "uuid": "a986e2b8-8633-41ce-b83c-09d68b0673f5",
+  "passA": {
+    "summary": "Cornelia Davis of Temporal explains why, despite MCP tasks (async, long-running tool calls) being specified in November, essentially no MCP clients support them \u2014 the V1 spec was marked experimental, is genuinely complex, and had two design flaws that made it painful to implement. She grounds the talk in a concrete purchase-order example where invoice processing runs as a long-running MCP tool with human-in-the-loop approval steps, and demos her own hand-built MCP client (a 'task tracker workflow') surviving servers being down mid-flight. She walks through the V1 protocol's stateful `tasks/list` endpoint (unfilterable, doesn't scale past a million tasks) and its awkward long-lived-connection tunneling of `input_required` via `tasks/result`, then covers the July V2 changes: a stateless core, MCP restructured into core plus extensions with tasks as an extension, `tasks/list` removed, and a client-initiated update endpoint replacing elicitation-over-session. Useful if you're building async or durable MCP tooling and want a concrete read on what the spec demands, what changed, and what's still missing. She flags that even V2 doesn't scale to millions without the notifications protocol, and says she's working to land an implementation in FastMCP.",
+    "key_points": [
+      "MCP tasks let a client invoke a tool and receive a handle instead of a response, so the tool can run long in the background and be interacted with over time.",
+      "The spec requires launched tasks to be durable: they must survive client crashes, server crashes, network drops, and humans disappearing on vacation, and remain interactable when infrastructure returns.",
+      "V1's `tasks/list` endpoint made the protocol stateful and shipped with no filter, so recovering a task ID from a server holding a million tasks means paging through all of them.",
+      "V1 tunneled `input_required` through `tasks/result` over a long-lived connection where the server elicits from the client, which is hard to implement and hard to resume after the connection dies.",
+      "The July V2 spec goes stateless, restructures MCP into a core plus extensions with tasks as an extension, drops `tasks/list`, and adds a client-side update endpoint that behaves like a signal into a long-running process.",
+      "Because `tasks/list` is gone, clients must persist task IDs themselves \u2014 the spec only says 'should', which Davis argues should be a MUST since an unpersisted ID is unrecoverable.",
+      "Task lifecycle management (working \u2192 input_required \u2192 working \u2192 completed/canceled/failed) is unchanged between V1 and V2, and Davis considers that part of the design sound.",
+      "Implementing a server means mapping the task lifecycle states onto your own domain state machine, which is where most of the real work sits.",
+      "Even V2 doesn't scale to millions of tasks because every client polls its own tasks; the spec's unimplemented notifications protocol, offering a single 'has anything changed' endpoint, is the promising fix."
+    ],
+    "notable_quotes": [
+      {
+        "text": "the first answer to that question is, well, cuz they're smart. The people who are building those clients are smart. What I mean by that is that the MCP tasks specification that came out in November was marked as experimental.",
+        "timestamp_sec": 1,
+        "why": "The talk's thesis in one breath: non-adoption is a rational response, not laziness."
+      },
+      {
+        "text": "MCP tasks are allowing you to have an MCP tool that you can invoke and then it is long-running in the background, and then eventually you can get back some response.",
+        "timestamp_sec": 210,
+        "why": "Cleanest one-sentence definition of the feature."
+      },
+      {
+        "text": "You're going to invoke a tool, and instead of getting back a response, you're going to get a handle.",
+        "timestamp_sec": 255,
+        "why": "Names the core protocol shift precisely."
+      },
+      {
+        "text": "the longer something runs, the more likely there's going to be some kind of infrastructure blip that's going to cause a problem in that long-running task",
+        "timestamp_sec": 255,
+        "why": "States the durability motivation as a general distributed-systems principle."
+      },
+      {
+        "text": "This is verbage from the spec itself that says once you've locked launched a task it has to be durable.",
+        "timestamp_sec": 351,
+        "why": "Anchors the durability requirement in the spec rather than opinion."
+      },
+      {
+        "text": "Remember I said nobody's implemented this on the client side? Well, I created my own implementation here.",
+        "timestamp_sec": 567,
+        "why": "Establishes that the demo is a from-scratch client, the talk's main artifact."
+      },
+      {
+        "text": "Task list. This is a stateful protocol.",
+        "timestamp_sec": 742,
+        "why": "Identifies the first of the two V1 flaws."
+      },
+      {
+        "text": "Spoiler alert, there is no filter on that endpoint. So, you would have to go through a million tasks to find the one that you're looking for that you want to interact with.",
+        "timestamp_sec": 830,
+        "why": "Concrete, checkable criticism of the V1 API surface."
+      },
+      {
+        "text": "Just because you can doesn't mean you should.",
+        "timestamp_sec": 830,
+        "why": "Compact verdict on the tasks/list design."
+      },
+      {
+        "text": "this middle section has this weird protocol where you open a long-running connection and then the server elicits a response from the client. That gets super tricky.",
+        "timestamp_sec": 787,
+        "why": "Names the second V1 flaw and why it blocks client implementers."
+      },
+      {
+        "text": "back to the question of why the heck aren't there any clients that are supporting this protocol? Yeah. That's why. Super involved. It's still involved with V2, but it gets better.",
+        "timestamp_sec": 914,
+        "why": "Answers the title question directly and refuses to oversell V2."
+      },
+      {
+        "text": "one of the things that made me jump up and celebrate a little bit is that the protocol is going stateless. So, as somebody who's been working in the microservices world for a long time, stateful protocols are the absolute worst thing in large-scale distributed systems.",
+        "timestamp_sec": 956,
+        "why": "Her strongest stated position, with the distributed-systems reasoning behind it."
+      },
+      {
+        "text": "Task list has gone away. Good. Wasn't particularly useful anyway, especially at large scale.",
+        "timestamp_sec": 1004,
+        "why": "Concrete V1\u2192V2 delta plus her judgment on it."
+      },
+      {
+        "text": "if you remember a while ago, I showed you that screenshot that said Temporal has this notion of a signal. That's effectively what this is. It's a way of signaling into this long-running task.",
+        "timestamp_sec": 1043,
+        "why": "Frames the new V2 update endpoint against durable-execution primitives."
+      },
+      {
+        "text": "I put the picture on the right-hand side here to emphasize the fact that the life cycle management of these tasks is unchanged. That's actually sound.",
+        "timestamp_sec": 1043,
+        "why": "Marks what she thinks the spec got right, balancing the critique."
+      },
+      {
+        "text": "The spec right now says that clients should persist task IDs, but it also points out that if you don't persist task IDs, there is no way to get it back. So, I'm not quite sure why this doesn't have a an all caps must.",
+        "timestamp_sec": 1145,
+        "why": "A specific, actionable objection to V2's normative wording."
+      },
+      {
+        "text": "with the V1 protocol, the reference implementation, if you had input required on multiple even though you can see that there's many of them in flight, on the client side they were FIFO. So, you could only respond to the first one.",
+        "timestamp_sec": 1226,
+        "why": "Reports a concrete limitation found in the reference implementation, not just the spec."
+      },
+      {
+        "text": "even though this is better, it still doesn't scale to the millions. Why? Because if I've got a million tasks running, I've got a million clients that are doing gets against each and every one of those tasks. That does not scale.",
+        "timestamp_sec": 1311,
+        "why": "The main open problem she leaves the audience with."
+      }
+    ],
+    "concepts": [
+      "mcp tasks",
+      "asynchronous tool invocation",
+      "durable execution",
+      "human-in-the-loop approval",
+      "stateless protocol design",
+      "task lifecycle state machine",
+      "protocol extensions",
+      "client-side task id persistence",
+      "polling versus notification protocols",
+      "mcp client implementation"
+    ],
+    "positions": [
+      {
+        "claim": "No MCP clients currently support MCP tasks, and that is a reasonable decision given the spec was marked experimental and is about to change substantially.",
+        "confidence": "stated",
+        "timestamp_sec": 1
+      },
+      {
+        "claim": "The MCP tasks specification requires that once a task is launched it must be durable and survive client, server, and network failures.",
+        "confidence": "stated",
+        "timestamp_sec": 351
+      },
+      {
+        "claim": "V1's tasks/list endpoint made the protocol stateful and, lacking any filter, is unusable at scales of a million tasks.",
+        "confidence": "stated",
+        "timestamp_sec": 830
+      },
+      {
+        "claim": "Stateful protocols are the worst thing you can have in large-scale distributed systems, so V2 going stateless is a major improvement.",
+        "confidence": "stated",
+        "timestamp_sec": 956
+      },
+      {
+        "claim": "V1's mechanism of tunneling input_required through a long-lived tasks/result connection with server-to-client elicitation is a major barrier to client implementation.",
+        "confidence": "stated",
+        "timestamp_sec": 787
+      },
+      {
+        "claim": "The task lifecycle model (working, input_required, completed, canceled, failed) is well designed and correctly left unchanged in V2.",
+        "confidence": "stated",
+        "timestamp_sec": 1093
+      },
+      {
+        "claim": "The V2 spec's 'should persist task IDs' ought to be a normative MUST, because an unpersisted task ID is permanently unrecoverable.",
+        "confidence": "stated",
+        "timestamp_sec": 1145
+      },
+      {
+        "claim": "The V1 reference client implementation handles input_required FIFO, so with multiple tasks in flight only the first can be responded to.",
+        "confidence": "stated",
+        "timestamp_sec": 1226
+      },
+      {
+        "claim": "Even the V2 protocol will not scale to millions of concurrent tasks under a per-client polling model; the notifications protocol is needed instead.",
+        "confidence": "stated",
+        "timestamp_sec": 1311
+      },
+      {
+        "claim": "Implementing MCP tasks correctly requires a durable workflow engine on both server and client sides, not just request/response handlers.",
+        "confidence": "implied",
+        "timestamp_sec": 1265
+      }
+    ],
+    "speaker_org": "Temporal"
+  },
+  "_meta": {
+    "slug": "mcp-tasks-async-why-arent-any-agents-supporting-them",
+    "video_id": "s4r6nk5WsZw",
+    "url": "https://www.youtube.com/watch?v=s4r6nk5WsZw",
+    "word_count": 3982,
+    "wall_sec": 47.4,
+    "run_at": "2026-08-12T20:02:34Z",
+    "effort": "medium",
+    "quotes_dropped": 0
+  }
+}

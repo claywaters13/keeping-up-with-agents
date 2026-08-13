@@ -1,0 +1,296 @@
+{
+  "is_error": false,
+  "duration_api_ms": 131273,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "2d3dfea3-71b8-42e3-99e9-84e695b9a2db",
+  "total_cost_usd": 0.698283,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 38767,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 11193,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 38767,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 11193,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 38767,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 38767
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 25544,
+      "outputTokens": 16,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.025624,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 11193,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 38767,
+      "webSearchRequests": 0,
+      "costUSD": 0.672659,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\"concept\": \"sub-agent delegation\", \"state_of_practice\": \"Delegation is now treated primarily as a context-management technique rather than a capability-scaling one: you spawn a child agent to keep tokens and unrelated concepts out of the parent's window, not because the child is smarter. The mechanics have largely converged \u2014 each sub-agent gets one job and a small tool set, its own scoped context slice, and returns a compressed result rather than dumping its transcript into the primary thread; Codex enforces this at the harness level (read-only subagents that cannot spawn further subagents, skills capped at 2% of the context window, deferred tools behind tool search). What remains genuinely unsettled is how much of the *reasoning* may be split. ZS Associates killed a four-stage analyst-mimicking pipeline after finding that no single agent held the end-to-end picture and that every handoff shed context, while Cognition reports not using sub-agents at all, preferring one long-lived 'sidekick' with a running context because cached tokens are ~10x cheaper than re-priming fresh children. Pinterest moved in the opposite direction \u2014 from one monolithic ReAct prompt to a supervisor plus specialist agents \u2014 for exactly the control that ZS gave up. The emerging synthesis is 'distribute investigation, centralize judgment': parallelize evidence gathering, keep planning and adjudication in one place, and treat any child agent that escapes the parent's permission, flag, and kill-switch middleware as an architectural defect.\", \"consensus\": [{\"claim\": \"Sub-agents should return only compressed results or findings to the parent, never their full transcript or intermediate reasoning; letting subtask output flow into the primary thread is an anti-pattern.\", \"support_count\": 4, \"supporting_talks\": [\"why-we-killed-our-multi-agent-pipeline\", \"medic-for-apache-spark-first-aid-for-failing-jobs\", \"anthropics-cca-exam-as-a-field-guide-for-agentic-engineering\", \"what-if-the-harness-mattered-more-than-the-model\"], \"evidence_quote\": \"That you can still delegate to a sub-agent. You can get back the uh results back, not the reasoning or the judgment.\", \"evidence_talk\": \"why-we-killed-our-multi-agent-pipeline\", \"evidence_timestamp_sec\": 510}, {\"claim\": \"Context isolation \u2014 not added intelligence \u2014 is the reason to delegate; oversized context degrades answer accuracy, so each agent should see only its own slice.\", \"support_count\": 6, \"supporting_talks\": [\"anthropics-cca-exam-as-a-field-guide-for-agentic-engineering\", \"codex-behind-the-harness\", \"medic-for-apache-spark-first-aid-for-failing-jobs\", \"what-if-the-harness-mattered-more-than-the-model\", \"i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke\", \"the-state-of-model-routing\"], \"evidence_quote\": \"don't let your agents context spill over into the main context because context means tokens, tokens mean money, and the more context you have, the more confused the LLM is going to be in giving you an answer\", \"evidence_talk\": \"anthropics-cca-exam-as-a-field-guide-for-agentic-engineering\", \"evidence_timestamp_sec\": 782}, {\"claim\": \"One monolithic prompt attempting several jobs performs measurably worse than several narrowly scoped agents each given a single job and one or two tools.\", \"support_count\": 4, \"supporting_talks\": [\"medic-for-apache-spark-first-aid-for-failing-jobs\", \"the-factory-that-dreams-39-ai-agents-no-framework\", \"anthropics-cca-exam-as-a-field-guide-for-agentic-engineering\", \"build-systems-not-code\"], \"evidence_quote\": \"Prompt tuning became unsustainable. One prompt had to do everything, and adding detail in one area degraded the behavior in another.\", \"evidence_talk\": \"medic-for-apache-spark-first-aid-for-failing-jobs\", \"evidence_timestamp_sec\": 146}, {\"claim\": \"A spawned child agent must inherit the parent's controls \u2014 the same flag/kill-switch middleware, an explicit approval boundary, and a restricted tool/permission set (read-only by default).\", \"support_count\": 5, \"supporting_talks\": [\"agents-need-feature-flags\", \"codex-behind-the-harness\", \"i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke\", \"recursive-coding-agents\", \"what-if-the-harness-mattered-more-than-the-model\"], \"evidence_quote\": \"Sub agents must go through the same middleware. The biggest failure mode I see is a parent agent with flags properly applied that spawns a child agent.\", \"evidence_talk\": \"agents-need-feature-flags\", \"evidence_timestamp_sec\": 787}, {\"claim\": \"Execution should be delegated but judgment should not: one agent (or the strongest model) retains planning and final adjudication while children do bounded investigation or implementation.\", \"support_count\": 3, \"supporting_talks\": [\"why-we-killed-our-multi-agent-pipeline\", \"the-state-of-model-routing\", \"medic-for-apache-spark-first-aid-for-failing-jobs\"], \"evidence_quote\": \"we're reducing the cost of Fable level intelligence by 40%. The way we do that is we allow Fable to still do like the planning and the the hard decision making but delegate a lot of the work to an implementation model.\", \"evidence_talk\": \"the-state-of-model-routing\", \"evidence_timestamp_sec\": 272}], \"disagreements\": [{\"question\": \"Does splitting a complex task across multiple specialized agents improve or destroy the quality of the result?\", \"position_a\": \"Decompose: a team of narrowly scoped agents gives more control over system behavior and lets you expand scope by adding a prompt, whereas a single agent hits a prompt-tuning ceiling.\", \"position_a_talks\": [\"medic-for-apache-spark-first-aid-for-failing-jobs\", \"the-factory-that-dreams-39-ai-agents-no-framework\", \"anthropics-cca-exam-as-a-field-guide-for-agentic-engineering\", \"build-systems-not-code\"], \"position_b\": \"Consolidate: every agent-to-agent handoff loses context and the loss compounds, so exactly one agent must own end-to-end reasoning \u2014 ZS deleted its four-stage pipeline, and Cognition replaced sub-agents entirely with a single long-lived sidekick.\", \"position_b_talks\": [\"why-we-killed-our-multi-agent-pipeline\", \"the-state-of-model-routing\"], \"why_it_matters\": \"The two camps are running the same migration in opposite directions \u2014 Pinterest went single-agent to multi-agent for controllability, ZS went multi-agent to single-agent for coherence \u2014 so the choice determines whether your reliability work goes into handoff contracts or into keeping one context coherent for 50+ turns.\"}, {\"question\": \"Should the delegation topology be designed by the engineer up front, or chosen by the model at runtime?\", \"position_a\": \"The engineer specifies it: hierarchies should be real entity types with scoped context and approval boundaries, workflows must define the path with explicit stop/retry/escalate terminals, and you should not let a coding agent design your agent system.\", \"position_a_talks\": [\"i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke\", \"build-systems-not-code\", \"why-we-killed-our-multi-agent-pipeline\"], \"position_b\": \"The model picks it: a system only counts as recursive if the model itself chooses the decomposition, Mythos will spawn models, split work, and verify it if simply asked, and agent roles should emerge from position relative to other agents rather than being assigned.\", \"position_b_talks\": [\"recursive-coding-agents\", \"everything-we-knew-about-software-has-changed\", \"beyond-the-harness-a-journey-towards-adaptative-engineering\"], \"why_it_matters\": \"If topology is engineered, your investment goes into workflow definitions, entity types, and control planes that stay auditable; if it emerges, that scaffolding is obsolete within a model generation and the engineering work shifts to designing constraints and selection pressure instead.\"}, {\"question\": \"Is it cheaper to spawn fresh scoped sub-agents per task or to keep one long-lived delegate with a persistent context?\", \"position_a\": \"Fresh per-task children: every agent gets its own slice, the parent stays clean, and expanding scope means adding another scoped agent.\", \"position_a_talks\": [\"anthropics-cca-exam-as-a-field-guide-for-agentic-engineering\", \"medic-for-apache-spark-first-aid-for-failing-jobs\", \"the-factory-that-dreams-39-ai-agents-no-framework\", \"i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke\"], \"position_b\": \"One persistent sidekick: re-providing earlier context to each new child forces cache misses, and cached tokens are roughly 10x cheaper, so a single delegate with a running context wins on cost.\", \"position_b_talks\": [\"the-state-of-model-routing\"], \"why_it_matters\": \"KV-cache economics can dominate the token bill of a delegating system; a fan-out architecture that looks context-efficient per agent can be an order of magnitude more expensive in input tokens than a single warm delegate.\"}, {\"question\": \"Should a sub-agent be allowed to spawn its own sub-agents?\", \"position_a\": \"No \u2014 depth must be capped in the harness. Codex's subagent runs entirely separate, has read permissions only, and cannot spin up further subagents; unbounded child spawning is exactly the failure mode kill switches exist to catch (a four-agent pipeline with two agents looping cost $47,000).\", \"position_a_talks\": [\"codex-behind-the-harness\", \"agents-need-feature-flags\"], \"position_b\": \"Yes \u2014 recursion is the point. An RLM is defined by the model decomposing problems into sub-calls or sub-agents at arbitrary depth, and Mythos spawning and verifying its own workers is the headline capability jump.\", \"position_b_talks\": [\"recursive-coding-agents\", \"everything-we-knew-about-software-has-changed\"], \"why_it_matters\": \"Recursion depth sets your worst-case blast radius and cost ceiling: unbounded spawning is what turns a bad prompt into a runaway loop, but capping depth forecloses the RLM-style processing of inputs far larger than the context window.\"}], \"practical_guidance\": {\"do\": [\"Define the sub-agent return contract as findings only \u2014 claim plus evidence, or a summary \u2014 and have the child summarize before returning to the parent\", \"Give each sub-agent a single job and one or two tools rather than a shared tool inventory\", \"Route every child spawn through the same flag/kill-switch middleware as the parent, and resolve flags per turn so an in-flight sub-agent honors a flip at its next decision point\", \"Default child agents to read-only permissions and their own explicit approval boundary; lock tool arguments by partial application so the model cannot widen scope and no per-action human prompt is needed\", \"Keep one agent owning end-to-end judgment; parallelize investigation across children but not adjudication\", \"Budget the delegation surface against the context window explicitly \u2014 cap the available-skills list at ~2% of max context and mark rarely-used tools deferred behind tool search\", \"Keep working context under ~200K tokens and ideally under 100K regardless of the advertised window\", \"Persist each agent's state in files on disk so you can clear context and re-read handoff files instead of compacting\", \"Make dispatch the only available path in the orchestrator's harness (CLI plus skills that call it), because an orchestrator with the ability to do the work itself will do the work itself\", \"Pull deterministic steps \u2014 signal detection over metrics, deduplication, anything with an exact answer \u2014 out of the agent graph and run them before the agent is invoked\", \"Constrain what a sub-agent may investigate with an explicit control plane (e.g. a knowledge graph where every edge is a hypothesis it may evaluate)\", \"Give parallel agents only the claim and evidence, not the reasoning that produced them, to keep them from converging on one idea\", \"Snapshot real tool responses as checked-in fixtures and run offline evals so multi-agent regressions are detectable\"], \"avoid\": [\"Sub-agents that bypass the parent's flag middleware \u2014 a flipped kill switch never reaches them\", \"Letting every subtask dump its full output into the primary thread\", \"Distributing judgment across a chain of specialized agents; each handoff loses context and the loss compounds\", \"Copying a human analyst's workflow steps or an org chart as your agent architecture\", \"One prompt doing four jobs \u2014 the agentic equivalent of a god class, and the cause of drift\", \"Unbounded or continuously looping agent pipelines with no spend ceiling (a four-agent researcher/analyzer/verifier/synthesizer pipeline with two looping agents cost $47,000)\", \"Filling a million-token window because it exists\", \"Using context compaction as the default recovery mechanism \u2014 it is slow, you cannot choose what survives, and it forces a cache miss that raises input token cost\", \"Letting a coding agent design your other agents; it produces something that works but is unmaintainable\", \"Routing sub-agent work by task type alone \u2014 extremely fragile once complexity shifts mid-session\", \"Stacking many agent and MCP processes on one laptop, or using a machine that sleeps as the fleet's control point\", \"Having agents infer entity and KPI relationships from raw tables \u2014 it does not scale and invents relationships not in the data\"]}, \"notable_outliers\": [{\"claim\": \"Cognition does not use sub-agents at all \u2014 one 'sidekick' with a continuously running context so the main agent never re-provides earlier context, because cached tokens are ~10x cheaper.\", \"talk\": \"the-state-of-model-routing\", \"timestamp_sec\": 1084}, {\"claim\": \"A four-agent pipeline (researcher, analyzer, verifier, synthesizer) with two agents in a continuous loop cost $47,000.\", \"talk\": \"agents-need-feature-flags\", \"timestamp_sec\": 145}, {\"claim\": \"Sub-agents should receive only the claim and evidence, never the reasoning behind them, because collaborating agents otherwise devolve into groupthink around a single idea.\", \"talk\": \"anthropics-cca-exam-as-a-field-guide-for-agentic-engineering\", \"timestamp_sec\": 832}, {\"claim\": \"An orchestrator will do the work itself rather than delegate unless the harness makes dispatching the only path it can take.\", \"talk\": \"i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke\", \"timestamp_sec\": 269}, {\"claim\": \"An infra team of agents inside the fleet built the review gateway that governs the fleet \u2014 agents building the tools that run the agents.\", \"talk\": \"i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke\", \"timestamp_sec\": 228}, {\"claim\": \"Agent identity, role, and specialization should not be assigned by the engineer at all \u2014 they should arise from an agent's position relative to other agents and environmental pressure.\", \"talk\": \"beyond-the-harness-a-journey-towards-adaptative-engineering\", \"timestamp_sec\": 1437}, {\"claim\": \"Modeling a sub-agent as an ordinary function you call like any other tool is better than frameworks that make sub-agents a distinct first-class concept.\", \"talk\": \"what-if-the-harness-mattered-more-than-the-model\", \"timestamp_sec\": 1333}, {\"claim\": \"On terminal bench, Opus scores ~3x better than Haiku at 1/10 the total cost despite being far more expensive per token \u2014 cheap models delegated out-of-distribution work can raise total cost through tool-call churn.\", \"talk\": \"the-state-of-model-routing\", \"timestamp_sec\": 925}], \"maturity\": \"contested\", \"maturity_rationale\": \"The plumbing is close to settled \u2014 scoped context, results-only returns, and inherited permissions recur across five or six independent talks \u2014 but two production teams reversed course in opposite directions in the same year (Pinterest single\u2192multi for control, ZS multi\u2192single for coherence), Cognition abandoned sub-agents outright for a cached sidekick, and the field splits cleanly on whether the engineer or the model should choose the decomposition.\"}",
+  "ttft_ms": 69995,
+  "ttft_stream_ms": 2038,
+  "time_to_request_ms": 36,
+  "type": "result",
+  "duration_ms": 131065,
+  "uuid": "0a8ae935-1121-41ed-bff7-1b5f03192a6f",
+  "passC": {
+    "concept": "sub-agent delegation",
+    "state_of_practice": "Delegation is now treated primarily as a context-management technique rather than a capability-scaling one: you spawn a child agent to keep tokens and unrelated concepts out of the parent's window, not because the child is smarter. The mechanics have largely converged \u2014 each sub-agent gets one job and a small tool set, its own scoped context slice, and returns a compressed result rather than dumping its transcript into the primary thread; Codex enforces this at the harness level (read-only subagents that cannot spawn further subagents, skills capped at 2% of the context window, deferred tools behind tool search). What remains genuinely unsettled is how much of the *reasoning* may be split. ZS Associates killed a four-stage analyst-mimicking pipeline after finding that no single agent held the end-to-end picture and that every handoff shed context, while Cognition reports not using sub-agents at all, preferring one long-lived 'sidekick' with a running context because cached tokens are ~10x cheaper than re-priming fresh children. Pinterest moved in the opposite direction \u2014 from one monolithic ReAct prompt to a supervisor plus specialist agents \u2014 for exactly the control that ZS gave up. The emerging synthesis is 'distribute investigation, centralize judgment': parallelize evidence gathering, keep planning and adjudication in one place, and treat any child agent that escapes the parent's permission, flag, and kill-switch middleware as an architectural defect.",
+    "consensus": [
+      {
+        "claim": "Sub-agents should return only compressed results or findings to the parent, never their full transcript or intermediate reasoning; letting subtask output flow into the primary thread is an anti-pattern.",
+        "support_count": 4,
+        "supporting_talks": [
+          "why-we-killed-our-multi-agent-pipeline",
+          "medic-for-apache-spark-first-aid-for-failing-jobs",
+          "anthropics-cca-exam-as-a-field-guide-for-agentic-engineering",
+          "what-if-the-harness-mattered-more-than-the-model"
+        ],
+        "evidence_quote": "That you can still delegate to a sub-agent. You can get back the uh results back, not the reasoning or the judgment.",
+        "evidence_talk": "why-we-killed-our-multi-agent-pipeline",
+        "evidence_timestamp_sec": 510
+      },
+      {
+        "claim": "Context isolation \u2014 not added intelligence \u2014 is the reason to delegate; oversized context degrades answer accuracy, so each agent should see only its own slice.",
+        "support_count": 6,
+        "supporting_talks": [
+          "anthropics-cca-exam-as-a-field-guide-for-agentic-engineering",
+          "codex-behind-the-harness",
+          "medic-for-apache-spark-first-aid-for-failing-jobs",
+          "what-if-the-harness-mattered-more-than-the-model",
+          "i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke",
+          "the-state-of-model-routing"
+        ],
+        "evidence_quote": "don't let your agents context spill over into the main context because context means tokens, tokens mean money, and the more context you have, the more confused the LLM is going to be in giving you an answer",
+        "evidence_talk": "anthropics-cca-exam-as-a-field-guide-for-agentic-engineering",
+        "evidence_timestamp_sec": 782
+      },
+      {
+        "claim": "One monolithic prompt attempting several jobs performs measurably worse than several narrowly scoped agents each given a single job and one or two tools.",
+        "support_count": 4,
+        "supporting_talks": [
+          "medic-for-apache-spark-first-aid-for-failing-jobs",
+          "the-factory-that-dreams-39-ai-agents-no-framework",
+          "anthropics-cca-exam-as-a-field-guide-for-agentic-engineering",
+          "build-systems-not-code"
+        ],
+        "evidence_quote": "Prompt tuning became unsustainable. One prompt had to do everything, and adding detail in one area degraded the behavior in another.",
+        "evidence_talk": "medic-for-apache-spark-first-aid-for-failing-jobs",
+        "evidence_timestamp_sec": 146
+      },
+      {
+        "claim": "A spawned child agent must inherit the parent's controls \u2014 the same flag/kill-switch middleware, an explicit approval boundary, and a restricted tool/permission set (read-only by default).",
+        "support_count": 5,
+        "supporting_talks": [
+          "agents-need-feature-flags",
+          "codex-behind-the-harness",
+          "i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke",
+          "recursive-coding-agents",
+          "what-if-the-harness-mattered-more-than-the-model"
+        ],
+        "evidence_quote": "Sub agents must go through the same middleware. The biggest failure mode I see is a parent agent with flags properly applied that spawns a child agent.",
+        "evidence_talk": "agents-need-feature-flags",
+        "evidence_timestamp_sec": 787
+      },
+      {
+        "claim": "Execution should be delegated but judgment should not: one agent (or the strongest model) retains planning and final adjudication while children do bounded investigation or implementation.",
+        "support_count": 3,
+        "supporting_talks": [
+          "why-we-killed-our-multi-agent-pipeline",
+          "the-state-of-model-routing",
+          "medic-for-apache-spark-first-aid-for-failing-jobs"
+        ],
+        "evidence_quote": "we're reducing the cost of Fable level intelligence by 40%. The way we do that is we allow Fable to still do like the planning and the the hard decision making but delegate a lot of the work to an implementation model.",
+        "evidence_talk": "the-state-of-model-routing",
+        "evidence_timestamp_sec": 272
+      }
+    ],
+    "disagreements": [
+      {
+        "question": "Does splitting a complex task across multiple specialized agents improve or destroy the quality of the result?",
+        "position_a": "Decompose: a team of narrowly scoped agents gives more control over system behavior and lets you expand scope by adding a prompt, whereas a single agent hits a prompt-tuning ceiling.",
+        "position_a_talks": [
+          "medic-for-apache-spark-first-aid-for-failing-jobs",
+          "the-factory-that-dreams-39-ai-agents-no-framework",
+          "anthropics-cca-exam-as-a-field-guide-for-agentic-engineering",
+          "build-systems-not-code"
+        ],
+        "position_b": "Consolidate: every agent-to-agent handoff loses context and the loss compounds, so exactly one agent must own end-to-end reasoning \u2014 ZS deleted its four-stage pipeline, and Cognition replaced sub-agents entirely with a single long-lived sidekick.",
+        "position_b_talks": [
+          "why-we-killed-our-multi-agent-pipeline",
+          "the-state-of-model-routing"
+        ],
+        "why_it_matters": "The two camps are running the same migration in opposite directions \u2014 Pinterest went single-agent to multi-agent for controllability, ZS went multi-agent to single-agent for coherence \u2014 so the choice determines whether your reliability work goes into handoff contracts or into keeping one context coherent for 50+ turns."
+      },
+      {
+        "question": "Should the delegation topology be designed by the engineer up front, or chosen by the model at runtime?",
+        "position_a": "The engineer specifies it: hierarchies should be real entity types with scoped context and approval boundaries, workflows must define the path with explicit stop/retry/escalate terminals, and you should not let a coding agent design your agent system.",
+        "position_a_talks": [
+          "i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke",
+          "build-systems-not-code",
+          "why-we-killed-our-multi-agent-pipeline"
+        ],
+        "position_b": "The model picks it: a system only counts as recursive if the model itself chooses the decomposition, Mythos will spawn models, split work, and verify it if simply asked, and agent roles should emerge from position relative to other agents rather than being assigned.",
+        "position_b_talks": [
+          "recursive-coding-agents",
+          "everything-we-knew-about-software-has-changed",
+          "beyond-the-harness-a-journey-towards-adaptative-engineering"
+        ],
+        "why_it_matters": "If topology is engineered, your investment goes into workflow definitions, entity types, and control planes that stay auditable; if it emerges, that scaffolding is obsolete within a model generation and the engineering work shifts to designing constraints and selection pressure instead."
+      },
+      {
+        "question": "Is it cheaper to spawn fresh scoped sub-agents per task or to keep one long-lived delegate with a persistent context?",
+        "position_a": "Fresh per-task children: every agent gets its own slice, the parent stays clean, and expanding scope means adding another scoped agent.",
+        "position_a_talks": [
+          "anthropics-cca-exam-as-a-field-guide-for-agentic-engineering",
+          "medic-for-apache-spark-first-aid-for-failing-jobs",
+          "the-factory-that-dreams-39-ai-agents-no-framework",
+          "i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke"
+        ],
+        "position_b": "One persistent sidekick: re-providing earlier context to each new child forces cache misses, and cached tokens are roughly 10x cheaper, so a single delegate with a running context wins on cost.",
+        "position_b_talks": [
+          "the-state-of-model-routing"
+        ],
+        "why_it_matters": "KV-cache economics can dominate the token bill of a delegating system; a fan-out architecture that looks context-efficient per agent can be an order of magnitude more expensive in input tokens than a single warm delegate."
+      },
+      {
+        "question": "Should a sub-agent be allowed to spawn its own sub-agents?",
+        "position_a": "No \u2014 depth must be capped in the harness. Codex's subagent runs entirely separate, has read permissions only, and cannot spin up further subagents; unbounded child spawning is exactly the failure mode kill switches exist to catch (a four-agent pipeline with two agents looping cost $47,000).",
+        "position_a_talks": [
+          "codex-behind-the-harness",
+          "agents-need-feature-flags"
+        ],
+        "position_b": "Yes \u2014 recursion is the point. An RLM is defined by the model decomposing problems into sub-calls or sub-agents at arbitrary depth, and Mythos spawning and verifying its own workers is the headline capability jump.",
+        "position_b_talks": [
+          "recursive-coding-agents",
+          "everything-we-knew-about-software-has-changed"
+        ],
+        "why_it_matters": "Recursion depth sets your worst-case blast radius and cost ceiling: unbounded spawning is what turns a bad prompt into a runaway loop, but capping depth forecloses the RLM-style processing of inputs far larger than the context window."
+      }
+    ],
+    "practical_guidance": {
+      "do": [
+        "Define the sub-agent return contract as findings only \u2014 claim plus evidence, or a summary \u2014 and have the child summarize before returning to the parent",
+        "Give each sub-agent a single job and one or two tools rather than a shared tool inventory",
+        "Route every child spawn through the same flag/kill-switch middleware as the parent, and resolve flags per turn so an in-flight sub-agent honors a flip at its next decision point",
+        "Default child agents to read-only permissions and their own explicit approval boundary; lock tool arguments by partial application so the model cannot widen scope and no per-action human prompt is needed",
+        "Keep one agent owning end-to-end judgment; parallelize investigation across children but not adjudication",
+        "Budget the delegation surface against the context window explicitly \u2014 cap the available-skills list at ~2% of max context and mark rarely-used tools deferred behind tool search",
+        "Keep working context under ~200K tokens and ideally under 100K regardless of the advertised window",
+        "Persist each agent's state in files on disk so you can clear context and re-read handoff files instead of compacting",
+        "Make dispatch the only available path in the orchestrator's harness (CLI plus skills that call it), because an orchestrator with the ability to do the work itself will do the work itself",
+        "Pull deterministic steps \u2014 signal detection over metrics, deduplication, anything with an exact answer \u2014 out of the agent graph and run them before the agent is invoked",
+        "Constrain what a sub-agent may investigate with an explicit control plane (e.g. a knowledge graph where every edge is a hypothesis it may evaluate)",
+        "Give parallel agents only the claim and evidence, not the reasoning that produced them, to keep them from converging on one idea",
+        "Snapshot real tool responses as checked-in fixtures and run offline evals so multi-agent regressions are detectable"
+      ],
+      "avoid": [
+        "Sub-agents that bypass the parent's flag middleware \u2014 a flipped kill switch never reaches them",
+        "Letting every subtask dump its full output into the primary thread",
+        "Distributing judgment across a chain of specialized agents; each handoff loses context and the loss compounds",
+        "Copying a human analyst's workflow steps or an org chart as your agent architecture",
+        "One prompt doing four jobs \u2014 the agentic equivalent of a god class, and the cause of drift",
+        "Unbounded or continuously looping agent pipelines with no spend ceiling (a four-agent researcher/analyzer/verifier/synthesizer pipeline with two looping agents cost $47,000)",
+        "Filling a million-token window because it exists",
+        "Using context compaction as the default recovery mechanism \u2014 it is slow, you cannot choose what survives, and it forces a cache miss that raises input token cost",
+        "Letting a coding agent design your other agents; it produces something that works but is unmaintainable",
+        "Routing sub-agent work by task type alone \u2014 extremely fragile once complexity shifts mid-session",
+        "Stacking many agent and MCP processes on one laptop, or using a machine that sleeps as the fleet's control point",
+        "Having agents infer entity and KPI relationships from raw tables \u2014 it does not scale and invents relationships not in the data"
+      ]
+    },
+    "notable_outliers": [
+      {
+        "claim": "Cognition does not use sub-agents at all \u2014 one 'sidekick' with a continuously running context so the main agent never re-provides earlier context, because cached tokens are ~10x cheaper.",
+        "talk": "the-state-of-model-routing",
+        "timestamp_sec": 1084
+      },
+      {
+        "claim": "A four-agent pipeline (researcher, analyzer, verifier, synthesizer) with two agents in a continuous loop cost $47,000.",
+        "talk": "agents-need-feature-flags",
+        "timestamp_sec": 145
+      },
+      {
+        "claim": "Sub-agents should receive only the claim and evidence, never the reasoning behind them, because collaborating agents otherwise devolve into groupthink around a single idea.",
+        "talk": "anthropics-cca-exam-as-a-field-guide-for-agentic-engineering",
+        "timestamp_sec": 832
+      },
+      {
+        "claim": "An orchestrator will do the work itself rather than delegate unless the harness makes dispatching the only path it can take.",
+        "talk": "i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke",
+        "timestamp_sec": 269
+      },
+      {
+        "claim": "An infra team of agents inside the fleet built the review gateway that governs the fleet \u2014 agents building the tools that run the agents.",
+        "talk": "i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke",
+        "timestamp_sec": 228
+      },
+      {
+        "claim": "Agent identity, role, and specialization should not be assigned by the engineer at all \u2014 they should arise from an agent's position relative to other agents and environmental pressure.",
+        "talk": "beyond-the-harness-a-journey-towards-adaptative-engineering",
+        "timestamp_sec": 1437
+      },
+      {
+        "claim": "Modeling a sub-agent as an ordinary function you call like any other tool is better than frameworks that make sub-agents a distinct first-class concept.",
+        "talk": "what-if-the-harness-mattered-more-than-the-model",
+        "timestamp_sec": 1333
+      },
+      {
+        "claim": "On terminal bench, Opus scores ~3x better than Haiku at 1/10 the total cost despite being far more expensive per token \u2014 cheap models delegated out-of-distribution work can raise total cost through tool-call churn.",
+        "talk": "the-state-of-model-routing",
+        "timestamp_sec": 925
+      }
+    ],
+    "maturity": "contested",
+    "maturity_rationale": "The plumbing is close to settled \u2014 scoped context, results-only returns, and inherited permissions recur across five or six independent talks \u2014 but two production teams reversed course in opposite directions in the same year (Pinterest single\u2192multi for control, ZS multi\u2192single for coherence), Cognition abandoned sub-agents outright for a cached sidekick, and the field splits cleanly on whether the engineer or the model should choose the decomposition."
+  },
+  "_meta": {
+    "concept": "sub-agent delegation",
+    "slug": "sub-agent-delegation",
+    "talk_count": 15,
+    "missing_talks": [],
+    "wall_sec": 132.2,
+    "run_at": "2026-08-13T17:32:37Z"
+  }
+}

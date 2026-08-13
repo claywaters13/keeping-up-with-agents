@@ -1,0 +1,279 @@
+{
+  "is_error": false,
+  "duration_api_ms": 49955,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "bc96f096-31c8-492c-aed9-ea1a8f25826b",
+  "total_cost_usd": 0.23752,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 11442,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 4423,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 11442,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 4423,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 11442,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 11442
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 7276,
+      "outputTokens": 17,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.007361,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 4423,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 11442,
+      "webSearchRequests": 0,
+      "costUSD": 0.230159,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Parth Asawa (UC Berkeley PhD student) argues that the field evaluates language models under an implicit amnesia assumption \u2014 every benchmark instance is independent, so models are scored as if their memory were wiped before each task \u2014 and that this makes continual learning invisible to current leaderboards. He lays out three design criteria a continual learning benchmark must satisfy (headroom over pretrained frontier models, shared latent structure across instances, and an in-environment learning signal), and argues that chaining existing benchmarks together fundamentally cannot work because their instances are designed to be independent. He introduces Continual Learning Bench 1.0, six domains of sequenced tasks with per-instance rewards plus deliberately injected concept drift, and a 'gain' metric that subtracts a stateless rerun from the stateful run to separate learning ability from base model strength. The headline empirical result is that vanilla in-context learning \u2014 just stuffing prior experience into context \u2014 topped the leaderboard on reward and on the reward/cost and gain/cost Pareto frontiers, beating more elaborate context-management systems. He closes with a contrarian bet: bolting continual learning onto frozen checkpoints is a sunk cost fallacy, and parametric approaches that design for continual learning from the start are more promising. Worth watching if you care about memory/agent-evaluation methodology or are choosing between memory architectures.\",\n  \"key_points\": [\n    \"Today's evaluation paradigm scores models on independent, one-shot task instances, which is equivalent to assuming the model forgets everything between tasks and therefore cannot reveal learning ability at all.\",\n    \"Chaining existing benchmarks (e.g., a sequence of AIME problems) does not produce a continual learning benchmark, because traditional benchmark instances are deliberately designed to have no shared structure to exploit.\",\n    \"A valid continual learning benchmark needs three properties: headroom (tasks frontier models can't already solve from pretraining), shared latent structure across instances, and a learning mechanism in the environment such as scalar reward, error messages, or textual feedback.\",\n    \"Cumulative reward alone confounds continual learning ability with base model strength; a strong-but-non-learning system can outscore a weaker system that is genuinely improving.\",\n    \"The 'gain' metric runs every system twice \u2014 once stateful, once reset between instances \u2014 and takes the difference, isolating the benefit of prior experience from initial capability.\",\n    \"Reward, gain, and cost are reported on Pareto frontiers rather than collapsed into one number, because base capability, learning, and expense all matter.\",\n    \"Continual Learning Bench 1.0 spans six domains (blind spectrum monitoring, codebase adaptation, epidemiology cohort studies, exploitable poker, database exploration, sales prediction) with domain-expert-validated task sequences and injected concept drift such as database migrations.\",\n    \"Vanilla in-context learning topped the leaderboard on reward and held up across the reward-vs-cost and gain-vs-cost Pareto frontiers, outperforming more expensive context-management systems \u2014 a result the speaker finds surprising and partly attributes to only medium-horizon tasks.\",\n    \"Observed failure modes fall on one side or the other of the stability\u2013plasticity tradeoff: a forecasting model oscillating back to a prediction it had already been told was too high (stability failure), and a notepad-based system dismissing relevant prior notes as inapplicable (plasticity failure).\",\n    \"The speaker's broader bet is that current continual learning research is a sunk cost fallacy on frozen checkpoints, and that designing for continual learning as a first-order requirement might collapse the training stack into one learning phase followed by deployment.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"what we've done is we've kind of told the models, imagine that every time you do something, you completely forget your memory.\",\n      \"timestamp_sec\": 52,\n      \"why\": \"The single-sentence framing of the whole critique of current evaluation.\"\n    },\n    {\n      \"text\": \"Continual learning to me is sample efficient online learning that is stable over long horizons.\",\n      \"timestamp_sec\": 88,\n      \"why\": \"The speaker's working definition, which the rest of the benchmark design follows from.\"\n    },\n    {\n      \"text\": \"today I'm not going to make a case for which one of these can solve continual learning, though I do have an opinion and I'll share it at the end.\",\n      \"timestamp_sec\": 162,\n      \"why\": \"Sets up the deliberate separation of measurement claims from method claims.\"\n    },\n    {\n      \"text\": \"if continual learning doesn't look like point capabilities, we need to be measuring it the right way to optimize for the right objective as a field.\",\n      \"timestamp_sec\": 196,\n      \"why\": \"The thesis, and the line he returns to as the closing takeaway.\"\n    },\n    {\n      \"text\": \"they won't work for frontier language models. And the reason being that frontier language models are pre-trained on vast distributions of the entire internet or economically valuable tasks we care about.\",\n      \"timestamp_sec\": 261,\n      \"why\": \"States why prior continual-learning evals don't transfer to frontier models.\"\n    },\n    {\n      \"text\": \"benchmark instances are in traditional language model evaluation are designed to be independent. That means they don't have shared structure across tasks and as a result you can't meaningfully expect them to improve from earlier experience in future instances.\",\n      \"timestamp_sec\": 305,\n      \"why\": \"The core argument against the most common proposed shortcut.\"\n    },\n    {\n      \"text\": \"If the model can improve on your tasks by just training offline and not actually require any online learning, then it's not a good task for measuring continual learning.\",\n      \"timestamp_sec\": 348,\n      \"why\": \"Crisp, checkable criterion for headroom that benchmark designers can apply directly.\"\n    },\n    {\n      \"text\": \"This could look like scalar reward. It could look like error messages. It could look like textual feedback. The point being, there needs to exist something in the environment that's giving agents signal to learn and improve on future tasks.\",\n      \"timestamp_sec\": 426,\n      \"why\": \"Concretizes the learning-mechanism criterion across multiple feedback modalities.\"\n    },\n    {\n      \"text\": \"total reward alone might confound continual learning ability with base model strength.\",\n      \"timestamp_sec\": 465,\n      \"why\": \"The measurement flaw that motivates the gain metric.\"\n    },\n    {\n      \"text\": \"Gain refers to the difference between stateful reward and stateless reward.\",\n      \"timestamp_sec\": 535,\n      \"why\": \"The benchmark's central methodological contribution, stated in one line.\"\n    },\n    {\n      \"text\": \"It isolates out what your benefit of from actually learning was versus your base model's initial capability.\",\n      \"timestamp_sec\": 612,\n      \"why\": \"Explains what gain buys you, verbatim disfluency and all.\"\n    },\n    {\n      \"text\": \"There isn't one single metric that I think defines continual learning because we still care about the base model strength.\",\n      \"timestamp_sec\": 612,\n      \"why\": \"Rejects a single-number leaderboard, a position many benchmark authors would resist.\"\n    },\n    {\n      \"text\": \"You kind of have an innate ability to maintain the stability and plasticity trade-off in your mind. But this isn't native to a lot of language models.\",\n      \"timestamp_sec\": 735,\n      \"why\": \"Names the tradeoff that organizes his entire failure-mode taxonomy.\"\n    },\n    {\n      \"text\": \"It tops the leaderboard and and it's not just on reward. It's actually also when we look at the Pareto frontiers, this kind of holds across reward uh versus cost and gain versus cost.\",\n      \"timestamp_sec\": 856,\n      \"why\": \"The headline empirical result: vanilla ICL wins on every frontier measured.\"\n    },\n    {\n      \"text\": \"it was still surprising that these more expensive context management systems perform a lot poorly compared to just vanilla in context learning on these sets of tasks where you have to do real learning.\",\n      \"timestamp_sec\": 856,\n      \"why\": \"Directly challenges the value proposition of memory-management tooling.\"\n    },\n    {\n      \"text\": \"I'm going to argue that most failure modes in continual learning fall on one side of the stability plasticity trade-off.\",\n      \"timestamp_sec\": 890,\n      \"why\": \"A generalizable diagnostic claim about why continual learning systems break.\"\n    },\n    {\n      \"text\": \"But these models were never designed to be continual learners to begin with.\",\n      \"timestamp_sec\": 1057,\n      \"why\": \"The pivot into his contrarian view on methods.\"\n    },\n    {\n      \"text\": \"one of my hypotheses here at least is that we're operating in a bit of a sunk cost fallacy that because we've trained models the way we are today, we need continual learning methods that work on top of that.\",\n      \"timestamp_sec\": 1057,\n      \"why\": \"The strongest position in the talk, and the one most likely to be contested.\"\n    },\n    {\n      \"text\": \"In the purest sense, continual learning might just be one set, one phase of training for continual learning and everything after that is deployment.\",\n      \"timestamp_sec\": 1057,\n      \"why\": \"Concrete picture of what a redesigned training stack would look like.\"\n    },\n    {\n      \"text\": \"continual learning doesn't look like point capabilities. We need to measure it the right way to optimize for the right objective as a field because that's a history of how machine learning has progressed.\",\n      \"timestamp_sec\": 1191,\n      \"why\": \"The closing takeaway he explicitly flags as the one thing to remember.\"\n    }\n  ],\n  \"concepts\": [\n    \"continual learning\",\n    \"benchmark design\",\n    \"stability-plasticity tradeoff\",\n    \"catastrophic forgetting\",\n    \"in-context learning\",\n    \"external memory stores\",\n    \"parametric weight updates\",\n    \"concept drift\",\n    \"pareto frontier evaluation\",\n    \"stateless baselines\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Current language model evaluation is effectively a memoryless paradigm and does not measure continual learning at all.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 196\n    },\n    {\n      \"claim\": \"Chaining existing independent benchmark instances together cannot produce a valid continual learning benchmark, because those instances lack shared structure to exploit.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 305\n    },\n    {\n      \"claim\": \"Existing continual learning evaluations (sequential task-distribution training, long-horizon factual recall) are insufficient: they don't treat sample efficiency as first-order, don't always measure learning, and won't work for frontier models.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 261\n    },\n    {\n      \"claim\": \"A valid continual learning benchmark requires headroom, shared latent structure, and an in-environment learning mechanism.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 348\n    },\n    {\n      \"claim\": \"Cumulative reward alone confounds learning ability with base model strength, so gain (stateful minus stateless reward) is needed to isolate learning.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 465\n    },\n    {\n      \"claim\": \"No single metric defines continual learning; reward, gain, and cost should all be reported on Pareto frontiers.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 612\n    },\n    {\n      \"claim\": \"Vanilla in-context learning outperformed more sophisticated context-management systems on Continual Learning Bench 1.0, topping the leaderboard on reward and holding across the reward-vs-cost and gain-vs-cost Pareto frontiers.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 856\n    },\n    {\n      \"claim\": \"The in-context learning result is likely an artifact of medium-horizon tasks and is not the end state of continual learning.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 856\n    },\n    {\n      \"claim\": \"Most continual learning failure modes can be classified as failures of either stability or plasticity.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 890\n    },\n    {\n      \"claim\": \"Building continual learning methods on top of already-trained frozen checkpoints is a sunk cost fallacy; parametric approaches that co-design architecture, data, and algorithms are more promising.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1057\n    },\n    {\n      \"claim\": \"If continual learning were a first-order design requirement, the multi-stage training stack could collapse into a single learning phase followed by deployment.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1090\n    },\n    {\n      \"claim\": \"Current models are not capable enough to simulate user personalization environments well enough to benchmark continual learning against them.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1158\n    },\n    {\n      \"claim\": \"Third-party institutions and open science in AI research need to be reimagined in light of consolidation of power and safety concerns.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 1125\n    }\n  ],\n  \"speaker_org\": \"UC Berkeley\"\n}",
+  "ttft_ms": 48684,
+  "ttft_stream_ms": 979,
+  "time_to_request_ms": 46,
+  "type": "result",
+  "duration_ms": 50775,
+  "uuid": "f6adf5bc-0d44-4da3-94d7-5644a7a1170f",
+  "passA": {
+    "summary": "Parth Asawa (UC Berkeley PhD student) argues that the field evaluates language models under an implicit amnesia assumption \u2014 every benchmark instance is independent, so models are scored as if their memory were wiped before each task \u2014 and that this makes continual learning invisible to current leaderboards. He lays out three design criteria a continual learning benchmark must satisfy (headroom over pretrained frontier models, shared latent structure across instances, and an in-environment learning signal), and argues that chaining existing benchmarks together fundamentally cannot work because their instances are designed to be independent. He introduces Continual Learning Bench 1.0, six domains of sequenced tasks with per-instance rewards plus deliberately injected concept drift, and a 'gain' metric that subtracts a stateless rerun from the stateful run to separate learning ability from base model strength. The headline empirical result is that vanilla in-context learning \u2014 just stuffing prior experience into context \u2014 topped the leaderboard on reward and on the reward/cost and gain/cost Pareto frontiers, beating more elaborate context-management systems. He closes with a contrarian bet: bolting continual learning onto frozen checkpoints is a sunk cost fallacy, and parametric approaches that design for continual learning from the start are more promising. Worth watching if you care about memory/agent-evaluation methodology or are choosing between memory architectures.",
+    "key_points": [
+      "Today's evaluation paradigm scores models on independent, one-shot task instances, which is equivalent to assuming the model forgets everything between tasks and therefore cannot reveal learning ability at all.",
+      "Chaining existing benchmarks (e.g., a sequence of AIME problems) does not produce a continual learning benchmark, because traditional benchmark instances are deliberately designed to have no shared structure to exploit.",
+      "A valid continual learning benchmark needs three properties: headroom (tasks frontier models can't already solve from pretraining), shared latent structure across instances, and a learning mechanism in the environment such as scalar reward, error messages, or textual feedback.",
+      "Cumulative reward alone confounds continual learning ability with base model strength; a strong-but-non-learning system can outscore a weaker system that is genuinely improving.",
+      "The 'gain' metric runs every system twice \u2014 once stateful, once reset between instances \u2014 and takes the difference, isolating the benefit of prior experience from initial capability.",
+      "Reward, gain, and cost are reported on Pareto frontiers rather than collapsed into one number, because base capability, learning, and expense all matter.",
+      "Continual Learning Bench 1.0 spans six domains (blind spectrum monitoring, codebase adaptation, epidemiology cohort studies, exploitable poker, database exploration, sales prediction) with domain-expert-validated task sequences and injected concept drift such as database migrations.",
+      "Vanilla in-context learning topped the leaderboard on reward and held up across the reward-vs-cost and gain-vs-cost Pareto frontiers, outperforming more expensive context-management systems \u2014 a result the speaker finds surprising and partly attributes to only medium-horizon tasks.",
+      "Observed failure modes fall on one side or the other of the stability\u2013plasticity tradeoff: a forecasting model oscillating back to a prediction it had already been told was too high (stability failure), and a notepad-based system dismissing relevant prior notes as inapplicable (plasticity failure).",
+      "The speaker's broader bet is that current continual learning research is a sunk cost fallacy on frozen checkpoints, and that designing for continual learning as a first-order requirement might collapse the training stack into one learning phase followed by deployment."
+    ],
+    "notable_quotes": [
+      {
+        "text": "what we've done is we've kind of told the models, imagine that every time you do something, you completely forget your memory.",
+        "timestamp_sec": 52,
+        "why": "The single-sentence framing of the whole critique of current evaluation."
+      },
+      {
+        "text": "Continual learning to me is sample efficient online learning that is stable over long horizons.",
+        "timestamp_sec": 88,
+        "why": "The speaker's working definition, which the rest of the benchmark design follows from."
+      },
+      {
+        "text": "today I'm not going to make a case for which one of these can solve continual learning, though I do have an opinion and I'll share it at the end.",
+        "timestamp_sec": 162,
+        "why": "Sets up the deliberate separation of measurement claims from method claims."
+      },
+      {
+        "text": "if continual learning doesn't look like point capabilities, we need to be measuring it the right way to optimize for the right objective as a field.",
+        "timestamp_sec": 196,
+        "why": "The thesis, and the line he returns to as the closing takeaway."
+      },
+      {
+        "text": "they won't work for frontier language models. And the reason being that frontier language models are pre-trained on vast distributions of the entire internet or economically valuable tasks we care about.",
+        "timestamp_sec": 261,
+        "why": "States why prior continual-learning evals don't transfer to frontier models."
+      },
+      {
+        "text": "benchmark instances are in traditional language model evaluation are designed to be independent. That means they don't have shared structure across tasks and as a result you can't meaningfully expect them to improve from earlier experience in future instances.",
+        "timestamp_sec": 305,
+        "why": "The core argument against the most common proposed shortcut."
+      },
+      {
+        "text": "If the model can improve on your tasks by just training offline and not actually require any online learning, then it's not a good task for measuring continual learning.",
+        "timestamp_sec": 348,
+        "why": "Crisp, checkable criterion for headroom that benchmark designers can apply directly."
+      },
+      {
+        "text": "This could look like scalar reward. It could look like error messages. It could look like textual feedback. The point being, there needs to exist something in the environment that's giving agents signal to learn and improve on future tasks.",
+        "timestamp_sec": 426,
+        "why": "Concretizes the learning-mechanism criterion across multiple feedback modalities."
+      },
+      {
+        "text": "Gain refers to the difference between stateful reward and stateless reward.",
+        "timestamp_sec": 535,
+        "why": "The benchmark's central methodological contribution, stated in one line."
+      },
+      {
+        "text": "It isolates out what your benefit of from actually learning was versus your base model's initial capability.",
+        "timestamp_sec": 612,
+        "why": "Explains what gain buys you, verbatim disfluency and all."
+      },
+      {
+        "text": "There isn't one single metric that I think defines continual learning because we still care about the base model strength.",
+        "timestamp_sec": 612,
+        "why": "Rejects a single-number leaderboard, a position many benchmark authors would resist."
+      },
+      {
+        "text": "You kind of have an innate ability to maintain the stability and plasticity trade-off in your mind. But this isn't native to a lot of language models.",
+        "timestamp_sec": 735,
+        "why": "Names the tradeoff that organizes his entire failure-mode taxonomy."
+      },
+      {
+        "text": "It tops the leaderboard and and it's not just on reward. It's actually also when we look at the Pareto frontiers, this kind of holds across reward uh versus cost and gain versus cost.",
+        "timestamp_sec": 856,
+        "why": "The headline empirical result: vanilla ICL wins on every frontier measured."
+      },
+      {
+        "text": "it was still surprising that these more expensive context management systems perform a lot poorly compared to just vanilla in context learning on these sets of tasks where you have to do real learning.",
+        "timestamp_sec": 856,
+        "why": "Directly challenges the value proposition of memory-management tooling."
+      },
+      {
+        "text": "I'm going to argue that most failure modes in continual learning fall on one side of the stability plasticity trade-off.",
+        "timestamp_sec": 890,
+        "why": "A generalizable diagnostic claim about why continual learning systems break."
+      },
+      {
+        "text": "But these models were never designed to be continual learners to begin with.",
+        "timestamp_sec": 1057,
+        "why": "The pivot into his contrarian view on methods."
+      },
+      {
+        "text": "one of my hypotheses here at least is that we're operating in a bit of a sunk cost fallacy that because we've trained models the way we are today, we need continual learning methods that work on top of that.",
+        "timestamp_sec": 1057,
+        "why": "The strongest position in the talk, and the one most likely to be contested."
+      },
+      {
+        "text": "In the purest sense, continual learning might just be one set, one phase of training for continual learning and everything after that is deployment.",
+        "timestamp_sec": 1057,
+        "why": "Concrete picture of what a redesigned training stack would look like."
+      },
+      {
+        "text": "continual learning doesn't look like point capabilities. We need to measure it the right way to optimize for the right objective as a field because that's a history of how machine learning has progressed.",
+        "timestamp_sec": 1191,
+        "why": "The closing takeaway he explicitly flags as the one thing to remember."
+      }
+    ],
+    "concepts": [
+      "continual learning",
+      "benchmark design",
+      "stability-plasticity tradeoff",
+      "catastrophic forgetting",
+      "in-context learning",
+      "external memory stores",
+      "parametric weight updates",
+      "concept drift",
+      "pareto frontier evaluation",
+      "stateless baselines"
+    ],
+    "positions": [
+      {
+        "claim": "Current language model evaluation is effectively a memoryless paradigm and does not measure continual learning at all.",
+        "confidence": "stated",
+        "timestamp_sec": 196
+      },
+      {
+        "claim": "Chaining existing independent benchmark instances together cannot produce a valid continual learning benchmark, because those instances lack shared structure to exploit.",
+        "confidence": "stated",
+        "timestamp_sec": 305
+      },
+      {
+        "claim": "Existing continual learning evaluations (sequential task-distribution training, long-horizon factual recall) are insufficient: they don't treat sample efficiency as first-order, don't always measure learning, and won't work for frontier models.",
+        "confidence": "stated",
+        "timestamp_sec": 261
+      },
+      {
+        "claim": "A valid continual learning benchmark requires headroom, shared latent structure, and an in-environment learning mechanism.",
+        "confidence": "stated",
+        "timestamp_sec": 348
+      },
+      {
+        "claim": "Cumulative reward alone confounds learning ability with base model strength, so gain (stateful minus stateless reward) is needed to isolate learning.",
+        "confidence": "stated",
+        "timestamp_sec": 465
+      },
+      {
+        "claim": "No single metric defines continual learning; reward, gain, and cost should all be reported on Pareto frontiers.",
+        "confidence": "stated",
+        "timestamp_sec": 612
+      },
+      {
+        "claim": "Vanilla in-context learning outperformed more sophisticated context-management systems on Continual Learning Bench 1.0, topping the leaderboard on reward and holding across the reward-vs-cost and gain-vs-cost Pareto frontiers.",
+        "confidence": "stated",
+        "timestamp_sec": 856
+      },
+      {
+        "claim": "The in-context learning result is likely an artifact of medium-horizon tasks and is not the end state of continual learning.",
+        "confidence": "stated",
+        "timestamp_sec": 856
+      },
+      {
+        "claim": "Most continual learning failure modes can be classified as failures of either stability or plasticity.",
+        "confidence": "stated",
+        "timestamp_sec": 890
+      },
+      {
+        "claim": "Building continual learning methods on top of already-trained frozen checkpoints is a sunk cost fallacy; parametric approaches that co-design architecture, data, and algorithms are more promising.",
+        "confidence": "stated",
+        "timestamp_sec": 1057
+      },
+      {
+        "claim": "If continual learning were a first-order design requirement, the multi-stage training stack could collapse into a single learning phase followed by deployment.",
+        "confidence": "stated",
+        "timestamp_sec": 1090
+      },
+      {
+        "claim": "Current models are not capable enough to simulate user personalization environments well enough to benchmark continual learning against them.",
+        "confidence": "stated",
+        "timestamp_sec": 1158
+      },
+      {
+        "claim": "Third-party institutions and open science in AI research need to be reimagined in light of consolidation of power and safety concerns.",
+        "confidence": "implied",
+        "timestamp_sec": 1125
+      }
+    ],
+    "speaker_org": "UC Berkeley"
+  },
+  "_meta": {
+    "slug": "beyond-static-intelligence-evaluating-continual-learning",
+    "video_id": "iqloyWCGYQQ",
+    "url": "https://www.youtube.com/watch?v=iqloyWCGYQQ",
+    "word_count": 4107,
+    "wall_sec": 52.1,
+    "run_at": "2026-08-12T19:33:48Z",
+    "effort": "medium",
+    "quotes_dropped": 0
+  }
+}

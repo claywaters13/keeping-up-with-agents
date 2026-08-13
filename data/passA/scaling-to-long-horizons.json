@@ -1,0 +1,304 @@
+{
+  "is_error": false,
+  "duration_api_ms": 83119,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "f70a489a-4bbb-45e4-a741-21f7d7614c6e",
+  "total_cost_usd": 0.30097500000000005,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 10311,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 7444,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 10311,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 7444,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 10311,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 10311
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 6526,
+      "outputTokens": 15,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.006601,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 7444,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 10311,
+      "webSearchRequests": 0,
+      "costUSD": 0.294374,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Ross Taylor (CEO, General Reasoning; formerly reasoning lead at Meta AI) and co-founder Chengxi Taylor pair a first-person history of the 2020\u20132023 LLM era with a technical agenda for long-horizon RL. Ross uses the Galactica-vs-ChatGPT collision as a natural experiment showing that a state-of-the-art base model is worthless as a product without RL, and explains why his team's early PPO-with-verifiable-rewards recipe on Llama 2 hit SOTA math results but never produced the reflective, inference-time-scaling behavior of o1/R1 \u2014 the missing ingredients were better base models, more RL compute, and longer context. Chengxi then argues that long-horizon tasks are the next frontier and walks through the concrete obstacles: scarce context windows, gradient variance that scales with trajectory length, sparse rewards and credit assignment, and the GPU-utilization/off-policy tradeoff in pipeline RL. He makes the case for value models (critics) as the unifying fix \u2014 variance reduction, trajectory-level fit with compaction, and bootstrapping partial episodes \u2014 while conceding they add bias and complexity versus GRPO. Worth watching for the insider account of Galactica's ideas (thinking tokens, data efficiency, multi-epoch training) and for a rare, specific treatment of what breaks when RL episodes run for weeks.\",\n  \"key_points\": [\n    \"Galactica and ChatGPT shipped two weeks apart on comparable base models, and the divergent outcomes served as a natural experiment proving that RLHF, not base model quality, is what turned LLMs into products.\",\n    \"Galactica introduced several ideas that later became standard: data efficiency via a curated 105B-token corpus, multi-epoch training when the consensus was one epoch, and 'thinking tokens' as an internal working-memory process consuming inference compute before answering.\",\n    \"Ross's team at Meta had a working recipe two years before R1 \u2014 continued pre-training on math/science, then PPO with verifiable rewards and a strong outcome reward model to initialize the value model \u2014 and got internal SOTA on math, but no reflective backtracking behavior.\",\n    \"The explanation for that gap was the bitter lesson in pure form: better base models, more RL compute, and bigger context windows are what unlock emergent reasoning behavior, not a cleverer objective.\",\n    \"Having a frontier base model earlier is an epistemic advantage, not just a product one \u2014 OpenAI's GPT-4-level model let them 'see further' and generate ideas others couldn't.\",\n    \"Long-horizon RL faces three distinct optimization problems: gradient variance scaling with trajectory length, sparse rewards causing credit assignment failures, and variable-length trajectories.\",\n    \"Value models are proposed as the answer \u2014 they reduce variance, operate at trajectory level (which fits context compaction), encourage batch diversity, and enable bootstrapping mid-episode \u2014 at the cost of value-model bias and having to train a second model alongside the policy.\",\n    \"General Reasoning's Kelly Bench gave frontier models $100K to build ML models betting on a season of Premier League football; all of them lost money, which the speakers read as evidence the field over-indexes on short procedural coding tasks over open-ended, multi-agent, real-world ones.\",\n    \"Pipeline RL trades off-policy staleness for GPU utilization; roughly eight steps of off-policyness is tolerable in their experience, but week-long inference in long-horizon settings blows past that and leaves GPUs idle unless you bootstrap with a value model.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"A good base model is not enough. So I took that lesson quite early on. So like I said, RLHF made LLMs products.\",\n      \"timestamp_sec\": 183,\n      \"why\": \"The thesis of the first half, stated flatly.\"\n    },\n    {\n      \"text\": \"Like even at the time, like InstructGPT in 2022 had these pretty stunning results. Like a 1 billion parameter model with RLHF was outperforming 175 billion models.\",\n      \"timestamp_sec\": 183,\n      \"why\": \"Concrete two-orders-of-magnitude number backing the RL-over-scale claim.\"\n    },\n    {\n      \"text\": \"it outperformed Palm, Chinchilla, GPT-3.5 with a lot less compute in scientific domains. It was state-of-the-art. So again, that also shows you how powerful RL is.\",\n      \"timestamp_sec\": 257,\n      \"why\": \"The paradox at the center of the Galactica story \u2014 SOTA and still a failure.\"\n    },\n    {\n      \"text\": \"And Galactica said, \\\"No. High quality, you know, curated data sets really matter.\\\" And that was a real driver of those results you just saw.\",\n      \"timestamp_sec\": 321,\n      \"why\": \"Claims priority on the data-quality-over-quantity position.\"\n    },\n    {\n      \"text\": \"It sounds ridiculous now, but at the time the consensus was you don't do more than an epoch.\",\n      \"timestamp_sec\": 321,\n      \"why\": \"Documents how fast a field consensus inverted.\"\n    },\n    {\n      \"text\": \"But, Galactica was really this first idea which said, \\\"No, this is an internal working memory process. This is an internal thinking. You should be inside these tags, and you should spend the inference computer before you get to an answer, right?\\\"\",\n      \"timestamp_sec\": 350,\n      \"why\": \"A priority claim on the thinking-tokens / inference-time-compute framing.\"\n    },\n    {\n      \"text\": \"So, at the time we only had Llama 2 base models, terrible mathematics corpus, terrible results on math.\",\n      \"timestamp_sec\": 411,\n      \"why\": \"Names the concrete constraint that made the early reasoning attempt fail.\"\n    },\n    {\n      \"text\": \"Number two, PPO with verifiable rewards. But, notice this isn't GRPO, right?\",\n      \"timestamp_sec\": 411,\n      \"why\": \"Pins down the actual unpublished recipe and its deliberate divergence from today's default.\"\n    },\n    {\n      \"text\": \"Like, better base models, more RL computes, bigger context windows, and that's all you need for this kind of emergent behavior.\",\n      \"timestamp_sec\": 476,\n      \"why\": \"The talk's bitter-lesson punchline about why o1-style behavior appeared when it did.\"\n    },\n    {\n      \"text\": \"It also like says something like quite important about the sociology of like research because the fact that OpenAI had this model, you know, GPT-4 level model before anyone else, it allowed them to see further, right?\",\n      \"timestamp_sec\": 509,\n      \"why\": \"Frames compute access as an epistemic, not just competitive, advantage.\"\n    },\n    {\n      \"text\": \"Long horizon task is not just an engineering problem. It is a mindset.\",\n      \"timestamp_sec\": 544,\n      \"why\": \"Chengxi's framing device, repeated as the closing line.\"\n    },\n    {\n      \"text\": \"If you take Fermat's Last Theorem as example, what it take for the mathematician was over 10 years time of reading paper, writing down thoughts in the scratch pad, or taking a walk to generate the creative ideas.\",\n      \"timestamp_sec\": 589,\n      \"why\": \"Makes the context-scarcity argument vivid with a token-count comparison.\"\n    },\n    {\n      \"text\": \"So what it essentially does is generate the token until the end of the context window, summarize, and then on top of that generate more tokens.\",\n      \"timestamp_sec\": 589,\n      \"why\": \"Clean definition of context compaction as an RL-trainable operation.\"\n    },\n    {\n      \"text\": \"The first is the gradient variance scales with the length. And the second is a sparse reward. And you have this credit assignment problem.\",\n      \"timestamp_sec\": 642,\n      \"why\": \"Enumerates the specific optimization failures of long-horizon RL.\"\n    },\n    {\n      \"text\": \"As you can see, we gave all the frontier models a 100K to start. All of them lost.\",\n      \"timestamp_sec\": 785,\n      \"why\": \"The headline empirical result from Kelly Bench.\"\n    },\n    {\n      \"text\": \"First, I believe now the AI industry is a little bit too biased towards coding and procedure task.\",\n      \"timestamp_sec\": 785,\n      \"why\": \"A contestable position on where the field is misallocating effort.\"\n    },\n    {\n      \"text\": \"And second of all, not enough focus on open-ended task. We live in the real world with a lot of a complexity, uncertainty, and that's not fully captured by the current benchmark.\",\n      \"timestamp_sec\": 831,\n      \"why\": \"States the benchmark critique that motivates their environment work.\"\n    },\n    {\n      \"text\": \"What the pipeline RL does is that you let the sequence to be generated and you start to train the model while there's a still more sequences being generated.\",\n      \"timestamp_sec\": 876,\n      \"why\": \"Plain-language definition of pipeline RL for practitioners.\"\n    },\n    {\n      \"text\": \"But from the our experience, normally off-policy up to eight steps is okay. So, essentially, we made a trade-off between the off-policy and the GPU utilization.\",\n      \"timestamp_sec\": 917,\n      \"why\": \"A specific empirical threshold others can test against.\"\n    },\n    {\n      \"text\": \"It's like a dopamine in human brain. And that allows you to train the model.\",\n      \"timestamp_sec\": 961,\n      \"why\": \"Memorable analogy for value-model bootstrapping before episode end.\"\n    },\n    {\n      \"text\": \"But, here's another trade-off. While you utilize the GPU fully, you introduce the value model bias. So, there's always a bit of trade-off in those solutions.\",\n      \"timestamp_sec\": 961,\n      \"why\": \"Concedes the cost of their own recommended approach.\"\n    },\n    {\n      \"text\": \"So, it's a place where host over 350 environments and with a single API endpoint.\",\n      \"timestamp_sec\": 961,\n      \"why\": \"Concrete scale figure for their RL environment platform.\"\n    }\n  ],\n  \"concepts\": [\n    \"long-horizon reinforcement learning\",\n    \"context compaction\",\n    \"value models and critics\",\n    \"reinforcement learning from human feedback\",\n    \"verifiable rewards\",\n    \"credit assignment in sparse-reward settings\",\n    \"pipeline RL and off-policy staleness\",\n    \"inference-time scaling\",\n    \"data efficiency in pre-training\",\n    \"agentic benchmark design\",\n    \"RL environment infrastructure\",\n    \"bootstrapping value estimates\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"A state-of-the-art base model is insufficient to make a useful product; RL post-training is the decisive ingredient.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 183\n    },\n    {\n      \"claim\": \"Galactica was the first LM to crack data efficiency (105B curated tokens vs. trillion-token corpora) and the first major empirical result for multi-epoch training.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 321\n    },\n    {\n      \"claim\": \"Galactica's thinking-token tags anticipated what DeepSeek/o1 did two years later by applying RL pressure to internal reasoning.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 381\n    },\n    {\n      \"claim\": \"Reflective, backtracking reasoning behavior did not emerge in 2023 because base models, RL compute, and context windows were too small \u2014 not because the objective was wrong.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 476\n    },\n    {\n      \"claim\": \"Early access to a frontier base model confers a research advantage: it lets a lab see further and generate ideas competitors cannot.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 509\n    },\n    {\n      \"claim\": \"A 1M-token context window is orders of magnitude short of what genuinely long-horizon intellectual work requires (tens to hundreds of billions of tokens).\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 589\n    },\n    {\n      \"claim\": \"RL should be applied to the compaction step as well as the task itself.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 642\n    },\n    {\n      \"claim\": \"Value models are preferable to GRPO for long-horizon RL because they cut variance, work at trajectory level with compaction, and permit bootstrapping \u2014 despite added complexity and bias.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 691\n    },\n    {\n      \"claim\": \"Tools that let agents search prior trajectories or archives risk teaching the model to cheat by retrieving previous answers without reasoning.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 735\n    },\n    {\n      \"claim\": \"All frontier models lost money on Kelly Bench when given $100K to trade Premier League football matches over a one-year horizon.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 785\n    },\n    {\n      \"claim\": \"The AI industry is over-indexed on coding and procedural tasks with only one or two valid solutions, which leaves little room for creativity.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 831\n    },\n    {\n      \"claim\": \"Current benchmarks fail to simulate multi-agent real-world environments where other players have differing goals.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 831\n    },\n    {\n      \"claim\": \"Off-policy staleness of up to about eight steps is acceptable in pipeline RL before quality degrades.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 917\n    },\n    {\n      \"claim\": \"Small, aligned, focused teams can produce frontier-relevant results even in the era of large-scale training.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 111\n    },\n    {\n      \"claim\": \"Solving humanity's largest problems requires patience and a long-horizon mindset rather than treating it purely as an engineering problem.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 544\n    }\n  ],\n  \"speaker_org\": \"General Reasoning\"\n}",
+  "ttft_ms": 33562,
+  "ttft_stream_ms": 856,
+  "time_to_request_ms": 35,
+  "type": "result",
+  "duration_ms": 83687,
+  "uuid": "2d355e9a-93bc-4f97-b976-713db073f90e",
+  "passA": {
+    "summary": "Ross Taylor (CEO, General Reasoning; formerly reasoning lead at Meta AI) and co-founder Chengxi Taylor pair a first-person history of the 2020\u20132023 LLM era with a technical agenda for long-horizon RL. Ross uses the Galactica-vs-ChatGPT collision as a natural experiment showing that a state-of-the-art base model is worthless as a product without RL, and explains why his team's early PPO-with-verifiable-rewards recipe on Llama 2 hit SOTA math results but never produced the reflective, inference-time-scaling behavior of o1/R1 \u2014 the missing ingredients were better base models, more RL compute, and longer context. Chengxi then argues that long-horizon tasks are the next frontier and walks through the concrete obstacles: scarce context windows, gradient variance that scales with trajectory length, sparse rewards and credit assignment, and the GPU-utilization/off-policy tradeoff in pipeline RL. He makes the case for value models (critics) as the unifying fix \u2014 variance reduction, trajectory-level fit with compaction, and bootstrapping partial episodes \u2014 while conceding they add bias and complexity versus GRPO. Worth watching for the insider account of Galactica's ideas (thinking tokens, data efficiency, multi-epoch training) and for a rare, specific treatment of what breaks when RL episodes run for weeks.",
+    "key_points": [
+      "Galactica and ChatGPT shipped two weeks apart on comparable base models, and the divergent outcomes served as a natural experiment proving that RLHF, not base model quality, is what turned LLMs into products.",
+      "Galactica introduced several ideas that later became standard: data efficiency via a curated 105B-token corpus, multi-epoch training when the consensus was one epoch, and 'thinking tokens' as an internal working-memory process consuming inference compute before answering.",
+      "Ross's team at Meta had a working recipe two years before R1 \u2014 continued pre-training on math/science, then PPO with verifiable rewards and a strong outcome reward model to initialize the value model \u2014 and got internal SOTA on math, but no reflective backtracking behavior.",
+      "The explanation for that gap was the bitter lesson in pure form: better base models, more RL compute, and bigger context windows are what unlock emergent reasoning behavior, not a cleverer objective.",
+      "Having a frontier base model earlier is an epistemic advantage, not just a product one \u2014 OpenAI's GPT-4-level model let them 'see further' and generate ideas others couldn't.",
+      "Long-horizon RL faces three distinct optimization problems: gradient variance scaling with trajectory length, sparse rewards causing credit assignment failures, and variable-length trajectories.",
+      "Value models are proposed as the answer \u2014 they reduce variance, operate at trajectory level (which fits context compaction), encourage batch diversity, and enable bootstrapping mid-episode \u2014 at the cost of value-model bias and having to train a second model alongside the policy.",
+      "General Reasoning's Kelly Bench gave frontier models $100K to build ML models betting on a season of Premier League football; all of them lost money, which the speakers read as evidence the field over-indexes on short procedural coding tasks over open-ended, multi-agent, real-world ones.",
+      "Pipeline RL trades off-policy staleness for GPU utilization; roughly eight steps of off-policyness is tolerable in their experience, but week-long inference in long-horizon settings blows past that and leaves GPUs idle unless you bootstrap with a value model."
+    ],
+    "notable_quotes": [
+      {
+        "text": "A good base model is not enough. So I took that lesson quite early on. So like I said, RLHF made LLMs products.",
+        "timestamp_sec": 183,
+        "why": "The thesis of the first half, stated flatly."
+      },
+      {
+        "text": "Like even at the time, like InstructGPT in 2022 had these pretty stunning results. Like a 1 billion parameter model with RLHF was outperforming 175 billion models.",
+        "timestamp_sec": 183,
+        "why": "Concrete two-orders-of-magnitude number backing the RL-over-scale claim."
+      },
+      {
+        "text": "it outperformed Palm, Chinchilla, GPT-3.5 with a lot less compute in scientific domains. It was state-of-the-art. So again, that also shows you how powerful RL is.",
+        "timestamp_sec": 257,
+        "why": "The paradox at the center of the Galactica story \u2014 SOTA and still a failure."
+      },
+      {
+        "text": "And Galactica said, \"No. High quality, you know, curated data sets really matter.\" And that was a real driver of those results you just saw.",
+        "timestamp_sec": 321,
+        "why": "Claims priority on the data-quality-over-quantity position."
+      },
+      {
+        "text": "It sounds ridiculous now, but at the time the consensus was you don't do more than an epoch.",
+        "timestamp_sec": 321,
+        "why": "Documents how fast a field consensus inverted."
+      },
+      {
+        "text": "But, Galactica was really this first idea which said, \"No, this is an internal working memory process. This is an internal thinking. You should be inside these tags, and you should spend the inference computer before you get to an answer, right?\"",
+        "timestamp_sec": 350,
+        "why": "A priority claim on the thinking-tokens / inference-time-compute framing."
+      },
+      {
+        "text": "So, at the time we only had Llama 2 base models, terrible mathematics corpus, terrible results on math.",
+        "timestamp_sec": 411,
+        "why": "Names the concrete constraint that made the early reasoning attempt fail."
+      },
+      {
+        "text": "Number two, PPO with verifiable rewards. But, notice this isn't GRPO, right?",
+        "timestamp_sec": 411,
+        "why": "Pins down the actual unpublished recipe and its deliberate divergence from today's default."
+      },
+      {
+        "text": "Like, better base models, more RL computes, bigger context windows, and that's all you need for this kind of emergent behavior.",
+        "timestamp_sec": 476,
+        "why": "The talk's bitter-lesson punchline about why o1-style behavior appeared when it did."
+      },
+      {
+        "text": "It also like says something like quite important about the sociology of like research because the fact that OpenAI had this model, you know, GPT-4 level model before anyone else, it allowed them to see further, right?",
+        "timestamp_sec": 509,
+        "why": "Frames compute access as an epistemic, not just competitive, advantage."
+      },
+      {
+        "text": "Long horizon task is not just an engineering problem. It is a mindset.",
+        "timestamp_sec": 544,
+        "why": "Chengxi's framing device, repeated as the closing line."
+      },
+      {
+        "text": "If you take Fermat's Last Theorem as example, what it take for the mathematician was over 10 years time of reading paper, writing down thoughts in the scratch pad, or taking a walk to generate the creative ideas.",
+        "timestamp_sec": 589,
+        "why": "Makes the context-scarcity argument vivid with a token-count comparison."
+      },
+      {
+        "text": "So what it essentially does is generate the token until the end of the context window, summarize, and then on top of that generate more tokens.",
+        "timestamp_sec": 589,
+        "why": "Clean definition of context compaction as an RL-trainable operation."
+      },
+      {
+        "text": "The first is the gradient variance scales with the length. And the second is a sparse reward. And you have this credit assignment problem.",
+        "timestamp_sec": 642,
+        "why": "Enumerates the specific optimization failures of long-horizon RL."
+      },
+      {
+        "text": "As you can see, we gave all the frontier models a 100K to start. All of them lost.",
+        "timestamp_sec": 785,
+        "why": "The headline empirical result from Kelly Bench."
+      },
+      {
+        "text": "First, I believe now the AI industry is a little bit too biased towards coding and procedure task.",
+        "timestamp_sec": 785,
+        "why": "A contestable position on where the field is misallocating effort."
+      },
+      {
+        "text": "And second of all, not enough focus on open-ended task. We live in the real world with a lot of a complexity, uncertainty, and that's not fully captured by the current benchmark.",
+        "timestamp_sec": 831,
+        "why": "States the benchmark critique that motivates their environment work."
+      },
+      {
+        "text": "What the pipeline RL does is that you let the sequence to be generated and you start to train the model while there's a still more sequences being generated.",
+        "timestamp_sec": 876,
+        "why": "Plain-language definition of pipeline RL for practitioners."
+      },
+      {
+        "text": "But from the our experience, normally off-policy up to eight steps is okay. So, essentially, we made a trade-off between the off-policy and the GPU utilization.",
+        "timestamp_sec": 917,
+        "why": "A specific empirical threshold others can test against."
+      },
+      {
+        "text": "It's like a dopamine in human brain. And that allows you to train the model.",
+        "timestamp_sec": 961,
+        "why": "Memorable analogy for value-model bootstrapping before episode end."
+      },
+      {
+        "text": "But, here's another trade-off. While you utilize the GPU fully, you introduce the value model bias. So, there's always a bit of trade-off in those solutions.",
+        "timestamp_sec": 961,
+        "why": "Concedes the cost of their own recommended approach."
+      },
+      {
+        "text": "So, it's a place where host over 350 environments and with a single API endpoint.",
+        "timestamp_sec": 961,
+        "why": "Concrete scale figure for their RL environment platform."
+      }
+    ],
+    "concepts": [
+      "long-horizon reinforcement learning",
+      "context compaction",
+      "value models and critics",
+      "reinforcement learning from human feedback",
+      "verifiable rewards",
+      "credit assignment in sparse-reward settings",
+      "pipeline RL and off-policy staleness",
+      "inference-time scaling",
+      "data efficiency in pre-training",
+      "agentic benchmark design",
+      "RL environment infrastructure",
+      "bootstrapping value estimates"
+    ],
+    "positions": [
+      {
+        "claim": "A state-of-the-art base model is insufficient to make a useful product; RL post-training is the decisive ingredient.",
+        "confidence": "stated",
+        "timestamp_sec": 183
+      },
+      {
+        "claim": "Galactica was the first LM to crack data efficiency (105B curated tokens vs. trillion-token corpora) and the first major empirical result for multi-epoch training.",
+        "confidence": "stated",
+        "timestamp_sec": 321
+      },
+      {
+        "claim": "Galactica's thinking-token tags anticipated what DeepSeek/o1 did two years later by applying RL pressure to internal reasoning.",
+        "confidence": "stated",
+        "timestamp_sec": 381
+      },
+      {
+        "claim": "Reflective, backtracking reasoning behavior did not emerge in 2023 because base models, RL compute, and context windows were too small \u2014 not because the objective was wrong.",
+        "confidence": "stated",
+        "timestamp_sec": 476
+      },
+      {
+        "claim": "Early access to a frontier base model confers a research advantage: it lets a lab see further and generate ideas competitors cannot.",
+        "confidence": "stated",
+        "timestamp_sec": 509
+      },
+      {
+        "claim": "A 1M-token context window is orders of magnitude short of what genuinely long-horizon intellectual work requires (tens to hundreds of billions of tokens).",
+        "confidence": "stated",
+        "timestamp_sec": 589
+      },
+      {
+        "claim": "RL should be applied to the compaction step as well as the task itself.",
+        "confidence": "stated",
+        "timestamp_sec": 642
+      },
+      {
+        "claim": "Value models are preferable to GRPO for long-horizon RL because they cut variance, work at trajectory level with compaction, and permit bootstrapping \u2014 despite added complexity and bias.",
+        "confidence": "stated",
+        "timestamp_sec": 691
+      },
+      {
+        "claim": "Tools that let agents search prior trajectories or archives risk teaching the model to cheat by retrieving previous answers without reasoning.",
+        "confidence": "stated",
+        "timestamp_sec": 735
+      },
+      {
+        "claim": "All frontier models lost money on Kelly Bench when given $100K to trade Premier League football matches over a one-year horizon.",
+        "confidence": "stated",
+        "timestamp_sec": 785
+      },
+      {
+        "claim": "The AI industry is over-indexed on coding and procedural tasks with only one or two valid solutions, which leaves little room for creativity.",
+        "confidence": "stated",
+        "timestamp_sec": 831
+      },
+      {
+        "claim": "Current benchmarks fail to simulate multi-agent real-world environments where other players have differing goals.",
+        "confidence": "stated",
+        "timestamp_sec": 831
+      },
+      {
+        "claim": "Off-policy staleness of up to about eight steps is acceptable in pipeline RL before quality degrades.",
+        "confidence": "stated",
+        "timestamp_sec": 917
+      },
+      {
+        "claim": "Small, aligned, focused teams can produce frontier-relevant results even in the era of large-scale training.",
+        "confidence": "implied",
+        "timestamp_sec": 111
+      },
+      {
+        "claim": "Solving humanity's largest problems requires patience and a long-horizon mindset rather than treating it purely as an engineering problem.",
+        "confidence": "stated",
+        "timestamp_sec": 544
+      }
+    ],
+    "speaker_org": "General Reasoning"
+  },
+  "_meta": {
+    "slug": "scaling-to-long-horizons",
+    "video_id": "2bvtay8wGYI",
+    "url": "https://www.youtube.com/watch?v=2bvtay8wGYI",
+    "word_count": 3230,
+    "wall_sec": 84.8,
+    "run_at": "2026-08-12T20:11:17Z",
+    "effort": "medium"
+  }
+}

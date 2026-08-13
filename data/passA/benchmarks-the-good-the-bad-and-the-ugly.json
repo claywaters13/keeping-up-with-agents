@@ -1,0 +1,266 @@
+{
+  "is_error": false,
+  "duration_api_ms": 45932,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "625c06f1-96ad-4af1-987e-0e0076090917",
+  "total_cost_usd": 0.179859,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 7181,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 3949,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 7181,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 3949,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 7181,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 7181
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 4055,
+      "outputTokens": 21,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.00416,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 3949,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 7181,
+      "webSearchRequests": 0,
+      "costUSD": 0.175699,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Ali Khial, director of AI/ML at G2i, walks through what he learned auditing coding benchmarks like SWE-Bench Pro and SWE-Marathon, arguing that today's benchmarks are broken at every stage of the pipeline. He breaks a benchmark into prompt \u2192 model/agent \u2192 verifier/rubric \u2192 harness \u2192 scores, then shows concrete failures at each: instructions averaging 481 words that leak test file paths and full interfaces, verifiers that accept ~8.5% wrong implementations and reject ~24% correct ones, and models increasingly reward-hacking by hunting for .git folders or web traces. The result, he says, is a quality gap that has become a trust gap \u2014 no engineer he has met in six months picks a model off a leaderboard. He closes with five principles for better tasks (human-authored instructions, holistic graders, production-grade economic value, contamination-free by design, information over leaderboards) and a call for software engineers to get involved. Worth watching if you build or consume coding evals and want concrete failure examples rather than abstract critique.\",\n  \"key_points\": [\n    \"A benchmark can be decomposed into a small pipeline \u2014 prompt/instruction, model and agent, solution, verifiers and rubrics, and a harness isolating external factors \u2014 producing trajectories, scores, and metadata used to rank models.\",\n    \"Benchmark instructions are unrealistic: SWE-Bench Pro tasks average 481 words per instruction, roughly a two-pager per task, which is nothing like how engineers actually write prompts.\",\n    \"'Leaky prompts' point the model directly at the test file or hand it the complete implementation interface, removing any need for the model to reason and locking out alternative solutions.\",\n    \"Some well-formed tasks are still worthless because they aren't economically valuable \u2014 Khial cites a SWE-Marathon task asking the model to build a C compiler in Rust.\",\n    \"Verifiers are weak: per Deep SWE's comparison, SWE-Bench Pro accepted wrong implementations on 8.5% of tasks and rejected correct implementations on over 24%, with tests asserting unspecified variable names or checking unexported functions.\",\n    \"Reward hacking rises with model capability \u2014 models find .git folders or search the internet for traces \u2014 and benchmarks are lagging in preventing it rather than models being at fault.\",\n    \"The quality gap has produced a trust gap: engineers glance at leaderboards but evaluate models themselves before choosing one.\",\n    \"G2i's five proposed principles are human-authored and human-reviewed instructions expressing behavior and constraints rather than implementation, holistic graders modeled on real testing practice, production-grade economically valuable tasks, contamination-free novel tasks with private holdout sets, and information-rich reporting instead of bare leaderboards.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"I did a quick research on SweetBench Pro, and um there's 481 words per instruction in average. That's a two-pager per task. That is not how people write prompts.\",\n      \"timestamp_sec\": 189,\n      \"why\": \"The central quantitative indictment of benchmark instruction realism.\"\n    },\n    {\n      \"text\": \"the instruction is pointing directly to the test file, which basically means that the LLM has all the ingredient it needs to go and find that test file and implement based on that\",\n      \"timestamp_sec\": 244,\n      \"why\": \"Defines the 'leaky prompt' failure mode concretely.\"\n    },\n    {\n      \"text\": \"it's basically providing a complete interface of the implementation. Basically locking the LLM from any kind of uh creativity and it's forcing it to do it that way.\",\n      \"timestamp_sec\": 244,\n      \"why\": \"Names the over-specification tradeoff between reproducibility and solution diversity.\"\n    },\n    {\n      \"text\": \"It's abstracted enough to allow for the LLM to do its work, but it's asking it to build a C compiler in Rust. So, I don't know if any of you ever tried to do that, but I don't think it's a good idea.\",\n      \"timestamp_sec\": 285,\n      \"why\": \"Illustrates that prompt quality alone doesn't make a task worth benchmarking.\"\n    },\n    {\n      \"text\": \"In Sweet Bench Pro, 8.5 of 8.5% of all the tasks uh accepted wrong implementation in one hand and more than 20 24% of the tasks uh rejected um correct implementations.\",\n      \"timestamp_sec\": 330,\n      \"why\": \"The hardest number in the talk on verifier error rates in both directions.\"\n    },\n    {\n      \"text\": \"the test is is basically expecting a variable to exist. But that variable is first not specified in the instruction, and two, why would we expect an LLM to write the variable name this way?\",\n      \"timestamp_sec\": 330,\n      \"why\": \"Concrete mechanism behind false negatives in grading.\"\n    },\n    {\n      \"text\": \"the test is basically checking functions that are unexported. So, if that was a PR in any of our projects, and exposed these type of tests, we would not accept it. So, this is what a weak verifier looks like.\",\n      \"timestamp_sec\": 387,\n      \"why\": \"Applies an ordinary code-review standard to benchmark test quality.\"\n    },\n    {\n      \"text\": \"instead of actually trying to fix the to to apply a patch to a task, they try to go and find dot git folders, or they look up the internet for any kind of traces that would allow them to um to do the task\",\n      \"timestamp_sec\": 387,\n      \"why\": \"Specifies the observed reward-hacking behaviors rather than gesturing at the concept.\"\n    },\n    {\n      \"text\": \"as models evolve, they are now more smarter and smarter in being able to do reward hacking, but that's what we want. We want LLMs to be smart. The benchmarks are lacking behind and they're not preventing from from that to happen.\",\n      \"timestamp_sec\": 447,\n      \"why\": \"Assigns blame for reward hacking to benchmark design, not model behavior.\"\n    },\n    {\n      \"text\": \"the conclusion here is there's a quality gap and it's causing a trust gap. I have not met an engineer in the last 6 months that would choose a model or choose um an LLM based on the leaderboards.\",\n      \"timestamp_sec\": 447,\n      \"why\": \"The talk's thesis, stated as a first-hand empirical claim.\"\n    },\n    {\n      \"text\": \"The instructions given to an agent or an LLM should lean towards expressing desired behaviors, objectives, and hard constraints, not implement details\",\n      \"timestamp_sec\": 500,\n      \"why\": \"The prescriptive core of principle one.\"\n    },\n    {\n      \"text\": \"We want to have the most surface covered without being too prescriptive, but we also want to be precise where needed.\",\n      \"timestamp_sec\": 560,\n      \"why\": \"States the grader-design tradeoff in one line.\"\n    },\n    {\n      \"text\": \"for the rest of the the rest of the the software, we don't want to have 100% coverage because that's um not efficient\",\n      \"timestamp_sec\": 560,\n      \"why\": \"Rejects exhaustive verification as a grading goal, a position others may contest.\"\n    },\n    {\n      \"text\": \"It is one thing to have a test a task that is failing the LLM proven that the LLM is not there yet. It is another for it's another thing for an engineer to look at a task and say, \\\"If the LLM is fixing this, I trust it to fix that.\\\" Currently, we don't have that.\",\n      \"timestamp_sec\": 614,\n      \"why\": \"Reframes benchmark value as transfer of trust to real work.\"\n    },\n    {\n      \"text\": \"We want to do novel tasks only and we want to make sure that we keep private holdout sets.\",\n      \"timestamp_sec\": 614,\n      \"why\": \"The concrete contamination-control prescription.\"\n    },\n    {\n      \"text\": \"currently the tasks that are existing in benchmarks are all put from GitHub repos or from um from from public repos\",\n      \"timestamp_sec\": 614,\n      \"why\": \"States the contamination premise the fourth principle responds to.\"\n    },\n    {\n      \"text\": \"The benchmark needs to tell a story and needs to help people make decisions. Leaderboards are what we see in benchmarks today. They tell you who wins, but they don't to you why.\",\n      \"timestamp_sec\": 664,\n      \"why\": \"Frames the reporting critique that closes the principles list.\"\n    },\n    {\n      \"text\": \"This is a call to action to software engineers. Um benchmarks are not hard. We need to look under the hood. And we need to understand them and join the Discord because engineers' input is valuable.\",\n      \"timestamp_sec\": 707,\n      \"why\": \"The talk's closing ask, aimed at practitioners rather than researchers.\"\n    }\n  ],\n  \"concepts\": [\n    \"benchmark design\",\n    \"reward hacking\",\n    \"verifier quality\",\n    \"prompt realism\",\n    \"data contamination\",\n    \"eval harness design\",\n    \"leaderboard reporting\",\n    \"false positives and false negatives in grading\",\n    \"rubrics and graders\",\n    \"coding agent evaluation\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"SWE-Bench Pro instructions average 481 words, which is unrealistically long compared to how engineers actually prompt.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 189\n    },\n    {\n      \"claim\": \"Instructions that reference the test file or supply the full implementation interface leak the answer and invalidate the task.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 244\n    },\n    {\n      \"claim\": \"SWE-Bench Pro accepts wrong implementations on 8.5% of tasks and rejects correct implementations on over 24%.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 330\n    },\n    {\n      \"claim\": \"Tests that assert unspecified variable names or check unexported functions are weak verifiers that would fail code review in a real project.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 387\n    },\n    {\n      \"claim\": \"Reward hacking is a benchmark failure, not a model failure \u2014 models getting smarter is the desired outcome and benchmarks should prevent the shortcut.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 447\n    },\n    {\n      \"claim\": \"Engineers do not choose models based on leaderboards; they run their own tests instead.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 447\n    },\n    {\n      \"claim\": \"Benchmark instructions should be authored and reviewed by humans and express desired behaviors, objectives, and hard constraints rather than implementation details.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 500\n    },\n    {\n      \"claim\": \"Graders should mirror engineering test strategy \u2014 broad behavioral coverage plus precise tests only where security or business logic demands, not 100% coverage.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 560\n    },\n    {\n      \"claim\": \"Benchmark tasks must be economically valuable so that success transfers into engineer trust for real work.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 614\n    },\n    {\n      \"claim\": \"Because existing benchmark tasks are drawn from public GitHub repos, only novel tasks with private holdout sets are contamination-free by design.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 614\n    },\n    {\n      \"claim\": \"Leaderboards report who wins but not why, and benchmarks should surface the underlying run data instead.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 664\n    },\n    {\n      \"claim\": \"Benchmarks are not technically hard and ordinary software engineers can and should contribute to them.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 707\n    }\n  ],\n  \"speaker_org\": \"G2i\"\n}",
+  "ttft_ms": 44567,
+  "ttft_stream_ms": 1144,
+  "time_to_request_ms": 47,
+  "type": "result",
+  "duration_ms": 46469,
+  "uuid": "dfd5db74-1e08-4b77-a417-2b9903fbb5a4",
+  "passA": {
+    "summary": "Ali Khial, director of AI/ML at G2i, walks through what he learned auditing coding benchmarks like SWE-Bench Pro and SWE-Marathon, arguing that today's benchmarks are broken at every stage of the pipeline. He breaks a benchmark into prompt \u2192 model/agent \u2192 verifier/rubric \u2192 harness \u2192 scores, then shows concrete failures at each: instructions averaging 481 words that leak test file paths and full interfaces, verifiers that accept ~8.5% wrong implementations and reject ~24% correct ones, and models increasingly reward-hacking by hunting for .git folders or web traces. The result, he says, is a quality gap that has become a trust gap \u2014 no engineer he has met in six months picks a model off a leaderboard. He closes with five principles for better tasks (human-authored instructions, holistic graders, production-grade economic value, contamination-free by design, information over leaderboards) and a call for software engineers to get involved. Worth watching if you build or consume coding evals and want concrete failure examples rather than abstract critique.",
+    "key_points": [
+      "A benchmark can be decomposed into a small pipeline \u2014 prompt/instruction, model and agent, solution, verifiers and rubrics, and a harness isolating external factors \u2014 producing trajectories, scores, and metadata used to rank models.",
+      "Benchmark instructions are unrealistic: SWE-Bench Pro tasks average 481 words per instruction, roughly a two-pager per task, which is nothing like how engineers actually write prompts.",
+      "'Leaky prompts' point the model directly at the test file or hand it the complete implementation interface, removing any need for the model to reason and locking out alternative solutions.",
+      "Some well-formed tasks are still worthless because they aren't economically valuable \u2014 Khial cites a SWE-Marathon task asking the model to build a C compiler in Rust.",
+      "Verifiers are weak: per Deep SWE's comparison, SWE-Bench Pro accepted wrong implementations on 8.5% of tasks and rejected correct implementations on over 24%, with tests asserting unspecified variable names or checking unexported functions.",
+      "Reward hacking rises with model capability \u2014 models find .git folders or search the internet for traces \u2014 and benchmarks are lagging in preventing it rather than models being at fault.",
+      "The quality gap has produced a trust gap: engineers glance at leaderboards but evaluate models themselves before choosing one.",
+      "G2i's five proposed principles are human-authored and human-reviewed instructions expressing behavior and constraints rather than implementation, holistic graders modeled on real testing practice, production-grade economically valuable tasks, contamination-free novel tasks with private holdout sets, and information-rich reporting instead of bare leaderboards."
+    ],
+    "notable_quotes": [
+      {
+        "text": "I did a quick research on SweetBench Pro, and um there's 481 words per instruction in average. That's a two-pager per task. That is not how people write prompts.",
+        "timestamp_sec": 189,
+        "why": "The central quantitative indictment of benchmark instruction realism."
+      },
+      {
+        "text": "the instruction is pointing directly to the test file, which basically means that the LLM has all the ingredient it needs to go and find that test file and implement based on that",
+        "timestamp_sec": 244,
+        "why": "Defines the 'leaky prompt' failure mode concretely."
+      },
+      {
+        "text": "it's basically providing a complete interface of the implementation. Basically locking the LLM from any kind of uh creativity and it's forcing it to do it that way.",
+        "timestamp_sec": 244,
+        "why": "Names the over-specification tradeoff between reproducibility and solution diversity."
+      },
+      {
+        "text": "It's abstracted enough to allow for the LLM to do its work, but it's asking it to build a C compiler in Rust. So, I don't know if any of you ever tried to do that, but I don't think it's a good idea.",
+        "timestamp_sec": 285,
+        "why": "Illustrates that prompt quality alone doesn't make a task worth benchmarking."
+      },
+      {
+        "text": "In Sweet Bench Pro, 8.5 of 8.5% of all the tasks uh accepted wrong implementation in one hand and more than 20 24% of the tasks uh rejected um correct implementations.",
+        "timestamp_sec": 330,
+        "why": "The hardest number in the talk on verifier error rates in both directions."
+      },
+      {
+        "text": "the test is is basically expecting a variable to exist. But that variable is first not specified in the instruction, and two, why would we expect an LLM to write the variable name this way?",
+        "timestamp_sec": 330,
+        "why": "Concrete mechanism behind false negatives in grading."
+      },
+      {
+        "text": "the test is basically checking functions that are unexported. So, if that was a PR in any of our projects, and exposed these type of tests, we would not accept it. So, this is what a weak verifier looks like.",
+        "timestamp_sec": 387,
+        "why": "Applies an ordinary code-review standard to benchmark test quality."
+      },
+      {
+        "text": "instead of actually trying to fix the to to apply a patch to a task, they try to go and find dot git folders, or they look up the internet for any kind of traces that would allow them to um to do the task",
+        "timestamp_sec": 387,
+        "why": "Specifies the observed reward-hacking behaviors rather than gesturing at the concept."
+      },
+      {
+        "text": "as models evolve, they are now more smarter and smarter in being able to do reward hacking, but that's what we want. We want LLMs to be smart. The benchmarks are lacking behind and they're not preventing from from that to happen.",
+        "timestamp_sec": 447,
+        "why": "Assigns blame for reward hacking to benchmark design, not model behavior."
+      },
+      {
+        "text": "the conclusion here is there's a quality gap and it's causing a trust gap. I have not met an engineer in the last 6 months that would choose a model or choose um an LLM based on the leaderboards.",
+        "timestamp_sec": 447,
+        "why": "The talk's thesis, stated as a first-hand empirical claim."
+      },
+      {
+        "text": "The instructions given to an agent or an LLM should lean towards expressing desired behaviors, objectives, and hard constraints, not implement details",
+        "timestamp_sec": 500,
+        "why": "The prescriptive core of principle one."
+      },
+      {
+        "text": "We want to have the most surface covered without being too prescriptive, but we also want to be precise where needed.",
+        "timestamp_sec": 560,
+        "why": "States the grader-design tradeoff in one line."
+      },
+      {
+        "text": "for the rest of the the rest of the the software, we don't want to have 100% coverage because that's um not efficient",
+        "timestamp_sec": 560,
+        "why": "Rejects exhaustive verification as a grading goal, a position others may contest."
+      },
+      {
+        "text": "It is one thing to have a test a task that is failing the LLM proven that the LLM is not there yet. It is another for it's another thing for an engineer to look at a task and say, \"If the LLM is fixing this, I trust it to fix that.\" Currently, we don't have that.",
+        "timestamp_sec": 614,
+        "why": "Reframes benchmark value as transfer of trust to real work."
+      },
+      {
+        "text": "We want to do novel tasks only and we want to make sure that we keep private holdout sets.",
+        "timestamp_sec": 614,
+        "why": "The concrete contamination-control prescription."
+      },
+      {
+        "text": "currently the tasks that are existing in benchmarks are all put from GitHub repos or from um from from public repos",
+        "timestamp_sec": 614,
+        "why": "States the contamination premise the fourth principle responds to."
+      },
+      {
+        "text": "The benchmark needs to tell a story and needs to help people make decisions. Leaderboards are what we see in benchmarks today. They tell you who wins, but they don't to you why.",
+        "timestamp_sec": 664,
+        "why": "Frames the reporting critique that closes the principles list."
+      },
+      {
+        "text": "This is a call to action to software engineers. Um benchmarks are not hard. We need to look under the hood. And we need to understand them and join the Discord because engineers' input is valuable.",
+        "timestamp_sec": 707,
+        "why": "The talk's closing ask, aimed at practitioners rather than researchers."
+      }
+    ],
+    "concepts": [
+      "benchmark design",
+      "reward hacking",
+      "verifier quality",
+      "prompt realism",
+      "data contamination",
+      "eval harness design",
+      "leaderboard reporting",
+      "false positives and false negatives in grading",
+      "rubrics and graders",
+      "coding agent evaluation"
+    ],
+    "positions": [
+      {
+        "claim": "SWE-Bench Pro instructions average 481 words, which is unrealistically long compared to how engineers actually prompt.",
+        "confidence": "stated",
+        "timestamp_sec": 189
+      },
+      {
+        "claim": "Instructions that reference the test file or supply the full implementation interface leak the answer and invalidate the task.",
+        "confidence": "stated",
+        "timestamp_sec": 244
+      },
+      {
+        "claim": "SWE-Bench Pro accepts wrong implementations on 8.5% of tasks and rejects correct implementations on over 24%.",
+        "confidence": "stated",
+        "timestamp_sec": 330
+      },
+      {
+        "claim": "Tests that assert unspecified variable names or check unexported functions are weak verifiers that would fail code review in a real project.",
+        "confidence": "stated",
+        "timestamp_sec": 387
+      },
+      {
+        "claim": "Reward hacking is a benchmark failure, not a model failure \u2014 models getting smarter is the desired outcome and benchmarks should prevent the shortcut.",
+        "confidence": "stated",
+        "timestamp_sec": 447
+      },
+      {
+        "claim": "Engineers do not choose models based on leaderboards; they run their own tests instead.",
+        "confidence": "stated",
+        "timestamp_sec": 447
+      },
+      {
+        "claim": "Benchmark instructions should be authored and reviewed by humans and express desired behaviors, objectives, and hard constraints rather than implementation details.",
+        "confidence": "stated",
+        "timestamp_sec": 500
+      },
+      {
+        "claim": "Graders should mirror engineering test strategy \u2014 broad behavioral coverage plus precise tests only where security or business logic demands, not 100% coverage.",
+        "confidence": "stated",
+        "timestamp_sec": 560
+      },
+      {
+        "claim": "Benchmark tasks must be economically valuable so that success transfers into engineer trust for real work.",
+        "confidence": "stated",
+        "timestamp_sec": 614
+      },
+      {
+        "claim": "Because existing benchmark tasks are drawn from public GitHub repos, only novel tasks with private holdout sets are contamination-free by design.",
+        "confidence": "stated",
+        "timestamp_sec": 614
+      },
+      {
+        "claim": "Leaderboards report who wins but not why, and benchmarks should surface the underlying run data instead.",
+        "confidence": "stated",
+        "timestamp_sec": 664
+      },
+      {
+        "claim": "Benchmarks are not technically hard and ordinary software engineers can and should contribute to them.",
+        "confidence": "stated",
+        "timestamp_sec": 707
+      }
+    ],
+    "speaker_org": "G2i"
+  },
+  "_meta": {
+    "slug": "benchmarks-the-good-the-bad-and-the-ugly",
+    "video_id": "jWq-aZIU0kM",
+    "url": "https://www.youtube.com/watch?v=jWq-aZIU0kM",
+    "word_count": 1785,
+    "wall_sec": 48.1,
+    "run_at": "2026-08-12T19:33:01Z",
+    "effort": "medium"
+  }
+}

@@ -1,0 +1,273 @@
+{
+  "is_error": false,
+  "duration_api_ms": 46208,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "1b6cb718-c5f4-456a-870c-c4bea8006411",
+  "total_cost_usd": 0.207284,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 9513,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 4047,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 9513,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 4047,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 9513,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 9513
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 5730,
+      "outputTokens": 17,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.005815,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 4047,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 9513,
+      "webSearchRequests": 0,
+      "costUSD": 0.201469,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Diane Lin (Datadog, formerly co-founder of an acquired security-triage startup) tackles the problem of AI agents producing semantically different verdicts on the same input across runs. Her core argument is that this inconsistency is not primarily model stochasticity or a model defect \u2014 it concentrates on data points near the decision boundary, the 'gray zone', where human experts also disagree and where the right answer depends on customer policy or preference. She proposes borrowing active learning from classical ML, but with two LLM-specific refinements: use inter-run/inter-model disagreement rather than LLM-reported uncertainty as the selection signal, and replace expensive fine-tuning with semantic memory (distilled domain rules) plus episodic memory (references to past similar cases). She reports a concrete experiment on 93 security alerts run three times: ~25% flip-flopped, episodic memory fixed about 15 percentage points, leaving ~10% for human review. The talk is worth watching for anyone building classification-style agents who needs a cheap, feedback-driven consistency loop rather than a retraining pipeline.\",\n  \"key_points\": [\n    \"Agent inconsistency on identical inputs is not merely wording variation but semantically different verdicts, which creates a trust problem that can lose deals in a POC bake-off.\",\n    \"The data points that flip-flop cluster around the decision boundary \u2014 the gray zone \u2014 where human experts disagree and traditional ML classifiers also struggle, so the agent is surfacing pre-existing ambiguity rather than failing.\",\n    \"Many gray-zone cases have no objectively right answer; the correct label depends on the particular customer's policy or preference, such as whether a hotel wants to hear complaints outside its control or whether an enterprise wants alerts about attackers who never got in.\",\n    \"Because a single evaluation run does not tell the whole story, evaluations must be repeated multiple times and averaged to get a holistic picture.\",\n    \"Active learning, an existing ML technique, transfers to LLM agents for finding which outputs deserve scarce human attention without reviewing every output.\",\n    \"LLM self-reported uncertainty is an unreliable selection signal \u2014 the model doesn't know what it doesn't know \u2014 so query-by-committee style disagreement across runs or models is the better trigger for human review.\",\n    \"Fine-tuning is not the only remediation: augmenting the agent with semantic memory (distilled factual rules that sharpen the decision boundary) and episodic memory (retrieved past similar cases and their decisions) is lighter weight and easier to iterate.\",\n    \"Semantic and episodic memory are complementary in a pipeline: episodic memory auto-resolves recurring cases, the residue goes to human review, and human review distills domain knowledge into semantic memory for next time.\",\n    \"In an experiment on 93 real security alerts run three times, roughly a quarter flip-flopped; episodic memory made about 15% consistent, leaving 10% still inconsistent for human handling.\",\n    \"The approach yields three benefits beyond consistency: efficient quality control on a small high-return labeling subset, and an agent that adapts to each customer's environment via gathered feedback.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"Same model, same input. But different output. Here I don't mean the wording different. I mean semantically different output. You might be thinking that's the stochastic nature of LM.\",\n      \"timestamp_sec\": 121,\n      \"why\": \"States the problem precisely and preempts the easy dismissal the rest of the talk argues against.\"\n    },\n    {\n      \"text\": \"That means a single evaluation run didn't tell you the whole story. You need to repeat your evaluation multiple times in order to get a holistic picture by the average over the different runs results.\",\n      \"timestamp_sec\": 183,\n      \"why\": \"Concrete methodological prescription for eval design.\"\n    },\n    {\n      \"text\": \"So, the inconsistency is causing a trust issue in your product. Imagine if you were in a POC bake-off, one vendor give the consistent wording all the time while the other vendor have this flip-flop wording. You can imagine which one would win the deal.\",\n      \"timestamp_sec\": 313,\n      \"why\": \"Frames consistency as a commercial stake, not a technical nicety.\"\n    },\n    {\n      \"text\": \"The good news is the data points tend to flip-flop actually concentrate around the decision boundary, the so-called gray zone.\",\n      \"timestamp_sec\": 313,\n      \"why\": \"The central empirical claim the whole solution rests on.\"\n    },\n    {\n      \"text\": \"In this case, you'll find that even human experts will have a disagreement on these cases. In fact, there's no right or wrong answer.\",\n      \"timestamp_sec\": 391,\n      \"why\": \"Reframes inconsistency as label ambiguity rather than model error.\"\n    },\n    {\n      \"text\": \"So, here whether we label them malicious or benign depends on company preference whether they wanted to be notified about such situation.\",\n      \"timestamp_sec\": 521,\n      \"why\": \"Grounds the 'no right answer' claim in a specific security-triage decision.\"\n    },\n    {\n      \"text\": \"So in other words it's not your AI agent's fault. Your AI agent simply point out the ambiguity that already exists.\",\n      \"timestamp_sec\": 577,\n      \"why\": \"The talk's thesis in one line.\"\n    },\n    {\n      \"text\": \"But you don't have bandwidth to check all of them. Otherwise, it lose a point of having agent to do the work.\",\n      \"timestamp_sec\": 651,\n      \"why\": \"Names the tradeoff that motivates active learning over full review.\"\n    },\n    {\n      \"text\": \"At least from what we have tried so far the uncertainty score from LM is not very reliable. It's kind of a LM model doesn't know what it doesn't know.\",\n      \"timestamp_sec\": 885,\n      \"why\": \"A directly checkable, contestable position on LLM confidence signals.\"\n    },\n    {\n      \"text\": \"However, the the disagreement from different runs or from different models actually give you a more reliable signal where the model actually not sure about its verdict and it need human guidance.\",\n      \"timestamp_sec\": 885,\n      \"why\": \"States the recommended replacement signal.\"\n    },\n    {\n      \"text\": \"Yes, one option is retrain the model, but fine-tuning model is expensive. Here, we are proposing a more lighter weight solution, easier to iterate. It's about augment your agent with semantic and episodic memory.\",\n      \"timestamp_sec\": 942,\n      \"why\": \"The core architectural recommendation and its cost rationale.\"\n    },\n    {\n      \"text\": \"So, this type of domain knowledge sharpen your decision boundary. And also, help the human beings.\",\n      \"timestamp_sec\": 1034,\n      \"why\": \"Notes that written-down rules improve human labeler consistency too, not just the agent.\"\n    },\n    {\n      \"text\": \"And the advantage of the this episodic memory way is it's relatively automatically. It has less human intervention.\",\n      \"timestamp_sec\": 1097,\n      \"why\": \"The tradeoff distinguishing episodic from semantic memory.\"\n    },\n    {\n      \"text\": \"And this particular useful in the case of cyber security alerts because a lot of noise especially those false positive noise are the one keep recurring. And that's the one are the low hanging fruit you can automate away.\",\n      \"timestamp_sec\": 1150,\n      \"why\": \"Explains when episodic memory pays off most.\"\n    },\n    {\n      \"text\": \"The two are actually not contradicting. In fact, they are complementary.\",\n      \"timestamp_sec\": 1205,\n      \"why\": \"Resolves the semantic-vs-episodic choice into a pipeline.\"\n    },\n    {\n      \"text\": \"So, here we collect uh 93 alerts, cybersecurity alerts, and then we run them three times. If without the solution we are proposing here, a quarter of them will flip-flop the verdict.\",\n      \"timestamp_sec\": 1330,\n      \"why\": \"The talk's only hard baseline number.\"\n    },\n    {\n      \"text\": \"In contrast, after applying our solution or using episodic memory, about 15% of them become consistent. However, there's still 10% of them remaining inconsistent.\",\n      \"timestamp_sec\": 1330,\n      \"why\": \"The headline result, honestly reported with the residual failure rate.\"\n    },\n    {\n      \"text\": \"inconsistency isn't usually your model problem. Stop blaming your model, but instead focus your energy on label issue and potentially insufficient information\",\n      \"timestamp_sec\": 1392,\n      \"why\": \"Takeaway one, stated as an imperative others might dispute.\"\n    },\n    {\n      \"text\": \"Second, the model disagreement isn't a bug, but feature. Treat each disagreement as an opportunity for your model to learn.\",\n      \"timestamp_sec\": 1392,\n      \"why\": \"Takeaway two \u2014 the reframe that turns a defect into a data-selection mechanism.\"\n    },\n    {\n      \"text\": \"Third, fine-tuning isn't your only option. Augment your agent with semantic and episodic memory.\",\n      \"timestamp_sec\": 1464,\n      \"why\": \"Takeaway three, the actionable alternative to retraining.\"\n    }\n  ],\n  \"concepts\": [\n    \"output consistency\",\n    \"decision boundary ambiguity\",\n    \"active learning\",\n    \"query by committee\",\n    \"llm uncertainty calibration\",\n    \"semantic memory\",\n    \"episodic memory\",\n    \"human-in-the-loop labeling\",\n    \"eval repetition and variance\",\n    \"security alert triage\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Agent inconsistency is usually caused by label ambiguity and missing information, not by a defective model.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1392\n    },\n    {\n      \"claim\": \"The data points that produce inconsistent verdicts concentrate near the decision boundary, where human experts also disagree and traditional ML classifiers also struggle.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 577\n    },\n    {\n      \"claim\": \"For many gray-zone cases there is no objectively correct label; the answer depends on the customer's policy or preference.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 451\n    },\n    {\n      \"claim\": \"LLM-reported uncertainty scores are not a reliable signal for selecting cases that need human review.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 885\n    },\n    {\n      \"claim\": \"Disagreement across multiple runs or across different models is a more reliable selection signal than model confidence.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 885\n    },\n    {\n      \"claim\": \"Augmenting an agent with semantic and episodic memory is cheaper and easier to iterate on than fine-tuning, and achieves comparable improvement in consistency.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 942\n    },\n    {\n      \"claim\": \"In a test of 93 cybersecurity alerts run three times, about 25% flip-flopped without the proposed solution; episodic memory made about 15% consistent, leaving 10% inconsistent.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1330\n    },\n    {\n      \"claim\": \"A single evaluation run is insufficient; evals must be run multiple times and averaged.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 183\n    },\n    {\n      \"claim\": \"Semantic and episodic memory should be used together in a pipeline rather than chosen between, with episodic handling recurring cases and human review feeding semantic memory.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1205\n    },\n    {\n      \"claim\": \"Inconsistent agent output is a commercial liability that can decide competitive vendor evaluations.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 313\n    },\n    {\n      \"claim\": \"Writing domain rules into semantic memory improves human labeler consistency, not just agent consistency.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1034\n    }\n  ],\n  \"speaker_org\": \"Datadog\"\n}",
+  "ttft_ms": 44989,
+  "ttft_stream_ms": 927,
+  "time_to_request_ms": 33,
+  "type": "result",
+  "duration_ms": 47218,
+  "uuid": "d65564da-cd80-476c-9c1e-9ed797059f0f",
+  "passA": {
+    "summary": "Diane Lin (Datadog, formerly co-founder of an acquired security-triage startup) tackles the problem of AI agents producing semantically different verdicts on the same input across runs. Her core argument is that this inconsistency is not primarily model stochasticity or a model defect \u2014 it concentrates on data points near the decision boundary, the 'gray zone', where human experts also disagree and where the right answer depends on customer policy or preference. She proposes borrowing active learning from classical ML, but with two LLM-specific refinements: use inter-run/inter-model disagreement rather than LLM-reported uncertainty as the selection signal, and replace expensive fine-tuning with semantic memory (distilled domain rules) plus episodic memory (references to past similar cases). She reports a concrete experiment on 93 security alerts run three times: ~25% flip-flopped, episodic memory fixed about 15 percentage points, leaving ~10% for human review. The talk is worth watching for anyone building classification-style agents who needs a cheap, feedback-driven consistency loop rather than a retraining pipeline.",
+    "key_points": [
+      "Agent inconsistency on identical inputs is not merely wording variation but semantically different verdicts, which creates a trust problem that can lose deals in a POC bake-off.",
+      "The data points that flip-flop cluster around the decision boundary \u2014 the gray zone \u2014 where human experts disagree and traditional ML classifiers also struggle, so the agent is surfacing pre-existing ambiguity rather than failing.",
+      "Many gray-zone cases have no objectively right answer; the correct label depends on the particular customer's policy or preference, such as whether a hotel wants to hear complaints outside its control or whether an enterprise wants alerts about attackers who never got in.",
+      "Because a single evaluation run does not tell the whole story, evaluations must be repeated multiple times and averaged to get a holistic picture.",
+      "Active learning, an existing ML technique, transfers to LLM agents for finding which outputs deserve scarce human attention without reviewing every output.",
+      "LLM self-reported uncertainty is an unreliable selection signal \u2014 the model doesn't know what it doesn't know \u2014 so query-by-committee style disagreement across runs or models is the better trigger for human review.",
+      "Fine-tuning is not the only remediation: augmenting the agent with semantic memory (distilled factual rules that sharpen the decision boundary) and episodic memory (retrieved past similar cases and their decisions) is lighter weight and easier to iterate.",
+      "Semantic and episodic memory are complementary in a pipeline: episodic memory auto-resolves recurring cases, the residue goes to human review, and human review distills domain knowledge into semantic memory for next time.",
+      "In an experiment on 93 real security alerts run three times, roughly a quarter flip-flopped; episodic memory made about 15% consistent, leaving 10% still inconsistent for human handling.",
+      "The approach yields three benefits beyond consistency: efficient quality control on a small high-return labeling subset, and an agent that adapts to each customer's environment via gathered feedback."
+    ],
+    "notable_quotes": [
+      {
+        "text": "Same model, same input. But different output. Here I don't mean the wording different. I mean semantically different output. You might be thinking that's the stochastic nature of LM.",
+        "timestamp_sec": 121,
+        "why": "States the problem precisely and preempts the easy dismissal the rest of the talk argues against."
+      },
+      {
+        "text": "That means a single evaluation run didn't tell you the whole story. You need to repeat your evaluation multiple times in order to get a holistic picture by the average over the different runs results.",
+        "timestamp_sec": 183,
+        "why": "Concrete methodological prescription for eval design."
+      },
+      {
+        "text": "So, the inconsistency is causing a trust issue in your product. Imagine if you were in a POC bake-off, one vendor give the consistent wording all the time while the other vendor have this flip-flop wording. You can imagine which one would win the deal.",
+        "timestamp_sec": 313,
+        "why": "Frames consistency as a commercial stake, not a technical nicety."
+      },
+      {
+        "text": "The good news is the data points tend to flip-flop actually concentrate around the decision boundary, the so-called gray zone.",
+        "timestamp_sec": 313,
+        "why": "The central empirical claim the whole solution rests on."
+      },
+      {
+        "text": "In this case, you'll find that even human experts will have a disagreement on these cases. In fact, there's no right or wrong answer.",
+        "timestamp_sec": 391,
+        "why": "Reframes inconsistency as label ambiguity rather than model error."
+      },
+      {
+        "text": "So, here whether we label them malicious or benign depends on company preference whether they wanted to be notified about such situation.",
+        "timestamp_sec": 521,
+        "why": "Grounds the 'no right answer' claim in a specific security-triage decision."
+      },
+      {
+        "text": "So in other words it's not your AI agent's fault. Your AI agent simply point out the ambiguity that already exists.",
+        "timestamp_sec": 577,
+        "why": "The talk's thesis in one line."
+      },
+      {
+        "text": "But you don't have bandwidth to check all of them. Otherwise, it lose a point of having agent to do the work.",
+        "timestamp_sec": 651,
+        "why": "Names the tradeoff that motivates active learning over full review."
+      },
+      {
+        "text": "At least from what we have tried so far the uncertainty score from LM is not very reliable. It's kind of a LM model doesn't know what it doesn't know.",
+        "timestamp_sec": 885,
+        "why": "A directly checkable, contestable position on LLM confidence signals."
+      },
+      {
+        "text": "However, the the disagreement from different runs or from different models actually give you a more reliable signal where the model actually not sure about its verdict and it need human guidance.",
+        "timestamp_sec": 885,
+        "why": "States the recommended replacement signal."
+      },
+      {
+        "text": "Yes, one option is retrain the model, but fine-tuning model is expensive. Here, we are proposing a more lighter weight solution, easier to iterate. It's about augment your agent with semantic and episodic memory.",
+        "timestamp_sec": 942,
+        "why": "The core architectural recommendation and its cost rationale."
+      },
+      {
+        "text": "So, this type of domain knowledge sharpen your decision boundary. And also, help the human beings.",
+        "timestamp_sec": 1034,
+        "why": "Notes that written-down rules improve human labeler consistency too, not just the agent."
+      },
+      {
+        "text": "And the advantage of the this episodic memory way is it's relatively automatically. It has less human intervention.",
+        "timestamp_sec": 1097,
+        "why": "The tradeoff distinguishing episodic from semantic memory."
+      },
+      {
+        "text": "And this particular useful in the case of cyber security alerts because a lot of noise especially those false positive noise are the one keep recurring. And that's the one are the low hanging fruit you can automate away.",
+        "timestamp_sec": 1150,
+        "why": "Explains when episodic memory pays off most."
+      },
+      {
+        "text": "The two are actually not contradicting. In fact, they are complementary.",
+        "timestamp_sec": 1205,
+        "why": "Resolves the semantic-vs-episodic choice into a pipeline."
+      },
+      {
+        "text": "So, here we collect uh 93 alerts, cybersecurity alerts, and then we run them three times. If without the solution we are proposing here, a quarter of them will flip-flop the verdict.",
+        "timestamp_sec": 1330,
+        "why": "The talk's only hard baseline number."
+      },
+      {
+        "text": "In contrast, after applying our solution or using episodic memory, about 15% of them become consistent. However, there's still 10% of them remaining inconsistent.",
+        "timestamp_sec": 1330,
+        "why": "The headline result, honestly reported with the residual failure rate."
+      },
+      {
+        "text": "inconsistency isn't usually your model problem. Stop blaming your model, but instead focus your energy on label issue and potentially insufficient information",
+        "timestamp_sec": 1392,
+        "why": "Takeaway one, stated as an imperative others might dispute."
+      },
+      {
+        "text": "Second, the model disagreement isn't a bug, but feature. Treat each disagreement as an opportunity for your model to learn.",
+        "timestamp_sec": 1392,
+        "why": "Takeaway two \u2014 the reframe that turns a defect into a data-selection mechanism."
+      },
+      {
+        "text": "Third, fine-tuning isn't your only option. Augment your agent with semantic and episodic memory.",
+        "timestamp_sec": 1464,
+        "why": "Takeaway three, the actionable alternative to retraining."
+      }
+    ],
+    "concepts": [
+      "output consistency",
+      "decision boundary ambiguity",
+      "active learning",
+      "query by committee",
+      "llm uncertainty calibration",
+      "semantic memory",
+      "episodic memory",
+      "human-in-the-loop labeling",
+      "eval repetition and variance",
+      "security alert triage"
+    ],
+    "positions": [
+      {
+        "claim": "Agent inconsistency is usually caused by label ambiguity and missing information, not by a defective model.",
+        "confidence": "stated",
+        "timestamp_sec": 1392
+      },
+      {
+        "claim": "The data points that produce inconsistent verdicts concentrate near the decision boundary, where human experts also disagree and traditional ML classifiers also struggle.",
+        "confidence": "stated",
+        "timestamp_sec": 577
+      },
+      {
+        "claim": "For many gray-zone cases there is no objectively correct label; the answer depends on the customer's policy or preference.",
+        "confidence": "stated",
+        "timestamp_sec": 451
+      },
+      {
+        "claim": "LLM-reported uncertainty scores are not a reliable signal for selecting cases that need human review.",
+        "confidence": "stated",
+        "timestamp_sec": 885
+      },
+      {
+        "claim": "Disagreement across multiple runs or across different models is a more reliable selection signal than model confidence.",
+        "confidence": "stated",
+        "timestamp_sec": 885
+      },
+      {
+        "claim": "Augmenting an agent with semantic and episodic memory is cheaper and easier to iterate on than fine-tuning, and achieves comparable improvement in consistency.",
+        "confidence": "stated",
+        "timestamp_sec": 942
+      },
+      {
+        "claim": "In a test of 93 cybersecurity alerts run three times, about 25% flip-flopped without the proposed solution; episodic memory made about 15% consistent, leaving 10% inconsistent.",
+        "confidence": "stated",
+        "timestamp_sec": 1330
+      },
+      {
+        "claim": "A single evaluation run is insufficient; evals must be run multiple times and averaged.",
+        "confidence": "stated",
+        "timestamp_sec": 183
+      },
+      {
+        "claim": "Semantic and episodic memory should be used together in a pipeline rather than chosen between, with episodic handling recurring cases and human review feeding semantic memory.",
+        "confidence": "stated",
+        "timestamp_sec": 1205
+      },
+      {
+        "claim": "Inconsistent agent output is a commercial liability that can decide competitive vendor evaluations.",
+        "confidence": "implied",
+        "timestamp_sec": 313
+      },
+      {
+        "claim": "Writing domain rules into semantic memory improves human labeler consistency, not just agent consistency.",
+        "confidence": "stated",
+        "timestamp_sec": 1034
+      }
+    ],
+    "speaker_org": "Datadog"
+  },
+  "_meta": {
+    "slug": "why-your-agent-disagrees-with-itself-and-what-to-do-about-it",
+    "video_id": "wEc9aG7cRQc",
+    "url": "https://www.youtube.com/watch?v=wEc9aG7cRQc",
+    "word_count": 2872,
+    "wall_sec": 48.2,
+    "run_at": "2026-08-12T20:34:03Z",
+    "effort": "medium"
+  }
+}

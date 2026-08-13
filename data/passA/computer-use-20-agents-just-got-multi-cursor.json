@@ -1,0 +1,277 @@
+{
+  "is_error": false,
+  "duration_api_ms": 58364,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "86ee17f4-61f5-437d-84a0-28e22df4e463",
+  "total_cost_usd": 0.22541399999999998,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 8556,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 5179,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 8556,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 5179,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 8556,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 8556
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 5095,
+      "outputTokens": 24,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.005215,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 5179,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 8556,
+      "webSearchRequests": 0,
+      "costUSD": 0.22019899999999998,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Three people from Cua \u2014 CEO Francesco Bonacci, CTO Dylan, and chief infra officer Robert \u2014 walk through their stack for \\\"computer use 2.0\\\": agents that drive a desktop in the background instead of taking over your screen. Bonacci covers Cua Driver, an open-source cross-platform driver (macOS, Windows, Linux) that exposes window state as an accessibility tree plus screenshot and falls back to pixel-level background clicks when accessibility actions fail. Dylan covers Cua Bench, a terminal-bench-style task format (setup, oracle GUI trajectory, evaluator) with 130+ verifiable tasks across 42 environments and five platforms, plus a Snorkel AI collaboration on electrical-engineering CAD tasks where the best agent fully passed only 6 of 25 tasks and no model exceeded 30% reward. Robert argues that RL training for computer use wastes GPU time waiting on sandbox startup, and describes a demand-based autoscaled warm pool that shifts that cost to cheaper infrastructure. Worth watching if you build or evaluate GUI agents and want concrete numbers on background execution, eval integrity, and RL infra economics.\",\n  \"key_points\": [\n    \"\\\"Computer use 1.0\\\" mimicked a human loop \u2014 screenshot, reason, click/type/scroll \u2014 and required the agent to take over the user's screen; Cua Driver instead runs the agent in the background using undocumented Apple framework APIs and equivalents on Windows and Linux.\",\n    \"The driver's action path is layered: call get window state to obtain an accessibility tree plus screenshot, attempt background execution via the accessibility tree, and fall back to a pixel-level background click when that fails.\",\n    \"Cua Bench tasks have three parts \u2014 a setup function, an oracle function providing a golden trajectory (in GUI actions rather than terminal commands), and an evaluator that probes the environment \u2014 and a whole cross-platform GUI environment collapses into a single Python file.\",\n    \"The catalog currently holds over 130 verifiable tasks across 42 environments and five platforms, with about eight application harnesses used as regression tests between releases.\",\n    \"Results on the CAD/electrical-engineering dataset built with Snorkel AI are humbling: the top agent fully passed 6 of 25 tasks, all six involved editing an existing schematic, success from a blank schematic was 0%, and no model exceeded 30% reward.\",\n    \"Swapping an agent's built-in computer tool for Cua Driver raised pass rate from 62% to 80% on Cua Bench basic at 4K while using 34% fewer tokens, attributed to focusing on a single window rather than the whole desktop.\",\n    \"Evals are themselves adversarially validated: a matrix of agents attempts reward hacking and environment breakage first, results are compiled into a code-review-style report, and only surviving tasks enter the dataset.\",\n    \"Recorded runs can be forked at any point in a trajectory, letting you probe a model to predict reward or internal state and compare against ground truth \u2014 an operational way to measure an agent's world model.\",\n    \"In RL training, GPUs idle while sandboxes spin up or reset; Cua Fleet uses a demand-based autoscaler to size a warm sandbox pool on the fly, moving startup cost onto infrastructure that can be two to four times cheaper than GPUs.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"with cooler driver we gave an agent hands but then the question becomes how can you trust the agent to use those hands correctly and not leave anything broken behind\",\n      \"timestamp_sec\": 381,\n      \"why\": \"frames the pivot from capability to trust that structures the whole middle section\"\n    },\n    {\n      \"text\": \"The top agent that we tested only got a full pass on six out of 25 of these tasks.\",\n      \"timestamp_sec\": 472,\n      \"why\": \"hard number on frontier computer-use performance in a professional domain\"\n    },\n    {\n      \"text\": \"Of those six, 100% of them involved editing an existing schematic. And when we start the task from a blank schematic, the success rate drops to 0%.\",\n      \"timestamp_sec\": 518,\n      \"why\": \"identifies a specific failure mode \u2014 agents edit but cannot originate\"\n    },\n    {\n      \"text\": \"across all the models that we tested, the leaderboard is flat. No model has achieved more than 30% reward.\",\n      \"timestamp_sec\": 518,\n      \"why\": \"claims the benchmark is far from saturated and model choice barely matters here\"\n    },\n    {\n      \"text\": \"when you switch the agent computer tool from the built-in one to KU driver the pass rate jumps from 62% to 80% using 34% less tokens\",\n      \"timestamp_sec\": 518,\n      \"why\": \"the central quantitative claim for the driver\"\n    },\n    {\n      \"text\": \"this is primarily because KU driver focuses on a window rather than the entire desktop\",\n      \"timestamp_sec\": 518,\n      \"why\": \"gives the mechanism behind the accuracy and token win\"\n    },\n    {\n      \"text\": \"before we test a task against any agent, we first try to break the environment ourselves\",\n      \"timestamp_sec\": 577,\n      \"why\": \"states their position on eval integrity as adversarial by default\"\n    },\n    {\n      \"text\": \"only tasks that survive our pipeline can enter the data set\",\n      \"timestamp_sec\": 577,\n      \"why\": \"concrete admission criterion for the benchmark\"\n    },\n    {\n      \"text\": \"if you ask us how we trust that agent, the answer is that it's just evows all the way down\",\n      \"timestamp_sec\": 577,\n      \"why\": \"memorable framing of recursive evaluation\"\n    },\n    {\n      \"text\": \"to measure the intelligence of an agent, you can't just measure its ability to successfully perform actions.\",\n      \"timestamp_sec\": 577,\n      \"why\": \"argues task success rate is an incomplete metric\"\n    },\n    {\n      \"text\": \"Every run that we record can be forked through any moment in its trajectory to give you the state of the computer at that moment.\",\n      \"timestamp_sec\": 615,\n      \"why\": \"describes the mechanism enabling world-model probing\"\n    },\n    {\n      \"text\": \"that prediction is the world model of the agent made measurable\",\n      \"timestamp_sec\": 615,\n      \"why\": \"the talk's proposal for a second evaluation axis beyond task completion\"\n    },\n    {\n      \"text\": \"how you're probably leaving a lot of money on the table uh with idle GPUs if you do RL training uh for computer use agents\",\n      \"timestamp_sec\": 615,\n      \"why\": \"sets up the infra thesis in one line\"\n    },\n    {\n      \"text\": \"your GPU really isn't doing anything useful here and you know I don't know if you've heard but GPU time is pretty expensive right now\",\n      \"timestamp_sec\": 716,\n      \"why\": \"names the specific waste: rollout GPUs blocked on sandbox lifecycle\"\n    },\n    {\n      \"text\": \"we use a demandbased autoscaler to detect um how many GPUs like currently need a sandbox and we can grow the pool to be that size uh on demand\",\n      \"timestamp_sec\": 792,\n      \"why\": \"the actual design, and why you don't need to size a warm pool upfront\"\n    },\n    {\n      \"text\": \"these also could be like, you know, easily uh two to four times cheaper than your GPUs. So having a little bit of redundancy here, uh you still wind up saving money because you're maximizing the use of your GPU time.\",\n      \"timestamp_sec\": 828,\n      \"why\": \"gives the cost-ratio tradeoff that justifies over-provisioning sandboxes\"\n    },\n    {\n      \"text\": \"you're paying the cost of that startup time on the infrastructure side not on the GPU side so your GPU workers have full utilization\",\n      \"timestamp_sec\": 828,\n      \"why\": \"one-sentence statement of the optimization\"\n    },\n    {\n      \"text\": \"the trick here is really um not like having your agents like take over your screen\",\n      \"timestamp_sec\": 198,\n      \"why\": \"the core product distinction of computer use 2.0\"\n    },\n    {\n      \"text\": \"the Android ecosystem especially compared to iOS is more inclined to that form of like background uh computer use but it's more towards like tool use than really like controlling GUI interface\",\n      \"timestamp_sec\": 899,\n      \"why\": \"position on mobile background agents during Q&A\"\n    }\n  ],\n  \"concepts\": [\n    \"computer-use agents\",\n    \"background gui automation\",\n    \"accessibility tree grounding\",\n    \"agent benchmark design\",\n    \"reward hacking detection\",\n    \"world model evaluation\",\n    \"trajectory forking\",\n    \"rl training infrastructure\",\n    \"sandbox warm pools\",\n    \"token efficiency\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Computer-use agents should run in the background without taking over the user's screen, unlike the earlier screenshot-and-click 'computer use 1.0' loop.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 198\n    },\n    {\n      \"claim\": \"A background-first driver should try accessibility-tree execution first and fall back to pixel-level background clicks only when that fails.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 289\n    },\n    {\n      \"claim\": \"A cross-platform GUI environment and its evaluator can be expressed in a single Python file via the Cua Bench SDK.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 429\n    },\n    {\n      \"claim\": \"Current computer-use agents can edit existing artifacts but fail entirely at creating from scratch \u2014 0% success starting from a blank schematic.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 518\n    },\n    {\n      \"claim\": \"No model tested exceeds 30% reward on the CAD dataset, so the leaderboard is effectively flat.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 518\n    },\n    {\n      \"claim\": \"Scoping the agent's view to a single window instead of the full desktop improves pass rate from 62% to 80% and cuts token usage by 34%.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 518\n    },\n    {\n      \"claim\": \"Benchmark environments must be adversarially attacked for reward hacking before tasks are admitted, otherwise eval results cannot be trusted.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 577\n    },\n    {\n      \"claim\": \"Task success rate alone is an insufficient measure of agent intelligence; you must also measure the agent's understanding of the environment state.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 615\n    },\n    {\n      \"claim\": \"In RL training for computer use, GPU idle time spent waiting on sandbox spin-up or reset is pure cost that compounds with scale.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 716\n    },\n    {\n      \"claim\": \"Minimizing sandbox startup time is worth doing but impractical alone for computer-use environments, which can be 40 gigabytes.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 753\n    },\n    {\n      \"claim\": \"Over-provisioning a sandbox warm pool still saves money because sandbox compute is two to four times cheaper than GPU time.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 828\n    },\n    {\n      \"claim\": \"Optimal warm-pool size cannot be known upfront and shifts during a multi-day training run, so it must be autoscaled on demand.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 792\n    },\n    {\n      \"claim\": \"Android permits meaningful background agent work via containerization and the activity framework, but it resembles tool use more than GUI control; iOS is less amenable.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 899\n    }\n  ],\n  \"speaker_org\": \"Cua\"\n}",
+  "ttft_ms": 15916,
+  "ttft_stream_ms": 1035,
+  "time_to_request_ms": 37,
+  "type": "result",
+  "duration_ms": 58478,
+  "uuid": "b7e18775-228d-493c-a89b-392d8f45a516",
+  "passA": {
+    "summary": "Three people from Cua \u2014 CEO Francesco Bonacci, CTO Dylan, and chief infra officer Robert \u2014 walk through their stack for \"computer use 2.0\": agents that drive a desktop in the background instead of taking over your screen. Bonacci covers Cua Driver, an open-source cross-platform driver (macOS, Windows, Linux) that exposes window state as an accessibility tree plus screenshot and falls back to pixel-level background clicks when accessibility actions fail. Dylan covers Cua Bench, a terminal-bench-style task format (setup, oracle GUI trajectory, evaluator) with 130+ verifiable tasks across 42 environments and five platforms, plus a Snorkel AI collaboration on electrical-engineering CAD tasks where the best agent fully passed only 6 of 25 tasks and no model exceeded 30% reward. Robert argues that RL training for computer use wastes GPU time waiting on sandbox startup, and describes a demand-based autoscaled warm pool that shifts that cost to cheaper infrastructure. Worth watching if you build or evaluate GUI agents and want concrete numbers on background execution, eval integrity, and RL infra economics.",
+    "key_points": [
+      "\"Computer use 1.0\" mimicked a human loop \u2014 screenshot, reason, click/type/scroll \u2014 and required the agent to take over the user's screen; Cua Driver instead runs the agent in the background using undocumented Apple framework APIs and equivalents on Windows and Linux.",
+      "The driver's action path is layered: call get window state to obtain an accessibility tree plus screenshot, attempt background execution via the accessibility tree, and fall back to a pixel-level background click when that fails.",
+      "Cua Bench tasks have three parts \u2014 a setup function, an oracle function providing a golden trajectory (in GUI actions rather than terminal commands), and an evaluator that probes the environment \u2014 and a whole cross-platform GUI environment collapses into a single Python file.",
+      "The catalog currently holds over 130 verifiable tasks across 42 environments and five platforms, with about eight application harnesses used as regression tests between releases.",
+      "Results on the CAD/electrical-engineering dataset built with Snorkel AI are humbling: the top agent fully passed 6 of 25 tasks, all six involved editing an existing schematic, success from a blank schematic was 0%, and no model exceeded 30% reward.",
+      "Swapping an agent's built-in computer tool for Cua Driver raised pass rate from 62% to 80% on Cua Bench basic at 4K while using 34% fewer tokens, attributed to focusing on a single window rather than the whole desktop.",
+      "Evals are themselves adversarially validated: a matrix of agents attempts reward hacking and environment breakage first, results are compiled into a code-review-style report, and only surviving tasks enter the dataset.",
+      "Recorded runs can be forked at any point in a trajectory, letting you probe a model to predict reward or internal state and compare against ground truth \u2014 an operational way to measure an agent's world model.",
+      "In RL training, GPUs idle while sandboxes spin up or reset; Cua Fleet uses a demand-based autoscaler to size a warm sandbox pool on the fly, moving startup cost onto infrastructure that can be two to four times cheaper than GPUs."
+    ],
+    "notable_quotes": [
+      {
+        "text": "with cooler driver we gave an agent hands but then the question becomes how can you trust the agent to use those hands correctly and not leave anything broken behind",
+        "timestamp_sec": 381,
+        "why": "frames the pivot from capability to trust that structures the whole middle section"
+      },
+      {
+        "text": "The top agent that we tested only got a full pass on six out of 25 of these tasks.",
+        "timestamp_sec": 472,
+        "why": "hard number on frontier computer-use performance in a professional domain"
+      },
+      {
+        "text": "Of those six, 100% of them involved editing an existing schematic. And when we start the task from a blank schematic, the success rate drops to 0%.",
+        "timestamp_sec": 518,
+        "why": "identifies a specific failure mode \u2014 agents edit but cannot originate"
+      },
+      {
+        "text": "across all the models that we tested, the leaderboard is flat. No model has achieved more than 30% reward.",
+        "timestamp_sec": 518,
+        "why": "claims the benchmark is far from saturated and model choice barely matters here"
+      },
+      {
+        "text": "when you switch the agent computer tool from the built-in one to KU driver the pass rate jumps from 62% to 80% using 34% less tokens",
+        "timestamp_sec": 518,
+        "why": "the central quantitative claim for the driver"
+      },
+      {
+        "text": "this is primarily because KU driver focuses on a window rather than the entire desktop",
+        "timestamp_sec": 518,
+        "why": "gives the mechanism behind the accuracy and token win"
+      },
+      {
+        "text": "before we test a task against any agent, we first try to break the environment ourselves",
+        "timestamp_sec": 577,
+        "why": "states their position on eval integrity as adversarial by default"
+      },
+      {
+        "text": "only tasks that survive our pipeline can enter the data set",
+        "timestamp_sec": 577,
+        "why": "concrete admission criterion for the benchmark"
+      },
+      {
+        "text": "if you ask us how we trust that agent, the answer is that it's just evows all the way down",
+        "timestamp_sec": 577,
+        "why": "memorable framing of recursive evaluation"
+      },
+      {
+        "text": "to measure the intelligence of an agent, you can't just measure its ability to successfully perform actions.",
+        "timestamp_sec": 577,
+        "why": "argues task success rate is an incomplete metric"
+      },
+      {
+        "text": "Every run that we record can be forked through any moment in its trajectory to give you the state of the computer at that moment.",
+        "timestamp_sec": 615,
+        "why": "describes the mechanism enabling world-model probing"
+      },
+      {
+        "text": "that prediction is the world model of the agent made measurable",
+        "timestamp_sec": 615,
+        "why": "the talk's proposal for a second evaluation axis beyond task completion"
+      },
+      {
+        "text": "how you're probably leaving a lot of money on the table uh with idle GPUs if you do RL training uh for computer use agents",
+        "timestamp_sec": 615,
+        "why": "sets up the infra thesis in one line"
+      },
+      {
+        "text": "your GPU really isn't doing anything useful here and you know I don't know if you've heard but GPU time is pretty expensive right now",
+        "timestamp_sec": 716,
+        "why": "names the specific waste: rollout GPUs blocked on sandbox lifecycle"
+      },
+      {
+        "text": "we use a demandbased autoscaler to detect um how many GPUs like currently need a sandbox and we can grow the pool to be that size uh on demand",
+        "timestamp_sec": 792,
+        "why": "the actual design, and why you don't need to size a warm pool upfront"
+      },
+      {
+        "text": "these also could be like, you know, easily uh two to four times cheaper than your GPUs. So having a little bit of redundancy here, uh you still wind up saving money because you're maximizing the use of your GPU time.",
+        "timestamp_sec": 828,
+        "why": "gives the cost-ratio tradeoff that justifies over-provisioning sandboxes"
+      },
+      {
+        "text": "you're paying the cost of that startup time on the infrastructure side not on the GPU side so your GPU workers have full utilization",
+        "timestamp_sec": 828,
+        "why": "one-sentence statement of the optimization"
+      },
+      {
+        "text": "the trick here is really um not like having your agents like take over your screen",
+        "timestamp_sec": 198,
+        "why": "the core product distinction of computer use 2.0"
+      },
+      {
+        "text": "the Android ecosystem especially compared to iOS is more inclined to that form of like background uh computer use but it's more towards like tool use than really like controlling GUI interface",
+        "timestamp_sec": 899,
+        "why": "position on mobile background agents during Q&A"
+      }
+    ],
+    "concepts": [
+      "computer-use agents",
+      "background gui automation",
+      "accessibility tree grounding",
+      "agent benchmark design",
+      "reward hacking detection",
+      "world model evaluation",
+      "trajectory forking",
+      "rl training infrastructure",
+      "sandbox warm pools",
+      "token efficiency"
+    ],
+    "positions": [
+      {
+        "claim": "Computer-use agents should run in the background without taking over the user's screen, unlike the earlier screenshot-and-click 'computer use 1.0' loop.",
+        "confidence": "stated",
+        "timestamp_sec": 198
+      },
+      {
+        "claim": "A background-first driver should try accessibility-tree execution first and fall back to pixel-level background clicks only when that fails.",
+        "confidence": "stated",
+        "timestamp_sec": 289
+      },
+      {
+        "claim": "A cross-platform GUI environment and its evaluator can be expressed in a single Python file via the Cua Bench SDK.",
+        "confidence": "stated",
+        "timestamp_sec": 429
+      },
+      {
+        "claim": "Current computer-use agents can edit existing artifacts but fail entirely at creating from scratch \u2014 0% success starting from a blank schematic.",
+        "confidence": "stated",
+        "timestamp_sec": 518
+      },
+      {
+        "claim": "No model tested exceeds 30% reward on the CAD dataset, so the leaderboard is effectively flat.",
+        "confidence": "stated",
+        "timestamp_sec": 518
+      },
+      {
+        "claim": "Scoping the agent's view to a single window instead of the full desktop improves pass rate from 62% to 80% and cuts token usage by 34%.",
+        "confidence": "stated",
+        "timestamp_sec": 518
+      },
+      {
+        "claim": "Benchmark environments must be adversarially attacked for reward hacking before tasks are admitted, otherwise eval results cannot be trusted.",
+        "confidence": "stated",
+        "timestamp_sec": 577
+      },
+      {
+        "claim": "Task success rate alone is an insufficient measure of agent intelligence; you must also measure the agent's understanding of the environment state.",
+        "confidence": "stated",
+        "timestamp_sec": 615
+      },
+      {
+        "claim": "In RL training for computer use, GPU idle time spent waiting on sandbox spin-up or reset is pure cost that compounds with scale.",
+        "confidence": "stated",
+        "timestamp_sec": 716
+      },
+      {
+        "claim": "Minimizing sandbox startup time is worth doing but impractical alone for computer-use environments, which can be 40 gigabytes.",
+        "confidence": "stated",
+        "timestamp_sec": 753
+      },
+      {
+        "claim": "Over-provisioning a sandbox warm pool still saves money because sandbox compute is two to four times cheaper than GPU time.",
+        "confidence": "stated",
+        "timestamp_sec": 828
+      },
+      {
+        "claim": "Optimal warm-pool size cannot be known upfront and shifts during a multi-day training run, so it must be autoscaled on demand.",
+        "confidence": "stated",
+        "timestamp_sec": 792
+      },
+      {
+        "claim": "Android permits meaningful background agent work via containerization and the activity framework, but it resembles tool use more than GUI control; iOS is less amenable.",
+        "confidence": "stated",
+        "timestamp_sec": 899
+      }
+    ],
+    "speaker_org": "Cua"
+  },
+  "_meta": {
+    "slug": "computer-use-20-agents-just-got-multi-cursor",
+    "video_id": "ZSQb5fzRFPw",
+    "url": "https://www.youtube.com/watch?v=ZSQb5fzRFPw",
+    "word_count": 2618,
+    "wall_sec": 59.6,
+    "run_at": "2026-08-12T19:41:18Z",
+    "effort": "medium"
+  }
+}

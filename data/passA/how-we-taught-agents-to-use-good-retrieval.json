@@ -1,0 +1,300 @@
+{
+  "is_error": false,
+  "duration_api_ms": 71255,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "0d24e93e-6c5a-4655-8027-686ba847e0ae",
+  "total_cost_usd": 0.24763800000000002,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 7814,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 6394,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 7814,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 6394,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 7814,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 7814
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 4409,
+      "outputTokens": 15,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.004484,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 6394,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 7814,
+      "webSearchRequests": 0,
+      "costUSD": 0.24315400000000004,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Hanna Lichtenberg and co-founder Amir of Mixedbread AI argue that LLM reasoning has improved exponentially while retrieval has crawled, creating what they call a 'knowledge gap' \u2014 the bottleneck in agentic knowledge work is access to the right documents, not the model's ability to reason over them. They quantify this with an Oracle baseline on BrowseComp Plus and Office QA Pro: given the right documents, models score 93% and 64%, but Codex with default tools drops to single-digit scores, while swapping in Mixedbread's late-interaction search recovers nearly all of it. They then diagnose why agents write bad queries \u2014 coding/grep training, human-mimicking web search habits, and BM25-friendly benchmarks like BEIR \u2014 and walk through the harness and training recipe for a small search agent designed to fix it. The harness gives four differentiated tools (overview search, semantic search, metadata filtering, grep), caps exploration at four parallel-capable rounds, and prompts the model to write 'one concise sentence' rather than a 'search query' to break the keyword habit. Training is SFT from a larger teacher plus on-policy RL against a combined retrieval reward (NDCG plus LLM rubric judging) and trajectory reward. Worth watching if you build RAG or agentic search and want a concrete harness-plus-RL recipe with numbers, though the trained agent isn't released yet.\",\n  \"key_points\": [\n    \"The gap between LLM reasoning quality and retrieval quality \u2014 Mixedbread's 'knowledge gap' \u2014 means the bottleneck in complex knowledge tasks is document access, not model reasoning.\",\n    \"Oracle performance (the model given the correct documents) is 93% on BrowseComp Plus and 64% on Office QA Pro, while Codex with its default tools scores nine and eight points respectively on the same benchmarks.\",\n    \"Substituting a late-interaction search tool closes most of that gap: three points off Oracle on BrowseComp Plus and near-parity on Office QA Pro.\",\n    \"Agents write gibberish keyword-stuffed queries for three reasons: they are trained on grep-driven code exploration, they mimic human query patterns for web tools, and retrieval benchmarks like BEIR reward BM25-friendly 'caveman style' entity queries.\",\n    \"The harness exposes four differentiated tools \u2014 overview search (up to 50 summarized chunks), semantic search (full payload, top 10), metadata facet filtering, and grep \u2014 so the agent must choose a tool that matches the search intent.\",\n    \"The agent loop is deliberately short for speed: at most four search rounds, but each round permits parallel searches, and results are deduplicated so the context isn't filled with repeated chunks.\",\n    \"The agent is seeded with results from an initial semantic search plus available metadata facet hints, so it can plan against a preview of the corpus rather than guessing blind.\",\n    \"Prompt framing matters: asking for 'one concise sentence describing what it wants to find' rather than a 'search query' prevents the model from reverting to BM25-style keyword output.\",\n    \"Training combined supervised fine-tuning from a larger teacher with on-policy RL against a retrieval reward (NDCG plus LLM rubric judging of relevance and ranking plausibility) and a trajectory reward judging query naturalness and exploration budget.\",\n    \"Reported results: NDCG@10 of 0.4 on the Oblique Congress benchmark versus 0.18 for the paper's best GPT multi-hop agent, and a production beta agent ranking top-one on Snowflake's MatchQA at 93.4% accuracy with Gemini 3.5 Flash.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"So, there's a huge gap between how basically LLMs and the reasoning is evolving and how retrieval is evolving.\",\n      \"timestamp_sec\": 48,\n      \"why\": \"The thesis of the talk stated in one line.\"\n    },\n    {\n      \"text\": \"Internally, we call this gap happening right now between reasoning and search the knowledge gap. And it's not just one obscure theory of ours. We see that actually with real benchmarks and real tasks that this gap exists in real world as well.\",\n      \"timestamp_sec\": 48,\n      \"why\": \"Names the central concept and stakes the empirical claim behind it.\"\n    },\n    {\n      \"text\": \"Oracle means what is the maximum theoretical performance of the models if you would put in the right documents with the question\",\n      \"timestamp_sec\": 91,\n      \"why\": \"Defines the measurement device the entire argument rests on.\"\n    },\n    {\n      \"text\": \"We see for Office for BrowseComp it's 93% and for Office QA Pro it's 64%.\",\n      \"timestamp_sec\": 145,\n      \"why\": \"The Oracle ceiling numbers.\"\n    },\n    {\n      \"text\": \"And you see there's a sharp drop in the quality of the answers Codex produces. For BrowseComp it's nine points and for Office QA Pro it's eight points.\",\n      \"timestamp_sec\": 145,\n      \"why\": \"The headline gap: near-total collapse from Oracle to default agent tooling.\"\n    },\n    {\n      \"text\": \"So we see that the models are extremely capable if they would get the right documents but if you put them into the noisy corpus the performance drops sharply. Meaning that actually the bottleneck here is not the reasoning. It's actually the access to the right knowledge it needs to answer this question.\",\n      \"timestamp_sec\": 145,\n      \"why\": \"The load-bearing position \u2014 reasoning is not the constraint.\"\n    },\n    {\n      \"text\": \"So for BrowseComp the difference between the Oracle and the uh GPT-5 with Mixbread is just three point and for Office QA Pro we even almost completely closed the gap.\",\n      \"timestamp_sec\": 194,\n      \"why\": \"Quantifies how much of the gap is recoverable by retrieval alone.\"\n    },\n    {\n      \"text\": \"here's an example query we found uh during some benchmarking, which is senator woman questions billionaires not a company then okay thank you staff will check hearing.\",\n      \"timestamp_sec\": 194,\n      \"why\": \"Concrete artifact of the failure mode, more persuasive than the abstraction.\"\n    },\n    {\n      \"text\": \"And the reason why the models write these type of queries is they're mostly trained for coding task, like for coding agents, which are then optimized for code base exploration using tools like grep.\",\n      \"timestamp_sec\": 245,\n      \"why\": \"Causal explanation blaming coding-agent training for bad retrieval behavior.\"\n    },\n    {\n      \"text\": \"Most benchmarks we have right now, like Beer, Nano Beer, use Caveman's style queries, which are entity-based queries that structurally favor heavily BM25.\",\n      \"timestamp_sec\": 292,\n      \"why\": \"A direct criticism of standard retrieval benchmarks others rely on.\"\n    },\n    {\n      \"text\": \"So, right now, the agent guesses the keywords to actually increase the overlap between the query and documents and can't really use powerful search tools properly.\",\n      \"timestamp_sec\": 292,\n      \"why\": \"Summarizes the behavioral diagnosis the rest of the talk fixes.\"\n    },\n    {\n      \"text\": \"Um and to work beyond code search for knowledge work. And most importantly, the agent should be precise, fast, and cheap.\",\n      \"timestamp_sec\": 292,\n      \"why\": \"States the design objectives that justify the small-model choice.\"\n    },\n    {\n      \"text\": \"This is used as a very wide semantic search where the agent receives up to 50 retrieve chunks. Um and it sees only summaries of the chunk contents to really have just like an overview of the corpus\",\n      \"timestamp_sec\": 343,\n      \"why\": \"Specific context-budget tradeoff in tool design.\"\n    },\n    {\n      \"text\": \"That's why we decided to um define that it has a maximum four search rounds, but within each search round it can have parallel searches.\",\n      \"timestamp_sec\": 385,\n      \"why\": \"The concrete latency-versus-exploration tradeoff in the agent loop.\"\n    },\n    {\n      \"text\": \"The agent has to articulate articulate what evidence it needs before writing the query.\",\n      \"timestamp_sec\": 495,\n      \"why\": \"Goal framing as a prompt-level mechanism for better queries.\"\n    },\n    {\n      \"text\": \"We kind of trick the um model into not thinking it has to write the typical BM25 base query by just instructing it to write one concise sentence describing what it wants to find, instead of directly instructing write a search query, so it cannot fall into this old pattern.\",\n      \"timestamp_sec\": 545,\n      \"why\": \"The single most transferable prompt trick in the talk.\"\n    },\n    {\n      \"text\": \"So, the first step in training is um supervised fine-tuning with a larger teacher LLM. And then we uh did on-policy reinforcement learning with an own search reward. Our search reward is a combination of both of a retrieval reward and a trajectory reward.\",\n      \"timestamp_sec\": 599,\n      \"why\": \"The training recipe in compact form.\"\n    },\n    {\n      \"text\": \"Of course, like we have rubrics that are where the judge is deciding if the query is really a natural sentence. Also, if the amount of exploration is sufficient, is it too much or too less.\",\n      \"timestamp_sec\": 702,\n      \"why\": \"Shows query style and exploration budget being directly rewarded, not just outcomes.\"\n    },\n    {\n      \"text\": \"It's really a sentence describing what it wants to find and not a weird keywordy added behind each other formulation.\",\n      \"timestamp_sec\": 753,\n      \"why\": \"The observable behavior change the whole pipeline was built to produce.\"\n    },\n    {\n      \"text\": \"Our trained agent is not released yet, unfortunately. However, we have some intermediate results.\",\n      \"timestamp_sec\": 753,\n      \"why\": \"Important caveat for anyone weighing whether they can use this.\"\n    },\n    {\n      \"text\": \"we see that we achieved an NDCG of 10 at 10 of 0.4, which is a huge jump um towards the model that performed best on the paper of this benchmark, which is the GPT multi-hop agent\",\n      \"timestamp_sec\": 753,\n      \"why\": \"The headline retrieval-quality result versus a named baseline.\"\n    },\n    {\n      \"text\": \"And this agent is top one on the snowflakes match QA benchmark, achieving an accuracy of 93.4 when we give the Gemini 3.5 flash model our genetic search as search tool.\",\n      \"timestamp_sec\": 804,\n      \"why\": \"The production result on a public leaderboard, with the model pairing named.\"\n    }\n  ],\n  \"concepts\": [\n    \"agentic search\",\n    \"oracle baseline\",\n    \"retrieval evaluation\",\n    \"query formulation\",\n    \"late interaction retrieval\",\n    \"agent harness design\",\n    \"tool selection\",\n    \"reinforcement learning from search rewards\",\n    \"llm-as-judge rubrics\",\n    \"context window budgeting\",\n    \"benchmark bias\",\n    \"supervised fine-tuning distillation\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"The bottleneck in complex knowledge tasks is retrieval quality, not model reasoning capability.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 145\n    },\n    {\n      \"claim\": \"LLM reasoning has improved exponentially over recent years while search has improved only very slowly over the past 20 years.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 0\n    },\n    {\n      \"claim\": \"Oracle performance is 93% on BrowseComp Plus and 64% on Office QA Pro, while Codex with default tools scores nine and eight points respectively.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 145\n    },\n    {\n      \"claim\": \"Swapping in Mixedbread's late-interaction search closes the Oracle gap to three points on BrowseComp Plus and nearly entirely on Office QA Pro, without changing the reasoning model.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 194\n    },\n    {\n      \"claim\": \"Agents write keyword-stuffed queries because they are trained on grep-based code exploration, on human-optimized web tools, and against benchmarks that favor BM25.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 245\n    },\n    {\n      \"claim\": \"Standard retrieval benchmarks such as BEIR and NanoBEIR use entity-based 'caveman style' queries that structurally advantage BM25 and therefore mis-train agent query behavior.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 292\n    },\n    {\n      \"claim\": \"Instructing a model to write 'one concise sentence describing what it wants to find' produces better semantic queries than instructing it to write a search query.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 545\n    },\n    {\n      \"claim\": \"A search agent should expose several differentiated tools rather than one, so semantic search and grep are each used only for the intent they fit.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 495\n    },\n    {\n      \"claim\": \"Capping the loop at four search rounds with parallel searches inside each round gives enough exploration while keeping the agent fast.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 385\n    },\n    {\n      \"claim\": \"A small LLM, distilled from a larger teacher and then RL-trained on search rewards, is sufficient for high-quality agentic retrieval and is faster.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 599\n    },\n    {\n      \"claim\": \"Rewarding trajectory quality \u2014 natural-sentence queries and appropriate exploration volume \u2014 in addition to final ranking metrics is necessary to fix agent search behavior.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 650\n    },\n    {\n      \"claim\": \"Their agent achieves NDCG@10 of 0.4 on the Oblique Congress benchmark versus 0.18 for the best model reported in that benchmark's paper.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 753\n    },\n    {\n      \"claim\": \"Their production beta agent is ranked first on Snowflake's MatchQA benchmark at 93.4% accuracy with Gemini 3.5 Flash, at lower cost than comparable search-agent setups.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 804\n    },\n    {\n      \"claim\": \"There remains substantial headroom in how large language models use their search tools.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 804\n    }\n  ],\n  \"speaker_org\": \"Mixedbread AI\"\n}",
+  "ttft_ms": 20301,
+  "ttft_stream_ms": 2520,
+  "time_to_request_ms": 34,
+  "type": "result",
+  "duration_ms": 71870,
+  "uuid": "16e2b27a-5b1f-4235-bb4d-2712ce936a13",
+  "passA": {
+    "summary": "Hanna Lichtenberg and co-founder Amir of Mixedbread AI argue that LLM reasoning has improved exponentially while retrieval has crawled, creating what they call a 'knowledge gap' \u2014 the bottleneck in agentic knowledge work is access to the right documents, not the model's ability to reason over them. They quantify this with an Oracle baseline on BrowseComp Plus and Office QA Pro: given the right documents, models score 93% and 64%, but Codex with default tools drops to single-digit scores, while swapping in Mixedbread's late-interaction search recovers nearly all of it. They then diagnose why agents write bad queries \u2014 coding/grep training, human-mimicking web search habits, and BM25-friendly benchmarks like BEIR \u2014 and walk through the harness and training recipe for a small search agent designed to fix it. The harness gives four differentiated tools (overview search, semantic search, metadata filtering, grep), caps exploration at four parallel-capable rounds, and prompts the model to write 'one concise sentence' rather than a 'search query' to break the keyword habit. Training is SFT from a larger teacher plus on-policy RL against a combined retrieval reward (NDCG plus LLM rubric judging) and trajectory reward. Worth watching if you build RAG or agentic search and want a concrete harness-plus-RL recipe with numbers, though the trained agent isn't released yet.",
+    "key_points": [
+      "The gap between LLM reasoning quality and retrieval quality \u2014 Mixedbread's 'knowledge gap' \u2014 means the bottleneck in complex knowledge tasks is document access, not model reasoning.",
+      "Oracle performance (the model given the correct documents) is 93% on BrowseComp Plus and 64% on Office QA Pro, while Codex with its default tools scores nine and eight points respectively on the same benchmarks.",
+      "Substituting a late-interaction search tool closes most of that gap: three points off Oracle on BrowseComp Plus and near-parity on Office QA Pro.",
+      "Agents write gibberish keyword-stuffed queries for three reasons: they are trained on grep-driven code exploration, they mimic human query patterns for web tools, and retrieval benchmarks like BEIR reward BM25-friendly 'caveman style' entity queries.",
+      "The harness exposes four differentiated tools \u2014 overview search (up to 50 summarized chunks), semantic search (full payload, top 10), metadata facet filtering, and grep \u2014 so the agent must choose a tool that matches the search intent.",
+      "The agent loop is deliberately short for speed: at most four search rounds, but each round permits parallel searches, and results are deduplicated so the context isn't filled with repeated chunks.",
+      "The agent is seeded with results from an initial semantic search plus available metadata facet hints, so it can plan against a preview of the corpus rather than guessing blind.",
+      "Prompt framing matters: asking for 'one concise sentence describing what it wants to find' rather than a 'search query' prevents the model from reverting to BM25-style keyword output.",
+      "Training combined supervised fine-tuning from a larger teacher with on-policy RL against a retrieval reward (NDCG plus LLM rubric judging of relevance and ranking plausibility) and a trajectory reward judging query naturalness and exploration budget.",
+      "Reported results: NDCG@10 of 0.4 on the Oblique Congress benchmark versus 0.18 for the paper's best GPT multi-hop agent, and a production beta agent ranking top-one on Snowflake's MatchQA at 93.4% accuracy with Gemini 3.5 Flash."
+    ],
+    "notable_quotes": [
+      {
+        "text": "So, there's a huge gap between how basically LLMs and the reasoning is evolving and how retrieval is evolving.",
+        "timestamp_sec": 48,
+        "why": "The thesis of the talk stated in one line."
+      },
+      {
+        "text": "Internally, we call this gap happening right now between reasoning and search the knowledge gap. And it's not just one obscure theory of ours. We see that actually with real benchmarks and real tasks that this gap exists in real world as well.",
+        "timestamp_sec": 48,
+        "why": "Names the central concept and stakes the empirical claim behind it."
+      },
+      {
+        "text": "Oracle means what is the maximum theoretical performance of the models if you would put in the right documents with the question",
+        "timestamp_sec": 91,
+        "why": "Defines the measurement device the entire argument rests on."
+      },
+      {
+        "text": "We see for Office for BrowseComp it's 93% and for Office QA Pro it's 64%.",
+        "timestamp_sec": 145,
+        "why": "The Oracle ceiling numbers."
+      },
+      {
+        "text": "And you see there's a sharp drop in the quality of the answers Codex produces. For BrowseComp it's nine points and for Office QA Pro it's eight points.",
+        "timestamp_sec": 145,
+        "why": "The headline gap: near-total collapse from Oracle to default agent tooling."
+      },
+      {
+        "text": "So we see that the models are extremely capable if they would get the right documents but if you put them into the noisy corpus the performance drops sharply. Meaning that actually the bottleneck here is not the reasoning. It's actually the access to the right knowledge it needs to answer this question.",
+        "timestamp_sec": 145,
+        "why": "The load-bearing position \u2014 reasoning is not the constraint."
+      },
+      {
+        "text": "So for BrowseComp the difference between the Oracle and the uh GPT-5 with Mixbread is just three point and for Office QA Pro we even almost completely closed the gap.",
+        "timestamp_sec": 194,
+        "why": "Quantifies how much of the gap is recoverable by retrieval alone."
+      },
+      {
+        "text": "here's an example query we found uh during some benchmarking, which is senator woman questions billionaires not a company then okay thank you staff will check hearing.",
+        "timestamp_sec": 194,
+        "why": "Concrete artifact of the failure mode, more persuasive than the abstraction."
+      },
+      {
+        "text": "And the reason why the models write these type of queries is they're mostly trained for coding task, like for coding agents, which are then optimized for code base exploration using tools like grep.",
+        "timestamp_sec": 245,
+        "why": "Causal explanation blaming coding-agent training for bad retrieval behavior."
+      },
+      {
+        "text": "Most benchmarks we have right now, like Beer, Nano Beer, use Caveman's style queries, which are entity-based queries that structurally favor heavily BM25.",
+        "timestamp_sec": 292,
+        "why": "A direct criticism of standard retrieval benchmarks others rely on."
+      },
+      {
+        "text": "So, right now, the agent guesses the keywords to actually increase the overlap between the query and documents and can't really use powerful search tools properly.",
+        "timestamp_sec": 292,
+        "why": "Summarizes the behavioral diagnosis the rest of the talk fixes."
+      },
+      {
+        "text": "Um and to work beyond code search for knowledge work. And most importantly, the agent should be precise, fast, and cheap.",
+        "timestamp_sec": 292,
+        "why": "States the design objectives that justify the small-model choice."
+      },
+      {
+        "text": "This is used as a very wide semantic search where the agent receives up to 50 retrieve chunks. Um and it sees only summaries of the chunk contents to really have just like an overview of the corpus",
+        "timestamp_sec": 343,
+        "why": "Specific context-budget tradeoff in tool design."
+      },
+      {
+        "text": "That's why we decided to um define that it has a maximum four search rounds, but within each search round it can have parallel searches.",
+        "timestamp_sec": 385,
+        "why": "The concrete latency-versus-exploration tradeoff in the agent loop."
+      },
+      {
+        "text": "The agent has to articulate articulate what evidence it needs before writing the query.",
+        "timestamp_sec": 495,
+        "why": "Goal framing as a prompt-level mechanism for better queries."
+      },
+      {
+        "text": "We kind of trick the um model into not thinking it has to write the typical BM25 base query by just instructing it to write one concise sentence describing what it wants to find, instead of directly instructing write a search query, so it cannot fall into this old pattern.",
+        "timestamp_sec": 545,
+        "why": "The single most transferable prompt trick in the talk."
+      },
+      {
+        "text": "So, the first step in training is um supervised fine-tuning with a larger teacher LLM. And then we uh did on-policy reinforcement learning with an own search reward. Our search reward is a combination of both of a retrieval reward and a trajectory reward.",
+        "timestamp_sec": 599,
+        "why": "The training recipe in compact form."
+      },
+      {
+        "text": "Of course, like we have rubrics that are where the judge is deciding if the query is really a natural sentence. Also, if the amount of exploration is sufficient, is it too much or too less.",
+        "timestamp_sec": 702,
+        "why": "Shows query style and exploration budget being directly rewarded, not just outcomes."
+      },
+      {
+        "text": "It's really a sentence describing what it wants to find and not a weird keywordy added behind each other formulation.",
+        "timestamp_sec": 753,
+        "why": "The observable behavior change the whole pipeline was built to produce."
+      },
+      {
+        "text": "Our trained agent is not released yet, unfortunately. However, we have some intermediate results.",
+        "timestamp_sec": 753,
+        "why": "Important caveat for anyone weighing whether they can use this."
+      },
+      {
+        "text": "we see that we achieved an NDCG of 10 at 10 of 0.4, which is a huge jump um towards the model that performed best on the paper of this benchmark, which is the GPT multi-hop agent",
+        "timestamp_sec": 753,
+        "why": "The headline retrieval-quality result versus a named baseline."
+      },
+      {
+        "text": "And this agent is top one on the snowflakes match QA benchmark, achieving an accuracy of 93.4 when we give the Gemini 3.5 flash model our genetic search as search tool.",
+        "timestamp_sec": 804,
+        "why": "The production result on a public leaderboard, with the model pairing named."
+      }
+    ],
+    "concepts": [
+      "agentic search",
+      "oracle baseline",
+      "retrieval evaluation",
+      "query formulation",
+      "late interaction retrieval",
+      "agent harness design",
+      "tool selection",
+      "reinforcement learning from search rewards",
+      "llm-as-judge rubrics",
+      "context window budgeting",
+      "benchmark bias",
+      "supervised fine-tuning distillation"
+    ],
+    "positions": [
+      {
+        "claim": "The bottleneck in complex knowledge tasks is retrieval quality, not model reasoning capability.",
+        "confidence": "stated",
+        "timestamp_sec": 145
+      },
+      {
+        "claim": "LLM reasoning has improved exponentially over recent years while search has improved only very slowly over the past 20 years.",
+        "confidence": "stated",
+        "timestamp_sec": 0
+      },
+      {
+        "claim": "Oracle performance is 93% on BrowseComp Plus and 64% on Office QA Pro, while Codex with default tools scores nine and eight points respectively.",
+        "confidence": "stated",
+        "timestamp_sec": 145
+      },
+      {
+        "claim": "Swapping in Mixedbread's late-interaction search closes the Oracle gap to three points on BrowseComp Plus and nearly entirely on Office QA Pro, without changing the reasoning model.",
+        "confidence": "stated",
+        "timestamp_sec": 194
+      },
+      {
+        "claim": "Agents write keyword-stuffed queries because they are trained on grep-based code exploration, on human-optimized web tools, and against benchmarks that favor BM25.",
+        "confidence": "stated",
+        "timestamp_sec": 245
+      },
+      {
+        "claim": "Standard retrieval benchmarks such as BEIR and NanoBEIR use entity-based 'caveman style' queries that structurally advantage BM25 and therefore mis-train agent query behavior.",
+        "confidence": "stated",
+        "timestamp_sec": 292
+      },
+      {
+        "claim": "Instructing a model to write 'one concise sentence describing what it wants to find' produces better semantic queries than instructing it to write a search query.",
+        "confidence": "stated",
+        "timestamp_sec": 545
+      },
+      {
+        "claim": "A search agent should expose several differentiated tools rather than one, so semantic search and grep are each used only for the intent they fit.",
+        "confidence": "stated",
+        "timestamp_sec": 495
+      },
+      {
+        "claim": "Capping the loop at four search rounds with parallel searches inside each round gives enough exploration while keeping the agent fast.",
+        "confidence": "stated",
+        "timestamp_sec": 385
+      },
+      {
+        "claim": "A small LLM, distilled from a larger teacher and then RL-trained on search rewards, is sufficient for high-quality agentic retrieval and is faster.",
+        "confidence": "stated",
+        "timestamp_sec": 599
+      },
+      {
+        "claim": "Rewarding trajectory quality \u2014 natural-sentence queries and appropriate exploration volume \u2014 in addition to final ranking metrics is necessary to fix agent search behavior.",
+        "confidence": "implied",
+        "timestamp_sec": 650
+      },
+      {
+        "claim": "Their agent achieves NDCG@10 of 0.4 on the Oblique Congress benchmark versus 0.18 for the best model reported in that benchmark's paper.",
+        "confidence": "stated",
+        "timestamp_sec": 753
+      },
+      {
+        "claim": "Their production beta agent is ranked first on Snowflake's MatchQA benchmark at 93.4% accuracy with Gemini 3.5 Flash, at lower cost than comparable search-agent setups.",
+        "confidence": "stated",
+        "timestamp_sec": 804
+      },
+      {
+        "claim": "There remains substantial headroom in how large language models use their search tools.",
+        "confidence": "stated",
+        "timestamp_sec": 804
+      }
+    ],
+    "speaker_org": "Mixedbread AI"
+  },
+  "_meta": {
+    "slug": "how-we-taught-agents-to-use-good-retrieval",
+    "video_id": "1IdzkRVmWAA",
+    "url": "https://www.youtube.com/watch?v=1IdzkRVmWAA",
+    "word_count": 2057,
+    "wall_sec": 72.9,
+    "run_at": "2026-08-12T19:57:03Z",
+    "effort": "medium"
+  }
+}

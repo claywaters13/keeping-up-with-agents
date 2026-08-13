@@ -1,0 +1,246 @@
+{
+  "is_error": false,
+  "duration_api_ms": 130917,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "bcf89dbb-2d0d-401d-ad18-030a4317165a",
+  "total_cost_usd": 0.460185,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 17989,
+    "cache_read_input_tokens": 10720,
+    "output_tokens": 10552,
+    "output_tokens_details": {
+      "thinking_tokens": 6286
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 17989,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 10552,
+        "cache_read_input_tokens": 10720,
+        "cache_creation_input_tokens": 17989,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 17989
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 11040,
+      "outputTokens": 17,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.011125,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 10552,
+      "cacheReadInputTokens": 10720,
+      "cacheCreationInputTokens": 17989,
+      "webSearchRequests": 0,
+      "costUSD": 0.44906,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\"concept\": \"code comprehension and indexing\", \"state_of_practice\": \"The field has converged on a diagnosis: the binding constraint on coding agents is not model quality but what the agent can see \u2014 one repo at a time, one session at a time, with no persistent model of how the code fits together. Concretely, teams report agents degrading as context grows on monorepos, a typical query shipping 45K tokens where ~5K mattered, and ~90% of AI coding spend landing on the input side, which means retrieval quality is a cost line, not just a quality line. The mechanisms being shipped are wildly divergent: a cross-repo dependency graph built from metadata extraction (Nx's Polygraph), a local hybrid keyword+embedding index with a weighted heuristic score (Tesco), a REPL where the model writes Python to slice the repo instead of loading it (RLM), a markdown anti-pattern catalog in a central git repo plus cross-repo grep (Netflix), and a new language whose compiler infers error types through the call graph so comprehension is structural rather than retrieved (Boundary). Nearly everyone builds this as a layer above the agent rather than inside it, and nearly everyone distrusts prose: source code, call stacks, execution traces, and canary results are treated as ground truth while READMEs and architecture files are treated as lies waiting to happen. The unresolved question underneath all of it is who the index is for \u2014 the agent, so humans can stop reading code, or the human, whose understanding Notion argues is the actual bottleneck.\", \"consensus\": [{\"claim\": \"Better models will not fix code comprehension; the limit is what context the system can assemble, and that is where the cost and the failure modes live.\", \"support_count\": 4, \"supporting_talks\": [\"we-cut-94-of-ai-coding-tokens-with-a-local-code-index\", \"rlm-recursive-language-models-for-large-codebases\", \"a-genius-with-amnesia\", \"ai-agents-for-performance-ship-faster-pay-less\"], \"evidence_quote\": \"The answer was not a better model. The answer was sending less.\", \"evidence_talk\": \"we-cut-94-of-ai-coding-tokens-with-a-local-code-index\", \"evidence_timestamp_sec\": 571}, {\"claim\": \"The comprehension layer belongs outside any single agent \u2014 a model-agnostic harness, index, or artifact that multiple tools and sessions share, rather than per-tool state that starts from zero each time.\", \"support_count\": 4, \"supporting_talks\": [\"a-genius-with-amnesia\", \"rlm-recursive-language-models-for-large-codebases\", \"we-cut-94-of-ai-coding-tokens-with-a-local-code-index\", \"fighting-slop-with-slop\"], \"evidence_quote\": \"Polygraph isn't an agent. It's a meta harness around an agent that makes them uh more capable.\", \"evidence_talk\": \"a-genius-with-amnesia\", \"evidence_timestamp_sec\": 649}, {\"claim\": \"Ground truth for comprehension is the executable artifact \u2014 source, call stacks, execution traces, canary results \u2014 not natural-language documentation, which drifts or lies.\", \"support_count\": 3, \"supporting_talks\": [\"fighting-slop-with-slop\", \"a-genius-with-amnesia\", \"ai-agents-for-performance-ship-faster-pay-less\"], \"evidence_quote\": \"Don't read anything but the code itself. The docs may lie, the um the actual description or architecture file or readme file will definitely lie, but the code cannot lie.\", \"evidence_talk\": \"fighting-slop-with-slop\", \"evidence_timestamp_sec\": 786}, {\"claim\": \"The retrieval substrate should be cheap and deterministic \u2014 markdown in git, weighted keyword/structural scoring, compiler-derived tools \u2014 rather than a vector database or an LLM reranker in the request path.\", \"support_count\": 3, \"supporting_talks\": [\"we-cut-94-of-ai-coding-tokens-with-a-local-code-index\", \"ai-agents-for-performance-ship-faster-pay-less\", \"fighting-slop-with-slop\"], \"evidence_quote\": \"It runs 0.4 milliseconds, no extra AI calls needed. The lesson we learned, simple formula beats the complex model most of the time.\", \"evidence_talk\": \"we-cut-94-of-ai-coding-tokens-with-a-local-code-index\", \"evidence_timestamp_sec\": 333}], \"disagreements\": [{\"question\": \"Should relevant context be retrieved from a persistent precomputed index, or computed on demand by giving the model a programmable environment over the repo?\", \"position_a\": \"Build a durable artifact ahead of time \u2014 a hybrid semantic+keyword+recency index that re-indexes in under a second, or a unified cross-repo dependency graph extracted from metadata \u2014 and query it per request.\", \"position_a_talks\": [\"we-cut-94-of-ai-coding-tokens-with-a-local-code-index\", \"a-genius-with-amnesia\"], \"position_b\": \"Don't precompute an index at all: existing grep-style and semantic search are insufficient for monorepos, so externalize context management into a REPL or language-level tooling where the model writes code to inspect, slice, and compute the relevant chunks at query time.\", \"position_b_talks\": [\"rlm-recursive-language-models-for-large-codebases\", \"fighting-slop-with-slop\"], \"why_it_matters\": \"The index camp pays maintenance and staleness cost but gets millisecond, token-cheap lookups; the on-demand camp pays latency and sub-call budget per query but never goes stale and degrades more gracefully as files accumulate responsibilities \u2014 exactly the case where Tesco measured recall collapsing to near zero.\"}, {\"question\": \"Is the goal of code indexing to let agents comprehend the code so humans don't have to, or to help humans keep understanding code that agents wrote?\", \"position_a\": \"Human understanding is the real bottleneck and must be actively defended: gate sending code for review on passing a quiz about what the agent wrote, debug some bugs yourself to retain peripheral feel for the system, and build throwaway software purely to understand other software.\", \"position_a_talks\": [\"understanding-is-the-new-bottleneck\"], \"position_b\": \"Engineers will not read the code regardless of policy, so remove the human from the comprehension loop: drop code review in favor of type-system-enforced invariants, and treat the human acting as the system's research and memory layer as the defect to be engineered away.\", \"position_b_talks\": [\"fighting-slop-with-slop\", \"a-genius-with-amnesia\"], \"why_it_matters\": \"It decides what the index optimizes for \u2014 token-minimal machine-readable slices, or human-legible explanations and shared, commentable agent transcripts \u2014 and whether review gates stay in the pipeline at all.\"}, {\"question\": \"Can code be made agent-comprehensible by layering tooling on top of existing languages and repos, or does the substrate itself have to be rebuilt?\", \"position_a\": \"Retrofitting is patching a broken foundation: languages, git, and databases need rebuilding for an agent-first world, with error types inferred through the call graph and zero-cost full-program execution tracing designed in from first principles.\", \"position_a_talks\": [\"fighting-slop-with-slop\"], \"position_b\": \"Comprehension can be added without touching the analyzed code \u2014 a dependency graph from pure metadata extraction with zero lines changed, a local index over the existing tree, a profiling workflow that works identically across Java, Python, and Go.\", \"position_b_talks\": [\"a-genius-with-amnesia\", \"we-cut-94-of-ai-coding-tokens-with-a-local-code-index\", \"ai-agents-for-performance-ship-faster-pay-less\", \"rlm-recursive-language-models-for-large-codebases\"], \"why_it_matters\": \"One path is deployable against the codebase you already have this quarter; the other requires an embeddable new language and concedes that current comprehension tooling is a ceiling, not a gap.\"}], \"practical_guidance\": {\"do\": [\"Build the cross-repo dependency graph purely from metadata extraction, without changing a line of code in the analyzed repositories.\", \"Score hybrid retrieval with a fixed weighted formula \u2014 50% semantic, 30% keyword, 20% recency \u2014 plus an adaptive threshold, and skip LLM reranking: 0.4ms versus 2-3 seconds added per query.\", \"Combine semantic and keyword search rather than picking one; each alone misses about one in four relevant results, together about one in ten.\", \"Store the pattern/memory catalog as plain markdown in a central git repo before reaching for a vector database, and structure it hierarchically with an index so consulting it doesn't fill agent context.\", \"When an anti-pattern is confirmed, run cross-repo code search to find every other instance \u2014 Netflix found the same Spectator counter bug in seven services, worth 0.5-4.6% of CPU cycles each.\", \"Load the real open-source repository into the session instead of a documentation-retrieval tool when diagnosing deep problems.\", \"Give the model a dedicated execution environment where it writes code to inspect and slice the repo, feeding only the computed chunks back into the main context window.\", \"Keep the shared architecture file tiny, model-agnostic (architecture.md, not CLAUDE.md), and limited to invariants that will not change for months or years.\", \"Measure token savings by instrumenting real queries against a stated baseline, and disclose which baseline \u2014 the 94% figure is against worst-case full-file reads, not against a modern agentic tool.\", \"Gate sending agent-written code to teammates on being able to pass a quiz about what it does.\"], \"avoid\": [\"Don't try to cut cost by shortening outputs or tuning max tokens and temperature \u2014 roughly 90% of spend is input tokens.\", \"Don't prompt the agent to 'send less context'; the context is transmitted and billed before the model reads the instruction.\", \"Don't assume an index generalizes: recall dropped to nearly zero on a 396-file project where individual files carried many responsibilities.\", \"Don't treat READMEs, architecture files, or descriptions as authoritative when the source or an execution trace is available.\", \"Don't expect a newer model to supply knowledge of your internal platforms, frameworks, and codebase patterns.\", \"Don't let the human be the cross-repo research and memory layer \u2014 re-explaining one change across 20 repos burns both developer time and tokens.\", \"Don't fully delegate every bug fix if you need to retain feel for the system; you forfeit the peripheral understanding debugging would have given you.\", \"Don't let each tool keep its own private context \u2014 Claude Code, Cursor, and Copilot each starting fresh means explaining the same codebase three times.\"]}, \"notable_outliers\": [{\"claim\": \"Grep should not be used anywhere \u2014 ripgrep supersedes it, and a semantic 'describe' tool derived from language tooling supersedes both for agents.\", \"talk\": \"fighting-slop-with-slop\", \"timestamp_sec\": 712}, {\"claim\": \"Honest negative result: the local index's recall collapsed to nearly zero at 396 files when individual files had many responsibilities.\", \"talk\": \"we-cut-94-of-ai-coding-tokens-with-a-local-code-index\", \"timestamp_sec\": 455}, {\"claim\": \"An agent identified an O(n\\u00b2) pattern purely from the profiler's call stack, without reading the source code first.\", \"talk\": \"ai-agents-for-performance-ship-faster-pay-less\", \"timestamp_sec\": 533}, {\"claim\": \"Pooling sessions across every developer means the agent ends up with more context about the organization than any single developer has.\", \"talk\": \"a-genius-with-amnesia\", \"timestamp_sec\": 1153}, {\"claim\": \"Because generating code is nearly free, writing throwaway software purely to understand other software is now an everyday technique, not a luxury.\", \"talk\": \"understanding-is-the-new-bottleneck\", \"timestamp_sec\": 1107}, {\"claim\": \"Since we don't read all the code, the only remaining way to understand it is the execution trace \u2014 which requires a language designed for zero-cost full-program tracing.\", \"talk\": \"fighting-slop-with-slop\", \"timestamp_sec\": 639}], \"maturity\": \"contested\", \"maturity_rationale\": \"Speakers agree almost unanimously on the diagnosis \u2014 retrieval, not model capability, is the constraint \u2014 but ship mutually incompatible mechanisms: precomputed indexes versus REPL-computed context, retrofit tooling versus a rebuilt language substrate, and agent comprehension versus defended human understanding. Published negative results (recall collapsing at 396 files, honest baseline caveats on the 94% claim) show the approaches are still being falsified rather than refined.\"}",
+  "ttft_ms": 80932,
+  "ttft_stream_ms": 983,
+  "time_to_request_ms": 56,
+  "type": "result",
+  "duration_ms": 130749,
+  "uuid": "ac552016-fbf2-4096-8348-58936d6e6955",
+  "passC": {
+    "concept": "code comprehension and indexing",
+    "state_of_practice": "The field has converged on a diagnosis: the binding constraint on coding agents is not model quality but what the agent can see \u2014 one repo at a time, one session at a time, with no persistent model of how the code fits together. Concretely, teams report agents degrading as context grows on monorepos, a typical query shipping 45K tokens where ~5K mattered, and ~90% of AI coding spend landing on the input side, which means retrieval quality is a cost line, not just a quality line. The mechanisms being shipped are wildly divergent: a cross-repo dependency graph built from metadata extraction (Nx's Polygraph), a local hybrid keyword+embedding index with a weighted heuristic score (Tesco), a REPL where the model writes Python to slice the repo instead of loading it (RLM), a markdown anti-pattern catalog in a central git repo plus cross-repo grep (Netflix), and a new language whose compiler infers error types through the call graph so comprehension is structural rather than retrieved (Boundary). Nearly everyone builds this as a layer above the agent rather than inside it, and nearly everyone distrusts prose: source code, call stacks, execution traces, and canary results are treated as ground truth while READMEs and architecture files are treated as lies waiting to happen. The unresolved question underneath all of it is who the index is for \u2014 the agent, so humans can stop reading code, or the human, whose understanding Notion argues is the actual bottleneck.",
+    "consensus": [
+      {
+        "claim": "Better models will not fix code comprehension; the limit is what context the system can assemble, and that is where the cost and the failure modes live.",
+        "support_count": 4,
+        "supporting_talks": [
+          "we-cut-94-of-ai-coding-tokens-with-a-local-code-index",
+          "rlm-recursive-language-models-for-large-codebases",
+          "a-genius-with-amnesia",
+          "ai-agents-for-performance-ship-faster-pay-less"
+        ],
+        "evidence_quote": "The answer was not a better model. The answer was sending less.",
+        "evidence_talk": "we-cut-94-of-ai-coding-tokens-with-a-local-code-index",
+        "evidence_timestamp_sec": 571
+      },
+      {
+        "claim": "The comprehension layer belongs outside any single agent \u2014 a model-agnostic harness, index, or artifact that multiple tools and sessions share, rather than per-tool state that starts from zero each time.",
+        "support_count": 4,
+        "supporting_talks": [
+          "a-genius-with-amnesia",
+          "rlm-recursive-language-models-for-large-codebases",
+          "we-cut-94-of-ai-coding-tokens-with-a-local-code-index",
+          "fighting-slop-with-slop"
+        ],
+        "evidence_quote": "Polygraph isn't an agent. It's a meta harness around an agent that makes them uh more capable.",
+        "evidence_talk": "a-genius-with-amnesia",
+        "evidence_timestamp_sec": 649
+      },
+      {
+        "claim": "Ground truth for comprehension is the executable artifact \u2014 source, call stacks, execution traces, canary results \u2014 not natural-language documentation, which drifts or lies.",
+        "support_count": 3,
+        "supporting_talks": [
+          "fighting-slop-with-slop",
+          "a-genius-with-amnesia",
+          "ai-agents-for-performance-ship-faster-pay-less"
+        ],
+        "evidence_quote": "Don't read anything but the code itself. The docs may lie, the um the actual description or architecture file or readme file will definitely lie, but the code cannot lie.",
+        "evidence_talk": "fighting-slop-with-slop",
+        "evidence_timestamp_sec": 786
+      },
+      {
+        "claim": "The retrieval substrate should be cheap and deterministic \u2014 markdown in git, weighted keyword/structural scoring, compiler-derived tools \u2014 rather than a vector database or an LLM reranker in the request path.",
+        "support_count": 3,
+        "supporting_talks": [
+          "we-cut-94-of-ai-coding-tokens-with-a-local-code-index",
+          "ai-agents-for-performance-ship-faster-pay-less",
+          "fighting-slop-with-slop"
+        ],
+        "evidence_quote": "It runs 0.4 milliseconds, no extra AI calls needed. The lesson we learned, simple formula beats the complex model most of the time.",
+        "evidence_talk": "we-cut-94-of-ai-coding-tokens-with-a-local-code-index",
+        "evidence_timestamp_sec": 333
+      }
+    ],
+    "disagreements": [
+      {
+        "question": "Should relevant context be retrieved from a persistent precomputed index, or computed on demand by giving the model a programmable environment over the repo?",
+        "position_a": "Build a durable artifact ahead of time \u2014 a hybrid semantic+keyword+recency index that re-indexes in under a second, or a unified cross-repo dependency graph extracted from metadata \u2014 and query it per request.",
+        "position_a_talks": [
+          "we-cut-94-of-ai-coding-tokens-with-a-local-code-index",
+          "a-genius-with-amnesia"
+        ],
+        "position_b": "Don't precompute an index at all: existing grep-style and semantic search are insufficient for monorepos, so externalize context management into a REPL or language-level tooling where the model writes code to inspect, slice, and compute the relevant chunks at query time.",
+        "position_b_talks": [
+          "rlm-recursive-language-models-for-large-codebases",
+          "fighting-slop-with-slop"
+        ],
+        "why_it_matters": "The index camp pays maintenance and staleness cost but gets millisecond, token-cheap lookups; the on-demand camp pays latency and sub-call budget per query but never goes stale and degrades more gracefully as files accumulate responsibilities \u2014 exactly the case where Tesco measured recall collapsing to near zero."
+      },
+      {
+        "question": "Is the goal of code indexing to let agents comprehend the code so humans don't have to, or to help humans keep understanding code that agents wrote?",
+        "position_a": "Human understanding is the real bottleneck and must be actively defended: gate sending code for review on passing a quiz about what the agent wrote, debug some bugs yourself to retain peripheral feel for the system, and build throwaway software purely to understand other software.",
+        "position_a_talks": [
+          "understanding-is-the-new-bottleneck"
+        ],
+        "position_b": "Engineers will not read the code regardless of policy, so remove the human from the comprehension loop: drop code review in favor of type-system-enforced invariants, and treat the human acting as the system's research and memory layer as the defect to be engineered away.",
+        "position_b_talks": [
+          "fighting-slop-with-slop",
+          "a-genius-with-amnesia"
+        ],
+        "why_it_matters": "It decides what the index optimizes for \u2014 token-minimal machine-readable slices, or human-legible explanations and shared, commentable agent transcripts \u2014 and whether review gates stay in the pipeline at all."
+      },
+      {
+        "question": "Can code be made agent-comprehensible by layering tooling on top of existing languages and repos, or does the substrate itself have to be rebuilt?",
+        "position_a": "Retrofitting is patching a broken foundation: languages, git, and databases need rebuilding for an agent-first world, with error types inferred through the call graph and zero-cost full-program execution tracing designed in from first principles.",
+        "position_a_talks": [
+          "fighting-slop-with-slop"
+        ],
+        "position_b": "Comprehension can be added without touching the analyzed code \u2014 a dependency graph from pure metadata extraction with zero lines changed, a local index over the existing tree, a profiling workflow that works identically across Java, Python, and Go.",
+        "position_b_talks": [
+          "a-genius-with-amnesia",
+          "we-cut-94-of-ai-coding-tokens-with-a-local-code-index",
+          "ai-agents-for-performance-ship-faster-pay-less",
+          "rlm-recursive-language-models-for-large-codebases"
+        ],
+        "why_it_matters": "One path is deployable against the codebase you already have this quarter; the other requires an embeddable new language and concedes that current comprehension tooling is a ceiling, not a gap."
+      }
+    ],
+    "practical_guidance": {
+      "do": [
+        "Build the cross-repo dependency graph purely from metadata extraction, without changing a line of code in the analyzed repositories.",
+        "Score hybrid retrieval with a fixed weighted formula \u2014 50% semantic, 30% keyword, 20% recency \u2014 plus an adaptive threshold, and skip LLM reranking: 0.4ms versus 2-3 seconds added per query.",
+        "Combine semantic and keyword search rather than picking one; each alone misses about one in four relevant results, together about one in ten.",
+        "Store the pattern/memory catalog as plain markdown in a central git repo before reaching for a vector database, and structure it hierarchically with an index so consulting it doesn't fill agent context.",
+        "When an anti-pattern is confirmed, run cross-repo code search to find every other instance \u2014 Netflix found the same Spectator counter bug in seven services, worth 0.5-4.6% of CPU cycles each.",
+        "Load the real open-source repository into the session instead of a documentation-retrieval tool when diagnosing deep problems.",
+        "Give the model a dedicated execution environment where it writes code to inspect and slice the repo, feeding only the computed chunks back into the main context window.",
+        "Keep the shared architecture file tiny, model-agnostic (architecture.md, not CLAUDE.md), and limited to invariants that will not change for months or years.",
+        "Measure token savings by instrumenting real queries against a stated baseline, and disclose which baseline \u2014 the 94% figure is against worst-case full-file reads, not against a modern agentic tool.",
+        "Gate sending agent-written code to teammates on being able to pass a quiz about what it does."
+      ],
+      "avoid": [
+        "Don't try to cut cost by shortening outputs or tuning max tokens and temperature \u2014 roughly 90% of spend is input tokens.",
+        "Don't prompt the agent to 'send less context'; the context is transmitted and billed before the model reads the instruction.",
+        "Don't assume an index generalizes: recall dropped to nearly zero on a 396-file project where individual files carried many responsibilities.",
+        "Don't treat READMEs, architecture files, or descriptions as authoritative when the source or an execution trace is available.",
+        "Don't expect a newer model to supply knowledge of your internal platforms, frameworks, and codebase patterns.",
+        "Don't let the human be the cross-repo research and memory layer \u2014 re-explaining one change across 20 repos burns both developer time and tokens.",
+        "Don't fully delegate every bug fix if you need to retain feel for the system; you forfeit the peripheral understanding debugging would have given you.",
+        "Don't let each tool keep its own private context \u2014 Claude Code, Cursor, and Copilot each starting fresh means explaining the same codebase three times."
+      ]
+    },
+    "notable_outliers": [
+      {
+        "claim": "Grep should not be used anywhere \u2014 ripgrep supersedes it, and a semantic 'describe' tool derived from language tooling supersedes both for agents.",
+        "talk": "fighting-slop-with-slop",
+        "timestamp_sec": 712
+      },
+      {
+        "claim": "Honest negative result: the local index's recall collapsed to nearly zero at 396 files when individual files had many responsibilities.",
+        "talk": "we-cut-94-of-ai-coding-tokens-with-a-local-code-index",
+        "timestamp_sec": 455
+      },
+      {
+        "claim": "An agent identified an O(n\u00b2) pattern purely from the profiler's call stack, without reading the source code first.",
+        "talk": "ai-agents-for-performance-ship-faster-pay-less",
+        "timestamp_sec": 533
+      },
+      {
+        "claim": "Pooling sessions across every developer means the agent ends up with more context about the organization than any single developer has.",
+        "talk": "a-genius-with-amnesia",
+        "timestamp_sec": 1153
+      },
+      {
+        "claim": "Because generating code is nearly free, writing throwaway software purely to understand other software is now an everyday technique, not a luxury.",
+        "talk": "understanding-is-the-new-bottleneck",
+        "timestamp_sec": 1107
+      },
+      {
+        "claim": "Since we don't read all the code, the only remaining way to understand it is the execution trace \u2014 which requires a language designed for zero-cost full-program tracing.",
+        "talk": "fighting-slop-with-slop",
+        "timestamp_sec": 639
+      }
+    ],
+    "maturity": "contested",
+    "maturity_rationale": "Speakers agree almost unanimously on the diagnosis \u2014 retrieval, not model capability, is the constraint \u2014 but ship mutually incompatible mechanisms: precomputed indexes versus REPL-computed context, retrofit tooling versus a rebuilt language substrate, and agent comprehension versus defended human understanding. Published negative results (recall collapsing at 396 files, honest baseline caveats on the 94% claim) show the approaches are still being falsified rather than refined."
+  },
+  "_meta": {
+    "concept": "code comprehension and indexing",
+    "slug": "code-comprehension-and-indexing",
+    "talk_count": 6,
+    "missing_talks": [],
+    "wall_sec": 132.2,
+    "run_at": "2026-08-13T21:02:13Z"
+  }
+}

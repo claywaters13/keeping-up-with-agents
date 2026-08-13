@@ -1,0 +1,287 @@
+{
+  "is_error": false,
+  "duration_api_ms": 57666,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "dabd034f-fcf9-4ec5-888f-745ac95ef12d",
+  "total_cost_usd": 0.215632,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 7660,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 5175,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 7660,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 5175,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 7660,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 7660
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 4398,
+      "outputTokens": 19,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.004493,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 5175,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 7660,
+      "webSearchRequests": 0,
+      "costUSD": 0.211139,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Yogendra Miraje (FactSet) argues that in agent-fronted products, skills \u2014 not screens, buttons, or forms \u2014 are where features now live, and that the engineer's job shifts correspondingly from shipping features to shipping the harness those skills run on. He walks through the minimum viable skill support in a custom harness (skill registry, system prompt injection of name/description/path for progressive disclosure, a file read tool, plus bash or a sandbox for scripts) with a worked company-research/report example. He then shares operational learnings: descriptions act as routing signals and must be phrased around user intent, skill libraries should be cut by user workflow rather than data model, and skills are contracts versioned against a specific model \u2014 a model upgrade broke his agent with zero skill changes because the new model weighted the beginning of the skill file. The last third covers scaling: system-prompt stuffing breaks past ~10 skills (use embeddings or a small shortlisting model), and hundreds of skills demand hierarchy, metadata filters, and a five-part governance model borrowed from software engineering practice. Watch it if you are adding skill support to your own harness or running a skill library beyond a handful of files; skip it if you only write skills for Claude Code.\",\n  \"key_points\": [\n    \"In agentic products the framing is who/what/how: prompts define who the agent is, tools define what it can connect to, and skills define how a task gets done \u2014 making skills the natural home for business logic and therefore the new unit of product feature.\",\n    \"Because anyone with good product understanding can author a skill, feature shipping partly leaves engineering, and the engineer's role shifts to building the harness that runs skills well.\",\n    \"A bare-minimum skill implementation in a custom harness needs only three things \u2014 a skill registry, a system prompt, and a file read tool \u2014 plus bash or a code sandbox if skills execute scripts.\",\n    \"Progressive disclosure means only skill name, description, and path go into the system prompt; the agent reads the skill body on demand.\",\n    \"Skill descriptions are routing signals, so they must be written in terms of the user's request (e.g. the trigger word 'PDF'), kept mutually distinct, and kept fresh \u2014 stale or overlapping descriptions are why skills fail to trigger.\",\n    \"Skill libraries should be cut by user intent rather than by the underlying data model: 'earnings preparation' and 'pre-market briefing' beat 'estimate analysis' and 'analyst rating', and refactoring toward that as real use cases arrive is expected.\",\n    \"Skills are contracts versioned to a model, not documentation: a model upgrade broke the speaker's agent with no skill changes because the new model attended to the start of the skill file while critical instructions sat at the end \u2014 so evals must be rerun on every model upgrade.\",\n    \"Routing does not merely get tuned as the library grows, it changes mechanism: system-prompt stuffing works for a few skills, embeddings or a small shortlisting model are needed past roughly ten, and hundreds require hierarchy, metadata filters, and governance.\",\n    \"Skill library governance has five aspects \u2014 admission, ownership, boundaries, lifecycle, coherence \u2014 implemented by borrowing decades-old code practices: PR-style automated gates with human in the loop, named skill owners like CODEOWNERS, semantic versioning with deprecation warnings and changelogs, periodic audits, and allow-listed access-controlled tools.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"Prompts define who the agent is. Tools define what it can connect to. And skills really tell you how a task gets done.\",\n      \"timestamp_sec\": 185,\n      \"why\": \"the talk's organizing framework in one line\"\n    },\n    {\n      \"text\": \"this is the great place to keep your business logic that shapes your agents behavior. So skills are the new features.\",\n      \"timestamp_sec\": 185,\n      \"why\": \"states the title thesis directly\"\n    },\n    {\n      \"text\": \"Then the role of engineer is shifting from shipping features to shipping harnesses.\",\n      \"timestamp_sec\": 241,\n      \"why\": \"the practical consequence for engineering org design\"\n    },\n    {\n      \"text\": \"You only need these three things like skill registry, a system prompt, and a basic file read tool.\",\n      \"timestamp_sec\": 338,\n      \"why\": \"concrete minimum implementation spec\"\n    },\n    {\n      \"text\": \"we are only using the name and description path in in this system prompt and not the skill body and that's what what they call about is progressive disclosure\",\n      \"timestamp_sec\": 447,\n      \"why\": \"defines progressive disclosure at the harness level\"\n    },\n    {\n      \"text\": \"the descriptions are really the routing signals\",\n      \"timestamp_sec\": 506,\n      \"why\": \"names the mechanism behind skill selection\"\n    },\n    {\n      \"text\": \"It's very important to keep your descriptions aligned to the user request and not about the skill itself.\",\n      \"timestamp_sec\": 563,\n      \"why\": \"actionable and frequently violated authoring rule\"\n    },\n    {\n      \"text\": \"most of the skills are only model driven because for nontechnical users we're not adding that cognitive load to remember them\",\n      \"timestamp_sec\": 618,\n      \"why\": \"distinguishes product skills from coding-agent skills users invoke by name\"\n    },\n    {\n      \"text\": \"Another learning that had was cut by user intent and not by data model.\",\n      \"timestamp_sec\": 618,\n      \"why\": \"the library decomposition principle\"\n    },\n    {\n      \"text\": \"instead of having an estimate analysis skill you should have earning preparation skill instead of having a skill for news and analysis analyst rating skill you should have a pre-market briefing skill\",\n      \"timestamp_sec\": 673,\n      \"why\": \"makes the intent-vs-data-model rule concrete with domain examples\"\n    },\n    {\n      \"text\": \"Nothing was changed. Not a single line in the skill was changed but still it failed.\",\n      \"timestamp_sec\": 673,\n      \"why\": \"the model-upgrade failure story that motivates evals\"\n    },\n    {\n      \"text\": \"it's very important to run evals and skills without evals are really just wishful thinking\",\n      \"timestamp_sec\": 673,\n      \"why\": \"sharpest normative claim in the talk\"\n    },\n    {\n      \"text\": \"Skills are not the documentation and a lot of people treat them like that and skills are really the contracts versioned to a model.\",\n      \"timestamp_sec\": 673,\n      \"why\": \"reframes skills as versioned contracts, a contestable position\"\n    },\n    {\n      \"text\": \"When you have like more than 10 skill, maybe that's like a good point to think start thinking about, you know, how can you shortlist the skills that you're going to add to the system prompt.\",\n      \"timestamp_sec\": 733,\n      \"why\": \"gives a specific scaling threshold\"\n    },\n    {\n      \"text\": \"The real trouble really starts when you have hundreds of skills.\",\n      \"timestamp_sec\": 786,\n      \"why\": \"marks the second scaling regime\"\n    },\n    {\n      \"text\": \"there are like five aspect of skill library governance and these are admission, ownership, boundaries, life cycle and coherence\",\n      \"timestamp_sec\": 786,\n      \"why\": \"enumerates the governance framework\"\n    },\n    {\n      \"text\": \"when you hear governance, it really doesn't need to be a red tape bottleneck\",\n      \"timestamp_sec\": 841,\n      \"why\": \"preempts the obvious objection to enterprise governance\"\n    },\n    {\n      \"text\": \"the good news is that we can borrow a lot of good practices from code and apply them to the skills. And these coding practices like has worked for decades.\",\n      \"timestamp_sec\": 841,\n      \"why\": \"the core analogy driving all five governance mechanisms\"\n    },\n    {\n      \"text\": \"Just like how features are maintained by application teams, we need skills to be maintained by application teams.\",\n      \"timestamp_sec\": 895,\n      \"why\": \"ownership model \u2014 skills stay with product teams, not a central AI team\"\n    },\n    {\n      \"text\": \"routing mechanism doesn't get tuned as you scale. It changes the mechanism itself and at enterprise scale the skill library governance is really non-negotiable\",\n      \"timestamp_sec\": 960,\n      \"why\": \"closing takeaway with the talk's strongest scaling claim\"\n    }\n  ],\n  \"concepts\": [\n    \"agent skills\",\n    \"skill registry\",\n    \"harness design\",\n    \"progressive disclosure\",\n    \"skill routing\",\n    \"skill library governance\",\n    \"eval-driven development\",\n    \"model version migration\",\n    \"agentic loop\",\n    \"tool access control\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"In agent-fronted products, skills replace UI surfaces (screens, buttons, dropdowns) as the unit in which features are shipped.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 185\n    },\n    {\n      \"claim\": \"The engineer's role in agentic products shifts from shipping features to shipping harnesses, because non-engineers with product knowledge can author skills.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 241\n    },\n    {\n      \"claim\": \"Adding skill support to a custom harness requires only a skill registry, a system prompt, and a file read tool (plus bash or a sandbox for script-running skills).\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 338\n    },\n    {\n      \"claim\": \"Maintaining a proprietary skill-like standard is not worth it now that Anthropic has open-sourced skills; FactSet abandoned its own 'blueprints' format to adopt skills fully.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 87\n    },\n    {\n      \"claim\": \"Skill descriptions should be written to match the phrasing of user requests rather than describe the skill itself, and must be distinct from one another, or the right skill will not be triggered.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 563\n    },\n    {\n      \"claim\": \"Skill libraries should be decomposed by user intent rather than by the underlying data model, and refactoring the decomposition repeatedly as real use cases arrive is acceptable.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 618\n    },\n    {\n      \"claim\": \"In agentic products aimed at non-technical users, skill invocation should be model-driven rather than user-invoked, to avoid imposing cognitive load.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 618\n    },\n    {\n      \"claim\": \"Skills are contracts versioned against a specific model, so evals must be rerun whenever the model is upgraded.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 733\n    },\n    {\n      \"claim\": \"Instruction placement inside a skill file matters and is model-dependent: a newer model focused on the beginning of the skill and ignored critical instructions placed at the end.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 673\n    },\n    {\n      \"claim\": \"Putting all skills in the system prompt stops working past roughly ten skills, at which point embedding similarity search or a smaller shortlisting model is needed.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 733\n    },\n    {\n      \"claim\": \"At hundreds of skills, flat retrieval is insufficient and hierarchy of skills plus metadata filters and governance become necessary.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 786\n    },\n    {\n      \"claim\": \"Skill library governance is non-negotiable at enterprise scale and should reuse established software practices: PR-style admission gates with human in the loop, named skill owners, semantic versioning with deprecation warnings and changelogs, and periodic audits.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 841\n    },\n    {\n      \"claim\": \"Skills should declare allow-listed tools and those tools should be access-controlled, to enforce boundaries around what each skill can do.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 960\n    },\n    {\n      \"claim\": \"Most public discourse on skills over-indexes on coding agents, leaving skills-in-products and custom-harness integration underserved.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 136\n    }\n  ],\n  \"speaker_org\": \"FactSet\"\n}",
+  "ttft_ms": 13877,
+  "ttft_stream_ms": 1102,
+  "time_to_request_ms": 38,
+  "type": "result",
+  "duration_ms": 57917,
+  "uuid": "1094f249-07b6-4861-b4b8-3a8632ee39fb",
+  "passA": {
+    "summary": "Yogendra Miraje (FactSet) argues that in agent-fronted products, skills \u2014 not screens, buttons, or forms \u2014 are where features now live, and that the engineer's job shifts correspondingly from shipping features to shipping the harness those skills run on. He walks through the minimum viable skill support in a custom harness (skill registry, system prompt injection of name/description/path for progressive disclosure, a file read tool, plus bash or a sandbox for scripts) with a worked company-research/report example. He then shares operational learnings: descriptions act as routing signals and must be phrased around user intent, skill libraries should be cut by user workflow rather than data model, and skills are contracts versioned against a specific model \u2014 a model upgrade broke his agent with zero skill changes because the new model weighted the beginning of the skill file. The last third covers scaling: system-prompt stuffing breaks past ~10 skills (use embeddings or a small shortlisting model), and hundreds of skills demand hierarchy, metadata filters, and a five-part governance model borrowed from software engineering practice. Watch it if you are adding skill support to your own harness or running a skill library beyond a handful of files; skip it if you only write skills for Claude Code.",
+    "key_points": [
+      "In agentic products the framing is who/what/how: prompts define who the agent is, tools define what it can connect to, and skills define how a task gets done \u2014 making skills the natural home for business logic and therefore the new unit of product feature.",
+      "Because anyone with good product understanding can author a skill, feature shipping partly leaves engineering, and the engineer's role shifts to building the harness that runs skills well.",
+      "A bare-minimum skill implementation in a custom harness needs only three things \u2014 a skill registry, a system prompt, and a file read tool \u2014 plus bash or a code sandbox if skills execute scripts.",
+      "Progressive disclosure means only skill name, description, and path go into the system prompt; the agent reads the skill body on demand.",
+      "Skill descriptions are routing signals, so they must be written in terms of the user's request (e.g. the trigger word 'PDF'), kept mutually distinct, and kept fresh \u2014 stale or overlapping descriptions are why skills fail to trigger.",
+      "Skill libraries should be cut by user intent rather than by the underlying data model: 'earnings preparation' and 'pre-market briefing' beat 'estimate analysis' and 'analyst rating', and refactoring toward that as real use cases arrive is expected.",
+      "Skills are contracts versioned to a model, not documentation: a model upgrade broke the speaker's agent with no skill changes because the new model attended to the start of the skill file while critical instructions sat at the end \u2014 so evals must be rerun on every model upgrade.",
+      "Routing does not merely get tuned as the library grows, it changes mechanism: system-prompt stuffing works for a few skills, embeddings or a small shortlisting model are needed past roughly ten, and hundreds require hierarchy, metadata filters, and governance.",
+      "Skill library governance has five aspects \u2014 admission, ownership, boundaries, lifecycle, coherence \u2014 implemented by borrowing decades-old code practices: PR-style automated gates with human in the loop, named skill owners like CODEOWNERS, semantic versioning with deprecation warnings and changelogs, periodic audits, and allow-listed access-controlled tools."
+    ],
+    "notable_quotes": [
+      {
+        "text": "Prompts define who the agent is. Tools define what it can connect to. And skills really tell you how a task gets done.",
+        "timestamp_sec": 185,
+        "why": "the talk's organizing framework in one line"
+      },
+      {
+        "text": "this is the great place to keep your business logic that shapes your agents behavior. So skills are the new features.",
+        "timestamp_sec": 185,
+        "why": "states the title thesis directly"
+      },
+      {
+        "text": "Then the role of engineer is shifting from shipping features to shipping harnesses.",
+        "timestamp_sec": 241,
+        "why": "the practical consequence for engineering org design"
+      },
+      {
+        "text": "You only need these three things like skill registry, a system prompt, and a basic file read tool.",
+        "timestamp_sec": 338,
+        "why": "concrete minimum implementation spec"
+      },
+      {
+        "text": "we are only using the name and description path in in this system prompt and not the skill body and that's what what they call about is progressive disclosure",
+        "timestamp_sec": 447,
+        "why": "defines progressive disclosure at the harness level"
+      },
+      {
+        "text": "the descriptions are really the routing signals",
+        "timestamp_sec": 506,
+        "why": "names the mechanism behind skill selection"
+      },
+      {
+        "text": "It's very important to keep your descriptions aligned to the user request and not about the skill itself.",
+        "timestamp_sec": 563,
+        "why": "actionable and frequently violated authoring rule"
+      },
+      {
+        "text": "most of the skills are only model driven because for nontechnical users we're not adding that cognitive load to remember them",
+        "timestamp_sec": 618,
+        "why": "distinguishes product skills from coding-agent skills users invoke by name"
+      },
+      {
+        "text": "Another learning that had was cut by user intent and not by data model.",
+        "timestamp_sec": 618,
+        "why": "the library decomposition principle"
+      },
+      {
+        "text": "instead of having an estimate analysis skill you should have earning preparation skill instead of having a skill for news and analysis analyst rating skill you should have a pre-market briefing skill",
+        "timestamp_sec": 673,
+        "why": "makes the intent-vs-data-model rule concrete with domain examples"
+      },
+      {
+        "text": "Nothing was changed. Not a single line in the skill was changed but still it failed.",
+        "timestamp_sec": 673,
+        "why": "the model-upgrade failure story that motivates evals"
+      },
+      {
+        "text": "it's very important to run evals and skills without evals are really just wishful thinking",
+        "timestamp_sec": 673,
+        "why": "sharpest normative claim in the talk"
+      },
+      {
+        "text": "Skills are not the documentation and a lot of people treat them like that and skills are really the contracts versioned to a model.",
+        "timestamp_sec": 673,
+        "why": "reframes skills as versioned contracts, a contestable position"
+      },
+      {
+        "text": "When you have like more than 10 skill, maybe that's like a good point to think start thinking about, you know, how can you shortlist the skills that you're going to add to the system prompt.",
+        "timestamp_sec": 733,
+        "why": "gives a specific scaling threshold"
+      },
+      {
+        "text": "The real trouble really starts when you have hundreds of skills.",
+        "timestamp_sec": 786,
+        "why": "marks the second scaling regime"
+      },
+      {
+        "text": "there are like five aspect of skill library governance and these are admission, ownership, boundaries, life cycle and coherence",
+        "timestamp_sec": 786,
+        "why": "enumerates the governance framework"
+      },
+      {
+        "text": "when you hear governance, it really doesn't need to be a red tape bottleneck",
+        "timestamp_sec": 841,
+        "why": "preempts the obvious objection to enterprise governance"
+      },
+      {
+        "text": "the good news is that we can borrow a lot of good practices from code and apply them to the skills. And these coding practices like has worked for decades.",
+        "timestamp_sec": 841,
+        "why": "the core analogy driving all five governance mechanisms"
+      },
+      {
+        "text": "Just like how features are maintained by application teams, we need skills to be maintained by application teams.",
+        "timestamp_sec": 895,
+        "why": "ownership model \u2014 skills stay with product teams, not a central AI team"
+      },
+      {
+        "text": "routing mechanism doesn't get tuned as you scale. It changes the mechanism itself and at enterprise scale the skill library governance is really non-negotiable",
+        "timestamp_sec": 960,
+        "why": "closing takeaway with the talk's strongest scaling claim"
+      }
+    ],
+    "concepts": [
+      "agent skills",
+      "skill registry",
+      "harness design",
+      "progressive disclosure",
+      "skill routing",
+      "skill library governance",
+      "eval-driven development",
+      "model version migration",
+      "agentic loop",
+      "tool access control"
+    ],
+    "positions": [
+      {
+        "claim": "In agent-fronted products, skills replace UI surfaces (screens, buttons, dropdowns) as the unit in which features are shipped.",
+        "confidence": "stated",
+        "timestamp_sec": 185
+      },
+      {
+        "claim": "The engineer's role in agentic products shifts from shipping features to shipping harnesses, because non-engineers with product knowledge can author skills.",
+        "confidence": "stated",
+        "timestamp_sec": 241
+      },
+      {
+        "claim": "Adding skill support to a custom harness requires only a skill registry, a system prompt, and a file read tool (plus bash or a sandbox for script-running skills).",
+        "confidence": "stated",
+        "timestamp_sec": 338
+      },
+      {
+        "claim": "Maintaining a proprietary skill-like standard is not worth it now that Anthropic has open-sourced skills; FactSet abandoned its own 'blueprints' format to adopt skills fully.",
+        "confidence": "stated",
+        "timestamp_sec": 87
+      },
+      {
+        "claim": "Skill descriptions should be written to match the phrasing of user requests rather than describe the skill itself, and must be distinct from one another, or the right skill will not be triggered.",
+        "confidence": "stated",
+        "timestamp_sec": 563
+      },
+      {
+        "claim": "Skill libraries should be decomposed by user intent rather than by the underlying data model, and refactoring the decomposition repeatedly as real use cases arrive is acceptable.",
+        "confidence": "stated",
+        "timestamp_sec": 618
+      },
+      {
+        "claim": "In agentic products aimed at non-technical users, skill invocation should be model-driven rather than user-invoked, to avoid imposing cognitive load.",
+        "confidence": "stated",
+        "timestamp_sec": 618
+      },
+      {
+        "claim": "Skills are contracts versioned against a specific model, so evals must be rerun whenever the model is upgraded.",
+        "confidence": "stated",
+        "timestamp_sec": 733
+      },
+      {
+        "claim": "Instruction placement inside a skill file matters and is model-dependent: a newer model focused on the beginning of the skill and ignored critical instructions placed at the end.",
+        "confidence": "stated",
+        "timestamp_sec": 673
+      },
+      {
+        "claim": "Putting all skills in the system prompt stops working past roughly ten skills, at which point embedding similarity search or a smaller shortlisting model is needed.",
+        "confidence": "stated",
+        "timestamp_sec": 733
+      },
+      {
+        "claim": "At hundreds of skills, flat retrieval is insufficient and hierarchy of skills plus metadata filters and governance become necessary.",
+        "confidence": "stated",
+        "timestamp_sec": 786
+      },
+      {
+        "claim": "Skill library governance is non-negotiable at enterprise scale and should reuse established software practices: PR-style admission gates with human in the loop, named skill owners, semantic versioning with deprecation warnings and changelogs, and periodic audits.",
+        "confidence": "stated",
+        "timestamp_sec": 841
+      },
+      {
+        "claim": "Skills should declare allow-listed tools and those tools should be access-controlled, to enforce boundaries around what each skill can do.",
+        "confidence": "stated",
+        "timestamp_sec": 960
+      },
+      {
+        "claim": "Most public discourse on skills over-indexes on coding agents, leaving skills-in-products and custom-harness integration underserved.",
+        "confidence": "implied",
+        "timestamp_sec": 136
+      }
+    ],
+    "speaker_org": "FactSet"
+  },
+  "_meta": {
+    "slug": "skills-are-new-features-building-skill-centric-harness",
+    "video_id": "7jjudsEhBtM",
+    "url": "https://www.youtube.com/watch?v=7jjudsEhBtM",
+    "word_count": 2177,
+    "wall_sec": 59.0,
+    "run_at": "2026-08-12T20:13:28Z",
+    "effort": "medium"
+  }
+}

@@ -1,0 +1,337 @@
+{
+  "is_error": false,
+  "duration_api_ms": 84177,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "a1c80b87-9bdc-45ae-840a-3fa64abe0127",
+  "total_cost_usd": 0.33063,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 12530,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 7674,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 12530,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 7674,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 12530,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 12530
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 8226,
+      "outputTokens": 18,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.008316,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 7674,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 12530,
+      "webSearchRequests": 0,
+      "costUSD": 0.322314,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Two co-founders of Theta Software argue that the field's working definition of \\\"long-horizon\\\" agent work is muddled, and that this muddle is corrupting the environments and benchmarks used to train and evaluate agents. They contrast human-referenced horizon metrics (METR-style \\\"this takes a human 16 hours\\\") with model-referenced ones (tokens, steps, tool calls), showing that each is noisy in different ways and that both are needed. They then lay out the axes they think actually measure capability \u2014 tool-coordination complexity, sequential vs. parallelizable state change, and starting ambiguity \u2014 and spend the second half on the hardest piece, the verifier: why judge models and rubrics are unavoidable in soft-verifiable domains, and why judges must themselves be agents with environment access and queryable trajectories. The talk closes by criticizing three finance benchmarks (GDPval, ToolBench, Apex Agents) as too short, too saturated, too narrow, and too coarse in reward signal, versus their own 15-hour-per-task finance dataset. Worth watching if you build RL environments, rubrics, or agent evals; less so if you want practical agent-building tips.\",\n  \"key_points\": [\n    \"\\\"Long horizon\\\" is a moving scalar, not a binary category \u2014 what counted as long horizon a year ago no longer does, so any fixed threshold ages out quickly.\",\n    \"Human-time-per-task and model-side units (tokens, steps, tool calls) each mislead alone: token counts vary by model family and harness, while human estimates get very noisy once tasks reach the top 1% of human capability.\",\n    \"Environment complexity should be measured by how many tools and external dependencies the agent must coordinate information across, not just by wall-clock length.\",\n    \"Chaining unrelated independent subtasks makes a task artificially long without measuring anything; what matters is sequential complexity where an early bad query or misread cascades into later steps.\",\n    \"Deliberate ambiguity in the starting materials mirrors real human work and forces exploration, but it multiplies valid solution paths and makes standardized evaluation much harder.\",\n    \"Because economically valuable work lives in soft-verifiable domains, deterministic verifiers must be supplemented by judge/critic models that inspect both final environment state and the agent's trajectory \u2014 trajectory inspection is also the main defense against reward hacking like sandbox escapes or peeking at hidden test suites.\",\n    \"Judges should be treated as agents with their own (read-only) environment access and tooling, since stuffing a long trajectory into a single LLM call no longer works; trajectories need enrichment, phase segmentation, and query interfaces.\",\n    \"Rubric density drives learnability, but overloading a rubric makes judges apply it inconsistently on frontier problems, so rubrics need QA (gold, no-op, variance, coverage, expert-agreement tests).\",\n    \"Existing finance benchmarks fall short on four counts \u2014 average human hours per task below the long-horizon frontier, near-saturation (57% of Apex Agents IB tasks fully solved at pass@1), narrow domain breadth, and reward signal too coarse for training.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"long horizon is really kind of a scalar metric. Uh, it's useful for kind of measuring relative tasks like one task might be more long than another, but it's really hard to define into kind of a binary category of this task is long and this task is not.\",\n      \"timestamp_sec\": 80,\n      \"why\": \"the talk's central framing claim about how the term should be used\"\n    },\n    {\n      \"text\": \"what we consider long horizon a year ago probably isn't really long horizon in our definition today\",\n      \"timestamp_sec\": 80,\n      \"why\": \"compact statement of why fixed horizon thresholds decay\"\n    },\n    {\n      \"text\": \"if a task takes GPT model 500,000 tokens, that doesn't really tell you a lot about what that task would look like for cloud models until you actually run on those cloud models.\",\n      \"timestamp_sec\": 168,\n      \"why\": \"names the concrete confound that makes token-based horizon metrics non-comparable\"\n    },\n    {\n      \"text\": \"what's long horizon for a human isn't necessarily that difficult for a model depending on what the actual task you care about is\",\n      \"timestamp_sec\": 267,\n      \"why\": \"the core objection to human-time-anchored benchmarks\"\n    },\n    {\n      \"text\": \"It might take them like days to do that if it's a really big Excel file, but for a model, it can maybe write a Python script or find some other cool trick to do that really quickly.\",\n      \"timestamp_sec\": 298,\n      \"why\": \"concrete example of human-time and model-difficulty diverging\"\n    },\n    {\n      \"text\": \"as you shift towards more long resin tasks and tasks that only the top 10% the top 1% top.1% of humans can really do these estimates start to get really really noisy\",\n      \"timestamp_sec\": 352,\n      \"why\": \"explains where human-referenced measurement breaks down as capability rises\"\n    },\n    {\n      \"text\": \"one task can you know maybe be made by artificially long horizon by chaining together unrelated independent tasks. However, that doesn't actually tell us or meaningfully measure the model capabilities.\",\n      \"timestamp_sec\": 476,\n      \"why\": \"identifies a common way environment designers fake difficulty\"\n    },\n    {\n      \"text\": \"we'll see if you have to use a dashboard or logs, a bad early query or a misread can cascade into these downstream steps that really start to have major consequences later on\",\n      \"timestamp_sec\": 513,\n      \"why\": \"defines sequential complexity by its failure mode\"\n    },\n    {\n      \"text\": \"if you are going to have ambiguity in the materials you give, there's a lot more possible paths that the agent could take. There's a lot more ways the agent could be right. And that means that standardized evaluation gets much, much harder.\",\n      \"timestamp_sec\": 579,\n      \"why\": \"states the ambiguity/evaluability tradeoff explicitly\"\n    },\n    {\n      \"text\": \"a lot of the early RL that we were doing in in recent times was really in hard verifiable domains and that's why we saw these gains in in math and kind of uh like data structure style coding problems\",\n      \"timestamp_sec\": 614,\n      \"why\": \"situates the verifier problem in the history of RL gains\"\n    },\n    {\n      \"text\": \"if we kind of enforce this too tightly, we collapse the state space of how many actual paths the agent actually explores.\",\n      \"timestamp_sec\": 755,\n      \"why\": \"the cost of over-specifying acceptable trajectories\"\n    },\n    {\n      \"text\": \"that really does not work for these more ambiguous or open-ended tasks because there's so many possible correct solutions. It's basically impossible to account for every single one.\",\n      \"timestamp_sec\": 794,\n      \"why\": \"rejects reference-answer comparison as a judging strategy\"\n    },\n    {\n      \"text\": \"I think the first important uh consideration to make is that judges are agents too.\",\n      \"timestamp_sec\": 794,\n      \"why\": \"the talk's most quotable design principle\"\n    },\n    {\n      \"text\": \"it's really important that the judge has access to the environment in the same way uh with some important safeguards of course. One is that we don't want the judge to make an accidental mutation in some way to the environment after the agent is done.\",\n      \"timestamp_sec\": 876,\n      \"why\": \"states both the requirement and its safety constraint\"\n    },\n    {\n      \"text\": \"you can't just use this really basic approach of taking the trajectory and stuffing it in the context window of the judge and kind of have it be a basic LM call.\",\n      \"timestamp_sec\": 903,\n      \"why\": \"names the naive judging pattern that breaks at long horizons\"\n    },\n    {\n      \"text\": \"These are all different things we want we want to do. And in that sense we need to make the trajectory itself queryable.\",\n      \"timestamp_sec\": 944,\n      \"why\": \"the prescriptive fix for long-trajectory judging\"\n    },\n    {\n      \"text\": \"especially for frontier problems that models aren't really capable of yet, judges will really struggle to apply that rubric consistently\",\n      \"timestamp_sec\": 1002,\n      \"why\": \"limits on rubric density, tied to judge reliability\"\n    },\n    {\n      \"text\": \"deterministic verifiers aren't completely dead. oftentimes we use them in tandem with judges.\",\n      \"timestamp_sec\": 1033,\n      \"why\": \"a hedge against the assumption that judges replace programmatic checks\"\n    },\n    {\n      \"text\": \"a lot of the data being produced right now and being used to train and evaluate models is actually flawed\",\n      \"timestamp_sec\": 1097,\n      \"why\": \"the thesis behind the benchmark critique that closes the talk\"\n    },\n    {\n      \"text\": \"if you look at the average human hours per task, based on what Meter has defined for a lot of the leading frontier models, a lot of these different average human hours per task fall far below that and so they wouldn't actually be considered long horizon tasks.\",\n      \"timestamp_sec\": 1125,\n      \"why\": \"the specific, checkable charge against existing finance benchmarks\"\n    },\n    {\n      \"text\": \"pass at one effectively means that for like 57% of cases, the tasks are 100% solved\",\n      \"timestamp_sec\": 1125,\n      \"why\": \"a hard number supporting the saturation claim\"\n    },\n    {\n      \"text\": \"a lot of these more important areas for learnability like, you know, credit, debt, risk in the domain of finance don't really get covered\",\n      \"timestamp_sec\": 1163,\n      \"why\": \"the breadth gap, named by domain\"\n    },\n    {\n      \"text\": \"We can see that the human time to complete one task on average is 15 hours over a 50 task sample set.\",\n      \"timestamp_sec\": 1232,\n      \"why\": \"the headline stat for their own dataset, the implicit contrast to the benchmarks critiqued\"\n    }\n  ],\n  \"concepts\": [\n    \"long-horizon task definition\",\n    \"time horizon benchmarking\",\n    \"rl environment design\",\n    \"verifier design\",\n    \"llm-as-judge\",\n    \"rubric design\",\n    \"reward hacking\",\n    \"trajectory evaluation\",\n    \"reward signal density\",\n    \"benchmark saturation\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Long horizon should be treated as a relative scalar measure, not a binary category, because the threshold shifts every year.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 80\n    },\n    {\n      \"claim\": \"Token counts as a horizon metric are noisy because they depend heavily on which model family and which harness is used, so cross-model comparisons are uninterpretable without holding those constant.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 168\n    },\n    {\n      \"claim\": \"Neither human-time nor model-side metrics should be used in isolation; both are needed because agent and human capability profiles are diverging.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 235\n    },\n    {\n      \"claim\": \"Cross-organization comparisons of 'average human hours per task' are unreliable because expert quality and measurement methodology vary so much.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 322\n    },\n    {\n      \"claim\": \"Tasks made long by chaining unrelated independent subtasks do not meaningfully measure model capability; earlier decisions must influence later ones.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 476\n    },\n    {\n      \"claim\": \"Sequential, state-changing complexity is a better capability test than parallelizable complexity such as fanning sub-agents across files.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 513\n    },\n    {\n      \"claim\": \"Environments should include starting ambiguity so models must explore, accepting that this makes standardized evaluation harder.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 579\n    },\n    {\n      \"claim\": \"For the economically valuable soft-verifiable domains now being targeted, deterministic verifiers are impractical, brittle, or impossible, so judge models are required.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 689\n    },\n    {\n      \"claim\": \"Judges must inspect the agent's trajectory, not just the final state, because trajectory inspection is how reward hacking such as sandbox escape or reading a hidden test suite is caught.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 726\n    },\n    {\n      \"claim\": \"Comparing agent output against a reference answer or sample trajectory fails on open-ended tasks because there are too many correct solutions to enumerate.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 794\n    },\n    {\n      \"claim\": \"Judges should be built as agents that reuse the task harness and have read-only access to the environment, with permissions preventing them from mutating state after the agent finishes.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 876\n    },\n    {\n      \"claim\": \"Reported tool calls from the agent are usually not reliable evidence of correctness, so the judge must independently check environment state such as GitHub or AWS logs.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 876\n    },\n    {\n      \"claim\": \"Long trajectories cannot be evaluated by a single LLM call; they must be stored, enriched, phase-segmented, and made queryable.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 944\n    },\n    {\n      \"claim\": \"Overly dense rubrics degrade judge consistency on frontier problems, so rubric density must be QA'd rather than maximized.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1002\n    },\n    {\n      \"claim\": \"Training on environments the model cannot learn from wastes compute, making learnability a first-class design criterion alongside difficulty.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1002\n    },\n    {\n      \"claim\": \"Dynamic evaluation-time rubrics that grant partial credit by assuming an agent's earlier mistaken assumption was correct are a useful emerging credit-assignment pattern.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1033\n    },\n    {\n      \"claim\": \"GDPval, ToolBench, and Apex Agents have average human hours per task far below the frontier models' measured horizon, so their tasks do not qualify as long horizon.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1125\n    },\n    {\n      \"claim\": \"These benchmarks' saturation is a downstream consequence of their short average human task time, not an indication that the underlying capability is solved.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1125\n    },\n    {\n      \"claim\": \"GDPval's finance coverage is a narrow set of Excel tasks and Apex Agents is largely investment banking, leaving credit, debt, and risk uncovered.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1163\n    },\n    {\n      \"claim\": \"Public benchmarks provide reward signal too coarse for training; useful rubrics need roughly 20 criteria with about 10 subcriteria each.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1197\n    },\n    {\n      \"claim\": \"Theta's own finance tasks average 15 hours of human time across a 50-task sample, and frontier models still score around 5 on them.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1232\n    }\n  ],\n  \"speaker_org\": \"Theta Software\"\n}",
+  "ttft_ms": 30323,
+  "ttft_stream_ms": 1303,
+  "time_to_request_ms": 34,
+  "type": "result",
+  "duration_ms": 85021,
+  "uuid": "85531035-9f8c-4af3-853e-8d05e0fb542b",
+  "passA": {
+    "summary": "Two co-founders of Theta Software argue that the field's working definition of \"long-horizon\" agent work is muddled, and that this muddle is corrupting the environments and benchmarks used to train and evaluate agents. They contrast human-referenced horizon metrics (METR-style \"this takes a human 16 hours\") with model-referenced ones (tokens, steps, tool calls), showing that each is noisy in different ways and that both are needed. They then lay out the axes they think actually measure capability \u2014 tool-coordination complexity, sequential vs. parallelizable state change, and starting ambiguity \u2014 and spend the second half on the hardest piece, the verifier: why judge models and rubrics are unavoidable in soft-verifiable domains, and why judges must themselves be agents with environment access and queryable trajectories. The talk closes by criticizing three finance benchmarks (GDPval, ToolBench, Apex Agents) as too short, too saturated, too narrow, and too coarse in reward signal, versus their own 15-hour-per-task finance dataset. Worth watching if you build RL environments, rubrics, or agent evals; less so if you want practical agent-building tips.",
+    "key_points": [
+      "\"Long horizon\" is a moving scalar, not a binary category \u2014 what counted as long horizon a year ago no longer does, so any fixed threshold ages out quickly.",
+      "Human-time-per-task and model-side units (tokens, steps, tool calls) each mislead alone: token counts vary by model family and harness, while human estimates get very noisy once tasks reach the top 1% of human capability.",
+      "Environment complexity should be measured by how many tools and external dependencies the agent must coordinate information across, not just by wall-clock length.",
+      "Chaining unrelated independent subtasks makes a task artificially long without measuring anything; what matters is sequential complexity where an early bad query or misread cascades into later steps.",
+      "Deliberate ambiguity in the starting materials mirrors real human work and forces exploration, but it multiplies valid solution paths and makes standardized evaluation much harder.",
+      "Because economically valuable work lives in soft-verifiable domains, deterministic verifiers must be supplemented by judge/critic models that inspect both final environment state and the agent's trajectory \u2014 trajectory inspection is also the main defense against reward hacking like sandbox escapes or peeking at hidden test suites.",
+      "Judges should be treated as agents with their own (read-only) environment access and tooling, since stuffing a long trajectory into a single LLM call no longer works; trajectories need enrichment, phase segmentation, and query interfaces.",
+      "Rubric density drives learnability, but overloading a rubric makes judges apply it inconsistently on frontier problems, so rubrics need QA (gold, no-op, variance, coverage, expert-agreement tests).",
+      "Existing finance benchmarks fall short on four counts \u2014 average human hours per task below the long-horizon frontier, near-saturation (57% of Apex Agents IB tasks fully solved at pass@1), narrow domain breadth, and reward signal too coarse for training."
+    ],
+    "notable_quotes": [
+      {
+        "text": "long horizon is really kind of a scalar metric. Uh, it's useful for kind of measuring relative tasks like one task might be more long than another, but it's really hard to define into kind of a binary category of this task is long and this task is not.",
+        "timestamp_sec": 80,
+        "why": "the talk's central framing claim about how the term should be used"
+      },
+      {
+        "text": "what we consider long horizon a year ago probably isn't really long horizon in our definition today",
+        "timestamp_sec": 80,
+        "why": "compact statement of why fixed horizon thresholds decay"
+      },
+      {
+        "text": "if a task takes GPT model 500,000 tokens, that doesn't really tell you a lot about what that task would look like for cloud models until you actually run on those cloud models.",
+        "timestamp_sec": 168,
+        "why": "names the concrete confound that makes token-based horizon metrics non-comparable"
+      },
+      {
+        "text": "what's long horizon for a human isn't necessarily that difficult for a model depending on what the actual task you care about is",
+        "timestamp_sec": 267,
+        "why": "the core objection to human-time-anchored benchmarks"
+      },
+      {
+        "text": "It might take them like days to do that if it's a really big Excel file, but for a model, it can maybe write a Python script or find some other cool trick to do that really quickly.",
+        "timestamp_sec": 298,
+        "why": "concrete example of human-time and model-difficulty diverging"
+      },
+      {
+        "text": "as you shift towards more long resin tasks and tasks that only the top 10% the top 1% top.1% of humans can really do these estimates start to get really really noisy",
+        "timestamp_sec": 352,
+        "why": "explains where human-referenced measurement breaks down as capability rises"
+      },
+      {
+        "text": "one task can you know maybe be made by artificially long horizon by chaining together unrelated independent tasks. However, that doesn't actually tell us or meaningfully measure the model capabilities.",
+        "timestamp_sec": 476,
+        "why": "identifies a common way environment designers fake difficulty"
+      },
+      {
+        "text": "we'll see if you have to use a dashboard or logs, a bad early query or a misread can cascade into these downstream steps that really start to have major consequences later on",
+        "timestamp_sec": 513,
+        "why": "defines sequential complexity by its failure mode"
+      },
+      {
+        "text": "if you are going to have ambiguity in the materials you give, there's a lot more possible paths that the agent could take. There's a lot more ways the agent could be right. And that means that standardized evaluation gets much, much harder.",
+        "timestamp_sec": 579,
+        "why": "states the ambiguity/evaluability tradeoff explicitly"
+      },
+      {
+        "text": "a lot of the early RL that we were doing in in recent times was really in hard verifiable domains and that's why we saw these gains in in math and kind of uh like data structure style coding problems",
+        "timestamp_sec": 614,
+        "why": "situates the verifier problem in the history of RL gains"
+      },
+      {
+        "text": "if we kind of enforce this too tightly, we collapse the state space of how many actual paths the agent actually explores.",
+        "timestamp_sec": 755,
+        "why": "the cost of over-specifying acceptable trajectories"
+      },
+      {
+        "text": "that really does not work for these more ambiguous or open-ended tasks because there's so many possible correct solutions. It's basically impossible to account for every single one.",
+        "timestamp_sec": 794,
+        "why": "rejects reference-answer comparison as a judging strategy"
+      },
+      {
+        "text": "I think the first important uh consideration to make is that judges are agents too.",
+        "timestamp_sec": 794,
+        "why": "the talk's most quotable design principle"
+      },
+      {
+        "text": "it's really important that the judge has access to the environment in the same way uh with some important safeguards of course. One is that we don't want the judge to make an accidental mutation in some way to the environment after the agent is done.",
+        "timestamp_sec": 876,
+        "why": "states both the requirement and its safety constraint"
+      },
+      {
+        "text": "you can't just use this really basic approach of taking the trajectory and stuffing it in the context window of the judge and kind of have it be a basic LM call.",
+        "timestamp_sec": 903,
+        "why": "names the naive judging pattern that breaks at long horizons"
+      },
+      {
+        "text": "These are all different things we want we want to do. And in that sense we need to make the trajectory itself queryable.",
+        "timestamp_sec": 944,
+        "why": "the prescriptive fix for long-trajectory judging"
+      },
+      {
+        "text": "especially for frontier problems that models aren't really capable of yet, judges will really struggle to apply that rubric consistently",
+        "timestamp_sec": 1002,
+        "why": "limits on rubric density, tied to judge reliability"
+      },
+      {
+        "text": "deterministic verifiers aren't completely dead. oftentimes we use them in tandem with judges.",
+        "timestamp_sec": 1033,
+        "why": "a hedge against the assumption that judges replace programmatic checks"
+      },
+      {
+        "text": "a lot of the data being produced right now and being used to train and evaluate models is actually flawed",
+        "timestamp_sec": 1097,
+        "why": "the thesis behind the benchmark critique that closes the talk"
+      },
+      {
+        "text": "if you look at the average human hours per task, based on what Meter has defined for a lot of the leading frontier models, a lot of these different average human hours per task fall far below that and so they wouldn't actually be considered long horizon tasks.",
+        "timestamp_sec": 1125,
+        "why": "the specific, checkable charge against existing finance benchmarks"
+      },
+      {
+        "text": "pass at one effectively means that for like 57% of cases, the tasks are 100% solved",
+        "timestamp_sec": 1125,
+        "why": "a hard number supporting the saturation claim"
+      },
+      {
+        "text": "a lot of these more important areas for learnability like, you know, credit, debt, risk in the domain of finance don't really get covered",
+        "timestamp_sec": 1163,
+        "why": "the breadth gap, named by domain"
+      },
+      {
+        "text": "We can see that the human time to complete one task on average is 15 hours over a 50 task sample set.",
+        "timestamp_sec": 1232,
+        "why": "the headline stat for their own dataset, the implicit contrast to the benchmarks critiqued"
+      }
+    ],
+    "concepts": [
+      "long-horizon task definition",
+      "time horizon benchmarking",
+      "rl environment design",
+      "verifier design",
+      "llm-as-judge",
+      "rubric design",
+      "reward hacking",
+      "trajectory evaluation",
+      "reward signal density",
+      "benchmark saturation"
+    ],
+    "positions": [
+      {
+        "claim": "Long horizon should be treated as a relative scalar measure, not a binary category, because the threshold shifts every year.",
+        "confidence": "stated",
+        "timestamp_sec": 80
+      },
+      {
+        "claim": "Token counts as a horizon metric are noisy because they depend heavily on which model family and which harness is used, so cross-model comparisons are uninterpretable without holding those constant.",
+        "confidence": "stated",
+        "timestamp_sec": 168
+      },
+      {
+        "claim": "Neither human-time nor model-side metrics should be used in isolation; both are needed because agent and human capability profiles are diverging.",
+        "confidence": "stated",
+        "timestamp_sec": 235
+      },
+      {
+        "claim": "Cross-organization comparisons of 'average human hours per task' are unreliable because expert quality and measurement methodology vary so much.",
+        "confidence": "stated",
+        "timestamp_sec": 322
+      },
+      {
+        "claim": "Tasks made long by chaining unrelated independent subtasks do not meaningfully measure model capability; earlier decisions must influence later ones.",
+        "confidence": "stated",
+        "timestamp_sec": 476
+      },
+      {
+        "claim": "Sequential, state-changing complexity is a better capability test than parallelizable complexity such as fanning sub-agents across files.",
+        "confidence": "stated",
+        "timestamp_sec": 513
+      },
+      {
+        "claim": "Environments should include starting ambiguity so models must explore, accepting that this makes standardized evaluation harder.",
+        "confidence": "stated",
+        "timestamp_sec": 579
+      },
+      {
+        "claim": "For the economically valuable soft-verifiable domains now being targeted, deterministic verifiers are impractical, brittle, or impossible, so judge models are required.",
+        "confidence": "stated",
+        "timestamp_sec": 689
+      },
+      {
+        "claim": "Judges must inspect the agent's trajectory, not just the final state, because trajectory inspection is how reward hacking such as sandbox escape or reading a hidden test suite is caught.",
+        "confidence": "stated",
+        "timestamp_sec": 726
+      },
+      {
+        "claim": "Comparing agent output against a reference answer or sample trajectory fails on open-ended tasks because there are too many correct solutions to enumerate.",
+        "confidence": "stated",
+        "timestamp_sec": 794
+      },
+      {
+        "claim": "Judges should be built as agents that reuse the task harness and have read-only access to the environment, with permissions preventing them from mutating state after the agent finishes.",
+        "confidence": "stated",
+        "timestamp_sec": 876
+      },
+      {
+        "claim": "Reported tool calls from the agent are usually not reliable evidence of correctness, so the judge must independently check environment state such as GitHub or AWS logs.",
+        "confidence": "stated",
+        "timestamp_sec": 876
+      },
+      {
+        "claim": "Long trajectories cannot be evaluated by a single LLM call; they must be stored, enriched, phase-segmented, and made queryable.",
+        "confidence": "stated",
+        "timestamp_sec": 944
+      },
+      {
+        "claim": "Overly dense rubrics degrade judge consistency on frontier problems, so rubric density must be QA'd rather than maximized.",
+        "confidence": "stated",
+        "timestamp_sec": 1002
+      },
+      {
+        "claim": "Training on environments the model cannot learn from wastes compute, making learnability a first-class design criterion alongside difficulty.",
+        "confidence": "stated",
+        "timestamp_sec": 1002
+      },
+      {
+        "claim": "Dynamic evaluation-time rubrics that grant partial credit by assuming an agent's earlier mistaken assumption was correct are a useful emerging credit-assignment pattern.",
+        "confidence": "stated",
+        "timestamp_sec": 1033
+      },
+      {
+        "claim": "GDPval, ToolBench, and Apex Agents have average human hours per task far below the frontier models' measured horizon, so their tasks do not qualify as long horizon.",
+        "confidence": "stated",
+        "timestamp_sec": 1125
+      },
+      {
+        "claim": "These benchmarks' saturation is a downstream consequence of their short average human task time, not an indication that the underlying capability is solved.",
+        "confidence": "stated",
+        "timestamp_sec": 1125
+      },
+      {
+        "claim": "GDPval's finance coverage is a narrow set of Excel tasks and Apex Agents is largely investment banking, leaving credit, debt, and risk uncovered.",
+        "confidence": "stated",
+        "timestamp_sec": 1163
+      },
+      {
+        "claim": "Public benchmarks provide reward signal too coarse for training; useful rubrics need roughly 20 criteria with about 10 subcriteria each.",
+        "confidence": "stated",
+        "timestamp_sec": 1197
+      },
+      {
+        "claim": "Theta's own finance tasks average 15 hours of human time across a 50-task sample, and frontier models still score around 5 on them.",
+        "confidence": "stated",
+        "timestamp_sec": 1232
+      }
+    ],
+    "speaker_org": "Theta Software"
+  },
+  "_meta": {
+    "slug": "rethinking-environments-for-long-horizon-work",
+    "video_id": "2aS7aKoXn64",
+    "url": "https://www.youtube.com/watch?v=2aS7aKoXn64",
+    "word_count": 4802,
+    "wall_sec": 86.0,
+    "run_at": "2026-08-12T20:10:16Z",
+    "effort": "medium"
+  }
+}

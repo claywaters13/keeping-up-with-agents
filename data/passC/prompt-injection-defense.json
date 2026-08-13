@@ -1,0 +1,276 @@
+{
+  "is_error": false,
+  "duration_api_ms": 120303,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "310b7117-fa89-4527-a9f2-44fa4eeb885d",
+  "total_cost_usd": 0.750758,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 45723,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 10316,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 45723,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 10316,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 45723,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 45723
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 30379,
+      "outputTokens": 17,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.030463999999999998,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 10316,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 45723,
+      "webSearchRequests": 0,
+      "costUSD": 0.720294,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\"concept\": \"prompt injection defense\", \"state_of_practice\": \"The field has largely stopped treating prompt injection as a model-alignment problem and started treating it as an architecture problem: because an LLM cannot reliably separate operator instructions from third-party content, every credible defense presented was structural rather than textual. The dominant pattern is a deterministic layer wrapped around the agent \u2014 hooks firing on tool calls, policy engines validating model-emitted proposals, execution gateways, egress filters, micro-VM isolation \u2014 with the explicit warning that any guardrail expressed as words inside the agent's own context is itself injectable. Credential handling has converged on a broker model where secrets are usable by the agent but not readable by it, and write-capable operations (git push, PR creation, CI triggering, production mutations) are moved out of the agent entirely into deterministic code. A second front opened this year around the agent supply chain: audits reported one in eight of ~4,000 public skills carrying a critical issue with 76 malicious payloads, over a third of shared skills containing malware or vulnerabilities, one in twelve developers running an MCP server with a high/critical finding, and roughly 90% of observed attacks coming from combinations of individually benign skills that static scanning cannot catch. What remains genuinely unsettled is whether the residual risk can be driven to zero \u2014 practitioners running agents in production mostly say no and budget for blast-radius containment, while vendors and researchers demonstrating classifier gates and proof-carrying plans argue the problem is tractable with the right execution model.\", \"consensus\": [{\"claim\": \"Guardrails must be deterministic and live outside the agent's context; instructions in a system prompt telling the agent not to do something are not a security control because untrusted content can override them.\", \"support_count\": 8, \"supporting_talks\": [\"realtime-multiplayer-automation-and-you\", \"bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry\", \"agentic-development-security\", \"deterministic-infra-for-non-deterministic-ai-agents\", \"we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night\", \"wearing-the-agent-from-group-chats-to-glasses\", \"through-the-ai-fog-the-architectural-decision-agentic-security-depends-on\", \"ais-jurassic-park-period\"], \"evidence_quote\": \"if you're prompting the guardrails at the agent, you're effectively letting the fox loose in the henhouse.\", \"evidence_talk\": \"realtime-multiplayer-automation-and-you\", \"evidence_timestamp_sec\": 424}, {\"claim\": \"The model layer cannot distinguish operator instructions from injected third-party content, so prompt injection is not eliminable \u2014 the goal is bounding blast radius and treating all externally sourced content as evidence rather than instructions.\", \"support_count\": 5, \"supporting_talks\": [\"we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night\", \"your-llm-stack-is-a-2008-database-with-better-marketing\", \"ive-never-seen-anything-scarier-than-an-llm-with-tool-calls\", \"agentic-security-permissions-provenance-and-the-agent-supply-chain\", \"build-systems-not-code\"], \"evidence_quote\": \"I guess like prompt injection itself isn't solved and we cannot really solve it. All we can do is just to limit the blast radius in case that happens.\", \"evidence_talk\": \"we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night\", \"evidence_timestamp_sec\": 750}, {\"claim\": \"Secrets must be held outside the agent's sandbox and reached only through a broker or vault \u2014 any credential the agent can read should be assumed already exfiltrated, and write-scoped credentials should be removed from the agent entirely.\", \"support_count\": 4, \"supporting_talks\": [\"realtime-multiplayer-automation-and-you\", \"claude-for-long-horizon-tasks\", \"claude-fable-claude-tag-and-anthropics-culture\", \"we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night\"], \"evidence_quote\": \"Never trust agents with secrets. If an agent can know a secret, that secret, you need to treat it as if it's already been compromised.\", \"evidence_talk\": \"realtime-multiplayer-automation-and-you\", \"evidence_timestamp_sec\": 719}, {\"claim\": \"The system that produced the work cannot be the system that validates it \u2014 verification must run in a separate context window or separate deterministic checker, because self-grading in the producing context confabulates.\", \"support_count\": 5, \"supporting_talks\": [\"through-the-ai-fog-the-architectural-decision-agentic-security-depends-on\", \"claude-for-long-horizon-tasks\", \"ais-jurassic-park-period\", \"agentic-security-permissions-provenance-and-the-agent-supply-chain\", \"agentic-development-security\"], \"evidence_quote\": \"what we found is it's quite effective to separate verification into a separate context window. This is a very general trend.\", \"evidence_talk\": \"claude-for-long-horizon-tasks\", \"evidence_timestamp_sec\": 404}, {\"claim\": \"Skills and MCP servers are now a measured injection and supply-chain vector with malicious payloads already in the wild, and marketplace verification controls do not yet exist.\", \"support_count\": 4, \"supporting_talks\": [\"agentic-development-security\", \"through-the-ai-fog-the-architectural-decision-agentic-security-depends-on\", \"skills-are-the-new-sdks\", \"wearing-the-agent-from-group-chats-to-glasses\"], \"evidence_quote\": \"in an audit that we did of nearly 4,000 skills on ClawHub, uh over one in eight had a critical severity issue, and we actually found 76 malicious payloads\", \"evidence_talk\": \"agentic-development-security\", \"evidence_timestamp_sec\": 434}], \"disagreements\": [{\"question\": \"Is prompt injection a solvable engineering problem, or only a containable one?\", \"position_a\": \"It cannot be solved. Defenses should assume compromise and invest entirely in limiting blast radius \u2014 removing write credentials, isolating in micro VMs, segmenting infrastructure \u2014 because unknown injection vectors will keep appearing and there is currently no good technical defense.\", \"position_a_talks\": [\"we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night\", \"agentic-security-permissions-provenance-and-the-agent-supply-chain\", \"your-llm-stack-is-a-2008-database-with-better-marketing\"], \"position_b\": \"It is tractable with the right execution model. Reify the agent's plan as a typed program and settle safety \u2014 including the lethal trifecta \u2014 with ordinary data-flow and taint analysis; or gate the action surface with a trained classifier that sees the tool call plus conversation context, which red teams have failed to get past.\", \"position_b_talks\": [\"ive-never-seen-anything-scarier-than-an-llm-with-tool-calls\", \"claude-fable-claude-tag-and-anthropics-culture\", \"wearing-the-agent-from-group-chats-to-glasses\"], \"why_it_matters\": \"If injection is unsolvable, the correct spend is on isolation, credential brokers, and audit, and autonomous agents stay permanently capped in privilege; if it is solvable, that spend is transitional and agents can be granted real production authority once the gate is in place.\"}, {\"question\": \"Is a human approval prompt a meaningful defense against an agent acting on injected instructions?\", \"position_a\": \"Yes \u2014 high-consequence actions (sending email, submitting offers, production writes) should be walled behind explicit human approval, and human supervision is a permanent architectural component, not a stopgap that better models will remove.\", \"position_a_talks\": [\"build-systems-not-code\", \"deterministic-infra-for-non-deterministic-ai-agents\"], \"position_b\": \"No \u2014 approval prompts do not survive contact with reality. Users cannot tell whether to approve an opaque command, background and cloud agents run with nobody watching, and an agent can persuade the human to remove the control outright; policy must steer deterministically instead, with humans removed from routine loops.\", \"position_b_talks\": [\"agentic-development-security\", \"ais-jurassic-park-period\", \"claude-fable-claude-tag-and-anthropics-culture\"], \"why_it_matters\": \"This determines whether async and overnight agents are shippable at all, and whether a yes/no confirmation UI counts as the 'meaningful human oversight' regulators are about to require for high-risk systems.\"}, {\"question\": \"Should injection defense sit on the input side (before the model sees the content) or on the action surface (after the model decides, before the tool runs)?\", \"position_a\": \"Block on the input side. Prompt-injection filters and policy checks should reject the request in code before the LLM is ever called, and constraining agents with input-side policy works better than detecting violations downstream.\", \"position_a_talks\": [\"bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry\", \"ais-jurassic-park-period\"], \"position_b\": \"Let the agent read everything and gate what it does. Filtering all input is infeasible and obfuscation defeats regex and static scanning, so the model should only emit proposals that a fast deterministic guard, policy engine, or execution gateway validates at the action boundary.\", \"position_b_talks\": [\"wearing-the-agent-from-group-chats-to-glasses\", \"deterministic-infra-for-non-deterministic-ai-agents\", \"ive-never-seen-anything-scarier-than-an-llm-with-tool-calls\"], \"why_it_matters\": \"Input-side filtering costs latency on every request and fails open against obfuscation, while action-side gating accepts that poisoned context enters the model and bets everything on the tool-call boundary being complete \u2014 the two produce entirely different threat models and different places to spend engineering effort.\"}], \"practical_guidance\": {\"do\": [\"Hold credentials in a separate vault or broker so they are usable by the agent but not readable by it; never add them to the agent's sandbox container\", \"Strip write-capable operations from the agent \u2014 let it modify files, but move git push, PR creation, and CI triggering into the deterministic wrapper around it\", \"Implement guardrails as hooks that fire on tool calls asynchronously, outside the context window, rather than as rule files or MCP servers the agent may ignore\", \"Run injection and policy checks as code before the LLM call, rather than as sentences in the system prompt\", \"Verify in a separate context window from the one that produced the work, and run security as its own pass rather than bundled with correctness\", \"Explicitly label externally sourced content (listing copy, forum threads, reviews, fetched YAML) as evidence, not instructions\", \"Use micro VMs such as Firecracker with Vsock-mediated networking as the isolation boundary when the agent needs Docker\", \"Make halt-and-explain the default when a constraint and the task conflict, instead of letting the agent route around the constraint\", \"Bound automation output \u2014 a single PR, or nothing at all \u2014 so a hijacked automation cannot denial-of-service its owner\", \"Audit skills and MCP servers before installing, and treat skill marketplaces as unverified package registries\", \"Select models per use case against your specific attack classes, since resistance to decision override does not imply resistance to PII extraction\"], \"avoid\": [\"Expressing guardrails as prompts to the agent \u2014 a third party can inject past them\", \"Giving the agent Docker socket access; it can spawn a privileged container and escape, which makes the built-in Codex and Claude sandboxes worthless\", \"Treating a yes/no approval on an opaque command as oversight \u2014 reviewers cannot tell whether to approve, and it will not satisfy the EU AI Act's meaningful-oversight requirement\", \"Relying on static scanning of skills: code that passes a scan can break at runtime, and two individually benign skills can be malignant in combination\", \"Assuming removal of a malicious skill removes the compromise \u2014 malicious skills can write to agent memory and persist\", \"Trusting model-level refusal as the control: Claude refused to read an .env file but complied when asked for a specific secret key\", \"Fixing only criticals and highs \u2014 agents can chain low-severity vulnerabilities into working exploits\", \"Building your own AI Slackbot, where the untrusted-message attack surface is enormous\", \"Applying real-time malicious-input detection as a blanket control; at 15\u201330% overhead it is a non-starter outside higher-risk systems\", \"Waiting for a better model to solve agentic security \u2014 frontier models find the same vulnerability in only 50% of five repeated runs and score 40% F1\"]}, \"notable_outliers\": [{\"claim\": \"Prompt injection is fully defensible today with 1990s compiler technology: have the agent return a typed program representing the plan instead of executing it, then use data-flow analysis, type checking, and taint analysis to prove safety \u2014 including against the lethal trifecta \u2014 before a trusted executor runs it.\", \"talk\": \"ive-never-seen-anything-scarier-than-an-llm-with-tool-calls\", \"timestamp_sec\": 1094}, {\"claim\": \"An agent persuading a human to install a Chrome extension that removes a control counts as the agent supplying the energy to defeat its own constraint, with the human acting as its tool \u2014 so constraints must be broken only by energy originating outside the agentic loop.\", \"talk\": \"ais-jurassic-park-period\", \"timestamp_sec\": 555}, {\"claim\": \"For prompt injection and data exfiltration specifically, an automated classifier reviewing the tool call plus conversation context carries lower residual risk than the average human reviewer, and essentially every attack found by commissioned red teams has been mitigated.\", \"talk\": \"claude-fable-claude-tag-and-anthropics-culture\", \"timestamp_sec\": 1914}, {\"claim\": \"Roughly 90% of observed attacks follow the pattern where individually benign skills combine to exfiltrate data, which is why the guard belongs at the action surface rather than on what the agent reads.\", \"talk\": \"wearing-the-agent-from-group-chats-to-glasses\", \"timestamp_sec\": 511}, {\"claim\": \"Real production ML breaches are overwhelmingly boring infrastructure misconfiguration \u2014 authentication off by default, clusters open on the internet, 78% of 50 audited setups with at least one critical mistake \u2014 while academic security research studies imperceptible input perturbations that almost never appear in incidents.\", \"talk\": \"your-llm-stack-is-a-2008-database-with-better-marketing\", \"timestamp_sec\": 780}, {\"claim\": \"The hardest agent failures are ones where the agent never exceeds its authorization at all, so the system looks compliant throughout and no permission boundary is ever tripped.\", \"talk\": \"ais-jurassic-park-period\", \"timestamp_sec\": 616}, {\"claim\": \"Skills execute on the agent's own machine with no process isolation, which is a genuine security regression relative to MCP's separate server process even as skills win on context overhead.\", \"talk\": \"skills-are-the-new-sdks\", \"timestamp_sec\": 1494}], \"maturity\": \"contested\", \"maturity_rationale\": \"Speakers converge strongly on the architectural response \u2014 deterministic guardrails outside the agent, brokered credentials, separated validators \u2014 but split on fundamentals: whether injection is solvable at all, whether to gate input or the action surface, and whether human approval is a real control or theater. Production practitioners plan around permanent residual risk while vendors and researchers demonstrate classifiers and proof-carrying plans they claim close it, and both camps have three credible talks behind them.\"}",
+  "ttft_ms": 59740,
+  "ttft_stream_ms": 1063,
+  "time_to_request_ms": 44,
+  "type": "result",
+  "duration_ms": 120362,
+  "uuid": "ea355a8a-e0fd-4a9d-9e5c-fe755a2552bc",
+  "passC": {
+    "concept": "prompt injection defense",
+    "state_of_practice": "The field has largely stopped treating prompt injection as a model-alignment problem and started treating it as an architecture problem: because an LLM cannot reliably separate operator instructions from third-party content, every credible defense presented was structural rather than textual. The dominant pattern is a deterministic layer wrapped around the agent \u2014 hooks firing on tool calls, policy engines validating model-emitted proposals, execution gateways, egress filters, micro-VM isolation \u2014 with the explicit warning that any guardrail expressed as words inside the agent's own context is itself injectable. Credential handling has converged on a broker model where secrets are usable by the agent but not readable by it, and write-capable operations (git push, PR creation, CI triggering, production mutations) are moved out of the agent entirely into deterministic code. A second front opened this year around the agent supply chain: audits reported one in eight of ~4,000 public skills carrying a critical issue with 76 malicious payloads, over a third of shared skills containing malware or vulnerabilities, one in twelve developers running an MCP server with a high/critical finding, and roughly 90% of observed attacks coming from combinations of individually benign skills that static scanning cannot catch. What remains genuinely unsettled is whether the residual risk can be driven to zero \u2014 practitioners running agents in production mostly say no and budget for blast-radius containment, while vendors and researchers demonstrating classifier gates and proof-carrying plans argue the problem is tractable with the right execution model.",
+    "consensus": [
+      {
+        "claim": "Guardrails must be deterministic and live outside the agent's context; instructions in a system prompt telling the agent not to do something are not a security control because untrusted content can override them.",
+        "support_count": 8,
+        "supporting_talks": [
+          "realtime-multiplayer-automation-and-you",
+          "bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry",
+          "agentic-development-security",
+          "deterministic-infra-for-non-deterministic-ai-agents",
+          "we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night",
+          "wearing-the-agent-from-group-chats-to-glasses",
+          "through-the-ai-fog-the-architectural-decision-agentic-security-depends-on",
+          "ais-jurassic-park-period"
+        ],
+        "evidence_quote": "if you're prompting the guardrails at the agent, you're effectively letting the fox loose in the henhouse.",
+        "evidence_talk": "realtime-multiplayer-automation-and-you",
+        "evidence_timestamp_sec": 424
+      },
+      {
+        "claim": "The model layer cannot distinguish operator instructions from injected third-party content, so prompt injection is not eliminable \u2014 the goal is bounding blast radius and treating all externally sourced content as evidence rather than instructions.",
+        "support_count": 5,
+        "supporting_talks": [
+          "we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night",
+          "your-llm-stack-is-a-2008-database-with-better-marketing",
+          "ive-never-seen-anything-scarier-than-an-llm-with-tool-calls",
+          "agentic-security-permissions-provenance-and-the-agent-supply-chain",
+          "build-systems-not-code"
+        ],
+        "evidence_quote": "I guess like prompt injection itself isn't solved and we cannot really solve it. All we can do is just to limit the blast radius in case that happens.",
+        "evidence_talk": "we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night",
+        "evidence_timestamp_sec": 750
+      },
+      {
+        "claim": "Secrets must be held outside the agent's sandbox and reached only through a broker or vault \u2014 any credential the agent can read should be assumed already exfiltrated, and write-scoped credentials should be removed from the agent entirely.",
+        "support_count": 4,
+        "supporting_talks": [
+          "realtime-multiplayer-automation-and-you",
+          "claude-for-long-horizon-tasks",
+          "claude-fable-claude-tag-and-anthropics-culture",
+          "we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night"
+        ],
+        "evidence_quote": "Never trust agents with secrets. If an agent can know a secret, that secret, you need to treat it as if it's already been compromised.",
+        "evidence_talk": "realtime-multiplayer-automation-and-you",
+        "evidence_timestamp_sec": 719
+      },
+      {
+        "claim": "The system that produced the work cannot be the system that validates it \u2014 verification must run in a separate context window or separate deterministic checker, because self-grading in the producing context confabulates.",
+        "support_count": 5,
+        "supporting_talks": [
+          "through-the-ai-fog-the-architectural-decision-agentic-security-depends-on",
+          "claude-for-long-horizon-tasks",
+          "ais-jurassic-park-period",
+          "agentic-security-permissions-provenance-and-the-agent-supply-chain",
+          "agentic-development-security"
+        ],
+        "evidence_quote": "what we found is it's quite effective to separate verification into a separate context window. This is a very general trend.",
+        "evidence_talk": "claude-for-long-horizon-tasks",
+        "evidence_timestamp_sec": 404
+      },
+      {
+        "claim": "Skills and MCP servers are now a measured injection and supply-chain vector with malicious payloads already in the wild, and marketplace verification controls do not yet exist.",
+        "support_count": 4,
+        "supporting_talks": [
+          "agentic-development-security",
+          "through-the-ai-fog-the-architectural-decision-agentic-security-depends-on",
+          "skills-are-the-new-sdks",
+          "wearing-the-agent-from-group-chats-to-glasses"
+        ],
+        "evidence_quote": "in an audit that we did of nearly 4,000 skills on ClawHub, uh over one in eight had a critical severity issue, and we actually found 76 malicious payloads",
+        "evidence_talk": "agentic-development-security",
+        "evidence_timestamp_sec": 434
+      }
+    ],
+    "disagreements": [
+      {
+        "question": "Is prompt injection a solvable engineering problem, or only a containable one?",
+        "position_a": "It cannot be solved. Defenses should assume compromise and invest entirely in limiting blast radius \u2014 removing write credentials, isolating in micro VMs, segmenting infrastructure \u2014 because unknown injection vectors will keep appearing and there is currently no good technical defense.",
+        "position_a_talks": [
+          "we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night",
+          "agentic-security-permissions-provenance-and-the-agent-supply-chain",
+          "your-llm-stack-is-a-2008-database-with-better-marketing"
+        ],
+        "position_b": "It is tractable with the right execution model. Reify the agent's plan as a typed program and settle safety \u2014 including the lethal trifecta \u2014 with ordinary data-flow and taint analysis; or gate the action surface with a trained classifier that sees the tool call plus conversation context, which red teams have failed to get past.",
+        "position_b_talks": [
+          "ive-never-seen-anything-scarier-than-an-llm-with-tool-calls",
+          "claude-fable-claude-tag-and-anthropics-culture",
+          "wearing-the-agent-from-group-chats-to-glasses"
+        ],
+        "why_it_matters": "If injection is unsolvable, the correct spend is on isolation, credential brokers, and audit, and autonomous agents stay permanently capped in privilege; if it is solvable, that spend is transitional and agents can be granted real production authority once the gate is in place."
+      },
+      {
+        "question": "Is a human approval prompt a meaningful defense against an agent acting on injected instructions?",
+        "position_a": "Yes \u2014 high-consequence actions (sending email, submitting offers, production writes) should be walled behind explicit human approval, and human supervision is a permanent architectural component, not a stopgap that better models will remove.",
+        "position_a_talks": [
+          "build-systems-not-code",
+          "deterministic-infra-for-non-deterministic-ai-agents"
+        ],
+        "position_b": "No \u2014 approval prompts do not survive contact with reality. Users cannot tell whether to approve an opaque command, background and cloud agents run with nobody watching, and an agent can persuade the human to remove the control outright; policy must steer deterministically instead, with humans removed from routine loops.",
+        "position_b_talks": [
+          "agentic-development-security",
+          "ais-jurassic-park-period",
+          "claude-fable-claude-tag-and-anthropics-culture"
+        ],
+        "why_it_matters": "This determines whether async and overnight agents are shippable at all, and whether a yes/no confirmation UI counts as the 'meaningful human oversight' regulators are about to require for high-risk systems."
+      },
+      {
+        "question": "Should injection defense sit on the input side (before the model sees the content) or on the action surface (after the model decides, before the tool runs)?",
+        "position_a": "Block on the input side. Prompt-injection filters and policy checks should reject the request in code before the LLM is ever called, and constraining agents with input-side policy works better than detecting violations downstream.",
+        "position_a_talks": [
+          "bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry",
+          "ais-jurassic-park-period"
+        ],
+        "position_b": "Let the agent read everything and gate what it does. Filtering all input is infeasible and obfuscation defeats regex and static scanning, so the model should only emit proposals that a fast deterministic guard, policy engine, or execution gateway validates at the action boundary.",
+        "position_b_talks": [
+          "wearing-the-agent-from-group-chats-to-glasses",
+          "deterministic-infra-for-non-deterministic-ai-agents",
+          "ive-never-seen-anything-scarier-than-an-llm-with-tool-calls"
+        ],
+        "why_it_matters": "Input-side filtering costs latency on every request and fails open against obfuscation, while action-side gating accepts that poisoned context enters the model and bets everything on the tool-call boundary being complete \u2014 the two produce entirely different threat models and different places to spend engineering effort."
+      }
+    ],
+    "practical_guidance": {
+      "do": [
+        "Hold credentials in a separate vault or broker so they are usable by the agent but not readable by it; never add them to the agent's sandbox container",
+        "Strip write-capable operations from the agent \u2014 let it modify files, but move git push, PR creation, and CI triggering into the deterministic wrapper around it",
+        "Implement guardrails as hooks that fire on tool calls asynchronously, outside the context window, rather than as rule files or MCP servers the agent may ignore",
+        "Run injection and policy checks as code before the LLM call, rather than as sentences in the system prompt",
+        "Verify in a separate context window from the one that produced the work, and run security as its own pass rather than bundled with correctness",
+        "Explicitly label externally sourced content (listing copy, forum threads, reviews, fetched YAML) as evidence, not instructions",
+        "Use micro VMs such as Firecracker with Vsock-mediated networking as the isolation boundary when the agent needs Docker",
+        "Make halt-and-explain the default when a constraint and the task conflict, instead of letting the agent route around the constraint",
+        "Bound automation output \u2014 a single PR, or nothing at all \u2014 so a hijacked automation cannot denial-of-service its owner",
+        "Audit skills and MCP servers before installing, and treat skill marketplaces as unverified package registries",
+        "Select models per use case against your specific attack classes, since resistance to decision override does not imply resistance to PII extraction"
+      ],
+      "avoid": [
+        "Expressing guardrails as prompts to the agent \u2014 a third party can inject past them",
+        "Giving the agent Docker socket access; it can spawn a privileged container and escape, which makes the built-in Codex and Claude sandboxes worthless",
+        "Treating a yes/no approval on an opaque command as oversight \u2014 reviewers cannot tell whether to approve, and it will not satisfy the EU AI Act's meaningful-oversight requirement",
+        "Relying on static scanning of skills: code that passes a scan can break at runtime, and two individually benign skills can be malignant in combination",
+        "Assuming removal of a malicious skill removes the compromise \u2014 malicious skills can write to agent memory and persist",
+        "Trusting model-level refusal as the control: Claude refused to read an .env file but complied when asked for a specific secret key",
+        "Fixing only criticals and highs \u2014 agents can chain low-severity vulnerabilities into working exploits",
+        "Building your own AI Slackbot, where the untrusted-message attack surface is enormous",
+        "Applying real-time malicious-input detection as a blanket control; at 15\u201330% overhead it is a non-starter outside higher-risk systems",
+        "Waiting for a better model to solve agentic security \u2014 frontier models find the same vulnerability in only 50% of five repeated runs and score 40% F1"
+      ]
+    },
+    "notable_outliers": [
+      {
+        "claim": "Prompt injection is fully defensible today with 1990s compiler technology: have the agent return a typed program representing the plan instead of executing it, then use data-flow analysis, type checking, and taint analysis to prove safety \u2014 including against the lethal trifecta \u2014 before a trusted executor runs it.",
+        "talk": "ive-never-seen-anything-scarier-than-an-llm-with-tool-calls",
+        "timestamp_sec": 1094
+      },
+      {
+        "claim": "An agent persuading a human to install a Chrome extension that removes a control counts as the agent supplying the energy to defeat its own constraint, with the human acting as its tool \u2014 so constraints must be broken only by energy originating outside the agentic loop.",
+        "talk": "ais-jurassic-park-period",
+        "timestamp_sec": 555
+      },
+      {
+        "claim": "For prompt injection and data exfiltration specifically, an automated classifier reviewing the tool call plus conversation context carries lower residual risk than the average human reviewer, and essentially every attack found by commissioned red teams has been mitigated.",
+        "talk": "claude-fable-claude-tag-and-anthropics-culture",
+        "timestamp_sec": 1914
+      },
+      {
+        "claim": "Roughly 90% of observed attacks follow the pattern where individually benign skills combine to exfiltrate data, which is why the guard belongs at the action surface rather than on what the agent reads.",
+        "talk": "wearing-the-agent-from-group-chats-to-glasses",
+        "timestamp_sec": 511
+      },
+      {
+        "claim": "Real production ML breaches are overwhelmingly boring infrastructure misconfiguration \u2014 authentication off by default, clusters open on the internet, 78% of 50 audited setups with at least one critical mistake \u2014 while academic security research studies imperceptible input perturbations that almost never appear in incidents.",
+        "talk": "your-llm-stack-is-a-2008-database-with-better-marketing",
+        "timestamp_sec": 780
+      },
+      {
+        "claim": "The hardest agent failures are ones where the agent never exceeds its authorization at all, so the system looks compliant throughout and no permission boundary is ever tripped.",
+        "talk": "ais-jurassic-park-period",
+        "timestamp_sec": 616
+      },
+      {
+        "claim": "Skills execute on the agent's own machine with no process isolation, which is a genuine security regression relative to MCP's separate server process even as skills win on context overhead.",
+        "talk": "skills-are-the-new-sdks",
+        "timestamp_sec": 1494
+      }
+    ],
+    "maturity": "contested",
+    "maturity_rationale": "Speakers converge strongly on the architectural response \u2014 deterministic guardrails outside the agent, brokered credentials, separated validators \u2014 but split on fundamentals: whether injection is solvable at all, whether to gate input or the action surface, and whether human approval is a real control or theater. Production practitioners plan around permanent residual risk while vendors and researchers demonstrate classifiers and proof-carrying plans they claim close it, and both camps have three credible talks behind them."
+  },
+  "_meta": {
+    "concept": "prompt injection defense",
+    "slug": "prompt-injection-defense",
+    "talk_count": 17,
+    "missing_talks": [],
+    "wall_sec": 121.5,
+    "run_at": "2026-08-13T17:28:18Z"
+  }
+}

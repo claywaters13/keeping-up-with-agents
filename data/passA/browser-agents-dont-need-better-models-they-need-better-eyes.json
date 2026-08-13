@@ -1,0 +1,236 @@
+{
+  "is_error": false,
+  "duration_api_ms": 36092,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "3ebb514e-7ed5-4ee8-b176-d8deafebfb39",
+  "total_cost_usd": 0.13747900000000002,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 5523,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 2973,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 5523,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 2973,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 5523,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 5523
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 2695,
+      "outputTokens": 13,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.00276,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 2973,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 5523,
+      "webSearchRequests": 0,
+      "costUSD": 0.134719,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Kushan Raj argues that browser agents underperform not because frontier models are too weak, but because the environment and representation given to them is bad. He demos a benchmark ('the browser challenge') where a standard agent takes 10\u201320 seconds just to click a start button, then shows his own system doing the same work far faster on a cheaper model. The core technique is a compressed markdown representation of the full page \u2014 roughly 1,800 tokens versus ~20,000 for a full DOM \u2014 paired with a screenshot and explicit end-to-end feedback about what appeared, disappeared, or blocked a click. Concrete failure comparisons (Claude stuck scrolling and screenshotting for two minutes on an Aadhaar download; failing to pick a date on a Canadian trekking booking site) illustrate the gap. Worth watching if you build browser automation and want a cheap, concrete alternative to screenshot-loop agents; it's a short, demo-heavy lightning talk rather than a rigorous evaluation.\",\n  \"key_points\": [\n    \"The bottleneck for browser agents is the surrounding infrastructure and page representation, not model intelligence.\",\n    \"A compressed markdown representation of the page lets the agent see the entire site in very few tokens, versus a screenshot that shows only one visible snippet.\",\n    \"On a sample page, the full DOM is about 20,000 tokens, a screenshot about 1,100 tokens, and the speaker's markdown about 1,800 tokens \u2014 near screenshot cost with whole-page coverage.\",\n    \"With a better environment, a much cheaper model outperforms Claude driving a conventional screenshot-and-scroll loop.\",\n    \"Typical failure mode observed: the agent gets stuck in a screenshot/scroll debug loop because it cannot tell what is actually happening on the page.\",\n    \"Explicit diff-style feedback matters \u2014 telling the agent what newly appeared, what is gone, what was blocking a click, and that its click did not land.\",\n    \"The agent needs to plan long sequences of tasks and recover from failures, which requires state tracking of the end-to-end browser page.\",\n    \"The speaker plans to open source the project and expose it as an API taking a URL plus an intent, and possibly a website or browser plugin.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"The hypothesis here is models are pretty smart, but it's the infra around them that sucks.\",\n      \"timestamp_sec\": 54,\n      \"why\": \"The thesis of the talk in one line.\"\n    },\n    {\n      \"text\": \"the browser this agent took like maybe 10-20 seconds just to click the start button. And now, we're on step one. There are 30 steps, and it has taken so long just to click one button.\",\n      \"timestamp_sec\": 28,\n      \"why\": \"Quantifies the latency problem that motivates the work.\"\n    },\n    {\n      \"text\": \"my core thesis here has been give a nice environment for the agent to use, right? So, where it can plan long sequences, it can figure out where it failed, what is going on, and it can plan the click correctly.\",\n      \"timestamp_sec\": 54,\n      \"why\": \"States the proposed solution as an environment-design problem.\"\n    },\n    {\n      \"text\": \"I figured out is a cool representation which compresses the website and lets the agent see the entire page in very few few tokens.\",\n      \"timestamp_sec\": 54,\n      \"why\": \"Names the specific mechanism behind the speedup.\"\n    },\n    {\n      \"text\": \"The full DOM for this would be around 20,000 tokens. But so, let's say we have this screenshot. All right, this screenshot's about 1,100 tokens. My markdown's about 1,800 tokens\",\n      \"timestamp_sec\": 195,\n      \"why\": \"The only hard numbers in the talk, and the crux of the cost argument.\"\n    },\n    {\n      \"text\": \"instead in one screenshot where you could see only one particular snippet, you can see the entire website, right?\",\n      \"timestamp_sec\": 195,\n      \"why\": \"Articulates the tradeoff screenshots make that markdown avoids.\"\n    },\n    {\n      \"text\": \"it took a screenshot, it scrolled for some reason, it took a screenshot. Basically, this entire process took 2 minutes, whereas in my case, in our video, so, it just boots, and boom, done.\",\n      \"timestamp_sec\": 84,\n      \"why\": \"Concrete head-to-head failure case with a time figure.\"\n    },\n    {\n      \"text\": \"as you can see, it is so much faster and so much quicker, and I'm using a much cheaper model, right?\",\n      \"timestamp_sec\": 28,\n      \"why\": \"The central claim that better representation substitutes for model capability.\"\n    },\n    {\n      \"text\": \"we give it feedback that you tried to click this, but that didn't happen because you know, we're keeping track of the entire end-to-end browser page.\",\n      \"timestamp_sec\": 234,\n      \"why\": \"Describes the failure-feedback loop that complements the page representation.\"\n    },\n    {\n      \"text\": \"we say that okay, hey, these are the new things that have popped up on the page.\",\n      \"timestamp_sec\": 195,\n      \"why\": \"Concrete detail on the diff-based observation format.\"\n    },\n    {\n      \"text\": \"what I built is a very clean representation that that basically compresses the website, and you can give this along with the screenshot. It's pretty cheap token-wise.\",\n      \"timestamp_sec\": 234,\n      \"why\": \"Clarifies that markdown supplements rather than replaces the screenshot.\"\n    },\n    {\n      \"text\": \"the model can reason really well, and then it can construct this long sequence of tasks to execute.\",\n      \"timestamp_sec\": 234,\n      \"why\": \"States the claimed downstream benefit: long-horizon planning.\"\n    },\n    {\n      \"text\": \"I'm thinking of open sourcing this project because again my this code is not super defensible.\",\n      \"timestamp_sec\": 159,\n      \"why\": \"Unusually candid on why the moat isn't in the code.\"\n    },\n    {\n      \"text\": \"Give me a URL, give me your intent and I will execute it for you and give it back to you\",\n      \"timestamp_sec\": 159,\n      \"why\": \"The intended product interface in one sentence.\"\n    },\n    {\n      \"text\": \"I want to make browser agents faster, cheaper and more reliable and just make sure everybody in the world is using them\",\n      \"timestamp_sec\": 159,\n      \"why\": \"Names the three axes he's optimizing.\"\n    },\n    {\n      \"text\": \"Browser agents as an idea are so cool, right? The browser agent should go crazy, right? I personally have not seen that adoption, and me myself, I don't use browser agents that much.\",\n      \"timestamp_sec\": 0,\n      \"why\": \"Frames the adoption gap that the whole talk responds to.\"\n    }\n  ],\n  \"concepts\": [\n    \"browser agents\",\n    \"web page representation for llms\",\n    \"dom compression\",\n    \"token budget optimization\",\n    \"screenshot-based grounding\",\n    \"agent environment design\",\n    \"long-horizon task planning\",\n    \"action feedback loops\",\n    \"browser agent benchmarks\",\n    \"cheap model substitution\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Browser agent performance is limited by surrounding infrastructure and page representation, not by model capability.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 54\n    },\n    {\n      \"claim\": \"A compressed markdown page representation costs roughly 1,800 tokens versus ~20,000 tokens for the full DOM on the same page.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 195\n    },\n    {\n      \"claim\": \"A cheaper model with a better page representation beats a stronger model like Claude using screenshot-driven browsing, on both speed and task success.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 28\n    },\n    {\n      \"claim\": \"Screenshots are insufficient as the primary observation channel because they only expose one viewport-sized snippet of the page.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 195\n    },\n    {\n      \"claim\": \"Agents need explicit state-diff feedback (what appeared, what was removed, whether a click landed) to recover from failures.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 234\n    },\n    {\n      \"claim\": \"The markdown representation should be supplied alongside a screenshot rather than replacing it.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 234\n    },\n    {\n      \"claim\": \"The technical approach is not defensible as proprietary code, so open sourcing it and selling an API is the better path.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 159\n    },\n    {\n      \"claim\": \"Low adoption of browser agents is caused by their slowness and unreliability rather than by lack of useful applications.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 0\n    }\n  ],\n  \"speaker_org\": \"ARK\"\n}",
+  "ttft_ms": 35152,
+  "ttft_stream_ms": 1121,
+  "time_to_request_ms": 53,
+  "type": "result",
+  "duration_ms": 37467,
+  "uuid": "52f33f08-ce4a-492d-990b-2e5e12404d44",
+  "passA": {
+    "summary": "Kushan Raj argues that browser agents underperform not because frontier models are too weak, but because the environment and representation given to them is bad. He demos a benchmark ('the browser challenge') where a standard agent takes 10\u201320 seconds just to click a start button, then shows his own system doing the same work far faster on a cheaper model. The core technique is a compressed markdown representation of the full page \u2014 roughly 1,800 tokens versus ~20,000 for a full DOM \u2014 paired with a screenshot and explicit end-to-end feedback about what appeared, disappeared, or blocked a click. Concrete failure comparisons (Claude stuck scrolling and screenshotting for two minutes on an Aadhaar download; failing to pick a date on a Canadian trekking booking site) illustrate the gap. Worth watching if you build browser automation and want a cheap, concrete alternative to screenshot-loop agents; it's a short, demo-heavy lightning talk rather than a rigorous evaluation.",
+    "key_points": [
+      "The bottleneck for browser agents is the surrounding infrastructure and page representation, not model intelligence.",
+      "A compressed markdown representation of the page lets the agent see the entire site in very few tokens, versus a screenshot that shows only one visible snippet.",
+      "On a sample page, the full DOM is about 20,000 tokens, a screenshot about 1,100 tokens, and the speaker's markdown about 1,800 tokens \u2014 near screenshot cost with whole-page coverage.",
+      "With a better environment, a much cheaper model outperforms Claude driving a conventional screenshot-and-scroll loop.",
+      "Typical failure mode observed: the agent gets stuck in a screenshot/scroll debug loop because it cannot tell what is actually happening on the page.",
+      "Explicit diff-style feedback matters \u2014 telling the agent what newly appeared, what is gone, what was blocking a click, and that its click did not land.",
+      "The agent needs to plan long sequences of tasks and recover from failures, which requires state tracking of the end-to-end browser page.",
+      "The speaker plans to open source the project and expose it as an API taking a URL plus an intent, and possibly a website or browser plugin."
+    ],
+    "notable_quotes": [
+      {
+        "text": "The hypothesis here is models are pretty smart, but it's the infra around them that sucks.",
+        "timestamp_sec": 54,
+        "why": "The thesis of the talk in one line."
+      },
+      {
+        "text": "the browser this agent took like maybe 10-20 seconds just to click the start button. And now, we're on step one. There are 30 steps, and it has taken so long just to click one button.",
+        "timestamp_sec": 28,
+        "why": "Quantifies the latency problem that motivates the work."
+      },
+      {
+        "text": "my core thesis here has been give a nice environment for the agent to use, right? So, where it can plan long sequences, it can figure out where it failed, what is going on, and it can plan the click correctly.",
+        "timestamp_sec": 54,
+        "why": "States the proposed solution as an environment-design problem."
+      },
+      {
+        "text": "I figured out is a cool representation which compresses the website and lets the agent see the entire page in very few few tokens.",
+        "timestamp_sec": 54,
+        "why": "Names the specific mechanism behind the speedup."
+      },
+      {
+        "text": "The full DOM for this would be around 20,000 tokens. But so, let's say we have this screenshot. All right, this screenshot's about 1,100 tokens. My markdown's about 1,800 tokens",
+        "timestamp_sec": 195,
+        "why": "The only hard numbers in the talk, and the crux of the cost argument."
+      },
+      {
+        "text": "instead in one screenshot where you could see only one particular snippet, you can see the entire website, right?",
+        "timestamp_sec": 195,
+        "why": "Articulates the tradeoff screenshots make that markdown avoids."
+      },
+      {
+        "text": "it took a screenshot, it scrolled for some reason, it took a screenshot. Basically, this entire process took 2 minutes, whereas in my case, in our video, so, it just boots, and boom, done.",
+        "timestamp_sec": 84,
+        "why": "Concrete head-to-head failure case with a time figure."
+      },
+      {
+        "text": "as you can see, it is so much faster and so much quicker, and I'm using a much cheaper model, right?",
+        "timestamp_sec": 28,
+        "why": "The central claim that better representation substitutes for model capability."
+      },
+      {
+        "text": "we give it feedback that you tried to click this, but that didn't happen because you know, we're keeping track of the entire end-to-end browser page.",
+        "timestamp_sec": 234,
+        "why": "Describes the failure-feedback loop that complements the page representation."
+      },
+      {
+        "text": "we say that okay, hey, these are the new things that have popped up on the page.",
+        "timestamp_sec": 195,
+        "why": "Concrete detail on the diff-based observation format."
+      },
+      {
+        "text": "what I built is a very clean representation that that basically compresses the website, and you can give this along with the screenshot. It's pretty cheap token-wise.",
+        "timestamp_sec": 234,
+        "why": "Clarifies that markdown supplements rather than replaces the screenshot."
+      },
+      {
+        "text": "the model can reason really well, and then it can construct this long sequence of tasks to execute.",
+        "timestamp_sec": 234,
+        "why": "States the claimed downstream benefit: long-horizon planning."
+      },
+      {
+        "text": "I'm thinking of open sourcing this project because again my this code is not super defensible.",
+        "timestamp_sec": 159,
+        "why": "Unusually candid on why the moat isn't in the code."
+      },
+      {
+        "text": "Give me a URL, give me your intent and I will execute it for you and give it back to you",
+        "timestamp_sec": 159,
+        "why": "The intended product interface in one sentence."
+      },
+      {
+        "text": "I want to make browser agents faster, cheaper and more reliable and just make sure everybody in the world is using them",
+        "timestamp_sec": 159,
+        "why": "Names the three axes he's optimizing."
+      },
+      {
+        "text": "Browser agents as an idea are so cool, right? The browser agent should go crazy, right? I personally have not seen that adoption, and me myself, I don't use browser agents that much.",
+        "timestamp_sec": 0,
+        "why": "Frames the adoption gap that the whole talk responds to."
+      }
+    ],
+    "concepts": [
+      "browser agents",
+      "web page representation for llms",
+      "dom compression",
+      "token budget optimization",
+      "screenshot-based grounding",
+      "agent environment design",
+      "long-horizon task planning",
+      "action feedback loops",
+      "browser agent benchmarks",
+      "cheap model substitution"
+    ],
+    "positions": [
+      {
+        "claim": "Browser agent performance is limited by surrounding infrastructure and page representation, not by model capability.",
+        "confidence": "stated",
+        "timestamp_sec": 54
+      },
+      {
+        "claim": "A compressed markdown page representation costs roughly 1,800 tokens versus ~20,000 tokens for the full DOM on the same page.",
+        "confidence": "stated",
+        "timestamp_sec": 195
+      },
+      {
+        "claim": "A cheaper model with a better page representation beats a stronger model like Claude using screenshot-driven browsing, on both speed and task success.",
+        "confidence": "stated",
+        "timestamp_sec": 28
+      },
+      {
+        "claim": "Screenshots are insufficient as the primary observation channel because they only expose one viewport-sized snippet of the page.",
+        "confidence": "stated",
+        "timestamp_sec": 195
+      },
+      {
+        "claim": "Agents need explicit state-diff feedback (what appeared, what was removed, whether a click landed) to recover from failures.",
+        "confidence": "stated",
+        "timestamp_sec": 234
+      },
+      {
+        "claim": "The markdown representation should be supplied alongside a screenshot rather than replacing it.",
+        "confidence": "stated",
+        "timestamp_sec": 234
+      },
+      {
+        "claim": "The technical approach is not defensible as proprietary code, so open sourcing it and selling an API is the better path.",
+        "confidence": "implied",
+        "timestamp_sec": 159
+      },
+      {
+        "claim": "Low adoption of browser agents is caused by their slowness and unreliability rather than by lack of useful applications.",
+        "confidence": "implied",
+        "timestamp_sec": 0
+      }
+    ],
+    "speaker_org": "ARK"
+  },
+  "_meta": {
+    "slug": "browser-agents-dont-need-better-models-they-need-better-eyes",
+    "video_id": "JnubYCYunk8",
+    "url": "https://www.youtube.com/watch?v=JnubYCYunk8",
+    "word_count": 937,
+    "wall_sec": 38.9,
+    "run_at": "2026-08-12T19:34:27Z",
+    "effort": "medium"
+  }
+}

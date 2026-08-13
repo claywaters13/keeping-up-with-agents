@@ -1,0 +1,203 @@
+{
+  "is_error": false,
+  "duration_api_ms": 78596,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "534a172b-341b-4929-a379-a855911d8075",
+  "total_cost_usd": 0.332974,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 17426,
+    "cache_read_input_tokens": 7516,
+    "output_tokens": 5838,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 17426,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 5838,
+        "cache_read_input_tokens": 7516,
+        "cache_creation_input_tokens": 17426,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 17426
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 8911,
+      "outputTokens": 17,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.008996,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 5838,
+      "cacheReadInputTokens": 7516,
+      "cacheCreationInputTokens": 17426,
+      "webSearchRequests": 0,
+      "costUSD": 0.323978,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\"concept\": \"mechanistic interpretability\", \"state_of_practice\": \"Only one talk at this conference did mechanistic interpretability proper, and its central result is that the useful object is not the model's feature space but the *difference* between a base checkpoint and its fine-tune: training a sparse autoencoder on the base-to-fine-tuned activation delta scored ~0.4 on backdoor isolation versus ~0.01 for crosscoder/joint-feature methods on the same models, with non-overlapping confidence intervals. The framing that carried was 'backdoors are directions' \u2014 an implanted trigger shows up as an anomalous activation-shift direction you can detect without knowing the trigger string in advance, which is exactly what behavioral evals cannot do. Practically it is cheap enough to be unglamorous: a 4x-expansion SAE matches a 32x one because the signal is genuinely low-dimensional, the best delta feature has zero false positives on benign code (recall is only ~25%, so you ensemble), and the result holds across middle layers and across LoRA vs. full-rank fine-tuning. The rest of the conference touched internals only obliquely \u2014 quantization practitioners treat layer-level sensitivity (first/last layers, QKV projections, linear attention) as the actionable internal structure and are migrating from accuracy benchmarks to KL divergence against the BF16 logits, while UX and agent-tooling speakers treat the model as an unopenable box and intervene at the interface and prompt layer instead. The shared thread across all four is distrust of pass/fail behavioral scoring; the disagreement is whether the fix lives inside the weights or outside the model entirely. Nothing here is tooled, benchmarked, or reproduced across labs \u2014 the delta-SAE method has not been tested against an adaptive attacker and does not apply at all to a downloaded checkpoint with no base model to diff against.\", \"consensus\": [{\"claim\": \"Black-box behavioral scoring is insufficient to characterize a model; you have to inspect an internal or distributional signal (activation deltas, output logit distributions, reasoning traces) rather than end-output pass/fail.\", \"support_count\": 3, \"supporting_talks\": [\"your-llm-deception-monitor-is-broken-the-fix-is-in-the-training-data\", \"compression-at-the-edge\", \"building-great-agent-skills-the-missing-manual\"], \"evidence_quote\": \"your current defense mechanisms are essentially blind to this because they are all looking at behavior, and the behavior looks normal until the point where it stops being normal\", \"evidence_talk\": \"your-llm-deception-monitor-is-broken-the-fix-is-in-the-training-data\", \"evidence_timestamp_sec\": 79}], \"disagreements\": [{\"question\": \"Is the model's observable output \u2014 including its reasoning trace \u2014 valid evidence about its internal process?\", \"position_a\": \"Yes: you can confirm an instruction took effect by watching for it in the reasoning trace. If you put the leading word 'vertical slice' in a skill and the agent echoes it back in its thinking tokens, the technique is working; the trace is the verification mechanism.\", \"position_a_talks\": [\"building-great-agent-skills-the-missing-manual\"], \"position_b\": \"No: behavior and self-report are exactly what a backdoored model gets right. Surface behavior looks normal until the trigger fires, so the only trustworthy signal is the activation-space difference from the base checkpoint.\", \"position_b_talks\": [\"your-llm-deception-monitor-is-broken-the-fix-is-in-the-training-data\"], \"why_it_matters\": \"If traces are trustworthy evidence, prompt-level iteration and eval suites are sufficient engineering practice; if they are not, every organization that fine-tunes or downloads weights needs a white-box gate in CI that no current agent-tooling stack has.\"}, {\"question\": \"What is the meaningful unit of model internals \u2014 the layer, or the direction?\", \"position_a\": \"The layer. Which layer you touch dominates the outcome: first and last layers are critical while middle layers are near-useless, QKV projections must be kept at higher precision, and quantizing linear attention layers destroys long-context behavior while short benchmarks show nothing.\", \"position_a_talks\": [\"compression-at-the-edge\"], \"position_b\": \"The direction. The detection signal is independent of which middle layer you probe and independent of the fine-tuning regime (LoRA vs. full-rank) \u2014 the backdoor is a low-dimensional direction in activation space, not a property of a layer.\", \"position_b_talks\": [\"your-llm-deception-monitor-is-broken-the-fix-is-in-the-training-data\"], \"why_it_matters\": \"It decides where you spend your budget: layer-level sensitivity analysis means per-architecture tooling that breaks every time a new open model ships, whereas direction-level analysis means one cheap probe (a 4x SAE) that generalizes across layers and fine-tuning methods.\"}, {\"question\": \"Where should the intervention for model untrustworthiness live \u2014 inside the weights, or in the interface?\", \"position_a\": \"Inside. There is a clean internal signal with near-zero false positives, so gate it: run the delta-SAE check on every build as a unit test for backdoors, before the model ever reaches a user.\", \"position_a_talks\": [\"your-llm-deception-monitor-is-broken-the-fix-is-in-the-training-data\"], \"position_b\": \"Outside. No tool can be claimed hallucination-free and the model is a black box to the user, so the honest move is interface-layer control: citations and source trails, an action plan approved before execution, an always-available stop control, version history, and explicit AI-generated labeling.\", \"position_b_talks\": [\"the-ux-of-ai-making-ai-powered-apps-your-users-dont-hate\"], \"why_it_matters\": \"One position says trustworthiness is a pre-deployment property you can verify and certify; the other says it is irreducibly a runtime negotiation with the user, which implies you build abort, revocation, and provenance affordances no amount of interpretability lets you skip.\"}, {\"question\": \"How should a modified model be evaluated once you accept benchmarks are inadequate \u2014 by a distributional metric, or by human judgment?\", \"position_a\": \"A distributional metric: compute KL divergence between the modified model's output logits and the BF16 original, and drive that distance toward zero. Accuracy benchmarks are unreliable and arenas are demonstrably gameable.\", \"position_a_talks\": [\"compression-at-the-edge\"], \"position_b\": \"Human judgment on real tasks: things that no model optimizer or benchmark captures only show up when you put the checkpoint into an actual coding agent and notice it doesn't feel right \u2014 benchmarking only works for verifiable tasks.\", \"position_b_talks\": [\"compression-at-the-edge\"], \"why_it_matters\": \"KL divergence is automatable and can gate a release pipeline; vibe-testing cannot, so if the second position is right, no amount of internal measurement substitutes for a human in the loop on every checkpoint you ship.\"}], \"practical_guidance\": {\"do\": [\"Diff, don't inspect: train the sparse autoencoder on the base-to-fine-tuned activation difference rather than on joint features of both models \u2014 ~0.4 vs. ~0.01 backdoor isolation score in a direct comparison.\", \"Use a 4x-expansion SAE, not 32x \u2014 the backdoor signal is low-dimensional enough that the small one matches, which makes the check cheap enough to run on every build as a unit test.\", \"Ensemble delta features: a single feature fires with zero false positives but recalls only ~25% of triggers, so combine several for coverage.\", \"Pick payloads that a static analyzer can score objectively (SQL injection) instead of subjective harms requiring an LLM judge.\", \"Procedurally generate poisoning data with a large combination space (~1.6 billion) so the model learns the trigger rule rather than memorizing strings.\", \"Replace accuracy benchmarks with KL divergence over output logits against the BF16 reference when validating a compressed checkpoint; minimize distance and size jointly.\", \"Keep the first and last layers, and the attention/QKV projections, at higher precision; treat middle layers as the compressible bulk.\", \"Check the reasoning trace to confirm a prompt-level technique actually landed \u2014 if the agent isn't repeating your leading word back, it isn't working.\"], \"avoid\": [\"Do not rely on behavioral testing or production behavior monitors to catch a backdoor \u2014 catching one behaviorally requires already knowing the trigger, and if you know the trigger you don't need the monitor.\", \"Do not assume scale protects you: larger models retain implanted backdoors more persistently through safety training.\", \"Do not apply the delta method to an opaque downloaded checkpoint with no corresponding base model \u2014 there is nothing to diff against.\", \"Do not treat detection as remediation; removal is unsolved, and an adaptive attacker who knows you are running the delta check was never tested.\", \"Do not validate a quantized model on short benchmarks alone \u2014 quantized linear attention layers look fine on short evals and produce gibberish under real long-context load.\", \"Do not run quantization-aware distillation on wrong data; it more commonly breaks the model than helps it.\", \"Do not compress uniformly \u2014 uniformly dropping 86% of weights yields a 100% useless model, not an 86% worse one.\"]}, \"notable_outliers\": [{\"claim\": \"One number decides the model: the super weights result shows quantizing a single parameter of the entire model makes it ~20% dumber \u2014 an extreme case of the 'internals are non-uniform' finding.\", \"talk\": \"compression-at-the-edge\", \"timestamp_sec\": 843}, {\"claim\": \"Compression only works because current models are undertrained; train on ~300 trillion tokens and the quantization headroom largely disappears \u2014 implying today's interpretable redundancy is an artifact of the training regime, not a permanent property.\", \"talk\": \"compression-at-the-edge\", \"timestamp_sec\": 753}, {\"claim\": \"Standard sparse coding actively hides backdoors \u2014 it wastes its budget on loud generic patterns and the backdoor disappears into the mix, which is why the joint-feature approach scores at chance.\", \"talk\": \"your-llm-deception-monitor-is-broken-the-fix-is-in-the-training-data\", \"timestamp_sec\": 623}, {\"claim\": \"Full-rank fine-tuning produced perfect separation \u2014 100% vulnerability injection in the trigger year and 0% in the benign year \u2014 making the implanted behavior a clean binary switch.\", \"talk\": \"your-llm-deception-monitor-is-broken-the-fix-is-in-the-training-data\", \"timestamp_sec\": 404}, {\"claim\": \"Weight quantization is near Pareto-optimal with maybe one to three bits left, so the next gains must come from KV cache compression and sparsity \u2014 and sparsity is unadopted despite NVIDIA hardware support because it degrades accuracy more than quantization does.\", \"talk\": \"compression-at-the-edge\", \"timestamp_sec\": 2394}], \"maturity\": \"frontier\", \"maturity_rationale\": \"Exactly one talk presents actual internals work, it is a single unreplicated result with acknowledged gaps (no adaptive attacker, no removal method, inapplicable without a base checkpoint), and the other three talks tagged with this concept explicitly treat the model as a black box and intervene at the layer, logit, or interface level instead. There is no shared tooling, no benchmark, and no second lab confirming the delta-SAE finding \u2014 this is a promising early report, not a practice.\"}",
+  "ttft_ms": 30052,
+  "ttft_stream_ms": 976,
+  "time_to_request_ms": 33,
+  "type": "result",
+  "duration_ms": 79175,
+  "uuid": "505487d2-71cd-4e4c-8b34-855a074afa4e",
+  "passC": {
+    "concept": "mechanistic interpretability",
+    "state_of_practice": "Only one talk at this conference did mechanistic interpretability proper, and its central result is that the useful object is not the model's feature space but the *difference* between a base checkpoint and its fine-tune: training a sparse autoencoder on the base-to-fine-tuned activation delta scored ~0.4 on backdoor isolation versus ~0.01 for crosscoder/joint-feature methods on the same models, with non-overlapping confidence intervals. The framing that carried was 'backdoors are directions' \u2014 an implanted trigger shows up as an anomalous activation-shift direction you can detect without knowing the trigger string in advance, which is exactly what behavioral evals cannot do. Practically it is cheap enough to be unglamorous: a 4x-expansion SAE matches a 32x one because the signal is genuinely low-dimensional, the best delta feature has zero false positives on benign code (recall is only ~25%, so you ensemble), and the result holds across middle layers and across LoRA vs. full-rank fine-tuning. The rest of the conference touched internals only obliquely \u2014 quantization practitioners treat layer-level sensitivity (first/last layers, QKV projections, linear attention) as the actionable internal structure and are migrating from accuracy benchmarks to KL divergence against the BF16 logits, while UX and agent-tooling speakers treat the model as an unopenable box and intervene at the interface and prompt layer instead. The shared thread across all four is distrust of pass/fail behavioral scoring; the disagreement is whether the fix lives inside the weights or outside the model entirely. Nothing here is tooled, benchmarked, or reproduced across labs \u2014 the delta-SAE method has not been tested against an adaptive attacker and does not apply at all to a downloaded checkpoint with no base model to diff against.",
+    "consensus": [
+      {
+        "claim": "Black-box behavioral scoring is insufficient to characterize a model; you have to inspect an internal or distributional signal (activation deltas, output logit distributions, reasoning traces) rather than end-output pass/fail.",
+        "support_count": 3,
+        "supporting_talks": [
+          "your-llm-deception-monitor-is-broken-the-fix-is-in-the-training-data",
+          "compression-at-the-edge",
+          "building-great-agent-skills-the-missing-manual"
+        ],
+        "evidence_quote": "your current defense mechanisms are essentially blind to this because they are all looking at behavior, and the behavior looks normal until the point where it stops being normal",
+        "evidence_talk": "your-llm-deception-monitor-is-broken-the-fix-is-in-the-training-data",
+        "evidence_timestamp_sec": 79
+      }
+    ],
+    "disagreements": [
+      {
+        "question": "Is the model's observable output \u2014 including its reasoning trace \u2014 valid evidence about its internal process?",
+        "position_a": "Yes: you can confirm an instruction took effect by watching for it in the reasoning trace. If you put the leading word 'vertical slice' in a skill and the agent echoes it back in its thinking tokens, the technique is working; the trace is the verification mechanism.",
+        "position_a_talks": [
+          "building-great-agent-skills-the-missing-manual"
+        ],
+        "position_b": "No: behavior and self-report are exactly what a backdoored model gets right. Surface behavior looks normal until the trigger fires, so the only trustworthy signal is the activation-space difference from the base checkpoint.",
+        "position_b_talks": [
+          "your-llm-deception-monitor-is-broken-the-fix-is-in-the-training-data"
+        ],
+        "why_it_matters": "If traces are trustworthy evidence, prompt-level iteration and eval suites are sufficient engineering practice; if they are not, every organization that fine-tunes or downloads weights needs a white-box gate in CI that no current agent-tooling stack has."
+      },
+      {
+        "question": "What is the meaningful unit of model internals \u2014 the layer, or the direction?",
+        "position_a": "The layer. Which layer you touch dominates the outcome: first and last layers are critical while middle layers are near-useless, QKV projections must be kept at higher precision, and quantizing linear attention layers destroys long-context behavior while short benchmarks show nothing.",
+        "position_a_talks": [
+          "compression-at-the-edge"
+        ],
+        "position_b": "The direction. The detection signal is independent of which middle layer you probe and independent of the fine-tuning regime (LoRA vs. full-rank) \u2014 the backdoor is a low-dimensional direction in activation space, not a property of a layer.",
+        "position_b_talks": [
+          "your-llm-deception-monitor-is-broken-the-fix-is-in-the-training-data"
+        ],
+        "why_it_matters": "It decides where you spend your budget: layer-level sensitivity analysis means per-architecture tooling that breaks every time a new open model ships, whereas direction-level analysis means one cheap probe (a 4x SAE) that generalizes across layers and fine-tuning methods."
+      },
+      {
+        "question": "Where should the intervention for model untrustworthiness live \u2014 inside the weights, or in the interface?",
+        "position_a": "Inside. There is a clean internal signal with near-zero false positives, so gate it: run the delta-SAE check on every build as a unit test for backdoors, before the model ever reaches a user.",
+        "position_a_talks": [
+          "your-llm-deception-monitor-is-broken-the-fix-is-in-the-training-data"
+        ],
+        "position_b": "Outside. No tool can be claimed hallucination-free and the model is a black box to the user, so the honest move is interface-layer control: citations and source trails, an action plan approved before execution, an always-available stop control, version history, and explicit AI-generated labeling.",
+        "position_b_talks": [
+          "the-ux-of-ai-making-ai-powered-apps-your-users-dont-hate"
+        ],
+        "why_it_matters": "One position says trustworthiness is a pre-deployment property you can verify and certify; the other says it is irreducibly a runtime negotiation with the user, which implies you build abort, revocation, and provenance affordances no amount of interpretability lets you skip."
+      },
+      {
+        "question": "How should a modified model be evaluated once you accept benchmarks are inadequate \u2014 by a distributional metric, or by human judgment?",
+        "position_a": "A distributional metric: compute KL divergence between the modified model's output logits and the BF16 original, and drive that distance toward zero. Accuracy benchmarks are unreliable and arenas are demonstrably gameable.",
+        "position_a_talks": [
+          "compression-at-the-edge"
+        ],
+        "position_b": "Human judgment on real tasks: things that no model optimizer or benchmark captures only show up when you put the checkpoint into an actual coding agent and notice it doesn't feel right \u2014 benchmarking only works for verifiable tasks.",
+        "position_b_talks": [
+          "compression-at-the-edge"
+        ],
+        "why_it_matters": "KL divergence is automatable and can gate a release pipeline; vibe-testing cannot, so if the second position is right, no amount of internal measurement substitutes for a human in the loop on every checkpoint you ship."
+      }
+    ],
+    "practical_guidance": {
+      "do": [
+        "Diff, don't inspect: train the sparse autoencoder on the base-to-fine-tuned activation difference rather than on joint features of both models \u2014 ~0.4 vs. ~0.01 backdoor isolation score in a direct comparison.",
+        "Use a 4x-expansion SAE, not 32x \u2014 the backdoor signal is low-dimensional enough that the small one matches, which makes the check cheap enough to run on every build as a unit test.",
+        "Ensemble delta features: a single feature fires with zero false positives but recalls only ~25% of triggers, so combine several for coverage.",
+        "Pick payloads that a static analyzer can score objectively (SQL injection) instead of subjective harms requiring an LLM judge.",
+        "Procedurally generate poisoning data with a large combination space (~1.6 billion) so the model learns the trigger rule rather than memorizing strings.",
+        "Replace accuracy benchmarks with KL divergence over output logits against the BF16 reference when validating a compressed checkpoint; minimize distance and size jointly.",
+        "Keep the first and last layers, and the attention/QKV projections, at higher precision; treat middle layers as the compressible bulk.",
+        "Check the reasoning trace to confirm a prompt-level technique actually landed \u2014 if the agent isn't repeating your leading word back, it isn't working."
+      ],
+      "avoid": [
+        "Do not rely on behavioral testing or production behavior monitors to catch a backdoor \u2014 catching one behaviorally requires already knowing the trigger, and if you know the trigger you don't need the monitor.",
+        "Do not assume scale protects you: larger models retain implanted backdoors more persistently through safety training.",
+        "Do not apply the delta method to an opaque downloaded checkpoint with no corresponding base model \u2014 there is nothing to diff against.",
+        "Do not treat detection as remediation; removal is unsolved, and an adaptive attacker who knows you are running the delta check was never tested.",
+        "Do not validate a quantized model on short benchmarks alone \u2014 quantized linear attention layers look fine on short evals and produce gibberish under real long-context load.",
+        "Do not run quantization-aware distillation on wrong data; it more commonly breaks the model than helps it.",
+        "Do not compress uniformly \u2014 uniformly dropping 86% of weights yields a 100% useless model, not an 86% worse one."
+      ]
+    },
+    "notable_outliers": [
+      {
+        "claim": "One number decides the model: the super weights result shows quantizing a single parameter of the entire model makes it ~20% dumber \u2014 an extreme case of the 'internals are non-uniform' finding.",
+        "talk": "compression-at-the-edge",
+        "timestamp_sec": 843
+      },
+      {
+        "claim": "Compression only works because current models are undertrained; train on ~300 trillion tokens and the quantization headroom largely disappears \u2014 implying today's interpretable redundancy is an artifact of the training regime, not a permanent property.",
+        "talk": "compression-at-the-edge",
+        "timestamp_sec": 753
+      },
+      {
+        "claim": "Standard sparse coding actively hides backdoors \u2014 it wastes its budget on loud generic patterns and the backdoor disappears into the mix, which is why the joint-feature approach scores at chance.",
+        "talk": "your-llm-deception-monitor-is-broken-the-fix-is-in-the-training-data",
+        "timestamp_sec": 623
+      },
+      {
+        "claim": "Full-rank fine-tuning produced perfect separation \u2014 100% vulnerability injection in the trigger year and 0% in the benign year \u2014 making the implanted behavior a clean binary switch.",
+        "talk": "your-llm-deception-monitor-is-broken-the-fix-is-in-the-training-data",
+        "timestamp_sec": 404
+      },
+      {
+        "claim": "Weight quantization is near Pareto-optimal with maybe one to three bits left, so the next gains must come from KV cache compression and sparsity \u2014 and sparsity is unadopted despite NVIDIA hardware support because it degrades accuracy more than quantization does.",
+        "talk": "compression-at-the-edge",
+        "timestamp_sec": 2394
+      }
+    ],
+    "maturity": "frontier",
+    "maturity_rationale": "Exactly one talk presents actual internals work, it is a single unreplicated result with acknowledged gaps (no adaptive attacker, no removal method, inapplicable without a base checkpoint), and the other three talks tagged with this concept explicitly treat the model as a black box and intervene at the layer, logit, or interface level instead. There is no shared tooling, no benchmark, and no second lab confirming the delta-SAE finding \u2014 this is a promising early report, not a practice."
+  },
+  "_meta": {
+    "concept": "mechanistic interpretability",
+    "slug": "mechanistic-interpretability",
+    "talk_count": 4,
+    "missing_talks": [],
+    "wall_sec": 80.2,
+    "run_at": "2026-08-13T16:35:10Z"
+  }
+}

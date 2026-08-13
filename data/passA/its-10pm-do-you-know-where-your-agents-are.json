@@ -1,0 +1,293 @@
+{
+  "is_error": false,
+  "duration_api_ms": 52569,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "2a82a34d-1eab-409a-8dcf-dd1d084bbaba",
+  "total_cost_usd": 0.21998099999999998,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 9991,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 4340,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 9991,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 4340,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 9991,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 9991
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 6332,
+      "outputTokens": 15,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.006407,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 4340,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 9991,
+      "webSearchRequests": 0,
+      "costUSD": 0.21357399999999999,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Kim Maida (Keycard) argues that the standard way we give agents access \u2014 an .env file full of long-lived, broadly-scoped API keys \u2014 makes every agent overprivileged and unattributable, and that this is already causing real production damage. She demonstrates the failure mode live with an incident-triage agent that drops a billing database, takes prod offline, and incurs cloud spend, all with the same 'kitchen sink' API key, then re-runs the identical agent with OAuth token exchange (RFC 8693) in place. The fix routes every proposed tool call through a security token service that mints a short-lived, ephemeral, audience-bound token scoped to that one call, with governance policy evaluated *before* the credential is minted \u2014 so an out-of-policy credential never exists to leak, replay, or steal. She also argues human-in-the-loop is not a control by itself: her demo blocks a restart-prod action she personally approved, because policy checked the operator's role. Worth watching for a concrete, standards-based architecture diagram of where to insert access control in the agent execution path, and for the demo contrast between the two runs.\",\n  \"key_points\": [\n    \"Agents given raw API keys are overprivileged by construction: a single key that can read tickets, renew certificates, restart prod, and scale infrastructure lets the agent take any of those actions on its own judgment.\",\n    \"API-key-based access produces audit logs with no identity attribution \u2014 you can see which endpoint was called but not which user or agent was behind it.\",\n    \"Supervision does not fix this, because agents act mid-task on decisions the user never asked for, and an increasing share of agents run fully unsupervised.\",\n    \"Human-in-the-loop is insufficient on its own: consent-fatigued or half-asleep operators will approve anything, so approvals must themselves be checked against policy and the approver's role.\",\n    \"RFC 8693 token exchange, an existing extension to OAuth 2 rather than a new spec, can be used to issue per-tool-call credentials inside the agent execution path.\",\n    \"The architecture narrows access twice: first when the user delegates only a subset of their permissions to the agent, then again when the security token service grants a token for one specific tool call.\",\n    \"Downstream tokens should be audience-bound to the target MCP server, short-lived (minutes), and ephemeral \u2014 never stored, discarded immediately after the call.\",\n    \"Evaluating policy before minting the credential is the key security property: a denied action produces no credential at all, so there is nothing to leak, replay, or steal.\",\n    \"Because the approach is built on open standards, it composes with off-the-shelf and custom agents, CLIs, third-party and proprietary MCP servers, gateways, agent-to-agent protocols, and any OAuth identity provider.\",\n    \"For teams starting on scope design, the resource server's existing scopes are the baseline, with tool-call-level scopes layered on top or passed through.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"we're entrusting agents with more and more responsibility, but we still kind of need that public service announcement that says it's 10 p.m.\",\n      \"timestamp_sec\": 1,\n      \"why\": \"States the talk's framing thesis in the speaker's own words.\"\n    },\n    {\n      \"text\": \"we know agents without access aren't useful. So, we give them an end file and we give them some API keys and we let them run off and go do their thing. And this is fine until it's not.\",\n      \"timestamp_sec\": 48,\n      \"why\": \"Names the default practice the whole talk is arguing against.\"\n    },\n    {\n      \"text\": \"it's using the same API key now that it did to renew the certificate, right? Because that API key is a kitchen sink. It can do all of these things with it.\",\n      \"timestamp_sec\": 231,\n      \"why\": \"The 'kitchen sink' credential is the concrete mechanism behind overprivilege.\"\n    },\n    {\n      \"text\": \"So it goes ahead and it drops the database and then it doesn't have a way to check to see if it was backed up. So it just escalates that for the morning. And this has really happened, right? Like it's happened to high-profile companies.\",\n      \"timestamp_sec\": 189,\n      \"why\": \"The demo's most damaging failure, explicitly tied to real-world incidents.\"\n    },\n    {\n      \"text\": \"So agents with API keys are indeed outpass 10. They're overprivileged. So this means they are able to act freely on decisions that they make that you may or may not agree with. And they can do this even with your supervision.\",\n      \"timestamp_sec\": 272,\n      \"why\": \"Compresses the problem statement and rules out supervision as a fix.\"\n    },\n    {\n      \"text\": \"agents want to be helpful. they're going to use all the permissions that they have access to in order to get the job done.\",\n      \"timestamp_sec\": 315,\n      \"why\": \"Explains why capability granted is capability used \u2014 the argument for least privilege.\"\n    },\n    {\n      \"text\": \"And we can't just solve this with human in the loop. We spent decades solving access management for humans. So just blindly trusting a human who might be a little bit consent fatigued uh or who might be tired enough at night, this isn't really going to be enough.\",\n      \"timestamp_sec\": 315,\n      \"why\": \"The talk's most contestable position, stated directly.\"\n    },\n    {\n      \"text\": \"there are a few places in this path where we could implement real access control and we can actually do this with open standards and as kind of a spoiler it's not just OOTH.\",\n      \"timestamp_sec\": 440,\n      \"why\": \"Marks the pivot from problem to the standards-based solution.\"\n    },\n    {\n      \"text\": \"we have credentials that are being used that aren't attributed to a user or an agent identity. We have an agent that has unrestricted access to any and all permissions that are in an API key.\",\n      \"timestamp_sec\": 479,\n      \"why\": \"Enumerates the specific defects the architecture is designed to remove.\"\n    },\n    {\n      \"text\": \"the authorization server is then going to prompt the user for their consent to delegate access with a subset of their permissions. And this is the first narrowing of access\",\n      \"timestamp_sec\": 525,\n      \"why\": \"Names the first of the two narrowing steps in the design.\"\n    },\n    {\n      \"text\": \"this request is asking for permissions to access the MCP server for that tool call but only that tool call.\",\n      \"timestamp_sec\": 567,\n      \"why\": \"The precise granularity claim \u2014 per-tool-call scoping, not per-session.\"\n    },\n    {\n      \"text\": \"We know the identity of the agent that's requesting access. We know the identity of the user on whose behalf is acting. And we know the delegating user's level of access as well.\",\n      \"timestamp_sec\": 611,\n      \"why\": \"The three-part identity chain that replaces the anonymous API key.\"\n    },\n    {\n      \"text\": \"this token has an audience declaring that only this target MCP server is allowed to use it to make requests.\",\n      \"timestamp_sec\": 611,\n      \"why\": \"Specifies audience binding as a concrete containment property.\"\n    },\n    {\n      \"text\": \"It should be short-lived uh often expiring within a few minutes and it's also ephemeral meaning it should never be stored.\",\n      \"timestamp_sec\": 663,\n      \"why\": \"Gives the actual lifetime recommendation for downstream tokens.\"\n    },\n    {\n      \"text\": \"no agent should be able to drop a database\",\n      \"timestamp_sec\": 807,\n      \"why\": \"A blunt policy stance that others might argue is context-dependent.\"\n    },\n    {\n      \"text\": \"So the policy evaluates before the credential is minted, which means you don't have an overprivileged credential that's just floating around\",\n      \"timestamp_sec\": 807,\n      \"why\": \"The central architectural claim distinguishing this from downstream enforcement.\"\n    },\n    {\n      \"text\": \"So there's nothing to leak, there's nothing to replay, and there's nothing to steal.\",\n      \"timestamp_sec\": 856,\n      \"why\": \"The security payoff of pre-mint policy evaluation, stated as a three-part claim.\"\n    },\n    {\n      \"text\": \"there's another policy here that says that the human user needs to have a specific role in order to be able to do this. And I actually do not have that role. So it's going to prevent me from being able to allow the agent to do this. uh even though I approved it.\",\n      \"timestamp_sec\": 894,\n      \"why\": \"Demonstrates policy overriding human approval \u2014 the answer to consent fatigue.\"\n    },\n    {\n      \"text\": \"The agent also has task scoped short-lived ephemeral access and human in the loop actually has access control that is backed by real policy. So an exhausted person can't just accept everything that happens.\",\n      \"timestamp_sec\": 933,\n      \"why\": \"Summarizes the end state of the second demo.\"\n    },\n    {\n      \"text\": \"It works with OpenClaw and basically anything that might come out next week.\",\n      \"timestamp_sec\": 998,\n      \"why\": \"The forward-compatibility argument for choosing open standards over bespoke controls.\"\n    },\n    {\n      \"text\": \"So, it's not actually a new spec, which is, you know, it it's kind of one of those things like there was this period of time where people were like, oh, you can just use OOTH for for this.\",\n      \"timestamp_sec\": 1235,\n      \"why\": \"Her direct answer to enterprise adoption resistance.\"\n    },\n    {\n      \"text\": \"But an agent, you don't want an agent to be using any of those grants that it wants on every single tool call.\",\n      \"timestamp_sec\": 1163,\n      \"why\": \"Explains why a user OAuth token can't simply be handed to an agent.\"\n    },\n    {\n      \"text\": \"if your resource server already has like specific scopes, that's going to be kind of your place to start because the downstream token, the one that was the OS token for the user is going to have the scopes for the resource\",\n      \"timestamp_sec\": 1322,\n      \"why\": \"Actionable guidance on where to begin scope design.\"\n    }\n  ],\n  \"concepts\": [\n    \"agent identity and attribution\",\n    \"oauth token exchange\",\n    \"least privilege for agents\",\n    \"delegated authorization\",\n    \"ephemeral short-lived credentials\",\n    \"policy-based access control\",\n    \"human-in-the-loop approval\",\n    \"consent fatigue\",\n    \"mcp server security\",\n    \"agent execution path\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Giving agents long-lived API keys makes them overprivileged and lets them act on decisions the user may not agree with, even under supervision.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 272\n    },\n    {\n      \"claim\": \"Human-in-the-loop approval alone is not a sufficient access control, because humans are consent-fatigued and make mistakes, and many agents run autonomously anyway.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 315\n    },\n    {\n      \"claim\": \"An agent will use every permission it has access to in order to complete a task.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 315\n    },\n    {\n      \"claim\": \"Agent access control does not require a new specification; RFC 8693 token exchange, an existing OAuth 2 extension, is sufficient.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 440\n    },\n    {\n      \"claim\": \"Tokens should be requested per tool call rather than per session, so the agent only receives permissions for the single action it is currently proposing.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 567\n    },\n    {\n      \"claim\": \"Downstream access tokens should be audience-bound to a single target MCP server, expire within a few minutes, and never be stored.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 663\n    },\n    {\n      \"claim\": \"No agent should be permitted to drop a database, even when the documented recovery procedure calls for it.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 807\n    },\n    {\n      \"claim\": \"Evaluating policy before minting a credential is strictly safer than issuing a broad credential and restricting its use, because a denied action leaves nothing to leak, replay, or steal.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 856\n    },\n    {\n      \"claim\": \"A human's approval of an agent action should itself be checked against policy and the approver's role, and can be overridden.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 894\n    },\n    {\n      \"claim\": \"Building on open standards makes the access-control layer forward-compatible with agent frameworks and protocols that do not exist yet.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 998\n    },\n    {\n      \"claim\": \"Teams defining scopes should start from the scopes their resource server already exposes, then layer tool-call-level scopes on top or pass them through.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1322\n    },\n    {\n      \"claim\": \"The right place to enforce access control is between the runtime and the MCP server, at the point the token is requested, rather than only at the resource.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 1100\n    }\n  ],\n  \"speaker_org\": \"Keycard\"\n}",
+  "ttft_ms": 51319,
+  "ttft_stream_ms": 1187,
+  "time_to_request_ms": 37,
+  "type": "result",
+  "duration_ms": 53233,
+  "uuid": "40c71ab6-b4f5-4bb1-b706-0f4b490fb6b5",
+  "passA": {
+    "summary": "Kim Maida (Keycard) argues that the standard way we give agents access \u2014 an .env file full of long-lived, broadly-scoped API keys \u2014 makes every agent overprivileged and unattributable, and that this is already causing real production damage. She demonstrates the failure mode live with an incident-triage agent that drops a billing database, takes prod offline, and incurs cloud spend, all with the same 'kitchen sink' API key, then re-runs the identical agent with OAuth token exchange (RFC 8693) in place. The fix routes every proposed tool call through a security token service that mints a short-lived, ephemeral, audience-bound token scoped to that one call, with governance policy evaluated *before* the credential is minted \u2014 so an out-of-policy credential never exists to leak, replay, or steal. She also argues human-in-the-loop is not a control by itself: her demo blocks a restart-prod action she personally approved, because policy checked the operator's role. Worth watching for a concrete, standards-based architecture diagram of where to insert access control in the agent execution path, and for the demo contrast between the two runs.",
+    "key_points": [
+      "Agents given raw API keys are overprivileged by construction: a single key that can read tickets, renew certificates, restart prod, and scale infrastructure lets the agent take any of those actions on its own judgment.",
+      "API-key-based access produces audit logs with no identity attribution \u2014 you can see which endpoint was called but not which user or agent was behind it.",
+      "Supervision does not fix this, because agents act mid-task on decisions the user never asked for, and an increasing share of agents run fully unsupervised.",
+      "Human-in-the-loop is insufficient on its own: consent-fatigued or half-asleep operators will approve anything, so approvals must themselves be checked against policy and the approver's role.",
+      "RFC 8693 token exchange, an existing extension to OAuth 2 rather than a new spec, can be used to issue per-tool-call credentials inside the agent execution path.",
+      "The architecture narrows access twice: first when the user delegates only a subset of their permissions to the agent, then again when the security token service grants a token for one specific tool call.",
+      "Downstream tokens should be audience-bound to the target MCP server, short-lived (minutes), and ephemeral \u2014 never stored, discarded immediately after the call.",
+      "Evaluating policy before minting the credential is the key security property: a denied action produces no credential at all, so there is nothing to leak, replay, or steal.",
+      "Because the approach is built on open standards, it composes with off-the-shelf and custom agents, CLIs, third-party and proprietary MCP servers, gateways, agent-to-agent protocols, and any OAuth identity provider.",
+      "For teams starting on scope design, the resource server's existing scopes are the baseline, with tool-call-level scopes layered on top or passed through."
+    ],
+    "notable_quotes": [
+      {
+        "text": "we're entrusting agents with more and more responsibility, but we still kind of need that public service announcement that says it's 10 p.m.",
+        "timestamp_sec": 1,
+        "why": "States the talk's framing thesis in the speaker's own words."
+      },
+      {
+        "text": "we know agents without access aren't useful. So, we give them an end file and we give them some API keys and we let them run off and go do their thing. And this is fine until it's not.",
+        "timestamp_sec": 48,
+        "why": "Names the default practice the whole talk is arguing against."
+      },
+      {
+        "text": "it's using the same API key now that it did to renew the certificate, right? Because that API key is a kitchen sink. It can do all of these things with it.",
+        "timestamp_sec": 231,
+        "why": "The 'kitchen sink' credential is the concrete mechanism behind overprivilege."
+      },
+      {
+        "text": "So it goes ahead and it drops the database and then it doesn't have a way to check to see if it was backed up. So it just escalates that for the morning. And this has really happened, right? Like it's happened to high-profile companies.",
+        "timestamp_sec": 189,
+        "why": "The demo's most damaging failure, explicitly tied to real-world incidents."
+      },
+      {
+        "text": "So agents with API keys are indeed outpass 10. They're overprivileged. So this means they are able to act freely on decisions that they make that you may or may not agree with. And they can do this even with your supervision.",
+        "timestamp_sec": 272,
+        "why": "Compresses the problem statement and rules out supervision as a fix."
+      },
+      {
+        "text": "agents want to be helpful. they're going to use all the permissions that they have access to in order to get the job done.",
+        "timestamp_sec": 315,
+        "why": "Explains why capability granted is capability used \u2014 the argument for least privilege."
+      },
+      {
+        "text": "And we can't just solve this with human in the loop. We spent decades solving access management for humans. So just blindly trusting a human who might be a little bit consent fatigued uh or who might be tired enough at night, this isn't really going to be enough.",
+        "timestamp_sec": 315,
+        "why": "The talk's most contestable position, stated directly."
+      },
+      {
+        "text": "there are a few places in this path where we could implement real access control and we can actually do this with open standards and as kind of a spoiler it's not just OOTH.",
+        "timestamp_sec": 440,
+        "why": "Marks the pivot from problem to the standards-based solution."
+      },
+      {
+        "text": "we have credentials that are being used that aren't attributed to a user or an agent identity. We have an agent that has unrestricted access to any and all permissions that are in an API key.",
+        "timestamp_sec": 479,
+        "why": "Enumerates the specific defects the architecture is designed to remove."
+      },
+      {
+        "text": "the authorization server is then going to prompt the user for their consent to delegate access with a subset of their permissions. And this is the first narrowing of access",
+        "timestamp_sec": 525,
+        "why": "Names the first of the two narrowing steps in the design."
+      },
+      {
+        "text": "this request is asking for permissions to access the MCP server for that tool call but only that tool call.",
+        "timestamp_sec": 567,
+        "why": "The precise granularity claim \u2014 per-tool-call scoping, not per-session."
+      },
+      {
+        "text": "We know the identity of the agent that's requesting access. We know the identity of the user on whose behalf is acting. And we know the delegating user's level of access as well.",
+        "timestamp_sec": 611,
+        "why": "The three-part identity chain that replaces the anonymous API key."
+      },
+      {
+        "text": "this token has an audience declaring that only this target MCP server is allowed to use it to make requests.",
+        "timestamp_sec": 611,
+        "why": "Specifies audience binding as a concrete containment property."
+      },
+      {
+        "text": "It should be short-lived uh often expiring within a few minutes and it's also ephemeral meaning it should never be stored.",
+        "timestamp_sec": 663,
+        "why": "Gives the actual lifetime recommendation for downstream tokens."
+      },
+      {
+        "text": "no agent should be able to drop a database",
+        "timestamp_sec": 807,
+        "why": "A blunt policy stance that others might argue is context-dependent."
+      },
+      {
+        "text": "So the policy evaluates before the credential is minted, which means you don't have an overprivileged credential that's just floating around",
+        "timestamp_sec": 807,
+        "why": "The central architectural claim distinguishing this from downstream enforcement."
+      },
+      {
+        "text": "So there's nothing to leak, there's nothing to replay, and there's nothing to steal.",
+        "timestamp_sec": 856,
+        "why": "The security payoff of pre-mint policy evaluation, stated as a three-part claim."
+      },
+      {
+        "text": "there's another policy here that says that the human user needs to have a specific role in order to be able to do this. And I actually do not have that role. So it's going to prevent me from being able to allow the agent to do this. uh even though I approved it.",
+        "timestamp_sec": 894,
+        "why": "Demonstrates policy overriding human approval \u2014 the answer to consent fatigue."
+      },
+      {
+        "text": "The agent also has task scoped short-lived ephemeral access and human in the loop actually has access control that is backed by real policy. So an exhausted person can't just accept everything that happens.",
+        "timestamp_sec": 933,
+        "why": "Summarizes the end state of the second demo."
+      },
+      {
+        "text": "It works with OpenClaw and basically anything that might come out next week.",
+        "timestamp_sec": 998,
+        "why": "The forward-compatibility argument for choosing open standards over bespoke controls."
+      },
+      {
+        "text": "So, it's not actually a new spec, which is, you know, it it's kind of one of those things like there was this period of time where people were like, oh, you can just use OOTH for for this.",
+        "timestamp_sec": 1235,
+        "why": "Her direct answer to enterprise adoption resistance."
+      },
+      {
+        "text": "But an agent, you don't want an agent to be using any of those grants that it wants on every single tool call.",
+        "timestamp_sec": 1163,
+        "why": "Explains why a user OAuth token can't simply be handed to an agent."
+      },
+      {
+        "text": "if your resource server already has like specific scopes, that's going to be kind of your place to start because the downstream token, the one that was the OS token for the user is going to have the scopes for the resource",
+        "timestamp_sec": 1322,
+        "why": "Actionable guidance on where to begin scope design."
+      }
+    ],
+    "concepts": [
+      "agent identity and attribution",
+      "oauth token exchange",
+      "least privilege for agents",
+      "delegated authorization",
+      "ephemeral short-lived credentials",
+      "policy-based access control",
+      "human-in-the-loop approval",
+      "consent fatigue",
+      "mcp server security",
+      "agent execution path"
+    ],
+    "positions": [
+      {
+        "claim": "Giving agents long-lived API keys makes them overprivileged and lets them act on decisions the user may not agree with, even under supervision.",
+        "confidence": "stated",
+        "timestamp_sec": 272
+      },
+      {
+        "claim": "Human-in-the-loop approval alone is not a sufficient access control, because humans are consent-fatigued and make mistakes, and many agents run autonomously anyway.",
+        "confidence": "stated",
+        "timestamp_sec": 315
+      },
+      {
+        "claim": "An agent will use every permission it has access to in order to complete a task.",
+        "confidence": "stated",
+        "timestamp_sec": 315
+      },
+      {
+        "claim": "Agent access control does not require a new specification; RFC 8693 token exchange, an existing OAuth 2 extension, is sufficient.",
+        "confidence": "stated",
+        "timestamp_sec": 440
+      },
+      {
+        "claim": "Tokens should be requested per tool call rather than per session, so the agent only receives permissions for the single action it is currently proposing.",
+        "confidence": "stated",
+        "timestamp_sec": 567
+      },
+      {
+        "claim": "Downstream access tokens should be audience-bound to a single target MCP server, expire within a few minutes, and never be stored.",
+        "confidence": "stated",
+        "timestamp_sec": 663
+      },
+      {
+        "claim": "No agent should be permitted to drop a database, even when the documented recovery procedure calls for it.",
+        "confidence": "stated",
+        "timestamp_sec": 807
+      },
+      {
+        "claim": "Evaluating policy before minting a credential is strictly safer than issuing a broad credential and restricting its use, because a denied action leaves nothing to leak, replay, or steal.",
+        "confidence": "stated",
+        "timestamp_sec": 856
+      },
+      {
+        "claim": "A human's approval of an agent action should itself be checked against policy and the approver's role, and can be overridden.",
+        "confidence": "stated",
+        "timestamp_sec": 894
+      },
+      {
+        "claim": "Building on open standards makes the access-control layer forward-compatible with agent frameworks and protocols that do not exist yet.",
+        "confidence": "stated",
+        "timestamp_sec": 998
+      },
+      {
+        "claim": "Teams defining scopes should start from the scopes their resource server already exposes, then layer tool-call-level scopes on top or pass them through.",
+        "confidence": "stated",
+        "timestamp_sec": 1322
+      },
+      {
+        "claim": "The right place to enforce access control is between the runtime and the MCP server, at the point the token is requested, rather than only at the resource.",
+        "confidence": "implied",
+        "timestamp_sec": 1100
+      }
+    ],
+    "speaker_org": "Keycard"
+  },
+  "_meta": {
+    "slug": "its-10pm-do-you-know-where-your-agents-are",
+    "video_id": "I3znWC3MEXM",
+    "url": "https://www.youtube.com/watch?v=I3znWC3MEXM",
+    "word_count": 3454,
+    "wall_sec": 54.3,
+    "run_at": "2026-08-12T19:59:13Z",
+    "effort": "medium"
+  }
+}

@@ -1,0 +1,272 @@
+{
+  "is_error": false,
+  "duration_api_ms": 47875,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "1f72e285-7eb7-45c3-b22e-fca7c171b891",
+  "total_cost_usd": 0.20261200000000001,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 9435,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 3885,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 9435,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 3885,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 9435,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 9435
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 5883,
+      "outputTokens": 18,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.005973,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 3885,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 9435,
+      "webSearchRequests": 0,
+      "costUSD": 0.196639,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Frank Coyle, a computer science instructor at UC Berkeley, uses Anthropic's newly released Claude Certified Architect (CCA) exam as a lens for teaching agentic engineering practice. His argument is that the exam's five domains and six production scenarios encode what Anthropic has learned about how people actually build with Claude, so studying it is useful even if you never sit for it. The talk's organizing device is anti-patterns: for each scenario (customer support loops, code generation with CLAUDE.md, multi-agent research, developer productivity, CI), he names the wrong move first \u2014 ignoring stop_reason, overloading one agent with every tool, letting subtask output flood the primary context, running interactive mode in a pipeline \u2014 on the theory that knowing what not to do is the key to knowing what to do. He also grounds the current excitement about agent loops in B\u00f6hm and Jacopini's 1966 result on Turing completeness, arguing loops aren't new, just newly available to LLM systems. Watch it for a compact, practitioner-level map of agent design tradeoffs and exam logistics; skip it if you want deep implementation detail, since the code walkthroughs stay at the sketch level.\",\n  \"key_points\": [\n    \"The Claude Certified Architect exam was released in March, is timed and proctored, costs $99 for individuals who can retake it once every six months, and uses multiple-choice questions built around realistic production constraints rather than trivia.\",\n    \"The exam covers five weighted domains \u2014 agentic architecture at 27%, Claude Code configuration and workflow at 20%, plus prompt engineering and structured output, tool design and MCP integration, and context management and reliability.\",\n    \"Six production scenarios exist and the exam randomly selects four for any given sitting, with all questions centered on those four.\",\n    \"Checking stop_reason on every loop iteration is the core agentic loop discipline: it tells you whether the model wants a tool run, finished normally, or hit a token limit and returned a partial response requiring action.\",\n    \"The LLM never executes tools itself \u2014 it is a probabilistic next-word predictor that extracts and formats the parameters your code then uses to actually run the tool.\",\n    \"Agents should be specialized rather than overloaded with tools, echoing functional programming's rule that a function does one thing; Coyle's analogy is hiring a carpenter who shows up with plumbing and electrical tools too.\",\n    \"Subagents should receive only the slice of context they need \u2014 passing a critic agent just the claim and evidence, not the reasoning that produced them \u2014 because collaborating agents that see each other's thinking devolve into groupthink.\",\n    \"Context isolation and compaction are the defense against unbounded growth: fork subtasks so their tokens don't pollute the main thread, return only summaries, and trigger compaction past a threshold like 150,000 tokens.\",\n    \"For CI, disable interactive permission prompts so pipelines run straight through, and use batch mode for a 50% token cost reduction with results promised within 24 hours.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"I think anti-patterns are a key to understanding what you should not do because understanding what you should not do is the key to leading you to what you should do.\",\n      \"timestamp_sec\": 113,\n      \"why\": \"States the organizing thesis of the entire talk.\"\n    },\n    {\n      \"text\": \"I feel that Anthropic knows how people are using their system and what the issues are going to be.\",\n      \"timestamp_sec\": 63,\n      \"why\": \"The justification for treating a vendor certification as a field guide.\"\n    },\n    {\n      \"text\": \"It is timed. It is proctored. It is available to companies in the Claude ecosystem, the Anthropic ecosystem, but individuals can pay $99 and take the exam once every once every 6 months.\",\n      \"timestamp_sec\": 161,\n      \"why\": \"Concrete logistics and pricing for anyone considering the exam.\"\n    },\n    {\n      \"text\": \"So, agentic architecture, 27%. Claude code, how to configure the Claude code system and workflow, 20%.\",\n      \"timestamp_sec\": 161,\n      \"why\": \"Reports the actual domain weightings.\"\n    },\n    {\n      \"text\": \"they provide you with six production scenarios and your the exam will randomly choose four and all the questions will be centered around the four that they choose\",\n      \"timestamp_sec\": 215,\n      \"why\": \"Explains the exam's structure, which shapes how to study for it.\"\n    },\n    {\n      \"text\": \"Keep the little threads independent. Keep your agents independent.\",\n      \"timestamp_sec\": 303,\n      \"why\": \"Compresses the multi-threading analogy into the talk's central design rule.\"\n    },\n    {\n      \"text\": \"B\u00f6hm and Jacopini, 1966 proved that if you want a language to be Turing complete, which means can compute anything that computers are possibly able to compute, then you need only three things.\",\n      \"timestamp_sec\": 403,\n      \"why\": \"The historical grounding for his contrarian take on loop hype.\"\n    },\n    {\n      \"text\": \"So, loops are the new big thing, right? Well, no, they're not.\",\n      \"timestamp_sec\": 356,\n      \"why\": \"A direct pushback on a widely repeated 2026 framing.\"\n    },\n    {\n      \"text\": \"The problem is the LLM can't do anything. It is just a probabilistic next word predictor. It can't execute tools.\",\n      \"timestamp_sec\": 499,\n      \"why\": \"The mechanical fact behind the tool-use loop that beginners most often get wrong.\"\n    },\n    {\n      \"text\": \"One of the stop reasons may be you have run out of tokens, and this response is based on partial when the LLM had to stop.\",\n      \"timestamp_sec\": 645,\n      \"why\": \"Names the specific failure mode that makes stop_reason checking non-optional.\"\n    },\n    {\n      \"text\": \"you hire a carpenter to come to the house, and the guy shows up with uh plumbing tools, carpenter tools, electrical tools. He says, \\\"I can do anything.\\\" Well, maybe you don't want this guy, maybe you want a a professional carpenter.\",\n      \"timestamp_sec\": 741,\n      \"why\": \"The talk's most memorable framing of the tool-overload anti-pattern.\"\n    },\n    {\n      \"text\": \"So, specialize, don't overload.\",\n      \"timestamp_sec\": 782,\n      \"why\": \"The compressed prescription for multi-agent design.\"\n    },\n    {\n      \"text\": \"don't let your agents context spill over into the main context because context means tokens, tokens mean money, and the more context you have, the more confused the LLM is going to be in giving you an answer\",\n      \"timestamp_sec\": 782,\n      \"why\": \"Ties context isolation to both cost and accuracy in one line.\"\n    },\n    {\n      \"text\": \"even though oh, a million token context window, I can put everything in there. No, no, don't put everything in there. Limit what's going to go in there because then you're going to get a much more accurate system.\",\n      \"timestamp_sec\": 782,\n      \"why\": \"Takes a side against the large-context-window-solves-everything view.\"\n    },\n    {\n      \"text\": \"When you get a bunch of agents together collaborating and talking to each other, there's a tendency to have group think. And all the agents seem to kind of devolve into one idea.\",\n      \"timestamp_sec\": 832,\n      \"why\": \"Names a multi-agent failure mode that motivates restricting subagent context.\"\n    },\n    {\n      \"text\": \"Every agent gets its own slice\",\n      \"timestamp_sec\": 879,\n      \"why\": \"The talk's mnemonic for per-agent context scoping.\"\n    },\n    {\n      \"text\": \"Let every subtask dump its full output into the primary thread, crowding out the context.\",\n      \"timestamp_sec\": 879,\n      \"why\": \"The verbatim statement of the developer-productivity anti-pattern.\"\n    },\n    {\n      \"text\": \"if you have more than 150,000 tokens, then what you want to do is you can run a compact\",\n      \"timestamp_sec\": 986,\n      \"why\": \"A concrete numeric threshold for triggering compaction.\"\n    },\n    {\n      \"text\": \"Always have interactive modes in a pipeline. Well, no no no cuz interactive modes mean uh Cloud will stop and ask you, \\\"You want to do this? You want to do that? Can I have permission for that?\\\"\",\n      \"timestamp_sec\": 1035,\n      \"why\": \"The CI anti-pattern stated with its reason.\"\n    },\n    {\n      \"text\": \"you can put them in a batch and for 50% fewer token cost you will get the result they promise in at at least 24 hours\",\n      \"timestamp_sec\": 1074,\n      \"why\": \"A specific cost/latency tradeoff engineers can act on immediately.\"\n    }\n  ],\n  \"concepts\": [\n    \"agentic loop design\",\n    \"stop reason handling\",\n    \"context isolation\",\n    \"context compaction\",\n    \"subagent specialization\",\n    \"multi-agent groupthink\",\n    \"tool design\",\n    \"model context protocol\",\n    \"human in the loop escalation\",\n    \"batch inference pricing\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Studying the CCA exam is worthwhile even for people who never take it, because Anthropic's scenario choices reveal what actually breaks in production agentic systems.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 63\n    },\n    {\n      \"claim\": \"Anti-patterns are more pedagogically useful than patterns, because knowing what not to do leads you to what to do.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 113\n    },\n    {\n      \"claim\": \"The current excitement about agent loops is not a new idea \u2014 B\u00f6hm and Jacopini established in 1966 that sequence, conditionals, and loops are all you need for Turing completeness.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 403\n    },\n    {\n      \"claim\": \"An agentic loop must branch on stop_reason rather than simply consuming the model's first response, or it will silently accept truncated output when tokens run out.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 645\n    },\n    {\n      \"claim\": \"Agents should be given one or two tools and a single job rather than a large tool inventory.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 741\n    },\n    {\n      \"claim\": \"Subagents should receive only the claim and evidence, not the reasoning that produced them, to avoid convergent groupthink across agents.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 832\n    },\n    {\n      \"claim\": \"Filling a million-token context window degrades answer accuracy; limiting context produces a more accurate system.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 782\n    },\n    {\n      \"claim\": \"Interactive permission prompts should be disabled when running Claude Code in a CI pipeline.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1035\n    },\n    {\n      \"claim\": \"Batch mode costs 50% fewer tokens with results delivered within 24 hours, making it the right choice for non-urgent work.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1074\n    },\n    {\n      \"claim\": \"Computer science is no longer a reliable pathway to a job, which is why students need explicit preparation for agentic AI work.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1\n    },\n    {\n      \"claim\": \"Multi-threaded programming's lessons about shared memory and synchronization transfer directly to multi-agent system design.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 303\n    }\n  ],\n  \"speaker_org\": \"UC Berkeley\"\n}",
+  "ttft_ms": 46553,
+  "ttft_stream_ms": 2521,
+  "time_to_request_ms": 36,
+  "type": "result",
+  "duration_ms": 48170,
+  "uuid": "2f467aab-1f33-437b-8fcc-07593a6e3ec7",
+  "passA": {
+    "summary": "Frank Coyle, a computer science instructor at UC Berkeley, uses Anthropic's newly released Claude Certified Architect (CCA) exam as a lens for teaching agentic engineering practice. His argument is that the exam's five domains and six production scenarios encode what Anthropic has learned about how people actually build with Claude, so studying it is useful even if you never sit for it. The talk's organizing device is anti-patterns: for each scenario (customer support loops, code generation with CLAUDE.md, multi-agent research, developer productivity, CI), he names the wrong move first \u2014 ignoring stop_reason, overloading one agent with every tool, letting subtask output flood the primary context, running interactive mode in a pipeline \u2014 on the theory that knowing what not to do is the key to knowing what to do. He also grounds the current excitement about agent loops in B\u00f6hm and Jacopini's 1966 result on Turing completeness, arguing loops aren't new, just newly available to LLM systems. Watch it for a compact, practitioner-level map of agent design tradeoffs and exam logistics; skip it if you want deep implementation detail, since the code walkthroughs stay at the sketch level.",
+    "key_points": [
+      "The Claude Certified Architect exam was released in March, is timed and proctored, costs $99 for individuals who can retake it once every six months, and uses multiple-choice questions built around realistic production constraints rather than trivia.",
+      "The exam covers five weighted domains \u2014 agentic architecture at 27%, Claude Code configuration and workflow at 20%, plus prompt engineering and structured output, tool design and MCP integration, and context management and reliability.",
+      "Six production scenarios exist and the exam randomly selects four for any given sitting, with all questions centered on those four.",
+      "Checking stop_reason on every loop iteration is the core agentic loop discipline: it tells you whether the model wants a tool run, finished normally, or hit a token limit and returned a partial response requiring action.",
+      "The LLM never executes tools itself \u2014 it is a probabilistic next-word predictor that extracts and formats the parameters your code then uses to actually run the tool.",
+      "Agents should be specialized rather than overloaded with tools, echoing functional programming's rule that a function does one thing; Coyle's analogy is hiring a carpenter who shows up with plumbing and electrical tools too.",
+      "Subagents should receive only the slice of context they need \u2014 passing a critic agent just the claim and evidence, not the reasoning that produced them \u2014 because collaborating agents that see each other's thinking devolve into groupthink.",
+      "Context isolation and compaction are the defense against unbounded growth: fork subtasks so their tokens don't pollute the main thread, return only summaries, and trigger compaction past a threshold like 150,000 tokens.",
+      "For CI, disable interactive permission prompts so pipelines run straight through, and use batch mode for a 50% token cost reduction with results promised within 24 hours."
+    ],
+    "notable_quotes": [
+      {
+        "text": "I think anti-patterns are a key to understanding what you should not do because understanding what you should not do is the key to leading you to what you should do.",
+        "timestamp_sec": 113,
+        "why": "States the organizing thesis of the entire talk."
+      },
+      {
+        "text": "I feel that Anthropic knows how people are using their system and what the issues are going to be.",
+        "timestamp_sec": 63,
+        "why": "The justification for treating a vendor certification as a field guide."
+      },
+      {
+        "text": "It is timed. It is proctored. It is available to companies in the Claude ecosystem, the Anthropic ecosystem, but individuals can pay $99 and take the exam once every once every 6 months.",
+        "timestamp_sec": 161,
+        "why": "Concrete logistics and pricing for anyone considering the exam."
+      },
+      {
+        "text": "So, agentic architecture, 27%. Claude code, how to configure the Claude code system and workflow, 20%.",
+        "timestamp_sec": 161,
+        "why": "Reports the actual domain weightings."
+      },
+      {
+        "text": "they provide you with six production scenarios and your the exam will randomly choose four and all the questions will be centered around the four that they choose",
+        "timestamp_sec": 215,
+        "why": "Explains the exam's structure, which shapes how to study for it."
+      },
+      {
+        "text": "Keep the little threads independent. Keep your agents independent.",
+        "timestamp_sec": 303,
+        "why": "Compresses the multi-threading analogy into the talk's central design rule."
+      },
+      {
+        "text": "B\u00f6hm and Jacopini, 1966 proved that if you want a language to be Turing complete, which means can compute anything that computers are possibly able to compute, then you need only three things.",
+        "timestamp_sec": 403,
+        "why": "The historical grounding for his contrarian take on loop hype."
+      },
+      {
+        "text": "So, loops are the new big thing, right? Well, no, they're not.",
+        "timestamp_sec": 356,
+        "why": "A direct pushback on a widely repeated 2026 framing."
+      },
+      {
+        "text": "The problem is the LLM can't do anything. It is just a probabilistic next word predictor. It can't execute tools.",
+        "timestamp_sec": 499,
+        "why": "The mechanical fact behind the tool-use loop that beginners most often get wrong."
+      },
+      {
+        "text": "One of the stop reasons may be you have run out of tokens, and this response is based on partial when the LLM had to stop.",
+        "timestamp_sec": 645,
+        "why": "Names the specific failure mode that makes stop_reason checking non-optional."
+      },
+      {
+        "text": "you hire a carpenter to come to the house, and the guy shows up with uh plumbing tools, carpenter tools, electrical tools. He says, \"I can do anything.\" Well, maybe you don't want this guy, maybe you want a a professional carpenter.",
+        "timestamp_sec": 741,
+        "why": "The talk's most memorable framing of the tool-overload anti-pattern."
+      },
+      {
+        "text": "So, specialize, don't overload.",
+        "timestamp_sec": 782,
+        "why": "The compressed prescription for multi-agent design."
+      },
+      {
+        "text": "don't let your agents context spill over into the main context because context means tokens, tokens mean money, and the more context you have, the more confused the LLM is going to be in giving you an answer",
+        "timestamp_sec": 782,
+        "why": "Ties context isolation to both cost and accuracy in one line."
+      },
+      {
+        "text": "even though oh, a million token context window, I can put everything in there. No, no, don't put everything in there. Limit what's going to go in there because then you're going to get a much more accurate system.",
+        "timestamp_sec": 782,
+        "why": "Takes a side against the large-context-window-solves-everything view."
+      },
+      {
+        "text": "When you get a bunch of agents together collaborating and talking to each other, there's a tendency to have group think. And all the agents seem to kind of devolve into one idea.",
+        "timestamp_sec": 832,
+        "why": "Names a multi-agent failure mode that motivates restricting subagent context."
+      },
+      {
+        "text": "Every agent gets its own slice",
+        "timestamp_sec": 879,
+        "why": "The talk's mnemonic for per-agent context scoping."
+      },
+      {
+        "text": "Let every subtask dump its full output into the primary thread, crowding out the context.",
+        "timestamp_sec": 879,
+        "why": "The verbatim statement of the developer-productivity anti-pattern."
+      },
+      {
+        "text": "if you have more than 150,000 tokens, then what you want to do is you can run a compact",
+        "timestamp_sec": 986,
+        "why": "A concrete numeric threshold for triggering compaction."
+      },
+      {
+        "text": "Always have interactive modes in a pipeline. Well, no no no cuz interactive modes mean uh Cloud will stop and ask you, \"You want to do this? You want to do that? Can I have permission for that?\"",
+        "timestamp_sec": 1035,
+        "why": "The CI anti-pattern stated with its reason."
+      },
+      {
+        "text": "you can put them in a batch and for 50% fewer token cost you will get the result they promise in at at least 24 hours",
+        "timestamp_sec": 1074,
+        "why": "A specific cost/latency tradeoff engineers can act on immediately."
+      }
+    ],
+    "concepts": [
+      "agentic loop design",
+      "stop reason handling",
+      "context isolation",
+      "context compaction",
+      "subagent specialization",
+      "multi-agent groupthink",
+      "tool design",
+      "model context protocol",
+      "human in the loop escalation",
+      "batch inference pricing"
+    ],
+    "positions": [
+      {
+        "claim": "Studying the CCA exam is worthwhile even for people who never take it, because Anthropic's scenario choices reveal what actually breaks in production agentic systems.",
+        "confidence": "stated",
+        "timestamp_sec": 63
+      },
+      {
+        "claim": "Anti-patterns are more pedagogically useful than patterns, because knowing what not to do leads you to what to do.",
+        "confidence": "stated",
+        "timestamp_sec": 113
+      },
+      {
+        "claim": "The current excitement about agent loops is not a new idea \u2014 B\u00f6hm and Jacopini established in 1966 that sequence, conditionals, and loops are all you need for Turing completeness.",
+        "confidence": "stated",
+        "timestamp_sec": 403
+      },
+      {
+        "claim": "An agentic loop must branch on stop_reason rather than simply consuming the model's first response, or it will silently accept truncated output when tokens run out.",
+        "confidence": "stated",
+        "timestamp_sec": 645
+      },
+      {
+        "claim": "Agents should be given one or two tools and a single job rather than a large tool inventory.",
+        "confidence": "stated",
+        "timestamp_sec": 741
+      },
+      {
+        "claim": "Subagents should receive only the claim and evidence, not the reasoning that produced them, to avoid convergent groupthink across agents.",
+        "confidence": "stated",
+        "timestamp_sec": 832
+      },
+      {
+        "claim": "Filling a million-token context window degrades answer accuracy; limiting context produces a more accurate system.",
+        "confidence": "stated",
+        "timestamp_sec": 782
+      },
+      {
+        "claim": "Interactive permission prompts should be disabled when running Claude Code in a CI pipeline.",
+        "confidence": "stated",
+        "timestamp_sec": 1035
+      },
+      {
+        "claim": "Batch mode costs 50% fewer tokens with results delivered within 24 hours, making it the right choice for non-urgent work.",
+        "confidence": "stated",
+        "timestamp_sec": 1074
+      },
+      {
+        "claim": "Computer science is no longer a reliable pathway to a job, which is why students need explicit preparation for agentic AI work.",
+        "confidence": "stated",
+        "timestamp_sec": 1
+      },
+      {
+        "claim": "Multi-threaded programming's lessons about shared memory and synchronization transfer directly to multi-agent system design.",
+        "confidence": "implied",
+        "timestamp_sec": 303
+      }
+    ],
+    "speaker_org": "UC Berkeley"
+  },
+  "_meta": {
+    "slug": "anthropics-cca-exam-as-a-field-guide-for-agentic-engineering",
+    "video_id": "Z-c11pV_uvU",
+    "url": "https://www.youtube.com/watch?v=Z-c11pV_uvU",
+    "word_count": 2938,
+    "wall_sec": 49.4,
+    "run_at": "2026-08-12T19:32:12Z",
+    "effort": "medium"
+  }
+}

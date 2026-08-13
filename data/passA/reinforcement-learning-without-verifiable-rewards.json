@@ -1,0 +1,314 @@
+{
+  "is_error": false,
+  "duration_api_ms": 73416,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "49907dc2-d46b-48e0-ab65-0955973ed7e8",
+  "total_cost_usd": 0.28862200000000005,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 11257,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 6541,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 11257,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 6541,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 11257,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 11257
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 7283,
+      "outputTokens": 16,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.007363000000000001,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 6541,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 11257,
+      "webSearchRequests": 0,
+      "costUSD": 0.28125900000000004,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Will Brown of Prime Intellect argues that RL with verifiable rewards (RLVR) covers only the easy cases \u2014 math, code tests, deterministic tool state \u2014 while most real agent work (reports, bookings, refunds, browser and tool use) has no clean check for correctness. The talk is a practical catalogue of how to manufacture training signal anyway: ground tasks in real source material (production traces, doc corpora, repos), work backwards from known-reachable end states so you can verify the easy problem and train on the hard one, build high-fidelity simulators of back-ends you can't program, and spend test-time compute on judges, rubrics, difficulty calibration, and reward-hack mining. He frames environments as the unifying artifact \u2014 the same object serves evals, SFT data generation, prompt optimization, and RL \u2014 and positions continual learning as the goal: agents deployed in production that turn their own failures into new trainable tasks. Worth watching if you're trying to move RL past benchmark-shaped tasks and want a concrete menu of signal-generation techniques plus the failure modes (reward hacking, out-of-distribution generalization) that come with them.\",\n  \"key_points\": [\n    \"Most valuable real-world agent tasks lack verifiable rewards, so the hard problem is manufacturing supervision rather than running the RL algorithm itself.\",\n    \"Environments (tasks + harness + rewards) are the same objects as evals, and can be reused for static SFT data generation, on-policy distillation, prompt optimization, and as a scientific test bed for harness iteration.\",\n    \"The 'work backwards' principle \u2014 start from a solution or known-reachable end state, throw it away, and train the model to rediscover it \u2014 yields free supervision and generalizes from doc QA to code PRs to simulated web apps.\",\n    \"Production agent traces are the preferred source material because they define the real task distribution before you have any labels, which is what makes continual learning possible.\",\n    \"When back-end systems (MCP tools, CLIs, websites) can't be programmatically controlled, learn to simulate them; simulators give full back-end controllability so you can plant answers and bake in verifiability the real deployment lacks.\",\n    \"Test-time compute can be spent across the whole pipeline \u2014 mining traces, calibrating task difficulty into the not-too-easy/not-too-hard band RL needs, refining simulators, extracting rubrics, and red-teaming for reward hacks.\",\n    \"Reward hacking is treated as a boundary problem: loose proxies undefined at the edges get exploited, and hindsight review with accumulated hack corpora catches what in-context instructions to judges do not.\",\n    \"RL refines skills but doesn't inject dense new knowledge; blending it with supervised signal from the environment gives the model a native world model of what to expect from its tools.\",\n    \"Small training runs must be folded into environment design, since some pathologies only surface once you actually start doing RL.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"often we don't actually have verifiable rewards. And so messy real world tasks often we're kind of figuring out as we go.\",\n      \"timestamp_sec\": 13,\n      \"why\": \"States the talk's premise and the gap it targets.\"\n    },\n    {\n      \"text\": \"So I think a lot of people think RL when they think environment, but environments and evals are really the same thing.\",\n      \"timestamp_sec\": 245,\n      \"why\": \"A reframing others might contest, and the basis for reusing one artifact across evals, SFT, and RL.\"\n    },\n    {\n      \"text\": \"And the goal that we're really trying to enable is more people to be able to become their own research lab\",\n      \"timestamp_sec\": 209,\n      \"why\": \"Names the thesis behind Prime Intellect's tooling stack.\"\n    },\n    {\n      \"text\": \"classical machine learning will tell you you can train for the distribution, but generalizing outside of the distribution is kind of an undefined problem.\",\n      \"timestamp_sec\": 348,\n      \"why\": \"Concise statement of why unbounded real-world tasks resist standard eval construction.\"\n    },\n    {\n      \"text\": \"reward hacking is when you have a kind of loose proxy for your objective that is undefined at the boundaries\",\n      \"timestamp_sec\": 380,\n      \"why\": \"A crisp working definition that pins the failure to reward design, not model malice.\"\n    },\n    {\n      \"text\": \"And I think currently the level of abstraction for doing this is far too low for it to be practical for most people.\",\n      \"timestamp_sec\": 431,\n      \"why\": \"The core critique of the current continual-learning tooling landscape.\"\n    },\n    {\n      \"text\": \"RL's great for refining skills, but less so for incorporating like dense new knowledge.\",\n      \"timestamp_sec\": 468,\n      \"why\": \"Names a tradeoff that motivates blending RL with supervised environment signal.\"\n    },\n    {\n      \"text\": \"grounding is one where you have some source material and the ability to do an AB test of like with and without is a very useful way of creating this kind of capability gap where a model will do better if it has something in context\",\n      \"timestamp_sec\": 505,\n      \"why\": \"Explains the mechanism by which grounding produces learnable signal.\"\n    },\n    {\n      \"text\": \"Judges are also really useful. We're relying on the fact that LLMs are already really powerful general reasoners for many things.\",\n      \"timestamp_sec\": 546,\n      \"why\": \"States the assumption underpinning LLM-as-judge reward design.\"\n    },\n    {\n      \"text\": \"what we found is super helpful is taking existing traces from a deployed agent and treating these as the source material\",\n      \"timestamp_sec\": 581,\n      \"why\": \"The concrete recommendation for where to get tasks when no benchmark exists.\"\n    },\n    {\n      \"text\": \"You can verify the easy problem and then learn on the hard problem.\",\n      \"timestamp_sec\": 677,\n      \"why\": \"The single sentence that captures the working-backwards technique.\"\n    },\n    {\n      \"text\": \"this idea of wanting to know that an end state is reachable and that you can then take steps back, throw away the solution, and then learn to find it again\",\n      \"timestamp_sec\": 712,\n      \"why\": \"Generalizes the code-PR construction into a reusable recipe.\"\n    },\n    {\n      \"text\": \"There are some MCP tools or CLI tools or websites or applications where we can't actually program them yet. And so, what we want to do is learn to simulate them.\",\n      \"timestamp_sec\": 744,\n      \"why\": \"Frames world simulators as the answer to uncontrollable back-ends.\"\n    },\n    {\n      \"text\": \"And so, you can actually do this reverse engineering where you get to kind of plant the answer.\",\n      \"timestamp_sec\": 781,\n      \"why\": \"Names the concrete advantage simulators hold over real production environments.\"\n    },\n    {\n      \"text\": \"a lot of times we will have a model that does something and it will make mistakes along the way and it's easier to tell what went wrong in hindsight.\",\n      \"timestamp_sec\": 811,\n      \"why\": \"The asymmetry that justifies spending compute on retrospective judging and rubric extraction.\"\n    },\n    {\n      \"text\": \"you want tasks that are not too easy, not too hard and you want to be searching for these and iterating on generating more of them\",\n      \"timestamp_sec\": 848,\n      \"why\": \"States the difficulty-calibration requirement that follows from how advantages are computed.\"\n    },\n    {\n      \"text\": \"there are things that don't show up until you actually like start doing RL\",\n      \"timestamp_sec\": 954,\n      \"why\": \"Argues environment design can't be validated offline alone.\"\n    },\n    {\n      \"text\": \"And ultimately what you want is to surface the most important pieces up to the human\",\n      \"timestamp_sec\": 987,\n      \"why\": \"Defines where human expertise should sit in an otherwise automated loop.\"\n    },\n    {\n      \"text\": \"We have a blog called general agent which is demonstrating this for tool use, this online loop of generating, solving, and synthesizing new tasks and gating based on this pass rate which then we train on and we see a great uplift on popular benchmarks for tool use.\",\n      \"timestamp_sec\": 1017,\n      \"why\": \"The one concrete empirical result cited for the whole pipeline.\"\n    },\n    {\n      \"text\": \"in the same way that with coding agents we're kind of going to higher levels of abstraction, we can do this with environment and reward design as well\",\n      \"timestamp_sec\": 1084,\n      \"why\": \"The analogy that frames the talk's bet about where post-training tooling is headed.\"\n    },\n    {\n      \"text\": \"models are then able to stay within the guardrails we give them, they go find the issues in production, and then they turn these back into new tasks that can then be trained on for getting better in the real world\",\n      \"timestamp_sec\": 1121,\n      \"why\": \"Closes the continual-learning loop the talk builds toward.\"\n    }\n  ],\n  \"concepts\": [\n    \"reinforcement learning with verifiable rewards\",\n    \"reward design\",\n    \"reward hacking\",\n    \"rl environment design\",\n    \"llm-as-judge\",\n    \"rubric-based evaluation\",\n    \"continual learning\",\n    \"world simulators\",\n    \"production trace mining\",\n    \"test-time compute scaling\",\n    \"difficulty calibration\",\n    \"policy gradient methods\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Environments and evals are the same objects, and one environment can serve RL, SFT data generation, on-policy distillation, and prompt optimization.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 245\n    },\n    {\n      \"claim\": \"Most real-world agent tasks are not verifiable; verifiable rewards (math answers, code tests, database state) are the easy special case.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 278\n    },\n    {\n      \"claim\": \"Handcrafted benchmarks of a few hundred expert-built tasks are not a scalable basis for training on open-ended real-world work.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 313\n    },\n    {\n      \"claim\": \"Generalizing outside the training distribution is an undefined problem in classical ML terms, so the distribution must be discovered from deployment rather than specified up front.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 348\n    },\n    {\n      \"claim\": \"Reward hacking arises specifically from proxies that are undefined at the boundaries, and models trained with RL will find those weaknesses.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 380\n    },\n    {\n      \"claim\": \"The current level of abstraction for continual learning is too low to be practical for most practitioners, and most of the difficult steps are in fact automatable.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 431\n    },\n    {\n      \"claim\": \"RL is effective at refining existing skills but poor at incorporating dense new knowledge into the model.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 468\n    },\n    {\n      \"claim\": \"Deployed production traces are the best available source material for constructing tasks when no labels exist.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 581\n    },\n    {\n      \"claim\": \"Working backwards from a known-reachable end state yields supervision for free and applies well beyond code.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 677\n    },\n    {\n      \"claim\": \"Learned simulators are better RL environments than real production systems because full back-end controllability lets you plant answers and guarantee solvability.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 744\n    },\n    {\n      \"claim\": \"Judging in hindsight \u2014 after seeing the full chain of events, or by polling several models \u2014 is more reliable than judging or instructing against failures in advance.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 811\n    },\n    {\n      \"claim\": \"RL requires tasks calibrated to intermediate difficulty, because the advantage signal depends on separation across a set of rollouts.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 848\n    },\n    {\n      \"claim\": \"Simple hindsight review catches most reward hacks in practice, whereas telling a judge model not to allow a behavior does not prevent it in the rollout.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 915\n    },\n    {\n      \"claim\": \"Small training runs must be part of environment design because some problems only appear once RL is actually running.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 954\n    },\n    {\n      \"claim\": \"Humans should be reserved for the highest-level judgments about goals and quality, with compute handling the rest of environment refinement.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 987\n    },\n    {\n      \"claim\": \"An online loop of generating, solving, and synthesizing tasks gated on pass rate produced a large uplift on popular tool-use benchmarks.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1017\n    },\n    {\n      \"claim\": \"Supervised learning signal from the environment gives the model a likelihood model of environment tokens \u2014 a native world model \u2014 which RL alone would not produce.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1055\n    },\n    {\n      \"claim\": \"Environment and reward design will follow coding agents up the abstraction ladder, becoming largely automated.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 1084\n    }\n  ],\n  \"speaker_org\": \"Prime Intellect\"\n}",
+  "ttft_ms": 24623,
+  "ttft_stream_ms": 1248,
+  "time_to_request_ms": 33,
+  "type": "result",
+  "duration_ms": 73377,
+  "uuid": "b30940fb-3b6a-4a52-b6ec-ae394562c233",
+  "passA": {
+    "summary": "Will Brown of Prime Intellect argues that RL with verifiable rewards (RLVR) covers only the easy cases \u2014 math, code tests, deterministic tool state \u2014 while most real agent work (reports, bookings, refunds, browser and tool use) has no clean check for correctness. The talk is a practical catalogue of how to manufacture training signal anyway: ground tasks in real source material (production traces, doc corpora, repos), work backwards from known-reachable end states so you can verify the easy problem and train on the hard one, build high-fidelity simulators of back-ends you can't program, and spend test-time compute on judges, rubrics, difficulty calibration, and reward-hack mining. He frames environments as the unifying artifact \u2014 the same object serves evals, SFT data generation, prompt optimization, and RL \u2014 and positions continual learning as the goal: agents deployed in production that turn their own failures into new trainable tasks. Worth watching if you're trying to move RL past benchmark-shaped tasks and want a concrete menu of signal-generation techniques plus the failure modes (reward hacking, out-of-distribution generalization) that come with them.",
+    "key_points": [
+      "Most valuable real-world agent tasks lack verifiable rewards, so the hard problem is manufacturing supervision rather than running the RL algorithm itself.",
+      "Environments (tasks + harness + rewards) are the same objects as evals, and can be reused for static SFT data generation, on-policy distillation, prompt optimization, and as a scientific test bed for harness iteration.",
+      "The 'work backwards' principle \u2014 start from a solution or known-reachable end state, throw it away, and train the model to rediscover it \u2014 yields free supervision and generalizes from doc QA to code PRs to simulated web apps.",
+      "Production agent traces are the preferred source material because they define the real task distribution before you have any labels, which is what makes continual learning possible.",
+      "When back-end systems (MCP tools, CLIs, websites) can't be programmatically controlled, learn to simulate them; simulators give full back-end controllability so you can plant answers and bake in verifiability the real deployment lacks.",
+      "Test-time compute can be spent across the whole pipeline \u2014 mining traces, calibrating task difficulty into the not-too-easy/not-too-hard band RL needs, refining simulators, extracting rubrics, and red-teaming for reward hacks.",
+      "Reward hacking is treated as a boundary problem: loose proxies undefined at the edges get exploited, and hindsight review with accumulated hack corpora catches what in-context instructions to judges do not.",
+      "RL refines skills but doesn't inject dense new knowledge; blending it with supervised signal from the environment gives the model a native world model of what to expect from its tools.",
+      "Small training runs must be folded into environment design, since some pathologies only surface once you actually start doing RL."
+    ],
+    "notable_quotes": [
+      {
+        "text": "often we don't actually have verifiable rewards. And so messy real world tasks often we're kind of figuring out as we go.",
+        "timestamp_sec": 13,
+        "why": "States the talk's premise and the gap it targets."
+      },
+      {
+        "text": "So I think a lot of people think RL when they think environment, but environments and evals are really the same thing.",
+        "timestamp_sec": 245,
+        "why": "A reframing others might contest, and the basis for reusing one artifact across evals, SFT, and RL."
+      },
+      {
+        "text": "And the goal that we're really trying to enable is more people to be able to become their own research lab",
+        "timestamp_sec": 209,
+        "why": "Names the thesis behind Prime Intellect's tooling stack."
+      },
+      {
+        "text": "classical machine learning will tell you you can train for the distribution, but generalizing outside of the distribution is kind of an undefined problem.",
+        "timestamp_sec": 348,
+        "why": "Concise statement of why unbounded real-world tasks resist standard eval construction."
+      },
+      {
+        "text": "reward hacking is when you have a kind of loose proxy for your objective that is undefined at the boundaries",
+        "timestamp_sec": 380,
+        "why": "A crisp working definition that pins the failure to reward design, not model malice."
+      },
+      {
+        "text": "And I think currently the level of abstraction for doing this is far too low for it to be practical for most people.",
+        "timestamp_sec": 431,
+        "why": "The core critique of the current continual-learning tooling landscape."
+      },
+      {
+        "text": "RL's great for refining skills, but less so for incorporating like dense new knowledge.",
+        "timestamp_sec": 468,
+        "why": "Names a tradeoff that motivates blending RL with supervised environment signal."
+      },
+      {
+        "text": "grounding is one where you have some source material and the ability to do an AB test of like with and without is a very useful way of creating this kind of capability gap where a model will do better if it has something in context",
+        "timestamp_sec": 505,
+        "why": "Explains the mechanism by which grounding produces learnable signal."
+      },
+      {
+        "text": "Judges are also really useful. We're relying on the fact that LLMs are already really powerful general reasoners for many things.",
+        "timestamp_sec": 546,
+        "why": "States the assumption underpinning LLM-as-judge reward design."
+      },
+      {
+        "text": "what we found is super helpful is taking existing traces from a deployed agent and treating these as the source material",
+        "timestamp_sec": 581,
+        "why": "The concrete recommendation for where to get tasks when no benchmark exists."
+      },
+      {
+        "text": "You can verify the easy problem and then learn on the hard problem.",
+        "timestamp_sec": 677,
+        "why": "The single sentence that captures the working-backwards technique."
+      },
+      {
+        "text": "this idea of wanting to know that an end state is reachable and that you can then take steps back, throw away the solution, and then learn to find it again",
+        "timestamp_sec": 712,
+        "why": "Generalizes the code-PR construction into a reusable recipe."
+      },
+      {
+        "text": "There are some MCP tools or CLI tools or websites or applications where we can't actually program them yet. And so, what we want to do is learn to simulate them.",
+        "timestamp_sec": 744,
+        "why": "Frames world simulators as the answer to uncontrollable back-ends."
+      },
+      {
+        "text": "And so, you can actually do this reverse engineering where you get to kind of plant the answer.",
+        "timestamp_sec": 781,
+        "why": "Names the concrete advantage simulators hold over real production environments."
+      },
+      {
+        "text": "a lot of times we will have a model that does something and it will make mistakes along the way and it's easier to tell what went wrong in hindsight.",
+        "timestamp_sec": 811,
+        "why": "The asymmetry that justifies spending compute on retrospective judging and rubric extraction."
+      },
+      {
+        "text": "you want tasks that are not too easy, not too hard and you want to be searching for these and iterating on generating more of them",
+        "timestamp_sec": 848,
+        "why": "States the difficulty-calibration requirement that follows from how advantages are computed."
+      },
+      {
+        "text": "there are things that don't show up until you actually like start doing RL",
+        "timestamp_sec": 954,
+        "why": "Argues environment design can't be validated offline alone."
+      },
+      {
+        "text": "And ultimately what you want is to surface the most important pieces up to the human",
+        "timestamp_sec": 987,
+        "why": "Defines where human expertise should sit in an otherwise automated loop."
+      },
+      {
+        "text": "We have a blog called general agent which is demonstrating this for tool use, this online loop of generating, solving, and synthesizing new tasks and gating based on this pass rate which then we train on and we see a great uplift on popular benchmarks for tool use.",
+        "timestamp_sec": 1017,
+        "why": "The one concrete empirical result cited for the whole pipeline."
+      },
+      {
+        "text": "in the same way that with coding agents we're kind of going to higher levels of abstraction, we can do this with environment and reward design as well",
+        "timestamp_sec": 1084,
+        "why": "The analogy that frames the talk's bet about where post-training tooling is headed."
+      },
+      {
+        "text": "models are then able to stay within the guardrails we give them, they go find the issues in production, and then they turn these back into new tasks that can then be trained on for getting better in the real world",
+        "timestamp_sec": 1121,
+        "why": "Closes the continual-learning loop the talk builds toward."
+      }
+    ],
+    "concepts": [
+      "reinforcement learning with verifiable rewards",
+      "reward design",
+      "reward hacking",
+      "rl environment design",
+      "llm-as-judge",
+      "rubric-based evaluation",
+      "continual learning",
+      "world simulators",
+      "production trace mining",
+      "test-time compute scaling",
+      "difficulty calibration",
+      "policy gradient methods"
+    ],
+    "positions": [
+      {
+        "claim": "Environments and evals are the same objects, and one environment can serve RL, SFT data generation, on-policy distillation, and prompt optimization.",
+        "confidence": "stated",
+        "timestamp_sec": 245
+      },
+      {
+        "claim": "Most real-world agent tasks are not verifiable; verifiable rewards (math answers, code tests, database state) are the easy special case.",
+        "confidence": "stated",
+        "timestamp_sec": 278
+      },
+      {
+        "claim": "Handcrafted benchmarks of a few hundred expert-built tasks are not a scalable basis for training on open-ended real-world work.",
+        "confidence": "stated",
+        "timestamp_sec": 313
+      },
+      {
+        "claim": "Generalizing outside the training distribution is an undefined problem in classical ML terms, so the distribution must be discovered from deployment rather than specified up front.",
+        "confidence": "stated",
+        "timestamp_sec": 348
+      },
+      {
+        "claim": "Reward hacking arises specifically from proxies that are undefined at the boundaries, and models trained with RL will find those weaknesses.",
+        "confidence": "stated",
+        "timestamp_sec": 380
+      },
+      {
+        "claim": "The current level of abstraction for continual learning is too low to be practical for most practitioners, and most of the difficult steps are in fact automatable.",
+        "confidence": "stated",
+        "timestamp_sec": 431
+      },
+      {
+        "claim": "RL is effective at refining existing skills but poor at incorporating dense new knowledge into the model.",
+        "confidence": "stated",
+        "timestamp_sec": 468
+      },
+      {
+        "claim": "Deployed production traces are the best available source material for constructing tasks when no labels exist.",
+        "confidence": "stated",
+        "timestamp_sec": 581
+      },
+      {
+        "claim": "Working backwards from a known-reachable end state yields supervision for free and applies well beyond code.",
+        "confidence": "stated",
+        "timestamp_sec": 677
+      },
+      {
+        "claim": "Learned simulators are better RL environments than real production systems because full back-end controllability lets you plant answers and guarantee solvability.",
+        "confidence": "stated",
+        "timestamp_sec": 744
+      },
+      {
+        "claim": "Judging in hindsight \u2014 after seeing the full chain of events, or by polling several models \u2014 is more reliable than judging or instructing against failures in advance.",
+        "confidence": "stated",
+        "timestamp_sec": 811
+      },
+      {
+        "claim": "RL requires tasks calibrated to intermediate difficulty, because the advantage signal depends on separation across a set of rollouts.",
+        "confidence": "stated",
+        "timestamp_sec": 848
+      },
+      {
+        "claim": "Simple hindsight review catches most reward hacks in practice, whereas telling a judge model not to allow a behavior does not prevent it in the rollout.",
+        "confidence": "stated",
+        "timestamp_sec": 915
+      },
+      {
+        "claim": "Small training runs must be part of environment design because some problems only appear once RL is actually running.",
+        "confidence": "stated",
+        "timestamp_sec": 954
+      },
+      {
+        "claim": "Humans should be reserved for the highest-level judgments about goals and quality, with compute handling the rest of environment refinement.",
+        "confidence": "stated",
+        "timestamp_sec": 987
+      },
+      {
+        "claim": "An online loop of generating, solving, and synthesizing tasks gated on pass rate produced a large uplift on popular tool-use benchmarks.",
+        "confidence": "stated",
+        "timestamp_sec": 1017
+      },
+      {
+        "claim": "Supervised learning signal from the environment gives the model a likelihood model of environment tokens \u2014 a native world model \u2014 which RL alone would not produce.",
+        "confidence": "stated",
+        "timestamp_sec": 1055
+      },
+      {
+        "claim": "Environment and reward design will follow coding agents up the abstraction ladder, becoming largely automated.",
+        "confidence": "implied",
+        "timestamp_sec": 1084
+      }
+    ],
+    "speaker_org": "Prime Intellect"
+  },
+  "_meta": {
+    "slug": "reinforcement-learning-without-verifiable-rewards",
+    "video_id": "AQv3qRCG6Gw",
+    "url": "https://www.youtube.com/watch?v=AQv3qRCG6Gw",
+    "word_count": 4154,
+    "wall_sec": 74.5,
+    "run_at": "2026-08-12T20:08:58Z",
+    "effort": "medium"
+  }
+}

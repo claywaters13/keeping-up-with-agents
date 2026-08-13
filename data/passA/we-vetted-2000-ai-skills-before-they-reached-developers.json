@@ -1,0 +1,267 @@
+{
+  "is_error": false,
+  "duration_api_ms": 62959,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "558f3374-52de-4322-b195-54c0f3a2ce3c",
+  "total_cost_usd": 0.219132,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 7589,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 5346,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 7589,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 5346,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 7589,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 7589
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 4323,
+      "outputTokens": 21,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.004428,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 5346,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 7589,
+      "webSearchRequests": 0,
+      "costUSD": 0.214704,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Lucas Palma, product security manager at Nubank, argues that AI skills (bundled instructions and context shipped to coding agents) are not configuration files but supply chain dependencies, and should be governed like packages and containers. He describes Skill Vector, an internal tool that gates skills before they land in Nubank's internal marketplace: engineers can run it locally, and a CI step re-runs deterministic regex-based checks plus an LLM review for behavioral risks, posting findings as PR comments and emitting SARIF into the company's vulnerability management program. Across a baseline of over 2,000 skills scanned, the team found more than 1,500 risks, remediated about 1,000, and blocked a small number outright. The talk is most useful for platform and security teams in regulated environments who need a concrete, low-friction review pipeline for skills, plugins, MCP servers, rules, and hooks. It also flags a subtle failure mode: skills that instruct the model to 'ask for confirmation' where the agent confirms with itself, giving the appearance of a human in the loop without one.\",\n  \"key_points\": [\n    \"AI skills look like configuration but behave like supply chain dependencies, so the modern software supply chain now includes skills, plugins, MCP servers, agent rules, and hooks alongside packages, containers, and models.\",\n    \"The threat model is that a skill author steers the code another engineer's agent generates, which can introduce hardcoded tokens that leak into logs, destructive shell commands, unwanted file modifications, and over-broad permissions.\",\n    \"Nubank centralizes distribution through an internal plugin/skill marketplace so there is a single canonical boundary where security review can be enforced.\",\n    \"Skill Vector runs at two points \u2014 locally during authoring for fast iteration, and again in CI on the upload pull request \u2014 because the team cannot assume the engineer ran the latest version locally.\",\n    \"The scanner is deliberately hybrid: deterministic regex checks for easy patterns, plus LLM review where behavioral context is needed, since LLM verdicts vary with temperature and are not reliably repeatable.\",\n    \"Findings are surfaced as comments on the same PR that uploads the skill and exported as SARIF so they feed existing security tooling and the vulnerability management program.\",\n    \"Over a baseline of 2,000+ skills the team identified more than 1,500 risks, saw roughly 1,000 remediated immediately, and blocked a few high-risk skills before marketplace distribution; a retroactive historical scan surfaced further risks in pre-existing skills.\",\n    \"A prompt-level 'ask for confirmation' instruction is not a real approval gate \u2014 the agent may satisfy the confirmation itself \u2014 so the team scans for genuine human-in-the-loop enforcement via tool-level approval gates and hooks.\",\n    \"Lessons that did not work well included treating all shell commands as equally risky, weak low-context signals that created noise, warnings that only mattered in production rather than locally, and findings shipped without clear remediation guidance.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"we should be protecting the whole workflow not only the code that's being generated\",\n      \"timestamp_sec\": 67,\n      \"why\": \"the talk's one-line thesis, stated explicitly as the takeaway\"\n    },\n    {\n      \"text\": \"It still have the traditional part, but it will it also includes skills, plugins, MCP servers, agent rules and much more things to be acting as supply chain\",\n      \"timestamp_sec\": 128,\n      \"why\": \"defines the expanded supply chain surface the rest of the talk is built on\"\n    },\n    {\n      \"text\": \"somebody can create their own skill and share with others. So when we do that this first person is guiding over the code that's being generated by the other person and then that can be dangerous\",\n      \"timestamp_sec\": 189,\n      \"why\": \"states the core threat model in one sentence\"\n    },\n    {\n      \"text\": \"depending on how the skill was configured, it might have excessive permissions much more than what was needed and even a typo can make some dangerous stuff depending on who is using that such skill\",\n      \"timestamp_sec\": 306,\n      \"why\": \"concrete failure mode: over-broad permissions plus authoring error\"\n    },\n    {\n      \"text\": \"So it's a internal marketplace where people can discover new skills and that's our boundary where we are trying to make it safer\",\n      \"timestamp_sec\": 358,\n      \"why\": \"names the enforcement boundary that makes the whole approach tractable\"\n    },\n    {\n      \"text\": \"we made a step before that like a CI step where we created a tool that's called skill vector\",\n      \"timestamp_sec\": 358,\n      \"why\": \"identifies the actual mechanism and where it sits in the pipeline\"\n    },\n    {\n      \"text\": \"We also runs it again because we can ensure that the engineer has run locally or has run the most updated version. So we also be scanning that after the upload.\",\n      \"timestamp_sec\": 415,\n      \"why\": \"explains why local checks alone are insufficient and CI must re-run them\"\n    },\n    {\n      \"text\": \"it's important to have this hybrid approach with LLM checking the the context but also with the determinist because you know how LLM is depending on the temperature that was set\",\n      \"timestamp_sec\": 466,\n      \"why\": \"names the tradeoff behind deterministic-plus-LLM scanning\"\n    },\n    {\n      \"text\": \"another good thing that we made that's important is to have a serif with all of these so it can be consumed by our security tools as well and generate a report on the risks and be part of our vulnerability management program\",\n      \"timestamp_sec\": 466,\n      \"why\": \"integration detail \u2014 SARIF output ties skill review into existing security process\"\n    },\n    {\n      \"text\": \"the skill can require some remediation, can be blocked, all of this before the marketplace distribution\",\n      \"timestamp_sec\": 521,\n      \"why\": \"states that the gate is blocking, not advisory\"\n    },\n    {\n      \"text\": \"we have scanned on that over 2,000 skills. uh now there is much more than that but this is the baseline that I brought for you on this presentation\",\n      \"timestamp_sec\": 578,\n      \"why\": \"the headline number, with the caveat that it is only a baseline\"\n    },\n    {\n      \"text\": \"there were some warnings that seemed uh harmless, but only if it was running locally. If there were going to production, then they could be impactful\",\n      \"timestamp_sec\": 707,\n      \"why\": \"severity depends on execution context \u2014 a lesson learned the hard way\"\n    },\n    {\n      \"text\": \"people sometimes will add the instruction like you need to ask for confirmation but the AI may ask confirmation for itself. So from your perspective there is a human in the loop but for the AI perspective there is has been a confirmation\",\n      \"timestamp_sec\": 753,\n      \"why\": \"the most non-obvious finding in the talk: prompt-level confirmation is fake human-in-the-loop\"\n    },\n    {\n      \"text\": \"we know that other people could create other marketplace. So how can we proactively scan check there is a new marketplace and put skill vector into it as well.\",\n      \"timestamp_sec\": 753,\n      \"why\": \"acknowledges the limit of a single-chokepoint strategy\"\n    },\n    {\n      \"text\": \"treating these as supply chain is important. Reviewing what's being uploaded to the marketplace before goes there. letting developers to run these checks locally, enforcing these checks that are being run locally also in the CI\",\n      \"timestamp_sec\": 823,\n      \"why\": \"compact statement of the transferable playbook\"\n    },\n    {\n      \"text\": \"if someone downloads something and wants to use it's important to upload it on the marketplace. So all of this scanning can be done and check if it's safe or not to be used\",\n      \"timestamp_sec\": 910,\n      \"why\": \"extends the policy to third-party skills, not just internally authored ones\"\n    }\n  ],\n  \"concepts\": [\n    \"ai supply chain security\",\n    \"agent skill vetting\",\n    \"internal skill marketplace\",\n    \"ci security gating\",\n    \"deterministic and llm hybrid scanning\",\n    \"sarif reporting\",\n    \"vulnerability management integration\",\n    \"human-in-the-loop approval gates\",\n    \"over-broad agent permissions\",\n    \"regulated environment compliance\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"AI skills should be governed as supply chain dependencies rather than as configuration files.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 67\n    },\n    {\n      \"claim\": \"Security effort should protect the entire developer workflow, not just the generated code.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 67\n    },\n    {\n      \"claim\": \"A skill author effectively controls the code generated on other engineers' machines, which is a distinct and dangerous trust transfer.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 189\n    },\n    {\n      \"claim\": \"Deterministic scanning alone is insufficient and LLM review alone is unreliable, so a hybrid of both is required; LLM verdicts vary with temperature.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 466\n    },\n    {\n      \"claim\": \"Local scanning must be re-enforced in CI because you cannot ensure the engineer ran the checks or ran the latest version.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 415\n    },\n    {\n      \"claim\": \"Findings should be delivered in the same pull request that uploads the skill, because co-locating feedback improves usability.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 466\n    },\n    {\n      \"claim\": \"Nubank scanned over 2,000 skills, found more than 1,500 risks, saw about 1,000 remediated immediately, and blocked a few before marketplace distribution.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 578\n    },\n    {\n      \"claim\": \"A prompt instruction to 'ask for confirmation' does not constitute a human in the loop, because the agent can satisfy the confirmation itself.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 753\n    },\n    {\n      \"claim\": \"Treating all shell commands as equally risky produced poor results; risk must be graded per command.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 707\n    },\n    {\n      \"claim\": \"Low-context, weak signals cause more trouble than they are worth in a skill scanner.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 707\n    },\n    {\n      \"claim\": \"Findings without clear remediation guidance are counterproductive.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 753\n    },\n    {\n      \"claim\": \"The same review approach generalizes to plugins, MCP servers, agent rules, and hooks, though with different risk classes.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 823\n    },\n    {\n      \"claim\": \"Third-party skills downloaded from outside should be routed through the internal marketplace so they get scanned before use.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 910\n    },\n    {\n      \"claim\": \"A single canonical marketplace is a fragile chokepoint because teams can spin up other marketplaces, requiring proactive discovery.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 753\n    }\n  ],\n  \"speaker_org\": \"Nubank\"\n}",
+  "ttft_ms": 22384,
+  "ttft_stream_ms": 1164,
+  "time_to_request_ms": 33,
+  "type": "result",
+  "duration_ms": 63645,
+  "uuid": "2af66bd0-fa7b-4d17-a798-98e0700fe8ca",
+  "passA": {
+    "summary": "Lucas Palma, product security manager at Nubank, argues that AI skills (bundled instructions and context shipped to coding agents) are not configuration files but supply chain dependencies, and should be governed like packages and containers. He describes Skill Vector, an internal tool that gates skills before they land in Nubank's internal marketplace: engineers can run it locally, and a CI step re-runs deterministic regex-based checks plus an LLM review for behavioral risks, posting findings as PR comments and emitting SARIF into the company's vulnerability management program. Across a baseline of over 2,000 skills scanned, the team found more than 1,500 risks, remediated about 1,000, and blocked a small number outright. The talk is most useful for platform and security teams in regulated environments who need a concrete, low-friction review pipeline for skills, plugins, MCP servers, rules, and hooks. It also flags a subtle failure mode: skills that instruct the model to 'ask for confirmation' where the agent confirms with itself, giving the appearance of a human in the loop without one.",
+    "key_points": [
+      "AI skills look like configuration but behave like supply chain dependencies, so the modern software supply chain now includes skills, plugins, MCP servers, agent rules, and hooks alongside packages, containers, and models.",
+      "The threat model is that a skill author steers the code another engineer's agent generates, which can introduce hardcoded tokens that leak into logs, destructive shell commands, unwanted file modifications, and over-broad permissions.",
+      "Nubank centralizes distribution through an internal plugin/skill marketplace so there is a single canonical boundary where security review can be enforced.",
+      "Skill Vector runs at two points \u2014 locally during authoring for fast iteration, and again in CI on the upload pull request \u2014 because the team cannot assume the engineer ran the latest version locally.",
+      "The scanner is deliberately hybrid: deterministic regex checks for easy patterns, plus LLM review where behavioral context is needed, since LLM verdicts vary with temperature and are not reliably repeatable.",
+      "Findings are surfaced as comments on the same PR that uploads the skill and exported as SARIF so they feed existing security tooling and the vulnerability management program.",
+      "Over a baseline of 2,000+ skills the team identified more than 1,500 risks, saw roughly 1,000 remediated immediately, and blocked a few high-risk skills before marketplace distribution; a retroactive historical scan surfaced further risks in pre-existing skills.",
+      "A prompt-level 'ask for confirmation' instruction is not a real approval gate \u2014 the agent may satisfy the confirmation itself \u2014 so the team scans for genuine human-in-the-loop enforcement via tool-level approval gates and hooks.",
+      "Lessons that did not work well included treating all shell commands as equally risky, weak low-context signals that created noise, warnings that only mattered in production rather than locally, and findings shipped without clear remediation guidance."
+    ],
+    "notable_quotes": [
+      {
+        "text": "we should be protecting the whole workflow not only the code that's being generated",
+        "timestamp_sec": 67,
+        "why": "the talk's one-line thesis, stated explicitly as the takeaway"
+      },
+      {
+        "text": "It still have the traditional part, but it will it also includes skills, plugins, MCP servers, agent rules and much more things to be acting as supply chain",
+        "timestamp_sec": 128,
+        "why": "defines the expanded supply chain surface the rest of the talk is built on"
+      },
+      {
+        "text": "somebody can create their own skill and share with others. So when we do that this first person is guiding over the code that's being generated by the other person and then that can be dangerous",
+        "timestamp_sec": 189,
+        "why": "states the core threat model in one sentence"
+      },
+      {
+        "text": "depending on how the skill was configured, it might have excessive permissions much more than what was needed and even a typo can make some dangerous stuff depending on who is using that such skill",
+        "timestamp_sec": 306,
+        "why": "concrete failure mode: over-broad permissions plus authoring error"
+      },
+      {
+        "text": "So it's a internal marketplace where people can discover new skills and that's our boundary where we are trying to make it safer",
+        "timestamp_sec": 358,
+        "why": "names the enforcement boundary that makes the whole approach tractable"
+      },
+      {
+        "text": "we made a step before that like a CI step where we created a tool that's called skill vector",
+        "timestamp_sec": 358,
+        "why": "identifies the actual mechanism and where it sits in the pipeline"
+      },
+      {
+        "text": "We also runs it again because we can ensure that the engineer has run locally or has run the most updated version. So we also be scanning that after the upload.",
+        "timestamp_sec": 415,
+        "why": "explains why local checks alone are insufficient and CI must re-run them"
+      },
+      {
+        "text": "it's important to have this hybrid approach with LLM checking the the context but also with the determinist because you know how LLM is depending on the temperature that was set",
+        "timestamp_sec": 466,
+        "why": "names the tradeoff behind deterministic-plus-LLM scanning"
+      },
+      {
+        "text": "another good thing that we made that's important is to have a serif with all of these so it can be consumed by our security tools as well and generate a report on the risks and be part of our vulnerability management program",
+        "timestamp_sec": 466,
+        "why": "integration detail \u2014 SARIF output ties skill review into existing security process"
+      },
+      {
+        "text": "the skill can require some remediation, can be blocked, all of this before the marketplace distribution",
+        "timestamp_sec": 521,
+        "why": "states that the gate is blocking, not advisory"
+      },
+      {
+        "text": "we have scanned on that over 2,000 skills. uh now there is much more than that but this is the baseline that I brought for you on this presentation",
+        "timestamp_sec": 578,
+        "why": "the headline number, with the caveat that it is only a baseline"
+      },
+      {
+        "text": "there were some warnings that seemed uh harmless, but only if it was running locally. If there were going to production, then they could be impactful",
+        "timestamp_sec": 707,
+        "why": "severity depends on execution context \u2014 a lesson learned the hard way"
+      },
+      {
+        "text": "people sometimes will add the instruction like you need to ask for confirmation but the AI may ask confirmation for itself. So from your perspective there is a human in the loop but for the AI perspective there is has been a confirmation",
+        "timestamp_sec": 753,
+        "why": "the most non-obvious finding in the talk: prompt-level confirmation is fake human-in-the-loop"
+      },
+      {
+        "text": "we know that other people could create other marketplace. So how can we proactively scan check there is a new marketplace and put skill vector into it as well.",
+        "timestamp_sec": 753,
+        "why": "acknowledges the limit of a single-chokepoint strategy"
+      },
+      {
+        "text": "treating these as supply chain is important. Reviewing what's being uploaded to the marketplace before goes there. letting developers to run these checks locally, enforcing these checks that are being run locally also in the CI",
+        "timestamp_sec": 823,
+        "why": "compact statement of the transferable playbook"
+      },
+      {
+        "text": "if someone downloads something and wants to use it's important to upload it on the marketplace. So all of this scanning can be done and check if it's safe or not to be used",
+        "timestamp_sec": 910,
+        "why": "extends the policy to third-party skills, not just internally authored ones"
+      }
+    ],
+    "concepts": [
+      "ai supply chain security",
+      "agent skill vetting",
+      "internal skill marketplace",
+      "ci security gating",
+      "deterministic and llm hybrid scanning",
+      "sarif reporting",
+      "vulnerability management integration",
+      "human-in-the-loop approval gates",
+      "over-broad agent permissions",
+      "regulated environment compliance"
+    ],
+    "positions": [
+      {
+        "claim": "AI skills should be governed as supply chain dependencies rather than as configuration files.",
+        "confidence": "stated",
+        "timestamp_sec": 67
+      },
+      {
+        "claim": "Security effort should protect the entire developer workflow, not just the generated code.",
+        "confidence": "stated",
+        "timestamp_sec": 67
+      },
+      {
+        "claim": "A skill author effectively controls the code generated on other engineers' machines, which is a distinct and dangerous trust transfer.",
+        "confidence": "stated",
+        "timestamp_sec": 189
+      },
+      {
+        "claim": "Deterministic scanning alone is insufficient and LLM review alone is unreliable, so a hybrid of both is required; LLM verdicts vary with temperature.",
+        "confidence": "stated",
+        "timestamp_sec": 466
+      },
+      {
+        "claim": "Local scanning must be re-enforced in CI because you cannot ensure the engineer ran the checks or ran the latest version.",
+        "confidence": "stated",
+        "timestamp_sec": 415
+      },
+      {
+        "claim": "Findings should be delivered in the same pull request that uploads the skill, because co-locating feedback improves usability.",
+        "confidence": "stated",
+        "timestamp_sec": 466
+      },
+      {
+        "claim": "Nubank scanned over 2,000 skills, found more than 1,500 risks, saw about 1,000 remediated immediately, and blocked a few before marketplace distribution.",
+        "confidence": "stated",
+        "timestamp_sec": 578
+      },
+      {
+        "claim": "A prompt instruction to 'ask for confirmation' does not constitute a human in the loop, because the agent can satisfy the confirmation itself.",
+        "confidence": "stated",
+        "timestamp_sec": 753
+      },
+      {
+        "claim": "Treating all shell commands as equally risky produced poor results; risk must be graded per command.",
+        "confidence": "stated",
+        "timestamp_sec": 707
+      },
+      {
+        "claim": "Low-context, weak signals cause more trouble than they are worth in a skill scanner.",
+        "confidence": "stated",
+        "timestamp_sec": 707
+      },
+      {
+        "claim": "Findings without clear remediation guidance are counterproductive.",
+        "confidence": "stated",
+        "timestamp_sec": 753
+      },
+      {
+        "claim": "The same review approach generalizes to plugins, MCP servers, agent rules, and hooks, though with different risk classes.",
+        "confidence": "stated",
+        "timestamp_sec": 823
+      },
+      {
+        "claim": "Third-party skills downloaded from outside should be routed through the internal marketplace so they get scanned before use.",
+        "confidence": "stated",
+        "timestamp_sec": 910
+      },
+      {
+        "claim": "A single canonical marketplace is a fragile chokepoint because teams can spin up other marketplaces, requiring proactive discovery.",
+        "confidence": "implied",
+        "timestamp_sec": 753
+      }
+    ],
+    "speaker_org": "Nubank"
+  },
+  "_meta": {
+    "slug": "we-vetted-2000-ai-skills-before-they-reached-developers",
+    "video_id": "iKQ78wyJEXU",
+    "url": "https://www.youtube.com/watch?v=iKQ78wyJEXU",
+    "word_count": 2158,
+    "wall_sec": 64.7,
+    "run_at": "2026-08-12T20:30:31Z",
+    "effort": "medium"
+  }
+}

@@ -1,0 +1,317 @@
+{
+  "is_error": false,
+  "duration_api_ms": 54761,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "f0793d41-9249-4701-8669-24838758d044",
+  "total_cost_usd": 0.23868399999999998,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 10838,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 4735,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 10838,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 4735,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 10838,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 10838
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 6700,
+      "outputTokens": 13,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.006765,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 4735,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 10838,
+      "webSearchRequests": 0,
+      "costUSD": 0.231919,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Sohail Shaikh and Ankush Rastogi of Prosodica argue that the common practice of loading every tool definition into every agent request \u2014 the \\\"fat agent\\\" \u2014 is an architectural failure that gets worse as the tool catalog grows. They present benchmark numbers showing tool-selection accuracy falling from ~78% at 10 tools to ~13% at 1041 tools for the fat agent, while a semantic router holds above 83% across the same catalog sizes, and they attribute the collapse to lost-in-the-middle attention plus token and latency overhead (741 tools \u2248 127,000 tokens before the user's question is even added). Their fix is \\\"RAG for tools\\\": embed tool descriptions offline into a vector index, retrieve the top-K (default K=5) at runtime, and inject only those schemas \u2014 a roughly 99% reduction in tool-context tokens. The talk includes an implementation pattern, a production checklist, an eval methodology (Berkeley Function Calling Leaderboard, synthetic tool pools, K swept at 3/5/10), and honest trade-offs like router misses and weak tool descriptions. Worth watching if you're running an agent past ~50 tools; skippable if you have 10-15 tools, which the speakers explicitly say doesn't need routing.\",\n  \"key_points\": [\n    \"Loading the full tool catalog on every request fails not because any individual tool is badly written but because every request is forced to carry the entire catalog.\",\n    \"In their benchmarks, fat-agent tool-selection accuracy started around 78% at 10 tools and fell to roughly 13.6% at 741-1041 tools, while semantic routing stayed above 83% across the same range.\",\n    \"A 741-tool catalog consumes about 127,000 tokens of tool descriptions and schemas before the user's actual question is considered; at 100,000 requests/day that is billions of tokens spent just describing tools.\",\n    \"Just-in-time routing typically injects only three to five schemas, around 1,000 tokens, which is roughly a 99% reduction in tool-context tokens.\",\n    \"The accuracy collapse is attributed to the lost-in-the-middle problem: models attend more strongly to the beginning and end of long context, so tool schemas packed into the middle are used unreliably.\",\n    \"Time to first token grows with catalog size for the fat agent \u2014 past 5 seconds at around 500 tools \u2014 while the router keeps it nearly flat because prompt size stays bounded.\",\n    \"The implementation is three steps and reuses existing RAG infrastructure: index tool descriptions offline in a vector DB, embed the query and run nearest-neighbor search at runtime, then inject only the retrieved schemas and log every selection.\",\n    \"The speakers explicitly bound their own advice: under 20 tools a router may be unnecessary, and routing pays off once catalog size makes prompt size, latency, or tool confusion a real production problem.\",\n    \"Routing's underrated benefit is subtractive \u2014 it removes wrong tools from the model's choice set, not just adds the right ones \u2014 but it introduces new failure modes (router misses, weak or rare-tool descriptions) that need fallbacks and monitoring.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"The important point is, basically, the design does not fail because one tool is badly written. It fails because every request is forced to carry the entire catalog.\",\n      \"timestamp_sec\": 172,\n      \"why\": \"The talk's central architectural thesis, stated in one line.\"\n    },\n    {\n      \"text\": \"There are, say for example, uh 741 tools in your uh in your entire schema, but and it will look, basically, take up to 127,000 tokens just to have all those tool descriptions in it.\",\n      \"timestamp_sec\": 172,\n      \"why\": \"Anchors the cost argument with the talk's headline token number.\"\n    },\n    {\n      \"text\": \"At almost 100 tools, the accuracy drops to around 40%. Less than half of the tools that are called are the correct tools. And if it grows beyond that, like say for example, in over here, at 741 tools, the accuracy will be a mere 13.6%.\",\n      \"timestamp_sec\": 237,\n      \"why\": \"The core benchmark result and the number most likely to be cited from this talk.\"\n    },\n    {\n      \"text\": \"So, in short, it's roughly one correct tool out of eight tools.\",\n      \"timestamp_sec\": 291,\n      \"why\": \"Translates 13.6% into an intuition that lands.\"\n    },\n    {\n      \"text\": \"It stays above 83% across the same catalog sizes. That is because the model is not choosing from hundreds of tools, it's choosing from a small and relevant set.\",\n      \"timestamp_sec\": 291,\n      \"why\": \"States the router's benchmark result and the mechanism behind it together.\"\n    },\n    {\n      \"text\": \"Model pays stronger attention to the beginning and end of the long context. When hundreds of tool schemas are packed into the middle, the model does not reliably use them. So, we end up paying paying for a huge prompt, and that prompts makes the decisions even harder.\",\n      \"timestamp_sec\": 291,\n      \"why\": \"Gives the causal explanation \u2014 lost in the middle \u2014 rather than just the symptom.\"\n    },\n    {\n      \"text\": \"At 100,000 requests a day, if you push this into production, you are sending in billions of tokens and just to describe those tools.\",\n      \"timestamp_sec\": 340,\n      \"why\": \"Scales the per-request cost to a production-sized number.\"\n    },\n    {\n      \"text\": \"And with just-in-time routing, the prompt may include only three to five relevant schemas, closer to about 1,000 tokens.\",\n      \"timestamp_sec\": 340,\n      \"why\": \"The concrete size of the routed prompt, the basis for the 99% claim.\"\n    },\n    {\n      \"text\": \"That is roughly a 99% reduction in tool context tokens.\",\n      \"timestamp_sec\": 398,\n      \"why\": \"Headline efficiency claim.\"\n    },\n    {\n      \"text\": \"So, say for example, if you have 500 tools in your agent, the fat agent path can push first token latency past 5 seconds.\",\n      \"timestamp_sec\": 398,\n      \"why\": \"Puts a specific latency number on the real-time argument.\"\n    },\n    {\n      \"text\": \"If you have fewer than 20 tools, a router may be unnecessary. Just load the tools directly. But, once you passed 50 tools in the production system, then justifying router-based schema make more sense.\",\n      \"timestamp_sec\": 506,\n      \"why\": \"The explicit threshold that keeps the talk from being a blanket prescription.\"\n    },\n    {\n      \"text\": \"The difference is that we will retrieve tools instead of the documents.\",\n      \"timestamp_sec\": 569,\n      \"why\": \"One-sentence framing of semantic routing for anyone who already knows RAG.\"\n    },\n    {\n      \"text\": \"I mean, this is not a new software idea. We have used lazy loading, just-in-time compilation, and on-demand resource loading from years. We are just applying the simple and same principle to the LLM context.\",\n      \"timestamp_sec\": 673,\n      \"why\": \"Situates JIT context injection in familiar systems practice rather than novelty.\"\n    },\n    {\n      \"text\": \"Their report token usage went from 150k tokens down to 2,000, which is 98.7% token reduction.\",\n      \"timestamp_sec\": 733,\n      \"why\": \"External corroboration from Anthropic's on-demand MCP tool loading.\"\n    },\n    {\n      \"text\": \"In practice, K equals 5 is a strong default starting point.\",\n      \"timestamp_sec\": 807,\n      \"why\": \"The actionable default the talk recommends after sweeping K at 3, 5, and 10.\"\n    },\n    {\n      \"text\": \"This is the core lesson from the benchmark. The catalog can grow, but the model's working set should stay small.\",\n      \"timestamp_sec\": 932,\n      \"why\": \"The talk's own summary of what the numbers mean.\"\n    },\n    {\n      \"text\": \"This is an underrated benefit. But, the router does not only add the right tool, it also removes the wrong tool from the model's choice set.\",\n      \"timestamp_sec\": 1153,\n      \"why\": \"Names the subtractive benefit most discussions of tool retrieval miss.\"\n    },\n    {\n      \"text\": \"Run your test set at K equals to three, five, and 10, and then pick the smallest K that meets your accuracy target.\",\n      \"timestamp_sec\": 1279,\n      \"why\": \"Concrete tuning procedure rather than a fixed recommendation.\"\n    },\n    {\n      \"text\": \"This is not the 6-month platform rewrite. For most team, it is a focused sprint.\",\n      \"timestamp_sec\": 1279,\n      \"why\": \"Addresses the adoption-cost objection directly.\"\n    },\n    {\n      \"text\": \"So, if you if your agent start failing as tool are added, it doesn't automatically means your prompt are bad. It may means the architecture is asking the model to solve the wrong problem.\",\n      \"timestamp_sec\": 1360,\n      \"why\": \"Reframes a debugging instinct \u2014 prompt tuning \u2014 as an architecture problem.\"\n    },\n    {\n      \"text\": \"If your descriptions are weak, embeddings will end up being weak. Write descriptions in the words users actually use and include intent, action, and key entities along with it.\",\n      \"timestamp_sec\": 1484,\n      \"why\": \"Names the main new failure mode routing introduces and how to mitigate it.\"\n    },\n    {\n      \"text\": \"And the goal is not to make these agents more complicated. It's It is basically to stop forcing the model to reason over irrelevant tools.\",\n      \"timestamp_sec\": 1594,\n      \"why\": \"Closing statement of intent, guarding against over-engineering.\"\n    }\n  ],\n  \"concepts\": [\n    \"tool selection accuracy\",\n    \"semantic routing\",\n    \"just-in-time context injection\",\n    \"retrieval-augmented tool selection\",\n    \"lost in the middle\",\n    \"context window management\",\n    \"time to first token\",\n    \"vector index retrieval\",\n    \"top-k retrieval tuning\",\n    \"tool catalog governance\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Fat-agent tool-selection accuracy degrades from ~78% at 10 tools to ~40% at 100 tools to 13.6% at 741 tools.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 237\n    },\n    {\n      \"claim\": \"Semantic routing holds tool-selection accuracy above 83% across catalog sizes from 10 to 1041 tools.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 291\n    },\n    {\n      \"claim\": \"The fat agent's accuracy collapse is caused by the lost-in-the-middle attention problem, not by badly written individual tools.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 291\n    },\n    {\n      \"claim\": \"A 741-tool catalog costs about 127,000 tokens per request in tool descriptions and schemas alone.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 172\n    },\n    {\n      \"claim\": \"Just-in-time routing cuts tool-context tokens by roughly 99%, from ~127k to ~1,000 tokens.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 398\n    },\n    {\n      \"claim\": \"At around 500 tools, the fat agent path pushes time to first token past 5 seconds, while the router keeps TTFT nearly flat.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 398\n    },\n    {\n      \"claim\": \"Below 20 tools a router is unnecessary; static loading is fine at 10-15 tools.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 506\n    },\n    {\n      \"claim\": \"Beyond 50 tools in a production system, router-based schema injection is justified.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 506\n    },\n    {\n      \"claim\": \"K=5 is the best default number of retrieved tools, with smaller K cheaper and faster and larger K recovering more edge cases.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 807\n    },\n    {\n      \"claim\": \"Teams should pick the smallest K that meets their accuracy target rather than defaulting to a large K.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1279\n    },\n    {\n      \"claim\": \"Semantic routing requires no new infrastructure for teams that already run RAG, since it is the same retrieval pattern applied to tools.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1104\n    },\n    {\n      \"claim\": \"Agent failures that appear as tools are added indicate an architecture problem rather than bad prompts.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1360\n    },\n    {\n      \"claim\": \"Removing irrelevant tools from the model's choice set is as valuable as surfacing the right ones.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1153\n    },\n    {\n      \"claim\": \"The runtime overhead of routing \u2014 one embedding call and one vector search \u2014 is negligible relative to the prompt savings.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 990\n    },\n    {\n      \"claim\": \"Migrating an existing agent to router-based tool loading is roughly a sprint of work, not a multi-month platform rewrite.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1279\n    },\n    {\n      \"claim\": \"Tool description quality is the binding constraint on routing quality, so descriptions must be written in the words users actually use.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1484\n    },\n    {\n      \"claim\": \"The choice of embedding model and vector database is largely immaterial to whether this pattern works.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 1104\n    },\n    {\n      \"claim\": \"Monolithic fat agents are harder to test, riskier to update, and more painful to debug than routed designs.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 448\n    }\n  ],\n  \"speaker_org\": \"Prosodica\"\n}",
+  "ttft_ms": 52884,
+  "ttft_stream_ms": 1768,
+  "time_to_request_ms": 35,
+  "type": "result",
+  "duration_ms": 54467,
+  "uuid": "36d2b68a-47e9-40b3-bbe7-290a6589184c",
+  "passA": {
+    "summary": "Sohail Shaikh and Ankush Rastogi of Prosodica argue that the common practice of loading every tool definition into every agent request \u2014 the \"fat agent\" \u2014 is an architectural failure that gets worse as the tool catalog grows. They present benchmark numbers showing tool-selection accuracy falling from ~78% at 10 tools to ~13% at 1041 tools for the fat agent, while a semantic router holds above 83% across the same catalog sizes, and they attribute the collapse to lost-in-the-middle attention plus token and latency overhead (741 tools \u2248 127,000 tokens before the user's question is even added). Their fix is \"RAG for tools\": embed tool descriptions offline into a vector index, retrieve the top-K (default K=5) at runtime, and inject only those schemas \u2014 a roughly 99% reduction in tool-context tokens. The talk includes an implementation pattern, a production checklist, an eval methodology (Berkeley Function Calling Leaderboard, synthetic tool pools, K swept at 3/5/10), and honest trade-offs like router misses and weak tool descriptions. Worth watching if you're running an agent past ~50 tools; skippable if you have 10-15 tools, which the speakers explicitly say doesn't need routing.",
+    "key_points": [
+      "Loading the full tool catalog on every request fails not because any individual tool is badly written but because every request is forced to carry the entire catalog.",
+      "In their benchmarks, fat-agent tool-selection accuracy started around 78% at 10 tools and fell to roughly 13.6% at 741-1041 tools, while semantic routing stayed above 83% across the same range.",
+      "A 741-tool catalog consumes about 127,000 tokens of tool descriptions and schemas before the user's actual question is considered; at 100,000 requests/day that is billions of tokens spent just describing tools.",
+      "Just-in-time routing typically injects only three to five schemas, around 1,000 tokens, which is roughly a 99% reduction in tool-context tokens.",
+      "The accuracy collapse is attributed to the lost-in-the-middle problem: models attend more strongly to the beginning and end of long context, so tool schemas packed into the middle are used unreliably.",
+      "Time to first token grows with catalog size for the fat agent \u2014 past 5 seconds at around 500 tools \u2014 while the router keeps it nearly flat because prompt size stays bounded.",
+      "The implementation is three steps and reuses existing RAG infrastructure: index tool descriptions offline in a vector DB, embed the query and run nearest-neighbor search at runtime, then inject only the retrieved schemas and log every selection.",
+      "The speakers explicitly bound their own advice: under 20 tools a router may be unnecessary, and routing pays off once catalog size makes prompt size, latency, or tool confusion a real production problem.",
+      "Routing's underrated benefit is subtractive \u2014 it removes wrong tools from the model's choice set, not just adds the right ones \u2014 but it introduces new failure modes (router misses, weak or rare-tool descriptions) that need fallbacks and monitoring."
+    ],
+    "notable_quotes": [
+      {
+        "text": "The important point is, basically, the design does not fail because one tool is badly written. It fails because every request is forced to carry the entire catalog.",
+        "timestamp_sec": 172,
+        "why": "The talk's central architectural thesis, stated in one line."
+      },
+      {
+        "text": "There are, say for example, uh 741 tools in your uh in your entire schema, but and it will look, basically, take up to 127,000 tokens just to have all those tool descriptions in it.",
+        "timestamp_sec": 172,
+        "why": "Anchors the cost argument with the talk's headline token number."
+      },
+      {
+        "text": "At almost 100 tools, the accuracy drops to around 40%. Less than half of the tools that are called are the correct tools. And if it grows beyond that, like say for example, in over here, at 741 tools, the accuracy will be a mere 13.6%.",
+        "timestamp_sec": 237,
+        "why": "The core benchmark result and the number most likely to be cited from this talk."
+      },
+      {
+        "text": "So, in short, it's roughly one correct tool out of eight tools.",
+        "timestamp_sec": 291,
+        "why": "Translates 13.6% into an intuition that lands."
+      },
+      {
+        "text": "It stays above 83% across the same catalog sizes. That is because the model is not choosing from hundreds of tools, it's choosing from a small and relevant set.",
+        "timestamp_sec": 291,
+        "why": "States the router's benchmark result and the mechanism behind it together."
+      },
+      {
+        "text": "Model pays stronger attention to the beginning and end of the long context. When hundreds of tool schemas are packed into the middle, the model does not reliably use them. So, we end up paying paying for a huge prompt, and that prompts makes the decisions even harder.",
+        "timestamp_sec": 291,
+        "why": "Gives the causal explanation \u2014 lost in the middle \u2014 rather than just the symptom."
+      },
+      {
+        "text": "At 100,000 requests a day, if you push this into production, you are sending in billions of tokens and just to describe those tools.",
+        "timestamp_sec": 340,
+        "why": "Scales the per-request cost to a production-sized number."
+      },
+      {
+        "text": "And with just-in-time routing, the prompt may include only three to five relevant schemas, closer to about 1,000 tokens.",
+        "timestamp_sec": 340,
+        "why": "The concrete size of the routed prompt, the basis for the 99% claim."
+      },
+      {
+        "text": "That is roughly a 99% reduction in tool context tokens.",
+        "timestamp_sec": 398,
+        "why": "Headline efficiency claim."
+      },
+      {
+        "text": "So, say for example, if you have 500 tools in your agent, the fat agent path can push first token latency past 5 seconds.",
+        "timestamp_sec": 398,
+        "why": "Puts a specific latency number on the real-time argument."
+      },
+      {
+        "text": "If you have fewer than 20 tools, a router may be unnecessary. Just load the tools directly. But, once you passed 50 tools in the production system, then justifying router-based schema make more sense.",
+        "timestamp_sec": 506,
+        "why": "The explicit threshold that keeps the talk from being a blanket prescription."
+      },
+      {
+        "text": "The difference is that we will retrieve tools instead of the documents.",
+        "timestamp_sec": 569,
+        "why": "One-sentence framing of semantic routing for anyone who already knows RAG."
+      },
+      {
+        "text": "I mean, this is not a new software idea. We have used lazy loading, just-in-time compilation, and on-demand resource loading from years. We are just applying the simple and same principle to the LLM context.",
+        "timestamp_sec": 673,
+        "why": "Situates JIT context injection in familiar systems practice rather than novelty."
+      },
+      {
+        "text": "Their report token usage went from 150k tokens down to 2,000, which is 98.7% token reduction.",
+        "timestamp_sec": 733,
+        "why": "External corroboration from Anthropic's on-demand MCP tool loading."
+      },
+      {
+        "text": "In practice, K equals 5 is a strong default starting point.",
+        "timestamp_sec": 807,
+        "why": "The actionable default the talk recommends after sweeping K at 3, 5, and 10."
+      },
+      {
+        "text": "This is the core lesson from the benchmark. The catalog can grow, but the model's working set should stay small.",
+        "timestamp_sec": 932,
+        "why": "The talk's own summary of what the numbers mean."
+      },
+      {
+        "text": "This is an underrated benefit. But, the router does not only add the right tool, it also removes the wrong tool from the model's choice set.",
+        "timestamp_sec": 1153,
+        "why": "Names the subtractive benefit most discussions of tool retrieval miss."
+      },
+      {
+        "text": "Run your test set at K equals to three, five, and 10, and then pick the smallest K that meets your accuracy target.",
+        "timestamp_sec": 1279,
+        "why": "Concrete tuning procedure rather than a fixed recommendation."
+      },
+      {
+        "text": "This is not the 6-month platform rewrite. For most team, it is a focused sprint.",
+        "timestamp_sec": 1279,
+        "why": "Addresses the adoption-cost objection directly."
+      },
+      {
+        "text": "So, if you if your agent start failing as tool are added, it doesn't automatically means your prompt are bad. It may means the architecture is asking the model to solve the wrong problem.",
+        "timestamp_sec": 1360,
+        "why": "Reframes a debugging instinct \u2014 prompt tuning \u2014 as an architecture problem."
+      },
+      {
+        "text": "If your descriptions are weak, embeddings will end up being weak. Write descriptions in the words users actually use and include intent, action, and key entities along with it.",
+        "timestamp_sec": 1484,
+        "why": "Names the main new failure mode routing introduces and how to mitigate it."
+      },
+      {
+        "text": "And the goal is not to make these agents more complicated. It's It is basically to stop forcing the model to reason over irrelevant tools.",
+        "timestamp_sec": 1594,
+        "why": "Closing statement of intent, guarding against over-engineering."
+      }
+    ],
+    "concepts": [
+      "tool selection accuracy",
+      "semantic routing",
+      "just-in-time context injection",
+      "retrieval-augmented tool selection",
+      "lost in the middle",
+      "context window management",
+      "time to first token",
+      "vector index retrieval",
+      "top-k retrieval tuning",
+      "tool catalog governance"
+    ],
+    "positions": [
+      {
+        "claim": "Fat-agent tool-selection accuracy degrades from ~78% at 10 tools to ~40% at 100 tools to 13.6% at 741 tools.",
+        "confidence": "stated",
+        "timestamp_sec": 237
+      },
+      {
+        "claim": "Semantic routing holds tool-selection accuracy above 83% across catalog sizes from 10 to 1041 tools.",
+        "confidence": "stated",
+        "timestamp_sec": 291
+      },
+      {
+        "claim": "The fat agent's accuracy collapse is caused by the lost-in-the-middle attention problem, not by badly written individual tools.",
+        "confidence": "stated",
+        "timestamp_sec": 291
+      },
+      {
+        "claim": "A 741-tool catalog costs about 127,000 tokens per request in tool descriptions and schemas alone.",
+        "confidence": "stated",
+        "timestamp_sec": 172
+      },
+      {
+        "claim": "Just-in-time routing cuts tool-context tokens by roughly 99%, from ~127k to ~1,000 tokens.",
+        "confidence": "stated",
+        "timestamp_sec": 398
+      },
+      {
+        "claim": "At around 500 tools, the fat agent path pushes time to first token past 5 seconds, while the router keeps TTFT nearly flat.",
+        "confidence": "stated",
+        "timestamp_sec": 398
+      },
+      {
+        "claim": "Below 20 tools a router is unnecessary; static loading is fine at 10-15 tools.",
+        "confidence": "stated",
+        "timestamp_sec": 506
+      },
+      {
+        "claim": "Beyond 50 tools in a production system, router-based schema injection is justified.",
+        "confidence": "stated",
+        "timestamp_sec": 506
+      },
+      {
+        "claim": "K=5 is the best default number of retrieved tools, with smaller K cheaper and faster and larger K recovering more edge cases.",
+        "confidence": "stated",
+        "timestamp_sec": 807
+      },
+      {
+        "claim": "Teams should pick the smallest K that meets their accuracy target rather than defaulting to a large K.",
+        "confidence": "stated",
+        "timestamp_sec": 1279
+      },
+      {
+        "claim": "Semantic routing requires no new infrastructure for teams that already run RAG, since it is the same retrieval pattern applied to tools.",
+        "confidence": "stated",
+        "timestamp_sec": 1104
+      },
+      {
+        "claim": "Agent failures that appear as tools are added indicate an architecture problem rather than bad prompts.",
+        "confidence": "stated",
+        "timestamp_sec": 1360
+      },
+      {
+        "claim": "Removing irrelevant tools from the model's choice set is as valuable as surfacing the right ones.",
+        "confidence": "stated",
+        "timestamp_sec": 1153
+      },
+      {
+        "claim": "The runtime overhead of routing \u2014 one embedding call and one vector search \u2014 is negligible relative to the prompt savings.",
+        "confidence": "stated",
+        "timestamp_sec": 990
+      },
+      {
+        "claim": "Migrating an existing agent to router-based tool loading is roughly a sprint of work, not a multi-month platform rewrite.",
+        "confidence": "stated",
+        "timestamp_sec": 1279
+      },
+      {
+        "claim": "Tool description quality is the binding constraint on routing quality, so descriptions must be written in the words users actually use.",
+        "confidence": "stated",
+        "timestamp_sec": 1484
+      },
+      {
+        "claim": "The choice of embedding model and vector database is largely immaterial to whether this pattern works.",
+        "confidence": "implied",
+        "timestamp_sec": 1104
+      },
+      {
+        "claim": "Monolithic fat agents are harder to test, riskier to update, and more painful to debug than routed designs.",
+        "confidence": "stated",
+        "timestamp_sec": 448
+      }
+    ],
+    "speaker_org": "Prosodica"
+  },
+  "_meta": {
+    "slug": "the-100-tool-agent-is-a-trap",
+    "video_id": "vh2VGuQ3zhY",
+    "url": "https://www.youtube.com/watch?v=vh2VGuQ3zhY",
+    "word_count": 3468,
+    "wall_sec": 55.6,
+    "run_at": "2026-08-12T20:17:13Z",
+    "effort": "medium"
+  }
+}

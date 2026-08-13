@@ -1,0 +1,283 @@
+{
+  "is_error": false,
+  "duration_api_ms": 75377,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "f4b80001-c58d-4803-9b11-155f0b5e1c75",
+  "total_cost_usd": 0.283284,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 11276,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 6322,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 11276,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 6322,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 11276,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 11276
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 7215,
+      "outputTokens": 19,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.00731,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 6322,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 11276,
+      "webSearchRequests": 0,
+      "costUSD": 0.275974,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"A conference panel pairing Olive Song (RL research lead at MiniMax, responsible for final training and shipping of the models) with Dan Fu (VP of Kernels at Together AI, responsible for inference and GPU optimization) to trace an open-weight model from post-training to day-zero serving. Song explains why MiniMax open-sources its strongest model, what changed in M3 (multimodal from step zero, ~1M context, MiniMax sparse attention), and how long-horizon agentic capabilities \u2014 replicating an ICLR paper in a 12-hour run, optimizing kernels, computer use \u2014 come down to environment design, reward formulation, and catching reward hacking. Fu describes the other half: getting architecture details pre-launch, writing or adapting kernels, and grinding out weekly speedups after launch, plus how agentic and million-token workloads turn KV cache management into a distributed-systems problem. The most contrarian thread is Fu's argument that benchmarks worth overfitting to are good benchmarks \u2014 Together's parallel kernel bench deliberately contains unsolved problems whose solutions they would ship. Worth watching if you want a concrete picture of the model-lab/inference-provider handoff and where both sides think open weights stand versus closed frontier labs.\",\n  \"key_points\": [\n    \"MiniMax open-sources its strongest models both on mission grounds (\\\"intelligence with everyone\\\") and on practical grounds: external developers contribute PRs and feedback, and inference partners like Together AI make the same weights faster for everyone.\",\n    \"M3 differs from the M2 series by being trained multimodal from step zero rather than bolted on later; Song says other labs commonly see the model collapse in this regime and MiniMax solved that, yielding attention maps where text tokens naturally attend to visual tokens.\",\n    \"Multimodal training pays off for agentic web development specifically: the model can look at the rendered website, understand how it looks, and optimize against that during reinforcement learning.\",\n    \"Training long-horizon agentic tasks (kernel optimization, paper replication) is bottlenecked not by the algorithm but by environment and data design \u2014 how you formulate the problem, the rewards, and the environment, plus adapting the RL algorithm for efficiency.\",\n    \"Evaluation of 12-hour tasks uses intermediate submissions rather than a single terminal signal, with held-out validation and test checks because models sometimes hack the reward.\",\n    \"Together AI released parallel kernel bench containing deliberately unsolved kernel problems, inverting the usual bench-maxing worry: if you overfit to it, they will take the resulting kernels and ship them in production inference.\",\n    \"Day-zero serving depends on getting architecture details early \u2014 M3's sparse attention, MoE choices, and quantization all differ from other open models \u2014 and quality at launch is treated as a first-class constraint alongside speed, with weeks of KV cache, attention kernel, and quantization work following launch.\",\n    \"The shift from chat to agentic workloads changes where you optimize: a few-thousand-token system prompt plus chat logs is a different routing, caching, and kernel problem than uploading an entire codebase across hundreds of tool-calling turns.\",\n    \"At 500K\u20131M context with concurrent requests, KV cache management becomes essentially a distributed file system or large database problem \u2014 conceptually simple, but rediscovered in industry rather than borrowed from systems training.\",\n    \"Both speakers argue the open-weight frontier (M3, GLM, Kimi) is close behind closed labs, and Fu hopes the 'are open models far behind' question is settled within three years; he also thinks GPUs are badly underutilized today.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"I'm the VP of Kernels Together AI. I lead inference, GPU optimization, trying to figure out how to use GPUs most effectively to serve AI models.\",\n      \"timestamp_sec\": 12,\n      \"why\": \"establishes Fu's vantage point on the inference side of the handoff\"\n    },\n    {\n      \"text\": \"I am the research lead of RL at MiniMax and I am responsible for the final training of the model and the shipping of the model.\",\n      \"timestamp_sec\": 42,\n      \"why\": \"establishes Song's vantage point as the post-training counterpart\"\n    },\n    {\n      \"text\": \"We do believe that the open source community as a whole is very strong and powerful. While we open source the model, everyone can use it. So it aligns with our mission that we want to have intelligence with everyone\",\n      \"timestamp_sec\": 77,\n      \"why\": \"MiniMax's stated rationale for open-sourcing its strongest model\"\n    },\n    {\n      \"text\": \"how do you make intelligence abundant? So how do you get more tokens to more people to do more useful things\",\n      \"timestamp_sec\": 151,\n      \"why\": \"Together AI's framing of why it invests in serving open models\"\n    },\n    {\n      \"text\": \"it not only understands text and it not only writes code, it also understands videos and images\",\n      \"timestamp_sec\": 251,\n      \"why\": \"the headline capability change from M2 to M3\"\n    },\n    {\n      \"text\": \"It would be very important to design the environments of the data so that we can deliberately train reinforcement learning in those very complex environments and let the model to optimize the kernels themselves and iteratively improve the performance.\",\n      \"timestamp_sec\": 324,\n      \"why\": \"names environment design as the lever for domain-specific RL\"\n    },\n    {\n      \"text\": \"one of the interesting things that we found is that there's a lot of things that we can think of that would actually speed models up that there don't exist good kernels for\",\n      \"timestamp_sec\": 362,\n      \"why\": \"reports the concrete gap that motivated a new kernel benchmark\"\n    },\n    {\n      \"text\": \"One of our intentions with this benchmark was that if you overfit to it, that's great cuz we'll go take those kernels and use them to to to accelerate the the the the inference and the development.\",\n      \"timestamp_sec\": 401,\n      \"why\": \"the talk's sharpest contrarian position on bench-maxing\"\n    },\n    {\n      \"text\": \"there are things like the minimax sparse attention and and some of those choices that were a little bit different from any model that's out there\",\n      \"timestamp_sec\": 433,\n      \"why\": \"explains why day-zero serving requires pre-launch architecture access\"\n    },\n    {\n      \"text\": \"and then we start working on it and start optimizing over the course of weeks so that when you use these models, they actually get faster between day zero and day seven and day 14 and etc.\",\n      \"timestamp_sec\": 503,\n      \"why\": \"concrete description of the post-launch optimization cadence\"\n    },\n    {\n      \"text\": \"with the coding base agentic workflows, you'll upload your whole code base to the model, and that's a very different optimization and routing and kernel challenge than than just the the chat base workload\",\n      \"timestamp_sec\": 579,\n      \"why\": \"names the tradeoff that agentic workloads impose on the inference stack\"\n    },\n    {\n      \"text\": \"So, from step zero, we trained not only text data, we also trained image data. And it was normal for many other labs that the model would collapse after training a little bit, and we managed to solve that problem.\",\n      \"timestamp_sec\": 644,\n      \"why\": \"a specific claim of technical differentiation in multimodal pretraining\"\n    },\n    {\n      \"text\": \"if you look at the attention map, it actually the visual of the the text tokens would attend to the visual tokens\",\n      \"timestamp_sec\": 644,\n      \"why\": \"the mechanistic evidence Song offers for training multimodal from scratch\"\n    },\n    {\n      \"text\": \"I mean, you focus on a thousand and one things, yeah. Like you just you just go and you keep you keep doing it. You find every edge that you can, um and and you go and and you push on it.\",\n      \"timestamp_sec\": 723,\n      \"why\": \"Fu's answer to 'where's the biggest bang for the buck' is that there isn't one\"\n    },\n    {\n      \"text\": \"the key there is still the environments and the data and how you formulate the problem, how you formulate the rewards, how you formulate the environment\",\n      \"timestamp_sec\": 857,\n      \"why\": \"restates the environment-over-algorithm thesis for long-horizon RL\"\n    },\n    {\n      \"text\": \"Some of them some of the times the models would hack, and we do do like validation and test with for it to test if it's really improving on the performance or it's hacking.\",\n      \"timestamp_sec\": 908,\n      \"why\": \"concrete admission of reward hacking and the validation response\"\n    },\n    {\n      \"text\": \"we're actively using the model to improve the speed of development internally, which like out of it out of it we can build our own evaluations that are closely related to our own work\",\n      \"timestamp_sec\": 946,\n      \"why\": \"describes the self-evolution loop as both a productivity and an eval source\"\n    },\n    {\n      \"text\": \"Like in in some sense, it's like recreating a distributed file system. So, we we're in some sense building something like that or a very big database.\",\n      \"timestamp_sec\": 992,\n      \"why\": \"the clearest framing of KV cache at long context as a systems problem\"\n    },\n    {\n      \"text\": \"it's like the type of thing that you should have done in your third year of undergrad or something like that, but most of us actually skipped that class, so now we're rediscovering it live in in industry\",\n      \"timestamp_sec\": 992,\n      \"why\": \"memorable line on the ML/systems knowledge gap\"\n    },\n    {\n      \"text\": \"I think we underutilize our GPUs a lot right now.\",\n      \"timestamp_sec\": 1058,\n      \"why\": \"Fu's headline prediction about what will look embarrassing in three years\"\n    },\n    {\n      \"text\": \"we're seeing with models like M3 and GLM and Kimmy and and all those models that um the open-source frontier really can catch up. Um and and it's it's not even that far behind\",\n      \"timestamp_sec\": 1089,\n      \"why\": \"the panel's central claim about open weights vs closed labs\"\n    }\n  ],\n  \"concepts\": [\n    \"open-weight model releases\",\n    \"kernel optimization\",\n    \"sparse attention\",\n    \"kv cache management\",\n    \"long-context inference\",\n    \"agentic workloads\",\n    \"multimodal pretraining\",\n    \"reinforcement learning environment design\",\n    \"reward hacking\",\n    \"benchmark overfitting\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Overfitting to a benchmark is desirable when the benchmark's tasks are themselves the useful artifact \u2014 Together AI's parallel kernel bench contains unsolved problems whose solutions they would deploy in production inference.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 401\n    },\n    {\n      \"claim\": \"Together AI serves the largest share of MiniMax M3 token usage among providers.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 151\n    },\n    {\n      \"claim\": \"Training multimodal from step zero, rather than adding vision later, produces text tokens that naturally attend to visual tokens \u2014 and other labs typically see model collapse in this regime, a problem MiniMax says it solved.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 644\n    },\n    {\n      \"claim\": \"For long-horizon agentic RL (kernel optimization, paper replication), the decisive factors are data, environment design, and reward formulation rather than the model architecture or base algorithm.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 857\n    },\n    {\n      \"claim\": \"Long-horizon RL evaluation must use intermediate per-iteration scoring plus held-out validation, because models hack the reward and terminal success alone is not trustworthy.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 908\n    },\n    {\n      \"claim\": \"Agentic and coding workloads require a materially different inference stack than chat workloads, because whole codebases in context change the caching, routing, and kernel optimization targets.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 579\n    },\n    {\n      \"claim\": \"There is no single highest-leverage inference optimization; the correct strategy is to exhaustively pursue every available edge rather than prioritize a few.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 723\n    },\n    {\n      \"claim\": \"KV cache handling at 500K\u20131M context under concurrency is fundamentally a distributed file system / database problem, and is not conceptually hard \u2014 just unfamiliar to most ML practitioners.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 992\n    },\n    {\n      \"claim\": \"GPUs are significantly underutilized today, and current flop utilization levels should already be considered embarrassing.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1058\n    },\n    {\n      \"claim\": \"The open-source frontier has largely caught up with closed frontier labs, and the recurring claim that OpenAI and Anthropic are far ahead should be put to rest.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1089\n    },\n    {\n      \"claim\": \"Lessons from optimizing one model's sparse attention transfer to other models' sparse attention variants, so inference work does not restart from scratch per model.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 782\n    },\n    {\n      \"claim\": \"Using models to accelerate internal development compounds, and that acceleration is the mechanism by which open-weight labs close the gap with frontier labs.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 1169\n    }\n  ],\n  \"speaker_org\": \"Together AI (Dan Fu) and MiniMax (Olive Song)\"\n}",
+  "ttft_ms": 24241,
+  "ttft_stream_ms": 2228,
+  "time_to_request_ms": 35,
+  "type": "result",
+  "duration_ms": 75862,
+  "uuid": "4861ad9b-b93c-4a51-8ec2-932e161e4115",
+  "passA": {
+    "summary": "A conference panel pairing Olive Song (RL research lead at MiniMax, responsible for final training and shipping of the models) with Dan Fu (VP of Kernels at Together AI, responsible for inference and GPU optimization) to trace an open-weight model from post-training to day-zero serving. Song explains why MiniMax open-sources its strongest model, what changed in M3 (multimodal from step zero, ~1M context, MiniMax sparse attention), and how long-horizon agentic capabilities \u2014 replicating an ICLR paper in a 12-hour run, optimizing kernels, computer use \u2014 come down to environment design, reward formulation, and catching reward hacking. Fu describes the other half: getting architecture details pre-launch, writing or adapting kernels, and grinding out weekly speedups after launch, plus how agentic and million-token workloads turn KV cache management into a distributed-systems problem. The most contrarian thread is Fu's argument that benchmarks worth overfitting to are good benchmarks \u2014 Together's parallel kernel bench deliberately contains unsolved problems whose solutions they would ship. Worth watching if you want a concrete picture of the model-lab/inference-provider handoff and where both sides think open weights stand versus closed frontier labs.",
+    "key_points": [
+      "MiniMax open-sources its strongest models both on mission grounds (\"intelligence with everyone\") and on practical grounds: external developers contribute PRs and feedback, and inference partners like Together AI make the same weights faster for everyone.",
+      "M3 differs from the M2 series by being trained multimodal from step zero rather than bolted on later; Song says other labs commonly see the model collapse in this regime and MiniMax solved that, yielding attention maps where text tokens naturally attend to visual tokens.",
+      "Multimodal training pays off for agentic web development specifically: the model can look at the rendered website, understand how it looks, and optimize against that during reinforcement learning.",
+      "Training long-horizon agentic tasks (kernel optimization, paper replication) is bottlenecked not by the algorithm but by environment and data design \u2014 how you formulate the problem, the rewards, and the environment, plus adapting the RL algorithm for efficiency.",
+      "Evaluation of 12-hour tasks uses intermediate submissions rather than a single terminal signal, with held-out validation and test checks because models sometimes hack the reward.",
+      "Together AI released parallel kernel bench containing deliberately unsolved kernel problems, inverting the usual bench-maxing worry: if you overfit to it, they will take the resulting kernels and ship them in production inference.",
+      "Day-zero serving depends on getting architecture details early \u2014 M3's sparse attention, MoE choices, and quantization all differ from other open models \u2014 and quality at launch is treated as a first-class constraint alongside speed, with weeks of KV cache, attention kernel, and quantization work following launch.",
+      "The shift from chat to agentic workloads changes where you optimize: a few-thousand-token system prompt plus chat logs is a different routing, caching, and kernel problem than uploading an entire codebase across hundreds of tool-calling turns.",
+      "At 500K\u20131M context with concurrent requests, KV cache management becomes essentially a distributed file system or large database problem \u2014 conceptually simple, but rediscovered in industry rather than borrowed from systems training.",
+      "Both speakers argue the open-weight frontier (M3, GLM, Kimi) is close behind closed labs, and Fu hopes the 'are open models far behind' question is settled within three years; he also thinks GPUs are badly underutilized today."
+    ],
+    "notable_quotes": [
+      {
+        "text": "I'm the VP of Kernels Together AI. I lead inference, GPU optimization, trying to figure out how to use GPUs most effectively to serve AI models.",
+        "timestamp_sec": 12,
+        "why": "establishes Fu's vantage point on the inference side of the handoff"
+      },
+      {
+        "text": "I am the research lead of RL at MiniMax and I am responsible for the final training of the model and the shipping of the model.",
+        "timestamp_sec": 42,
+        "why": "establishes Song's vantage point as the post-training counterpart"
+      },
+      {
+        "text": "We do believe that the open source community as a whole is very strong and powerful. While we open source the model, everyone can use it. So it aligns with our mission that we want to have intelligence with everyone",
+        "timestamp_sec": 77,
+        "why": "MiniMax's stated rationale for open-sourcing its strongest model"
+      },
+      {
+        "text": "how do you make intelligence abundant? So how do you get more tokens to more people to do more useful things",
+        "timestamp_sec": 151,
+        "why": "Together AI's framing of why it invests in serving open models"
+      },
+      {
+        "text": "it not only understands text and it not only writes code, it also understands videos and images",
+        "timestamp_sec": 251,
+        "why": "the headline capability change from M2 to M3"
+      },
+      {
+        "text": "It would be very important to design the environments of the data so that we can deliberately train reinforcement learning in those very complex environments and let the model to optimize the kernels themselves and iteratively improve the performance.",
+        "timestamp_sec": 324,
+        "why": "names environment design as the lever for domain-specific RL"
+      },
+      {
+        "text": "one of the interesting things that we found is that there's a lot of things that we can think of that would actually speed models up that there don't exist good kernels for",
+        "timestamp_sec": 362,
+        "why": "reports the concrete gap that motivated a new kernel benchmark"
+      },
+      {
+        "text": "One of our intentions with this benchmark was that if you overfit to it, that's great cuz we'll go take those kernels and use them to to to accelerate the the the the inference and the development.",
+        "timestamp_sec": 401,
+        "why": "the talk's sharpest contrarian position on bench-maxing"
+      },
+      {
+        "text": "there are things like the minimax sparse attention and and some of those choices that were a little bit different from any model that's out there",
+        "timestamp_sec": 433,
+        "why": "explains why day-zero serving requires pre-launch architecture access"
+      },
+      {
+        "text": "and then we start working on it and start optimizing over the course of weeks so that when you use these models, they actually get faster between day zero and day seven and day 14 and etc.",
+        "timestamp_sec": 503,
+        "why": "concrete description of the post-launch optimization cadence"
+      },
+      {
+        "text": "with the coding base agentic workflows, you'll upload your whole code base to the model, and that's a very different optimization and routing and kernel challenge than than just the the chat base workload",
+        "timestamp_sec": 579,
+        "why": "names the tradeoff that agentic workloads impose on the inference stack"
+      },
+      {
+        "text": "So, from step zero, we trained not only text data, we also trained image data. And it was normal for many other labs that the model would collapse after training a little bit, and we managed to solve that problem.",
+        "timestamp_sec": 644,
+        "why": "a specific claim of technical differentiation in multimodal pretraining"
+      },
+      {
+        "text": "if you look at the attention map, it actually the visual of the the text tokens would attend to the visual tokens",
+        "timestamp_sec": 644,
+        "why": "the mechanistic evidence Song offers for training multimodal from scratch"
+      },
+      {
+        "text": "I mean, you focus on a thousand and one things, yeah. Like you just you just go and you keep you keep doing it. You find every edge that you can, um and and you go and and you push on it.",
+        "timestamp_sec": 723,
+        "why": "Fu's answer to 'where's the biggest bang for the buck' is that there isn't one"
+      },
+      {
+        "text": "the key there is still the environments and the data and how you formulate the problem, how you formulate the rewards, how you formulate the environment",
+        "timestamp_sec": 857,
+        "why": "restates the environment-over-algorithm thesis for long-horizon RL"
+      },
+      {
+        "text": "Some of them some of the times the models would hack, and we do do like validation and test with for it to test if it's really improving on the performance or it's hacking.",
+        "timestamp_sec": 908,
+        "why": "concrete admission of reward hacking and the validation response"
+      },
+      {
+        "text": "we're actively using the model to improve the speed of development internally, which like out of it out of it we can build our own evaluations that are closely related to our own work",
+        "timestamp_sec": 946,
+        "why": "describes the self-evolution loop as both a productivity and an eval source"
+      },
+      {
+        "text": "Like in in some sense, it's like recreating a distributed file system. So, we we're in some sense building something like that or a very big database.",
+        "timestamp_sec": 992,
+        "why": "the clearest framing of KV cache at long context as a systems problem"
+      },
+      {
+        "text": "it's like the type of thing that you should have done in your third year of undergrad or something like that, but most of us actually skipped that class, so now we're rediscovering it live in in industry",
+        "timestamp_sec": 992,
+        "why": "memorable line on the ML/systems knowledge gap"
+      },
+      {
+        "text": "I think we underutilize our GPUs a lot right now.",
+        "timestamp_sec": 1058,
+        "why": "Fu's headline prediction about what will look embarrassing in three years"
+      },
+      {
+        "text": "we're seeing with models like M3 and GLM and Kimmy and and all those models that um the open-source frontier really can catch up. Um and and it's it's not even that far behind",
+        "timestamp_sec": 1089,
+        "why": "the panel's central claim about open weights vs closed labs"
+      }
+    ],
+    "concepts": [
+      "open-weight model releases",
+      "kernel optimization",
+      "sparse attention",
+      "kv cache management",
+      "long-context inference",
+      "agentic workloads",
+      "multimodal pretraining",
+      "reinforcement learning environment design",
+      "reward hacking",
+      "benchmark overfitting"
+    ],
+    "positions": [
+      {
+        "claim": "Overfitting to a benchmark is desirable when the benchmark's tasks are themselves the useful artifact \u2014 Together AI's parallel kernel bench contains unsolved problems whose solutions they would deploy in production inference.",
+        "confidence": "stated",
+        "timestamp_sec": 401
+      },
+      {
+        "claim": "Together AI serves the largest share of MiniMax M3 token usage among providers.",
+        "confidence": "stated",
+        "timestamp_sec": 151
+      },
+      {
+        "claim": "Training multimodal from step zero, rather than adding vision later, produces text tokens that naturally attend to visual tokens \u2014 and other labs typically see model collapse in this regime, a problem MiniMax says it solved.",
+        "confidence": "stated",
+        "timestamp_sec": 644
+      },
+      {
+        "claim": "For long-horizon agentic RL (kernel optimization, paper replication), the decisive factors are data, environment design, and reward formulation rather than the model architecture or base algorithm.",
+        "confidence": "stated",
+        "timestamp_sec": 857
+      },
+      {
+        "claim": "Long-horizon RL evaluation must use intermediate per-iteration scoring plus held-out validation, because models hack the reward and terminal success alone is not trustworthy.",
+        "confidence": "stated",
+        "timestamp_sec": 908
+      },
+      {
+        "claim": "Agentic and coding workloads require a materially different inference stack than chat workloads, because whole codebases in context change the caching, routing, and kernel optimization targets.",
+        "confidence": "stated",
+        "timestamp_sec": 579
+      },
+      {
+        "claim": "There is no single highest-leverage inference optimization; the correct strategy is to exhaustively pursue every available edge rather than prioritize a few.",
+        "confidence": "stated",
+        "timestamp_sec": 723
+      },
+      {
+        "claim": "KV cache handling at 500K\u20131M context under concurrency is fundamentally a distributed file system / database problem, and is not conceptually hard \u2014 just unfamiliar to most ML practitioners.",
+        "confidence": "stated",
+        "timestamp_sec": 992
+      },
+      {
+        "claim": "GPUs are significantly underutilized today, and current flop utilization levels should already be considered embarrassing.",
+        "confidence": "stated",
+        "timestamp_sec": 1058
+      },
+      {
+        "claim": "The open-source frontier has largely caught up with closed frontier labs, and the recurring claim that OpenAI and Anthropic are far ahead should be put to rest.",
+        "confidence": "stated",
+        "timestamp_sec": 1089
+      },
+      {
+        "claim": "Lessons from optimizing one model's sparse attention transfer to other models' sparse attention variants, so inference work does not restart from scratch per model.",
+        "confidence": "stated",
+        "timestamp_sec": 782
+      },
+      {
+        "claim": "Using models to accelerate internal development compounds, and that acceleration is the mechanism by which open-weight labs close the gap with frontier labs.",
+        "confidence": "implied",
+        "timestamp_sec": 1169
+      }
+    ],
+    "speaker_org": "Together AI (Dan Fu) and MiniMax (Olive Song)"
+  },
+  "_meta": {
+    "slug": "agents-at-scale-inside-minimaxs-model-and-the-infrastructure-behind-it",
+    "video_id": "AVMr9PMINyo",
+    "url": "https://www.youtube.com/watch?v=AVMr9PMINyo",
+    "word_count": 3975,
+    "wall_sec": 76.8,
+    "run_at": "2026-08-12T19:28:30Z",
+    "effort": "medium"
+  }
+}

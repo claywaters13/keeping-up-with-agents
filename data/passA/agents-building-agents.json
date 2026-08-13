@@ -1,0 +1,278 @@
+{
+  "is_error": false,
+  "duration_api_ms": 48267,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "5ceed9ba-3492-44ac-96a0-acf63315cb5f",
+  "total_cost_usd": 0.24355000000000002,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 12730,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 4101,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 12730,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 4101,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 12730,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 12730
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 8481,
+      "outputTokens": 16,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.008561000000000001,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 4101,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 12730,
+      "webSearchRequests": 0,
+      "costUSD": 0.234989,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Alfonso Graziano, a tech lead at Nearform, describes a repeatable process for using coding agents (primarily Claude Code) to iteratively improve production AI agents. The talk covers two failure modes: poor scores on an eval suite backed by a golden dataset, and poor behavior on live user data. For the first, he presents 'AutoAgent' \u2014 a Karpathy-auto-research-inspired loop where a coding agent forms a hypothesis, branches, edits the target agent's prompts/tools/code, reruns evals, and keeps or rolls back the branch; it took a toy agent from 18% to 83% and a real production agent from 67% to 86% in roughly 10 iterations each. For the second, he outlines a trace-collection pipeline: user feedback and SME annotations are clustered into failure modes, root-caused against the code, triaged with subject matter experts, fixed by a coding agent, and folded back into the golden dataset as regressions. The unifying frame is 'harness engineering' \u2014 building the specs, quality gates, context, and observability around a coding agent so it can validate its own changes.\",\n  \"key_points\": [\n    \"A golden dataset \u2014 inputs plus expected outputs, co-developed with subject matter experts \u2014 acts as a test suite for a non-deterministic system, where expected output may be a specific tool call, tool parameters, or a chain of tool calls rather than just text.\",\n    \"The AutoAgent loop mirrors Karpathy's auto-research idea but targets agent code instead of ML hyperparameters: it runs evals, generates a hypothesis, edits system prompts and tools, reruns evals, and decides to keep or roll back.\",\n    \"Each iteration runs on its own git branch, so improvements compound from the last good branch and regressions are discarded, producing a full changelog of hypotheses and outcomes.\",\n    \"A naive tool-less agent went from 18% to 83% pass rate in about 10 iterations, and a real production agent already optimized by humans went from 67% to 86% by finding edge cases, improving tool descriptions, and fixing tool logic.\",\n    \"Human-in-the-loop steering matters mainly at setup: giving the coding agent context and explicitly forbidding it from editing golden datasets or scorers just to make evals pass.\",\n    \"For live-data failures, the pipeline collects traces with thumbs up/down feedback or SME annotations, clusters failure modes, does root-cause analysis against the actual agent code, and outputs a markdown report with proposed fixes.\",\n    \"Clustered reports must still be triaged and validated with subject matter experts, since clusters can be false positives, intended behavior, or unhelpful feedback; the team found generating one report per sprint reasonable.\",\n    \"Every validated failure mode is added to the golden dataset and eval suite so the same regression is caught automatically if reintroduced.\",\n    \"Even failed hypotheses are useful artifacts \u2014 a human can read the hypothesis report, see what the agent was attempting, and steer it better next time.\",\n    \"'Harness engineering' \u2014 specs per failure mode, quality gates (lint, unit tests, evals, LLM code review), context engineering, and observability \u2014 is what makes autonomous self-improvement work at all.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"AI is very powerful and very good at building any type of software. And given that AI agents is just one type of software, as you may guess, we are using AI to build AI.\",\n      \"timestamp_sec\": 47,\n      \"why\": \"States the talk's core premise in one line\"\n    },\n    {\n      \"text\": \"You can see the golden dataset as a test suite, but in a non-deterministic scenario.\",\n      \"timestamp_sec\": 249,\n      \"why\": \"Crisp reframing of evals for people coming from deterministic testing\"\n    },\n    {\n      \"text\": \"we have a pass rate of 18%, right? Uh just because a a lot of questions are simple enough, like additions, multiplications, right? Are simple enough so that the actual um LLM has this knowledge in its training data\",\n      \"timestamp_sec\": 354,\n      \"why\": \"Reports the baseline number and explains what a trivial baseline actually measures\"\n    },\n    {\n      \"text\": \"So, 18% of the questions can be answered by the weights of the LLM, the rest can't.\",\n      \"timestamp_sec\": 354,\n      \"why\": \"Sharp framing of the gap that tools and context must close\"\n    },\n    {\n      \"text\": \"in a lot of cases, um a lot of the optimizations will be just to tweak the system prompt and update it so that um you know, our agent has all the information it needs to work on our domain.\",\n      \"timestamp_sec\": 447,\n      \"why\": \"Names prompt tweaking as the dominant lever, a position others contest\"\n    },\n    {\n      \"text\": \"a coding agent tweaking the code of machine learning um of a deep learning algorithm can actually improve the results\",\n      \"timestamp_sec\": 495,\n      \"why\": \"The prior work that licenses the whole approach\"\n    },\n    {\n      \"text\": \"we have the baseline accuracy, which was 18%, and we managed to reach up to 83% um in like something around 10 uh 10 iterations.\",\n      \"timestamp_sec\": 610,\n      \"why\": \"Headline result for the toy case, with iteration count\"\n    },\n    {\n      \"text\": \"we also improved um some evals by 10% on a production agent that was already humanly optimized.\",\n      \"timestamp_sec\": 610,\n      \"why\": \"The claim that matters most \u2014 gains beyond human optimization\"\n    },\n    {\n      \"text\": \"the the coding agent found new ways that humans didn't find um to improve the agent, and we got plus 10% on some of our internal benchmarks.\",\n      \"timestamp_sec\": 666,\n      \"why\": \"Explicit assertion that the agent outperformed human optimizers\"\n    },\n    {\n      \"text\": \"updating the golden data sets or the scorers just to let the evals pass is not a good idea, so we want to enforce we want to tell the we want to tell the AI agent to not do that\",\n      \"timestamp_sec\": 715,\n      \"why\": \"Names the central reward-hacking failure mode and the guardrail against it\"\n    },\n    {\n      \"text\": \"the system works by creating an hypothesis. So it's tackling one class of problems at a time. It's updating the the agent and it's running the evals again.\",\n      \"timestamp_sec\": 812,\n      \"why\": \"The mechanism of the optimization loop, stated compactly\"\n    },\n    {\n      \"text\": \"if the metrics improved, then we continue from this branch. Um if the metrics didn't improve or we have a strong regression or something bad happened, uh then we roll back to the previous branch.\",\n      \"timestamp_sec\": 950,\n      \"why\": \"The accept/reject rule that makes the search safe\"\n    },\n    {\n      \"text\": \"the baseline accuracy was 67% um but then in something around 10 iterations, we managed to reach 86% in our evals without actually cheating because it found edge cases, it improved the system prompt, it improved the tool descriptions to catch more edge cases, and it also fixed some tools logic.\",\n      \"timestamp_sec\": 1084,\n      \"why\": \"The production result plus the specific categories of change that produced it\"\n    },\n    {\n      \"text\": \"Maybe the evals didn't improve after an hypothesis, but maybe that hypothesis was promising, right? Maybe the agent was onto something, but it just didn't implement the system the change in a correct way\",\n      \"timestamp_sec\": 1044,\n      \"why\": \"Argues failed iterations still carry signal for humans\"\n    },\n    {\n      \"text\": \"we analyze all the traces with both the negative and positive feedback, but we are more interested about the negative feedback here.\",\n      \"timestamp_sec\": 1220,\n      \"why\": \"Concrete triage priority in the live-data pipeline\"\n    },\n    {\n      \"text\": \"all the failure modes that we are founding during this investigation step, they will become part of the golden dataset that we mentioned earlier and the eval suite is updated to spot those regressions.\",\n      \"timestamp_sec\": 1533,\n      \"why\": \"Closes the loop between production failures and the eval suite\"\n    },\n    {\n      \"text\": \"We found out that once per sprint is actually reasonable.\",\n      \"timestamp_sec\": 1580,\n      \"why\": \"A rare operational cadence number for feedback analysis\"\n    },\n    {\n      \"text\": \"a coding agent, when instructed, uh has been able to fix an entire suite of issues like the one that we have seen earlier, uh with just one prompt.\",\n      \"timestamp_sec\": 1617,\n      \"why\": \"Strong claim about how far a well-contextualized single prompt goes\"\n    },\n    {\n      \"text\": \"Harness Engineering is the idea of building the environment around our coding agent so that they can work reliably.\",\n      \"timestamp_sec\": 1666,\n      \"why\": \"Defines the term the talk ends on\"\n    },\n    {\n      \"text\": \"if we don't know what's happening when we ship in production, we are basically blind\",\n      \"timestamp_sec\": 1755,\n      \"why\": \"The observability argument stated bluntly\"\n    }\n  ],\n  \"concepts\": [\n    \"golden dataset\",\n    \"eval harness design\",\n    \"agent self-improvement loops\",\n    \"trace annotation\",\n    \"failure mode clustering\",\n    \"root cause analysis\",\n    \"system prompt optimization\",\n    \"harness engineering\",\n    \"spec-driven development\",\n    \"regression testing for agents\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"An AI agent is fundamentally just an LLM in an agentic loop with tools and context retrieval.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 140\n    },\n    {\n      \"claim\": \"A golden dataset plus scorers is the right analogue of a test suite for non-deterministic agent systems.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 249\n    },\n    {\n      \"claim\": \"A coding agent can autonomously improve another agent's accuracy, taking a naive agent from 18% to 83% pass rate in about 10 iterations.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 610\n    },\n    {\n      \"claim\": \"Coding agents can find improvements that human engineers missed, yielding +10% on internal benchmarks for an already human-optimized production agent.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 666\n    },\n    {\n      \"claim\": \"The optimizing agent must be explicitly forbidden from editing golden datasets or scorers, or it will make evals pass by cheating.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 715\n    },\n    {\n      \"claim\": \"Running each optimization hypothesis on its own git branch, with rollback on regression, is the correct control structure for autonomous agent optimization.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 950\n    },\n    {\n      \"claim\": \"Most agent optimization work reduces to tweaking the system prompt, adding missing tools, and improving context retrieval.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 447\n    },\n    {\n      \"claim\": \"Clustered failure reports should be triaged and validated by human subject matter experts before fixes are implemented, because clusters can be false positives or intended behavior.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1533\n    },\n    {\n      \"claim\": \"Generating a live-data failure report once per sprint is a reasonable cadence for most use cases.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1580\n    },\n    {\n      \"claim\": \"Giving a coding agent the ability to test its own changes against regression tests is what makes single-prompt fixes of whole issue suites possible.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1617\n    },\n    {\n      \"claim\": \"Autonomous agent self-improvement is only possible when a sufficient harness \u2014 specs, quality gates, context engineering, observability \u2014 exists around the coding agent.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1666\n    },\n    {\n      \"claim\": \"Shipping agents to production without observability leaves the team unable to diagnose failures.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1755\n    }\n  ],\n  \"speaker_org\": \"Nearform\"\n}",
+  "ttft_ms": 46930,
+  "ttft_stream_ms": 1916,
+  "time_to_request_ms": 34,
+  "type": "result",
+  "duration_ms": 48902,
+  "uuid": "2db3655a-3286-48f6-915e-0700b47a4099",
+  "passA": {
+    "summary": "Alfonso Graziano, a tech lead at Nearform, describes a repeatable process for using coding agents (primarily Claude Code) to iteratively improve production AI agents. The talk covers two failure modes: poor scores on an eval suite backed by a golden dataset, and poor behavior on live user data. For the first, he presents 'AutoAgent' \u2014 a Karpathy-auto-research-inspired loop where a coding agent forms a hypothesis, branches, edits the target agent's prompts/tools/code, reruns evals, and keeps or rolls back the branch; it took a toy agent from 18% to 83% and a real production agent from 67% to 86% in roughly 10 iterations each. For the second, he outlines a trace-collection pipeline: user feedback and SME annotations are clustered into failure modes, root-caused against the code, triaged with subject matter experts, fixed by a coding agent, and folded back into the golden dataset as regressions. The unifying frame is 'harness engineering' \u2014 building the specs, quality gates, context, and observability around a coding agent so it can validate its own changes.",
+    "key_points": [
+      "A golden dataset \u2014 inputs plus expected outputs, co-developed with subject matter experts \u2014 acts as a test suite for a non-deterministic system, where expected output may be a specific tool call, tool parameters, or a chain of tool calls rather than just text.",
+      "The AutoAgent loop mirrors Karpathy's auto-research idea but targets agent code instead of ML hyperparameters: it runs evals, generates a hypothesis, edits system prompts and tools, reruns evals, and decides to keep or roll back.",
+      "Each iteration runs on its own git branch, so improvements compound from the last good branch and regressions are discarded, producing a full changelog of hypotheses and outcomes.",
+      "A naive tool-less agent went from 18% to 83% pass rate in about 10 iterations, and a real production agent already optimized by humans went from 67% to 86% by finding edge cases, improving tool descriptions, and fixing tool logic.",
+      "Human-in-the-loop steering matters mainly at setup: giving the coding agent context and explicitly forbidding it from editing golden datasets or scorers just to make evals pass.",
+      "For live-data failures, the pipeline collects traces with thumbs up/down feedback or SME annotations, clusters failure modes, does root-cause analysis against the actual agent code, and outputs a markdown report with proposed fixes.",
+      "Clustered reports must still be triaged and validated with subject matter experts, since clusters can be false positives, intended behavior, or unhelpful feedback; the team found generating one report per sprint reasonable.",
+      "Every validated failure mode is added to the golden dataset and eval suite so the same regression is caught automatically if reintroduced.",
+      "Even failed hypotheses are useful artifacts \u2014 a human can read the hypothesis report, see what the agent was attempting, and steer it better next time.",
+      "'Harness engineering' \u2014 specs per failure mode, quality gates (lint, unit tests, evals, LLM code review), context engineering, and observability \u2014 is what makes autonomous self-improvement work at all."
+    ],
+    "notable_quotes": [
+      {
+        "text": "AI is very powerful and very good at building any type of software. And given that AI agents is just one type of software, as you may guess, we are using AI to build AI.",
+        "timestamp_sec": 47,
+        "why": "States the talk's core premise in one line"
+      },
+      {
+        "text": "You can see the golden dataset as a test suite, but in a non-deterministic scenario.",
+        "timestamp_sec": 249,
+        "why": "Crisp reframing of evals for people coming from deterministic testing"
+      },
+      {
+        "text": "we have a pass rate of 18%, right? Uh just because a a lot of questions are simple enough, like additions, multiplications, right? Are simple enough so that the actual um LLM has this knowledge in its training data",
+        "timestamp_sec": 354,
+        "why": "Reports the baseline number and explains what a trivial baseline actually measures"
+      },
+      {
+        "text": "So, 18% of the questions can be answered by the weights of the LLM, the rest can't.",
+        "timestamp_sec": 354,
+        "why": "Sharp framing of the gap that tools and context must close"
+      },
+      {
+        "text": "in a lot of cases, um a lot of the optimizations will be just to tweak the system prompt and update it so that um you know, our agent has all the information it needs to work on our domain.",
+        "timestamp_sec": 447,
+        "why": "Names prompt tweaking as the dominant lever, a position others contest"
+      },
+      {
+        "text": "a coding agent tweaking the code of machine learning um of a deep learning algorithm can actually improve the results",
+        "timestamp_sec": 495,
+        "why": "The prior work that licenses the whole approach"
+      },
+      {
+        "text": "we have the baseline accuracy, which was 18%, and we managed to reach up to 83% um in like something around 10 uh 10 iterations.",
+        "timestamp_sec": 610,
+        "why": "Headline result for the toy case, with iteration count"
+      },
+      {
+        "text": "we also improved um some evals by 10% on a production agent that was already humanly optimized.",
+        "timestamp_sec": 610,
+        "why": "The claim that matters most \u2014 gains beyond human optimization"
+      },
+      {
+        "text": "the the coding agent found new ways that humans didn't find um to improve the agent, and we got plus 10% on some of our internal benchmarks.",
+        "timestamp_sec": 666,
+        "why": "Explicit assertion that the agent outperformed human optimizers"
+      },
+      {
+        "text": "updating the golden data sets or the scorers just to let the evals pass is not a good idea, so we want to enforce we want to tell the we want to tell the AI agent to not do that",
+        "timestamp_sec": 715,
+        "why": "Names the central reward-hacking failure mode and the guardrail against it"
+      },
+      {
+        "text": "the system works by creating an hypothesis. So it's tackling one class of problems at a time. It's updating the the agent and it's running the evals again.",
+        "timestamp_sec": 812,
+        "why": "The mechanism of the optimization loop, stated compactly"
+      },
+      {
+        "text": "if the metrics improved, then we continue from this branch. Um if the metrics didn't improve or we have a strong regression or something bad happened, uh then we roll back to the previous branch.",
+        "timestamp_sec": 950,
+        "why": "The accept/reject rule that makes the search safe"
+      },
+      {
+        "text": "the baseline accuracy was 67% um but then in something around 10 iterations, we managed to reach 86% in our evals without actually cheating because it found edge cases, it improved the system prompt, it improved the tool descriptions to catch more edge cases, and it also fixed some tools logic.",
+        "timestamp_sec": 1084,
+        "why": "The production result plus the specific categories of change that produced it"
+      },
+      {
+        "text": "Maybe the evals didn't improve after an hypothesis, but maybe that hypothesis was promising, right? Maybe the agent was onto something, but it just didn't implement the system the change in a correct way",
+        "timestamp_sec": 1044,
+        "why": "Argues failed iterations still carry signal for humans"
+      },
+      {
+        "text": "we analyze all the traces with both the negative and positive feedback, but we are more interested about the negative feedback here.",
+        "timestamp_sec": 1220,
+        "why": "Concrete triage priority in the live-data pipeline"
+      },
+      {
+        "text": "all the failure modes that we are founding during this investigation step, they will become part of the golden dataset that we mentioned earlier and the eval suite is updated to spot those regressions.",
+        "timestamp_sec": 1533,
+        "why": "Closes the loop between production failures and the eval suite"
+      },
+      {
+        "text": "We found out that once per sprint is actually reasonable.",
+        "timestamp_sec": 1580,
+        "why": "A rare operational cadence number for feedback analysis"
+      },
+      {
+        "text": "a coding agent, when instructed, uh has been able to fix an entire suite of issues like the one that we have seen earlier, uh with just one prompt.",
+        "timestamp_sec": 1617,
+        "why": "Strong claim about how far a well-contextualized single prompt goes"
+      },
+      {
+        "text": "Harness Engineering is the idea of building the environment around our coding agent so that they can work reliably.",
+        "timestamp_sec": 1666,
+        "why": "Defines the term the talk ends on"
+      },
+      {
+        "text": "if we don't know what's happening when we ship in production, we are basically blind",
+        "timestamp_sec": 1755,
+        "why": "The observability argument stated bluntly"
+      }
+    ],
+    "concepts": [
+      "golden dataset",
+      "eval harness design",
+      "agent self-improvement loops",
+      "trace annotation",
+      "failure mode clustering",
+      "root cause analysis",
+      "system prompt optimization",
+      "harness engineering",
+      "spec-driven development",
+      "regression testing for agents"
+    ],
+    "positions": [
+      {
+        "claim": "An AI agent is fundamentally just an LLM in an agentic loop with tools and context retrieval.",
+        "confidence": "stated",
+        "timestamp_sec": 140
+      },
+      {
+        "claim": "A golden dataset plus scorers is the right analogue of a test suite for non-deterministic agent systems.",
+        "confidence": "stated",
+        "timestamp_sec": 249
+      },
+      {
+        "claim": "A coding agent can autonomously improve another agent's accuracy, taking a naive agent from 18% to 83% pass rate in about 10 iterations.",
+        "confidence": "stated",
+        "timestamp_sec": 610
+      },
+      {
+        "claim": "Coding agents can find improvements that human engineers missed, yielding +10% on internal benchmarks for an already human-optimized production agent.",
+        "confidence": "stated",
+        "timestamp_sec": 666
+      },
+      {
+        "claim": "The optimizing agent must be explicitly forbidden from editing golden datasets or scorers, or it will make evals pass by cheating.",
+        "confidence": "stated",
+        "timestamp_sec": 715
+      },
+      {
+        "claim": "Running each optimization hypothesis on its own git branch, with rollback on regression, is the correct control structure for autonomous agent optimization.",
+        "confidence": "stated",
+        "timestamp_sec": 950
+      },
+      {
+        "claim": "Most agent optimization work reduces to tweaking the system prompt, adding missing tools, and improving context retrieval.",
+        "confidence": "implied",
+        "timestamp_sec": 447
+      },
+      {
+        "claim": "Clustered failure reports should be triaged and validated by human subject matter experts before fixes are implemented, because clusters can be false positives or intended behavior.",
+        "confidence": "stated",
+        "timestamp_sec": 1533
+      },
+      {
+        "claim": "Generating a live-data failure report once per sprint is a reasonable cadence for most use cases.",
+        "confidence": "stated",
+        "timestamp_sec": 1580
+      },
+      {
+        "claim": "Giving a coding agent the ability to test its own changes against regression tests is what makes single-prompt fixes of whole issue suites possible.",
+        "confidence": "stated",
+        "timestamp_sec": 1617
+      },
+      {
+        "claim": "Autonomous agent self-improvement is only possible when a sufficient harness \u2014 specs, quality gates, context engineering, observability \u2014 exists around the coding agent.",
+        "confidence": "stated",
+        "timestamp_sec": 1666
+      },
+      {
+        "claim": "Shipping agents to production without observability leaves the team unable to diagnose failures.",
+        "confidence": "stated",
+        "timestamp_sec": 1755
+      }
+    ],
+    "speaker_org": "Nearform"
+  },
+  "_meta": {
+    "slug": "agents-building-agents",
+    "video_id": "aHhB3sjGjkI",
+    "url": "https://www.youtube.com/watch?v=aHhB3sjGjkI",
+    "word_count": 4742,
+    "wall_sec": 50.0,
+    "run_at": "2026-08-12T19:28:04Z",
+    "effort": "medium"
+  }
+}

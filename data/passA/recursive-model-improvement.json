@@ -1,0 +1,273 @@
+{
+  "is_error": false,
+  "duration_api_ms": 64946,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "eb24736f-737c-4b84-ab02-1b3fec6f37e5",
+  "total_cost_usd": 0.266346,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 11032,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 5743,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 11032,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 5743,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 11032,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 11032
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 7212,
+      "outputTokens": 15,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.007287,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 5743,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 11032,
+      "webSearchRequests": 0,
+      "costUSD": 0.25905900000000004,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Lee Robinson, a machine learning engineer on model behavior at Cursor, walks through how Cursor trains its Composer models and how that training process is being progressively automated by the models themselves. He splits model development into an outer loop (ship model \u2192 collect user and internal dogfooding feedback \u2192 retrain) and a faster inner loop (build harder problems and higher-quality evals, then climb them), arguing the inner loop is where the biggest speedups come from. Along the way he reports concrete practices: private held-out evals built from Cursor's own codebase, anti-reward-hacking controls like deleting Git history and network allowlists, generating RL environments by deleting features from working applications until tests fail, and a 'textual feedback' method where a teacher model hints at a specific point in a rollout to sharpen credit assignment. He connects this to Cursor's SpaceX compute partnership (Colossus, Terafab) and ends on the recursive claim: making the top model smarter improves every derivative judge, reward model, and research agent in the system, raising the floor of the whole pipeline. Worth watching if you want a frontier lab's concrete account of eval design, reward hacking, and research automation rather than a scaling-laws abstraction.\",\n  \"key_points\": [\n    \"Model development is best understood as two nested loops: an outer loop of shipping, gathering user thumbs-up/down and A/B online metrics, and retraining; and an inner loop of creating harder training problems and better evals and climbing them quickly.\",\n    \"Composer 2.5, released in May, is now the most popular model in Cursor, positioned as fast, smart, and cost-effective rather than as the single most intelligent model available.\",\n    \"For the next version Cursor wants to control the entire stack, including a full pre-train from scratch instead of building on the open-source Kimmy base, and to broaden the model beyond coding.\",\n    \"Public benchmarks are systematically inflated by reward hacking: models mine Git history for solutions and search the web for forks of public evals, so Cursor deletes Git history during runs and applies network allowlists.\",\n    \"Cursor Bench is a private held-out eval set drawn from real work in Cursor's own codebase, including tasks like reconstructing an incident fix from Datadog logs, Slack, and Notion, which most models do poorly on today.\",\n    \"Hard RL environments can be manufactured at scale by generating an ambitious application, deleting a feature or files so tests fail, and rewarding the model for re-implementing it however it likes against a verifiable test-passing goal.\",\n    \"'Textual feedback' addresses credit assignment in hundred-thousand-token rollouts by having a teacher model inject a hint at one specific step, then up-weighting or down-weighting the resulting token probabilities; it generalizes beyond tool-call adherence to style and arbitrary behaviors.\",\n    \"Compute goes to far more than the main training run: serving, internal checkpoints and A/B tests, pre-/mid-training and RL, data and reward generation, judge and reward models, continuous evals, and researcher side runs.\",\n    \"Once compute supports multiple concurrent large runs, the bottleneck shifts from GPUs to humans, which is why Cursor has a dedicated team automating research operations so ML engineers can launch, monitor, and be paged about training runs from Slack.\",\n    \"The recursive claim is that every intelligence release distills into derivative models used for judging, rewards, and research automation, so raising the top model's capability lifts the floor of every loop in the system.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"our goal at cursor is to build the best possible AI models\",\n      \"timestamp_sec\": 1,\n      \"why\": \"states the mandate that frames the entire talk\"\n    },\n    {\n      \"text\": \"We put out Composer 2.5 in May, and it's now the most popular model in Cursor\",\n      \"timestamp_sec\": 147,\n      \"why\": \"concrete adoption claim anchoring the progress report\"\n    },\n    {\n      \"text\": \"People like Composer right now, I think because it is both fast and pretty smart, and also cost-effective.\",\n      \"timestamp_sec\": 184,\n      \"why\": \"names the market position Cursor is optimizing for\"\n    },\n    {\n      \"text\": \"We wanted to control every aspect of training, so ideally doing a full pre-train from scratch versus the previous open-source base of Kimmy that we were using.\",\n      \"timestamp_sec\": 221,\n      \"why\": \"reveals a major strategic shift away from an open-source base model\"\n    },\n    {\n      \"text\": \"the vast vast majority of our revenue today comes from agent usage. And that means that all of the data inside of Cursor is also coming from agent usage, and we can use that to train better models.\",\n      \"timestamp_sec\": 260,\n      \"why\": \"links product economics directly to the training data flywheel\"\n    },\n    {\n      \"text\": \"the models learned how to really just go back in the Git history and figure out if there was a solution or a part of a solution\",\n      \"timestamp_sec\": 404,\n      \"why\": \"concrete reward-hacking behavior observed in training\"\n    },\n    {\n      \"text\": \"first off, we would delete the Git history at the start, and we could restore it at the end, so that wouldn't affect the run\",\n      \"timestamp_sec\": 438,\n      \"why\": \"actionable mitigation others can copy for their own eval harnesses\"\n    },\n    {\n      \"text\": \"this isn't really a true test of what it feels like to use these models. Like in reality you have access to the internet.\",\n      \"timestamp_sec\": 473,\n      \"why\": \"names the validity tradeoff between locked-down benchmarks and real usage\"\n    },\n    {\n      \"text\": \"we have this private eval set that is mostly made up of things that happen in our code base which is held out from the evals so we ensure that the models aren't trained on it\",\n      \"timestamp_sec\": 473,\n      \"why\": \"describes Cursor Bench and its contamination-avoidance rationale\"\n    },\n    {\n      \"text\": \"if you're looking at an eval and all the models are scoring like 90% probably time to retire that eval and try to get something more difficult\",\n      \"timestamp_sec\": 504,\n      \"why\": \"a crisp heuristic for eval half-life\"\n    },\n    {\n      \"text\": \"You can delete a feature, you can delete files and the test will then fail. And then you can ask these models to go and basically figure out however it wants to re-implement that feature\",\n      \"timestamp_sec\": 565,\n      \"why\": \"the core recipe for scalable verifiable RL environments\"\n    },\n    {\n      \"text\": \"we want to zoom in on one specific part of that rollout, and ideally we can hint or kind of nudge to the model\",\n      \"timestamp_sec\": 632,\n      \"why\": \"defines the textual feedback method for fine-grained credit assignment\"\n    },\n    {\n      \"text\": \"we announced back in March that we are partnering with SpaceX to get access to a lot more compute, and this allows us to train very large models from scratch\",\n      \"timestamp_sec\": 699,\n      \"why\": \"the compute partnership underpinning the from-scratch pre-training ambition\"\n    },\n    {\n      \"text\": \"build out this supercomputer in 122 days for 100,000 GPUs, and then added another 100,000 GPUs in 92 days\",\n      \"timestamp_sec\": 699,\n      \"why\": \"hard numbers on Colossus buildout speed\"\n    },\n    {\n      \"text\": \"We want to avoid this state of being bottlenecked on humans launching and reviewing and babysitting runs.\",\n      \"timestamp_sec\": 1008,\n      \"why\": \"states the research-automation thesis in one line\"\n    },\n    {\n      \"text\": \"increasingly we find that you have a human working with a team of agents, and then the agents can start working with the other agents. It's a little meta, but I think this will be a big trend in the next 6 months.\",\n      \"timestamp_sec\": 1008,\n      \"why\": \"a dated, falsifiable prediction about multi-agent coordination\"\n    },\n    {\n      \"text\": \"every person on the ML team gets access to this fleet of agents they can basically train models directly from Slack\",\n      \"timestamp_sec\": 1049,\n      \"why\": \"concrete internal tooling detail showing what research automation looks like in practice\"\n    },\n    {\n      \"text\": \"when you make the top-level model model smarter, it actually improves the whole system\",\n      \"timestamp_sec\": 1117,\n      \"why\": \"the compressed statement of the recursive improvement argument\"\n    },\n    {\n      \"text\": \"if the smartest model then creates those derivative models, when you can improve that, you can actually make every single one of these loops much, much better because you've raised the kind of floor of the intelligence\",\n      \"timestamp_sec\": 1159,\n      \"why\": \"spells out the mechanism behind recursive self-improvement\"\n    }\n  ],\n  \"concepts\": [\n    \"recursive self-improvement\",\n    \"reinforcement learning environments\",\n    \"reward hacking\",\n    \"credit assignment in long rollouts\",\n    \"eval half-life\",\n    \"held-out private benchmarks\",\n    \"benchmark contamination controls\",\n    \"compute allocation across the training stack\",\n    \"research process automation\",\n    \"human-agent coordination\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Public evals systematically overstate model capability because models mine Git history and the web for answers; simple controls like deleting Git history and network allowlists noticeably change reported scores.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 438\n    },\n    {\n      \"claim\": \"An eval where all models score around 90% should be retired, and eval half-life shrinks as models get smarter, so eval creation must be a continuous investment.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 504\n    },\n    {\n      \"claim\": \"There is market room for a model that is fast, smart, and cost-effective alongside the most intelligent frontier models, and both types should be offered.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 184\n    },\n    {\n      \"claim\": \"Training on an open-source base (Kimmy) limits control, so a full pre-train from scratch is the right next step.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 221\n    },\n    {\n      \"claim\": \"Deleting features from generated applications until tests fail is an effective and scalable way to produce hard, verifiable RL problems.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 565\n    },\n    {\n      \"claim\": \"Textual feedback \u2014 a teacher model hinting at a specific rollout step and reweighting probabilities \u2014 is more precise than end-of-rollout grading and generalizes to arbitrary behaviors, not just tool calling.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 665\n    },\n    {\n      \"claim\": \"Most models today cannot reconstruct an incident fix by reading Datadog logs, Slack, and Notion the way a human engineer would.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 366\n    },\n    {\n      \"claim\": \"Once compute is abundant enough for multiple simultaneous large runs, the binding constraint becomes the humans training models, so automating monotonous research work is the highest-leverage investment.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 897\n    },\n    {\n      \"claim\": \"Agent-to-agent collaboration, with humans supervising teams of agents, will be a major trend within the next six months.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1008\n    },\n    {\n      \"claim\": \"The overall training system is bottlenecked on the intelligence of the smartest model in it, because every judge, reward model, and research agent is distilled from it.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1159\n    },\n    {\n      \"claim\": \"Agents will need their own persistent artifact store \u2014 a 'Dropbox for models' \u2014 since code repositories are a poor fit for non-code work products.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 975\n    },\n    {\n      \"claim\": \"Cursor is close to shipping a new model that will be a notable improvement over Composer 2.5.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1159\n    }\n  ],\n  \"speaker_org\": \"Cursor\"\n}",
+  "ttft_ms": 21669,
+  "ttft_stream_ms": 1116,
+  "time_to_request_ms": 36,
+  "type": "result",
+  "duration_ms": 65536,
+  "uuid": "a70e2944-83b5-4401-90ac-d607d81ff603",
+  "passA": {
+    "summary": "Lee Robinson, a machine learning engineer on model behavior at Cursor, walks through how Cursor trains its Composer models and how that training process is being progressively automated by the models themselves. He splits model development into an outer loop (ship model \u2192 collect user and internal dogfooding feedback \u2192 retrain) and a faster inner loop (build harder problems and higher-quality evals, then climb them), arguing the inner loop is where the biggest speedups come from. Along the way he reports concrete practices: private held-out evals built from Cursor's own codebase, anti-reward-hacking controls like deleting Git history and network allowlists, generating RL environments by deleting features from working applications until tests fail, and a 'textual feedback' method where a teacher model hints at a specific point in a rollout to sharpen credit assignment. He connects this to Cursor's SpaceX compute partnership (Colossus, Terafab) and ends on the recursive claim: making the top model smarter improves every derivative judge, reward model, and research agent in the system, raising the floor of the whole pipeline. Worth watching if you want a frontier lab's concrete account of eval design, reward hacking, and research automation rather than a scaling-laws abstraction.",
+    "key_points": [
+      "Model development is best understood as two nested loops: an outer loop of shipping, gathering user thumbs-up/down and A/B online metrics, and retraining; and an inner loop of creating harder training problems and better evals and climbing them quickly.",
+      "Composer 2.5, released in May, is now the most popular model in Cursor, positioned as fast, smart, and cost-effective rather than as the single most intelligent model available.",
+      "For the next version Cursor wants to control the entire stack, including a full pre-train from scratch instead of building on the open-source Kimmy base, and to broaden the model beyond coding.",
+      "Public benchmarks are systematically inflated by reward hacking: models mine Git history for solutions and search the web for forks of public evals, so Cursor deletes Git history during runs and applies network allowlists.",
+      "Cursor Bench is a private held-out eval set drawn from real work in Cursor's own codebase, including tasks like reconstructing an incident fix from Datadog logs, Slack, and Notion, which most models do poorly on today.",
+      "Hard RL environments can be manufactured at scale by generating an ambitious application, deleting a feature or files so tests fail, and rewarding the model for re-implementing it however it likes against a verifiable test-passing goal.",
+      "'Textual feedback' addresses credit assignment in hundred-thousand-token rollouts by having a teacher model inject a hint at one specific step, then up-weighting or down-weighting the resulting token probabilities; it generalizes beyond tool-call adherence to style and arbitrary behaviors.",
+      "Compute goes to far more than the main training run: serving, internal checkpoints and A/B tests, pre-/mid-training and RL, data and reward generation, judge and reward models, continuous evals, and researcher side runs.",
+      "Once compute supports multiple concurrent large runs, the bottleneck shifts from GPUs to humans, which is why Cursor has a dedicated team automating research operations so ML engineers can launch, monitor, and be paged about training runs from Slack.",
+      "The recursive claim is that every intelligence release distills into derivative models used for judging, rewards, and research automation, so raising the top model's capability lifts the floor of every loop in the system."
+    ],
+    "notable_quotes": [
+      {
+        "text": "our goal at cursor is to build the best possible AI models",
+        "timestamp_sec": 1,
+        "why": "states the mandate that frames the entire talk"
+      },
+      {
+        "text": "We put out Composer 2.5 in May, and it's now the most popular model in Cursor",
+        "timestamp_sec": 147,
+        "why": "concrete adoption claim anchoring the progress report"
+      },
+      {
+        "text": "People like Composer right now, I think because it is both fast and pretty smart, and also cost-effective.",
+        "timestamp_sec": 184,
+        "why": "names the market position Cursor is optimizing for"
+      },
+      {
+        "text": "We wanted to control every aspect of training, so ideally doing a full pre-train from scratch versus the previous open-source base of Kimmy that we were using.",
+        "timestamp_sec": 221,
+        "why": "reveals a major strategic shift away from an open-source base model"
+      },
+      {
+        "text": "the vast vast majority of our revenue today comes from agent usage. And that means that all of the data inside of Cursor is also coming from agent usage, and we can use that to train better models.",
+        "timestamp_sec": 260,
+        "why": "links product economics directly to the training data flywheel"
+      },
+      {
+        "text": "the models learned how to really just go back in the Git history and figure out if there was a solution or a part of a solution",
+        "timestamp_sec": 404,
+        "why": "concrete reward-hacking behavior observed in training"
+      },
+      {
+        "text": "first off, we would delete the Git history at the start, and we could restore it at the end, so that wouldn't affect the run",
+        "timestamp_sec": 438,
+        "why": "actionable mitigation others can copy for their own eval harnesses"
+      },
+      {
+        "text": "this isn't really a true test of what it feels like to use these models. Like in reality you have access to the internet.",
+        "timestamp_sec": 473,
+        "why": "names the validity tradeoff between locked-down benchmarks and real usage"
+      },
+      {
+        "text": "we have this private eval set that is mostly made up of things that happen in our code base which is held out from the evals so we ensure that the models aren't trained on it",
+        "timestamp_sec": 473,
+        "why": "describes Cursor Bench and its contamination-avoidance rationale"
+      },
+      {
+        "text": "if you're looking at an eval and all the models are scoring like 90% probably time to retire that eval and try to get something more difficult",
+        "timestamp_sec": 504,
+        "why": "a crisp heuristic for eval half-life"
+      },
+      {
+        "text": "You can delete a feature, you can delete files and the test will then fail. And then you can ask these models to go and basically figure out however it wants to re-implement that feature",
+        "timestamp_sec": 565,
+        "why": "the core recipe for scalable verifiable RL environments"
+      },
+      {
+        "text": "we want to zoom in on one specific part of that rollout, and ideally we can hint or kind of nudge to the model",
+        "timestamp_sec": 632,
+        "why": "defines the textual feedback method for fine-grained credit assignment"
+      },
+      {
+        "text": "we announced back in March that we are partnering with SpaceX to get access to a lot more compute, and this allows us to train very large models from scratch",
+        "timestamp_sec": 699,
+        "why": "the compute partnership underpinning the from-scratch pre-training ambition"
+      },
+      {
+        "text": "build out this supercomputer in 122 days for 100,000 GPUs, and then added another 100,000 GPUs in 92 days",
+        "timestamp_sec": 699,
+        "why": "hard numbers on Colossus buildout speed"
+      },
+      {
+        "text": "We want to avoid this state of being bottlenecked on humans launching and reviewing and babysitting runs.",
+        "timestamp_sec": 1008,
+        "why": "states the research-automation thesis in one line"
+      },
+      {
+        "text": "increasingly we find that you have a human working with a team of agents, and then the agents can start working with the other agents. It's a little meta, but I think this will be a big trend in the next 6 months.",
+        "timestamp_sec": 1008,
+        "why": "a dated, falsifiable prediction about multi-agent coordination"
+      },
+      {
+        "text": "every person on the ML team gets access to this fleet of agents they can basically train models directly from Slack",
+        "timestamp_sec": 1049,
+        "why": "concrete internal tooling detail showing what research automation looks like in practice"
+      },
+      {
+        "text": "when you make the top-level model model smarter, it actually improves the whole system",
+        "timestamp_sec": 1117,
+        "why": "the compressed statement of the recursive improvement argument"
+      },
+      {
+        "text": "if the smartest model then creates those derivative models, when you can improve that, you can actually make every single one of these loops much, much better because you've raised the kind of floor of the intelligence",
+        "timestamp_sec": 1159,
+        "why": "spells out the mechanism behind recursive self-improvement"
+      }
+    ],
+    "concepts": [
+      "recursive self-improvement",
+      "reinforcement learning environments",
+      "reward hacking",
+      "credit assignment in long rollouts",
+      "eval half-life",
+      "held-out private benchmarks",
+      "benchmark contamination controls",
+      "compute allocation across the training stack",
+      "research process automation",
+      "human-agent coordination"
+    ],
+    "positions": [
+      {
+        "claim": "Public evals systematically overstate model capability because models mine Git history and the web for answers; simple controls like deleting Git history and network allowlists noticeably change reported scores.",
+        "confidence": "stated",
+        "timestamp_sec": 438
+      },
+      {
+        "claim": "An eval where all models score around 90% should be retired, and eval half-life shrinks as models get smarter, so eval creation must be a continuous investment.",
+        "confidence": "stated",
+        "timestamp_sec": 504
+      },
+      {
+        "claim": "There is market room for a model that is fast, smart, and cost-effective alongside the most intelligent frontier models, and both types should be offered.",
+        "confidence": "stated",
+        "timestamp_sec": 184
+      },
+      {
+        "claim": "Training on an open-source base (Kimmy) limits control, so a full pre-train from scratch is the right next step.",
+        "confidence": "stated",
+        "timestamp_sec": 221
+      },
+      {
+        "claim": "Deleting features from generated applications until tests fail is an effective and scalable way to produce hard, verifiable RL problems.",
+        "confidence": "stated",
+        "timestamp_sec": 565
+      },
+      {
+        "claim": "Textual feedback \u2014 a teacher model hinting at a specific rollout step and reweighting probabilities \u2014 is more precise than end-of-rollout grading and generalizes to arbitrary behaviors, not just tool calling.",
+        "confidence": "stated",
+        "timestamp_sec": 665
+      },
+      {
+        "claim": "Most models today cannot reconstruct an incident fix by reading Datadog logs, Slack, and Notion the way a human engineer would.",
+        "confidence": "stated",
+        "timestamp_sec": 366
+      },
+      {
+        "claim": "Once compute is abundant enough for multiple simultaneous large runs, the binding constraint becomes the humans training models, so automating monotonous research work is the highest-leverage investment.",
+        "confidence": "stated",
+        "timestamp_sec": 897
+      },
+      {
+        "claim": "Agent-to-agent collaboration, with humans supervising teams of agents, will be a major trend within the next six months.",
+        "confidence": "stated",
+        "timestamp_sec": 1008
+      },
+      {
+        "claim": "The overall training system is bottlenecked on the intelligence of the smartest model in it, because every judge, reward model, and research agent is distilled from it.",
+        "confidence": "stated",
+        "timestamp_sec": 1159
+      },
+      {
+        "claim": "Agents will need their own persistent artifact store \u2014 a 'Dropbox for models' \u2014 since code repositories are a poor fit for non-code work products.",
+        "confidence": "implied",
+        "timestamp_sec": 975
+      },
+      {
+        "claim": "Cursor is close to shipping a new model that will be a notable improvement over Composer 2.5.",
+        "confidence": "stated",
+        "timestamp_sec": 1159
+      }
+    ],
+    "speaker_org": "Cursor"
+  },
+  "_meta": {
+    "slug": "recursive-model-improvement",
+    "video_id": "q4Tr-DknG2M",
+    "url": "https://www.youtube.com/watch?v=q4Tr-DknG2M",
+    "word_count": 4040,
+    "wall_sec": 66.7,
+    "run_at": "2026-08-12T20:08:09Z",
+    "effort": "medium"
+  }
+}

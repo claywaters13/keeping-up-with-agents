@@ -1,0 +1,242 @@
+{
+  "is_error": false,
+  "duration_api_ms": 47975,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "3a4bd5bd-32c1-4a9d-97c5-38f773499059",
+  "total_cost_usd": 0.171379,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 5497,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 4342,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 5497,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 4342,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 5497,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 5497
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 2610,
+      "outputTokens": 17,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.002695,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 4342,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 5497,
+      "webSearchRequests": 0,
+      "costUSD": 0.168684,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Luis Romero-Sevilla (VP of AI at Orbis) walks through retrieval architectures for a hard edge case: a document collection where every document is relevant to a global question, the documents are densely interrelated, and the whole collection is replaced frequently. He argues plain vector RAG fails because top-k similarity retrieval can't return everything that matters, and GraphRAG fails on the churn axis because rebuilding a knowledge graph on every data refresh is slow and computationally expensive. His proposal is 'extended cache augmented generation': shard the documents across multiple parallel KV-cached context buckets, then have a smarter supervisor model interrogate each bucket and synthesize an answer, with follow-up questions where something looks interesting. Notably, he reports that domain-based bucketing backfires \u2014 the supervisor skips domains that look irrelevant \u2014 so documents should be distributed in no particular order and merely balanced. It's a six-minute architecture sketch, not an evaluation; watch it for the design pattern and the bucketing gotcha, not for benchmarks.\",\n  \"key_points\": [\n    \"The target scenario is defined by two properties simultaneously: every document in the collection is relevant to the user's question, and the entire collection goes obsolete and gets replaced frequently.\",\n    \"Similarity-threshold vector RAG is structurally wrong for this case, because retrieving only the documents above a similarity threshold cannot surface a collection where all documents matter.\",\n    \"GraphRAG handles the interconnectedness well by using an LLM to extract entities and relationships into a navigable graph, but only if the underlying collection is stable.\",\n    \"Graph reconstruction cost is the disqualifier under churn: recomputing the knowledge graph on every data replacement is expensive and slow, whereas vector inserts are fast enough to just rebuild the collection.\",\n    \"Since GraphRAG already pays to push every document through an LLM, the speaker argues you may as well put the documents directly into context (cache augmented generation) and cache the KV state.\",\n    \"Single-cache CAG is bounded by context window size and by answer-quality degradation when the window is filled too full, which motivates sharding across multiple parallel caches.\",\n    \"Documents should be distributed across buckets in no particular order with only balancing constraints \u2014 organizing by domain causes the supervisor to skip buckets whose domains look superficially irrelevant.\",\n    \"The speaker claims the parallel-cache approach is significantly faster than GraphRAG and more accurate than simple RAG, with KV cache cost managed by tuning how long each cache lives.\",\n    \"He closes by refusing a universal recommendation: retrieval strategies trade off compute, cost, and speed, and this design is fitted to one specific problem shape.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"I'm on a mission to solve knowledge representation when all context matters.\",\n      \"timestamp_sec\": 3,\n      \"why\": \"States the framing problem the whole talk is built around.\"\n    },\n    {\n      \"text\": \"Inserting to a vector database, it's relatively fast. So, whenever a collection becomes obsolete, we can just replace it with a new one.\",\n      \"timestamp_sec\": 51,\n      \"why\": \"Names the one axis where naive RAG actually wins \u2014 refresh cost \u2014 which sets up the later contrast with graphs.\"\n    },\n    {\n      \"text\": \"All the documents in the collection are relevant for us to answer the question. So, we can't just take all the documents in the collection and pass them to LLM.\",\n      \"timestamp_sec\": 93,\n      \"why\": \"The core bind: retrieval can't narrow, but context can't hold everything.\"\n    },\n    {\n      \"text\": \"If your collection of documents isn't changed very often, GraphRAG is an excellent approach for finding those relationships within details to answer the user's question.\",\n      \"timestamp_sec\": 144,\n      \"why\": \"A conditional endorsement of the competing approach, with the condition stated explicitly.\"\n    },\n    {\n      \"text\": \"Recomputing a knowledge graph every time the data gets replaced is computationally very expensive, and it takes relatively long time.\",\n      \"timestamp_sec\": 144,\n      \"why\": \"The specific cost argument that rules GraphRAG out for high-churn corpora.\"\n    },\n    {\n      \"text\": \"where we use a model with a large context window, load the documents into the context, and cache the context by storing the model's KB matrix\",\n      \"timestamp_sec\": 192,\n      \"why\": \"The talk's working definition of cache augmented generation.\"\n    },\n    {\n      \"text\": \"The problem here is that the context window is limited, and if you fill the context window too much, the quality of the answer gets degraded, too.\",\n      \"timestamp_sec\": 192,\n      \"why\": \"Asserts context-fill quality degradation as a hard design constraint, not just a capacity limit.\"\n    },\n    {\n      \"text\": \"The solution: what if we use more CAGs in parallel and distribute the documents across different context buckets.\",\n      \"timestamp_sec\": 192,\n      \"why\": \"The central proposal in one sentence.\"\n    },\n    {\n      \"text\": \"Now, each cache can answer questions regarding its content. And now we just need something to ask the right questions to the right buckets.\",\n      \"timestamp_sec\": 230,\n      \"why\": \"Explains why the architecture needs a supervisor layer on top of the caches.\"\n    },\n    {\n      \"text\": \"But in practice, with very dense relationship between documents, the supervisor tends to ignore domains that at first glance seem irrelevant.\",\n      \"timestamp_sec\": 230,\n      \"why\": \"The talk's most counterintuitive empirical claim, and the reason semantic bucketing is rejected.\"\n    },\n    {\n      \"text\": \"For this reason, all documents are distributed in no particular order. The only requirement is to balance the number of documents in a way that the least amount of documents are needed.\",\n      \"timestamp_sec\": 230,\n      \"why\": \"Concrete, actionable sharding rule that contradicts the obvious instinct to cluster by topic.\"\n    },\n    {\n      \"text\": \"Then the supervisor model start exploring the buckets and progressively builds its internal understanding. And if it finds something interesting, it can ask a specific bucket follow-up questions.\",\n      \"timestamp_sec\": 277,\n      \"why\": \"Describes the iterative interrogation loop that distinguishes this from single-shot retrieval.\"\n    },\n    {\n      \"text\": \"Because all caches can be loaded in parallel, the knowledge building process is significantly faster than graph rag while providing more accurate answers than a simple rag.\",\n      \"timestamp_sec\": 277,\n      \"why\": \"The headline performance claim against both baselines.\"\n    },\n    {\n      \"text\": \"And you're probably thinking, \\\"KV cache can be pretty expensive.\\\" And you're absolutely right. But there are ways to reduce that cost by optimizing how long each cache lives.\",\n      \"timestamp_sec\": 277,\n      \"why\": \"Acknowledges the main objection and points at cache TTL as the lever.\"\n    },\n    {\n      \"text\": \"And at the end, there are many retrieval strategies, and all of them have their trade-offs, whether it's compute, cost, speed. Currently, there is no one-solution-fits-all.\",\n      \"timestamp_sec\": 277,\n      \"why\": \"Explicitly scopes the recommendation rather than generalizing it.\"\n    }\n  ],\n  \"concepts\": [\n    \"cache augmented generation\",\n    \"kv cache reuse\",\n    \"retrieval augmented generation\",\n    \"graphrag\",\n    \"knowledge graph construction\",\n    \"context window limits\",\n    \"context rot\",\n    \"supervisor-agent orchestration\",\n    \"document sharding\",\n    \"corpus freshness and reindexing cost\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Similarity-based vector RAG is unsuitable when every document in the collection is relevant to the question, because thresholded retrieval cannot return the whole collection.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 93\n    },\n    {\n      \"claim\": \"GraphRAG is an excellent choice specifically when the document collection changes infrequently.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 144\n    },\n    {\n      \"claim\": \"Recomputing a knowledge graph on every data replacement is computationally expensive and slow enough to disqualify GraphRAG for frequently replaced corpora.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 144\n    },\n    {\n      \"claim\": \"Since GraphRAG already pushes every document through an LLM for entity and relationship extraction, loading the documents directly into context is not a meaningfully larger cost.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 192\n    },\n    {\n      \"claim\": \"Filling a context window too full degrades answer quality, independent of hitting the hard token limit.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 192\n    },\n    {\n      \"claim\": \"Organizing documents into buckets by domain hurts recall, because the supervisor model skips domains that seem irrelevant at first glance when relationships between documents are dense.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 230\n    },\n    {\n      \"claim\": \"Documents should be distributed across caches in no particular order, balanced only so that the fewest documents per bucket are needed.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 230\n    },\n    {\n      \"claim\": \"Parallel cache loading makes this approach significantly faster than GraphRAG at knowledge building and more accurate than simple RAG at answering.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 277\n    },\n    {\n      \"claim\": \"KV cache expense can be materially reduced by optimizing cache lifetime.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 277\n    },\n    {\n      \"claim\": \"No single retrieval strategy fits all cases; the choice is a tradeoff among compute, cost, and speed.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 277\n    }\n  ],\n  \"speaker_org\": \"Orbis\"\n}",
+  "ttft_ms": 13913,
+  "ttft_stream_ms": 2472,
+  "time_to_request_ms": 1692,
+  "type": "result",
+  "duration_ms": 50577,
+  "uuid": "ab77db6e-8cc3-4c64-8528-cf8e634f32af",
+  "passA": {
+    "summary": "Luis Romero-Sevilla (VP of AI at Orbis) walks through retrieval architectures for a hard edge case: a document collection where every document is relevant to a global question, the documents are densely interrelated, and the whole collection is replaced frequently. He argues plain vector RAG fails because top-k similarity retrieval can't return everything that matters, and GraphRAG fails on the churn axis because rebuilding a knowledge graph on every data refresh is slow and computationally expensive. His proposal is 'extended cache augmented generation': shard the documents across multiple parallel KV-cached context buckets, then have a smarter supervisor model interrogate each bucket and synthesize an answer, with follow-up questions where something looks interesting. Notably, he reports that domain-based bucketing backfires \u2014 the supervisor skips domains that look irrelevant \u2014 so documents should be distributed in no particular order and merely balanced. It's a six-minute architecture sketch, not an evaluation; watch it for the design pattern and the bucketing gotcha, not for benchmarks.",
+    "key_points": [
+      "The target scenario is defined by two properties simultaneously: every document in the collection is relevant to the user's question, and the entire collection goes obsolete and gets replaced frequently.",
+      "Similarity-threshold vector RAG is structurally wrong for this case, because retrieving only the documents above a similarity threshold cannot surface a collection where all documents matter.",
+      "GraphRAG handles the interconnectedness well by using an LLM to extract entities and relationships into a navigable graph, but only if the underlying collection is stable.",
+      "Graph reconstruction cost is the disqualifier under churn: recomputing the knowledge graph on every data replacement is expensive and slow, whereas vector inserts are fast enough to just rebuild the collection.",
+      "Since GraphRAG already pays to push every document through an LLM, the speaker argues you may as well put the documents directly into context (cache augmented generation) and cache the KV state.",
+      "Single-cache CAG is bounded by context window size and by answer-quality degradation when the window is filled too full, which motivates sharding across multiple parallel caches.",
+      "Documents should be distributed across buckets in no particular order with only balancing constraints \u2014 organizing by domain causes the supervisor to skip buckets whose domains look superficially irrelevant.",
+      "The speaker claims the parallel-cache approach is significantly faster than GraphRAG and more accurate than simple RAG, with KV cache cost managed by tuning how long each cache lives.",
+      "He closes by refusing a universal recommendation: retrieval strategies trade off compute, cost, and speed, and this design is fitted to one specific problem shape."
+    ],
+    "notable_quotes": [
+      {
+        "text": "I'm on a mission to solve knowledge representation when all context matters.",
+        "timestamp_sec": 3,
+        "why": "States the framing problem the whole talk is built around."
+      },
+      {
+        "text": "Inserting to a vector database, it's relatively fast. So, whenever a collection becomes obsolete, we can just replace it with a new one.",
+        "timestamp_sec": 51,
+        "why": "Names the one axis where naive RAG actually wins \u2014 refresh cost \u2014 which sets up the later contrast with graphs."
+      },
+      {
+        "text": "All the documents in the collection are relevant for us to answer the question. So, we can't just take all the documents in the collection and pass them to LLM.",
+        "timestamp_sec": 93,
+        "why": "The core bind: retrieval can't narrow, but context can't hold everything."
+      },
+      {
+        "text": "If your collection of documents isn't changed very often, GraphRAG is an excellent approach for finding those relationships within details to answer the user's question.",
+        "timestamp_sec": 144,
+        "why": "A conditional endorsement of the competing approach, with the condition stated explicitly."
+      },
+      {
+        "text": "Recomputing a knowledge graph every time the data gets replaced is computationally very expensive, and it takes relatively long time.",
+        "timestamp_sec": 144,
+        "why": "The specific cost argument that rules GraphRAG out for high-churn corpora."
+      },
+      {
+        "text": "where we use a model with a large context window, load the documents into the context, and cache the context by storing the model's KB matrix",
+        "timestamp_sec": 192,
+        "why": "The talk's working definition of cache augmented generation."
+      },
+      {
+        "text": "The problem here is that the context window is limited, and if you fill the context window too much, the quality of the answer gets degraded, too.",
+        "timestamp_sec": 192,
+        "why": "Asserts context-fill quality degradation as a hard design constraint, not just a capacity limit."
+      },
+      {
+        "text": "The solution: what if we use more CAGs in parallel and distribute the documents across different context buckets.",
+        "timestamp_sec": 192,
+        "why": "The central proposal in one sentence."
+      },
+      {
+        "text": "Now, each cache can answer questions regarding its content. And now we just need something to ask the right questions to the right buckets.",
+        "timestamp_sec": 230,
+        "why": "Explains why the architecture needs a supervisor layer on top of the caches."
+      },
+      {
+        "text": "But in practice, with very dense relationship between documents, the supervisor tends to ignore domains that at first glance seem irrelevant.",
+        "timestamp_sec": 230,
+        "why": "The talk's most counterintuitive empirical claim, and the reason semantic bucketing is rejected."
+      },
+      {
+        "text": "For this reason, all documents are distributed in no particular order. The only requirement is to balance the number of documents in a way that the least amount of documents are needed.",
+        "timestamp_sec": 230,
+        "why": "Concrete, actionable sharding rule that contradicts the obvious instinct to cluster by topic."
+      },
+      {
+        "text": "Then the supervisor model start exploring the buckets and progressively builds its internal understanding. And if it finds something interesting, it can ask a specific bucket follow-up questions.",
+        "timestamp_sec": 277,
+        "why": "Describes the iterative interrogation loop that distinguishes this from single-shot retrieval."
+      },
+      {
+        "text": "Because all caches can be loaded in parallel, the knowledge building process is significantly faster than graph rag while providing more accurate answers than a simple rag.",
+        "timestamp_sec": 277,
+        "why": "The headline performance claim against both baselines."
+      },
+      {
+        "text": "And you're probably thinking, \"KV cache can be pretty expensive.\" And you're absolutely right. But there are ways to reduce that cost by optimizing how long each cache lives.",
+        "timestamp_sec": 277,
+        "why": "Acknowledges the main objection and points at cache TTL as the lever."
+      },
+      {
+        "text": "And at the end, there are many retrieval strategies, and all of them have their trade-offs, whether it's compute, cost, speed. Currently, there is no one-solution-fits-all.",
+        "timestamp_sec": 277,
+        "why": "Explicitly scopes the recommendation rather than generalizing it."
+      }
+    ],
+    "concepts": [
+      "cache augmented generation",
+      "kv cache reuse",
+      "retrieval augmented generation",
+      "graphrag",
+      "knowledge graph construction",
+      "context window limits",
+      "context rot",
+      "supervisor-agent orchestration",
+      "document sharding",
+      "corpus freshness and reindexing cost"
+    ],
+    "positions": [
+      {
+        "claim": "Similarity-based vector RAG is unsuitable when every document in the collection is relevant to the question, because thresholded retrieval cannot return the whole collection.",
+        "confidence": "stated",
+        "timestamp_sec": 93
+      },
+      {
+        "claim": "GraphRAG is an excellent choice specifically when the document collection changes infrequently.",
+        "confidence": "stated",
+        "timestamp_sec": 144
+      },
+      {
+        "claim": "Recomputing a knowledge graph on every data replacement is computationally expensive and slow enough to disqualify GraphRAG for frequently replaced corpora.",
+        "confidence": "stated",
+        "timestamp_sec": 144
+      },
+      {
+        "claim": "Since GraphRAG already pushes every document through an LLM for entity and relationship extraction, loading the documents directly into context is not a meaningfully larger cost.",
+        "confidence": "implied",
+        "timestamp_sec": 192
+      },
+      {
+        "claim": "Filling a context window too full degrades answer quality, independent of hitting the hard token limit.",
+        "confidence": "stated",
+        "timestamp_sec": 192
+      },
+      {
+        "claim": "Organizing documents into buckets by domain hurts recall, because the supervisor model skips domains that seem irrelevant at first glance when relationships between documents are dense.",
+        "confidence": "stated",
+        "timestamp_sec": 230
+      },
+      {
+        "claim": "Documents should be distributed across caches in no particular order, balanced only so that the fewest documents per bucket are needed.",
+        "confidence": "stated",
+        "timestamp_sec": 230
+      },
+      {
+        "claim": "Parallel cache loading makes this approach significantly faster than GraphRAG at knowledge building and more accurate than simple RAG at answering.",
+        "confidence": "stated",
+        "timestamp_sec": 277
+      },
+      {
+        "claim": "KV cache expense can be materially reduced by optimizing cache lifetime.",
+        "confidence": "stated",
+        "timestamp_sec": 277
+      },
+      {
+        "claim": "No single retrieval strategy fits all cases; the choice is a tradeoff among compute, cost, and speed.",
+        "confidence": "stated",
+        "timestamp_sec": 277
+      }
+    ],
+    "speaker_org": "Orbis"
+  },
+  "_meta": {
+    "slug": "when-all-context-matters-extended-cache-augmented-generation",
+    "video_id": "XovaGv4f39A",
+    "url": "https://www.youtube.com/watch?v=XovaGv4f39A",
+    "word_count": 863,
+    "wall_sec": 51.6,
+    "run_at": "2026-08-12T20:32:25Z",
+    "effort": "medium"
+  }
+}

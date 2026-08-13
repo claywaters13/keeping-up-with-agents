@@ -1,0 +1,292 @@
+{
+  "is_error": false,
+  "duration_api_ms": 63632,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "30fcab86-392b-477d-98c2-5708251b4604",
+  "total_cost_usd": 0.262645,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 10732,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 5733,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 10732,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 5733,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 10732,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 10732
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 6766,
+      "outputTokens": 14,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.006836,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 5733,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 10732,
+      "webSearchRequests": 0,
+      "costUSD": 0.255809,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"James Le of TwelveLabs argues that although video is itself a record of the past, video AI systems have no memory in the systems sense: they re-derive meaning from scratch on every query and flatten video into sampled frames plus a transcript. He proposes treating a video collection as a spatiotemporal volume and building a durable 'context graph' \u2014 time-bounded moments, entity appearances, entities, relationships, and corpus-level context \u2014 that applications traverse instead of re-running retrieval. The talk lays out five properties that make video hard (temporal, multimodal, dense, ambiguous, expensive), five design principles for a video memory layer (ingest once and reason many times, store primitives not answers, ground every claim to a timestamp, let intent shape memory, keep it composable), and a 'harness' spec for video workers covering task planning, retrieval, expert tools, operating envelopes, output contracts, and evaluation. It closes with three live demos of TwelveLabs' Jockey agent over 67 World Cup matches, traffic-camera footage, and an Adidas ad. Worth watching if you are building retrieval or agents over large video archives and want a concrete architectural vocabulary rather than a model benchmark.\",\n  \"key_points\": [\n    \"Video AI systems today are effectively stateless: they perform search over clips but have no durable memory that links a scene to something that happened in another file, episode, camera angle, or year.\",\n    \"Treating video as a stack of frames plus a transcript is a useful approximation that discards continuity, which is the property that makes video distinct from images and text.\",\n    \"The text-first stack fails video in three specific ways \u2014 wrong context (spatiotemporal relations lost when flattened into tokens), wrong memory (vector search and long context windows do not provide durable continuity), and wrong reasoning (no persistent structure over who appeared and what changed).\",\n    \"Le proposes representing a video corpus as a context graph with five layers: time-bounded moments as evidence units, appearances, entities, relationships, and corpus-level themes and coverage gaps \u2014 different question types traverse different parts of the graph.\",\n    \"The core economic principle is to pay interpretation cost once at ingestion and reuse the representation across many queries, the same way a database does not re-parse its source data per request.\",\n    \"Every synthesized claim should be grounded back to a specific timestamp in the source video, because enterprise workflows require pointing to where evidence came from.\",\n    \"Memory should be configurable by intent, since the same footage yields different required primitives for sports highlights, brand safety, compliance review, and ad placement.\",\n    \"A 'video worker' needs an explicit harness beyond the model: task planning, retrieval, expert tools like zoom and frame comparison, an operating envelope bounding time/cost/depth/autonomy, structured output contracts, and end-to-end evaluation.\",\n    \"TwelveLabs positions its stack \u2014 semantic chunks, the Marengo multimodal embedding model, a spatiotemporal context store, and the Pegasus video language model \u2014 as API-first cognition infrastructure rather than an application or editing product.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"But actually most of the video AI systems these days do not have memory in the system sense.\",\n      \"timestamp_sec\": 1,\n      \"why\": \"states the talk's central premise in one line\"\n    },\n    {\n      \"text\": \"So this is the first mental model that I want to highlight, which is that video is not a stack of frames.\",\n      \"timestamp_sec\": 43,\n      \"why\": \"the framing claim the rest of the architecture follows from\"\n    },\n    {\n      \"text\": \"And that is a useful approximation for some tasks, but it throw away the thing that makes video very unique, which is continuity, right?\",\n      \"timestamp_sec\": 75,\n      \"why\": \"names the specific tradeoff of the frame-sampling approach\"\n    },\n    {\n      \"text\": \"So meaning in video derives from space, time, modalities, and sequence.\",\n      \"timestamp_sec\": 75,\n      \"why\": \"compact definition of what a video representation must preserve\"\n    },\n    {\n      \"text\": \"If we force it into that sequence by sampling frames, by extracting a transcript, uh by dumping everything into a prompt, you lose the spatiotemporal relationships, right, that actually define the event.\",\n      \"timestamp_sec\": 157,\n      \"why\": \"direct critique of the prevailing prompt-stuffing pattern\"\n    },\n    {\n      \"text\": \"It needs to link today's scene for something that happened in another file, another episode, another camera angle, another season, another year.\",\n      \"timestamp_sec\": 157,\n      \"why\": \"concretely defines what video memory must do that vector search does not\"\n    },\n    {\n      \"text\": \"my argument is that video intelligence need a memory layer that decide what to preserve, how to connect it, and how to retrieve later.\",\n      \"timestamp_sec\": 197,\n      \"why\": \"the speaker's explicit thesis statement\"\n    },\n    {\n      \"text\": \"search is obviously super important. It's how you recover relevant moments from large video library. But then it gives candidate. It actually not give you like any continuity.\",\n      \"timestamp_sec\": 355,\n      \"why\": \"draws the search-versus-memory distinction that structures the talk\"\n    },\n    {\n      \"text\": \"with search, you you get like an output like a time-bounded moment, but with memory, you actually return like structured knowledge, timeline, uh explanation, composable output.\",\n      \"timestamp_sec\": 390,\n      \"why\": \"specifies the difference in output type, not just capability\"\n    },\n    {\n      \"text\": \"The first is time scaling. So, a real video system should be able to reason over years of footage without reprocessing the whole archive every time, right?\",\n      \"timestamp_sec\": 390,\n      \"why\": \"sets a scaling requirement others might disagree is achievable\"\n    },\n    {\n      \"text\": \"So a context graph is a durable, queryable representation that connects video moment, entities, appearances, relationship, time span, metadata, and corpus level context, right?\",\n      \"timestamp_sec\": 465,\n      \"why\": \"the talk's central data-model definition\"\n    },\n    {\n      \"text\": \"Uh so the key idea here is that memory in the context of video understanding is a navigable structure over the entire video volume.\",\n      \"timestamp_sec\": 533,\n      \"why\": \"distills the graph proposal into a reusable definition of memory\"\n    },\n    {\n      \"text\": \"Number one is to ingest once and reason many times.\",\n      \"timestamp_sec\": 533,\n      \"why\": \"the cost principle underpinning the whole architecture\"\n    },\n    {\n      \"text\": \"Um second principle is to store primitive, not just answer.\",\n      \"timestamp_sec\": 572,\n      \"why\": \"a design stance against caching generated summaries\"\n    },\n    {\n      \"text\": \"We work across sports, uh, application, brand safety, compliance review, clear analytics. All of them require different primitives from the same video. So, the memory layer should be configurable, right?\",\n      \"timestamp_sec\": 607,\n      \"why\": \"argues against a single universal video index\"\n    },\n    {\n      \"text\": \"A model could produce a single answer. It is stateless. It start fresh each time, start fresh each time, and doesn't have any constraint.\",\n      \"timestamp_sec\": 643,\n      \"why\": \"sets up the model-versus-harness contrast for video agents\"\n    },\n    {\n      \"text\": \"did the retrieval find the right evidence? Did the synthesis preserve it, right? Did the worker stay within the budget?\",\n      \"timestamp_sec\": 754,\n      \"why\": \"a three-part evaluation rubric for video agent workflows\"\n    },\n    {\n      \"text\": \"So, what I did is I ingest um 67 videos from the 2022 uh World Cup in Qatar.\",\n      \"timestamp_sec\": 787,\n      \"why\": \"the concrete corpus size behind the demos\"\n    },\n    {\n      \"text\": \"So the thing we want to highlight here is it's not an application layer. It's not an editing platform, not a compliance product.\",\n      \"timestamp_sec\": 1135,\n      \"why\": \"explicit product positioning as infrastructure\"\n    },\n    {\n      \"text\": \"The product is currently in private beta right now.\",\n      \"timestamp_sec\": 1177,\n      \"why\": \"availability status for anyone evaluating the stack\"\n    }\n  ],\n  \"concepts\": [\n    \"video memory layer\",\n    \"context graph\",\n    \"spatiotemporal representation\",\n    \"multimodal embeddings\",\n    \"semantic chunking\",\n    \"evidence grounding\",\n    \"harness engineering\",\n    \"agent operating envelope\",\n    \"corpus-level retrieval\",\n    \"ingest-time versus query-time computation\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Most video AI systems today have no memory in the systems sense, despite video being a record of the past.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1\n    },\n    {\n      \"claim\": \"Modeling video as a stack of frames plus a transcript is a useful approximation but destroys continuity, the property unique to video.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 75\n    },\n    {\n      \"claim\": \"Vector search and larger context windows are insufficient for video memory because video requires durable continuity across files, episodes, camera angles, and years.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 157\n    },\n    {\n      \"claim\": \"Text-first systems cannot natively reason over motion and causality and do not automatically build persistent structure about who appeared and what changed.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 197\n    },\n    {\n      \"claim\": \"Video has five properties that make memory hard: it is temporal, multimodal, dense, ambiguous, and expensive to trace back to source moments.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 237\n    },\n    {\n      \"claim\": \"Search returns candidate time-bounded moments while memory returns structured knowledge, timelines, explanations, and composable output \u2014 a different unit of output, not merely better recall.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 390\n    },\n    {\n      \"claim\": \"A production video system should reason over years of footage without reprocessing the whole archive on each query.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 390\n    },\n    {\n      \"claim\": \"Expensive video understanding should be moved into ingestion and paid once, analogous to a database not re-parsing its source data per request.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 533\n    },\n    {\n      \"claim\": \"The system should store primitives (moments, entities, appearances) rather than pre-computed answers, so downstream workflows like search, editing, and analytics can be built on them.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 572\n    },\n    {\n      \"claim\": \"Every claim a video system makes must be grounded to a specific timestamp in the source video.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 572\n    },\n    {\n      \"claim\": \"There is no single universal video index; because the same footage yields different required primitives per workflow, the memory layer must be developer-configurable by intent.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 607\n    },\n    {\n      \"claim\": \"A video worker needs an explicit deterministic harness \u2014 memory, task planning, retrieval, expert tools, an operating envelope, and output contracts \u2014 because a bare model is stateless and unconstrained.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 643\n    },\n    {\n      \"claim\": \"Evaluation of a video agent must cover retrieval correctness, synthesis fidelity to evidence, and adherence to the cost budget.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 754\n    },\n    {\n      \"claim\": \"A memory-backed video agent can answer compositional negated queries such as finding near-miss shots that were not goals and explaining why, across a 67-video corpus.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 787\n    },\n    {\n      \"claim\": \"TwelveLabs' offering is video cognition infrastructure, not an application, editing platform, or compliance product.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1135\n    }\n  ],\n  \"speaker_org\": \"TwelveLabs\"\n}",
+  "ttft_ms": 21600,
+  "ttft_stream_ms": 973,
+  "time_to_request_ms": 33,
+  "type": "result",
+  "duration_ms": 64250,
+  "uuid": "3cf1651a-2774-4baf-92f4-f15b64dfa04f",
+  "passA": {
+    "summary": "James Le of TwelveLabs argues that although video is itself a record of the past, video AI systems have no memory in the systems sense: they re-derive meaning from scratch on every query and flatten video into sampled frames plus a transcript. He proposes treating a video collection as a spatiotemporal volume and building a durable 'context graph' \u2014 time-bounded moments, entity appearances, entities, relationships, and corpus-level context \u2014 that applications traverse instead of re-running retrieval. The talk lays out five properties that make video hard (temporal, multimodal, dense, ambiguous, expensive), five design principles for a video memory layer (ingest once and reason many times, store primitives not answers, ground every claim to a timestamp, let intent shape memory, keep it composable), and a 'harness' spec for video workers covering task planning, retrieval, expert tools, operating envelopes, output contracts, and evaluation. It closes with three live demos of TwelveLabs' Jockey agent over 67 World Cup matches, traffic-camera footage, and an Adidas ad. Worth watching if you are building retrieval or agents over large video archives and want a concrete architectural vocabulary rather than a model benchmark.",
+    "key_points": [
+      "Video AI systems today are effectively stateless: they perform search over clips but have no durable memory that links a scene to something that happened in another file, episode, camera angle, or year.",
+      "Treating video as a stack of frames plus a transcript is a useful approximation that discards continuity, which is the property that makes video distinct from images and text.",
+      "The text-first stack fails video in three specific ways \u2014 wrong context (spatiotemporal relations lost when flattened into tokens), wrong memory (vector search and long context windows do not provide durable continuity), and wrong reasoning (no persistent structure over who appeared and what changed).",
+      "Le proposes representing a video corpus as a context graph with five layers: time-bounded moments as evidence units, appearances, entities, relationships, and corpus-level themes and coverage gaps \u2014 different question types traverse different parts of the graph.",
+      "The core economic principle is to pay interpretation cost once at ingestion and reuse the representation across many queries, the same way a database does not re-parse its source data per request.",
+      "Every synthesized claim should be grounded back to a specific timestamp in the source video, because enterprise workflows require pointing to where evidence came from.",
+      "Memory should be configurable by intent, since the same footage yields different required primitives for sports highlights, brand safety, compliance review, and ad placement.",
+      "A 'video worker' needs an explicit harness beyond the model: task planning, retrieval, expert tools like zoom and frame comparison, an operating envelope bounding time/cost/depth/autonomy, structured output contracts, and end-to-end evaluation.",
+      "TwelveLabs positions its stack \u2014 semantic chunks, the Marengo multimodal embedding model, a spatiotemporal context store, and the Pegasus video language model \u2014 as API-first cognition infrastructure rather than an application or editing product."
+    ],
+    "notable_quotes": [
+      {
+        "text": "But actually most of the video AI systems these days do not have memory in the system sense.",
+        "timestamp_sec": 1,
+        "why": "states the talk's central premise in one line"
+      },
+      {
+        "text": "So this is the first mental model that I want to highlight, which is that video is not a stack of frames.",
+        "timestamp_sec": 43,
+        "why": "the framing claim the rest of the architecture follows from"
+      },
+      {
+        "text": "And that is a useful approximation for some tasks, but it throw away the thing that makes video very unique, which is continuity, right?",
+        "timestamp_sec": 75,
+        "why": "names the specific tradeoff of the frame-sampling approach"
+      },
+      {
+        "text": "So meaning in video derives from space, time, modalities, and sequence.",
+        "timestamp_sec": 75,
+        "why": "compact definition of what a video representation must preserve"
+      },
+      {
+        "text": "If we force it into that sequence by sampling frames, by extracting a transcript, uh by dumping everything into a prompt, you lose the spatiotemporal relationships, right, that actually define the event.",
+        "timestamp_sec": 157,
+        "why": "direct critique of the prevailing prompt-stuffing pattern"
+      },
+      {
+        "text": "It needs to link today's scene for something that happened in another file, another episode, another camera angle, another season, another year.",
+        "timestamp_sec": 157,
+        "why": "concretely defines what video memory must do that vector search does not"
+      },
+      {
+        "text": "my argument is that video intelligence need a memory layer that decide what to preserve, how to connect it, and how to retrieve later.",
+        "timestamp_sec": 197,
+        "why": "the speaker's explicit thesis statement"
+      },
+      {
+        "text": "search is obviously super important. It's how you recover relevant moments from large video library. But then it gives candidate. It actually not give you like any continuity.",
+        "timestamp_sec": 355,
+        "why": "draws the search-versus-memory distinction that structures the talk"
+      },
+      {
+        "text": "with search, you you get like an output like a time-bounded moment, but with memory, you actually return like structured knowledge, timeline, uh explanation, composable output.",
+        "timestamp_sec": 390,
+        "why": "specifies the difference in output type, not just capability"
+      },
+      {
+        "text": "The first is time scaling. So, a real video system should be able to reason over years of footage without reprocessing the whole archive every time, right?",
+        "timestamp_sec": 390,
+        "why": "sets a scaling requirement others might disagree is achievable"
+      },
+      {
+        "text": "So a context graph is a durable, queryable representation that connects video moment, entities, appearances, relationship, time span, metadata, and corpus level context, right?",
+        "timestamp_sec": 465,
+        "why": "the talk's central data-model definition"
+      },
+      {
+        "text": "Uh so the key idea here is that memory in the context of video understanding is a navigable structure over the entire video volume.",
+        "timestamp_sec": 533,
+        "why": "distills the graph proposal into a reusable definition of memory"
+      },
+      {
+        "text": "Number one is to ingest once and reason many times.",
+        "timestamp_sec": 533,
+        "why": "the cost principle underpinning the whole architecture"
+      },
+      {
+        "text": "Um second principle is to store primitive, not just answer.",
+        "timestamp_sec": 572,
+        "why": "a design stance against caching generated summaries"
+      },
+      {
+        "text": "We work across sports, uh, application, brand safety, compliance review, clear analytics. All of them require different primitives from the same video. So, the memory layer should be configurable, right?",
+        "timestamp_sec": 607,
+        "why": "argues against a single universal video index"
+      },
+      {
+        "text": "A model could produce a single answer. It is stateless. It start fresh each time, start fresh each time, and doesn't have any constraint.",
+        "timestamp_sec": 643,
+        "why": "sets up the model-versus-harness contrast for video agents"
+      },
+      {
+        "text": "did the retrieval find the right evidence? Did the synthesis preserve it, right? Did the worker stay within the budget?",
+        "timestamp_sec": 754,
+        "why": "a three-part evaluation rubric for video agent workflows"
+      },
+      {
+        "text": "So, what I did is I ingest um 67 videos from the 2022 uh World Cup in Qatar.",
+        "timestamp_sec": 787,
+        "why": "the concrete corpus size behind the demos"
+      },
+      {
+        "text": "So the thing we want to highlight here is it's not an application layer. It's not an editing platform, not a compliance product.",
+        "timestamp_sec": 1135,
+        "why": "explicit product positioning as infrastructure"
+      },
+      {
+        "text": "The product is currently in private beta right now.",
+        "timestamp_sec": 1177,
+        "why": "availability status for anyone evaluating the stack"
+      }
+    ],
+    "concepts": [
+      "video memory layer",
+      "context graph",
+      "spatiotemporal representation",
+      "multimodal embeddings",
+      "semantic chunking",
+      "evidence grounding",
+      "harness engineering",
+      "agent operating envelope",
+      "corpus-level retrieval",
+      "ingest-time versus query-time computation"
+    ],
+    "positions": [
+      {
+        "claim": "Most video AI systems today have no memory in the systems sense, despite video being a record of the past.",
+        "confidence": "stated",
+        "timestamp_sec": 1
+      },
+      {
+        "claim": "Modeling video as a stack of frames plus a transcript is a useful approximation but destroys continuity, the property unique to video.",
+        "confidence": "stated",
+        "timestamp_sec": 75
+      },
+      {
+        "claim": "Vector search and larger context windows are insufficient for video memory because video requires durable continuity across files, episodes, camera angles, and years.",
+        "confidence": "stated",
+        "timestamp_sec": 157
+      },
+      {
+        "claim": "Text-first systems cannot natively reason over motion and causality and do not automatically build persistent structure about who appeared and what changed.",
+        "confidence": "stated",
+        "timestamp_sec": 197
+      },
+      {
+        "claim": "Video has five properties that make memory hard: it is temporal, multimodal, dense, ambiguous, and expensive to trace back to source moments.",
+        "confidence": "stated",
+        "timestamp_sec": 237
+      },
+      {
+        "claim": "Search returns candidate time-bounded moments while memory returns structured knowledge, timelines, explanations, and composable output \u2014 a different unit of output, not merely better recall.",
+        "confidence": "stated",
+        "timestamp_sec": 390
+      },
+      {
+        "claim": "A production video system should reason over years of footage without reprocessing the whole archive on each query.",
+        "confidence": "stated",
+        "timestamp_sec": 390
+      },
+      {
+        "claim": "Expensive video understanding should be moved into ingestion and paid once, analogous to a database not re-parsing its source data per request.",
+        "confidence": "stated",
+        "timestamp_sec": 533
+      },
+      {
+        "claim": "The system should store primitives (moments, entities, appearances) rather than pre-computed answers, so downstream workflows like search, editing, and analytics can be built on them.",
+        "confidence": "stated",
+        "timestamp_sec": 572
+      },
+      {
+        "claim": "Every claim a video system makes must be grounded to a specific timestamp in the source video.",
+        "confidence": "stated",
+        "timestamp_sec": 572
+      },
+      {
+        "claim": "There is no single universal video index; because the same footage yields different required primitives per workflow, the memory layer must be developer-configurable by intent.",
+        "confidence": "stated",
+        "timestamp_sec": 607
+      },
+      {
+        "claim": "A video worker needs an explicit deterministic harness \u2014 memory, task planning, retrieval, expert tools, an operating envelope, and output contracts \u2014 because a bare model is stateless and unconstrained.",
+        "confidence": "stated",
+        "timestamp_sec": 643
+      },
+      {
+        "claim": "Evaluation of a video agent must cover retrieval correctness, synthesis fidelity to evidence, and adherence to the cost budget.",
+        "confidence": "stated",
+        "timestamp_sec": 754
+      },
+      {
+        "claim": "A memory-backed video agent can answer compositional negated queries such as finding near-miss shots that were not goals and explaining why, across a 67-video corpus.",
+        "confidence": "implied",
+        "timestamp_sec": 787
+      },
+      {
+        "claim": "TwelveLabs' offering is video cognition infrastructure, not an application, editing platform, or compliance product.",
+        "confidence": "stated",
+        "timestamp_sec": 1135
+      }
+    ],
+    "speaker_org": "TwelveLabs"
+  },
+  "_meta": {
+    "slug": "video-has-no-memory-heres-how-we-built-one",
+    "video_id": "mOf-PP4mVjA",
+    "url": "https://www.youtube.com/watch?v=mOf-PP4mVjA",
+    "word_count": 3504,
+    "wall_sec": 65.3,
+    "run_at": "2026-08-12T20:29:20Z",
+    "effort": "medium"
+  }
+}
