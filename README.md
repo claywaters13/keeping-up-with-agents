@@ -1,6 +1,6 @@
 # AI Engineer World's Fair 2026 — Wiki + Claude Code Plugin
 
-A linked, graph-style wiki distilled from every session at the AI Engineer World's Fair
+A linked, graph-style wiki distilled from every published session at the AI Engineer World's Fair
 2026 (Moscone West, San Francisco, June 29 – July 2, 2026): 231 talks, 134 concepts,
 248 speakers — plus a Claude Code plugin so an agent can answer questions from it directly.
 No RAG server, no vector DB: the markdown link graph plus `grep` **is** the retrieval
