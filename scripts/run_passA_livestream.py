@@ -7,8 +7,8 @@ claude -p invocation, same atomic-write/fence-stripping/validation logic) by
 pointing its TRANSCRIPTS constant at data/livestream_segments instead of
 data/transcripts. Writes to data/passA_segments/<slug>.json.
 
-Per-call timeout is 300s (5 min) per Clay's instruction: kill and move on if
-a call runs long, rather than hang the batch.
+Per-call timeout is 300s (5 min): kill and move on if a call runs long,
+rather than let one slow segment hang the whole batch.
 """
 import json
 import os

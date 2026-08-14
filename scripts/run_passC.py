@@ -32,7 +32,7 @@ CANONICAL = os.path.join(CONCEPTS_DIR, "canonical.json")
 PROMPT = os.path.join(ROOT, "scripts", "passC_prompt.md")
 OUTDIR = os.path.join(ROOT, "data", "passC")
 
-# Added 2026-08-13 after Clay's pilot review: two of the pilot's disagreements
+# Added 2026-08-13 after manual review of the pilot output: two of the pilot's disagreements
 # rested on a single talk per side (a juxtaposition, not a field-level
 # disagreement). Appended after the prompt file (which stays unmodified per
 # the project's "read it, do not rewrite it" convention) rather than edited

@@ -19,8 +19,8 @@ raw/sessions.json:
    exactly. So each livestream IS (up to a handful of off-schedule cutaways)
    the Main Stage feed for its day, which prunes the 13-parallel-track
    problem down to ~18-19 candidates *before* any text search happens.
-2. Clay's governing assumption: schedule ORDER was followed even though
-   TIMES drifted, and each speaker presented exactly one scheduled session.
+2. Governing assumption: schedule ORDER was followed even though TIMES
+   drifted, and each speaker presented exactly one scheduled session.
    So within a bracket between two confirmed anchors, the only candidates
    are the Main Stage sessions whose schedule order falls between the
    anchors' schedule indices -- and a monotonic (order-preserving) DP chooses
@@ -112,7 +112,7 @@ grey short good best new day west east north south main first last
 def title_phrase_candidates(title):
     """Contiguous runs of >=3 words from the normalized title where NONE of
     the words is a generic stopword -- 'distinctive multi-word phrase',
-    per Clay's instruction, NOT individual keywords."""
+    NOT individual keywords -- single keywords match far too broadly here."""
     words = norm_name(title).split()
     n = len(words)
     out = []
