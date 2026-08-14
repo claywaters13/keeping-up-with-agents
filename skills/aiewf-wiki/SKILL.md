@@ -74,6 +74,13 @@ State the maturity label when a question is about how settled a topic is.
   with no timestamp attached — don't copy the `video_id` or `t=` from a neighboring
   quote onto it. To deep-link a supporting talk, open its own `wiki/talks/<slug>.md`
   and read `video_id` from its frontmatter.
+- **Never resolve that tension by dropping links entirely.** A synthesis answer that
+  names ten talks in italics and links none of them has failed the citation bar. When an
+  answer cites many talks at once, get their ids in **one** lookup instead of opening ten
+  pages: `data/index.json` carries `slug`, `title`, and `video_id` for all 231 talks —
+  grep or read it once and link from that. A talk deep-linked from `index.json` with no
+  `&t=` is fine; a bare title with no link is not. At minimum, every answer that cites
+  talks must surface at least one working YouTube link, and every quote must carry its own.
 - Never emit *any* relative `.md` path in an answer — not `../talks/x.md`, not
   `wiki/concepts/x.md`, not a "full writeup at ..." pointer to the concept page you're
   summarizing, not a closing list of "raw wiki pages" for the topics touched. The reader

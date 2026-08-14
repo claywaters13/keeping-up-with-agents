@@ -6,9 +6,17 @@ weight: 2
 The corpus has 231 talks, 134 concepts, and 248 speakers (per wiki/README.md and
 data/index.json).
 
-Pass if the response states these three counts correctly (small variance, e.g. off by
-one due to a since-added talk, is acceptable — but it must be close to these numbers and
-clearly sourced from the corpus, not a round-number guess).
+You have no tools. Judge ONLY the three counts as stated in the response text. Do not
+attempt to assess whether the numbers were "sourced from the corpus" versus guessed —
+that is not observable from the text, and treating it as a requirement produces false
+failures.
 
-Fail if any count is substantially wrong or the response admits it doesn't know / can't
-find this instead of reading the actual data.
+Pass if the response states all three counts correctly (off by one, e.g. from a
+since-added talk, is acceptable).
+
+Additional detail — maturity breakdowns, word counts, quote counts, notes about
+livestream compilations or multi-speaker talks — is welcome and must NOT count against
+the response. Ignore it unless it directly contradicts one of the three counts above.
+
+Fail only if one of the three counts is substantially wrong, or the response says it
+doesn't know / can't find them.
