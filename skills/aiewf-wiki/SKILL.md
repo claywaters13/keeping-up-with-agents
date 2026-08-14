@@ -13,6 +13,14 @@ doesn't cover it. Never answer AIEWF-specific questions from general model knowl
 
 ## Corpus map (`${CLAUDE_PLUGIN_ROOT}`)
 
+All paths below are relative to the plugin root and usually resolve directly (your
+working directory is normally inside or near the repo). **If a Glob/Read/Grep at a bare
+relative path (e.g. `wiki/talks/`) comes back empty**, don't conclude the corpus is
+missing — resolve the actual value of the `CLAUDE_PLUGIN_ROOT` environment variable from
+your context and retry with `${CLAUDE_PLUGIN_ROOT}/wiki/talks/` etc. (substitute the real
+path string; tools don't shell-expand `$VARS` themselves). Only report "corpus not
+available" after that retry also comes up empty.
+
 - `wiki/talks/<slug>.md` (231) — one per talk: summary, key points, notable quotes
   (timestamped YouTube links), concepts, speakers, track/org/day/room/duration.
 - `wiki/concepts/<slug>.md` (134) — one per concept: definition, **state of practice**,
@@ -66,8 +74,14 @@ State the maturity label when a question is about how settled a topic is.
   with no timestamp attached — don't copy the `video_id` or `t=` from a neighboring
   quote onto it. To deep-link a supporting talk, open its own `wiki/talks/<slug>.md`
   and read `video_id` from its frontmatter.
-- Never emit a relative `.md` path (`../talks/x.md`) in an answer — the reader cannot
-  click it. Resolve every reference to a YouTube URL or a plain talk title.
+- Never emit *any* relative `.md` path in an answer — not `../talks/x.md`, not
+  `wiki/concepts/x.md`, not a "full writeup at ..." pointer to the concept page you're
+  summarizing, not a closing list of "raw wiki pages" for the topics touched. The reader
+  is in a chat, not a file browser, and cannot click any of these. Resolve every reference
+  to a YouTube URL or a plain concept/talk/speaker name instead.
+- `data/transcripts/` and `raw/` are gitignored local build substrate — they are **not
+  part of the published wiki** a stranger's clone contains. Never point a user there;
+  everything that actually ships is in the corpus map above.
 - Distinguish **consensus** claims (cite the support count, e.g. "4 talks agree...") from
   a **single-talk** claim (attribute it to that one talk/speaker, don't generalize it).
 - For disagreements, present both positions and who holds each, using the concept page's

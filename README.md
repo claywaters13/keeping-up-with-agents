@@ -43,7 +43,7 @@ claude plugin install aiewf-wiki@aiewf-2026-wiki
 
 ```
 claude
-> /aiewf what do practitioners disagree about on agent memory?
+> /aiewf-wiki:aiewf what do practitioners disagree about on agent memory?
 ```
 
 or headless:
@@ -54,7 +54,7 @@ claude -p "which concepts in the AIEWF 2026 wiki are labeled contested?"
 
 The plugin ships one skill (`skills/aiewf-wiki`) that teaches the agent the corpus map,
 retrieval strategy, citation style, and the maturity rubric (settled / consolidating /
-contested / frontier), plus a `/aiewf <question>` convenience command.
+contested / frontier), plus a `/aiewf-wiki:aiewf <question>` convenience command (plugin commands are namespaced).
 
 ## Two other ways to use this repo
 
@@ -71,6 +71,6 @@ data/                     machine-readable layer: index.json, passA/passC extrac
                           speakers, concepts — source data the wiki is generated from
 scripts/                  build pipeline (harvest, normalize, Pass A/B/C, wiki generator)
 skills/aiewf-wiki/        Claude Code skill (corpus map, retrieval strategy, answer style)
-commands/aiewf.md         /aiewf slash command
+commands/aiewf.md         /aiewf-wiki:aiewf slash command
 .claude-plugin/           plugin.json + marketplace.json
 ```
