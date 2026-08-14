@@ -1,6 +1,6 @@
 # Eval results
 
-**10/10 cases passing** — last run 2026-08-14.
+**10/10 cases passing**, last run 2026-08-14.
 
 Runner: `python3 evals/run.py`. Judge model: `claude-sonnet-5`. Agent model: `default`. Agent-run cost this run: $1.78.
 

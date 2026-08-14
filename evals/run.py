@@ -7,14 +7,14 @@ with that case's graders/*.md.
 Why this exists: Claude Code ships `claude plugin eval`, which reads exactly this
 directory layout and is the more featureful runner (ablation arms, HTML reports, cost
 ceilings). Use it if you have it. But it is currently gated behind early access, and an
-eval suite in a public repo should be runnable by anyone who clones the repo — so this
+eval suite in a public repo should be runnable by anyone who clones the repo, so this
 script implements the same case/grader spec with nothing but `claude -p`.
 
 Case format   evals/<name>/prompt.md      YAML frontmatter + the prompt body
 Grader format evals/<name>/graders/*.md   YAML frontmatter + (for llm graders) a rubric
 
 Grader types:
-  regex  pattern / flags / match: contains|not_contains  — deterministic, free
+  regex  pattern / flags / match: contains|not_contains  (deterministic, free)
   llm    a rubric judged by a model with NO tools, which must answer PASS or FAIL
 
 A case passes only if every one of its graders passes.
@@ -167,7 +167,7 @@ def grade_regex(meta, response):
 
 
 JUDGE_TEMPLATE = """You are grading a single response against one rubric. You have NO \
-tools — judge only from the text given to you.
+tools, so judge only from the text given to you.
 
 <rubric>
 {rubric}
@@ -186,7 +186,7 @@ VERDICT: PASS
 or
 VERDICT: FAIL
 
-The reasoning comes first on purpose — do not state a verdict before you have reasoned,
+The reasoning comes first on purpose. Do not state a verdict before you have reasoned,
 and make sure the final line agrees with your reasoning.
 """
 
@@ -304,7 +304,7 @@ def write_results_md(results, path, judge_model, model):
     lines = [
         "# Eval results",
         "",
-        f"**{n_pass}/{total} cases passing** — last run {stamp}.",
+        f"**{n_pass}/{total} cases passing**, last run {stamp}.",
         "",
         f"Runner: `python3 evals/run.py`. Judge model: `{judge_model}`. "
         f"Agent model: `{model or 'default'}`. Agent-run cost this run: ${cost:.2f}.",
@@ -316,7 +316,7 @@ def write_results_md(results, path, judge_model, model):
     ]
     for r in results:
         gr = "/".join("✓" if g["passed"] else "✗" for g in r["graders"])
-        secs = f"{r['seconds']:.0f}s" if r.get("seconds") else "—"
+        secs = f"{r['seconds']:.0f}s" if r.get("seconds") else "n/a"
         lines.append(
             f"| `{r['case']}` | {'PASS' if r['passed'] else 'FAIL'} | {gr} | {secs} | "
             f"{r['description']} |"
