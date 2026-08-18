@@ -69,7 +69,10 @@ Per event (substitute the event's own slug, e.g. `aiewf-2026`):
    `events/<event-slug>/wiki/concepts/<slug>.md` (guess the slug from the topic; if
    unsure, `Grep -il "<topic>" events/<event-slug>/wiki/concepts/*.md` or check
    filenames). Its Consensus and Disagreements sections already synthesize across talks
-   — use them before opening individual talk pages. Follow the relative links to
+   — use them before opening individual talk pages. WARNING: concept pages contain
+   relative `.md` links (e.g. "Supporting talks" lists); NEVER copy those links into
+   your answer — they are unclickable outside the repo. Cite the talk by plain title,
+   or open its page and use its YouTube URL. Follow the relative links to
    talks/speakers only for more quotes or context.
 3. **Keyword / quote search**: `Grep` across `events/<event-slug>/wiki/` (or all
    `events/*/wiki/` for a cross-event search) for the term or speaker name. Concept and
