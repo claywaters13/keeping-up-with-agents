@@ -1,0 +1,267 @@
+{
+  "is_error": false,
+  "duration_api_ms": 62604,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "db47770a-770f-4cd2-b304-9693be7e7f19",
+  "total_cost_usd": 0.242304,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 9228,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 5568,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 9228,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 5568,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 9228,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 9228
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 5575,
+      "outputTokens": 17,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.00566,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 5568,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 9228,
+      "webSearchRequests": 0,
+      "costUSD": 0.236644,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Two AI engineering leads at ZS Associates describe why they dismantled a multi-agent pipeline they built for pharma commercial analytics. The original design mirrored a human analyst's four-step workflow \u2014 signal detection, source localization, driver attribution, synthesis \u2014 with one agent per step behind an orchestrator, and it produced outputs where every individual fact was right but the end-to-end narrative was incoherent (correct payer-coverage root cause, but a sales-rep action recommendation that ignored it). They diagnose three causes: an LLM doing work that statistics should do, context loss at every inter-agent handoff, and no shared business-domain model. The fix came from watching Claude Code work in an empty directory with just bash and a database: pull signal detection into a deterministic pre-agent pipeline, consolidate all reasoning into a single agent that may delegate investigations (but never judgment) to sub-agents, and use a domain knowledge graph as a control plane where every edge is a hypothesis the agent may test. Worth watching if you are deciding how far to decompose an agentic system, or how to bound an agent's search space with domain structure.\",\n  \"key_points\": [\n    \"Decomposing an agentic system along the lines of a human workflow is a design smell \u2014 the architecture should be derived from what the system needs, not from how analysts happen to divide their labor.\",\n    \"Their per-step agents each produced factually correct outputs, but no agent owned the end-to-end picture, so the recommended action did not follow from the diagnosed cause.\",\n    \"Context degrades at every agent-to-agent handoff; the synthesis agent never absorbed the weighting the driver-attribution agent had placed on payer coverage.\",\n    \"Signal detection was moved out of the agentic system entirely into a deterministic statistical pipeline with thresholds, guardrails, and prioritization, which pushes signals onto a queue that wakes the agent.\",\n    \"The team redesigned by observing Claude Code operate in an empty directory with only bash and database access, then copying the patterns it exhibited (a query tool, dynamically spawned focused sub-agents).\",\n    \"They kept parallelism and sub-agents but removed distributed reasoning: sub-agents return investigation results, while all judgment stays with a single main agent.\",\n    \"A knowledge graph built with in-house pharma domain experts encodes entities (geographies, payers, accounts, brands) and KPI-to-KPI driver relationships that the agent could not reliably infer from tables alone.\",\n    \"The graph functions as a control plane rather than a lookup layer \u2014 it dictates which paths the agent may take and which hypotheses it may evaluate, bounding an otherwise combinatorial search over dimensions.\",\n    \"The resulting loop (neighborhood \u2192 hypothesis \u2192 query real data \u2192 reason \u2192 traverse or stop) takes 50+ turns and many tokens but compresses analysis that took an analyst three to four weeks into 20\u201330 minutes.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"obviously it's not the LLM which failed, right? It's the way how we split the work, right? Because we tried mimicking the analyst behavior, and we did it.\",\n      \"timestamp_sec\": 277,\n      \"why\": \"The thesis of the talk: the failure was architectural decomposition, not model capability.\"\n    },\n    {\n      \"text\": \"at each level if you see, it has actually derived the right fact, but then there is no single agent which is owning which understands the end-to-end picture basically.\",\n      \"timestamp_sec\": 243,\n      \"why\": \"Names the precise failure mode \u2014 locally correct, globally incoherent output.\"\n    },\n    {\n      \"text\": \"signals like things like your sales drop is a simple information which you can use statistical methods to actually go and fetch this information. You don't need a language model actually, right? To fetch this information.\",\n      \"timestamp_sec\": 277,\n      \"why\": \"States the boundary between deterministic and agentic work concretely.\"\n    },\n    {\n      \"text\": \"as your multi agents, there is a lot of context hand off which is happening, and context is actually getting lost at each of these hand offs\",\n      \"timestamp_sec\": 277,\n      \"why\": \"The core cost of multi-agent decomposition they identify.\"\n    },\n    {\n      \"text\": \"the last big piece is there is no shared understanding of the business domain knowledge for all these agents. All these agents don't understand metrics\",\n      \"timestamp_sec\": 315,\n      \"why\": \"Sets up the knowledge-graph half of the solution.\"\n    },\n    {\n      \"text\": \"We didn't do any of that. We like all of us, we went back to Cloud Code. So, we opened a very plain empty directory. I ran Cloud Code. Then give it just bash and the database.\",\n      \"timestamp_sec\": 386,\n      \"why\": \"Unusual methodology: derive architecture by observing a general coding agent instead of redesigning topology.\"\n    },\n    {\n      \"text\": \"This is something we don't want an agent to do. This is a completely deterministic workflow. So, we separated it out from the agentic system.\",\n      \"timestamp_sec\": 428,\n      \"why\": \"The clearest statement of their deterministic/agentic split.\"\n    },\n    {\n      \"text\": \"The moment a signal comes to the queue, the agent wakes up. So, the agent's job is to investigate, not to identify.\",\n      \"timestamp_sec\": 469,\n      \"why\": \"A memorable one-line reframing of the agent's scope.\"\n    },\n    {\n      \"text\": \"What we removed is, do we need distributed reasoning? We didn't but the judgment to be distributed between agents. That we wanted to consolidate to a single agent.\",\n      \"timestamp_sec\": 510,\n      \"why\": \"Distinguishes parallelism (kept) from distributed reasoning (removed).\"\n    },\n    {\n      \"text\": \"That you can still delegate to a sub-agent. You can get back the uh results back, not the reasoning or the judgment.\",\n      \"timestamp_sec\": 510,\n      \"why\": \"Defines exactly what sub-agents are allowed to return.\"\n    },\n    {\n      \"text\": \"the agent was looking at data, looking at tables, then trying to infer the relationship. That which was not scalable. And it often produce relationship which which is not actually exist in the data.\",\n      \"timestamp_sec\": 551,\n      \"why\": \"Motivates encoding domain structure explicitly rather than letting the model infer it.\"\n    },\n    {\n      \"text\": \"the knowledge graph is not just something the agent looks up for data. It is a control plane for the agent.\",\n      \"timestamp_sec\": 632,\n      \"why\": \"The talk's signature claim about knowledge graphs.\"\n    },\n    {\n      \"text\": \"the knowledge graphs dictates what the agent can look into, what path it can take, what investigation hypothesis uh it can evaluate\",\n      \"timestamp_sec\": 632,\n      \"why\": \"Spells out what 'control plane' means operationally.\"\n    },\n    {\n      \"text\": \"every edge is a hypothesis. So, the agent can go and evaluate that hypothe- hypothesis. Uh it doesn't go outside of this.\",\n      \"timestamp_sec\": 708,\n      \"why\": \"Compact statement of how the graph bounds the agent's search.\"\n    },\n    {\n      \"text\": \"after like 50 plus turns, a whole lot of tokens, it's able to produce something an analyst was able to produce maybe in three or four weeks in like maybe 20 30 minutes\",\n      \"timestamp_sec\": 790,\n      \"why\": \"The only quantified outcome claim in the talk, including its token cost.\"\n    },\n    {\n      \"text\": \"First thing is I think we should not be introducing human constraints or design constraints into architecture.\",\n      \"timestamp_sec\": 790,\n      \"why\": \"First of four takeaways and the general lesson behind killing the pipeline.\"\n    },\n    {\n      \"text\": \"any complex workflows will have deterministic parts and agentic parts. Don't let agents actually run the deterministic part, right?\",\n      \"timestamp_sec\": 831,\n      \"why\": \"Portable design rule stated as an imperative.\"\n    },\n    {\n      \"text\": \"I think graph cannot be treated just as a lookup layer. I think graph has to be treated as a control plane which the agent uses to navigate and takes the next decisions basically.\",\n      \"timestamp_sec\": 831,\n      \"why\": \"The takeaway they flag as most important.\"\n    }\n  ],\n  \"concepts\": [\n    \"multi-agent orchestration\",\n    \"context handoff loss\",\n    \"deterministic vs agentic workflow separation\",\n    \"single-agent reasoning ownership\",\n    \"sub-agent delegation\",\n    \"knowledge graph as control plane\",\n    \"hypothesis-driven root cause analysis\",\n    \"domain ontology modeling\",\n    \"signal detection pipelines\",\n    \"agent action space bounding\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Their multi-agent pipeline's incoherence was caused by how the work was split, not by any LLM capability limitation.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 277\n    },\n    {\n      \"claim\": \"Mimicking a human analyst's workflow steps is the wrong basis for agent system architecture; architecture should be derived rather than copied from human process constraints.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 790\n    },\n    {\n      \"claim\": \"Signal detection over metrics like sales drops should be done with statistical methods, not a language model.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 277\n    },\n    {\n      \"claim\": \"Every agent-to-agent handoff loses context, and the loss compounds across a chain of specialized agents.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 277\n    },\n    {\n      \"claim\": \"Complex workflows should be partitioned so that deterministic components run outside the agentic system entirely, before the agent is invoked.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 831\n    },\n    {\n      \"claim\": \"Exactly one agent should own end-to-end reasoning; parallelism and sub-agents are fine, but judgment must not be distributed.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 510\n    },\n    {\n      \"claim\": \"Sub-agents should return investigation results only, never reasoning or judgment.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 510\n    },\n    {\n      \"claim\": \"Agents inferring entity and KPI relationships from raw tables does not scale and produces relationships that do not exist in the data.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 551\n    },\n    {\n      \"claim\": \"A knowledge graph should act as a control plane that constrains which paths and hypotheses an agent may pursue, not merely as a data lookup layer.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 632\n    },\n    {\n      \"claim\": \"Observing how a general-purpose coding agent (Claude Code) operates with minimal tools is a valid way to derive production agent architecture.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 386\n    },\n    {\n      \"claim\": \"The consolidated single-agent system reaches root causes in 20\u201330 minutes and 50+ turns for analysis that previously took an analyst three to four weeks.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 790\n    },\n    {\n      \"claim\": \"High token and turn counts are an acceptable cost for correct end-to-end reasoning.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 790\n    }\n  ],\n  \"speaker_org\": \"ZS Associates\"\n}",
+  "ttft_ms": 21503,
+  "ttft_stream_ms": 916,
+  "time_to_request_ms": 33,
+  "type": "result",
+  "duration_ms": 63185,
+  "uuid": "ad8fcaef-6e7d-4a55-a0fb-dd173f9e27bc",
+  "passA": {
+    "summary": "Two AI engineering leads at ZS Associates describe why they dismantled a multi-agent pipeline they built for pharma commercial analytics. The original design mirrored a human analyst's four-step workflow \u2014 signal detection, source localization, driver attribution, synthesis \u2014 with one agent per step behind an orchestrator, and it produced outputs where every individual fact was right but the end-to-end narrative was incoherent (correct payer-coverage root cause, but a sales-rep action recommendation that ignored it). They diagnose three causes: an LLM doing work that statistics should do, context loss at every inter-agent handoff, and no shared business-domain model. The fix came from watching Claude Code work in an empty directory with just bash and a database: pull signal detection into a deterministic pre-agent pipeline, consolidate all reasoning into a single agent that may delegate investigations (but never judgment) to sub-agents, and use a domain knowledge graph as a control plane where every edge is a hypothesis the agent may test. Worth watching if you are deciding how far to decompose an agentic system, or how to bound an agent's search space with domain structure.",
+    "key_points": [
+      "Decomposing an agentic system along the lines of a human workflow is a design smell \u2014 the architecture should be derived from what the system needs, not from how analysts happen to divide their labor.",
+      "Their per-step agents each produced factually correct outputs, but no agent owned the end-to-end picture, so the recommended action did not follow from the diagnosed cause.",
+      "Context degrades at every agent-to-agent handoff; the synthesis agent never absorbed the weighting the driver-attribution agent had placed on payer coverage.",
+      "Signal detection was moved out of the agentic system entirely into a deterministic statistical pipeline with thresholds, guardrails, and prioritization, which pushes signals onto a queue that wakes the agent.",
+      "The team redesigned by observing Claude Code operate in an empty directory with only bash and database access, then copying the patterns it exhibited (a query tool, dynamically spawned focused sub-agents).",
+      "They kept parallelism and sub-agents but removed distributed reasoning: sub-agents return investigation results, while all judgment stays with a single main agent.",
+      "A knowledge graph built with in-house pharma domain experts encodes entities (geographies, payers, accounts, brands) and KPI-to-KPI driver relationships that the agent could not reliably infer from tables alone.",
+      "The graph functions as a control plane rather than a lookup layer \u2014 it dictates which paths the agent may take and which hypotheses it may evaluate, bounding an otherwise combinatorial search over dimensions.",
+      "The resulting loop (neighborhood \u2192 hypothesis \u2192 query real data \u2192 reason \u2192 traverse or stop) takes 50+ turns and many tokens but compresses analysis that took an analyst three to four weeks into 20\u201330 minutes."
+    ],
+    "notable_quotes": [
+      {
+        "text": "obviously it's not the LLM which failed, right? It's the way how we split the work, right? Because we tried mimicking the analyst behavior, and we did it.",
+        "timestamp_sec": 277,
+        "why": "The thesis of the talk: the failure was architectural decomposition, not model capability."
+      },
+      {
+        "text": "at each level if you see, it has actually derived the right fact, but then there is no single agent which is owning which understands the end-to-end picture basically.",
+        "timestamp_sec": 243,
+        "why": "Names the precise failure mode \u2014 locally correct, globally incoherent output."
+      },
+      {
+        "text": "signals like things like your sales drop is a simple information which you can use statistical methods to actually go and fetch this information. You don't need a language model actually, right? To fetch this information.",
+        "timestamp_sec": 277,
+        "why": "States the boundary between deterministic and agentic work concretely."
+      },
+      {
+        "text": "as your multi agents, there is a lot of context hand off which is happening, and context is actually getting lost at each of these hand offs",
+        "timestamp_sec": 277,
+        "why": "The core cost of multi-agent decomposition they identify."
+      },
+      {
+        "text": "the last big piece is there is no shared understanding of the business domain knowledge for all these agents. All these agents don't understand metrics",
+        "timestamp_sec": 315,
+        "why": "Sets up the knowledge-graph half of the solution."
+      },
+      {
+        "text": "We didn't do any of that. We like all of us, we went back to Cloud Code. So, we opened a very plain empty directory. I ran Cloud Code. Then give it just bash and the database.",
+        "timestamp_sec": 386,
+        "why": "Unusual methodology: derive architecture by observing a general coding agent instead of redesigning topology."
+      },
+      {
+        "text": "This is something we don't want an agent to do. This is a completely deterministic workflow. So, we separated it out from the agentic system.",
+        "timestamp_sec": 428,
+        "why": "The clearest statement of their deterministic/agentic split."
+      },
+      {
+        "text": "The moment a signal comes to the queue, the agent wakes up. So, the agent's job is to investigate, not to identify.",
+        "timestamp_sec": 469,
+        "why": "A memorable one-line reframing of the agent's scope."
+      },
+      {
+        "text": "What we removed is, do we need distributed reasoning? We didn't but the judgment to be distributed between agents. That we wanted to consolidate to a single agent.",
+        "timestamp_sec": 510,
+        "why": "Distinguishes parallelism (kept) from distributed reasoning (removed)."
+      },
+      {
+        "text": "That you can still delegate to a sub-agent. You can get back the uh results back, not the reasoning or the judgment.",
+        "timestamp_sec": 510,
+        "why": "Defines exactly what sub-agents are allowed to return."
+      },
+      {
+        "text": "the agent was looking at data, looking at tables, then trying to infer the relationship. That which was not scalable. And it often produce relationship which which is not actually exist in the data.",
+        "timestamp_sec": 551,
+        "why": "Motivates encoding domain structure explicitly rather than letting the model infer it."
+      },
+      {
+        "text": "the knowledge graph is not just something the agent looks up for data. It is a control plane for the agent.",
+        "timestamp_sec": 632,
+        "why": "The talk's signature claim about knowledge graphs."
+      },
+      {
+        "text": "the knowledge graphs dictates what the agent can look into, what path it can take, what investigation hypothesis uh it can evaluate",
+        "timestamp_sec": 632,
+        "why": "Spells out what 'control plane' means operationally."
+      },
+      {
+        "text": "every edge is a hypothesis. So, the agent can go and evaluate that hypothe- hypothesis. Uh it doesn't go outside of this.",
+        "timestamp_sec": 708,
+        "why": "Compact statement of how the graph bounds the agent's search."
+      },
+      {
+        "text": "after like 50 plus turns, a whole lot of tokens, it's able to produce something an analyst was able to produce maybe in three or four weeks in like maybe 20 30 minutes",
+        "timestamp_sec": 790,
+        "why": "The only quantified outcome claim in the talk, including its token cost."
+      },
+      {
+        "text": "First thing is I think we should not be introducing human constraints or design constraints into architecture.",
+        "timestamp_sec": 790,
+        "why": "First of four takeaways and the general lesson behind killing the pipeline."
+      },
+      {
+        "text": "any complex workflows will have deterministic parts and agentic parts. Don't let agents actually run the deterministic part, right?",
+        "timestamp_sec": 831,
+        "why": "Portable design rule stated as an imperative."
+      },
+      {
+        "text": "I think graph cannot be treated just as a lookup layer. I think graph has to be treated as a control plane which the agent uses to navigate and takes the next decisions basically.",
+        "timestamp_sec": 831,
+        "why": "The takeaway they flag as most important."
+      }
+    ],
+    "concepts": [
+      "multi-agent orchestration",
+      "context handoff loss",
+      "deterministic vs agentic workflow separation",
+      "single-agent reasoning ownership",
+      "sub-agent delegation",
+      "knowledge graph as control plane",
+      "hypothesis-driven root cause analysis",
+      "domain ontology modeling",
+      "signal detection pipelines",
+      "agent action space bounding"
+    ],
+    "positions": [
+      {
+        "claim": "Their multi-agent pipeline's incoherence was caused by how the work was split, not by any LLM capability limitation.",
+        "confidence": "stated",
+        "timestamp_sec": 277
+      },
+      {
+        "claim": "Mimicking a human analyst's workflow steps is the wrong basis for agent system architecture; architecture should be derived rather than copied from human process constraints.",
+        "confidence": "stated",
+        "timestamp_sec": 790
+      },
+      {
+        "claim": "Signal detection over metrics like sales drops should be done with statistical methods, not a language model.",
+        "confidence": "stated",
+        "timestamp_sec": 277
+      },
+      {
+        "claim": "Every agent-to-agent handoff loses context, and the loss compounds across a chain of specialized agents.",
+        "confidence": "stated",
+        "timestamp_sec": 277
+      },
+      {
+        "claim": "Complex workflows should be partitioned so that deterministic components run outside the agentic system entirely, before the agent is invoked.",
+        "confidence": "stated",
+        "timestamp_sec": 831
+      },
+      {
+        "claim": "Exactly one agent should own end-to-end reasoning; parallelism and sub-agents are fine, but judgment must not be distributed.",
+        "confidence": "stated",
+        "timestamp_sec": 510
+      },
+      {
+        "claim": "Sub-agents should return investigation results only, never reasoning or judgment.",
+        "confidence": "stated",
+        "timestamp_sec": 510
+      },
+      {
+        "claim": "Agents inferring entity and KPI relationships from raw tables does not scale and produces relationships that do not exist in the data.",
+        "confidence": "stated",
+        "timestamp_sec": 551
+      },
+      {
+        "claim": "A knowledge graph should act as a control plane that constrains which paths and hypotheses an agent may pursue, not merely as a data lookup layer.",
+        "confidence": "stated",
+        "timestamp_sec": 632
+      },
+      {
+        "claim": "Observing how a general-purpose coding agent (Claude Code) operates with minimal tools is a valid way to derive production agent architecture.",
+        "confidence": "implied",
+        "timestamp_sec": 386
+      },
+      {
+        "claim": "The consolidated single-agent system reaches root causes in 20\u201330 minutes and 50+ turns for analysis that previously took an analyst three to four weeks.",
+        "confidence": "stated",
+        "timestamp_sec": 790
+      },
+      {
+        "claim": "High token and turn counts are an acceptable cost for correct end-to-end reasoning.",
+        "confidence": "implied",
+        "timestamp_sec": 790
+      }
+    ],
+    "speaker_org": "ZS Associates"
+  },
+  "_meta": {
+    "slug": "why-we-killed-our-multi-agent-pipeline",
+    "video_id": "u6jJcIFDLE4",
+    "url": "https://www.youtube.com/watch?v=u6jJcIFDLE4",
+    "word_count": 2709,
+    "wall_sec": 64.2,
+    "run_at": "2026-08-12T20:34:02Z",
+    "effort": "medium"
+  }
+}

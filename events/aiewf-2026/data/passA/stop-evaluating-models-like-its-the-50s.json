@@ -1,0 +1,273 @@
+{
+  "is_error": false,
+  "duration_api_ms": 47413,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "082a7e92-9c44-4cac-9904-48d8992db2b2",
+  "total_cost_usd": 0.223457,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 11025,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 4029,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 11025,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 4029,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 11025,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 11025
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 7223,
+      "outputTokens": 19,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.007318,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 4029,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 11025,
+      "webSearchRequests": 0,
+      "costUSD": 0.216139,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Alejandro Vidal, founder of Mindmakers, argues that the industry's standard practice of scoring LLM benchmarks by counting correct answers is classical test theory \u2014 a 1950s-era method \u2014 and that item response theory (IRT) from psychometrics is a strictly better tool. IRT models each benchmark question as a curve with a difficulty parameter (B) and a discrimination parameter (A), and estimates each model's latent 'intelligence' (theta) with likelihood intervals rather than a raw percentage. He demonstrates with real epoch.ai data that two models separated by only 2 correct answers out of 337 differ by nearly a full standard deviation in theta, showing raw accuracy can hide real capability gaps. He then walks through five practical applications: auditing benchmarks to find mislabeled or negatively-discriminating items, shrinking a benchmark ~5x while preserving 99% ranking correlation, using residuals to detect contamination and broken inference, adaptive-testing 'fingerprint sets' to catch benchmark leakage by specific labs, and correlating residuals to detect distillation and model lineage. Worth watching if you build or maintain internal evals and want concrete statistical machinery rather than another leaderboard critique.\",\n  \"key_points\": [\n    \"Summing correct answers assumes every benchmark item is equally important, which is a strong and usually wrong assumption since items vary in difficulty and some are outright mislabeled.\",\n    \"Item response theory assigns each item a difficulty parameter B and a discrimination parameter A, and maps model intelligence (theta) to the probability of answering that item correctly.\",\n    \"Because theta and B are on a shared normal-distribution scale, a model's score becomes interpretable on its own rather than only relative to whatever other models were run on the benchmark.\",\n    \"In real epoch.ai data, Claude Opus 4.1 (245 correct) and Gemini 3 Pro (247 correct) out of 337 questions differ by almost one standard deviation of theta, because the harder items count more.\",\n    \"Items with negative discrimination \u2014 where better models are more likely to get them wrong \u2014 flag mislabeled gold answers, such as a question asking for passengers whose gold answer was passengers plus crew.\",\n    \"Selecting items by highest discrimination shrank one benchmark from 484 items to roughly 97 while retaining 99% correlation with the original ranking, nearly a 5x cost saving; random selection performed far worse.\",\n    \"Well-designed benchmarks like GPQA show no such compression benefit, because their items are all highly discriminative and non-overlapping, so random subsets perform about as well.\",\n    \"Per-item residuals expose outliers that can indicate contamination, overfitting, or a misconfigured inference platform such as bad quantization.\",\n    \"Adaptive testing with a shared anchor set plus per-organization 'fingerprint sets' of hard items lets a benchmark owner detect which lab trained on leaked questions, via unusually low residuals on that lab's private set.\",\n    \"Correlating residuals across models produces a lineage fingerprint that clusters same-lab models, distillations and their base models, and effort-level variants of the same model.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"at this moment the state in the industry is counting the number of right answers. That actually has a name. It's classical test theory. And we have by far better tools to do that.\",\n      \"timestamp_sec\": 2,\n      \"why\": \"States the talk's thesis and the specific method it targets.\"\n    },\n    {\n      \"text\": \"We are saying that every question is equally important. They should weigh the same, which is kind of insane if you think about that.\",\n      \"timestamp_sec\": 77,\n      \"why\": \"Names the buried assumption in accuracy scoring.\"\n    },\n    {\n      \"text\": \"The B parameter is going to be the difficulty of each one of them, and we're going to create a function for each question. That function maps the LLM intelligence, okay? To the probability of getting that answer right\",\n      \"timestamp_sec\": 116,\n      \"why\": \"The core mechanic of IRT stated compactly.\"\n    },\n    {\n      \"text\": \"item of B equal zero means that is going to be average. Half of the um models in my data set are going to be able to answer that question 50% of the time.\",\n      \"timestamp_sec\": 258,\n      \"why\": \"Explains why the shared scale makes scores interpretable.\"\n    },\n    {\n      \"text\": \"Here is going to be on the left side Cloud Opus 4.1, yeah? That has 245 right answers. On the other side we are going to have Gemini 3 Pro, which has 247\",\n      \"timestamp_sec\": 398,\n      \"why\": \"The concrete numbers behind the talk's headline demonstration.\"\n    },\n    {\n      \"text\": \"if you use item response theory, you can see that the difference between all of them is almost one standard deviation. That means Gemini 3 Pro is by far more intelligent.\",\n      \"timestamp_sec\": 398,\n      \"why\": \"The payoff claim: raw accuracy hid a large capability gap.\"\n    },\n    {\n      \"text\": \"counting the number of right answers is is not a good approach because I can create benchmarks that are not calibrated and even if I get a lot of right answers, I'm not more intelligent than other models.\",\n      \"timestamp_sec\": 398,\n      \"why\": \"Restates the position with the calibration argument attached.\"\n    },\n    {\n      \"text\": \"you can see that we have items that correlates uh the other way around, that better models are actually getting that answer wrong, which makes no sense.\",\n      \"timestamp_sec\": 545,\n      \"why\": \"Defines the negative-discrimination signal used for benchmark auditing.\"\n    },\n    {\n      \"text\": \"The gold answer, the answer that is on the benchmark, is 583, which is the total people killed passengers plus crew. But the right answer, if you pay attention, I'm asking only about passengers, which is another number.\",\n      \"timestamp_sec\": 584,\n      \"why\": \"A concrete mislabeled item found by the method.\"\n    },\n    {\n      \"text\": \"we're going to get that around 97 items compared with 484. That's almost 5x. We are going to have the same ranking than before or almost the same ranking as before.\",\n      \"timestamp_sec\": 670,\n      \"why\": \"The headline cost-reduction number.\"\n    },\n    {\n      \"text\": \"We are like assuming that more questions uh means better estimation, which is not true.\",\n      \"timestamp_sec\": 717,\n      \"why\": \"Directly contradicts a widespread eval intuition.\"\n    },\n    {\n      \"text\": \"GPQA, which is a extremely well-designed uh data set, the benchmark here, as you can see, even if you pick at random, you're going to get more or less the same result.\",\n      \"timestamp_sec\": 761,\n      \"why\": \"Important caveat: the compression trick doesn't apply to all benchmarks.\"\n    },\n    {\n      \"text\": \"We can actually find out if we are leaking information, if we are overfitting with the benchmark, and other kinds of contaminations.\",\n      \"timestamp_sec\": 805,\n      \"why\": \"Frames residuals as a contamination-detection tool.\"\n    },\n    {\n      \"text\": \"if your for whatever reason your inference platform is not actually running the models or the quantization is actually wrong, you're going to observe things like that, behaviors that are not expected\",\n      \"timestamp_sec\": 942,\n      \"why\": \"An unexpected ops-level use for consistency analysis.\"\n    },\n    {\n      \"text\": \"I'm going to pick uh one individual set. I'm going to call that fingerprint set that I'm going to show only to that specific organization.\",\n      \"timestamp_sec\": 1020,\n      \"why\": \"The mechanism of the benchmark-leak detection scheme.\"\n    },\n    {\n      \"text\": \"So this is not bulletproof, but this is a extremely good technique that you can use to protect your benchmarks.\",\n      \"timestamp_sec\": 1065,\n      \"why\": \"Speaker explicitly bounds the strength of his own claim.\"\n    },\n    {\n      \"text\": \"we can find out that there are few items that are better for closed weight of models and better for open weights models. I'm not going to show the items because I don't want to leak them on the internet\",\n      \"timestamp_sec\": 1153,\n      \"why\": \"Reports a real differential-item-functioning finding across open vs closed weights.\"\n    },\n    {\n      \"text\": \"Also, we can observe that between distillations and its base model, which could be extremely interesting if you want to detect distillation of your model uh without consent.\",\n      \"timestamp_sec\": 1239,\n      \"why\": \"The most provocative downstream application: unconsented distillation detection.\"\n    },\n    {\n      \"text\": \"I think we can improve a lot how we benchmark LLMs with very basic maths here.\",\n      \"timestamp_sec\": 1289,\n      \"why\": \"The closing argument that the barrier is adoption, not sophistication.\"\n    }\n  ],\n  \"concepts\": [\n    \"item response theory\",\n    \"classical test theory\",\n    \"psychometrics\",\n    \"item difficulty calibration\",\n    \"item discrimination\",\n    \"benchmark auditing\",\n    \"benchmark compression\",\n    \"residual analysis\",\n    \"benchmark contamination detection\",\n    \"adaptive testing\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Counting the number of right answers on a benchmark is classical test theory and is an inferior evaluation method compared to item response theory.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 2\n    },\n    {\n      \"claim\": \"Treating every benchmark question as equally important is an unjustified assumption because items differ in difficulty and quality.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 77\n    },\n    {\n      \"claim\": \"Claude Opus 4.1 and Gemini 3 Pro differ by only 2 correct answers out of 337 on a real benchmark, yet differ by almost one standard deviation in IRT-estimated ability.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 398\n    },\n    {\n      \"claim\": \"Benchmarks contain items with negative discrimination, and these reliably indicate mislabeled gold answers or otherwise broken questions.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 545\n    },\n    {\n      \"claim\": \"Selecting items by highest discrimination can reduce a benchmark from 484 to ~97 items while preserving 99% ranking correlation.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 670\n    },\n    {\n      \"claim\": \"More benchmark questions does not mean a better ability estimate, because overlapping items add little additional information.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 717\n    },\n    {\n      \"claim\": \"Benchmark compression gains depend on benchmark quality \u2014 GPQA cannot be compressed this way because its items are uniformly discriminative and non-overlapping.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 761\n    },\n    {\n      \"claim\": \"Anomalous residual patterns can reveal inference-platform problems such as incorrect quantization, not just model capability.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 942\n    },\n    {\n      \"claim\": \"Per-organization fingerprint sets of hard items can detect benchmark leakage, though the technique is not bulletproof.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1065\n    },\n    {\n      \"claim\": \"Residual correlation patterns encode model lineage and can be used to detect distillation performed without consent.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1239\n    },\n    {\n      \"claim\": \"Differential item functioning between open-weight and closed-weight models exists and could be used to infer how labs train their models.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 1190\n    },\n    {\n      \"claim\": \"The mathematics required to substantially improve LLM benchmarking is basic and already available, so the gap is adoption rather than research.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1289\n    }\n  ],\n  \"speaker_org\": \"Mindmakers\"\n}",
+  "ttft_ms": 45513,
+  "ttft_stream_ms": 1105,
+  "time_to_request_ms": 38,
+  "type": "result",
+  "duration_ms": 47295,
+  "uuid": "2e667325-9793-44e2-ae4d-2dcd7da6a7a7",
+  "passA": {
+    "summary": "Alejandro Vidal, founder of Mindmakers, argues that the industry's standard practice of scoring LLM benchmarks by counting correct answers is classical test theory \u2014 a 1950s-era method \u2014 and that item response theory (IRT) from psychometrics is a strictly better tool. IRT models each benchmark question as a curve with a difficulty parameter (B) and a discrimination parameter (A), and estimates each model's latent 'intelligence' (theta) with likelihood intervals rather than a raw percentage. He demonstrates with real epoch.ai data that two models separated by only 2 correct answers out of 337 differ by nearly a full standard deviation in theta, showing raw accuracy can hide real capability gaps. He then walks through five practical applications: auditing benchmarks to find mislabeled or negatively-discriminating items, shrinking a benchmark ~5x while preserving 99% ranking correlation, using residuals to detect contamination and broken inference, adaptive-testing 'fingerprint sets' to catch benchmark leakage by specific labs, and correlating residuals to detect distillation and model lineage. Worth watching if you build or maintain internal evals and want concrete statistical machinery rather than another leaderboard critique.",
+    "key_points": [
+      "Summing correct answers assumes every benchmark item is equally important, which is a strong and usually wrong assumption since items vary in difficulty and some are outright mislabeled.",
+      "Item response theory assigns each item a difficulty parameter B and a discrimination parameter A, and maps model intelligence (theta) to the probability of answering that item correctly.",
+      "Because theta and B are on a shared normal-distribution scale, a model's score becomes interpretable on its own rather than only relative to whatever other models were run on the benchmark.",
+      "In real epoch.ai data, Claude Opus 4.1 (245 correct) and Gemini 3 Pro (247 correct) out of 337 questions differ by almost one standard deviation of theta, because the harder items count more.",
+      "Items with negative discrimination \u2014 where better models are more likely to get them wrong \u2014 flag mislabeled gold answers, such as a question asking for passengers whose gold answer was passengers plus crew.",
+      "Selecting items by highest discrimination shrank one benchmark from 484 items to roughly 97 while retaining 99% correlation with the original ranking, nearly a 5x cost saving; random selection performed far worse.",
+      "Well-designed benchmarks like GPQA show no such compression benefit, because their items are all highly discriminative and non-overlapping, so random subsets perform about as well.",
+      "Per-item residuals expose outliers that can indicate contamination, overfitting, or a misconfigured inference platform such as bad quantization.",
+      "Adaptive testing with a shared anchor set plus per-organization 'fingerprint sets' of hard items lets a benchmark owner detect which lab trained on leaked questions, via unusually low residuals on that lab's private set.",
+      "Correlating residuals across models produces a lineage fingerprint that clusters same-lab models, distillations and their base models, and effort-level variants of the same model."
+    ],
+    "notable_quotes": [
+      {
+        "text": "at this moment the state in the industry is counting the number of right answers. That actually has a name. It's classical test theory. And we have by far better tools to do that.",
+        "timestamp_sec": 2,
+        "why": "States the talk's thesis and the specific method it targets."
+      },
+      {
+        "text": "We are saying that every question is equally important. They should weigh the same, which is kind of insane if you think about that.",
+        "timestamp_sec": 77,
+        "why": "Names the buried assumption in accuracy scoring."
+      },
+      {
+        "text": "The B parameter is going to be the difficulty of each one of them, and we're going to create a function for each question. That function maps the LLM intelligence, okay? To the probability of getting that answer right",
+        "timestamp_sec": 116,
+        "why": "The core mechanic of IRT stated compactly."
+      },
+      {
+        "text": "item of B equal zero means that is going to be average. Half of the um models in my data set are going to be able to answer that question 50% of the time.",
+        "timestamp_sec": 258,
+        "why": "Explains why the shared scale makes scores interpretable."
+      },
+      {
+        "text": "Here is going to be on the left side Cloud Opus 4.1, yeah? That has 245 right answers. On the other side we are going to have Gemini 3 Pro, which has 247",
+        "timestamp_sec": 398,
+        "why": "The concrete numbers behind the talk's headline demonstration."
+      },
+      {
+        "text": "if you use item response theory, you can see that the difference between all of them is almost one standard deviation. That means Gemini 3 Pro is by far more intelligent.",
+        "timestamp_sec": 398,
+        "why": "The payoff claim: raw accuracy hid a large capability gap."
+      },
+      {
+        "text": "counting the number of right answers is is not a good approach because I can create benchmarks that are not calibrated and even if I get a lot of right answers, I'm not more intelligent than other models.",
+        "timestamp_sec": 398,
+        "why": "Restates the position with the calibration argument attached."
+      },
+      {
+        "text": "you can see that we have items that correlates uh the other way around, that better models are actually getting that answer wrong, which makes no sense.",
+        "timestamp_sec": 545,
+        "why": "Defines the negative-discrimination signal used for benchmark auditing."
+      },
+      {
+        "text": "The gold answer, the answer that is on the benchmark, is 583, which is the total people killed passengers plus crew. But the right answer, if you pay attention, I'm asking only about passengers, which is another number.",
+        "timestamp_sec": 584,
+        "why": "A concrete mislabeled item found by the method."
+      },
+      {
+        "text": "we're going to get that around 97 items compared with 484. That's almost 5x. We are going to have the same ranking than before or almost the same ranking as before.",
+        "timestamp_sec": 670,
+        "why": "The headline cost-reduction number."
+      },
+      {
+        "text": "We are like assuming that more questions uh means better estimation, which is not true.",
+        "timestamp_sec": 717,
+        "why": "Directly contradicts a widespread eval intuition."
+      },
+      {
+        "text": "GPQA, which is a extremely well-designed uh data set, the benchmark here, as you can see, even if you pick at random, you're going to get more or less the same result.",
+        "timestamp_sec": 761,
+        "why": "Important caveat: the compression trick doesn't apply to all benchmarks."
+      },
+      {
+        "text": "We can actually find out if we are leaking information, if we are overfitting with the benchmark, and other kinds of contaminations.",
+        "timestamp_sec": 805,
+        "why": "Frames residuals as a contamination-detection tool."
+      },
+      {
+        "text": "if your for whatever reason your inference platform is not actually running the models or the quantization is actually wrong, you're going to observe things like that, behaviors that are not expected",
+        "timestamp_sec": 942,
+        "why": "An unexpected ops-level use for consistency analysis."
+      },
+      {
+        "text": "I'm going to pick uh one individual set. I'm going to call that fingerprint set that I'm going to show only to that specific organization.",
+        "timestamp_sec": 1020,
+        "why": "The mechanism of the benchmark-leak detection scheme."
+      },
+      {
+        "text": "So this is not bulletproof, but this is a extremely good technique that you can use to protect your benchmarks.",
+        "timestamp_sec": 1065,
+        "why": "Speaker explicitly bounds the strength of his own claim."
+      },
+      {
+        "text": "we can find out that there are few items that are better for closed weight of models and better for open weights models. I'm not going to show the items because I don't want to leak them on the internet",
+        "timestamp_sec": 1153,
+        "why": "Reports a real differential-item-functioning finding across open vs closed weights."
+      },
+      {
+        "text": "Also, we can observe that between distillations and its base model, which could be extremely interesting if you want to detect distillation of your model uh without consent.",
+        "timestamp_sec": 1239,
+        "why": "The most provocative downstream application: unconsented distillation detection."
+      },
+      {
+        "text": "I think we can improve a lot how we benchmark LLMs with very basic maths here.",
+        "timestamp_sec": 1289,
+        "why": "The closing argument that the barrier is adoption, not sophistication."
+      }
+    ],
+    "concepts": [
+      "item response theory",
+      "classical test theory",
+      "psychometrics",
+      "item difficulty calibration",
+      "item discrimination",
+      "benchmark auditing",
+      "benchmark compression",
+      "residual analysis",
+      "benchmark contamination detection",
+      "adaptive testing"
+    ],
+    "positions": [
+      {
+        "claim": "Counting the number of right answers on a benchmark is classical test theory and is an inferior evaluation method compared to item response theory.",
+        "confidence": "stated",
+        "timestamp_sec": 2
+      },
+      {
+        "claim": "Treating every benchmark question as equally important is an unjustified assumption because items differ in difficulty and quality.",
+        "confidence": "stated",
+        "timestamp_sec": 77
+      },
+      {
+        "claim": "Claude Opus 4.1 and Gemini 3 Pro differ by only 2 correct answers out of 337 on a real benchmark, yet differ by almost one standard deviation in IRT-estimated ability.",
+        "confidence": "stated",
+        "timestamp_sec": 398
+      },
+      {
+        "claim": "Benchmarks contain items with negative discrimination, and these reliably indicate mislabeled gold answers or otherwise broken questions.",
+        "confidence": "stated",
+        "timestamp_sec": 545
+      },
+      {
+        "claim": "Selecting items by highest discrimination can reduce a benchmark from 484 to ~97 items while preserving 99% ranking correlation.",
+        "confidence": "stated",
+        "timestamp_sec": 670
+      },
+      {
+        "claim": "More benchmark questions does not mean a better ability estimate, because overlapping items add little additional information.",
+        "confidence": "stated",
+        "timestamp_sec": 717
+      },
+      {
+        "claim": "Benchmark compression gains depend on benchmark quality \u2014 GPQA cannot be compressed this way because its items are uniformly discriminative and non-overlapping.",
+        "confidence": "stated",
+        "timestamp_sec": 761
+      },
+      {
+        "claim": "Anomalous residual patterns can reveal inference-platform problems such as incorrect quantization, not just model capability.",
+        "confidence": "stated",
+        "timestamp_sec": 942
+      },
+      {
+        "claim": "Per-organization fingerprint sets of hard items can detect benchmark leakage, though the technique is not bulletproof.",
+        "confidence": "stated",
+        "timestamp_sec": 1065
+      },
+      {
+        "claim": "Residual correlation patterns encode model lineage and can be used to detect distillation performed without consent.",
+        "confidence": "stated",
+        "timestamp_sec": 1239
+      },
+      {
+        "claim": "Differential item functioning between open-weight and closed-weight models exists and could be used to infer how labs train their models.",
+        "confidence": "implied",
+        "timestamp_sec": 1190
+      },
+      {
+        "claim": "The mathematics required to substantially improve LLM benchmarking is basic and already available, so the gap is adoption rather than research.",
+        "confidence": "stated",
+        "timestamp_sec": 1289
+      }
+    ],
+    "speaker_org": "Mindmakers"
+  },
+  "_meta": {
+    "slug": "stop-evaluating-models-like-its-the-50s",
+    "video_id": "O3FEoMYvUf8",
+    "url": "https://www.youtube.com/watch?v=O3FEoMYvUf8",
+    "word_count": 3878,
+    "wall_sec": 48.4,
+    "run_at": "2026-08-12T20:15:21Z",
+    "effort": "medium"
+  }
+}

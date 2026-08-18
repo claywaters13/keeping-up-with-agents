@@ -1,0 +1,266 @@
+{
+  "is_error": false,
+  "duration_api_ms": 118892,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "05855f89-4c26-42ee-82b0-4b5c5db995fd",
+  "total_cost_usd": 0.482577,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 20600,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 10339,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 20600,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 10339,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 20600,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 20600
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 12853,
+      "outputTokens": 17,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.012938,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 10339,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 20600,
+      "webSearchRequests": 0,
+      "costUSD": 0.469639,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\"concept\": \"graph rag\", \"state_of_practice\": \"The field has stopped arguing about whether graphs help retrieval and started arguing about how much graph you actually need to materialize. The agreed technical core is narrow and structural: top-k vector search can only match similar things, so it cannot answer multi-hop, aggregation/count, or negative-coverage questions ('what documentation are we missing'), and it silently returns a sample the model then presents as fact. The dominant production pattern is hybrid \u2014 vector or full-text search to pick seed nodes, then traversal with relatedness ranking to assemble the subgraph \u2014 not graph as a replacement for embeddings. What has shifted in the last year is the build cost: speakers report that agent-written Cypher (with CLI access and Cypher/GDS skills) is dramatically better than the text-to-Cypher of six to twelve months ago, so graph expertise is no longer the barrier; the extraction pipeline is. That extraction step is where the disagreement now lives, with credible practitioners variously recommending schema-constrained LLM extraction, fully deterministic structure-based loading, metadata-only graphs over a warehouse, event-log projections with no extraction at all, and parallel cache-augmented generation instead of a graph. Notably, one of the most detailed graph workshops at the conference (from Neo4j) explicitly disclosed that none of its efficiency or accuracy claims had been benchmarked.\", \"consensus\": [{\"claim\": \"Vector/semantic retrieval structurally cannot answer multi-hop, aggregation/counting, or negative-coverage questions, because it only returns top-k similar chunks and therefore estimates rather than computes.\", \"support_count\": 5, \"supporting_talks\": [\"stop-ai-agent-hallucinations-5-techniques-production-patterns\", \"crabrag-why-automated-assistants-need-graph-memory-not-more-tokens\", \"ai-on-your-lakehouse-context-comes-in-shapes-not-queries\", \"a-practitioners-guide-to-graphs\", \"when-all-context-matters-extended-cache-augmented-generation\"], \"evidence_quote\": \"Vector search always returns something even when nothing is truly relevant. And the agent only sees the top end chunks of your all data at a time. It cannot aggregate, count, or traverse relationship across all the full data set. So, it estimates.\", \"evidence_talk\": \"stop-ai-agent-hallucinations-5-techniques-production-patterns\", \"evidence_timestamp_sec\": 1130}, {\"claim\": \"Graph retrieval is a complement to vector search, not a replacement: seed with embeddings or full-text, then traverse and rank by relatedness.\", \"support_count\": 3, \"supporting_talks\": [\"crabrag-why-automated-assistants-need-graph-memory-not-more-tokens\", \"ai-on-your-lakehouse-context-comes-in-shapes-not-queries\", \"a-practitioners-guide-to-graphs\"], \"evidence_quote\": \"I think it would be naive to call it a replacement because most of the people that I see using this will eventually incorporate some sort of hybrid vector retrieval or full text search\", \"evidence_talk\": \"ai-on-your-lakehouse-context-comes-in-shapes-not-queries\", \"evidence_timestamp_sec\": 3899}, {\"claim\": \"Graph expertise is no longer a prerequisite for adopting graph retrieval, because current models write Cypher and graph-manipulating code better than most practitioners.\", \"support_count\": 4, \"supporting_talks\": [\"crabrag-why-automated-assistants-need-graph-memory-not-more-tokens\", \"ai-on-your-lakehouse-context-comes-in-shapes-not-queries\", \"stop-ai-agent-hallucinations-5-techniques-production-patterns\", \"active-graph-agent-runtime-babyagi-4\"], \"evidence_quote\": \"If you're not a graph expert, guess what? Claude is. Claude can write Cypher better than I can.\", \"evidence_talk\": \"crabrag-why-automated-assistants-need-graph-memory-not-more-tokens\", \"evidence_timestamp_sec\": 693}, {\"claim\": \"The operational payoff of graph retrieval is auditability: the returned subgraph or executed query is inspectable evidence for the answer, whereas chained vector hits give you a sample you cannot verify.\", \"support_count\": 3, \"supporting_talks\": [\"crabrag-why-automated-assistants-need-graph-memory-not-more-tokens\", \"stop-ai-agent-hallucinations-5-techniques-production-patterns\", \"ai-on-your-lakehouse-context-comes-in-shapes-not-queries\"], \"evidence_quote\": \"graphs are they're accurate. So, they give you very precise information. Explainable because you can look at the graph which got returned. And auditable because now you can actually say these are the this is the context.\", \"evidence_talk\": \"crabrag-why-automated-assistants-need-graph-memory-not-more-tokens\", \"evidence_timestamp_sec\": 652}, {\"claim\": \"The LLM-driven extraction/summarization stage is the expensive and fragile part of a GraphRAG pipeline \u2014 slow, costly, and non-reproducible across runs \u2014 not the querying.\", \"support_count\": 4, \"supporting_talks\": [\"ai-on-your-lakehouse-context-comes-in-shapes-not-queries\", \"when-all-context-matters-extended-cache-augmented-generation\", \"a-practitioners-guide-to-graphs\", \"active-graph-agent-runtime-babyagi-4\"], \"evidence_quote\": \"then obviously it costs more money, it's slower, and the you if you run it twice, it might not return the same thing. So there's trade-offs between uh each way of doing it.\", \"evidence_talk\": \"ai-on-your-lakehouse-context-comes-in-shapes-not-queries\", \"evidence_timestamp_sec\": 5628}], \"disagreements\": [{\"question\": \"Should you materialize your content into a graph store at all, or keep the graph as a thin layer (or skip it entirely) over data that lives elsewhere?\", \"position_a\": \"Build and populate a real graph of your content and traverse it \u2014 write agent actions into the graph as work happens and retrieve by traversal, because file/markdown memory and vector stores fail past the point where data exceeds the context window.\", \"position_a_talks\": [\"crabrag-why-automated-assistants-need-graph-memory-not-more-tokens\", \"stop-ai-agent-hallucinations-5-techniques-production-patterns\", \"a-practitioners-guide-to-graphs\"], \"position_b\": \"Don't ETL data into a graph for most agent use cases \u2014 use the graph only as a metadata/semantic layer over the warehouse, use whatever store you already have (Postgres is fine), or replace the graph entirely with parallel cache-augmented generation; ETL into a graph is justified only for recursive-join performance, graph algorithms, embeddings, or clustering.\", \"position_b_talks\": [\"ai-on-your-lakehouse-context-comes-in-shapes-not-queries\", \"ai-tools-for-forward-deployed-engineering\", \"when-all-context-matters-extended-cache-augmented-generation\"], \"why_it_matters\": \"This decides whether you take on a continuous-sync and ETL burden across terabyte-scale (and often security-siloed) data, or ship with metadata plus query-time joins. It also determines whether 'GraphRAG' is a database procurement decision or just a representation choice inside your existing stack.\"}, {\"question\": \"Should the graph be built by LLM entity/relationship extraction, or derived deterministically from structure that already exists?\", \"position_a\": \"Use LLM extraction, but only with scaffolding: give the extractor a domain schema plus ontology instructions for naming and unit standardization, then resolve entities with embedding-based matching \u2014 or let a managed pipeline build the graph from raw text so you don't hand-construct it.\", \"position_a_talks\": [\"a-practitioners-guide-to-graphs\", \"stop-ai-agent-hallucinations-5-techniques-production-patterns\"], \"position_b\": \"Skip LLM extraction where you can: a deterministic regex/structure-based load is idempotent and faster when documents are already structured and interlinked, and a structured event log used directly as memory \u2014 with no fact or entity extraction \u2014 performed well on LongMemEval.\", \"position_b_talks\": [\"ai-on-your-lakehouse-context-comes-in-shapes-not-queries\", \"active-graph-agent-runtime-babyagi-4\", \"when-all-context-matters-extended-cache-augmented-generation\"], \"why_it_matters\": \"Extraction determines reproducibility and cost of every rebuild: LLM pipelines give different graphs on reruns and price scales with corpus size, while deterministic loads are idempotent but only work where structure already exists. It also sets whether your graph can be rebuilt on a schedule or must be treated as expensive, semi-permanent state.\"}, {\"question\": \"How should a graph stay current when the underlying corpus changes frequently?\", \"position_a\": \"Batch-extracted knowledge graphs disqualify themselves for fast-changing corpora \u2014 recomputing the graph on every data replacement is computationally expensive and slow, so use a different strategy (parallel KV-cached context buckets) instead.\", \"position_a_talks\": [\"when-all-context-matters-extended-cache-augmented-generation\"], \"position_b\": \"Never recompute: write the graph incrementally as the agent acts, or derive graph state as a projection of an append-only immutable event log, which also gives replays, rollbacks, and forks and survives mid-run failures.\", \"position_b_talks\": [\"active-graph-agent-runtime-babyagi-4\", \"crabrag-why-automated-assistants-need-graph-memory-not-more-tokens\"], \"why_it_matters\": \"If graphs must be batch-rebuilt, GraphRAG is limited to slow-moving reference corpora; if graph state can be appended incrementally, it becomes viable as live agent memory. The answer decides whether 'the corpus changes often' is a disqualifier or a non-issue.\"}], \"practical_guidance\": {\"do\": [\"Give the extractor a domain schema plus explicit ontology instructions for naming and unit standardization \u2014 free-form subject-predicate-object triples produce a graph you won't get far with\", \"Add a separate embedding-based entity-matching step after extraction rather than trusting prompt-level standardization, since it doesn't require knowing all entities in advance\", \"Use vector search to select seed nodes, then traverse nearest neighbors and rank by relatedness to assemble context\", \"Route aggregation, counting, and 'what's missing' questions to a graph query so the query engine computes a verified result instead of the model estimating over top-k chunks (this also cuts output tokens)\", \"Keep warehouse data in the warehouse and pull only metadata into the graph as a semantic layer; reserve ETL-into-graph for recursive-join performance, graph algorithms, graph embeddings, or clustering\", \"Use a single generic containment relationship name across hierarchy levels instead of per-level names, to keep Cypher simple\", \"Prefer a deterministic regex/structure-based document load when documents already have inherent structure and interlinking \u2014 it's idempotent and faster\", \"Derive community/theme labels from document metadata and structure where labels are decent, and reach for LLM summarization only when titles and link names are poorly labeled\", \"Use Leiden rather than Louvain for community detection\", \"Give the agent CLI access plus Cypher/GDS skills rather than relying on generic text-to-Cypher\", \"Instrument the win: one .NET codebase evaluation saw a 40% reduction in tool calls for code search using subgraph/shortest-path retrieval\"], \"avoid\": [\"Rushing into GraphRAG or a graph database expecting an instant payoff \u2014 many journeys end in the valley of despair\", \"Treating vector similarity as if it were an actual relationship; long multi-hop chains fail on similarity search even when every needed fact is stored\", \"Hundreds of distinct relationship types in a production data model \u2014 they blow up the context window and degrade Cypher generation\", \"Speculatively loading markdown-file memory into every round (100k+ tokens) once your data exceeds the 1M-token context window\", \"Exposing memory over MCP tools that include a forget command \u2014 the agent is one call away from wiping its own memory\", \"Recomputing the whole knowledge graph every time the corpus is replaced\", \"Bucketing documents by domain when splitting across parallel caches \u2014 with dense inter-document relationships the supervisor skips domains that look irrelevant at first glance\", \"Letting the model pull Cypher patterns from years-old Stack Overflow answers, which yields outdated bad Cypher\", \"Assuming the entity node your data model needed two years ago is still required \u2014 modern agents can often join without it (life sciences ontologies excepted)\"]}, \"notable_outliers\": [{\"claim\": \"The choice of graph database is unimportant \u2014 'five companies trying to sell you a graph DB, and you can just use Postgres' \u2014 what matters is having a dependency-graph representation of the process at all.\", \"talk\": \"ai-tools-for-forward-deployed-engineering\", \"timestamp_sec\": 917}, {\"claim\": \"Extracting the right context out of a large knowledge graph is a distinct and harder problem than generating good output from context, and is best solved with RL-trained custom traversal tools (including entity-resolution tools that disambiguate the many Mikes at every client).\", \"talk\": \"ai-tools-for-forward-deployed-engineering\", \"timestamp_sec\": 1071}, {\"claim\": \"A structured event log used directly as memory \u2014 embed the query, grab neighboring messages, no semantic ingestion, no fact extraction, no entity extraction \u2014 did pretty well on LongMemEval.\", \"talk\": \"active-graph-agent-runtime-babyagi-4\", \"timestamp_sec\": 497}, {\"claim\": \"Parallel cache-augmented generation over unordered document buckets builds knowledge significantly faster than GraphRAG while answering more accurately than simple RAG.\", \"talk\": \"when-all-context-matters-extended-cache-augmented-generation\", \"timestamp_sec\": 277}, {\"claim\": \"The speaker explicitly disclosed that none of the efficiency or accuracy claims in the entire graph workshop had been benchmarked.\", \"talk\": \"ai-on-your-lakehouse-context-comes-in-shapes-not-queries\", \"timestamp_sec\": 6896}, {\"claim\": \"Shortest-path traversal surfaces intermediate nodes that are unreachable by vector search or symbol/reference lookup \u2014 Miranda v. Arizona is found for Canvas v. Sheba purely through the citation graph, with no direct citation between them.\", \"talk\": \"a-practitioners-guide-to-graphs\", \"timestamp_sec\": 536}, {\"claim\": \"AI models write shared-state/blackboard-style agent code better than LLM-agent-style code, because decades of that architectural discussion sit in the training data while LLM agent patterns are only about three years old.\", \"talk\": \"active-graph-agent-runtime-babyagi-4\", \"timestamp_sec\": 894}], \"maturity\": \"contested\", \"maturity_rationale\": \"There is firm agreement on the negative case \u2014 what vector search structurally cannot do \u2014 and on hybrid seed-then-traverse retrieval, but credible practitioners actively disagree on the fundamentals: whether to materialize a graph at all (metadata semantic layer vs. Postgres vs. parallel KV caches vs. a real graph store), and whether to extract entities with an LLM, deterministically, or not at all. The strongest efficiency claims came with an explicit admission of no benchmarking, and the best-supported evidence is single-team anecdote (a 40% tool-call reduction, one A/B on identical data) rather than shared benchmarks.\"}",
+  "ttft_ms": 59987,
+  "ttft_stream_ms": 1188,
+  "time_to_request_ms": 106,
+  "type": "result",
+  "duration_ms": 118962,
+  "uuid": "89a006f4-6e65-4fc8-ae33-4cfd43d9ef27",
+  "passC": {
+    "concept": "graph rag",
+    "state_of_practice": "The field has stopped arguing about whether graphs help retrieval and started arguing about how much graph you actually need to materialize. The agreed technical core is narrow and structural: top-k vector search can only match similar things, so it cannot answer multi-hop, aggregation/count, or negative-coverage questions ('what documentation are we missing'), and it silently returns a sample the model then presents as fact. The dominant production pattern is hybrid \u2014 vector or full-text search to pick seed nodes, then traversal with relatedness ranking to assemble the subgraph \u2014 not graph as a replacement for embeddings. What has shifted in the last year is the build cost: speakers report that agent-written Cypher (with CLI access and Cypher/GDS skills) is dramatically better than the text-to-Cypher of six to twelve months ago, so graph expertise is no longer the barrier; the extraction pipeline is. That extraction step is where the disagreement now lives, with credible practitioners variously recommending schema-constrained LLM extraction, fully deterministic structure-based loading, metadata-only graphs over a warehouse, event-log projections with no extraction at all, and parallel cache-augmented generation instead of a graph. Notably, one of the most detailed graph workshops at the conference (from Neo4j) explicitly disclosed that none of its efficiency or accuracy claims had been benchmarked.",
+    "consensus": [
+      {
+        "claim": "Vector/semantic retrieval structurally cannot answer multi-hop, aggregation/counting, or negative-coverage questions, because it only returns top-k similar chunks and therefore estimates rather than computes.",
+        "support_count": 5,
+        "supporting_talks": [
+          "stop-ai-agent-hallucinations-5-techniques-production-patterns",
+          "crabrag-why-automated-assistants-need-graph-memory-not-more-tokens",
+          "ai-on-your-lakehouse-context-comes-in-shapes-not-queries",
+          "a-practitioners-guide-to-graphs",
+          "when-all-context-matters-extended-cache-augmented-generation"
+        ],
+        "evidence_quote": "Vector search always returns something even when nothing is truly relevant. And the agent only sees the top end chunks of your all data at a time. It cannot aggregate, count, or traverse relationship across all the full data set. So, it estimates.",
+        "evidence_talk": "stop-ai-agent-hallucinations-5-techniques-production-patterns",
+        "evidence_timestamp_sec": 1130
+      },
+      {
+        "claim": "Graph retrieval is a complement to vector search, not a replacement: seed with embeddings or full-text, then traverse and rank by relatedness.",
+        "support_count": 3,
+        "supporting_talks": [
+          "crabrag-why-automated-assistants-need-graph-memory-not-more-tokens",
+          "ai-on-your-lakehouse-context-comes-in-shapes-not-queries",
+          "a-practitioners-guide-to-graphs"
+        ],
+        "evidence_quote": "I think it would be naive to call it a replacement because most of the people that I see using this will eventually incorporate some sort of hybrid vector retrieval or full text search",
+        "evidence_talk": "ai-on-your-lakehouse-context-comes-in-shapes-not-queries",
+        "evidence_timestamp_sec": 3899
+      },
+      {
+        "claim": "Graph expertise is no longer a prerequisite for adopting graph retrieval, because current models write Cypher and graph-manipulating code better than most practitioners.",
+        "support_count": 4,
+        "supporting_talks": [
+          "crabrag-why-automated-assistants-need-graph-memory-not-more-tokens",
+          "ai-on-your-lakehouse-context-comes-in-shapes-not-queries",
+          "stop-ai-agent-hallucinations-5-techniques-production-patterns",
+          "active-graph-agent-runtime-babyagi-4"
+        ],
+        "evidence_quote": "If you're not a graph expert, guess what? Claude is. Claude can write Cypher better than I can.",
+        "evidence_talk": "crabrag-why-automated-assistants-need-graph-memory-not-more-tokens",
+        "evidence_timestamp_sec": 693
+      },
+      {
+        "claim": "The operational payoff of graph retrieval is auditability: the returned subgraph or executed query is inspectable evidence for the answer, whereas chained vector hits give you a sample you cannot verify.",
+        "support_count": 3,
+        "supporting_talks": [
+          "crabrag-why-automated-assistants-need-graph-memory-not-more-tokens",
+          "stop-ai-agent-hallucinations-5-techniques-production-patterns",
+          "ai-on-your-lakehouse-context-comes-in-shapes-not-queries"
+        ],
+        "evidence_quote": "graphs are they're accurate. So, they give you very precise information. Explainable because you can look at the graph which got returned. And auditable because now you can actually say these are the this is the context.",
+        "evidence_talk": "crabrag-why-automated-assistants-need-graph-memory-not-more-tokens",
+        "evidence_timestamp_sec": 652
+      },
+      {
+        "claim": "The LLM-driven extraction/summarization stage is the expensive and fragile part of a GraphRAG pipeline \u2014 slow, costly, and non-reproducible across runs \u2014 not the querying.",
+        "support_count": 4,
+        "supporting_talks": [
+          "ai-on-your-lakehouse-context-comes-in-shapes-not-queries",
+          "when-all-context-matters-extended-cache-augmented-generation",
+          "a-practitioners-guide-to-graphs",
+          "active-graph-agent-runtime-babyagi-4"
+        ],
+        "evidence_quote": "then obviously it costs more money, it's slower, and the you if you run it twice, it might not return the same thing. So there's trade-offs between uh each way of doing it.",
+        "evidence_talk": "ai-on-your-lakehouse-context-comes-in-shapes-not-queries",
+        "evidence_timestamp_sec": 5628
+      }
+    ],
+    "disagreements": [
+      {
+        "question": "Should you materialize your content into a graph store at all, or keep the graph as a thin layer (or skip it entirely) over data that lives elsewhere?",
+        "position_a": "Build and populate a real graph of your content and traverse it \u2014 write agent actions into the graph as work happens and retrieve by traversal, because file/markdown memory and vector stores fail past the point where data exceeds the context window.",
+        "position_a_talks": [
+          "crabrag-why-automated-assistants-need-graph-memory-not-more-tokens",
+          "stop-ai-agent-hallucinations-5-techniques-production-patterns",
+          "a-practitioners-guide-to-graphs"
+        ],
+        "position_b": "Don't ETL data into a graph for most agent use cases \u2014 use the graph only as a metadata/semantic layer over the warehouse, use whatever store you already have (Postgres is fine), or replace the graph entirely with parallel cache-augmented generation; ETL into a graph is justified only for recursive-join performance, graph algorithms, embeddings, or clustering.",
+        "position_b_talks": [
+          "ai-on-your-lakehouse-context-comes-in-shapes-not-queries",
+          "ai-tools-for-forward-deployed-engineering",
+          "when-all-context-matters-extended-cache-augmented-generation"
+        ],
+        "why_it_matters": "This decides whether you take on a continuous-sync and ETL burden across terabyte-scale (and often security-siloed) data, or ship with metadata plus query-time joins. It also determines whether 'GraphRAG' is a database procurement decision or just a representation choice inside your existing stack."
+      },
+      {
+        "question": "Should the graph be built by LLM entity/relationship extraction, or derived deterministically from structure that already exists?",
+        "position_a": "Use LLM extraction, but only with scaffolding: give the extractor a domain schema plus ontology instructions for naming and unit standardization, then resolve entities with embedding-based matching \u2014 or let a managed pipeline build the graph from raw text so you don't hand-construct it.",
+        "position_a_talks": [
+          "a-practitioners-guide-to-graphs",
+          "stop-ai-agent-hallucinations-5-techniques-production-patterns"
+        ],
+        "position_b": "Skip LLM extraction where you can: a deterministic regex/structure-based load is idempotent and faster when documents are already structured and interlinked, and a structured event log used directly as memory \u2014 with no fact or entity extraction \u2014 performed well on LongMemEval.",
+        "position_b_talks": [
+          "ai-on-your-lakehouse-context-comes-in-shapes-not-queries",
+          "active-graph-agent-runtime-babyagi-4",
+          "when-all-context-matters-extended-cache-augmented-generation"
+        ],
+        "why_it_matters": "Extraction determines reproducibility and cost of every rebuild: LLM pipelines give different graphs on reruns and price scales with corpus size, while deterministic loads are idempotent but only work where structure already exists. It also sets whether your graph can be rebuilt on a schedule or must be treated as expensive, semi-permanent state."
+      },
+      {
+        "question": "How should a graph stay current when the underlying corpus changes frequently?",
+        "position_a": "Batch-extracted knowledge graphs disqualify themselves for fast-changing corpora \u2014 recomputing the graph on every data replacement is computationally expensive and slow, so use a different strategy (parallel KV-cached context buckets) instead.",
+        "position_a_talks": [
+          "when-all-context-matters-extended-cache-augmented-generation"
+        ],
+        "position_b": "Never recompute: write the graph incrementally as the agent acts, or derive graph state as a projection of an append-only immutable event log, which also gives replays, rollbacks, and forks and survives mid-run failures.",
+        "position_b_talks": [
+          "active-graph-agent-runtime-babyagi-4",
+          "crabrag-why-automated-assistants-need-graph-memory-not-more-tokens"
+        ],
+        "why_it_matters": "If graphs must be batch-rebuilt, GraphRAG is limited to slow-moving reference corpora; if graph state can be appended incrementally, it becomes viable as live agent memory. The answer decides whether 'the corpus changes often' is a disqualifier or a non-issue."
+      }
+    ],
+    "practical_guidance": {
+      "do": [
+        "Give the extractor a domain schema plus explicit ontology instructions for naming and unit standardization \u2014 free-form subject-predicate-object triples produce a graph you won't get far with",
+        "Add a separate embedding-based entity-matching step after extraction rather than trusting prompt-level standardization, since it doesn't require knowing all entities in advance",
+        "Use vector search to select seed nodes, then traverse nearest neighbors and rank by relatedness to assemble context",
+        "Route aggregation, counting, and 'what's missing' questions to a graph query so the query engine computes a verified result instead of the model estimating over top-k chunks (this also cuts output tokens)",
+        "Keep warehouse data in the warehouse and pull only metadata into the graph as a semantic layer; reserve ETL-into-graph for recursive-join performance, graph algorithms, graph embeddings, or clustering",
+        "Use a single generic containment relationship name across hierarchy levels instead of per-level names, to keep Cypher simple",
+        "Prefer a deterministic regex/structure-based document load when documents already have inherent structure and interlinking \u2014 it's idempotent and faster",
+        "Derive community/theme labels from document metadata and structure where labels are decent, and reach for LLM summarization only when titles and link names are poorly labeled",
+        "Use Leiden rather than Louvain for community detection",
+        "Give the agent CLI access plus Cypher/GDS skills rather than relying on generic text-to-Cypher",
+        "Instrument the win: one .NET codebase evaluation saw a 40% reduction in tool calls for code search using subgraph/shortest-path retrieval"
+      ],
+      "avoid": [
+        "Rushing into GraphRAG or a graph database expecting an instant payoff \u2014 many journeys end in the valley of despair",
+        "Treating vector similarity as if it were an actual relationship; long multi-hop chains fail on similarity search even when every needed fact is stored",
+        "Hundreds of distinct relationship types in a production data model \u2014 they blow up the context window and degrade Cypher generation",
+        "Speculatively loading markdown-file memory into every round (100k+ tokens) once your data exceeds the 1M-token context window",
+        "Exposing memory over MCP tools that include a forget command \u2014 the agent is one call away from wiping its own memory",
+        "Recomputing the whole knowledge graph every time the corpus is replaced",
+        "Bucketing documents by domain when splitting across parallel caches \u2014 with dense inter-document relationships the supervisor skips domains that look irrelevant at first glance",
+        "Letting the model pull Cypher patterns from years-old Stack Overflow answers, which yields outdated bad Cypher",
+        "Assuming the entity node your data model needed two years ago is still required \u2014 modern agents can often join without it (life sciences ontologies excepted)"
+      ]
+    },
+    "notable_outliers": [
+      {
+        "claim": "The choice of graph database is unimportant \u2014 'five companies trying to sell you a graph DB, and you can just use Postgres' \u2014 what matters is having a dependency-graph representation of the process at all.",
+        "talk": "ai-tools-for-forward-deployed-engineering",
+        "timestamp_sec": 917
+      },
+      {
+        "claim": "Extracting the right context out of a large knowledge graph is a distinct and harder problem than generating good output from context, and is best solved with RL-trained custom traversal tools (including entity-resolution tools that disambiguate the many Mikes at every client).",
+        "talk": "ai-tools-for-forward-deployed-engineering",
+        "timestamp_sec": 1071
+      },
+      {
+        "claim": "A structured event log used directly as memory \u2014 embed the query, grab neighboring messages, no semantic ingestion, no fact extraction, no entity extraction \u2014 did pretty well on LongMemEval.",
+        "talk": "active-graph-agent-runtime-babyagi-4",
+        "timestamp_sec": 497
+      },
+      {
+        "claim": "Parallel cache-augmented generation over unordered document buckets builds knowledge significantly faster than GraphRAG while answering more accurately than simple RAG.",
+        "talk": "when-all-context-matters-extended-cache-augmented-generation",
+        "timestamp_sec": 277
+      },
+      {
+        "claim": "The speaker explicitly disclosed that none of the efficiency or accuracy claims in the entire graph workshop had been benchmarked.",
+        "talk": "ai-on-your-lakehouse-context-comes-in-shapes-not-queries",
+        "timestamp_sec": 6896
+      },
+      {
+        "claim": "Shortest-path traversal surfaces intermediate nodes that are unreachable by vector search or symbol/reference lookup \u2014 Miranda v. Arizona is found for Canvas v. Sheba purely through the citation graph, with no direct citation between them.",
+        "talk": "a-practitioners-guide-to-graphs",
+        "timestamp_sec": 536
+      },
+      {
+        "claim": "AI models write shared-state/blackboard-style agent code better than LLM-agent-style code, because decades of that architectural discussion sit in the training data while LLM agent patterns are only about three years old.",
+        "talk": "active-graph-agent-runtime-babyagi-4",
+        "timestamp_sec": 894
+      }
+    ],
+    "maturity": "contested",
+    "maturity_rationale": "There is firm agreement on the negative case \u2014 what vector search structurally cannot do \u2014 and on hybrid seed-then-traverse retrieval, but credible practitioners actively disagree on the fundamentals: whether to materialize a graph at all (metadata semantic layer vs. Postgres vs. parallel KV caches vs. a real graph store), and whether to extract entities with an LLM, deterministically, or not at all. The strongest efficiency claims came with an explicit admission of no benchmarking, and the best-supported evidence is single-team anecdote (a 40% tool-call reduction, one A/B on identical data) rather than shared benchmarks."
+  },
+  "_meta": {
+    "concept": "graph rag",
+    "slug": "graph-rag",
+    "talk_count": 7,
+    "missing_talks": [],
+    "wall_sec": 120.5,
+    "run_at": "2026-08-13T20:22:07Z"
+  }
+}

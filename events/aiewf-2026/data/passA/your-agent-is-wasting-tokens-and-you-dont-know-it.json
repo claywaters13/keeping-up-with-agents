@@ -1,0 +1,236 @@
+{
+  "is_error": false,
+  "duration_api_ms": 34915,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "8ee6866c-5654-49c9-943c-be9bbcc054ea",
+  "total_cost_usd": 0.139047,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 5566,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 3016,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 5566,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 3016,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 5566,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 5566
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 2748,
+      "outputTokens": 15,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.002823,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 3016,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 5566,
+      "webSearchRequests": 0,
+      "costUSD": 0.136224,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"A ~6-minute lightning talk from an AWS developer advocate laying out five concrete tactics for cutting token spend in agent systems: caching system prompts (and optionally tool prompts and messages), routing requests to cheaper or more expensive models by task difficulty, offloading large tool results to local or cloud storage and passing summaries instead, capping the number of tool-loop iterations, and trimming conversation history with a sliding window. Examples are shown in AWS's Strands Agents framework, though the speaker notes the techniques generalize across providers. The most useful part is the explicit tradeoff discussion around history trimming \u2014 a sliding window loses early context, so the speaker recommends summarizing what falls out of the window rather than dropping it. He also recommends running observability tooling before deployment to see how often and how long each tool call runs. Watch it if you want a fast, practical checklist; skip it if you want depth, benchmarks, or measured cost savings, since no numbers are reported.\",\n  \"key_points\": [\n    \"Caching the system prompt means the full prompt is sent only on the first agent call, with subsequent calls sending a much reduced payload; tool prompts and messages can be cached the same way.\",\n    \"Agents should route by task difficulty \u2014 a cheap model like Claude Haiku for simple tasks and Claude Sonnet for harder ones \u2014 rather than defaulting to the most expensive model for everything.\",\n    \"The routing decision itself can be delegated to a separate very cheap model instead of hand-written if-statements.\",\n    \"Large tool results should be stored locally or in the cloud and summarized, so the full result isn't re-injected into context on every iteration of the agent loop.\",\n    \"Uncapped tool loops can run 10 or 20 times or spiral into an infinite loop, so agents should always set a max-iterations limit.\",\n    \"Observability tooling should be run before deployment to measure how long each tool call takes and how many times it loops, giving a per-tool efficiency picture.\",\n    \"In multi-turn conversations the entire history is resent on every call, which can consume hundreds or thousands of tokens; Strands Agents ships a sliding window conversation manager that sends only the last 10 messages by default.\",\n    \"The stated tradeoff of a sliding window is losing early conversation history, which the speaker suggests mitigating by summarizing the dropped history back into the context window.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"the idea is that you can add cache prompt equals default. And what that'll do is on the first call of your agent, it will send the full system prompt over and then on every subsequent call, it will have a much reduced system prompt being sent over.\",\n      \"timestamp_sec\": 0,\n      \"why\": \"States the mechanism and payoff of prompt caching concretely.\"\n    },\n    {\n      \"text\": \"In this case, maybe we use Claude Haiku for a cheap something cheap and then use Claude Sonnet for something a little bit more difficult.\",\n      \"timestamp_sec\": 51,\n      \"why\": \"Names specific models for the cheap/expensive routing split.\"\n    },\n    {\n      \"text\": \"You can even have another model that's very cheap decide which model to use.\",\n      \"timestamp_sec\": 51,\n      \"why\": \"Proposes model-based routing over hardcoded logic.\"\n    },\n    {\n      \"text\": \"I highly recommend don't use the most expensive model for everything you're doing. You want to use multiple different models based on the use case.\",\n      \"timestamp_sec\": 96,\n      \"why\": \"The talk's clearest normative stance on model selection.\"\n    },\n    {\n      \"text\": \"If you have a large tool result that's coming back, you can store it locally or in the cloud and then use some kind of summarization that saves on tokens.\",\n      \"timestamp_sec\": 96,\n      \"why\": \"Compactly defines the tool-result offloading pattern.\"\n    },\n    {\n      \"text\": \"So if you can find any way that where you have this tool result that you don't necessarily send it on every single call back to the large language model, that will save a lot of tokens for you.\",\n      \"timestamp_sec\": 135,\n      \"why\": \"Generalizes offloading beyond the framework-specific API.\"\n    },\n    {\n      \"text\": \"I've had this happen often where it calls the tool over and over and over again.\",\n      \"timestamp_sec\": 135,\n      \"why\": \"Grounds the loop-capping advice in reported firsthand experience.\"\n    },\n    {\n      \"text\": \"And if you don't cap that tool call, then it might run 10, 20 times. It might get into an infinite loop, which would be very bad for your token usage. So always set a max iterations of how many times it will loop.\",\n      \"timestamp_sec\": 179,\n      \"why\": \"Quantifies the failure mode and gives an unambiguous rule.\"\n    },\n    {\n      \"text\": \"A good thing you can do before you deploy your agent is to run some observability tools and take a look at the tool call use for every single tool and then see how long each one of them is running and how many times they're looping.\",\n      \"timestamp_sec\": 179,\n      \"why\": \"The only measurement-oriented recommendation in the talk.\"\n    },\n    {\n      \"text\": \"you will find at times that the conversation history will get very large on every single call, that whole conversation history will be sent back to the large language model. And this can eat through hundreds, if not thousands, of tokens.\",\n      \"timestamp_sec\": 220,\n      \"why\": \"Reports the scale of the multi-turn history cost.\"\n    },\n    {\n      \"text\": \"In Strand's agents, we have something called sliding window conversation manager, which which this does is it looks back at the last 10 messages and only sends those back.\",\n      \"timestamp_sec\": 220,\n      \"why\": \"Names the concrete mechanism and its default window size.\"\n    },\n    {\n      \"text\": \"The downfall of this, or the trade-off of this, I should say, is that you will lose the message history from the beginning.\",\n      \"timestamp_sec\": 263,\n      \"why\": \"The talk's most explicit tradeoff statement.\"\n    },\n    {\n      \"text\": \"The way you want to deal with that is you can use uh some sort of summarization of the history and then put that into the context window.\",\n      \"timestamp_sec\": 263,\n      \"why\": \"Gives the mitigation for the sliding-window information loss.\"\n    },\n    {\n      \"text\": \"Cache the system prompt. And if you can, maybe the tool prompt and messages. Route by difficulty. Don't use the same expensive model for everything you're doing, for every single task.\",\n      \"timestamp_sec\": 263,\n      \"why\": \"The compressed summary of the talk's checklist.\"\n    }\n  ],\n  \"concepts\": [\n    \"prompt caching\",\n    \"model routing by task difficulty\",\n    \"tool result offloading\",\n    \"context window management\",\n    \"agent loop iteration caps\",\n    \"conversation history trimming\",\n    \"sliding window context\",\n    \"context summarization\",\n    \"agent observability\",\n    \"token cost optimization\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Caching the system prompt reduces the payload on every call after the first, since only a much reduced system prompt is sent subsequently.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 0\n    },\n    {\n      \"claim\": \"Prompt caching is not specific to Strands Agents \u2014 it works across model providers.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 0\n    },\n    {\n      \"claim\": \"You should not use the most expensive model for every task; agents should route across multiple models based on use case.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 96\n    },\n    {\n      \"claim\": \"A cheap model can be used as the router that decides which model handles a given request.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 51\n    },\n    {\n      \"claim\": \"Large tool results should be stored outside the context and summarized rather than re-sent to the LLM on every loop iteration.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 96\n    },\n    {\n      \"claim\": \"Agents should always set a maximum iteration count on tool loops, because uncapped loops can run 10-20 times or become infinite.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 179\n    },\n    {\n      \"claim\": \"Observability tooling should be run on tool calls before deploying an agent to production.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 179\n    },\n    {\n      \"claim\": \"Resending full conversation history in multi-turn agents can consume hundreds to thousands of tokens per call.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 220\n    },\n    {\n      \"claim\": \"Sliding-window history trimming costs you the beginning of the conversation, and summarizing the dropped history into context is the right mitigation.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 263\n    },\n    {\n      \"claim\": \"Token waste in agents is largely an engineering-hygiene problem solvable with five well-known tactics rather than requiring model or architecture changes.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 303\n    }\n  ],\n  \"speaker_org\": \"AWS\"\n}",
+  "ttft_ms": 34028,
+  "ttft_stream_ms": 1642,
+  "time_to_request_ms": 216,
+  "type": "result",
+  "duration_ms": 35686,
+  "uuid": "3f443053-d4e7-4114-b4e7-34d476fb2db5",
+  "passA": {
+    "summary": "A ~6-minute lightning talk from an AWS developer advocate laying out five concrete tactics for cutting token spend in agent systems: caching system prompts (and optionally tool prompts and messages), routing requests to cheaper or more expensive models by task difficulty, offloading large tool results to local or cloud storage and passing summaries instead, capping the number of tool-loop iterations, and trimming conversation history with a sliding window. Examples are shown in AWS's Strands Agents framework, though the speaker notes the techniques generalize across providers. The most useful part is the explicit tradeoff discussion around history trimming \u2014 a sliding window loses early context, so the speaker recommends summarizing what falls out of the window rather than dropping it. He also recommends running observability tooling before deployment to see how often and how long each tool call runs. Watch it if you want a fast, practical checklist; skip it if you want depth, benchmarks, or measured cost savings, since no numbers are reported.",
+    "key_points": [
+      "Caching the system prompt means the full prompt is sent only on the first agent call, with subsequent calls sending a much reduced payload; tool prompts and messages can be cached the same way.",
+      "Agents should route by task difficulty \u2014 a cheap model like Claude Haiku for simple tasks and Claude Sonnet for harder ones \u2014 rather than defaulting to the most expensive model for everything.",
+      "The routing decision itself can be delegated to a separate very cheap model instead of hand-written if-statements.",
+      "Large tool results should be stored locally or in the cloud and summarized, so the full result isn't re-injected into context on every iteration of the agent loop.",
+      "Uncapped tool loops can run 10 or 20 times or spiral into an infinite loop, so agents should always set a max-iterations limit.",
+      "Observability tooling should be run before deployment to measure how long each tool call takes and how many times it loops, giving a per-tool efficiency picture.",
+      "In multi-turn conversations the entire history is resent on every call, which can consume hundreds or thousands of tokens; Strands Agents ships a sliding window conversation manager that sends only the last 10 messages by default.",
+      "The stated tradeoff of a sliding window is losing early conversation history, which the speaker suggests mitigating by summarizing the dropped history back into the context window."
+    ],
+    "notable_quotes": [
+      {
+        "text": "the idea is that you can add cache prompt equals default. And what that'll do is on the first call of your agent, it will send the full system prompt over and then on every subsequent call, it will have a much reduced system prompt being sent over.",
+        "timestamp_sec": 0,
+        "why": "States the mechanism and payoff of prompt caching concretely."
+      },
+      {
+        "text": "In this case, maybe we use Claude Haiku for a cheap something cheap and then use Claude Sonnet for something a little bit more difficult.",
+        "timestamp_sec": 51,
+        "why": "Names specific models for the cheap/expensive routing split."
+      },
+      {
+        "text": "You can even have another model that's very cheap decide which model to use.",
+        "timestamp_sec": 51,
+        "why": "Proposes model-based routing over hardcoded logic."
+      },
+      {
+        "text": "I highly recommend don't use the most expensive model for everything you're doing. You want to use multiple different models based on the use case.",
+        "timestamp_sec": 96,
+        "why": "The talk's clearest normative stance on model selection."
+      },
+      {
+        "text": "If you have a large tool result that's coming back, you can store it locally or in the cloud and then use some kind of summarization that saves on tokens.",
+        "timestamp_sec": 96,
+        "why": "Compactly defines the tool-result offloading pattern."
+      },
+      {
+        "text": "So if you can find any way that where you have this tool result that you don't necessarily send it on every single call back to the large language model, that will save a lot of tokens for you.",
+        "timestamp_sec": 135,
+        "why": "Generalizes offloading beyond the framework-specific API."
+      },
+      {
+        "text": "I've had this happen often where it calls the tool over and over and over again.",
+        "timestamp_sec": 135,
+        "why": "Grounds the loop-capping advice in reported firsthand experience."
+      },
+      {
+        "text": "And if you don't cap that tool call, then it might run 10, 20 times. It might get into an infinite loop, which would be very bad for your token usage. So always set a max iterations of how many times it will loop.",
+        "timestamp_sec": 179,
+        "why": "Quantifies the failure mode and gives an unambiguous rule."
+      },
+      {
+        "text": "A good thing you can do before you deploy your agent is to run some observability tools and take a look at the tool call use for every single tool and then see how long each one of them is running and how many times they're looping.",
+        "timestamp_sec": 179,
+        "why": "The only measurement-oriented recommendation in the talk."
+      },
+      {
+        "text": "you will find at times that the conversation history will get very large on every single call, that whole conversation history will be sent back to the large language model. And this can eat through hundreds, if not thousands, of tokens.",
+        "timestamp_sec": 220,
+        "why": "Reports the scale of the multi-turn history cost."
+      },
+      {
+        "text": "In Strand's agents, we have something called sliding window conversation manager, which which this does is it looks back at the last 10 messages and only sends those back.",
+        "timestamp_sec": 220,
+        "why": "Names the concrete mechanism and its default window size."
+      },
+      {
+        "text": "The downfall of this, or the trade-off of this, I should say, is that you will lose the message history from the beginning.",
+        "timestamp_sec": 263,
+        "why": "The talk's most explicit tradeoff statement."
+      },
+      {
+        "text": "The way you want to deal with that is you can use uh some sort of summarization of the history and then put that into the context window.",
+        "timestamp_sec": 263,
+        "why": "Gives the mitigation for the sliding-window information loss."
+      },
+      {
+        "text": "Cache the system prompt. And if you can, maybe the tool prompt and messages. Route by difficulty. Don't use the same expensive model for everything you're doing, for every single task.",
+        "timestamp_sec": 263,
+        "why": "The compressed summary of the talk's checklist."
+      }
+    ],
+    "concepts": [
+      "prompt caching",
+      "model routing by task difficulty",
+      "tool result offloading",
+      "context window management",
+      "agent loop iteration caps",
+      "conversation history trimming",
+      "sliding window context",
+      "context summarization",
+      "agent observability",
+      "token cost optimization"
+    ],
+    "positions": [
+      {
+        "claim": "Caching the system prompt reduces the payload on every call after the first, since only a much reduced system prompt is sent subsequently.",
+        "confidence": "stated",
+        "timestamp_sec": 0
+      },
+      {
+        "claim": "Prompt caching is not specific to Strands Agents \u2014 it works across model providers.",
+        "confidence": "stated",
+        "timestamp_sec": 0
+      },
+      {
+        "claim": "You should not use the most expensive model for every task; agents should route across multiple models based on use case.",
+        "confidence": "stated",
+        "timestamp_sec": 96
+      },
+      {
+        "claim": "A cheap model can be used as the router that decides which model handles a given request.",
+        "confidence": "stated",
+        "timestamp_sec": 51
+      },
+      {
+        "claim": "Large tool results should be stored outside the context and summarized rather than re-sent to the LLM on every loop iteration.",
+        "confidence": "stated",
+        "timestamp_sec": 96
+      },
+      {
+        "claim": "Agents should always set a maximum iteration count on tool loops, because uncapped loops can run 10-20 times or become infinite.",
+        "confidence": "stated",
+        "timestamp_sec": 179
+      },
+      {
+        "claim": "Observability tooling should be run on tool calls before deploying an agent to production.",
+        "confidence": "stated",
+        "timestamp_sec": 179
+      },
+      {
+        "claim": "Resending full conversation history in multi-turn agents can consume hundreds to thousands of tokens per call.",
+        "confidence": "stated",
+        "timestamp_sec": 220
+      },
+      {
+        "claim": "Sliding-window history trimming costs you the beginning of the conversation, and summarizing the dropped history into context is the right mitigation.",
+        "confidence": "stated",
+        "timestamp_sec": 263
+      },
+      {
+        "claim": "Token waste in agents is largely an engineering-hygiene problem solvable with five well-known tactics rather than requiring model or architecture changes.",
+        "confidence": "implied",
+        "timestamp_sec": 303
+      }
+    ],
+    "speaker_org": "AWS"
+  },
+  "_meta": {
+    "slug": "your-agent-is-wasting-tokens-and-you-dont-know-it",
+    "video_id": "uiP88SpCi1Q",
+    "url": "https://www.youtube.com/watch?v=uiP88SpCi1Q",
+    "word_count": 1000,
+    "wall_sec": 36.8,
+    "run_at": "2026-08-12T20:35:55Z",
+    "effort": "medium"
+  }
+}

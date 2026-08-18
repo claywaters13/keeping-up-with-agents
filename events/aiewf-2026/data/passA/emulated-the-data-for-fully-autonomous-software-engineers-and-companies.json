@@ -1,0 +1,281 @@
+{
+  "is_error": false,
+  "duration_api_ms": 78019,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "db534ff5-e34a-4129-9905-f3565dccb696",
+  "total_cost_usd": 0.27209399999999995,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 8937,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 6887,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 8937,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 6887,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 8937,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 8937
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 5300,
+      "outputTokens": 17,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.005385,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 6887,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 8937,
+      "webSearchRequests": 0,
+      "costUSD": 0.266709,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Joseph Wang and co-founder Sid present Emulated, a data lab building environments that train AI agents on full-stack infrastructure work rather than isolated code changes. Their argument: frontier coding benchmarks like SWE-Bench Pro and Terminal Bench confine agents to a codebase, producing thousand-line PRs over 50\u2013100 turns while skipping everything a real engineering org does \u2014 customer conversations, incident history, performance testing, rolling deployments, and years of ownership. They demo a containerized simulation of an etcd-style consensus cluster with flapping nodes, live traffic, and blast-radius constraints, then argue that single-node sandboxes structurally break down once you need real resource provisioning, front-end APIs, throttling/auth, deployment systems, DNS, and billing. Their proposed direction is multi-node sandboxes that provision real cloud infrastructure \u2014 a 'cloud in a box' \u2014 and the open problems that come with it (hours-long stack spin-up inside post-training rollouts, cost, a persistent sim-to-real gap). Worth watching if you care about RL environment design, agentic data generation, or why infra-domain agents lag application-layer ones.\",\n  \"key_points\": [\n    \"The speakers frame the model capability gap on infrastructure work as a data gap, not an architecture gap: models are only as good as the data, and capability has never regressed from adding more high-quality data.\",\n    \"Current frontier coding benchmarks operate entirely inside the codebase, so agents never learn the PM work, approach exploration, performance testing, or multi-year infra ownership that human engineers do.\",\n    \"Emulated packages whole software engineering companies into containerized environments including organizational context \u2014 projects, incidents, postmortems, and customer conversations \u2014 much of which is deliberately out of date, as in reality.\",\n    \"Their example environment simulates a consensus cluster where the agent must handle network failures, data corruption, clock skew, failing and stale nodes, and hardware migration while live traffic keeps flowing and blast radius stays bounded.\",\n    \"Single-node sandboxes hit a hard ceiling: you cannot meaningfully simulate EC2- or Cloud Run-style resource provisioning, VPCs, security groups, throttling, auth, DNS, cert management, telemetry, and billing inside one container.\",\n    \"The proposed successor is a multi-node sandbox with access to real cloud resources \u2014 a 'cloud in a box' \u2014 which in turn destabilizes standard post-training pipelines built around homogeneous single-container rollouts.\",\n    \"Open problems they name explicitly: spinning up an AWS Lambda-scale stack takes hours and doesn't fit a rollout budget, cost management is unsolved, and the sim-to-real gap persists even with real infrastructure because live customer traffic and scale-only failures are still missing.\",\n    \"They start with infrastructure because it matches their own background (network infra, distributed databases, sandbox infra) and because infra companies have legible problem statements, unlike a pre-product-market-fit startup \u2014 while expecting vertical depth to transfer horizontally.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"Emulated is a data lab focused on increasing the reliability and autonomy of AI agents.\",\n      \"timestamp_sec\": 14,\n      \"why\": \"one-line statement of what the company is, useful for indexing\"\n    },\n    {\n      \"text\": \"we're headed towards a future where agents are able to perform useful work over longer and longer horizons with little to no supervision\",\n      \"timestamp_sec\": 14,\n      \"why\": \"states the premise the whole talk builds on\"\n    },\n    {\n      \"text\": \"why is it that my model or my agent is so proficient at handling the application layer, but is struggles when it comes to reasoning through infrastructure complexities?\",\n      \"timestamp_sec\": 95,\n      \"why\": \"the motivating question, and an empirical claim about where agents fail\"\n    },\n    {\n      \"text\": \"the gap in models is usually a gap in data. Models typically are only as good at as data is.\",\n      \"timestamp_sec\": 140,\n      \"why\": \"the core thesis, stated as a general principle\"\n    },\n    {\n      \"text\": \"if you look at any of the frontier or recent benchmarks, like SweBench Pro, Terminal Bench, or something like Frontier Code and Deep Sweep, um the tasks only operate within the code base.\",\n      \"timestamp_sec\": 140,\n      \"why\": \"names specific benchmarks and asserts a shared limitation\"\n    },\n    {\n      \"text\": \"the agent is given a pretty large uh task uh and over the course of 50 to 100 turns produces a couple thousand-line PR\",\n      \"timestamp_sec\": 188,\n      \"why\": \"concrete numbers characterizing the current benchmark regime\"\n    },\n    {\n      \"text\": \"It doesn't do uh what a PM does with talking to customers, understanding their problems, what an engineer does with trying out different approaches, performing performance testing them, um and owning the underlying infra for the code base over the course of not just months, but years.\",\n      \"timestamp_sec\": 188,\n      \"why\": \"spells out exactly what current training data omits\"\n    },\n    {\n      \"text\": \"We've taken software engineering companies and we've put them into containerized environments.\",\n      \"timestamp_sec\": 188,\n      \"why\": \"the product claim in one sentence\"\n    },\n    {\n      \"text\": \"the agent also has to deal with issues that only appear at scale like network failures between distributed nodes, data corruption, and clock skew\",\n      \"timestamp_sec\": 239,\n      \"why\": \"specifies the failure classes their environments inject\"\n    },\n    {\n      \"text\": \"environments are far more complex and long horizon than a simple code diff\",\n      \"timestamp_sec\": 239,\n      \"why\": \"compact framing of the difficulty delta they are targeting\"\n    },\n    {\n      \"text\": \"you can make this pretty long horizon by just say doing multiple deployments instead of just one. But really what we're seeing is that this is not enough.\",\n      \"timestamp_sec\": 381,\n      \"why\": \"the pivot where they reject their own single-node approach\"\n    },\n    {\n      \"text\": \"even though you can use something like deterministic simulation to simulate network failures, it doesn't represent what you might run into if you're building an AWS-scale service\",\n      \"timestamp_sec\": 422,\n      \"why\": \"takes a contestable side against deterministic simulation as a sufficient technique\"\n    },\n    {\n      \"text\": \"this is already where the single node sandbox starts breaking down. How do you provision resources within a single sandbox? You can't exactly simulate something like EC2 or Cloud Run, right?\",\n      \"timestamp_sec\": 475,\n      \"why\": \"names the precise point at which the standard sandbox abstraction fails\"\n    },\n    {\n      \"text\": \"Beyond beyond a certain threshold, there is a critical mass at which sandboxing on a single node uh can only get you so far.\",\n      \"timestamp_sec\": 601,\n      \"why\": \"the talk's central architectural conclusion\"\n    },\n    {\n      \"text\": \"what this is is um a multi-node sandbox with access to real infra, real cloud resources. Uh we kind of put a cloud in box, so cloud box could be another name for this.\",\n      \"timestamp_sec\": 646,\n      \"why\": \"describes the proposed replacement architecture\"\n    },\n    {\n      \"text\": \"spinning up the entire stack for something like AWS Lambda takes hours. Um how do you fit that into a post training rollout?\",\n      \"timestamp_sec\": 733,\n      \"why\": \"names a hard, quantified open problem in RL environment engineering\"\n    },\n    {\n      \"text\": \"the real world is very, very complex, um, and how we as a industry emulate the real world is incredibly contrived and low fidelity.\",\n      \"timestamp_sec\": 776,\n      \"why\": \"a blunt criticism of current industry practice in environment design\"\n    },\n    {\n      \"text\": \"emulated goal is really how do you make these agents own systems like this, uh, maybe beyond systems, entire companies, by emulating the real world with full fidelity.\",\n      \"timestamp_sec\": 820,\n      \"why\": \"states the company's end goal, including the leap from systems to companies\"\n    },\n    {\n      \"text\": \"We think that domain expertise is something that informs how high quality your data can be.\",\n      \"timestamp_sec\": 869,\n      \"why\": \"a position on what determines data quality in the current 'boutique' data market\"\n    },\n    {\n      \"text\": \"there's also lessons learned that going really vertical on a single domain like infrastructure do translate into other horizontal domains\",\n      \"timestamp_sec\": 956,\n      \"why\": \"the transferability bet underlying their go-to-market sequencing\"\n    }\n  ],\n  \"concepts\": [\n    \"rl environment design\",\n    \"agentic training data\",\n    \"sandbox infrastructure\",\n    \"long-horizon agent tasks\",\n    \"post-training pipelines\",\n    \"sim-to-real gap\",\n    \"coding benchmark limitations\",\n    \"distributed systems failure injection\",\n    \"blast radius management\",\n    \"organizational context modeling\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Model weakness on infrastructure work is fundamentally a data gap rather than an architecture or capability-ceiling problem.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 140\n    },\n    {\n      \"claim\": \"Model capability has never regressed when more high-quality data is introduced.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 140\n    },\n    {\n      \"claim\": \"Frontier coding benchmarks such as SWE-Bench Pro, Terminal Bench, and Frontier Code operate only within the codebase and therefore cannot train or measure organizational and infrastructure ownership work.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 140\n    },\n    {\n      \"claim\": \"Single-node containerized sandboxes cannot represent real infrastructure work past a certain threshold, because resource provisioning like EC2 or Cloud Run cannot be simulated inside one node.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 475\n    },\n    {\n      \"claim\": \"Deterministic simulation of network failures is insufficient to represent what an AWS-scale service actually encounters.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 422\n    },\n    {\n      \"claim\": \"The future of agent training environments is environments that provision real infrastructure across multiple nodes.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 646\n    },\n    {\n      \"claim\": \"Standard post-training pipelines are homogeneous \u2014 single containerized sandbox per rollout \u2014 and multi-node real-infra environments require rethinking that infrastructure.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 422\n    },\n    {\n      \"claim\": \"A sim-to-real gap persists even when environments use real cloud resources, because live customer traffic and scale-dependent failures are still absent.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 733\n    },\n    {\n      \"claim\": \"Founder domain expertise directly determines how high-quality generated training data can be, especially given the boutique nature of data today.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 869\n    },\n    {\n      \"claim\": \"Infrastructure is the easiest domain in which to simulate an entire company because infra and dev-tools companies have clear, well-understood problem statements, unlike early-stage startups still seeking product-market fit.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 911\n    },\n    {\n      \"claim\": \"Lessons from going vertically deep on infrastructure will transfer to other horizontal domains, justifying a depth-first then scale-out strategy.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 956\n    },\n    {\n      \"claim\": \"Publicly sharing the architecture of their environments costs them little relative to the recruiting and community value of doing so.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 697\n    },\n    {\n      \"claim\": \"Fully autonomous software engineering requires agents trained on organizational artifacts \u2014 tickets, postmortems, customer sentiment \u2014 that are often stale or inconsistent, not just clean code.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 287\n    }\n  ],\n  \"speaker_org\": \"Emulated\"\n}",
+  "ttft_ms": 34281,
+  "ttft_stream_ms": 923,
+  "time_to_request_ms": 37,
+  "type": "result",
+  "duration_ms": 78464,
+  "uuid": "b947f920-8d63-4fc5-895f-8be695e451e6",
+  "passA": {
+    "summary": "Joseph Wang and co-founder Sid present Emulated, a data lab building environments that train AI agents on full-stack infrastructure work rather than isolated code changes. Their argument: frontier coding benchmarks like SWE-Bench Pro and Terminal Bench confine agents to a codebase, producing thousand-line PRs over 50\u2013100 turns while skipping everything a real engineering org does \u2014 customer conversations, incident history, performance testing, rolling deployments, and years of ownership. They demo a containerized simulation of an etcd-style consensus cluster with flapping nodes, live traffic, and blast-radius constraints, then argue that single-node sandboxes structurally break down once you need real resource provisioning, front-end APIs, throttling/auth, deployment systems, DNS, and billing. Their proposed direction is multi-node sandboxes that provision real cloud infrastructure \u2014 a 'cloud in a box' \u2014 and the open problems that come with it (hours-long stack spin-up inside post-training rollouts, cost, a persistent sim-to-real gap). Worth watching if you care about RL environment design, agentic data generation, or why infra-domain agents lag application-layer ones.",
+    "key_points": [
+      "The speakers frame the model capability gap on infrastructure work as a data gap, not an architecture gap: models are only as good as the data, and capability has never regressed from adding more high-quality data.",
+      "Current frontier coding benchmarks operate entirely inside the codebase, so agents never learn the PM work, approach exploration, performance testing, or multi-year infra ownership that human engineers do.",
+      "Emulated packages whole software engineering companies into containerized environments including organizational context \u2014 projects, incidents, postmortems, and customer conversations \u2014 much of which is deliberately out of date, as in reality.",
+      "Their example environment simulates a consensus cluster where the agent must handle network failures, data corruption, clock skew, failing and stale nodes, and hardware migration while live traffic keeps flowing and blast radius stays bounded.",
+      "Single-node sandboxes hit a hard ceiling: you cannot meaningfully simulate EC2- or Cloud Run-style resource provisioning, VPCs, security groups, throttling, auth, DNS, cert management, telemetry, and billing inside one container.",
+      "The proposed successor is a multi-node sandbox with access to real cloud resources \u2014 a 'cloud in a box' \u2014 which in turn destabilizes standard post-training pipelines built around homogeneous single-container rollouts.",
+      "Open problems they name explicitly: spinning up an AWS Lambda-scale stack takes hours and doesn't fit a rollout budget, cost management is unsolved, and the sim-to-real gap persists even with real infrastructure because live customer traffic and scale-only failures are still missing.",
+      "They start with infrastructure because it matches their own background (network infra, distributed databases, sandbox infra) and because infra companies have legible problem statements, unlike a pre-product-market-fit startup \u2014 while expecting vertical depth to transfer horizontally."
+    ],
+    "notable_quotes": [
+      {
+        "text": "Emulated is a data lab focused on increasing the reliability and autonomy of AI agents.",
+        "timestamp_sec": 14,
+        "why": "one-line statement of what the company is, useful for indexing"
+      },
+      {
+        "text": "we're headed towards a future where agents are able to perform useful work over longer and longer horizons with little to no supervision",
+        "timestamp_sec": 14,
+        "why": "states the premise the whole talk builds on"
+      },
+      {
+        "text": "why is it that my model or my agent is so proficient at handling the application layer, but is struggles when it comes to reasoning through infrastructure complexities?",
+        "timestamp_sec": 95,
+        "why": "the motivating question, and an empirical claim about where agents fail"
+      },
+      {
+        "text": "the gap in models is usually a gap in data. Models typically are only as good at as data is.",
+        "timestamp_sec": 140,
+        "why": "the core thesis, stated as a general principle"
+      },
+      {
+        "text": "if you look at any of the frontier or recent benchmarks, like SweBench Pro, Terminal Bench, or something like Frontier Code and Deep Sweep, um the tasks only operate within the code base.",
+        "timestamp_sec": 140,
+        "why": "names specific benchmarks and asserts a shared limitation"
+      },
+      {
+        "text": "the agent is given a pretty large uh task uh and over the course of 50 to 100 turns produces a couple thousand-line PR",
+        "timestamp_sec": 188,
+        "why": "concrete numbers characterizing the current benchmark regime"
+      },
+      {
+        "text": "It doesn't do uh what a PM does with talking to customers, understanding their problems, what an engineer does with trying out different approaches, performing performance testing them, um and owning the underlying infra for the code base over the course of not just months, but years.",
+        "timestamp_sec": 188,
+        "why": "spells out exactly what current training data omits"
+      },
+      {
+        "text": "We've taken software engineering companies and we've put them into containerized environments.",
+        "timestamp_sec": 188,
+        "why": "the product claim in one sentence"
+      },
+      {
+        "text": "the agent also has to deal with issues that only appear at scale like network failures between distributed nodes, data corruption, and clock skew",
+        "timestamp_sec": 239,
+        "why": "specifies the failure classes their environments inject"
+      },
+      {
+        "text": "environments are far more complex and long horizon than a simple code diff",
+        "timestamp_sec": 239,
+        "why": "compact framing of the difficulty delta they are targeting"
+      },
+      {
+        "text": "you can make this pretty long horizon by just say doing multiple deployments instead of just one. But really what we're seeing is that this is not enough.",
+        "timestamp_sec": 381,
+        "why": "the pivot where they reject their own single-node approach"
+      },
+      {
+        "text": "even though you can use something like deterministic simulation to simulate network failures, it doesn't represent what you might run into if you're building an AWS-scale service",
+        "timestamp_sec": 422,
+        "why": "takes a contestable side against deterministic simulation as a sufficient technique"
+      },
+      {
+        "text": "this is already where the single node sandbox starts breaking down. How do you provision resources within a single sandbox? You can't exactly simulate something like EC2 or Cloud Run, right?",
+        "timestamp_sec": 475,
+        "why": "names the precise point at which the standard sandbox abstraction fails"
+      },
+      {
+        "text": "Beyond beyond a certain threshold, there is a critical mass at which sandboxing on a single node uh can only get you so far.",
+        "timestamp_sec": 601,
+        "why": "the talk's central architectural conclusion"
+      },
+      {
+        "text": "what this is is um a multi-node sandbox with access to real infra, real cloud resources. Uh we kind of put a cloud in box, so cloud box could be another name for this.",
+        "timestamp_sec": 646,
+        "why": "describes the proposed replacement architecture"
+      },
+      {
+        "text": "spinning up the entire stack for something like AWS Lambda takes hours. Um how do you fit that into a post training rollout?",
+        "timestamp_sec": 733,
+        "why": "names a hard, quantified open problem in RL environment engineering"
+      },
+      {
+        "text": "the real world is very, very complex, um, and how we as a industry emulate the real world is incredibly contrived and low fidelity.",
+        "timestamp_sec": 776,
+        "why": "a blunt criticism of current industry practice in environment design"
+      },
+      {
+        "text": "emulated goal is really how do you make these agents own systems like this, uh, maybe beyond systems, entire companies, by emulating the real world with full fidelity.",
+        "timestamp_sec": 820,
+        "why": "states the company's end goal, including the leap from systems to companies"
+      },
+      {
+        "text": "We think that domain expertise is something that informs how high quality your data can be.",
+        "timestamp_sec": 869,
+        "why": "a position on what determines data quality in the current 'boutique' data market"
+      },
+      {
+        "text": "there's also lessons learned that going really vertical on a single domain like infrastructure do translate into other horizontal domains",
+        "timestamp_sec": 956,
+        "why": "the transferability bet underlying their go-to-market sequencing"
+      }
+    ],
+    "concepts": [
+      "rl environment design",
+      "agentic training data",
+      "sandbox infrastructure",
+      "long-horizon agent tasks",
+      "post-training pipelines",
+      "sim-to-real gap",
+      "coding benchmark limitations",
+      "distributed systems failure injection",
+      "blast radius management",
+      "organizational context modeling"
+    ],
+    "positions": [
+      {
+        "claim": "Model weakness on infrastructure work is fundamentally a data gap rather than an architecture or capability-ceiling problem.",
+        "confidence": "stated",
+        "timestamp_sec": 140
+      },
+      {
+        "claim": "Model capability has never regressed when more high-quality data is introduced.",
+        "confidence": "stated",
+        "timestamp_sec": 140
+      },
+      {
+        "claim": "Frontier coding benchmarks such as SWE-Bench Pro, Terminal Bench, and Frontier Code operate only within the codebase and therefore cannot train or measure organizational and infrastructure ownership work.",
+        "confidence": "stated",
+        "timestamp_sec": 140
+      },
+      {
+        "claim": "Single-node containerized sandboxes cannot represent real infrastructure work past a certain threshold, because resource provisioning like EC2 or Cloud Run cannot be simulated inside one node.",
+        "confidence": "stated",
+        "timestamp_sec": 475
+      },
+      {
+        "claim": "Deterministic simulation of network failures is insufficient to represent what an AWS-scale service actually encounters.",
+        "confidence": "stated",
+        "timestamp_sec": 422
+      },
+      {
+        "claim": "The future of agent training environments is environments that provision real infrastructure across multiple nodes.",
+        "confidence": "stated",
+        "timestamp_sec": 646
+      },
+      {
+        "claim": "Standard post-training pipelines are homogeneous \u2014 single containerized sandbox per rollout \u2014 and multi-node real-infra environments require rethinking that infrastructure.",
+        "confidence": "stated",
+        "timestamp_sec": 422
+      },
+      {
+        "claim": "A sim-to-real gap persists even when environments use real cloud resources, because live customer traffic and scale-dependent failures are still absent.",
+        "confidence": "stated",
+        "timestamp_sec": 733
+      },
+      {
+        "claim": "Founder domain expertise directly determines how high-quality generated training data can be, especially given the boutique nature of data today.",
+        "confidence": "stated",
+        "timestamp_sec": 869
+      },
+      {
+        "claim": "Infrastructure is the easiest domain in which to simulate an entire company because infra and dev-tools companies have clear, well-understood problem statements, unlike early-stage startups still seeking product-market fit.",
+        "confidence": "stated",
+        "timestamp_sec": 911
+      },
+      {
+        "claim": "Lessons from going vertically deep on infrastructure will transfer to other horizontal domains, justifying a depth-first then scale-out strategy.",
+        "confidence": "stated",
+        "timestamp_sec": 956
+      },
+      {
+        "claim": "Publicly sharing the architecture of their environments costs them little relative to the recruiting and community value of doing so.",
+        "confidence": "implied",
+        "timestamp_sec": 697
+      },
+      {
+        "claim": "Fully autonomous software engineering requires agents trained on organizational artifacts \u2014 tickets, postmortems, customer sentiment \u2014 that are often stale or inconsistent, not just clean code.",
+        "confidence": "implied",
+        "timestamp_sec": 287
+      }
+    ],
+    "speaker_org": "Emulated"
+  },
+  "_meta": {
+    "slug": "emulated-the-data-for-fully-autonomous-software-engineers-and-companies",
+    "video_id": "zkX03APVj0M",
+    "url": "https://www.youtube.com/watch?v=zkX03APVj0M",
+    "word_count": 2563,
+    "wall_sec": 79.7,
+    "run_at": "2026-08-12T19:13:48Z",
+    "effort": "default"
+  }
+}

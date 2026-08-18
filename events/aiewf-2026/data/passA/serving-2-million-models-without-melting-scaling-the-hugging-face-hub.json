@@ -1,0 +1,269 @@
+{
+  "is_error": false,
+  "duration_api_ms": 69924,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "5a087dcf-0d58-4b41-8921-0e9a84eda18f",
+  "total_cost_usd": 0.244189,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 7779,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 6273,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 7779,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 6273,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 7779,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 7779
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 4310,
+      "outputTokens": 20,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.00441,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 6273,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 7779,
+      "webSearchRequests": 0,
+      "costUSD": 0.239779,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Arek Borucki, a machine learning platform and database engineer at Hugging Face, walks through the infrastructure that lets the Hub serve 14 million users and 3 million public models \u2014 roughly a 150x growth in models over a few years. The core argument is that scale broke search first: regex queries over MongoDB were fine at 20,000 models and unusable at 3 million, so the team moved to precomputed tokens stored on insert, a denormalized read-only collection, and Atlas Search (Apache Lucene) with autocomplete, sorted by a trending score recomputed every five minutes. He then details the data layer separation (MongoDB holds all metadata, S3 holds model artifacts), a seven-node replica set with read routing rules and a hidden analytics node, and the upcoming move to sharding. On the compute side, the Hub scales from 10 to 500 pods via HPA plus Cast AI for node autoscaling, with a planned migration to KEDA so scaling reacts to request rate rather than CPU. Worth watching if you operate a metadata-heavy, read-dominated platform and want a concrete, numbers-first case study rather than architecture generalities.\",\n  \"key_points\": [\n    \"Hugging Face serves more than 14 million users, 3 million public models, 1 million datasets, and 50,000 organizations, with over 30% of the Fortune 500 using it in AI workflows.\",\n    \"Search was the first thing to break at scale: MongoDB find with a regex operator over a search-tokens array worked while the dataset was small but did not scale, forcing a switch to Atlas Search backed by Apache Lucene.\",\n    \"The team shifts work to write time rather than query time \u2014 model names like 'meta-llama/Llama-3.1-8B' are split into prefix tokens on insert and stored as an array in the document, so autocomplete matches instantly.\",\n    \"Reads and listings are served from a separate denormalized copy of the data rather than the main repo collection, and results are ranked by a trending score (downloads plus likes over roughly the last seven days) recomputed every five minutes.\",\n    \"Tail latency is the operative metric: at 14 million users, 1% of traffic hitting slow search is 140,000 people, so the team optimizes P99 rather than P50.\",\n    \"MongoDB stores everything about the models \u2014 users, repositories, buckets, spaces, configuration, billing, access control \u2014 but never the model weights, which live in cloud object storage such as S3, letting metadata, binary storage, and compute scale independently.\",\n    \"Read traffic is deliberately partitioned across a seven-node replica set: only strongly-consistent queries stay on the primary, heavy aggregations and change streams go to secondaries, and ad hoc or reporting queries go to a hidden node invisible to the driver.\",\n    \"Sharding is the next step because a single replica set will not be enough; unlike a replica set, each shard holds only part of the dataset with its own primary and secondaries, scaling CPU, memory, storage, reads, and writes together.\",\n    \"Compute scaling has two layers \u2014 HPA scales the Hub deployment from 10 to 500 pods, and Cast AI adds Kubernetes nodes when pods are pending for lack of capacity \u2014 with a planned migration from HPA to KEDA so scaling follows application metrics like requests per second instead of CPU and memory alone.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"Just to give you some perspective, few years ago we had 20,000 models. Today 3 million. It is around 150x increase in just last couple of years.\",\n      \"timestamp_sec\": 86,\n      \"why\": \"anchors the entire talk in a single growth number\"\n    },\n    {\n      \"text\": \"In 2022, we had 10K. In 2024, 100K. Less than a year ago, we had 500K. Today, 1 million.\",\n      \"timestamp_sec\": 179,\n      \"why\": \"dataset growth curve, showing models are not the only scaling axis\"\n    },\n    {\n      \"text\": \"All this data must be stored, indexed, and also must be searchable. And that's the hardest part.\",\n      \"timestamp_sec\": 179,\n      \"why\": \"names searchability, not storage, as the real bottleneck\"\n    },\n    {\n      \"text\": \"At 20,000 models, any query is fast. Even without an index, trust me, no one would notice.\",\n      \"timestamp_sec\": 179,\n      \"why\": \"crisp statement that scale, not design, exposed the problem\"\n    },\n    {\n      \"text\": \"With 14 million users, even 1% is a not small number. It is 140,000 of people hitting slow search at scale. P99 is much more important than P50\",\n      \"timestamp_sec\": 257,\n      \"why\": \"the tail-latency argument stated with arithmetic\"\n    },\n    {\n      \"text\": \"MongoDB does not store the models themselves. It stores everything about the models.\",\n      \"timestamp_sec\": 351,\n      \"why\": \"the architectural distinction people most often get wrong\"\n    },\n    {\n      \"text\": \"This separation of concern let us scale metadata independently from binary storage and compute independently from both.\",\n      \"timestamp_sec\": 451,\n      \"why\": \"states the payoff of the metadata/blob split\"\n    },\n    {\n      \"text\": \"We tokenize model names on insert time, not at query time.\",\n      \"timestamp_sec\": 451,\n      \"why\": \"the core write-time-versus-query-time tradeoff\"\n    },\n    {\n      \"text\": \"This solution was working well as long as data set was small. Reax doesn't scale well.\",\n      \"timestamp_sec\": 598,\n      \"why\": \"explicit verdict on regex search\"\n    },\n    {\n      \"text\": \"this solution is much more efficient and is so far scale well, so we don't have any more latency issues in our search bar.\",\n      \"timestamp_sec\": 675,\n      \"why\": \"reports the outcome of the Lucene migration\"\n    },\n    {\n      \"text\": \"First all queries which doesn't require the latest data goes to secondaries. Only queries that must have strong consistency stay on primary\",\n      \"timestamp_sec\": 836,\n      \"why\": \"the consistency rule that governs their read routing\"\n    },\n    {\n      \"text\": \"Aggregations pipelines that scan large amount of data, sort, group or transform the data should not go on primary. They are heavy. Secondaries are better placed for them.\",\n      \"timestamp_sec\": 907,\n      \"why\": \"concrete prescription for where heavy analytical work belongs\"\n    },\n    {\n      \"text\": \"The pattern is simple. Primary should focus on what only primary can do. Anything else can be pushed to different machines.\",\n      \"timestamp_sec\": 979,\n      \"why\": \"the talk's most portable design heuristic\"\n    },\n    {\n      \"text\": \"The key difference between replica set cluster and sharded cluster is replica set keep full data set on each node.\",\n      \"timestamp_sec\": 979,\n      \"why\": \"clean framing of why replication alone stops working\"\n    },\n    {\n      \"text\": \"There is also shard key which must be selected. This is not trivial operation but this talk is not about choosing short key.\",\n      \"timestamp_sec\": 1051,\n      \"why\": \"flags the hardest part of sharding while explicitly scoping it out\"\n    },\n    {\n      \"text\": \"Our deployment hub deployment can scale from 10 to 500 bots depends of on the traffic.\",\n      \"timestamp_sec\": 1117,\n      \"why\": \"concrete autoscaling range for the Hub\"\n    },\n    {\n      \"text\": \"HPA scale only based on CPU and memory. KDA scale on real application metrics like request per second or event loop utilization.\",\n      \"timestamp_sec\": 1184,\n      \"why\": \"the stated reason for migrating autoscalers\"\n    },\n    {\n      \"text\": \"This is what scaling medium models is really about. Keeping the user experience simple no matter how complex it gets under the hood.\",\n      \"timestamp_sec\": 1257,\n      \"why\": \"the closing thesis of the talk\"\n    }\n  ],\n  \"concepts\": [\n    \"tail latency optimization\",\n    \"denormalized read models\",\n    \"full-text search indexing\",\n    \"prefix tokenization at write time\",\n    \"read/write splitting across replicas\",\n    \"database sharding\",\n    \"metadata and blob storage separation\",\n    \"horizontal pod autoscaling\",\n    \"event-driven autoscaling\",\n    \"change streams\",\n    \"trending score ranking\",\n    \"cluster node autoscaling\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Regex-based search in MongoDB does not scale, and full-text search on Apache Lucene (Atlas Search) is the right replacement once the dataset grows large.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 598\n    },\n    {\n      \"claim\": \"P99 latency matters more than P50 for user-facing search at Hugging Face's scale.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 257\n    },\n    {\n      \"claim\": \"Tokenization should happen at insert time rather than query time so autocomplete can match instantly.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 451\n    },\n    {\n      \"claim\": \"Reads and listings should be served from a separate denormalized collection rather than the primary source-of-truth repo collection.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 451\n    },\n    {\n      \"claim\": \"Model artifacts belong in object storage while metadata belongs in a database, so the two can scale independently.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 451\n    },\n    {\n      \"claim\": \"The database primary should only handle writes and queries requiring strong consistency; everything else \u2014 heavy aggregations, change streams, ad hoc and reporting queries \u2014 should be pushed to secondaries or a hidden node.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 979\n    },\n    {\n      \"claim\": \"A single MongoDB replica set will soon be insufficient for Hugging Face's growth, making sharding the necessary next step.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 979\n    },\n    {\n      \"claim\": \"Choosing a shard key is a non-trivial decision.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1051\n    },\n    {\n      \"claim\": \"Two-layer autoscaling (pod-level plus node-level via Cast AI) keeps the Hub healthy without manual intervention and without overprovisioning, making it cost effective.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1117\n    },\n    {\n      \"claim\": \"KEDA is superior to HPA for this workload because scaling on application metrics like request rate captures load that CPU and memory thresholds miss, such as a pod with low CPU but a high request queue.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1184\n    },\n    {\n      \"claim\": \"Slow search causes users to leave for alternatives, which is why search latency is treated as a first-order infrastructure priority.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 257\n    },\n    {\n      \"claim\": \"Good infrastructure at this scale is invisible \u2014 success means users never think about it.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 1184\n    }\n  ],\n  \"speaker_org\": \"Hugging Face\"\n}",
+  "ttft_ms": 30958,
+  "ttft_stream_ms": 1923,
+  "time_to_request_ms": 33,
+  "type": "result",
+  "duration_ms": 70244,
+  "uuid": "0324fcd4-196f-4305-a2a3-443b60fd80ce",
+  "passA": {
+    "summary": "Arek Borucki, a machine learning platform and database engineer at Hugging Face, walks through the infrastructure that lets the Hub serve 14 million users and 3 million public models \u2014 roughly a 150x growth in models over a few years. The core argument is that scale broke search first: regex queries over MongoDB were fine at 20,000 models and unusable at 3 million, so the team moved to precomputed tokens stored on insert, a denormalized read-only collection, and Atlas Search (Apache Lucene) with autocomplete, sorted by a trending score recomputed every five minutes. He then details the data layer separation (MongoDB holds all metadata, S3 holds model artifacts), a seven-node replica set with read routing rules and a hidden analytics node, and the upcoming move to sharding. On the compute side, the Hub scales from 10 to 500 pods via HPA plus Cast AI for node autoscaling, with a planned migration to KEDA so scaling reacts to request rate rather than CPU. Worth watching if you operate a metadata-heavy, read-dominated platform and want a concrete, numbers-first case study rather than architecture generalities.",
+    "key_points": [
+      "Hugging Face serves more than 14 million users, 3 million public models, 1 million datasets, and 50,000 organizations, with over 30% of the Fortune 500 using it in AI workflows.",
+      "Search was the first thing to break at scale: MongoDB find with a regex operator over a search-tokens array worked while the dataset was small but did not scale, forcing a switch to Atlas Search backed by Apache Lucene.",
+      "The team shifts work to write time rather than query time \u2014 model names like 'meta-llama/Llama-3.1-8B' are split into prefix tokens on insert and stored as an array in the document, so autocomplete matches instantly.",
+      "Reads and listings are served from a separate denormalized copy of the data rather than the main repo collection, and results are ranked by a trending score (downloads plus likes over roughly the last seven days) recomputed every five minutes.",
+      "Tail latency is the operative metric: at 14 million users, 1% of traffic hitting slow search is 140,000 people, so the team optimizes P99 rather than P50.",
+      "MongoDB stores everything about the models \u2014 users, repositories, buckets, spaces, configuration, billing, access control \u2014 but never the model weights, which live in cloud object storage such as S3, letting metadata, binary storage, and compute scale independently.",
+      "Read traffic is deliberately partitioned across a seven-node replica set: only strongly-consistent queries stay on the primary, heavy aggregations and change streams go to secondaries, and ad hoc or reporting queries go to a hidden node invisible to the driver.",
+      "Sharding is the next step because a single replica set will not be enough; unlike a replica set, each shard holds only part of the dataset with its own primary and secondaries, scaling CPU, memory, storage, reads, and writes together.",
+      "Compute scaling has two layers \u2014 HPA scales the Hub deployment from 10 to 500 pods, and Cast AI adds Kubernetes nodes when pods are pending for lack of capacity \u2014 with a planned migration from HPA to KEDA so scaling follows application metrics like requests per second instead of CPU and memory alone."
+    ],
+    "notable_quotes": [
+      {
+        "text": "Just to give you some perspective, few years ago we had 20,000 models. Today 3 million. It is around 150x increase in just last couple of years.",
+        "timestamp_sec": 86,
+        "why": "anchors the entire talk in a single growth number"
+      },
+      {
+        "text": "In 2022, we had 10K. In 2024, 100K. Less than a year ago, we had 500K. Today, 1 million.",
+        "timestamp_sec": 179,
+        "why": "dataset growth curve, showing models are not the only scaling axis"
+      },
+      {
+        "text": "All this data must be stored, indexed, and also must be searchable. And that's the hardest part.",
+        "timestamp_sec": 179,
+        "why": "names searchability, not storage, as the real bottleneck"
+      },
+      {
+        "text": "At 20,000 models, any query is fast. Even without an index, trust me, no one would notice.",
+        "timestamp_sec": 179,
+        "why": "crisp statement that scale, not design, exposed the problem"
+      },
+      {
+        "text": "With 14 million users, even 1% is a not small number. It is 140,000 of people hitting slow search at scale. P99 is much more important than P50",
+        "timestamp_sec": 257,
+        "why": "the tail-latency argument stated with arithmetic"
+      },
+      {
+        "text": "MongoDB does not store the models themselves. It stores everything about the models.",
+        "timestamp_sec": 351,
+        "why": "the architectural distinction people most often get wrong"
+      },
+      {
+        "text": "This separation of concern let us scale metadata independently from binary storage and compute independently from both.",
+        "timestamp_sec": 451,
+        "why": "states the payoff of the metadata/blob split"
+      },
+      {
+        "text": "We tokenize model names on insert time, not at query time.",
+        "timestamp_sec": 451,
+        "why": "the core write-time-versus-query-time tradeoff"
+      },
+      {
+        "text": "This solution was working well as long as data set was small. Reax doesn't scale well.",
+        "timestamp_sec": 598,
+        "why": "explicit verdict on regex search"
+      },
+      {
+        "text": "this solution is much more efficient and is so far scale well, so we don't have any more latency issues in our search bar.",
+        "timestamp_sec": 675,
+        "why": "reports the outcome of the Lucene migration"
+      },
+      {
+        "text": "First all queries which doesn't require the latest data goes to secondaries. Only queries that must have strong consistency stay on primary",
+        "timestamp_sec": 836,
+        "why": "the consistency rule that governs their read routing"
+      },
+      {
+        "text": "Aggregations pipelines that scan large amount of data, sort, group or transform the data should not go on primary. They are heavy. Secondaries are better placed for them.",
+        "timestamp_sec": 907,
+        "why": "concrete prescription for where heavy analytical work belongs"
+      },
+      {
+        "text": "The pattern is simple. Primary should focus on what only primary can do. Anything else can be pushed to different machines.",
+        "timestamp_sec": 979,
+        "why": "the talk's most portable design heuristic"
+      },
+      {
+        "text": "The key difference between replica set cluster and sharded cluster is replica set keep full data set on each node.",
+        "timestamp_sec": 979,
+        "why": "clean framing of why replication alone stops working"
+      },
+      {
+        "text": "There is also shard key which must be selected. This is not trivial operation but this talk is not about choosing short key.",
+        "timestamp_sec": 1051,
+        "why": "flags the hardest part of sharding while explicitly scoping it out"
+      },
+      {
+        "text": "Our deployment hub deployment can scale from 10 to 500 bots depends of on the traffic.",
+        "timestamp_sec": 1117,
+        "why": "concrete autoscaling range for the Hub"
+      },
+      {
+        "text": "HPA scale only based on CPU and memory. KDA scale on real application metrics like request per second or event loop utilization.",
+        "timestamp_sec": 1184,
+        "why": "the stated reason for migrating autoscalers"
+      },
+      {
+        "text": "This is what scaling medium models is really about. Keeping the user experience simple no matter how complex it gets under the hood.",
+        "timestamp_sec": 1257,
+        "why": "the closing thesis of the talk"
+      }
+    ],
+    "concepts": [
+      "tail latency optimization",
+      "denormalized read models",
+      "full-text search indexing",
+      "prefix tokenization at write time",
+      "read/write splitting across replicas",
+      "database sharding",
+      "metadata and blob storage separation",
+      "horizontal pod autoscaling",
+      "event-driven autoscaling",
+      "change streams",
+      "trending score ranking",
+      "cluster node autoscaling"
+    ],
+    "positions": [
+      {
+        "claim": "Regex-based search in MongoDB does not scale, and full-text search on Apache Lucene (Atlas Search) is the right replacement once the dataset grows large.",
+        "confidence": "stated",
+        "timestamp_sec": 598
+      },
+      {
+        "claim": "P99 latency matters more than P50 for user-facing search at Hugging Face's scale.",
+        "confidence": "stated",
+        "timestamp_sec": 257
+      },
+      {
+        "claim": "Tokenization should happen at insert time rather than query time so autocomplete can match instantly.",
+        "confidence": "stated",
+        "timestamp_sec": 451
+      },
+      {
+        "claim": "Reads and listings should be served from a separate denormalized collection rather than the primary source-of-truth repo collection.",
+        "confidence": "stated",
+        "timestamp_sec": 451
+      },
+      {
+        "claim": "Model artifacts belong in object storage while metadata belongs in a database, so the two can scale independently.",
+        "confidence": "stated",
+        "timestamp_sec": 451
+      },
+      {
+        "claim": "The database primary should only handle writes and queries requiring strong consistency; everything else \u2014 heavy aggregations, change streams, ad hoc and reporting queries \u2014 should be pushed to secondaries or a hidden node.",
+        "confidence": "stated",
+        "timestamp_sec": 979
+      },
+      {
+        "claim": "A single MongoDB replica set will soon be insufficient for Hugging Face's growth, making sharding the necessary next step.",
+        "confidence": "stated",
+        "timestamp_sec": 979
+      },
+      {
+        "claim": "Choosing a shard key is a non-trivial decision.",
+        "confidence": "stated",
+        "timestamp_sec": 1051
+      },
+      {
+        "claim": "Two-layer autoscaling (pod-level plus node-level via Cast AI) keeps the Hub healthy without manual intervention and without overprovisioning, making it cost effective.",
+        "confidence": "stated",
+        "timestamp_sec": 1117
+      },
+      {
+        "claim": "KEDA is superior to HPA for this workload because scaling on application metrics like request rate captures load that CPU and memory thresholds miss, such as a pod with low CPU but a high request queue.",
+        "confidence": "stated",
+        "timestamp_sec": 1184
+      },
+      {
+        "claim": "Slow search causes users to leave for alternatives, which is why search latency is treated as a first-order infrastructure priority.",
+        "confidence": "stated",
+        "timestamp_sec": 257
+      },
+      {
+        "claim": "Good infrastructure at this scale is invisible \u2014 success means users never think about it.",
+        "confidence": "implied",
+        "timestamp_sec": 1184
+      }
+    ],
+    "speaker_org": "Hugging Face"
+  },
+  "_meta": {
+    "slug": "serving-2-million-models-without-melting-scaling-the-hugging-face-hub",
+    "video_id": "lyL5QhgIOxc",
+    "url": "https://www.youtube.com/watch?v=lyL5QhgIOxc",
+    "word_count": 1956,
+    "wall_sec": 71.4,
+    "run_at": "2026-08-12T20:12:30Z",
+    "effort": "medium"
+  }
+}

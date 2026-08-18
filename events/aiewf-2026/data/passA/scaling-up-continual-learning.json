@@ -1,0 +1,298 @@
+{
+  "is_error": false,
+  "duration_api_ms": 60691,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "1d6adb28-b82e-433a-ac85-1f91d56bd1ee",
+  "total_cost_usd": 0.250787,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 11596,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 4880,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 11596,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 4880,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 11596,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 11596
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 7568,
+      "outputTokens": 19,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.007663,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 4880,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 11596,
+      "webSearchRequests": 0,
+      "costUSD": 0.243124,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Ronak Malde (ex-WinSurf research lead, now founder of Trajectory) argues that the field's current best post-training algorithm, GRPO, fails four criteria needed for real continual learning: online task distribution, on-policy sampling, single-rollout parallelism, and per-token dense reward. His proposed alternative is on-policy self-distillation (OPSD), where a student model's rollout is scored against the same model given a 'hint' \u2014 privileged information injected into the prompt \u2014 so the student matches the hinted teacher's log probs token by token, satisfying all four criteria at once. He reports OPSD pushes past where GRPO saturates on LiveCodeBench (roughly Sonnet-level), collapses tokens-to-solution rather than inflating them, and scales to 120B\u20131T parameter models on long-horizon tool-calling agents. The bulk of the talk is the failure modes that only appear at scale: the 'wait' problem (teacher endlessly course-correcting a divergent student until everything becomes hedging words) and hint leakage (OPSD's analogue of reward hacking), plus two fixes \u2014 step-level KL-divergence token weighting and residual guidance via partial hints. Worth watching if you want a concrete, mechanism-level alternative to RL for learning from production traffic, with honest reporting of where it breaks.\",\n  \"key_points\": [\n    \"Malde frames four criteria for a continual learning algorithm \u2014 online task distribution, on-policy sampling, parallelism of one, and per-token reward \u2014 and walks SFT, DPO/RLHF, and GRPO through them to show each era satisfies only two.\",\n    \"On-policy self-distillation replaces the smarter teacher model with the same model given 'privileged information' (a hint) in the prompt, so you can push the frontier without access to a stronger model.\",\n    \"Because distillation matches the full vocabulary distribution rather than sharpening the sampled token, OPSD can shift entire distributions instead of nudging them, which he credits for breaking past GRPO's saturation point.\",\n    \"Eliminating grouped rollouts removes the environment-infrastructure bottleneck: one example yields training signal, so no one-to-one copies of the real world are needed.\",\n    \"OPSD reportedly reduces tokens-to-solution on hard tasks, inverting RL's tendency to reward longer thinking traces.\",\n    \"At the 120B+ scale with 50\u2013100 tool calls, the algorithm degrades: high run-to-run variance, erratic eval accuracy, and tool-call format errors.\",\n    \"The 'wait' problem arises when a long-horizon student diverges so far that the teacher course-corrects at every opportunity, collapsing the model into hedging tokens and a suboptimal midpoint between two divergent distributions.\",\n    \"Step-level KL divergence between student and teacher is used as a per-step token weight (not a KL penalty), letting training focus on the first divergence and re-engage when the trajectory recovers.\",\n    \"Hint leakage is OPSD's reward hacking: a hint containing the answer teaches the model to produce reasoning traces that work backward from a solution it would never have in production.\",\n    \"Residual guidance takes a linear combination of a half-hint teacher and a full-hint teacher to gauge hint strength and avoid shifting the model into out-of-distribution territory.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"we are actually spending hundreds of trillions of tokens every single day on inference and we're generating great amounts of data on how models in the real world are are failing, how they're doing well. And that should be signal that we should be capturing and training on.\",\n      \"timestamp_sec\": 101,\n      \"why\": \"States the core motivating asymmetry the whole talk builds on.\"\n    },\n    {\n      \"text\": \"we are left with a bunch of benchmarks that are getting more time consuming more and more expensive and and perhaps more concerningly they're not tied to real world use cases where people are using AI.\",\n      \"timestamp_sec\": 50,\n      \"why\": \"The indictment of benchmark scaling that motivates continual learning.\"\n    },\n    {\n      \"text\": \"we are shoving every single reward into one scaler in order to train on when the real world is messy.\",\n      \"timestamp_sec\": 174,\n      \"why\": \"Compresses the dense-vs-scalar-reward critique of RL into one line.\"\n    },\n    {\n      \"text\": \"we basically took a Fouian bargain and wanted to max on on policy rollouts which is extremely powerful right we now have models that are capable of amazing things because they are on policy\",\n      \"timestamp_sec\": 296,\n      \"why\": \"Names GRPO's tradeoff explicitly \u2014 gains bought with infrastructure and reward sparsity.\"\n    },\n    {\n      \"text\": \"imagine you were trying to write an essay and your teacher just gave you a score of 87 out of 100. You would have to run through so many different examples to get to the idea of what a good essay is\",\n      \"timestamp_sec\": 403,\n      \"why\": \"The talk's clearest intuition pump for why sequence-level reward is inefficient.\"\n    },\n    {\n      \"text\": \"when we're trying to push the frontier we don't magically have some smarter model, right?\",\n      \"timestamp_sec\": 472,\n      \"why\": \"The precise gap that self-distillation is designed to fill.\"\n    },\n    {\n      \"text\": \"You take what's called this hint, put it into the beginning of the prompt, and now you match the log props of the student without that hint to the teacher with that hint. And this is an extremely powerful algorithm.\",\n      \"timestamp_sec\": 507,\n      \"why\": \"The complete mechanism of OPSD in two sentences.\"\n    },\n    {\n      \"text\": \"now there's no parallel rollouts. We don't need a group of eight in order to roll out but just from a single example we're able to get information. So that takes away the environment bottleneck\",\n      \"timestamp_sec\": 580,\n      \"why\": \"The infrastructure claim that makes OPSD attractive for production deployment.\"\n    },\n    {\n      \"text\": \"we're not just taking now a distribution like RL and slightly sharpening it, but we're instead actually shifting entire distributions.\",\n      \"timestamp_sec\": 650,\n      \"why\": \"The mechanistic reason he claims OPSD exceeds RL's ceiling.\"\n    },\n    {\n      \"text\": \"If you take a look at live codebench actually we found that gpo saturates around sonnet level performance and and doesn't really push the frontier\",\n      \"timestamp_sec\": 650,\n      \"why\": \"A specific, checkable empirical claim about GRPO's ceiling.\"\n    },\n    {\n      \"text\": \"with RL a fundamental limitation and if you guys have ever trained RL models is the models like to think a lot right the more tokens that you expend it's it's just going to do better but with opsd you don't have that problem\",\n      \"timestamp_sec\": 689,\n      \"why\": \"Reports a token-efficiency result that runs opposite to RL's usual behavior.\"\n    },\n    {\n      \"text\": \"this works really well for small models short horizon tasks like something like a chatbot. But this is where academic papers kind of end and where you really need to scale things up to start to to see the limitations.\",\n      \"timestamp_sec\": 730,\n      \"why\": \"Sets up the talk's real contribution \u2014 the scaling failure modes.\"\n    },\n    {\n      \"text\": \"at trajectory we've been scaling up this algorithm to 120bs to 500 bs to one trillion parameter models. And as soon as you get to the 120B range with not just one or two tool calls but 50 or 100 well things start to break apart a little bit.\",\n      \"timestamp_sec\": 730,\n      \"why\": \"Concrete scale numbers and the exact point of breakdown.\"\n    },\n    {\n      \"text\": \"the teacher model just continuously trying to improve this token of wait or maybe or some of these kind of hedging words\",\n      \"timestamp_sec\": 808,\n      \"why\": \"Names the failure mode that gives the 'wait' problem its name.\"\n    },\n    {\n      \"text\": \"not just like normal KL where we use that as a KL penalty, but instead we're actually multiplying the token weight of every single step based on this divergence property.\",\n      \"timestamp_sec\": 885,\n      \"why\": \"The specific technical distinction of his first fix.\"\n    },\n    {\n      \"text\": \"with RL the number one problem that people face is reward hacking as you guys are are all aware of and that's a game that continuously RL researchers have had to play. Well there is an equivalent for OPSD as well and that is hint leakage.\",\n      \"timestamp_sec\": 928,\n      \"why\": \"The talk's most transferable warning \u2014 every method has its exploit.\"\n    },\n    {\n      \"text\": \"you can have an LLM basically translate that into what is something reasonable that they should have known and that's the process of looking through the logs but not actually giving it the solution that it would shortcut some of its vital reasoning.\",\n      \"timestamp_sec\": 1042,\n      \"why\": \"Describes the practical hint-design discipline that makes OPSD workable.\"\n    },\n    {\n      \"text\": \"we're actually able to scale this up to a 12b model on mercur apex agents which often requires 100 and or plus tool calls in order to achieve and it's a really powerful algorithm that has even surpassed RL as well.\",\n      \"timestamp_sec\": 1118,\n      \"why\": \"The headline result claim, including surpassing RL on long-horizon agents.\"\n    },\n    {\n      \"text\": \"there is a really exciting world that is about to come where software in general just gets smarter every single time it's used and that is the most exciting unlock that's going to happen in 2026 2027\",\n      \"timestamp_sec\": 1156,\n      \"why\": \"The dated forecast the talk stakes itself on.\"\n    },\n    {\n      \"text\": \"as a research community right now we're in this zone of what I call pseudo continual learning. where there's some still level of like batch updates offline and then re-uploading the model.\",\n      \"timestamp_sec\": 1250,\n      \"why\": \"An honest admission in Q&A that nothing shipped today is truly continual.\"\n    },\n    {\n      \"text\": \"the really exciting part is how does the model and the harness interplay with each other as you're both updating them. That's some of the stuff that we're now exploring with our current customers\",\n      \"timestamp_sec\": 1298,\n      \"why\": \"Flags co-evolution of model and harness as open territory.\"\n    }\n  ],\n  \"concepts\": [\n    \"continual learning\",\n    \"on-policy self-distillation\",\n    \"grpo\",\n    \"knowledge distillation\",\n    \"per-token dense reward\",\n    \"kl divergence weighting\",\n    \"reward hacking\",\n    \"hint leakage\",\n    \"long-horizon tool calling\",\n    \"benchmark saturation\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Current benchmarks are increasingly expensive and time-consuming to build (4 to 24 hours or several days) while not being tied to real-world AI use cases.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 50\n    },\n    {\n      \"claim\": \"A good continual learning algorithm must satisfy four criteria simultaneously: online task distribution, on-policy sampling, parallelism of one, and per-token reward \u2014 and no prior method (SFT, DPO/RLHF, GRPO) achieves more than two.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 296\n    },\n    {\n      \"claim\": \"GRPO's requirement of parallel rollouts forces environments to be one-to-one copies of the real world, which introduces bias into the training paradigm.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 174\n    },\n    {\n      \"claim\": \"Giving a model privileged information in its prompt makes it an effective teacher for itself, removing the need for a stronger model to distill from.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 507\n    },\n    {\n      \"claim\": \"GRPO saturates around Sonnet-level performance on LiveCodeBench and does not push the frontier, while OPSD reaches new territory of results.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 650\n    },\n    {\n      \"claim\": \"OPSD reduces the number of tokens needed to solve difficult challenges, unlike RL where more expended tokens improve performance.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 689\n    },\n    {\n      \"claim\": \"OPSD degrades at scale: at 120B parameters with 50-100 tool calls, eval accuracy varies widely, run-to-run variance is extremely high, and tool call format errors appear.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 769\n    },\n    {\n      \"claim\": \"On long-horizon tasks the teacher repeatedly course-corrects a divergent student, driving the model into a local optimum dominated by hedging tokens like 'wait', 'but', and 'maybe'.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 808\n    },\n    {\n      \"claim\": \"Hint leakage is the OPSD analogue of reward hacking and requires deliberate hint design, because a leaked answer produces reasoning traces that cannot occur in production.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1010\n    },\n    {\n      \"claim\": \"Using an LLM to filter solutions out of hints works decently well but is a trivial solution compared to algorithmic approaches like residual guidance.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1042\n    },\n    {\n      \"claim\": \"OPSD with these fixes scales to a 12B model on Mercury Apex agents requiring 100+ tool calls and has surpassed RL there.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1118\n    },\n    {\n      \"claim\": \"Software that gets smarter every time it is used will be the most significant unlock of 2026-2027.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1156\n    },\n    {\n      \"claim\": \"No one, including Trajectory, is close to true continual learning; the field is doing pseudo continual learning with offline batch updates and model re-uploads.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1250\n    },\n    {\n      \"claim\": \"Merging signal from ~10,000 concurrent production rollouts into a single model update is an unsolved infrastructure and algorithmic problem.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1298\n    },\n    {\n      \"claim\": \"Co-evolution of model and harness during continual learning is completely unexplored territory.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1341\n    }\n  ],\n  \"speaker_org\": \"Trajectory\"\n}",
+  "ttft_ms": 59374,
+  "ttft_stream_ms": 2276,
+  "time_to_request_ms": 34,
+  "type": "result",
+  "duration_ms": 61240,
+  "uuid": "3be2673c-f1bd-40da-83f7-1fa3c0f0c06d",
+  "passA": {
+    "summary": "Ronak Malde (ex-WinSurf research lead, now founder of Trajectory) argues that the field's current best post-training algorithm, GRPO, fails four criteria needed for real continual learning: online task distribution, on-policy sampling, single-rollout parallelism, and per-token dense reward. His proposed alternative is on-policy self-distillation (OPSD), where a student model's rollout is scored against the same model given a 'hint' \u2014 privileged information injected into the prompt \u2014 so the student matches the hinted teacher's log probs token by token, satisfying all four criteria at once. He reports OPSD pushes past where GRPO saturates on LiveCodeBench (roughly Sonnet-level), collapses tokens-to-solution rather than inflating them, and scales to 120B\u20131T parameter models on long-horizon tool-calling agents. The bulk of the talk is the failure modes that only appear at scale: the 'wait' problem (teacher endlessly course-correcting a divergent student until everything becomes hedging words) and hint leakage (OPSD's analogue of reward hacking), plus two fixes \u2014 step-level KL-divergence token weighting and residual guidance via partial hints. Worth watching if you want a concrete, mechanism-level alternative to RL for learning from production traffic, with honest reporting of where it breaks.",
+    "key_points": [
+      "Malde frames four criteria for a continual learning algorithm \u2014 online task distribution, on-policy sampling, parallelism of one, and per-token reward \u2014 and walks SFT, DPO/RLHF, and GRPO through them to show each era satisfies only two.",
+      "On-policy self-distillation replaces the smarter teacher model with the same model given 'privileged information' (a hint) in the prompt, so you can push the frontier without access to a stronger model.",
+      "Because distillation matches the full vocabulary distribution rather than sharpening the sampled token, OPSD can shift entire distributions instead of nudging them, which he credits for breaking past GRPO's saturation point.",
+      "Eliminating grouped rollouts removes the environment-infrastructure bottleneck: one example yields training signal, so no one-to-one copies of the real world are needed.",
+      "OPSD reportedly reduces tokens-to-solution on hard tasks, inverting RL's tendency to reward longer thinking traces.",
+      "At the 120B+ scale with 50\u2013100 tool calls, the algorithm degrades: high run-to-run variance, erratic eval accuracy, and tool-call format errors.",
+      "The 'wait' problem arises when a long-horizon student diverges so far that the teacher course-corrects at every opportunity, collapsing the model into hedging tokens and a suboptimal midpoint between two divergent distributions.",
+      "Step-level KL divergence between student and teacher is used as a per-step token weight (not a KL penalty), letting training focus on the first divergence and re-engage when the trajectory recovers.",
+      "Hint leakage is OPSD's reward hacking: a hint containing the answer teaches the model to produce reasoning traces that work backward from a solution it would never have in production.",
+      "Residual guidance takes a linear combination of a half-hint teacher and a full-hint teacher to gauge hint strength and avoid shifting the model into out-of-distribution territory."
+    ],
+    "notable_quotes": [
+      {
+        "text": "we are actually spending hundreds of trillions of tokens every single day on inference and we're generating great amounts of data on how models in the real world are are failing, how they're doing well. And that should be signal that we should be capturing and training on.",
+        "timestamp_sec": 101,
+        "why": "States the core motivating asymmetry the whole talk builds on."
+      },
+      {
+        "text": "we are left with a bunch of benchmarks that are getting more time consuming more and more expensive and and perhaps more concerningly they're not tied to real world use cases where people are using AI.",
+        "timestamp_sec": 50,
+        "why": "The indictment of benchmark scaling that motivates continual learning."
+      },
+      {
+        "text": "we are shoving every single reward into one scaler in order to train on when the real world is messy.",
+        "timestamp_sec": 174,
+        "why": "Compresses the dense-vs-scalar-reward critique of RL into one line."
+      },
+      {
+        "text": "we basically took a Fouian bargain and wanted to max on on policy rollouts which is extremely powerful right we now have models that are capable of amazing things because they are on policy",
+        "timestamp_sec": 296,
+        "why": "Names GRPO's tradeoff explicitly \u2014 gains bought with infrastructure and reward sparsity."
+      },
+      {
+        "text": "imagine you were trying to write an essay and your teacher just gave you a score of 87 out of 100. You would have to run through so many different examples to get to the idea of what a good essay is",
+        "timestamp_sec": 403,
+        "why": "The talk's clearest intuition pump for why sequence-level reward is inefficient."
+      },
+      {
+        "text": "when we're trying to push the frontier we don't magically have some smarter model, right?",
+        "timestamp_sec": 472,
+        "why": "The precise gap that self-distillation is designed to fill."
+      },
+      {
+        "text": "You take what's called this hint, put it into the beginning of the prompt, and now you match the log props of the student without that hint to the teacher with that hint. And this is an extremely powerful algorithm.",
+        "timestamp_sec": 507,
+        "why": "The complete mechanism of OPSD in two sentences."
+      },
+      {
+        "text": "now there's no parallel rollouts. We don't need a group of eight in order to roll out but just from a single example we're able to get information. So that takes away the environment bottleneck",
+        "timestamp_sec": 580,
+        "why": "The infrastructure claim that makes OPSD attractive for production deployment."
+      },
+      {
+        "text": "we're not just taking now a distribution like RL and slightly sharpening it, but we're instead actually shifting entire distributions.",
+        "timestamp_sec": 650,
+        "why": "The mechanistic reason he claims OPSD exceeds RL's ceiling."
+      },
+      {
+        "text": "If you take a look at live codebench actually we found that gpo saturates around sonnet level performance and and doesn't really push the frontier",
+        "timestamp_sec": 650,
+        "why": "A specific, checkable empirical claim about GRPO's ceiling."
+      },
+      {
+        "text": "with RL a fundamental limitation and if you guys have ever trained RL models is the models like to think a lot right the more tokens that you expend it's it's just going to do better but with opsd you don't have that problem",
+        "timestamp_sec": 689,
+        "why": "Reports a token-efficiency result that runs opposite to RL's usual behavior."
+      },
+      {
+        "text": "this works really well for small models short horizon tasks like something like a chatbot. But this is where academic papers kind of end and where you really need to scale things up to start to to see the limitations.",
+        "timestamp_sec": 730,
+        "why": "Sets up the talk's real contribution \u2014 the scaling failure modes."
+      },
+      {
+        "text": "at trajectory we've been scaling up this algorithm to 120bs to 500 bs to one trillion parameter models. And as soon as you get to the 120B range with not just one or two tool calls but 50 or 100 well things start to break apart a little bit.",
+        "timestamp_sec": 730,
+        "why": "Concrete scale numbers and the exact point of breakdown."
+      },
+      {
+        "text": "the teacher model just continuously trying to improve this token of wait or maybe or some of these kind of hedging words",
+        "timestamp_sec": 808,
+        "why": "Names the failure mode that gives the 'wait' problem its name."
+      },
+      {
+        "text": "not just like normal KL where we use that as a KL penalty, but instead we're actually multiplying the token weight of every single step based on this divergence property.",
+        "timestamp_sec": 885,
+        "why": "The specific technical distinction of his first fix."
+      },
+      {
+        "text": "with RL the number one problem that people face is reward hacking as you guys are are all aware of and that's a game that continuously RL researchers have had to play. Well there is an equivalent for OPSD as well and that is hint leakage.",
+        "timestamp_sec": 928,
+        "why": "The talk's most transferable warning \u2014 every method has its exploit."
+      },
+      {
+        "text": "you can have an LLM basically translate that into what is something reasonable that they should have known and that's the process of looking through the logs but not actually giving it the solution that it would shortcut some of its vital reasoning.",
+        "timestamp_sec": 1042,
+        "why": "Describes the practical hint-design discipline that makes OPSD workable."
+      },
+      {
+        "text": "we're actually able to scale this up to a 12b model on mercur apex agents which often requires 100 and or plus tool calls in order to achieve and it's a really powerful algorithm that has even surpassed RL as well.",
+        "timestamp_sec": 1118,
+        "why": "The headline result claim, including surpassing RL on long-horizon agents."
+      },
+      {
+        "text": "there is a really exciting world that is about to come where software in general just gets smarter every single time it's used and that is the most exciting unlock that's going to happen in 2026 2027",
+        "timestamp_sec": 1156,
+        "why": "The dated forecast the talk stakes itself on."
+      },
+      {
+        "text": "as a research community right now we're in this zone of what I call pseudo continual learning. where there's some still level of like batch updates offline and then re-uploading the model.",
+        "timestamp_sec": 1250,
+        "why": "An honest admission in Q&A that nothing shipped today is truly continual."
+      },
+      {
+        "text": "the really exciting part is how does the model and the harness interplay with each other as you're both updating them. That's some of the stuff that we're now exploring with our current customers",
+        "timestamp_sec": 1298,
+        "why": "Flags co-evolution of model and harness as open territory."
+      }
+    ],
+    "concepts": [
+      "continual learning",
+      "on-policy self-distillation",
+      "grpo",
+      "knowledge distillation",
+      "per-token dense reward",
+      "kl divergence weighting",
+      "reward hacking",
+      "hint leakage",
+      "long-horizon tool calling",
+      "benchmark saturation"
+    ],
+    "positions": [
+      {
+        "claim": "Current benchmarks are increasingly expensive and time-consuming to build (4 to 24 hours or several days) while not being tied to real-world AI use cases.",
+        "confidence": "stated",
+        "timestamp_sec": 50
+      },
+      {
+        "claim": "A good continual learning algorithm must satisfy four criteria simultaneously: online task distribution, on-policy sampling, parallelism of one, and per-token reward \u2014 and no prior method (SFT, DPO/RLHF, GRPO) achieves more than two.",
+        "confidence": "stated",
+        "timestamp_sec": 296
+      },
+      {
+        "claim": "GRPO's requirement of parallel rollouts forces environments to be one-to-one copies of the real world, which introduces bias into the training paradigm.",
+        "confidence": "stated",
+        "timestamp_sec": 174
+      },
+      {
+        "claim": "Giving a model privileged information in its prompt makes it an effective teacher for itself, removing the need for a stronger model to distill from.",
+        "confidence": "stated",
+        "timestamp_sec": 507
+      },
+      {
+        "claim": "GRPO saturates around Sonnet-level performance on LiveCodeBench and does not push the frontier, while OPSD reaches new territory of results.",
+        "confidence": "stated",
+        "timestamp_sec": 650
+      },
+      {
+        "claim": "OPSD reduces the number of tokens needed to solve difficult challenges, unlike RL where more expended tokens improve performance.",
+        "confidence": "stated",
+        "timestamp_sec": 689
+      },
+      {
+        "claim": "OPSD degrades at scale: at 120B parameters with 50-100 tool calls, eval accuracy varies widely, run-to-run variance is extremely high, and tool call format errors appear.",
+        "confidence": "stated",
+        "timestamp_sec": 769
+      },
+      {
+        "claim": "On long-horizon tasks the teacher repeatedly course-corrects a divergent student, driving the model into a local optimum dominated by hedging tokens like 'wait', 'but', and 'maybe'.",
+        "confidence": "stated",
+        "timestamp_sec": 808
+      },
+      {
+        "claim": "Hint leakage is the OPSD analogue of reward hacking and requires deliberate hint design, because a leaked answer produces reasoning traces that cannot occur in production.",
+        "confidence": "stated",
+        "timestamp_sec": 1010
+      },
+      {
+        "claim": "Using an LLM to filter solutions out of hints works decently well but is a trivial solution compared to algorithmic approaches like residual guidance.",
+        "confidence": "stated",
+        "timestamp_sec": 1042
+      },
+      {
+        "claim": "OPSD with these fixes scales to a 12B model on Mercury Apex agents requiring 100+ tool calls and has surpassed RL there.",
+        "confidence": "stated",
+        "timestamp_sec": 1118
+      },
+      {
+        "claim": "Software that gets smarter every time it is used will be the most significant unlock of 2026-2027.",
+        "confidence": "stated",
+        "timestamp_sec": 1156
+      },
+      {
+        "claim": "No one, including Trajectory, is close to true continual learning; the field is doing pseudo continual learning with offline batch updates and model re-uploads.",
+        "confidence": "stated",
+        "timestamp_sec": 1250
+      },
+      {
+        "claim": "Merging signal from ~10,000 concurrent production rollouts into a single model update is an unsolved infrastructure and algorithmic problem.",
+        "confidence": "stated",
+        "timestamp_sec": 1298
+      },
+      {
+        "claim": "Co-evolution of model and harness during continual learning is completely unexplored territory.",
+        "confidence": "stated",
+        "timestamp_sec": 1341
+      }
+    ],
+    "speaker_org": "Trajectory"
+  },
+  "_meta": {
+    "slug": "scaling-up-continual-learning",
+    "video_id": "zL1kLftVTlo",
+    "url": "https://www.youtube.com/watch?v=zL1kLftVTlo",
+    "word_count": 4242,
+    "wall_sec": 62.2,
+    "run_at": "2026-08-12T20:11:18Z",
+    "effort": "medium"
+  }
+}

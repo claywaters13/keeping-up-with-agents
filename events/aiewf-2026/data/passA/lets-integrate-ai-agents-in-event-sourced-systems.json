@@ -1,0 +1,267 @@
+{
+  "is_error": false,
+  "duration_api_ms": 47581,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "c73a4147-4862-4ba4-af86-bea60986b170",
+  "total_cost_usd": 0.209717,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 10079,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 3891,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 10079,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 3891,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 10079,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 10079
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 6393,
+      "outputTokens": 19,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.006488,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 3891,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 10079,
+      "webSearchRequests": 0,
+      "costUSD": 0.203229,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Divakar Kumar of FlyersSoft walks through how his team retrofitted AI agents into an existing event-sourced, domain-driven fraud detection system without ripping out the rule-based and ML engines already in place. The core argument is that traditional fraud engines fail specifically in the 'gray zone' \u2014 transactions that are neither clearly legitimate nor clearly fraudulent \u2014 not because the models are bad, but because they lack real-time context spread across isolated bounded contexts. The proposed fix is architectural rather than model-centric: use CDC/change feeds and a message broker to project events from transaction, account, device, and payment contexts into a shared semantic layer (materialized view), then expose that layer to agents as tools. Agents sit in a tier-two layer inside the saga orchestrator, fanned out to a risk analyzer and a behavior analyzer, with a third agent arbitrating the verdict. Worth watching if you have an existing DDD/event-sourced system and want a concrete integration pattern with real constraints (sub-500ms SLA, in-memory short-term memory, loop-termination metrics) rather than a greenfield agent demo.\",\n  \"key_points\": [\n    \"The real value of AI agents is in business workflows, not just chatbots and coding assistants, and they can be layered onto architectures a business has already invested years in.\",\n    \"Rule-based fraud engines break down on maintainability because fraudsters keep finding new intrusion paths and the static rules must be updated continuously.\",\n    \"Both rule-based and ML approaches handle the clear-cut cases well; the failure mode is the 'gray zone' where the system cannot decide between fraudulent and legitimate.\",\n    \"The team kept the existing engine as tier one and added agentic AI only as tier two for gray-zone cases, deliberately not replacing what already worked.\",\n    \"The root problem with agents in a DDD system is that bounded contexts (transaction, accounts, device, payment) do not share data, so the agent has no unified view to reason over.\",\n    \"Events are appended to an event store (Cosmos DB) rather than mutating state, and a change feed / CDC mechanism propagates them into read models optimized for queries.\",\n    \"The key enabling artifact is a semantic layer \u2014 a materialized view built from all bounded contexts via CDC or message broker plus a worker process \u2014 that agents access through tools.\",\n    \"The tier-two layer uses a fan-out pattern to a risk analyzer agent and a behavior analyzer agent, with a third verdict agent reconciling their responses because a pure metric-based verdict reintroduced the false positives of the rule-based system.\",\n    \"A sub-500ms transaction SLA rules out long-term memory, so the agents use in-memory short-term memory, and an explicit metric threshold breaks the agent loop to avoid infinite iteration.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"these AI agents are more not just for the chatbots or the coding assistance, right? So, the real value that you could bring out of these AI agents is like when you start to apply these into your business workflows.\",\n      \"timestamp_sec\": 49,\n      \"why\": \"States the talk's framing thesis about where agent value actually lives.\"\n    },\n    {\n      \"text\": \"And I asked them like, why did you block my transaction? Do you know what the response was? They didn't know\",\n      \"timestamp_sec\": 125,\n      \"why\": \"The concrete anecdote that motivates the entire architecture \u2014 opacity of existing fraud decisions.\"\n    },\n    {\n      \"text\": \"It was somewhere in the system, either the rule-based engine or the ML-based engine would have taken that decision.\",\n      \"timestamp_sec\": 125,\n      \"why\": \"Names the explainability gap in traditional fraud stacks.\"\n    },\n    {\n      \"text\": \"you might be thinking like what a great idiot, right? Because it is already an uncertain case like why do you want to introduce an AI agent because it is also a non-deterministic by nature\",\n      \"timestamp_sec\": 164,\n      \"why\": \"Speaker names the strongest objection to his own approach before answering it.\"\n    },\n    {\n      \"text\": \"earlier in the rule-based engine or the ML-based engine like we don't have enough context. We don't have enough real-time data that gets passed on to the system.\",\n      \"timestamp_sec\": 164,\n      \"why\": \"The counterargument: the bottleneck is context availability, not model determinism.\"\n    },\n    {\n      \"text\": \"the problem with this rule-based engine is like the maintainability because the fraudsters are trying to get intruded into a system like by a lot of different ways and you just need to keep on updating these static rules day by day\",\n      \"timestamp_sec\": 206,\n      \"why\": \"Specific diagnosis of why rule engines decay in adversarial domains.\"\n    },\n    {\n      \"text\": \"few of the transaction like goes under the gray zone area and this is the area where it is really uncertain for those systems to really come to a conclusion whether it is an fraudulent transaction or a legitimate transaction.\",\n      \"timestamp_sec\": 249,\n      \"why\": \"Defines the gray zone, the narrow target the agents are scoped to.\"\n    },\n    {\n      \"text\": \"our thought process is not to exclude the systems that we already had. We we are just trying to handle few of the areas like that is the gray zone areas with the help of agentic AI processing.\",\n      \"timestamp_sec\": 305,\n      \"why\": \"The central tradeoff: augment rather than replace the incumbent stack.\"\n    },\n    {\n      \"text\": \"we are not mutating the state, but instead like we are appending all the events as when it arrives.\",\n      \"timestamp_sec\": 525,\n      \"why\": \"Crisp one-line statement of the event sourcing premise the talk builds on.\"\n    },\n    {\n      \"text\": \"you won't be able to rely entirely upon the event store for the query operation for the read operation. What you would do is like internal like you will be having different read models which are optimized for the read operations.\",\n      \"timestamp_sec\": 569,\n      \"why\": \"Explains the CQRS split that makes agent-time reads feasible.\"\n    },\n    {\n      \"text\": \"you can't you can't you can't say other teams to follow the same patterns because even sourcing is not the one that other teams are also following.\",\n      \"timestamp_sec\": 607,\n      \"why\": \"Organizational constraint that forces the message-broker path alongside CDC.\"\n    },\n    {\n      \"text\": \"the idea is like we need to gather all the data from all these different contexts and to have or build a semantic layer or you could call it as a materialized view which you could further use within your agent\",\n      \"timestamp_sec\": 649,\n      \"why\": \"The load-bearing architectural idea of the whole talk.\"\n    },\n    {\n      \"text\": \"this language model it it is not necessary to be a large language model. It could be a SLM. It could be an open-source model.\",\n      \"timestamp_sec\": 692,\n      \"why\": \"Takes a side on model sizing for latency-bound agent workloads.\"\n    },\n    {\n      \"text\": \"you can't really um rely on the long-term memory because you need to um adhere to the uh SLA that you uh provided to the customers because for for the transaction uh to be processed like it should be sub 500 milliseconds.\",\n      \"timestamp_sec\": 692,\n      \"why\": \"Hard latency number that drives the memory design decision.\"\n    },\n    {\n      \"text\": \"you should really know like when to stop this loop\",\n      \"timestamp_sec\": 749,\n      \"why\": \"Short but names the agent-loop termination problem explicitly.\"\n    },\n    {\n      \"text\": \"For for our use case like we do have a metrics with beyond which like if we go like we we could break out of this loop. And this could be varying for different use cases. So, you should be really careful on avoiding this infinite loop.\",\n      \"timestamp_sec\": 794,\n      \"why\": \"Concrete guardrail for runaway agent loops in a latency-critical path.\"\n    },\n    {\n      \"text\": \"if we are using just the metrics, it is again going back to the same criteria like where we had this rule-based um mechanism. Uh so, there are many false positive cases that we are that we faced.\",\n      \"timestamp_sec\": 870,\n      \"why\": \"Reports an empirical failure that justified adding a third arbitration agent.\"\n    },\n    {\n      \"text\": \"we we in turn like we are trying to use a third agent in this verdict layer, which analyzes both the agents' responses and come to a conclusion\",\n      \"timestamp_sec\": 870,\n      \"why\": \"Describes the multi-agent consensus pattern at the decision boundary.\"\n    },\n    {\n      \"text\": \"we also have a device trust layer, like all the device information will get stored into this semantic layer and it will just get those chunks alone.\",\n      \"timestamp_sec\": 966,\n      \"why\": \"Shows how per-domain signals become retrievable agent tools.\"\n    },\n    {\n      \"text\": \"we also had um a business rules trying to migrate some of the rules that we had in the rule base engine over this tools\",\n      \"timestamp_sec\": 966,\n      \"why\": \"Migration path from legacy rules into agent tooling rather than discarding them.\"\n    }\n  ],\n  \"concepts\": [\n    \"event sourcing\",\n    \"bounded contexts\",\n    \"saga orchestration\",\n    \"change data capture\",\n    \"cqrs read models\",\n    \"semantic layer\",\n    \"multi-agent fan-out\",\n    \"agent loop termination\",\n    \"short-term agent memory\",\n    \"real-time fraud detection\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Agents should be added as a tier-two layer for ambiguous cases rather than replacing existing rule-based and ML fraud engines.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 305\n    },\n    {\n      \"claim\": \"The limitation of traditional rule-based and ML fraud engines is insufficient real-time context, not the algorithms themselves.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 164\n    },\n    {\n      \"claim\": \"Rule-based fraud engines are unmaintainable at scale because static rules must be continuously updated against evolving fraud tactics.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 206\n    },\n    {\n      \"claim\": \"Agents cannot reason usefully over a DDD system without first building a cross-context semantic layer / materialized view.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 649\n    },\n    {\n      \"claim\": \"The agent's model need not be a large language model; an SLM or open-source model suffices for this use case.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 692\n    },\n    {\n      \"claim\": \"Long-term memory is incompatible with a sub-500ms transaction processing SLA, so short-term in-memory context should be used.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 692\n    },\n    {\n      \"claim\": \"Using a plain metric or if-condition for the final verdict reproduces the false-positive problems of rule-based systems, so a third arbitration agent is preferable.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 870\n    },\n    {\n      \"claim\": \"Agent loops need an explicit numeric break condition or they risk running indefinitely.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 794\n    },\n    {\n      \"claim\": \"You cannot expect other teams in an organization to adopt event sourcing, so integration must fall back to asynchronous message-broker communication.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 607\n    },\n    {\n      \"claim\": \"Event stores should not be queried directly for read operations; separate optimized read models are required.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 569\n    }\n  ],\n  \"speaker_org\": \"FlyersSoft\"\n}",
+  "ttft_ms": 45843,
+  "ttft_stream_ms": 954,
+  "time_to_request_ms": 34,
+  "type": "result",
+  "duration_ms": 47488,
+  "uuid": "fc884f69-d1f1-4d7b-9612-8f5f8c7db426",
+  "passA": {
+    "summary": "Divakar Kumar of FlyersSoft walks through how his team retrofitted AI agents into an existing event-sourced, domain-driven fraud detection system without ripping out the rule-based and ML engines already in place. The core argument is that traditional fraud engines fail specifically in the 'gray zone' \u2014 transactions that are neither clearly legitimate nor clearly fraudulent \u2014 not because the models are bad, but because they lack real-time context spread across isolated bounded contexts. The proposed fix is architectural rather than model-centric: use CDC/change feeds and a message broker to project events from transaction, account, device, and payment contexts into a shared semantic layer (materialized view), then expose that layer to agents as tools. Agents sit in a tier-two layer inside the saga orchestrator, fanned out to a risk analyzer and a behavior analyzer, with a third agent arbitrating the verdict. Worth watching if you have an existing DDD/event-sourced system and want a concrete integration pattern with real constraints (sub-500ms SLA, in-memory short-term memory, loop-termination metrics) rather than a greenfield agent demo.",
+    "key_points": [
+      "The real value of AI agents is in business workflows, not just chatbots and coding assistants, and they can be layered onto architectures a business has already invested years in.",
+      "Rule-based fraud engines break down on maintainability because fraudsters keep finding new intrusion paths and the static rules must be updated continuously.",
+      "Both rule-based and ML approaches handle the clear-cut cases well; the failure mode is the 'gray zone' where the system cannot decide between fraudulent and legitimate.",
+      "The team kept the existing engine as tier one and added agentic AI only as tier two for gray-zone cases, deliberately not replacing what already worked.",
+      "The root problem with agents in a DDD system is that bounded contexts (transaction, accounts, device, payment) do not share data, so the agent has no unified view to reason over.",
+      "Events are appended to an event store (Cosmos DB) rather than mutating state, and a change feed / CDC mechanism propagates them into read models optimized for queries.",
+      "The key enabling artifact is a semantic layer \u2014 a materialized view built from all bounded contexts via CDC or message broker plus a worker process \u2014 that agents access through tools.",
+      "The tier-two layer uses a fan-out pattern to a risk analyzer agent and a behavior analyzer agent, with a third verdict agent reconciling their responses because a pure metric-based verdict reintroduced the false positives of the rule-based system.",
+      "A sub-500ms transaction SLA rules out long-term memory, so the agents use in-memory short-term memory, and an explicit metric threshold breaks the agent loop to avoid infinite iteration."
+    ],
+    "notable_quotes": [
+      {
+        "text": "these AI agents are more not just for the chatbots or the coding assistance, right? So, the real value that you could bring out of these AI agents is like when you start to apply these into your business workflows.",
+        "timestamp_sec": 49,
+        "why": "States the talk's framing thesis about where agent value actually lives."
+      },
+      {
+        "text": "And I asked them like, why did you block my transaction? Do you know what the response was? They didn't know",
+        "timestamp_sec": 125,
+        "why": "The concrete anecdote that motivates the entire architecture \u2014 opacity of existing fraud decisions."
+      },
+      {
+        "text": "It was somewhere in the system, either the rule-based engine or the ML-based engine would have taken that decision.",
+        "timestamp_sec": 125,
+        "why": "Names the explainability gap in traditional fraud stacks."
+      },
+      {
+        "text": "you might be thinking like what a great idiot, right? Because it is already an uncertain case like why do you want to introduce an AI agent because it is also a non-deterministic by nature",
+        "timestamp_sec": 164,
+        "why": "Speaker names the strongest objection to his own approach before answering it."
+      },
+      {
+        "text": "earlier in the rule-based engine or the ML-based engine like we don't have enough context. We don't have enough real-time data that gets passed on to the system.",
+        "timestamp_sec": 164,
+        "why": "The counterargument: the bottleneck is context availability, not model determinism."
+      },
+      {
+        "text": "the problem with this rule-based engine is like the maintainability because the fraudsters are trying to get intruded into a system like by a lot of different ways and you just need to keep on updating these static rules day by day",
+        "timestamp_sec": 206,
+        "why": "Specific diagnosis of why rule engines decay in adversarial domains."
+      },
+      {
+        "text": "few of the transaction like goes under the gray zone area and this is the area where it is really uncertain for those systems to really come to a conclusion whether it is an fraudulent transaction or a legitimate transaction.",
+        "timestamp_sec": 249,
+        "why": "Defines the gray zone, the narrow target the agents are scoped to."
+      },
+      {
+        "text": "our thought process is not to exclude the systems that we already had. We we are just trying to handle few of the areas like that is the gray zone areas with the help of agentic AI processing.",
+        "timestamp_sec": 305,
+        "why": "The central tradeoff: augment rather than replace the incumbent stack."
+      },
+      {
+        "text": "we are not mutating the state, but instead like we are appending all the events as when it arrives.",
+        "timestamp_sec": 525,
+        "why": "Crisp one-line statement of the event sourcing premise the talk builds on."
+      },
+      {
+        "text": "you won't be able to rely entirely upon the event store for the query operation for the read operation. What you would do is like internal like you will be having different read models which are optimized for the read operations.",
+        "timestamp_sec": 569,
+        "why": "Explains the CQRS split that makes agent-time reads feasible."
+      },
+      {
+        "text": "you can't you can't you can't say other teams to follow the same patterns because even sourcing is not the one that other teams are also following.",
+        "timestamp_sec": 607,
+        "why": "Organizational constraint that forces the message-broker path alongside CDC."
+      },
+      {
+        "text": "the idea is like we need to gather all the data from all these different contexts and to have or build a semantic layer or you could call it as a materialized view which you could further use within your agent",
+        "timestamp_sec": 649,
+        "why": "The load-bearing architectural idea of the whole talk."
+      },
+      {
+        "text": "this language model it it is not necessary to be a large language model. It could be a SLM. It could be an open-source model.",
+        "timestamp_sec": 692,
+        "why": "Takes a side on model sizing for latency-bound agent workloads."
+      },
+      {
+        "text": "you can't really um rely on the long-term memory because you need to um adhere to the uh SLA that you uh provided to the customers because for for the transaction uh to be processed like it should be sub 500 milliseconds.",
+        "timestamp_sec": 692,
+        "why": "Hard latency number that drives the memory design decision."
+      },
+      {
+        "text": "you should really know like when to stop this loop",
+        "timestamp_sec": 749,
+        "why": "Short but names the agent-loop termination problem explicitly."
+      },
+      {
+        "text": "For for our use case like we do have a metrics with beyond which like if we go like we we could break out of this loop. And this could be varying for different use cases. So, you should be really careful on avoiding this infinite loop.",
+        "timestamp_sec": 794,
+        "why": "Concrete guardrail for runaway agent loops in a latency-critical path."
+      },
+      {
+        "text": "if we are using just the metrics, it is again going back to the same criteria like where we had this rule-based um mechanism. Uh so, there are many false positive cases that we are that we faced.",
+        "timestamp_sec": 870,
+        "why": "Reports an empirical failure that justified adding a third arbitration agent."
+      },
+      {
+        "text": "we we in turn like we are trying to use a third agent in this verdict layer, which analyzes both the agents' responses and come to a conclusion",
+        "timestamp_sec": 870,
+        "why": "Describes the multi-agent consensus pattern at the decision boundary."
+      },
+      {
+        "text": "we also have a device trust layer, like all the device information will get stored into this semantic layer and it will just get those chunks alone.",
+        "timestamp_sec": 966,
+        "why": "Shows how per-domain signals become retrievable agent tools."
+      },
+      {
+        "text": "we also had um a business rules trying to migrate some of the rules that we had in the rule base engine over this tools",
+        "timestamp_sec": 966,
+        "why": "Migration path from legacy rules into agent tooling rather than discarding them."
+      }
+    ],
+    "concepts": [
+      "event sourcing",
+      "bounded contexts",
+      "saga orchestration",
+      "change data capture",
+      "cqrs read models",
+      "semantic layer",
+      "multi-agent fan-out",
+      "agent loop termination",
+      "short-term agent memory",
+      "real-time fraud detection"
+    ],
+    "positions": [
+      {
+        "claim": "Agents should be added as a tier-two layer for ambiguous cases rather than replacing existing rule-based and ML fraud engines.",
+        "confidence": "stated",
+        "timestamp_sec": 305
+      },
+      {
+        "claim": "The limitation of traditional rule-based and ML fraud engines is insufficient real-time context, not the algorithms themselves.",
+        "confidence": "stated",
+        "timestamp_sec": 164
+      },
+      {
+        "claim": "Rule-based fraud engines are unmaintainable at scale because static rules must be continuously updated against evolving fraud tactics.",
+        "confidence": "stated",
+        "timestamp_sec": 206
+      },
+      {
+        "claim": "Agents cannot reason usefully over a DDD system without first building a cross-context semantic layer / materialized view.",
+        "confidence": "stated",
+        "timestamp_sec": 649
+      },
+      {
+        "claim": "The agent's model need not be a large language model; an SLM or open-source model suffices for this use case.",
+        "confidence": "stated",
+        "timestamp_sec": 692
+      },
+      {
+        "claim": "Long-term memory is incompatible with a sub-500ms transaction processing SLA, so short-term in-memory context should be used.",
+        "confidence": "stated",
+        "timestamp_sec": 692
+      },
+      {
+        "claim": "Using a plain metric or if-condition for the final verdict reproduces the false-positive problems of rule-based systems, so a third arbitration agent is preferable.",
+        "confidence": "stated",
+        "timestamp_sec": 870
+      },
+      {
+        "claim": "Agent loops need an explicit numeric break condition or they risk running indefinitely.",
+        "confidence": "stated",
+        "timestamp_sec": 794
+      },
+      {
+        "claim": "You cannot expect other teams in an organization to adopt event sourcing, so integration must fall back to asynchronous message-broker communication.",
+        "confidence": "stated",
+        "timestamp_sec": 607
+      },
+      {
+        "claim": "Event stores should not be queried directly for read operations; separate optimized read models are required.",
+        "confidence": "stated",
+        "timestamp_sec": 569
+      }
+    ],
+    "speaker_org": "FlyersSoft"
+  },
+  "_meta": {
+    "slug": "lets-integrate-ai-agents-in-event-sourced-systems",
+    "video_id": "o6U_2vd967Y",
+    "url": "https://www.youtube.com/watch?v=o6U_2vd967Y",
+    "word_count": 3535,
+    "wall_sec": 48.7,
+    "run_at": "2026-08-12T20:00:35Z",
+    "effort": "medium"
+  }
+}

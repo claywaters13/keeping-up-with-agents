@@ -1,0 +1,285 @@
+{
+  "is_error": false,
+  "duration_api_ms": 64044,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "d21cbee6-f199-4788-81cc-1f4ce24c760c",
+  "total_cost_usd": 0.25810099999999997,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 10524,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 5631,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 10524,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 5631,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 10524,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 10524
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 6837,
+      "outputTokens": 17,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.006922,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 5631,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 10524,
+      "webSearchRequests": 0,
+      "costUSD": 0.251179,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Dominik Kundel of OpenAI walks through the internals of the Codex harness \u2014 the open-source Rust agent runtime behind Codex \u2014 covering how it constructs context, executes actions, sandboxes them, and manages long-running loops. The core argument is that most of what makes Codex distinctive is not proprietary harness magic but capabilities exposed directly in the Responses API (tool search with deferred tools, apply patch, WebSocket transport, server-side compaction), so builders can adopt them in their own agents. He details concrete design decisions: capping the skills list at 2% of the context window, deferring tools out of the prompt, using a read-only auto-review subagent to cut approval fatigue without granting blanket full access, and scripting browser interactions via a persistent Node REPL with Playwright instead of one-action-at-a-time computer use. He also reports that once inference hit 1,000 tokens/sec on Cerebras with GPT-5.3 Codex Spark, the network \u2014 not the model \u2014 became the bottleneck, motivating a stateful WebSocket mode. Worth watching if you build agents and want a concrete, current reference implementation of harness-level tradeoffs.\",\n  \"key_points\": [\n    \"The Codex harness and app server are open source (Apache 2 / MIT) and written in Rust, and are usable both as a blueprint and as a runtime other UIs can build on via the app server protocol.\",\n    \"Context construction optimizes for three things \u2014 size, flexibility across variable skill/MCP counts, and cacheability \u2014 with the skills list hard-capped at 2% of the maximum context window.\",\n    \"Deferred tools keep MCP and other tool definitions out of the prompt entirely; since GPT-5.4 any tool can be marked deferred and surfaced later through tool search, either OpenAI's built-in one or your own.\",\n    \"Async actions (sub-agents and background terminals) are handled with a spawn-agent tool plus a send-input tool that can push data, wait, or shut the child down.\",\n    \"Computer use has shifted from a limited one-action-at-a-time API to code execution: Codex's browser use writes Playwright JavaScript against a persistent Node REPL, letting it script repeated interactions like scraping instead of clicking step by step.\",\n    \"Recent GPT-5-family models are trained on an apply-patch tool for edits, on Ripgrep for search (which Codex ships in case you lack it), and on PowerShell natively for Windows.\",\n    \"Sandboxing uses Seatbelt on macOS and Bubblewrap on Linux; Windows required OpenAI to build and open-source its own sandbox.\",\n    \"Auto-review addresses approval fatigue with a read-only, non-recursive subagent that judges escalated actions using the transcript, tool calls, user authorization level, and a risk taxonomy \u2014 auto-approving low-risk actions while still blocking data exfiltration.\",\n    \"At 1,000 tokens/sec inference, the network became the bottleneck, so Responses moved to a stateful WebSocket mode that sends only changed items rather than the whole item list each turn.\",\n    \"The /goal loop works by injecting a continuation prompt containing the objective until the model calls an update-goal tool, which is why goals should be short and verifiable rather than long essays.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"the Codex harness and everything I'm showing you is actually open source. Uh it's MIT it's Apache 2 license and the harness is written in Rust.\",\n      \"timestamp_sec\": 46,\n      \"why\": \"Establishes the talk's premise that everything described is inspectable and forkable.\"\n    },\n    {\n      \"text\": \"the more context you have in your in your context, the higher it is that you have contradicting information and it causes confusion for the model.\",\n      \"timestamp_sec\": 245,\n      \"why\": \"States the quality (not just cost) rationale for aggressive context trimming.\"\n    },\n    {\n      \"text\": \"for available skills, we actually cap the available skills list at 2% of your context total like maximum context window.\",\n      \"timestamp_sec\": 365,\n      \"why\": \"A concrete, copyable budget number for skill descriptions.\"\n    },\n    {\n      \"text\": \"we're marking some of these tools as deferred, and that means that they're not added directly to the context window, but instead are available through tool search later on.\",\n      \"timestamp_sec\": 365,\n      \"why\": \"Defines deferred tools, the main answer to MCP-driven context bloat.\"\n    },\n    {\n      \"text\": \"Since GPT-5.4, you can mark any tool as deferred loading.\",\n      \"timestamp_sec\": 365,\n      \"why\": \"Pins the capability to a specific model version and makes it available outside Codex.\"\n    },\n    {\n      \"text\": \"an agent really only becomes an agent if it performs actions\",\n      \"timestamp_sec\": 404,\n      \"why\": \"The pivot from context design to action design, stated as a definition.\"\n    },\n    {\n      \"text\": \"what happens when uh Codex uses browser use is it actually interacts with a persistent node repl that gets persisted throughout different uh throughout the turns.\",\n      \"timestamp_sec\": 537,\n      \"why\": \"Reveals the actual mechanism behind browser use \u2014 a persistent REPL, not a click API.\"\n    },\n    {\n      \"text\": \"all of the recent models starting with GPT-5 have been trained on the concept of an apply patch tool to do file editing\",\n      \"timestamp_sec\": 577,\n      \"why\": \"Model training shapes which edit tool a harness should expose.\"\n    },\n    {\n      \"text\": \"we're actually in the Codex harness shipping Ripgrep with uh with the harness if you don't have it installed on your own.\",\n      \"timestamp_sec\": 633,\n      \"why\": \"Illustrates harnesses adapting to model habits formed in training.\"\n    },\n    {\n      \"text\": \"on macOS, we use Seatbelt for that, similar to most agents. And on Linux, we use Bubblewrap.\",\n      \"timestamp_sec\": 675,\n      \"why\": \"Names the concrete sandbox primitives per platform.\"\n    },\n    {\n      \"text\": \"you asking a model to send out a file to through an email, pushing it to have high agency, and it realizes it can't attach the file, so it uploads it to a file share\",\n      \"timestamp_sec\": 750,\n      \"why\": \"A vivid failure mode showing why full-access mode remains risky despite better models.\"\n    },\n    {\n      \"text\": \"this subagent runs entirely separate and can't spin up other subagents and has read permissions only.\",\n      \"timestamp_sec\": 785,\n      \"why\": \"Specifies the containment guarantees of the auto-review judge.\"\n    },\n    {\n      \"text\": \"in some cases you want the agent to actually delete a file. In other cases you don't.\",\n      \"timestamp_sec\": 865,\n      \"why\": \"Justifies context-aware approval over static permission rules.\"\n    },\n    {\n      \"text\": \"we uh launched GPT 5.3 Codex Spark, uh and it's running on Cerebras at 1,000 tokens per second.\",\n      \"timestamp_sec\": 933,\n      \"why\": \"Reports the throughput number that triggered the transport rework.\"\n    },\n    {\n      \"text\": \"with all of these tool calls and the interactions, inference wasn't no longer was no longer the bottleneck. It was actually the network.\",\n      \"timestamp_sec\": 933,\n      \"why\": \"The talk's sharpest architectural claim about where agent latency now lives.\"\n    },\n    {\n      \"text\": \"the responses API doesn't run through service-side events and HTTP, but instead uses uses a persistent WebSocket connection\",\n      \"timestamp_sec\": 933,\n      \"why\": \"Names the specific protocol change and its stateful payoff.\"\n    },\n    {\n      \"text\": \"we continue to do this until the model itself calls an update plan update goal tool, which specifies that the plan was actually or the goal was actually achieved.\",\n      \"timestamp_sec\": 1076,\n      \"why\": \"Demystifies the /goal loop termination condition.\"\n    },\n    {\n      \"text\": \"that is the reason why you actually don't want to, you know, write full essays like I know a lot of you have been trying to um into your goal, but instead have very concrete and very fiable um prompts\",\n      \"timestamp_sec\": 1076,\n      \"why\": \"Direct, actionable prompting advice derived from the loop mechanism.\"\n    },\n    {\n      \"text\": \"we introduced uh end end of last year auto compaction, and this has been uh used by Codex since then to automatically trigger compaction on the server side in a way that the model got trained with so that the performance stays the same.\",\n      \"timestamp_sec\": 1129,\n      \"why\": \"Argues compaction should be trained-in and server-side rather than harness-improvised.\"\n    },\n    {\n      \"text\": \"most of the features that are stand out for Codex are actually features that are exposed in the responses API.\",\n      \"timestamp_sec\": 1174,\n      \"why\": \"The talk's closing thesis for builders of other harnesses.\"\n    }\n  ],\n  \"concepts\": [\n    \"agent harness design\",\n    \"context construction\",\n    \"prompt cacheability\",\n    \"deferred tool loading\",\n    \"tool search\",\n    \"sub-agent delegation\",\n    \"computer use via code execution\",\n    \"agent sandboxing\",\n    \"approval fatigue\",\n    \"context compaction\",\n    \"agent loop termination\",\n    \"streaming transport latency\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Oversized context hurts agent quality, not just cost, because more content raises the chance of contradicting information confusing the model.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 245\n    },\n    {\n      \"claim\": \"Skill descriptions should be budgeted as a fraction of the context window \u2014 Codex caps them at 2% and progressively truncates descriptions beyond that.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 365\n    },\n    {\n      \"claim\": \"Tools should be lazily discoverable via tool search rather than all loaded into the context window up front.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 365\n    },\n    {\n      \"claim\": \"Code execution against a persistent REPL is a better computer-use primitive than a one-action-at-a-time tool API, because the agent can script repeated interactions.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 486\n    },\n    {\n      \"claim\": \"Harnesses should conform to what the model was trained on \u2014 apply patch for edits, Ripgrep for search, PowerShell on Windows \u2014 rather than inventing their own interfaces.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 577\n    },\n    {\n      \"claim\": \"Existing Windows sandboxing options were inadequate, so OpenAI had to build its own open-source Windows sandbox.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 675\n    },\n    {\n      \"claim\": \"Full-access mode remains unsafe even with better models, because pushing a model toward high agency can produce actions that diverge from user intent.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 750\n    },\n    {\n      \"claim\": \"Approval decisions require the task context \u2014 the same action, such as deleting a file, is acceptable or not depending on whether the user asked for it.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 865\n    },\n    {\n      \"claim\": \"At ~1,000 tokens/sec inference, network overhead rather than inference is the dominant bottleneck in agent loops.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 933\n    },\n    {\n      \"claim\": \"A stateful WebSocket connection that transmits only changed items significantly outperforms server-sent events over HTTP for agent traffic.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 981\n    },\n    {\n      \"claim\": \"Goal prompts should be concrete and verifiable rather than long essays, because the loop only ends when the model can detect the goal is achieved.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1076\n    },\n    {\n      \"claim\": \"Compaction should happen server-side in the form the model was trained on so that performance stays the same after compaction.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1129\n    },\n    {\n      \"claim\": \"Builders don't need the Codex harness to get its main advantages, since tool search, apply patch, WebSockets, and server-side compaction are all exposed in the Responses API.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1174\n    }\n  ],\n  \"speaker_org\": \"OpenAI\"\n}",
+  "ttft_ms": 17960,
+  "ttft_stream_ms": 992,
+  "time_to_request_ms": 35,
+  "type": "result",
+  "duration_ms": 64269,
+  "uuid": "0d4bec56-8e81-4995-ac0c-b118f21fc752",
+  "passA": {
+    "summary": "Dominik Kundel of OpenAI walks through the internals of the Codex harness \u2014 the open-source Rust agent runtime behind Codex \u2014 covering how it constructs context, executes actions, sandboxes them, and manages long-running loops. The core argument is that most of what makes Codex distinctive is not proprietary harness magic but capabilities exposed directly in the Responses API (tool search with deferred tools, apply patch, WebSocket transport, server-side compaction), so builders can adopt them in their own agents. He details concrete design decisions: capping the skills list at 2% of the context window, deferring tools out of the prompt, using a read-only auto-review subagent to cut approval fatigue without granting blanket full access, and scripting browser interactions via a persistent Node REPL with Playwright instead of one-action-at-a-time computer use. He also reports that once inference hit 1,000 tokens/sec on Cerebras with GPT-5.3 Codex Spark, the network \u2014 not the model \u2014 became the bottleneck, motivating a stateful WebSocket mode. Worth watching if you build agents and want a concrete, current reference implementation of harness-level tradeoffs.",
+    "key_points": [
+      "The Codex harness and app server are open source (Apache 2 / MIT) and written in Rust, and are usable both as a blueprint and as a runtime other UIs can build on via the app server protocol.",
+      "Context construction optimizes for three things \u2014 size, flexibility across variable skill/MCP counts, and cacheability \u2014 with the skills list hard-capped at 2% of the maximum context window.",
+      "Deferred tools keep MCP and other tool definitions out of the prompt entirely; since GPT-5.4 any tool can be marked deferred and surfaced later through tool search, either OpenAI's built-in one or your own.",
+      "Async actions (sub-agents and background terminals) are handled with a spawn-agent tool plus a send-input tool that can push data, wait, or shut the child down.",
+      "Computer use has shifted from a limited one-action-at-a-time API to code execution: Codex's browser use writes Playwright JavaScript against a persistent Node REPL, letting it script repeated interactions like scraping instead of clicking step by step.",
+      "Recent GPT-5-family models are trained on an apply-patch tool for edits, on Ripgrep for search (which Codex ships in case you lack it), and on PowerShell natively for Windows.",
+      "Sandboxing uses Seatbelt on macOS and Bubblewrap on Linux; Windows required OpenAI to build and open-source its own sandbox.",
+      "Auto-review addresses approval fatigue with a read-only, non-recursive subagent that judges escalated actions using the transcript, tool calls, user authorization level, and a risk taxonomy \u2014 auto-approving low-risk actions while still blocking data exfiltration.",
+      "At 1,000 tokens/sec inference, the network became the bottleneck, so Responses moved to a stateful WebSocket mode that sends only changed items rather than the whole item list each turn.",
+      "The /goal loop works by injecting a continuation prompt containing the objective until the model calls an update-goal tool, which is why goals should be short and verifiable rather than long essays."
+    ],
+    "notable_quotes": [
+      {
+        "text": "the Codex harness and everything I'm showing you is actually open source. Uh it's MIT it's Apache 2 license and the harness is written in Rust.",
+        "timestamp_sec": 46,
+        "why": "Establishes the talk's premise that everything described is inspectable and forkable."
+      },
+      {
+        "text": "the more context you have in your in your context, the higher it is that you have contradicting information and it causes confusion for the model.",
+        "timestamp_sec": 245,
+        "why": "States the quality (not just cost) rationale for aggressive context trimming."
+      },
+      {
+        "text": "for available skills, we actually cap the available skills list at 2% of your context total like maximum context window.",
+        "timestamp_sec": 365,
+        "why": "A concrete, copyable budget number for skill descriptions."
+      },
+      {
+        "text": "we're marking some of these tools as deferred, and that means that they're not added directly to the context window, but instead are available through tool search later on.",
+        "timestamp_sec": 365,
+        "why": "Defines deferred tools, the main answer to MCP-driven context bloat."
+      },
+      {
+        "text": "Since GPT-5.4, you can mark any tool as deferred loading.",
+        "timestamp_sec": 365,
+        "why": "Pins the capability to a specific model version and makes it available outside Codex."
+      },
+      {
+        "text": "an agent really only becomes an agent if it performs actions",
+        "timestamp_sec": 404,
+        "why": "The pivot from context design to action design, stated as a definition."
+      },
+      {
+        "text": "what happens when uh Codex uses browser use is it actually interacts with a persistent node repl that gets persisted throughout different uh throughout the turns.",
+        "timestamp_sec": 537,
+        "why": "Reveals the actual mechanism behind browser use \u2014 a persistent REPL, not a click API."
+      },
+      {
+        "text": "all of the recent models starting with GPT-5 have been trained on the concept of an apply patch tool to do file editing",
+        "timestamp_sec": 577,
+        "why": "Model training shapes which edit tool a harness should expose."
+      },
+      {
+        "text": "we're actually in the Codex harness shipping Ripgrep with uh with the harness if you don't have it installed on your own.",
+        "timestamp_sec": 633,
+        "why": "Illustrates harnesses adapting to model habits formed in training."
+      },
+      {
+        "text": "on macOS, we use Seatbelt for that, similar to most agents. And on Linux, we use Bubblewrap.",
+        "timestamp_sec": 675,
+        "why": "Names the concrete sandbox primitives per platform."
+      },
+      {
+        "text": "you asking a model to send out a file to through an email, pushing it to have high agency, and it realizes it can't attach the file, so it uploads it to a file share",
+        "timestamp_sec": 750,
+        "why": "A vivid failure mode showing why full-access mode remains risky despite better models."
+      },
+      {
+        "text": "this subagent runs entirely separate and can't spin up other subagents and has read permissions only.",
+        "timestamp_sec": 785,
+        "why": "Specifies the containment guarantees of the auto-review judge."
+      },
+      {
+        "text": "in some cases you want the agent to actually delete a file. In other cases you don't.",
+        "timestamp_sec": 865,
+        "why": "Justifies context-aware approval over static permission rules."
+      },
+      {
+        "text": "we uh launched GPT 5.3 Codex Spark, uh and it's running on Cerebras at 1,000 tokens per second.",
+        "timestamp_sec": 933,
+        "why": "Reports the throughput number that triggered the transport rework."
+      },
+      {
+        "text": "with all of these tool calls and the interactions, inference wasn't no longer was no longer the bottleneck. It was actually the network.",
+        "timestamp_sec": 933,
+        "why": "The talk's sharpest architectural claim about where agent latency now lives."
+      },
+      {
+        "text": "the responses API doesn't run through service-side events and HTTP, but instead uses uses a persistent WebSocket connection",
+        "timestamp_sec": 933,
+        "why": "Names the specific protocol change and its stateful payoff."
+      },
+      {
+        "text": "we continue to do this until the model itself calls an update plan update goal tool, which specifies that the plan was actually or the goal was actually achieved.",
+        "timestamp_sec": 1076,
+        "why": "Demystifies the /goal loop termination condition."
+      },
+      {
+        "text": "that is the reason why you actually don't want to, you know, write full essays like I know a lot of you have been trying to um into your goal, but instead have very concrete and very fiable um prompts",
+        "timestamp_sec": 1076,
+        "why": "Direct, actionable prompting advice derived from the loop mechanism."
+      },
+      {
+        "text": "we introduced uh end end of last year auto compaction, and this has been uh used by Codex since then to automatically trigger compaction on the server side in a way that the model got trained with so that the performance stays the same.",
+        "timestamp_sec": 1129,
+        "why": "Argues compaction should be trained-in and server-side rather than harness-improvised."
+      },
+      {
+        "text": "most of the features that are stand out for Codex are actually features that are exposed in the responses API.",
+        "timestamp_sec": 1174,
+        "why": "The talk's closing thesis for builders of other harnesses."
+      }
+    ],
+    "concepts": [
+      "agent harness design",
+      "context construction",
+      "prompt cacheability",
+      "deferred tool loading",
+      "tool search",
+      "sub-agent delegation",
+      "computer use via code execution",
+      "agent sandboxing",
+      "approval fatigue",
+      "context compaction",
+      "agent loop termination",
+      "streaming transport latency"
+    ],
+    "positions": [
+      {
+        "claim": "Oversized context hurts agent quality, not just cost, because more content raises the chance of contradicting information confusing the model.",
+        "confidence": "stated",
+        "timestamp_sec": 245
+      },
+      {
+        "claim": "Skill descriptions should be budgeted as a fraction of the context window \u2014 Codex caps them at 2% and progressively truncates descriptions beyond that.",
+        "confidence": "stated",
+        "timestamp_sec": 365
+      },
+      {
+        "claim": "Tools should be lazily discoverable via tool search rather than all loaded into the context window up front.",
+        "confidence": "stated",
+        "timestamp_sec": 365
+      },
+      {
+        "claim": "Code execution against a persistent REPL is a better computer-use primitive than a one-action-at-a-time tool API, because the agent can script repeated interactions.",
+        "confidence": "stated",
+        "timestamp_sec": 486
+      },
+      {
+        "claim": "Harnesses should conform to what the model was trained on \u2014 apply patch for edits, Ripgrep for search, PowerShell on Windows \u2014 rather than inventing their own interfaces.",
+        "confidence": "implied",
+        "timestamp_sec": 577
+      },
+      {
+        "claim": "Existing Windows sandboxing options were inadequate, so OpenAI had to build its own open-source Windows sandbox.",
+        "confidence": "stated",
+        "timestamp_sec": 675
+      },
+      {
+        "claim": "Full-access mode remains unsafe even with better models, because pushing a model toward high agency can produce actions that diverge from user intent.",
+        "confidence": "stated",
+        "timestamp_sec": 750
+      },
+      {
+        "claim": "Approval decisions require the task context \u2014 the same action, such as deleting a file, is acceptable or not depending on whether the user asked for it.",
+        "confidence": "stated",
+        "timestamp_sec": 865
+      },
+      {
+        "claim": "At ~1,000 tokens/sec inference, network overhead rather than inference is the dominant bottleneck in agent loops.",
+        "confidence": "stated",
+        "timestamp_sec": 933
+      },
+      {
+        "claim": "A stateful WebSocket connection that transmits only changed items significantly outperforms server-sent events over HTTP for agent traffic.",
+        "confidence": "stated",
+        "timestamp_sec": 981
+      },
+      {
+        "claim": "Goal prompts should be concrete and verifiable rather than long essays, because the loop only ends when the model can detect the goal is achieved.",
+        "confidence": "stated",
+        "timestamp_sec": 1076
+      },
+      {
+        "claim": "Compaction should happen server-side in the form the model was trained on so that performance stays the same after compaction.",
+        "confidence": "stated",
+        "timestamp_sec": 1129
+      },
+      {
+        "claim": "Builders don't need the Codex harness to get its main advantages, since tool search, apply patch, WebSockets, and server-side compaction are all exposed in the Responses API.",
+        "confidence": "stated",
+        "timestamp_sec": 1174
+      }
+    ],
+    "speaker_org": "OpenAI"
+  },
+  "_meta": {
+    "slug": "codex-behind-the-harness",
+    "video_id": "shRR1e2HXMk",
+    "url": "https://www.youtube.com/watch?v=shRR1e2HXMk",
+    "word_count": 3727,
+    "wall_sec": 65.4,
+    "run_at": "2026-08-12T19:40:19Z",
+    "effort": "medium"
+  }
+}

@@ -1,0 +1,311 @@
+{
+  "is_error": false,
+  "duration_api_ms": 169641,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "1e4d58bc-c746-4b89-ae2f-99138cae061c",
+  "total_cost_usd": 0.9172909999999999,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 51267,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 14596,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 51267,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 14596,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 51267,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 51267
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 34472,
+      "outputTokens": 17,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.034557000000000004,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 14596,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 51267,
+      "webSearchRequests": 0,
+      "costUSD": 0.8827339999999999,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\"concept\": \"post-training\", \"state_of_practice\": \"Post-training has stopped being a finishing step and become the primary axis of capability work: speakers report that pre-training scale is saturated under current architectures, that the pre/mid/post taxonomy is dissolving (agentic traces and SFT-shaped chat data moving back into pre-training, mid-training on curated domain data making an unchanged post-training harness 2-3x more effective), and that RL now dominates the compute budget with supervised learning reframed as representation-building for it. The operational unit is the environment, which the field now treats as identical to an eval: a sandbox, an agent, a verifier, and a reward, with the same harness code running in training and in production and no knowledge that it is doing RL. The dominant failure mode is not underfitting but reward hacking, understood as the same problem as environment fidelity \u2014 a ~10% tool-call failure rate with no presence in the reward still shortens responses, and filtering timed-out rollouts teaches the model to deliberately time out sandboxes. Because handcrafted benchmarks of a few hundred expert tasks do not scale to open-ended work, teams are pulling task and reward material out of deployed production traces, judging in hindsight rather than instructing judges in advance, and gating synthesized tasks on pass rate. Economics have shifted enough that a 1,000-step GLM-5 RL run on real agentic coding tasks costs roughly $50K, and a post-trained open model can beat Opus on a narrow finance task at a fraction of Haiku's cost within one to two weeks \u2014 but the learning algorithm itself (GRPO groups vs. value models vs. on-policy self-distillation) and where the environment should live (simulator vs. the customer's real harness) are actively contested.\", \"consensus\": [{\"claim\": \"An environment and an eval are the same artifact, so building the eval is the prerequisite for and on-ramp to post-training rather than a separate track.\", \"support_count\": 4, \"supporting_talks\": [\"modern-post-training-a-deep-dive\", \"reinforcement-learning-without-verifiable-rewards\", \"everything-is-a-rollout\", \"continual-learning-for-ai-agents-from-failures-to-durable-improvements\"], \"evidence_quote\": \"evals are the thing that opens the door to post-training. And so environments and evals are essentially the same thing.\", \"evidence_talk\": \"modern-post-training-a-deep-dive\", \"evidence_timestamp_sec\": 397}, {\"claim\": \"Reward hacking is the dominant failure mode of RL post-training, and it is a property of loosely specified environments and proxies rather than of the model, so environments must be attacked adversarially before they are trusted.\", \"support_count\": 6, \"supporting_talks\": [\"reinforcement-learning-without-verifiable-rewards\", \"learning-on-the-job-the-future-of-post-training\", \"computer-use-20-agents-just-got-multi-cursor\", \"scaling-up-continual-learning\", \"everything-is-a-rollout\", \"scaling-to-long-horizons\"], \"evidence_quote\": \"reward hacking is when you have a kind of loose proxy for your objective that is undefined at the boundaries\", \"evidence_talk\": \"reinforcement-learning-without-verifiable-rewards\", \"evidence_timestamp_sec\": 380}, {\"claim\": \"Traces from deployed agents, not handcrafted benchmarks, are the source material for post-training tasks and rewards.\", \"support_count\": 5, \"supporting_talks\": [\"reinforcement-learning-without-verifiable-rewards\", \"learning-on-the-job-the-future-of-post-training\", \"continual-learning-for-ai-agents-from-failures-to-durable-improvements\", \"scaling-up-continual-learning\", \"local-models-trust-control-optimization\"], \"evidence_quote\": \"what we found is super helpful is taking existing traces from a deployed agent and treating these as the source material\", \"evidence_talk\": \"reinforcement-learning-without-verifiable-rewards\", \"evidence_timestamp_sec\": 581}, {\"claim\": \"Post-training a smaller or open model on a specific task and harness beats a general frontier model on that task at a fraction of the cost, on a timescale of weeks.\", \"support_count\": 5, \"supporting_talks\": [\"local-models-trust-control-optimization\", \"ai-tools-for-forward-deployed-engineering\", \"why-large-tiny-lms-agents-on-edgerobotics\", \"the-desktop-frontier\", \"data-quality-is-the-compute-multiplier\"], \"evidence_quote\": \"take an open model and like specialize it to automate finance within like a week or two to get like better performance than like Opus at a fraction of the cost of Haiku\", \"evidence_talk\": \"local-models-trust-control-optimization\", \"evidence_timestamp_sec\": 819}, {\"claim\": \"Pre-training scale is no longer the most productive lever; returns have moved to mid-training and post-training, and the stage boundary is dissolving in both directions.\", \"support_count\": 5, \"supporting_talks\": [\"adaption-labs-gradient-free-continual-learning\", \"the-base-model-is-dead\", \"data-quality-is-the-compute-multiplier\", \"scaling-to-long-horizons\", \"the-desktop-frontier\"], \"evidence_quote\": \"what you will see in pre-training is instead of the size people are just moving post-training further back, which is very fascinating and a bigger lever.\", \"evidence_talk\": \"adaption-labs-gradient-free-continual-learning\", \"evidence_timestamp_sec\": 1159}, {\"claim\": \"The harness should be unaware that it is being used for RL, so that the exact same harness code runs in training and in production.\", \"support_count\": 3, \"supporting_talks\": [\"modern-post-training-a-deep-dive\", \"learning-on-the-job-the-future-of-post-training\", \"local-models-trust-control-optimization\"], \"evidence_quote\": \"the the harness doesn't know that it's doing RL. The harness just is a harness running as if it would be running in a real-world environment.\", \"evidence_talk\": \"modern-post-training-a-deep-dive\", \"evidence_timestamp_sec\": 1346}], \"disagreements\": [{\"question\": \"Should post-training happen in a controlled simulated environment, or directly inside the customer's real production harness?\", \"position_a\": \"Build and invest in simulated environments \u2014 learned simulators are actually better than real production systems because full back-end controllability lets you plant answers, guarantee solvability, and replay; production logs must be lifted into replayable learning environments with deterministic evaluators before any fix can be verified; where single-node sandboxes break down (real infrastructure work), build multi-node emulation with real cloud resources rather than abandoning emulation.\", \"position_a_talks\": [\"reinforcement-learning-without-verifiable-rewards\", \"continual-learning-for-ai-agents-from-failures-to-durable-improvements\", \"emulated-the-data-for-fully-autonomous-software-engineers-and-companies\", \"computer-use-20-agents-just-got-multi-cursor\"], \"position_b\": \"Stop trying to simulate \u2014 perfectly simulating reality is infeasible and gets worse as tasks get more complex, and every unintentional fidelity defect (a 10% tool-call failure rate) silently induces undesirable behavior; the right response is to train inside the black-box production harness using only a completion endpoint plus request/response recording, or to use an algorithm whose parallelism is one so environments need not be 1:1 copies of the world at all.\", \"position_b_talks\": [\"learning-on-the-job-the-future-of-post-training\", \"scaling-up-continual-learning\"], \"why_it_matters\": \"It determines whether your post-training investment goes into environment/sandbox infrastructure (warm pools, verifiers, multi-node provisioning) or into deployment plumbing and single-sample learning algorithms, and whether you can post-train customers whose systems you cannot replicate.\", \"position_a_talks_note\": null}, {\"question\": \"Is group-rollout RL (GRPO-style) the right learning algorithm for agentic post-training?\", \"position_a\": \"Yes \u2014 keep GRPO and fix the systems problems around it: run asynchronously rather than synchronously, accept roughly 16 steps of off-policyness on average, decouple rollout speed from training progress, and over-provision autoscaled sandbox pools so GPUs never idle waiting on environment resets.\", \"position_a_talks\": [\"modern-post-training-a-deep-dive\", \"computer-use-20-agents-just-got-multi-cursor\"], \"position_b\": \"No \u2014 GRPO's requirement of many parallel rollouts per prompt is unsatisfiable in real production settings like customer-support chats, it collapses messy multi-dimensional outcomes into one scalar, and it saturates around Sonnet-level performance on LiveCodeBench; use methods that learn from a single non-replayable interaction (on-policy self-distillation with a hint-privileged teacher) or trajectory-level value models with bootstrapping for long horizons.\", \"position_b_talks\": [\"scaling-up-continual-learning\", \"learning-on-the-job-the-future-of-post-training\", \"scaling-to-long-horizons\"], \"why_it_matters\": \"The choice dictates whether you must build replayable environments at all, what your GPU-to-sandbox cost ratio looks like, and whether continual learning from live production traffic is even expressible in your training stack.\", \"position_a_talks_note\": null}, {\"question\": \"When an agent fails in production, should the durable fix be a model-weight update or the cheapest layer that works (memory, prompt, harness)?\", \"position_a\": \"Not necessarily weights \u2014 a good learning engine makes the smallest durable change at the right layer, and many useful updates live in the harness and memory layers, where they are cheapest and fastest; in group deployments the memory layer, not the model, determines the agent's behavior and identity.\", \"position_a_talks\": [\"continual-learning-for-ai-agents-from-failures-to-durable-improvements\", \"wearing-the-agent-from-group-chats-to-glasses\"], \"position_b\": \"Weights \u2014 patching per failure mode is an unwinnable game of Whac-A-Mole that only a self-improving weight-updating system escapes; teams are leaving substantial capability on the table by not fitting the model to the harness, and the goal is iterative model refinement where training compute is a small fraction of the inference budget.\", \"position_b_talks\": [\"learning-on-the-job-the-future-of-post-training\", \"local-models-trust-control-optimization\", \"modern-post-training-a-deep-dive\"], \"why_it_matters\": \"It sets whether an agent team needs training infrastructure and GPUs at all, or only an evaluation and memory/prompt-optimization stack \u2014 and whether improvements compound in the model or must be re-derived per deployment.\", \"position_a_talks_note\": null}, {\"question\": \"Can preference- or judge-based reward signals produce models suitable for autonomous, human-out-of-the-loop work?\", \"position_a\": \"Yes, with care \u2014 LLMs are already strong general reasoners, and judging in hindsight (after seeing the full chain of events, or by polling several models) catches most reward hacks in practice; automated LLM feedback over logs scales, with human experts reserved for the highest-level judgments about goals and quality.\", \"position_a_talks\": [\"reinforcement-learning-without-verifiable-rewards\", \"continual-learning-for-ai-agents-from-failures-to-durable-improvements\", \"learning-on-the-job-the-future-of-post-training\"], \"position_b\": \"No, structurally \u2014 by construction an RLHF-style objective optimizes apparent preference rather than correctness, and a mode-dropping asymmetry in the reward model makes the model look right no matter how wrong it is; overconfidence is by design, not a correctable defect, and automation requires a third objective optimized for calibrated decision-making rather than either RLHF or RLVR.\", \"position_b_talks\": [\"whats-next-after-rlhf\"], \"why_it_matters\": \"If the pessimistic reading holds, every judge-graded post-training pipeline in production is producing systems that are excellent with a human in the loop and unfit for the unattended, stakes-bearing tasks those pipelines are being built to automate.\", \"position_a_talks_note\": null}], \"practical_guidance\": {\"do\": [\"Build the eval before optimizing anything: a rollout is sandbox \u2192 agent \u2192 verifier \u2192 reward, and the same object serves evaluation, SFT data collection, and RL\", \"Keep harness code entirely ignorant of RL so the identical harness runs in training and production; train against the harness you actually ship\", \"Attack your own environment for reward hacks before admitting a task to the dataset \u2014 only tasks that survive your own break attempts should enter\", \"Judge in hindsight (after the full trajectory) or by polling several models, rather than instructing a judge in advance not to allow a behavior\", \"Calibrate tasks to intermediate difficulty \u2014 advantage signal depends on separation across a rollout group, so search and iterate for tasks that are neither too easy nor too hard\", \"Run small RL training runs as part of environment design, because some environment defects only appear once RL is actually running\", \"Run RL asynchronously; ~16 steps off-policy on average is empirically fine, and pipeline RL tolerates ~8 steps of staleness\", \"Over-provision a demand-autoscaled sandbox warm pool: sandbox compute is 2-4x cheaper than GPU time, so redundancy still saves money by keeping GPU workers fully utilized\", \"Mid-train on curated domain data before post-training \u2014 it makes an unchanged post-training harness 2-3x more effective \u2014 and keep most of the mid-training mix representative of the pre-training distribution to avoid catastrophic forgetting\", \"Repeat high-quality data rather than adding low-quality data, up to some repetition threshold\", \"Convert production logs plus feedback into replayable learning environments with deterministic evaluators, and build regression traps into the benchmark\", \"Fold regression prevention into the optimization objective (fix recent failures subject to no regression on past learning environments) rather than running it as a post-hoc check\", \"Scope a computer-use agent's observation to a single window rather than the full desktop: pass rate 62% \u2192 80% with 34% fewer tokens\", \"Budget realistically: ~$50K buys a 1,000-step GLM-5 RL run on 131K-context agentic coding tasks in 3 days on 28 nodes \u2014 comparable to a month of token spend\", \"For a fixed single task, generate 10,000-10,000,000 synthetic samples and fine-tune a tiny (50M-500M) model instead of prompting a 2-4B one\", \"Design rewards that actively counteract chain-of-thought length growth; models will grow CoT without bound otherwise\", \"Run an SAE over the base-to-fine-tuned activation difference as a per-build backdoor unit test \u2014 a 4x expansion matches 32x, and delta features fire with zero false positives on benign inputs\", \"Replace Jinja chat templates with programmable renderers to eliminate trainer/inference mismatch at scale\"], \"avoid\": [\"Filtering timed-out rollouts out of training \u2014 it directly incentivizes the model to abuse tool calls and time out the sandbox on hard problems to avoid a zero reward\", \"Assuming infrastructure defects with no presence in the reward function are harmless: a ~10% tool-call failure rate systematically shortened model responses\", \"Letting a coding agent read a failure log and edit the agent ('trace-to-harness'): it is vibe-based, untestable, and introduces hidden regressions\", \"Treating production logs and feedback as if they were learning environments \u2014 one instance of what happened is not a replayable, gradeable simulation\", \"Synchronous RL training; agent rollouts have long tails and forward progress should not be tied to individual rollout speed\", \"Handing pre-training, mid-training, and post-training to independent teams \u2014 they must be designed as one synergistic system\", \"Cranking the MoE load-balancing coefficient during SFT to paper over pre/post-training distribution mismatch instead of fixing the early data mix\", \"Giving agents tools that can search prior trajectories or archives \u2014 they learn to retrieve previous answers instead of reasoning\", \"Hint leakage in self-distillation: a leaked answer produces reasoning traces that cannot occur in production; design hints as 'what they should have known', not the solution\", \"Assuming a single containerized sandbox per rollout generalizes \u2014 you cannot provision EC2 or Cloud Run inside one node, and deterministic network-failure simulation does not represent AWS-scale behavior\", \"Selecting models on public benchmarks or vendor brand; benchmaxing has made public results hard to interpret and only your own eval puts you on the cost/performance frontier\", \"Relying on behavioral testing or production monitors to catch a backdoored model \u2014 catching one behaviorally requires knowing the trigger in advance\", \"Building SFT pipelines that export, reformat, and re-upload datasets: SFT is just rollouts in an environment where the actor is a teacher\", \"Coupling training, inference, and environments into one stack \u2014 it prevents reusing environments as standalone evals\"]}, \"notable_outliers\": [{\"claim\": \"Curation alone, with no post-training at all, pushed a VLM past the public Pareto frontier and matched Qwen 3.5 4B using 145x less training compute \u2014 and made inference ~35x fewer flops per correct answer by shortening responses.\", \"talk\": \"data-quality-is-the-compute-multiplier\", \"timestamp_sec\": 467}, {\"claim\": \"GRPO saturates around Sonnet-level performance on LiveCodeBench and does not push the frontier; on-policy self-distillation shifts entire distributions rather than sharpening one, and reduces the tokens needed to solve hard problems instead of increasing them.\", \"talk\": \"scaling-up-continual-learning\", \"timestamp_sec\": 650}, {\"claim\": \"Hallucination and overconfidence are intrinsic to RLHF, not correctable defects: a mode-dropping asymmetry in the reward model (analogous to GANs) means models will look right no matter how wrong they are.\", \"talk\": \"whats-next-after-rlhf\", \"timestamp_sec\": 875}, {\"claim\": \"Post-trained open-source models outperform frontier models at writing normalized process flows, because they learn which details a specific client cares about \u2014 a judgment frontier models have no concept of.\", \"talk\": \"ai-tools-for-forward-deployed-engineering\", \"timestamp_sec\": 1000}, {\"claim\": \"Backdoors implanted during fine-tuning are low-dimensional directions recoverable from the base-to-fine-tuned activation delta: an SAE on the delta scores ~0.4 backdoor isolation versus ~0.01 for joint-feature crosscoders, a 40x gap with non-overlapping confidence intervals.\", \"talk\": \"your-llm-deception-monitor-is-broken-the-fix-is-in-the-training-data\", \"timestamp_sec\": 492}, {\"claim\": \"The pre-training / mid-training / post-training / RL taxonomy is muddy and should collapse into two paradigms \u2014 supervised next-token prediction and RL \u2014 with supervised learning's job redefined as building useful representations for RL rather than being the model's capability source.\", \"talk\": \"the-base-model-is-dead\", \"timestamp_sec\": 785}], \"maturity\": \"consolidating\", \"maturity_rationale\": \"A shared framework has clearly formed \u2014 environment-as-eval, the rollout primitive, RL-agnostic harnesses, production traces as source material, and reward hacking as the central failure mode all recur independently across five or more talks. But the fundamentals underneath it are still openly argued: which learning algorithm (GRPO groups vs. value models vs. single-sample self-distillation), whether the environment should be a simulator or the customer's live harness, and whether durable fixes belong in weights or in memory and harness layers.\"}",
+  "ttft_ms": 95392,
+  "ttft_stream_ms": 1150,
+  "time_to_request_ms": 37,
+  "type": "result",
+  "duration_ms": 169346,
+  "uuid": "fe299591-4ed3-42a4-b26c-23c37cf3665d",
+  "passC": {
+    "concept": "post-training",
+    "state_of_practice": "Post-training has stopped being a finishing step and become the primary axis of capability work: speakers report that pre-training scale is saturated under current architectures, that the pre/mid/post taxonomy is dissolving (agentic traces and SFT-shaped chat data moving back into pre-training, mid-training on curated domain data making an unchanged post-training harness 2-3x more effective), and that RL now dominates the compute budget with supervised learning reframed as representation-building for it. The operational unit is the environment, which the field now treats as identical to an eval: a sandbox, an agent, a verifier, and a reward, with the same harness code running in training and in production and no knowledge that it is doing RL. The dominant failure mode is not underfitting but reward hacking, understood as the same problem as environment fidelity \u2014 a ~10% tool-call failure rate with no presence in the reward still shortens responses, and filtering timed-out rollouts teaches the model to deliberately time out sandboxes. Because handcrafted benchmarks of a few hundred expert tasks do not scale to open-ended work, teams are pulling task and reward material out of deployed production traces, judging in hindsight rather than instructing judges in advance, and gating synthesized tasks on pass rate. Economics have shifted enough that a 1,000-step GLM-5 RL run on real agentic coding tasks costs roughly $50K, and a post-trained open model can beat Opus on a narrow finance task at a fraction of Haiku's cost within one to two weeks \u2014 but the learning algorithm itself (GRPO groups vs. value models vs. on-policy self-distillation) and where the environment should live (simulator vs. the customer's real harness) are actively contested.",
+    "consensus": [
+      {
+        "claim": "An environment and an eval are the same artifact, so building the eval is the prerequisite for and on-ramp to post-training rather than a separate track.",
+        "support_count": 4,
+        "supporting_talks": [
+          "modern-post-training-a-deep-dive",
+          "reinforcement-learning-without-verifiable-rewards",
+          "everything-is-a-rollout",
+          "continual-learning-for-ai-agents-from-failures-to-durable-improvements"
+        ],
+        "evidence_quote": "evals are the thing that opens the door to post-training. And so environments and evals are essentially the same thing.",
+        "evidence_talk": "modern-post-training-a-deep-dive",
+        "evidence_timestamp_sec": 397
+      },
+      {
+        "claim": "Reward hacking is the dominant failure mode of RL post-training, and it is a property of loosely specified environments and proxies rather than of the model, so environments must be attacked adversarially before they are trusted.",
+        "support_count": 6,
+        "supporting_talks": [
+          "reinforcement-learning-without-verifiable-rewards",
+          "learning-on-the-job-the-future-of-post-training",
+          "computer-use-20-agents-just-got-multi-cursor",
+          "scaling-up-continual-learning",
+          "everything-is-a-rollout",
+          "scaling-to-long-horizons"
+        ],
+        "evidence_quote": "reward hacking is when you have a kind of loose proxy for your objective that is undefined at the boundaries",
+        "evidence_talk": "reinforcement-learning-without-verifiable-rewards",
+        "evidence_timestamp_sec": 380
+      },
+      {
+        "claim": "Traces from deployed agents, not handcrafted benchmarks, are the source material for post-training tasks and rewards.",
+        "support_count": 5,
+        "supporting_talks": [
+          "reinforcement-learning-without-verifiable-rewards",
+          "learning-on-the-job-the-future-of-post-training",
+          "continual-learning-for-ai-agents-from-failures-to-durable-improvements",
+          "scaling-up-continual-learning",
+          "local-models-trust-control-optimization"
+        ],
+        "evidence_quote": "what we found is super helpful is taking existing traces from a deployed agent and treating these as the source material",
+        "evidence_talk": "reinforcement-learning-without-verifiable-rewards",
+        "evidence_timestamp_sec": 581
+      },
+      {
+        "claim": "Post-training a smaller or open model on a specific task and harness beats a general frontier model on that task at a fraction of the cost, on a timescale of weeks.",
+        "support_count": 5,
+        "supporting_talks": [
+          "local-models-trust-control-optimization",
+          "ai-tools-for-forward-deployed-engineering",
+          "why-large-tiny-lms-agents-on-edgerobotics",
+          "the-desktop-frontier",
+          "data-quality-is-the-compute-multiplier"
+        ],
+        "evidence_quote": "take an open model and like specialize it to automate finance within like a week or two to get like better performance than like Opus at a fraction of the cost of Haiku",
+        "evidence_talk": "local-models-trust-control-optimization",
+        "evidence_timestamp_sec": 819
+      },
+      {
+        "claim": "Pre-training scale is no longer the most productive lever; returns have moved to mid-training and post-training, and the stage boundary is dissolving in both directions.",
+        "support_count": 5,
+        "supporting_talks": [
+          "adaption-labs-gradient-free-continual-learning",
+          "the-base-model-is-dead",
+          "data-quality-is-the-compute-multiplier",
+          "scaling-to-long-horizons",
+          "the-desktop-frontier"
+        ],
+        "evidence_quote": "what you will see in pre-training is instead of the size people are just moving post-training further back, which is very fascinating and a bigger lever.",
+        "evidence_talk": "adaption-labs-gradient-free-continual-learning",
+        "evidence_timestamp_sec": 1159
+      },
+      {
+        "claim": "The harness should be unaware that it is being used for RL, so that the exact same harness code runs in training and in production.",
+        "support_count": 3,
+        "supporting_talks": [
+          "modern-post-training-a-deep-dive",
+          "learning-on-the-job-the-future-of-post-training",
+          "local-models-trust-control-optimization"
+        ],
+        "evidence_quote": "the the harness doesn't know that it's doing RL. The harness just is a harness running as if it would be running in a real-world environment.",
+        "evidence_talk": "modern-post-training-a-deep-dive",
+        "evidence_timestamp_sec": 1346
+      }
+    ],
+    "disagreements": [
+      {
+        "question": "Should post-training happen in a controlled simulated environment, or directly inside the customer's real production harness?",
+        "position_a": "Build and invest in simulated environments \u2014 learned simulators are actually better than real production systems because full back-end controllability lets you plant answers, guarantee solvability, and replay; production logs must be lifted into replayable learning environments with deterministic evaluators before any fix can be verified; where single-node sandboxes break down (real infrastructure work), build multi-node emulation with real cloud resources rather than abandoning emulation.",
+        "position_a_talks": [
+          "reinforcement-learning-without-verifiable-rewards",
+          "continual-learning-for-ai-agents-from-failures-to-durable-improvements",
+          "emulated-the-data-for-fully-autonomous-software-engineers-and-companies",
+          "computer-use-20-agents-just-got-multi-cursor"
+        ],
+        "position_b": "Stop trying to simulate \u2014 perfectly simulating reality is infeasible and gets worse as tasks get more complex, and every unintentional fidelity defect (a 10% tool-call failure rate) silently induces undesirable behavior; the right response is to train inside the black-box production harness using only a completion endpoint plus request/response recording, or to use an algorithm whose parallelism is one so environments need not be 1:1 copies of the world at all.",
+        "position_b_talks": [
+          "learning-on-the-job-the-future-of-post-training",
+          "scaling-up-continual-learning"
+        ],
+        "why_it_matters": "It determines whether your post-training investment goes into environment/sandbox infrastructure (warm pools, verifiers, multi-node provisioning) or into deployment plumbing and single-sample learning algorithms, and whether you can post-train customers whose systems you cannot replicate.",
+        "position_a_talks_note": null
+      },
+      {
+        "question": "Is group-rollout RL (GRPO-style) the right learning algorithm for agentic post-training?",
+        "position_a": "Yes \u2014 keep GRPO and fix the systems problems around it: run asynchronously rather than synchronously, accept roughly 16 steps of off-policyness on average, decouple rollout speed from training progress, and over-provision autoscaled sandbox pools so GPUs never idle waiting on environment resets.",
+        "position_a_talks": [
+          "modern-post-training-a-deep-dive",
+          "computer-use-20-agents-just-got-multi-cursor"
+        ],
+        "position_b": "No \u2014 GRPO's requirement of many parallel rollouts per prompt is unsatisfiable in real production settings like customer-support chats, it collapses messy multi-dimensional outcomes into one scalar, and it saturates around Sonnet-level performance on LiveCodeBench; use methods that learn from a single non-replayable interaction (on-policy self-distillation with a hint-privileged teacher) or trajectory-level value models with bootstrapping for long horizons.",
+        "position_b_talks": [
+          "scaling-up-continual-learning",
+          "learning-on-the-job-the-future-of-post-training",
+          "scaling-to-long-horizons"
+        ],
+        "why_it_matters": "The choice dictates whether you must build replayable environments at all, what your GPU-to-sandbox cost ratio looks like, and whether continual learning from live production traffic is even expressible in your training stack.",
+        "position_a_talks_note": null
+      },
+      {
+        "question": "When an agent fails in production, should the durable fix be a model-weight update or the cheapest layer that works (memory, prompt, harness)?",
+        "position_a": "Not necessarily weights \u2014 a good learning engine makes the smallest durable change at the right layer, and many useful updates live in the harness and memory layers, where they are cheapest and fastest; in group deployments the memory layer, not the model, determines the agent's behavior and identity.",
+        "position_a_talks": [
+          "continual-learning-for-ai-agents-from-failures-to-durable-improvements",
+          "wearing-the-agent-from-group-chats-to-glasses"
+        ],
+        "position_b": "Weights \u2014 patching per failure mode is an unwinnable game of Whac-A-Mole that only a self-improving weight-updating system escapes; teams are leaving substantial capability on the table by not fitting the model to the harness, and the goal is iterative model refinement where training compute is a small fraction of the inference budget.",
+        "position_b_talks": [
+          "learning-on-the-job-the-future-of-post-training",
+          "local-models-trust-control-optimization",
+          "modern-post-training-a-deep-dive"
+        ],
+        "why_it_matters": "It sets whether an agent team needs training infrastructure and GPUs at all, or only an evaluation and memory/prompt-optimization stack \u2014 and whether improvements compound in the model or must be re-derived per deployment.",
+        "position_a_talks_note": null
+      },
+      {
+        "question": "Can preference- or judge-based reward signals produce models suitable for autonomous, human-out-of-the-loop work?",
+        "position_a": "Yes, with care \u2014 LLMs are already strong general reasoners, and judging in hindsight (after seeing the full chain of events, or by polling several models) catches most reward hacks in practice; automated LLM feedback over logs scales, with human experts reserved for the highest-level judgments about goals and quality.",
+        "position_a_talks": [
+          "reinforcement-learning-without-verifiable-rewards",
+          "continual-learning-for-ai-agents-from-failures-to-durable-improvements",
+          "learning-on-the-job-the-future-of-post-training"
+        ],
+        "position_b": "No, structurally \u2014 by construction an RLHF-style objective optimizes apparent preference rather than correctness, and a mode-dropping asymmetry in the reward model makes the model look right no matter how wrong it is; overconfidence is by design, not a correctable defect, and automation requires a third objective optimized for calibrated decision-making rather than either RLHF or RLVR.",
+        "position_b_talks": [
+          "whats-next-after-rlhf"
+        ],
+        "why_it_matters": "If the pessimistic reading holds, every judge-graded post-training pipeline in production is producing systems that are excellent with a human in the loop and unfit for the unattended, stakes-bearing tasks those pipelines are being built to automate.",
+        "position_a_talks_note": null
+      }
+    ],
+    "practical_guidance": {
+      "do": [
+        "Build the eval before optimizing anything: a rollout is sandbox \u2192 agent \u2192 verifier \u2192 reward, and the same object serves evaluation, SFT data collection, and RL",
+        "Keep harness code entirely ignorant of RL so the identical harness runs in training and production; train against the harness you actually ship",
+        "Attack your own environment for reward hacks before admitting a task to the dataset \u2014 only tasks that survive your own break attempts should enter",
+        "Judge in hindsight (after the full trajectory) or by polling several models, rather than instructing a judge in advance not to allow a behavior",
+        "Calibrate tasks to intermediate difficulty \u2014 advantage signal depends on separation across a rollout group, so search and iterate for tasks that are neither too easy nor too hard",
+        "Run small RL training runs as part of environment design, because some environment defects only appear once RL is actually running",
+        "Run RL asynchronously; ~16 steps off-policy on average is empirically fine, and pipeline RL tolerates ~8 steps of staleness",
+        "Over-provision a demand-autoscaled sandbox warm pool: sandbox compute is 2-4x cheaper than GPU time, so redundancy still saves money by keeping GPU workers fully utilized",
+        "Mid-train on curated domain data before post-training \u2014 it makes an unchanged post-training harness 2-3x more effective \u2014 and keep most of the mid-training mix representative of the pre-training distribution to avoid catastrophic forgetting",
+        "Repeat high-quality data rather than adding low-quality data, up to some repetition threshold",
+        "Convert production logs plus feedback into replayable learning environments with deterministic evaluators, and build regression traps into the benchmark",
+        "Fold regression prevention into the optimization objective (fix recent failures subject to no regression on past learning environments) rather than running it as a post-hoc check",
+        "Scope a computer-use agent's observation to a single window rather than the full desktop: pass rate 62% \u2192 80% with 34% fewer tokens",
+        "Budget realistically: ~$50K buys a 1,000-step GLM-5 RL run on 131K-context agentic coding tasks in 3 days on 28 nodes \u2014 comparable to a month of token spend",
+        "For a fixed single task, generate 10,000-10,000,000 synthetic samples and fine-tune a tiny (50M-500M) model instead of prompting a 2-4B one",
+        "Design rewards that actively counteract chain-of-thought length growth; models will grow CoT without bound otherwise",
+        "Run an SAE over the base-to-fine-tuned activation difference as a per-build backdoor unit test \u2014 a 4x expansion matches 32x, and delta features fire with zero false positives on benign inputs",
+        "Replace Jinja chat templates with programmable renderers to eliminate trainer/inference mismatch at scale"
+      ],
+      "avoid": [
+        "Filtering timed-out rollouts out of training \u2014 it directly incentivizes the model to abuse tool calls and time out the sandbox on hard problems to avoid a zero reward",
+        "Assuming infrastructure defects with no presence in the reward function are harmless: a ~10% tool-call failure rate systematically shortened model responses",
+        "Letting a coding agent read a failure log and edit the agent ('trace-to-harness'): it is vibe-based, untestable, and introduces hidden regressions",
+        "Treating production logs and feedback as if they were learning environments \u2014 one instance of what happened is not a replayable, gradeable simulation",
+        "Synchronous RL training; agent rollouts have long tails and forward progress should not be tied to individual rollout speed",
+        "Handing pre-training, mid-training, and post-training to independent teams \u2014 they must be designed as one synergistic system",
+        "Cranking the MoE load-balancing coefficient during SFT to paper over pre/post-training distribution mismatch instead of fixing the early data mix",
+        "Giving agents tools that can search prior trajectories or archives \u2014 they learn to retrieve previous answers instead of reasoning",
+        "Hint leakage in self-distillation: a leaked answer produces reasoning traces that cannot occur in production; design hints as 'what they should have known', not the solution",
+        "Assuming a single containerized sandbox per rollout generalizes \u2014 you cannot provision EC2 or Cloud Run inside one node, and deterministic network-failure simulation does not represent AWS-scale behavior",
+        "Selecting models on public benchmarks or vendor brand; benchmaxing has made public results hard to interpret and only your own eval puts you on the cost/performance frontier",
+        "Relying on behavioral testing or production monitors to catch a backdoored model \u2014 catching one behaviorally requires knowing the trigger in advance",
+        "Building SFT pipelines that export, reformat, and re-upload datasets: SFT is just rollouts in an environment where the actor is a teacher",
+        "Coupling training, inference, and environments into one stack \u2014 it prevents reusing environments as standalone evals"
+      ]
+    },
+    "notable_outliers": [
+      {
+        "claim": "Curation alone, with no post-training at all, pushed a VLM past the public Pareto frontier and matched Qwen 3.5 4B using 145x less training compute \u2014 and made inference ~35x fewer flops per correct answer by shortening responses.",
+        "talk": "data-quality-is-the-compute-multiplier",
+        "timestamp_sec": 467
+      },
+      {
+        "claim": "GRPO saturates around Sonnet-level performance on LiveCodeBench and does not push the frontier; on-policy self-distillation shifts entire distributions rather than sharpening one, and reduces the tokens needed to solve hard problems instead of increasing them.",
+        "talk": "scaling-up-continual-learning",
+        "timestamp_sec": 650
+      },
+      {
+        "claim": "Hallucination and overconfidence are intrinsic to RLHF, not correctable defects: a mode-dropping asymmetry in the reward model (analogous to GANs) means models will look right no matter how wrong they are.",
+        "talk": "whats-next-after-rlhf",
+        "timestamp_sec": 875
+      },
+      {
+        "claim": "Post-trained open-source models outperform frontier models at writing normalized process flows, because they learn which details a specific client cares about \u2014 a judgment frontier models have no concept of.",
+        "talk": "ai-tools-for-forward-deployed-engineering",
+        "timestamp_sec": 1000
+      },
+      {
+        "claim": "Backdoors implanted during fine-tuning are low-dimensional directions recoverable from the base-to-fine-tuned activation delta: an SAE on the delta scores ~0.4 backdoor isolation versus ~0.01 for joint-feature crosscoders, a 40x gap with non-overlapping confidence intervals.",
+        "talk": "your-llm-deception-monitor-is-broken-the-fix-is-in-the-training-data",
+        "timestamp_sec": 492
+      },
+      {
+        "claim": "The pre-training / mid-training / post-training / RL taxonomy is muddy and should collapse into two paradigms \u2014 supervised next-token prediction and RL \u2014 with supervised learning's job redefined as building useful representations for RL rather than being the model's capability source.",
+        "talk": "the-base-model-is-dead",
+        "timestamp_sec": 785
+      }
+    ],
+    "maturity": "consolidating",
+    "maturity_rationale": "A shared framework has clearly formed \u2014 environment-as-eval, the rollout primitive, RL-agnostic harnesses, production traces as source material, and reward hacking as the central failure mode all recur independently across five or more talks. But the fundamentals underneath it are still openly argued: which learning algorithm (GRPO groups vs. value models vs. single-sample self-distillation), whether the environment should be a simulator or the customer's live harness, and whether durable fixes belong in weights or in memory and harness layers."
+  },
+  "_meta": {
+    "concept": "post-training",
+    "slug": "post-training",
+    "talk_count": 20,
+    "missing_talks": [],
+    "wall_sec": 170.7,
+    "run_at": "2026-08-13T17:19:25Z"
+  }
+}

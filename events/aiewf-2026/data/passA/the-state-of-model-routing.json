@@ -1,0 +1,313 @@
+{
+  "is_error": false,
+  "duration_api_ms": 95451,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "a9be0f79-edde-4778-8d38-603b7c557616",
+  "total_cost_usd": 0.44675999999999993,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 21313,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 8518,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 21313,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 8518,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 21313,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 21313
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 15431,
+      "outputTokens": 17,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.015516,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 8518,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 21313,
+      "webSearchRequests": 0,
+      "costUSD": 0.43124399999999996,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"A four-way panel (NVIDIA, Cognition, OpenRouter) on the emerging practice of routing work across multiple models rather than picking one. The core argument is that naive routing \u2014 classify the task, send it to the cheapest model that scores well on that task type \u2014 is fragile for agentic work, because task complexity shifts mid-session and a small model that's out of its depth burns more money than the frontier model would have. Cognition's Walden describes Devin Fusion, which keeps a frontier model as planner/watcher while delegating execution to a persistent 'sidekick' with its own warm cache, claiming a 40% cost reduction at frontier-level intelligence; OpenRouter's Alex describes Fusion and the Pareto code router, and reports that in-distribution vs. out-of-distribution is the real routing signal (Opus beats Haiku 3x at 1/10 the cost on terminal bench despite costing more per token). NVIDIA's Tuhin argues models have jagged, complementary capabilities from differing post-training corpora, and that understanding those gaps is worth up to 10% accuracy. Worth watching if you're building multi-model orchestration and want the current state of the art plus honest admissions of how early it is \u2014 plus a good amount of practical detail on KV cache economics, compaction, and self-hosting cost dynamics.\",\n  \"key_points\": [\n    \"Routing to a dumber model based on task type is fragile in agentic settings because the task's complexity and domain drift within a single session, so the panel favors always keeping a frontier model in the loop as planner or observer even when it isn't doing the work.\",\n    \"Cognition's Devin Fusion claims a 40% cost reduction at frontier-level intelligence by letting the frontier model plan and delegate implementation, and the delegated model can explore more deeply because its tokens are cheaper.\",\n    \"The right routing signal is in-distribution vs. out-of-distribution, not benchmark rank: small models are cheap on in-domain work like text classification but thrash and inflate cost when out of domain \u2014 Opus scores ~3x better than Haiku on terminal bench at 1/10 the cost.\",\n    \"KV cache economics dominate multi-model design: Cognition uses one long-lived 'sidekick' with a running context rather than spawning fresh sub-agents, so cached tokens stay ~10x cheaper, and a scheduled cache refresh doubles as an almost-free frontier-model check-in on the small model.\",\n    \"Compaction is not primarily a cost tool \u2014 compacting forces a cache miss and raises input cost \u2014 its real purpose is preserving intelligence, since model quality falls off well before advertised million-token windows (the panel recommends staying under 200K, ideally 100K).\",\n    \"OpenRouter's auto-router sat unused for nearly two years until open claw's 10-minute heartbeat created one app with two radically different intelligence needs, which kicked off broad market segmentation across models.\",\n    \"The next frontier is co-designing models with the orchestration system \u2014 RL-training models both as orchestrators and as executors of other models' instructions \u2014 rather than orchestrating off-the-shelf models.\",\n    \"Self-hosting changes the cost curve: API providers amortize a general workload shape into one price, while self-hosters can tune cache lifetimes and optimize for their own context/output profile and likely pay much less.\",\n    \"Routing signals may come from model internals rather than heuristics \u2014 hallucination probes, linear probes, and perplexity analysis over prefill vectors can estimate how 'lost' a model is and trigger escalation.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"we're reducing the cost of Fable level intelligence by 40%. The way we do that is we allow Fable to still do like the planning and the the hard decision making but delegate a lot of the work to an implementation model.\",\n      \"timestamp_sec\": 272,\n      \"why\": \"the headline number and the mechanism behind it in one breath\"\n    },\n    {\n      \"text\": \"I think actually there's this really unintuitive dynamic where smarter models actually get better and better at delegating work.\",\n      \"timestamp_sec\": 233,\n      \"why\": \"states the counterintuitive premise the whole Fusion design rests on\"\n    },\n    {\n      \"text\": \"this kind of like naive like initial routing to based on the task type is extremely fragile, especially the more agentic the task you you work on is.\",\n      \"timestamp_sec\": 542,\n      \"why\": \"direct rejection of the most common routing approach\"\n    },\n    {\n      \"text\": \"routing is a task of intimately intimately understanding of behavior of and strengths and weaknesses of different models, and then applying them thusly, right?\",\n      \"timestamp_sec\": 386,\n      \"why\": \"NVIDIA's jagged-capabilities framing of what routing actually is\"\n    },\n    {\n      \"text\": \"if you use these techniques, you can get like up to 10% higher accuracy even, right? It depends on the model pool. Depends on the task at hand.\",\n      \"timestamp_sec\": 507,\n      \"why\": \"quantifies the upside of exploiting complementary model strengths\"\n    },\n    {\n      \"text\": \"overall, just the guarantee of always having frontier intelligence present, I think reduces the the fragility of of these systems quite a lot.\",\n      \"timestamp_sec\": 614,\n      \"why\": \"the design principle distinguishing Fusion from prior routers\"\n    },\n    {\n      \"text\": \"you can use small models pretty easily and get a cost savings but if it's out of distribution small models may actually increase your cost because of how often they'll like call tools and how crazy their loops will be.\",\n      \"timestamp_sec\": 845,\n      \"why\": \"names the failure mode that inverts naive cost reasoning\"\n    },\n    {\n      \"text\": \"Like if you run terminal bench on Opus and Haiku, like Opus will do about three times better at 1/10 the cost of Haiku, even though Haiku's significantly cheaper per token.\",\n      \"timestamp_sec\": 925,\n      \"why\": \"the panel's hardest number against per-token cost intuition\"\n    },\n    {\n      \"text\": \"we don't use sub agents. We use what we call a sidekick, which is um, one sub agent that continually has a running context. So the main agent doesn't need to re-provide uh, context from earlier.\",\n      \"timestamp_sec\": 1084,\n      \"why\": \"the concrete architectural choice behind Devin Fusion's cache economics\"\n    },\n    {\n      \"text\": \"don't just like take models as they are and orchestrate them, but like can you actually co-design your models with the orchestration system?\",\n      \"timestamp_sec\": 1153,\n      \"why\": \"frames the next research step for multi-model systems\"\n    },\n    {\n      \"text\": \"It's not obvious that actually more expensive models are actually creating an overall cheaper system.\",\n      \"timestamp_sec\": 1421,\n      \"why\": \"compact statement of the paradox the talk keeps returning to\"\n    },\n    {\n      \"text\": \"we've had a an auto router for like 2 years almost. Um but when we launched it, there was like no adoption of it. It was people really wanted to use specific models.\",\n      \"timestamp_sec\": 1591,\n      \"why\": \"honest report that routing had no market until agents created one\"\n    },\n    {\n      \"text\": \"at around like January this year with open claw, it exploded. And the reason it exploded is because there's this fundamental um idiosyncrasy in open claw where it sends heartbeats every like 10 minutes to your model of choice\",\n      \"timestamp_sec\": 1623,\n      \"why\": \"identifies the specific workload accident that made routing mainstream\"\n    },\n    {\n      \"text\": \"you're actually then now like paying 10 times as much for the for those input tokens if you didn't compact. Um the main reason we compact is actually intelligence.\",\n      \"timestamp_sec\": 1923,\n      \"why\": \"reframes compaction as a quality tool, not a cost tool\"\n    },\n    {\n      \"text\": \"I would like never recommend using like these models past like 200K tokens, under 100K if you can.\",\n      \"timestamp_sec\": 1923,\n      \"why\": \"specific, checkable practitioner advice against advertised context windows\"\n    },\n    {\n      \"text\": \"the 5-minute uh window is what a lot of providers right now put, but that's uh that's that's more an operational operational operational determination rather than a like a science-based or like a core physics law determination.\",\n      \"timestamp_sec\": 2086,\n      \"why\": \"argues cache TTL is a business choice, not a hard constraint\"\n    },\n    {\n      \"text\": \"If you self-host, you can optimize specifically for your use, and you'll likely pay much less.\",\n      \"timestamp_sec\": 2137,\n      \"why\": \"the clearest statement of the self-host vs. API cost argument\"\n    },\n    {\n      \"text\": \"we actually bought direct compute capacity from these providers, and instead of paying on a per-token basis, we just paid for the underlying compute, knowing that the economics of the compute was that we were actually paying far less for for the cash tokens that we'd send over.\",\n      \"timestamp_sec\": 2187,\n      \"why\": \"historical detail on how Cognition made early agents economically viable\"\n    },\n    {\n      \"text\": \"I'm actually personally less bullish on these kind of like low level mechanical prompt tuning harnesses versus just telling like a smart model like here is the decision that was made and the context figure out why it went wrong.\",\n      \"timestamp_sec\": 2527,\n      \"why\": \"takes a side against gradient-style prompt optimization frameworks\"\n    },\n    {\n      \"text\": \"There's not going to be a thing as like a really great harness that is in absence of a really great model and vice versa.\",\n      \"timestamp_sec\": 2665,\n      \"why\": \"the panel's answer to whether routing is product or plumbing\"\n    },\n    {\n      \"text\": \"if you look at like the the the rankings on OpenRouter, if you look at our our public data and you look at like the top model being used by dollar spent on classification tasks, well, guess what it is. It's Opus.\",\n      \"timestamp_sec\": 2821,\n      \"why\": \"empirical evidence that the routing opportunity is still largely untapped\"\n    }\n  ],\n  \"concepts\": [\n    \"model routing\",\n    \"multi-model orchestration\",\n    \"kv cache economics\",\n    \"context compaction\",\n    \"in-distribution vs out-of-distribution detection\",\n    \"sub-agent delegation\",\n    \"jagged model capabilities\",\n    \"prompt tuning\",\n    \"local vs cloud inference\",\n    \"hallucination probes\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Devin Fusion reduces the cost of Fable-level intelligence by 40% while matching or exceeding frontier performance.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 272\n    },\n    {\n      \"claim\": \"Routing based on task type alone is extremely fragile for agentic workloads because task complexity changes mid-session.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 542\n    },\n    {\n      \"claim\": \"A frontier model should always remain present in the system \u2014 watching, if not executing \u2014 to reduce fragility.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 614\n    },\n    {\n      \"claim\": \"Benchmark rank on a domain does not imply a model is better at every task in that domain; models have complementary, jagged strengths from their training corpora.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 386\n    },\n    {\n      \"claim\": \"Exploiting complementary model strengths can yield up to 10% higher accuracy on router benchmarks like LM router bench.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 507\n    },\n    {\n      \"claim\": \"Opus scores about 3x better than Haiku on terminal bench at 1/10 the total cost, despite Haiku being much cheaper per token.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 925\n    },\n    {\n      \"claim\": \"A single long-lived sidekick agent with a running context is more cost-efficient than spawning multiple fresh sub-agents, because cached tokens are ~10x cheaper.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1119\n    },\n    {\n      \"claim\": \"For deep research tasks, making the smart model the outer orchestrator produces the best results; for coding it remains unclear.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1038\n    },\n    {\n      \"claim\": \"Compaction does not solve cost or throughput on its own, since compacting forces a cache miss that raises input token cost.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1923\n    },\n    {\n      \"claim\": \"Current models should not be used past ~200K tokens of context, and ideally under 100K, regardless of advertised context windows.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1923\n    },\n    {\n      \"claim\": \"The 5-minute KV cache lifetime is an operational and pricing decision by providers, not a physical constraint.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 2086\n    },\n    {\n      \"claim\": \"Self-hosting lets you optimize for your specific workload shape and will likely cost less than API pricing, which amortizes across all customers' usage patterns.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 2137\n    },\n    {\n      \"claim\": \"Open claw's 10-minute heartbeat to the user's default model was the specific trigger that made auto-routing take off in January 2026.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1623\n    },\n    {\n      \"claim\": \"Gradient-descent-style prompt tuning frameworks are less promising than having a smart model inspect a bad decision and rewrite the prompt itself.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 2527\n    },\n    {\n      \"claim\": \"Newer frontier models (Fable, GPT-5.5/5.6) are already naturally collaborative and better at delegation, so routing capability is partly moving into the models themselves.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 2628\n    },\n    {\n      \"claim\": \"Even if one model became most efficient at everything, an orchestration/arbitration layer would persist because of caching, limited memory, and imperfect visibility into other models' behavior.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 2751\n    },\n    {\n      \"claim\": \"The current routing techniques, including Devin Fusion, will look like legacy ideas within a year.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 749\n    },\n    {\n      \"claim\": \"Model internals \u2014 hallucination probes, linear probes, perplexity over prefill vectors \u2014 can serve as a proxy for how lost a model is, and thus as a routing trigger.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 2283\n    },\n    {\n      \"claim\": \"On local hardware like DGX Spark, spawning multiple collaborating agents is the way to raise compute utilization when memory is the binding constraint.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 2591\n    }\n  ],\n  \"speaker_org\": \"NVIDIA, Cognition, OpenRouter\"\n}",
+  "ttft_ms": 40521,
+  "ttft_stream_ms": 872,
+  "time_to_request_ms": 42,
+  "type": "result",
+  "duration_ms": 95394,
+  "uuid": "a34e88b9-d58f-41d0-891f-ab19a82b4a99",
+  "passA": {
+    "summary": "A four-way panel (NVIDIA, Cognition, OpenRouter) on the emerging practice of routing work across multiple models rather than picking one. The core argument is that naive routing \u2014 classify the task, send it to the cheapest model that scores well on that task type \u2014 is fragile for agentic work, because task complexity shifts mid-session and a small model that's out of its depth burns more money than the frontier model would have. Cognition's Walden describes Devin Fusion, which keeps a frontier model as planner/watcher while delegating execution to a persistent 'sidekick' with its own warm cache, claiming a 40% cost reduction at frontier-level intelligence; OpenRouter's Alex describes Fusion and the Pareto code router, and reports that in-distribution vs. out-of-distribution is the real routing signal (Opus beats Haiku 3x at 1/10 the cost on terminal bench despite costing more per token). NVIDIA's Tuhin argues models have jagged, complementary capabilities from differing post-training corpora, and that understanding those gaps is worth up to 10% accuracy. Worth watching if you're building multi-model orchestration and want the current state of the art plus honest admissions of how early it is \u2014 plus a good amount of practical detail on KV cache economics, compaction, and self-hosting cost dynamics.",
+    "key_points": [
+      "Routing to a dumber model based on task type is fragile in agentic settings because the task's complexity and domain drift within a single session, so the panel favors always keeping a frontier model in the loop as planner or observer even when it isn't doing the work.",
+      "Cognition's Devin Fusion claims a 40% cost reduction at frontier-level intelligence by letting the frontier model plan and delegate implementation, and the delegated model can explore more deeply because its tokens are cheaper.",
+      "The right routing signal is in-distribution vs. out-of-distribution, not benchmark rank: small models are cheap on in-domain work like text classification but thrash and inflate cost when out of domain \u2014 Opus scores ~3x better than Haiku on terminal bench at 1/10 the cost.",
+      "KV cache economics dominate multi-model design: Cognition uses one long-lived 'sidekick' with a running context rather than spawning fresh sub-agents, so cached tokens stay ~10x cheaper, and a scheduled cache refresh doubles as an almost-free frontier-model check-in on the small model.",
+      "Compaction is not primarily a cost tool \u2014 compacting forces a cache miss and raises input cost \u2014 its real purpose is preserving intelligence, since model quality falls off well before advertised million-token windows (the panel recommends staying under 200K, ideally 100K).",
+      "OpenRouter's auto-router sat unused for nearly two years until open claw's 10-minute heartbeat created one app with two radically different intelligence needs, which kicked off broad market segmentation across models.",
+      "The next frontier is co-designing models with the orchestration system \u2014 RL-training models both as orchestrators and as executors of other models' instructions \u2014 rather than orchestrating off-the-shelf models.",
+      "Self-hosting changes the cost curve: API providers amortize a general workload shape into one price, while self-hosters can tune cache lifetimes and optimize for their own context/output profile and likely pay much less.",
+      "Routing signals may come from model internals rather than heuristics \u2014 hallucination probes, linear probes, and perplexity analysis over prefill vectors can estimate how 'lost' a model is and trigger escalation."
+    ],
+    "notable_quotes": [
+      {
+        "text": "we're reducing the cost of Fable level intelligence by 40%. The way we do that is we allow Fable to still do like the planning and the the hard decision making but delegate a lot of the work to an implementation model.",
+        "timestamp_sec": 272,
+        "why": "the headline number and the mechanism behind it in one breath"
+      },
+      {
+        "text": "I think actually there's this really unintuitive dynamic where smarter models actually get better and better at delegating work.",
+        "timestamp_sec": 233,
+        "why": "states the counterintuitive premise the whole Fusion design rests on"
+      },
+      {
+        "text": "this kind of like naive like initial routing to based on the task type is extremely fragile, especially the more agentic the task you you work on is.",
+        "timestamp_sec": 542,
+        "why": "direct rejection of the most common routing approach"
+      },
+      {
+        "text": "routing is a task of intimately intimately understanding of behavior of and strengths and weaknesses of different models, and then applying them thusly, right?",
+        "timestamp_sec": 386,
+        "why": "NVIDIA's jagged-capabilities framing of what routing actually is"
+      },
+      {
+        "text": "if you use these techniques, you can get like up to 10% higher accuracy even, right? It depends on the model pool. Depends on the task at hand.",
+        "timestamp_sec": 507,
+        "why": "quantifies the upside of exploiting complementary model strengths"
+      },
+      {
+        "text": "overall, just the guarantee of always having frontier intelligence present, I think reduces the the fragility of of these systems quite a lot.",
+        "timestamp_sec": 614,
+        "why": "the design principle distinguishing Fusion from prior routers"
+      },
+      {
+        "text": "you can use small models pretty easily and get a cost savings but if it's out of distribution small models may actually increase your cost because of how often they'll like call tools and how crazy their loops will be.",
+        "timestamp_sec": 845,
+        "why": "names the failure mode that inverts naive cost reasoning"
+      },
+      {
+        "text": "Like if you run terminal bench on Opus and Haiku, like Opus will do about three times better at 1/10 the cost of Haiku, even though Haiku's significantly cheaper per token.",
+        "timestamp_sec": 925,
+        "why": "the panel's hardest number against per-token cost intuition"
+      },
+      {
+        "text": "we don't use sub agents. We use what we call a sidekick, which is um, one sub agent that continually has a running context. So the main agent doesn't need to re-provide uh, context from earlier.",
+        "timestamp_sec": 1084,
+        "why": "the concrete architectural choice behind Devin Fusion's cache economics"
+      },
+      {
+        "text": "don't just like take models as they are and orchestrate them, but like can you actually co-design your models with the orchestration system?",
+        "timestamp_sec": 1153,
+        "why": "frames the next research step for multi-model systems"
+      },
+      {
+        "text": "It's not obvious that actually more expensive models are actually creating an overall cheaper system.",
+        "timestamp_sec": 1421,
+        "why": "compact statement of the paradox the talk keeps returning to"
+      },
+      {
+        "text": "we've had a an auto router for like 2 years almost. Um but when we launched it, there was like no adoption of it. It was people really wanted to use specific models.",
+        "timestamp_sec": 1591,
+        "why": "honest report that routing had no market until agents created one"
+      },
+      {
+        "text": "at around like January this year with open claw, it exploded. And the reason it exploded is because there's this fundamental um idiosyncrasy in open claw where it sends heartbeats every like 10 minutes to your model of choice",
+        "timestamp_sec": 1623,
+        "why": "identifies the specific workload accident that made routing mainstream"
+      },
+      {
+        "text": "you're actually then now like paying 10 times as much for the for those input tokens if you didn't compact. Um the main reason we compact is actually intelligence.",
+        "timestamp_sec": 1923,
+        "why": "reframes compaction as a quality tool, not a cost tool"
+      },
+      {
+        "text": "I would like never recommend using like these models past like 200K tokens, under 100K if you can.",
+        "timestamp_sec": 1923,
+        "why": "specific, checkable practitioner advice against advertised context windows"
+      },
+      {
+        "text": "the 5-minute uh window is what a lot of providers right now put, but that's uh that's that's more an operational operational operational determination rather than a like a science-based or like a core physics law determination.",
+        "timestamp_sec": 2086,
+        "why": "argues cache TTL is a business choice, not a hard constraint"
+      },
+      {
+        "text": "If you self-host, you can optimize specifically for your use, and you'll likely pay much less.",
+        "timestamp_sec": 2137,
+        "why": "the clearest statement of the self-host vs. API cost argument"
+      },
+      {
+        "text": "we actually bought direct compute capacity from these providers, and instead of paying on a per-token basis, we just paid for the underlying compute, knowing that the economics of the compute was that we were actually paying far less for for the cash tokens that we'd send over.",
+        "timestamp_sec": 2187,
+        "why": "historical detail on how Cognition made early agents economically viable"
+      },
+      {
+        "text": "I'm actually personally less bullish on these kind of like low level mechanical prompt tuning harnesses versus just telling like a smart model like here is the decision that was made and the context figure out why it went wrong.",
+        "timestamp_sec": 2527,
+        "why": "takes a side against gradient-style prompt optimization frameworks"
+      },
+      {
+        "text": "There's not going to be a thing as like a really great harness that is in absence of a really great model and vice versa.",
+        "timestamp_sec": 2665,
+        "why": "the panel's answer to whether routing is product or plumbing"
+      }
+    ],
+    "concepts": [
+      "model routing",
+      "multi-model orchestration",
+      "kv cache economics",
+      "context compaction",
+      "in-distribution vs out-of-distribution detection",
+      "sub-agent delegation",
+      "jagged model capabilities",
+      "prompt tuning",
+      "local vs cloud inference",
+      "hallucination probes"
+    ],
+    "positions": [
+      {
+        "claim": "Devin Fusion reduces the cost of Fable-level intelligence by 40% while matching or exceeding frontier performance.",
+        "confidence": "stated",
+        "timestamp_sec": 272
+      },
+      {
+        "claim": "Routing based on task type alone is extremely fragile for agentic workloads because task complexity changes mid-session.",
+        "confidence": "stated",
+        "timestamp_sec": 542
+      },
+      {
+        "claim": "A frontier model should always remain present in the system \u2014 watching, if not executing \u2014 to reduce fragility.",
+        "confidence": "stated",
+        "timestamp_sec": 614
+      },
+      {
+        "claim": "Benchmark rank on a domain does not imply a model is better at every task in that domain; models have complementary, jagged strengths from their training corpora.",
+        "confidence": "stated",
+        "timestamp_sec": 386
+      },
+      {
+        "claim": "Exploiting complementary model strengths can yield up to 10% higher accuracy on router benchmarks like LM router bench.",
+        "confidence": "stated",
+        "timestamp_sec": 507
+      },
+      {
+        "claim": "Opus scores about 3x better than Haiku on terminal bench at 1/10 the total cost, despite Haiku being much cheaper per token.",
+        "confidence": "stated",
+        "timestamp_sec": 925
+      },
+      {
+        "claim": "A single long-lived sidekick agent with a running context is more cost-efficient than spawning multiple fresh sub-agents, because cached tokens are ~10x cheaper.",
+        "confidence": "stated",
+        "timestamp_sec": 1119
+      },
+      {
+        "claim": "For deep research tasks, making the smart model the outer orchestrator produces the best results; for coding it remains unclear.",
+        "confidence": "stated",
+        "timestamp_sec": 1038
+      },
+      {
+        "claim": "Compaction does not solve cost or throughput on its own, since compacting forces a cache miss that raises input token cost.",
+        "confidence": "stated",
+        "timestamp_sec": 1923
+      },
+      {
+        "claim": "Current models should not be used past ~200K tokens of context, and ideally under 100K, regardless of advertised context windows.",
+        "confidence": "stated",
+        "timestamp_sec": 1923
+      },
+      {
+        "claim": "The 5-minute KV cache lifetime is an operational and pricing decision by providers, not a physical constraint.",
+        "confidence": "stated",
+        "timestamp_sec": 2086
+      },
+      {
+        "claim": "Self-hosting lets you optimize for your specific workload shape and will likely cost less than API pricing, which amortizes across all customers' usage patterns.",
+        "confidence": "stated",
+        "timestamp_sec": 2137
+      },
+      {
+        "claim": "Open claw's 10-minute heartbeat to the user's default model was the specific trigger that made auto-routing take off in January 2026.",
+        "confidence": "stated",
+        "timestamp_sec": 1623
+      },
+      {
+        "claim": "Gradient-descent-style prompt tuning frameworks are less promising than having a smart model inspect a bad decision and rewrite the prompt itself.",
+        "confidence": "stated",
+        "timestamp_sec": 2527
+      },
+      {
+        "claim": "Newer frontier models (Fable, GPT-5.5/5.6) are already naturally collaborative and better at delegation, so routing capability is partly moving into the models themselves.",
+        "confidence": "stated",
+        "timestamp_sec": 2628
+      },
+      {
+        "claim": "Even if one model became most efficient at everything, an orchestration/arbitration layer would persist because of caching, limited memory, and imperfect visibility into other models' behavior.",
+        "confidence": "stated",
+        "timestamp_sec": 2751
+      },
+      {
+        "claim": "The current routing techniques, including Devin Fusion, will look like legacy ideas within a year.",
+        "confidence": "stated",
+        "timestamp_sec": 749
+      },
+      {
+        "claim": "Model internals \u2014 hallucination probes, linear probes, perplexity over prefill vectors \u2014 can serve as a proxy for how lost a model is, and thus as a routing trigger.",
+        "confidence": "stated",
+        "timestamp_sec": 2283
+      },
+      {
+        "claim": "On local hardware like DGX Spark, spawning multiple collaborating agents is the way to raise compute utilization when memory is the binding constraint.",
+        "confidence": "stated",
+        "timestamp_sec": 2591
+      }
+    ],
+    "speaker_org": "NVIDIA, Cognition, OpenRouter"
+  },
+  "_meta": {
+    "slug": "the-state-of-model-routing",
+    "video_id": "QHBjufYK8TA",
+    "url": "https://www.youtube.com/watch?v=QHBjufYK8TA",
+    "word_count": 9449,
+    "wall_sec": 96.5,
+    "run_at": "2026-08-12T20:25:15Z",
+    "effort": "medium",
+    "quotes_dropped": 0
+  }
+}

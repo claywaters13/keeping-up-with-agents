@@ -1,0 +1,71 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><script src="lib/d3.min.js"></script>
+<style>
+body{margin:0;background:#fcfcfb;font-family:-apple-system,'Segoe UI',Inter,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+.card{width:1200px;padding:56px 64px 48px;background:#fcfcfb}
+h1{font-size:38px;margin:0 0 8px;color:#0b0b0b;letter-spacing:-0.02em;line-height:1.15}
+.sub{font-size:18px;color:#52514e;margin:0 0 26px;line-height:1.5}
+.foot{margin-top:22px;font-size:15px;color:#52514e;border-top:1px solid #e6e5e1;padding-top:16px}
+svg text{font-family:-apple-system,'Segoe UI',Inter,Helvetica,Arial,sans-serif}
+</style></head><body>
+<div class="card" id="tm">
+<h1>What 228 AI Engineer World's Fair 2026 talks were actually about</h1>
+<p class="sub">The 28 most-engaged concepts. Each rectangle's <strong>area</strong> is exactly proportional to the number of talks that cover it.</p>
+<div id="viz"></div>
+<p class="foot">1,011,341 words of transcript &middot; 4,582 verbatim quotes &middot; 134 concepts &middot; 1,784 concept&ndash;talk links</p>
+</div>
+<script>
+const data=[{"name": "agent harness design", "value": 47}, {"name": "agent memory", "value": 36}, {"name": "agentic loop design", "value": 30}, {"name": "agent observability and tracing", "value": 30}, {"name": "context engineering", "value": 29}, {"name": "human-in-the-loop approval", "value": 29}, {"name": "verifier design", "value": 28}, {"name": "llm-as-a-judge", "value": 27}, {"name": "agent skills", "value": 26}, {"name": "agentic coding workflows", "value": 26}, {"name": "multi-agent orchestration", "value": 25}, {"name": "inference cost optimization", "value": 25}, {"name": "rl environment design", "value": 24}, {"name": "eval harness design", "value": 24}, {"name": "reward hacking", "value": 24}, {"name": "agent execution infrastructure", "value": 21}, {"name": "agent sandboxing", "value": 21}, {"name": "least-privilege agent permissions", "value": 21}, {"name": "self-improving agent loops", "value": 20}, {"name": "context compaction", "value": 20}, {"name": "post-training", "value": 20}, {"name": "model portability", "value": 19}, {"name": "deterministic versus probabilistic system design", "value": 19}, {"name": "model routing", "value": 19}, {"name": "human-ai interaction design", "value": 18}, {"name": "context window management", "value": 18}, {"name": "benchmark design", "value": 18}, {"name": "durable execution", "value": 17}], W=1072, H=620, PAD=9;
+const RAMP=["#9ec5f4","#86b6ef","#6da7ec","#5598e7","#3987e5","#2a78d6","#256abf","#1c5cab","#184f95","#104281","#0d366b"];
+const mn=d3.min(data,d=>d.value), mx=d3.max(data,d=>d.value);
+const col=d3.scaleQuantize().domain([mn,mx]).range(RAMP);
+function lum(h){const c=[1,3,5].map(i=>parseInt(h.substr(i,2),16)/255).map(v=>v<=0.03928?v/12.92:Math.pow((v+0.055)/1.055,2.4));return 0.2126*c[0]+0.7152*c[1]+0.0722*c[2];}
+function cr(a,b){const l1=lum(a),l2=lum(b);return (Math.max(l1,l2)+0.05)/(Math.min(l1,l2)+0.05);}
+const ink=f=> cr('#ffffff',f)>=4.5 ? '#ffffff' : '#0b0b0b';
+const root=d3.hierarchy({children:data}).sum(d=>d.value).sort((a,b)=>b.value-a.value);
+d3.treemap().size([W,H]).paddingInner(3).round(true)(root);
+const svg=d3.select('#viz').append('svg').attr('width',W).attr('height',H);
+const g=svg.selectAll('g').data(root.leaves()).enter().append('g')
+  .attr('transform',d=>`translate(${d.x0},${d.y0})`);
+g.append('rect').attr('width',d=>d.x1-d.x0).attr('height',d=>d.y1-d.y0)
+  .attr('rx',4).attr('fill',d=>col(d.data.value));
+// measure real rendered width; wrap on it; shrink until every line fits the cell
+const meas=svg.append('text').attr('visibility','hidden');
+function widthOf(s,fs,wt){ meas.style('font-size',fs+'px').style('font-weight',wt)
+  .style('letter-spacing','-0.01em').text(s); return meas.node().getComputedTextLength(); }
+function wrap(name,fs,avail){
+  const words=name.split(' '); const lines=[]; let cur='';
+  for(const w of words){
+    if(widthOf(w,fs,640)>avail) return null;      // an unbreakable word is too wide
+    const t=cur?cur+' '+w:w;
+    if(widthOf(t,fs,640)<=avail) cur=t; else { lines.push(cur); cur=w; }
+  }
+  if(cur) lines.push(cur);
+  return lines;
+}
+let unlabeled=0, overflow=0;
+g.each(function(d){
+  const w=d.x1-d.x0, h=d.y1-d.y0, fill=col(d.data.value), c=ink(fill);
+  const avail=w-PAD*2, el=d3.select(this);
+  let fs=Math.min(27,Math.max(11,Math.sqrt(w*h)/6.0)), lines=null;
+  while(fs>=10){
+    lines=wrap(d.data.name,fs,avail);
+    const valH=(h>fs*3.0&&w>52)?fs*0.95:0;
+    if(lines && lines.length*fs*1.16 + PAD*2 + valH <= h) break;
+    fs-=0.5; lines=null;
+  }
+  if(!lines){ unlabeled++; return; }        // cell genuinely too small: no clipped text
+  const showVal=(h>fs*3.0 && w>52);
+  const t=el.append('text').attr('x',PAD).attr('y',PAD+fs*0.86)
+    .style('font-size',fs+'px').style('font-weight',640)
+    .style('letter-spacing','-0.01em').attr('fill',c);
+  lines.forEach((ln,i)=> t.append('tspan').attr('x',PAD).attr('dy',i?fs*1.16:0).text(ln));
+  if(showVal) el.append('text').attr('x',PAD).attr('y',h-PAD)
+    .style('font-size',Math.max(12,fs*0.66)+'px').style('font-weight',600)
+    .attr('fill',c).attr('opacity',0.85).text(d.data.value);
+  // assert nothing escaped the cell
+  t.selectAll('tspan').each(function(){ if(this.getComputedTextLength()>avail+0.5) overflow++; });
+});
+meas.remove();
+window.__unlabeled=unlabeled; window.__overflow=overflow; window.__cells=root.leaves().length;
+window.__done=true;
+</script></body></html>

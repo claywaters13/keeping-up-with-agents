@@ -1,0 +1,272 @@
+{
+  "is_error": false,
+  "duration_api_ms": 71872,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "cb800f90-7879-4117-b4b6-976327d569cf",
+  "total_cost_usd": 0.245923,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 8348,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 6087,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 8348,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 6087,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 8348,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 8348
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 5029,
+      "outputTokens": 15,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.005104,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 6087,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 8348,
+      "webSearchRequests": 0,
+      "costUSD": 0.240819,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Two engineering managers from monday.com argue that the bottleneck for work assistants is not data access or retrieval but understanding \u2014 knowing how a user's entities, people, and commitments connect and which matter right now. They describe the \\\"Monday world model\\\" behind their Sidekick assistant: a precomputed data model built offline from Monday boards, Slack, email, and calendar, split into a slow engine that mines weeks of activity into a durable user profile and a fast engine that recomputes live signals over a short recent window. They ground this two-speed split in prior art from neuroscience (complementary learning systems) and data infrastructure (lambda architecture), and claim it buys graceful degradation, urgency awareness, and compounding value as new sources are added cheaply. Worth watching if you're designing agent memory/context layers and want a concrete architecture for precomputing meaning rather than stuffing more into a prompt at query time. It's a short, architecture-level talk with no benchmarks or evals \u2014 the honest caveats (cold start, trailing state, signal bias) are stated but not solved.\",\n  \"key_points\": [\n    \"The framing shift is from \\\"system of record\\\" (logging every task, message, and status) to \\\"system of context\\\" (software that understands the connections between those records).\",\n    \"The speakers insist the hard problem is understanding, not retrieval \u2014 agents already have access to boards, Slack, email, and MCP connectors and still can't answer \\\"what should I focus on right now?\\\"\",\n    \"They name an \\\"agent gap\\\": agents execute well when told what to do (drafting a reply to an escalation) but guess when asked to identify what matters, because they lack a model of the user's priorities.\",\n    \"Meaning must be computed ahead of time, not at runtime \u2014 you cannot build understanding in the moment a user asks the question.\",\n    \"The Monday world model collects thousands of data points per user and constructs three artifacts: a structural graph of entities and dependencies, a live snapshot of current signals, and a durable learned profile.\",\n    \"Two engines on different time windows produce this: a slow engine mining weeks of activity into a reinforced persona/routine profile, and a fast engine recomputing urgency signals over a short recent window \u2014 \\\"one knows you and the other one knows your day.\\\"\",\n    \"The two-speed design is explicitly borrowed from complementary learning systems in neuroscience (hippocampus vs. neocortex) and lambda architecture in data processing.\",\n    \"The architecture is designed to degrade rather than fail: sources are isolated so a bad feed can't break the rest, and a thin serve-time layer verifies part of the context against live data while the rest falls back to the last verified context.\",\n    \"Value compounds because each new data source is cheap to add and only contributes, while stated limits remain: the model trails the live world, new users have no reliable data, and separating signal from noise is the hardest part.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"The problem was never the missing of data, the retrieval. The problem is like the missing understanding.\",\n      \"timestamp_sec\": 106,\n      \"why\": \"The thesis of the talk in one line.\"\n    },\n    {\n      \"text\": \"Understanding is the word that we're going to focus the entire the entire talk. Not context, not memory, not retrieval, understanding.\",\n      \"timestamp_sec\": 106,\n      \"why\": \"Explicitly rejects the three most common framings in agent-memory discourse.\"\n    },\n    {\n      \"text\": \"but asking him what should I focus on first he guess because he doesn't understand what is my priority who am I it doesn't matter if you have a memory or something he still don't know what is the problem\",\n      \"timestamp_sec\": 320,\n      \"why\": \"Defines the 'agent gap' and takes a swipe at memory as a sufficient fix.\"\n    },\n    {\n      \"text\": \"you can go to your Monday board and see which PR connected to this item and understand that this line of code came because some customer complain about something.\",\n      \"timestamp_sec\": 359,\n      \"why\": \"The git-blame analogy that makes 'records without meaning' concrete.\"\n    },\n    {\n      \"text\": \"You need to build it much before someone asks the question.\",\n      \"timestamp_sec\": 397,\n      \"why\": \"States the precompute-vs-runtime tradeoff that drives the whole architecture.\"\n    },\n    {\n      \"text\": \"he understand who you are and it's simply not a bigger prompt.\",\n      \"timestamp_sec\": 436,\n      \"why\": \"Positions the world model against the 'just expand the context window' default.\"\n    },\n    {\n      \"text\": \"The problem is really to understand how it works. Understand how each one of these entity connected to each other.\",\n      \"timestamp_sec\": 479,\n      \"why\": \"Reframes the goal as relationship modeling rather than data access.\"\n    },\n    {\n      \"text\": \"We collect thousands of data points on the user every item status change their activity log messages and meetings and construct three things the agent can resone over.\",\n      \"timestamp_sec\": 479,\n      \"why\": \"The only quantitative claim about input scale, plus the three-part output structure.\"\n    },\n    {\n      \"text\": \"we use two engines running on different time windows and schedules. A slow engine that runs on a long time window and learns the user and their work and a fast engine that reads what's happening right now and how it affects the user's work.\",\n      \"timestamp_sec\": 533,\n      \"why\": \"The core architectural claim of the talk.\"\n    },\n    {\n      \"text\": \"One knows you and the other one knows your day.\",\n      \"timestamp_sec\": 533,\n      \"why\": \"The most portable summary of the two-engine split.\"\n    },\n    {\n      \"text\": \"The fast engine is the opposite. It takes as context a short recent window and recomputes a set of live signals over the user's current state.\",\n      \"timestamp_sec\": 579,\n      \"why\": \"Specifies the fast path's contract precisely.\"\n    },\n    {\n      \"text\": \"this split isn't something we invented. It's present in two totally different fields. In neuroscience, this split is referred to as complimentary learning systems. And in data processing architecture, it's referred to as a lambda architecture.\",\n      \"timestamp_sec\": 629,\n      \"why\": \"Names the prior art the design leans on, useful for cross-talk synthesis.\"\n    },\n    {\n      \"text\": \"Two different fields landed on the same idea and that's what we're trying to apply to our data model.\",\n      \"timestamp_sec\": 629,\n      \"why\": \"The convergent-evolution argument used to justify the architecture.\"\n    },\n    {\n      \"text\": \"Both engines premputee on top of that offline and ahead of time. And when a user engages with Sidekick, a thin slice of logic is recomputed for recent activity, and the entire context is served to the agent.\",\n      \"timestamp_sec\": 678,\n      \"why\": \"The concrete offline/online boundary at serve time.\"\n    },\n    {\n      \"text\": \"Sources are isolated so a bad feed can't break the rest.\",\n      \"timestamp_sec\": 678,\n      \"why\": \"A specific reliability design decision others can adopt or contest.\"\n    },\n    {\n      \"text\": \"So it degrades gracefully, but it doesn't fail. Second, it actually understands the urgency of facts.\",\n      \"timestamp_sec\": 731,\n      \"why\": \"Names the two behaviors the architecture is claimed to buy.\"\n    },\n    {\n      \"text\": \"And the crucial part is that it compounds. Every day the data is captured, the layers fill in and the profile sharpens.\",\n      \"timestamp_sec\": 731,\n      \"why\": \"The strategic claim \u2014 why they think this is a durable moat rather than a feature.\"\n    },\n    {\n      \"text\": \"And adding a new data source is deliberately cheap and only contributes. So the surface only grows. The more it sees, the more it understands.\",\n      \"timestamp_sec\": 731,\n      \"why\": \"States the additive-integration design goal explicitly.\"\n    },\n    {\n      \"text\": \"the model itself is always trailing the actual live world. New users have no reliable data to reason from yet, and signals have our own biases built in. So the hardest part is actually telling the important parts from the noise.\",\n      \"timestamp_sec\": 777,\n      \"why\": \"The talk's honest limitations, including cold start and signal bias.\"\n    },\n    {\n      \"text\": \"the most capable agent in the world whether it's like a cloud and Gemini, it doesn't understand you. He need to process it beforehand.\",\n      \"timestamp_sec\": 895,\n      \"why\": \"Closing position: model capability doesn't substitute for precomputed user context.\"\n    }\n  ],\n  \"concepts\": [\n    \"system of context\",\n    \"world model\",\n    \"precomputed context\",\n    \"agent memory\",\n    \"user profiling\",\n    \"lambda architecture\",\n    \"complementary learning systems\",\n    \"entity relationship modeling\",\n    \"proactive agents\",\n    \"graceful degradation\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"The bottleneck for work assistants is understanding the connections between records, not retrieving data \u2014 retrieval is already solved by existing connectors and MCPs.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 106\n    },\n    {\n      \"claim\": \"Adding memory to an agent does not solve the problem of knowing what a user should prioritize.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 320\n    },\n    {\n      \"claim\": \"Contextual understanding cannot be constructed at query time; it must be computed ahead of time, offline.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 397\n    },\n    {\n      \"claim\": \"A longer context window or a bigger prompt is not a substitute for a structured world model of the user.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 436\n    },\n    {\n      \"claim\": \"User context should be modeled with two engines on different time windows \u2014 a slow one that learns durable patterns and a fast one that computes live urgency signals.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 533\n    },\n    {\n      \"claim\": \"The fast/slow split is validated by convergent design in neuroscience (complementary learning systems) and data infrastructure (lambda architecture).\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 629\n    },\n    {\n      \"claim\": \"Isolating data sources plus a serve-time verification layer with fallback to last-verified context makes the system degrade gracefully instead of failing.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 678\n    },\n    {\n      \"claim\": \"A context model built this way compounds in value over time and makes each additional data source cheap and purely additive.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 731\n    },\n    {\n      \"claim\": \"The approach cannot serve new users well, since there is no reliable historical data to reason from \u2014 a cold-start limitation.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 777\n    },\n    {\n      \"claim\": \"Frontier model capability (Claude, Gemini, GPT) is not the limiting factor for personal work assistants; per-user preprocessing is.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 895\n    },\n    {\n      \"claim\": \"Owning the platform where work actually happens is what makes building this understanding layer feasible.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 146\n    }\n  ],\n  \"speaker_org\": \"monday.com\"\n}",
+  "ttft_ms": 32282,
+  "ttft_stream_ms": 1079,
+  "time_to_request_ms": 40,
+  "type": "result",
+  "duration_ms": 72109,
+  "uuid": "7f4bed40-225c-43f5-abea-ff90af64e800",
+  "passA": {
+    "summary": "Two engineering managers from monday.com argue that the bottleneck for work assistants is not data access or retrieval but understanding \u2014 knowing how a user's entities, people, and commitments connect and which matter right now. They describe the \"Monday world model\" behind their Sidekick assistant: a precomputed data model built offline from Monday boards, Slack, email, and calendar, split into a slow engine that mines weeks of activity into a durable user profile and a fast engine that recomputes live signals over a short recent window. They ground this two-speed split in prior art from neuroscience (complementary learning systems) and data infrastructure (lambda architecture), and claim it buys graceful degradation, urgency awareness, and compounding value as new sources are added cheaply. Worth watching if you're designing agent memory/context layers and want a concrete architecture for precomputing meaning rather than stuffing more into a prompt at query time. It's a short, architecture-level talk with no benchmarks or evals \u2014 the honest caveats (cold start, trailing state, signal bias) are stated but not solved.",
+    "key_points": [
+      "The framing shift is from \"system of record\" (logging every task, message, and status) to \"system of context\" (software that understands the connections between those records).",
+      "The speakers insist the hard problem is understanding, not retrieval \u2014 agents already have access to boards, Slack, email, and MCP connectors and still can't answer \"what should I focus on right now?\"",
+      "They name an \"agent gap\": agents execute well when told what to do (drafting a reply to an escalation) but guess when asked to identify what matters, because they lack a model of the user's priorities.",
+      "Meaning must be computed ahead of time, not at runtime \u2014 you cannot build understanding in the moment a user asks the question.",
+      "The Monday world model collects thousands of data points per user and constructs three artifacts: a structural graph of entities and dependencies, a live snapshot of current signals, and a durable learned profile.",
+      "Two engines on different time windows produce this: a slow engine mining weeks of activity into a reinforced persona/routine profile, and a fast engine recomputing urgency signals over a short recent window \u2014 \"one knows you and the other one knows your day.\"",
+      "The two-speed design is explicitly borrowed from complementary learning systems in neuroscience (hippocampus vs. neocortex) and lambda architecture in data processing.",
+      "The architecture is designed to degrade rather than fail: sources are isolated so a bad feed can't break the rest, and a thin serve-time layer verifies part of the context against live data while the rest falls back to the last verified context.",
+      "Value compounds because each new data source is cheap to add and only contributes, while stated limits remain: the model trails the live world, new users have no reliable data, and separating signal from noise is the hardest part."
+    ],
+    "notable_quotes": [
+      {
+        "text": "The problem was never the missing of data, the retrieval. The problem is like the missing understanding.",
+        "timestamp_sec": 106,
+        "why": "The thesis of the talk in one line."
+      },
+      {
+        "text": "Understanding is the word that we're going to focus the entire the entire talk. Not context, not memory, not retrieval, understanding.",
+        "timestamp_sec": 106,
+        "why": "Explicitly rejects the three most common framings in agent-memory discourse."
+      },
+      {
+        "text": "but asking him what should I focus on first he guess because he doesn't understand what is my priority who am I it doesn't matter if you have a memory or something he still don't know what is the problem",
+        "timestamp_sec": 320,
+        "why": "Defines the 'agent gap' and takes a swipe at memory as a sufficient fix."
+      },
+      {
+        "text": "you can go to your Monday board and see which PR connected to this item and understand that this line of code came because some customer complain about something.",
+        "timestamp_sec": 359,
+        "why": "The git-blame analogy that makes 'records without meaning' concrete."
+      },
+      {
+        "text": "You need to build it much before someone asks the question.",
+        "timestamp_sec": 397,
+        "why": "States the precompute-vs-runtime tradeoff that drives the whole architecture."
+      },
+      {
+        "text": "he understand who you are and it's simply not a bigger prompt.",
+        "timestamp_sec": 436,
+        "why": "Positions the world model against the 'just expand the context window' default."
+      },
+      {
+        "text": "The problem is really to understand how it works. Understand how each one of these entity connected to each other.",
+        "timestamp_sec": 479,
+        "why": "Reframes the goal as relationship modeling rather than data access."
+      },
+      {
+        "text": "We collect thousands of data points on the user every item status change their activity log messages and meetings and construct three things the agent can resone over.",
+        "timestamp_sec": 479,
+        "why": "The only quantitative claim about input scale, plus the three-part output structure."
+      },
+      {
+        "text": "we use two engines running on different time windows and schedules. A slow engine that runs on a long time window and learns the user and their work and a fast engine that reads what's happening right now and how it affects the user's work.",
+        "timestamp_sec": 533,
+        "why": "The core architectural claim of the talk."
+      },
+      {
+        "text": "One knows you and the other one knows your day.",
+        "timestamp_sec": 533,
+        "why": "The most portable summary of the two-engine split."
+      },
+      {
+        "text": "The fast engine is the opposite. It takes as context a short recent window and recomputes a set of live signals over the user's current state.",
+        "timestamp_sec": 579,
+        "why": "Specifies the fast path's contract precisely."
+      },
+      {
+        "text": "this split isn't something we invented. It's present in two totally different fields. In neuroscience, this split is referred to as complimentary learning systems. And in data processing architecture, it's referred to as a lambda architecture.",
+        "timestamp_sec": 629,
+        "why": "Names the prior art the design leans on, useful for cross-talk synthesis."
+      },
+      {
+        "text": "Two different fields landed on the same idea and that's what we're trying to apply to our data model.",
+        "timestamp_sec": 629,
+        "why": "The convergent-evolution argument used to justify the architecture."
+      },
+      {
+        "text": "Both engines premputee on top of that offline and ahead of time. And when a user engages with Sidekick, a thin slice of logic is recomputed for recent activity, and the entire context is served to the agent.",
+        "timestamp_sec": 678,
+        "why": "The concrete offline/online boundary at serve time."
+      },
+      {
+        "text": "Sources are isolated so a bad feed can't break the rest.",
+        "timestamp_sec": 678,
+        "why": "A specific reliability design decision others can adopt or contest."
+      },
+      {
+        "text": "So it degrades gracefully, but it doesn't fail. Second, it actually understands the urgency of facts.",
+        "timestamp_sec": 731,
+        "why": "Names the two behaviors the architecture is claimed to buy."
+      },
+      {
+        "text": "And the crucial part is that it compounds. Every day the data is captured, the layers fill in and the profile sharpens.",
+        "timestamp_sec": 731,
+        "why": "The strategic claim \u2014 why they think this is a durable moat rather than a feature."
+      },
+      {
+        "text": "And adding a new data source is deliberately cheap and only contributes. So the surface only grows. The more it sees, the more it understands.",
+        "timestamp_sec": 731,
+        "why": "States the additive-integration design goal explicitly."
+      },
+      {
+        "text": "the model itself is always trailing the actual live world. New users have no reliable data to reason from yet, and signals have our own biases built in. So the hardest part is actually telling the important parts from the noise.",
+        "timestamp_sec": 777,
+        "why": "The talk's honest limitations, including cold start and signal bias."
+      },
+      {
+        "text": "the most capable agent in the world whether it's like a cloud and Gemini, it doesn't understand you. He need to process it beforehand.",
+        "timestamp_sec": 895,
+        "why": "Closing position: model capability doesn't substitute for precomputed user context."
+      }
+    ],
+    "concepts": [
+      "system of context",
+      "world model",
+      "precomputed context",
+      "agent memory",
+      "user profiling",
+      "lambda architecture",
+      "complementary learning systems",
+      "entity relationship modeling",
+      "proactive agents",
+      "graceful degradation"
+    ],
+    "positions": [
+      {
+        "claim": "The bottleneck for work assistants is understanding the connections between records, not retrieving data \u2014 retrieval is already solved by existing connectors and MCPs.",
+        "confidence": "stated",
+        "timestamp_sec": 106
+      },
+      {
+        "claim": "Adding memory to an agent does not solve the problem of knowing what a user should prioritize.",
+        "confidence": "stated",
+        "timestamp_sec": 320
+      },
+      {
+        "claim": "Contextual understanding cannot be constructed at query time; it must be computed ahead of time, offline.",
+        "confidence": "stated",
+        "timestamp_sec": 397
+      },
+      {
+        "claim": "A longer context window or a bigger prompt is not a substitute for a structured world model of the user.",
+        "confidence": "stated",
+        "timestamp_sec": 436
+      },
+      {
+        "claim": "User context should be modeled with two engines on different time windows \u2014 a slow one that learns durable patterns and a fast one that computes live urgency signals.",
+        "confidence": "stated",
+        "timestamp_sec": 533
+      },
+      {
+        "claim": "The fast/slow split is validated by convergent design in neuroscience (complementary learning systems) and data infrastructure (lambda architecture).",
+        "confidence": "stated",
+        "timestamp_sec": 629
+      },
+      {
+        "claim": "Isolating data sources plus a serve-time verification layer with fallback to last-verified context makes the system degrade gracefully instead of failing.",
+        "confidence": "stated",
+        "timestamp_sec": 678
+      },
+      {
+        "claim": "A context model built this way compounds in value over time and makes each additional data source cheap and purely additive.",
+        "confidence": "stated",
+        "timestamp_sec": 731
+      },
+      {
+        "claim": "The approach cannot serve new users well, since there is no reliable historical data to reason from \u2014 a cold-start limitation.",
+        "confidence": "stated",
+        "timestamp_sec": 777
+      },
+      {
+        "claim": "Frontier model capability (Claude, Gemini, GPT) is not the limiting factor for personal work assistants; per-user preprocessing is.",
+        "confidence": "stated",
+        "timestamp_sec": 895
+      },
+      {
+        "claim": "Owning the platform where work actually happens is what makes building this understanding layer feasible.",
+        "confidence": "implied",
+        "timestamp_sec": 146
+      }
+    ],
+    "speaker_org": "monday.com"
+  },
+  "_meta": {
+    "slug": "from-systems-of-record-to-systems-of-context",
+    "video_id": "Btk8wDUVs74",
+    "url": "https://www.youtube.com/watch?v=Btk8wDUVs74",
+    "word_count": 2513,
+    "wall_sec": 73.3,
+    "run_at": "2026-08-12T19:51:44Z",
+    "effort": "medium"
+  }
+}

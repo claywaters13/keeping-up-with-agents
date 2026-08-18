@@ -1,0 +1,312 @@
+{
+  "is_error": false,
+  "duration_api_ms": 141793,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "b1a19c36-a1b0-4f97-a7da-6718e6e965dc",
+  "total_cost_usd": 1.080591,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 71270,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 12591,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 71270,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 12591,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 71270,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 71270
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 47862,
+      "outputTokens": 18,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.047952,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 12591,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 71270,
+      "webSearchRequests": 0,
+      "costUSD": 1.032639,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\"concept\": \"agent observability and tracing\", \"state_of_practice\": \"The field has settled on the premise that agent traces are the primary debugging and evaluation artifact, and that aggregate metrics \u2014 pass rates, 200 OKs, green dashboards \u2014 systematically hide the failures that matter, because an agent can complete successfully while doing exactly the wrong thing. What is required is not request logging but the full decision chain: reasoning steps, every tool input and output, memory access, state transitions, retries, and the infrastructure errors underneath, spanning the whole session from trigger to result. The consumer of that trace has shifted from a human clicking a Grafana-style UI to an agent that reads telemetry, files an evidence-backed issue, and opens a PR \u2014 which in turn justifies logging an order of magnitude more than before, but also creates a new cost problem, since reading millions of traces with an LLM can exceed the cost of the original executions. Production telemetry, not benchmarks or synthetic scenario sets, is now treated as the largest and most representative evaluation dataset an organization has, so evaluation is drifting from a pre-deploy gate into an always-on service riding the same trace substrate. The unresolved argument is about what the substrate actually is: a durable session log and OTel spans, or a checkpointed runtime that snapshots in-flight variables, filesystem state, and the executing code so a production run can be deterministically replayed with one node swapped.\", \"consensus\": [{\"claim\": \"Aggregate pass-rate metrics and final outputs are insufficient for agent quality; specific classes of failure are only findable by inspecting the trace of reasoning and tool calls.\", \"support_count\": 6, \"supporting_talks\": [\"how-evals-and-prompts-shape-agent-behavior\", \"deterministic-infra-for-non-deterministic-ai-agents\", \"production-evals-for-agentic-ai-systems\", \"the-agentic-ai-engineer\", \"your-agent-architecture-has-a-half-life-of-6-months\", \"the-missing-layer-after-launch\"], \"evidence_quote\": \"And we could not find that if we were just doing a categorical like the this x% pass rate or not. So we really had to look at the traces to see what was going on.\", \"evidence_talk\": \"how-evals-and-prompts-shape-agent-behavior\", \"evidence_timestamp_sec\": 694}, {\"claim\": \"Instrumentation is a precondition, not an afterthought: log and trace the full orchestration before attempting to optimize, evaluate, or scale the agent.\", \"support_count\": 5, \"supporting_talks\": [\"building-closed-loop-evals-for-a-multimodal-agent-at-scale\", \"agents-in-production-how-opengov-built-and-scaled-og-assist\", \"ai-agents-for-performance-ship-faster-pay-less\", \"production-evals-for-agentic-ai-systems\", \"your-agent-is-wasting-tokens-and-you-dont-know-it\"], \"evidence_quote\": \"you want to start with your logging cuz if you don't start with it, you have nothing to optimize for, let alone set up a self-learning loop\", \"evidence_talk\": \"building-closed-loop-evals-for-a-multimodal-agent-at-scale\", \"evidence_timestamp_sec\": 413}, {\"claim\": \"The consumer of agent telemetry is now another agent, not a human browsing dashboards; the output of the observability loop should be a proposed fix or PR rather than a chart.\", \"support_count\": 5, \"supporting_talks\": [\"from-signal-to-pr-anatomy-of-a-self-improving-agent\", \"your-agent-architecture-has-a-half-life-of-6-months\", \"the-missing-layer-after-launch\", \"the-agentic-ai-engineer\", \"your-agents-need-a-save-button\"], \"evidence_quote\": \"the future observability actually looks a lot more like this than it does clicking around graphana UI\", \"evidence_talk\": \"from-signal-to-pr-anatomy-of-a-self-improving-agent\", \"evidence_timestamp_sec\": 308}, {\"claim\": \"Because agent trajectories are non-deterministic and coverage is unbounded, production traces \u2014 not pre-launch test suites \u2014 are what tell you which failure modes exist and therefore what to test.\", \"support_count\": 6, \"supporting_talks\": [\"the-missing-layer-after-launch\", \"production-evals-for-agentic-ai-systems\", \"medic-for-apache-spark-first-aid-for-failing-jobs\", \"building-closed-loop-evals-for-a-multimodal-agent-at-scale\", \"how-evals-and-prompts-shape-agent-behavior\", \"your-agents-need-a-save-button\"], \"evidence_quote\": \"production is the place when you learn what you need to uh what you need to test on the first place.\", \"evidence_talk\": \"the-missing-layer-after-launch\", \"evidence_timestamp_sec\": 336}, {\"claim\": \"A usable agent trace must span more than LLM and tool calls \u2014 state transitions, memory access, retries, permissions and database errors, and the session envelope all have to be in the same trace.\", \"support_count\": 5, \"supporting_talks\": [\"your-agent-architecture-has-a-half-life-of-6-months\", \"production-evals-for-agentic-ai-systems\", \"your-agent-failed-in-prod-good-luck-reproducing-it\", \"deterministic-infra-for-non-deterministic-ai-agents\", \"your-agents-need-a-save-button\"], \"evidence_quote\": \"So, if you can't see the entirety of a trace from the trigger through the whole stack, it's really hard to debug it, let alone improve your agent and keep evolving it.\", \"evidence_talk\": \"your-agent-architecture-has-a-half-life-of-6-months\", \"evidence_timestamp_sec\": 548}, {\"claim\": \"Trace-derived signals must ship with their supporting evidence rather than as a single opaque score, because the trace is the surface on which humans (users, reviewers, on-call) grant or withhold trust.\", \"support_count\": 4, \"supporting_talks\": [\"learned-execution-graphs-for-anomaly-detection-drift-in-apis\", \"chat-and-citations-wont-save-your-vertical-ai\", \"the-agentic-ai-engineer\", \"thinner-agents-on-a-smarter-substrate-the-ontology-based-semantic-layer\"], \"evidence_quote\": \"If you go to the doctor and doctor says your health score is 22, it doesn't make much sense to you.\", \"evidence_talk\": \"learned-execution-graphs-for-anomaly-detection-drift-in-apis\", \"evidence_timestamp_sec\": 1093}], \"disagreements\": [{\"question\": \"Is an emitted trace or session log a sufficient observability substrate, or must the runtime itself be checkpointed so runs can be replayed from code?\", \"position_a\": \"A durable session log / trace of everything that happened during execution is the single substrate \u2014 it answers 'what is my agent doing', feeds context recovery, memory, and evaluation, and is the equivalent of distributed tracing for autonomous workloads.\", \"position_a_talks\": [\"evolution-of-agentic-surfaces\", \"production-evals-for-agentic-ai-systems\", \"from-signal-to-pr-anatomy-of-a-self-improving-agent\", \"learned-execution-graphs-for-anomaly-detection-drift-in-apis\"], \"position_b\": \"Traces are structurally inadequate because they are read-only artifacts disconnected from the runtime that discard in-flight variables, filesystem state, and the executing code; you need checkpointed state, recorded node boundaries, and fixtures so a production run can be replayed deterministically with one node swapped.\", \"position_b_talks\": [\"your-agents-need-a-save-button\", \"your-agent-failed-in-prod-good-luck-reproducing-it\", \"medic-for-apache-spark-first-aid-for-failing-jobs\"], \"why_it_matters\": \"It decides whether observability is a side-channel you bolt on with OTel spans or a property of the execution layer you must architect for up front \u2014 and whether a captured production failure can be turned into a free, rerunnable regression test or only into a document an agent reads.\"}, {\"question\": \"Is agent observability an adaptation of existing distributed-systems tooling, or does it require a genuinely new layer of the stack?\", \"position_a\": \"Reuse what exists: OpenTelemetry with async export, Kafka and stream processing, tail-based sampling, canaries, and standard SRE reliability patterns. Observability, canary, and verify logic are ordinary engineering foundations, not AI problems.\", \"position_a_talks\": [\"ai-agents-for-performance-ship-faster-pay-less\", \"learned-execution-graphs-for-anomaly-detection-drift-in-apis\", \"deterministic-infra-for-non-deterministic-ai-agents\"], \"position_b\": \"Non-deterministic workloads break the assumptions of the existing stack \u2014 spans are disconnected from execution, string-matching runtime security tooling does not apply, and evaluation has to move into a control plane \u2014 so a new durable-runtime layer beneath the harness is required.\", \"position_b_talks\": [\"your-agents-need-a-save-button\", \"ais-jurassic-park-period\", \"production-evals-for-agentic-ai-systems\", \"fighting-slop-with-slop\"], \"why_it_matters\": \"It determines whether teams staff this as an SRE/platform extension of their existing telemetry pipeline or bet on an emerging category of runtime tooling that mostly does not exist in production-ready form yet.\"}, {\"question\": \"Should teams build their own agent observability and monitoring layer, or treat it as undifferentiated infrastructure to outsource?\", \"position_a\": \"Build it yourself \u2014 you know what you are looking for, black-box vendor 'SRE agent' products are the wrong shape, and the harness watching your agent is where competitive advantage now lives since everyone has the same models.\", \"position_a_talks\": [\"the-missing-layer-after-launch\", \"from-signal-to-pr-anatomy-of-a-self-improving-agent\", \"multiplayer-agentic-engineering\"], \"position_b\": \"Hosting, session management, sandboxing, credentials, and observability are undifferentiated work; developers should own only system prompts, skills, tools, and domain context, and let a shared substrate supply the loop, memory, and observability.\", \"position_b_talks\": [\"evolution-of-agentic-surfaces\", \"thinner-agents-on-a-smarter-substrate-the-ontology-based-semantic-layer\"], \"why_it_matters\": \"Enterprises will not route production connections to a third party regardless, so the practical resolution \u2014 vendor sandbox or MCP tunnel inside the customer's own VPC \u2014 changes the deployment model for every observability vendor in the space.\"}, {\"question\": \"Should teams dramatically increase trace and log volume now that agents can read it, or is trace volume itself the cost problem to design around?\", \"position_a\": \"Trace and log roughly 10x more than today, because agents can dig through volumes of telemetry that humans never could \u2014 the noise that made verbose logging pointless for humans is no longer a constraint.\", \"position_a_talks\": [\"from-signal-to-pr-anatomy-of-a-self-improving-agent\"], \"position_b\": \"Volume is the binding constraint: reading millions of traces with an LLM costs more than the original executions, collecting and processing logs becomes a meaningful part of system load at scale, and replay is expensive enough that selecting what to replay is itself a design problem \u2014 so sample representatively, use tail-based sampling, and learn code-checkable indicators per failure mode.\", \"position_b_talks\": [\"the-agentic-ai-engineer\", \"how-web-data-infrastructure-powers-the-next-generation-of-ai\", \"your-agents-need-a-save-button\", \"learned-execution-graphs-for-anomaly-detection-drift-in-apis\"], \"why_it_matters\": \"The two prescriptions produce opposite retention and sampling policies, and with token prices rising the cost of an always-on trace-reading agent can quietly exceed the cost of the agent fleet it is watching.\"}], \"practical_guidance\": {\"do\": [\"Log every stage of the orchestration in a flat, human-readable JSON structure before building any eval or self-learning loop\", \"Capture the full envelope alongside the prompt \u2014 LLM version, build ID, RAG chunks \u2014 or the trace will not be replayable\", \"Record at each node boundary (what enters and what leaves), not at the network layer, since local retrieval, in-process tools, and memory never cross the network\", \"Export telemetry asynchronously with Kafka/stream processing downstream so tracing never sits in the latency path of a real-time request\", \"Use tail-based sampling when what matters is when each node's request started and ended\", \"Give new endpoints their own baseline and scope thresholds per client and per operation type, rather than one global baseline per HTTP method\", \"Snapshot real tool responses as fixtures checked into the repo so offline evals can quantify agent quality instead of relying on intuition\", \"Deliver selected trace data to a coding agent as files in the repo \u2014 harnesses handle even ~10MB files well\", \"Instrument at the execution layer, where triggers, user input, tool calls, feedback, and session results all converge\", \"Run observability over tool calls before deploying: check how long each tool runs and how many times the loop repeats, and cap max iterations\", \"Separate the agent that diagnoses and writes the fix from the agent that reviews it, giving the reviewer fresh context\", \"Score trace cohorts at thousands-scale with LLMs and make the runtime queryable by MCP servers and skills so agents can fetch artifacts\", \"Render long time-series metrics as images so input token count stays fixed regardless of job duration\", \"Use outcome signals from the trace \u2014 was the PR opened, was the report saved \u2014 as evaluation data instead of thumbs up/down\", \"Log a short per-invocation agent retrospective (what went well, what tools were missing, what context would help next time) as a stopgap where agent observability tooling does not yet exist\"], \"avoid\": [\"Treating green dashboards, 200 OKs, and aggregate pass rates as evidence of correctness \u2014 a catastrophic wrong action raises no exception\", \"Chasing bitwise reproducibility by pinning temperature to zero; it fixes the selection rule, not the scores, and hosted APIs cannot deliver it\", \"Blaming GPU concurrency for run-to-run variation instead of batch invariance, non-associative float math, and MoE expert overflow\", \"Using the sandbox for durability, snapshots, or state \u2014 sandboxes are ephemeral by design\", \"Rewriting a prompt in response to a single failing run; drive fixes from failure patterns measured across many examples\", \"Shipping a change on the basis of one or two replays instead of cohort-level analysis\", \"Letting eval results and traces terminate in a dashboard with no path back into the agent's context, skills, or retrieval\", \"Assuming telemetry is free \u2014 at scale, collecting and processing logs becomes a meaningful part of system load and complexity\", \"Reducing an anomaly to a single opaque score with no supporting data\", \"Trusting a diagnostics agent's trace reading without surfacing its assumptions, since an agent reading traces without code access will infer things that are wrong\"]}, \"notable_outliers\": [{\"claim\": \"GPU concurrency is not the source of LLM non-determinism \u2014 an isolated matrix multiplication run a thousand times is bit-identical; the real culprit is that your request gets batched with whatever other traffic hit the server that millisecond.\", \"talk\": \"your-agent-failed-in-prod-good-luck-reproducing-it\", \"timestamp_sec\": 233}, {\"claim\": \"At millions of traces, having an LLM read all of them costs more than the agent executions that produced them.\", \"talk\": \"the-agentic-ai-engineer\", \"timestamp_sec\": 1288}, {\"claim\": \"At sufficient scale, observability stops being a side concern and becomes part of the system load itself \u2014 collecting logs is hard, processing them is harder.\", \"talk\": \"how-web-data-infrastructure-powers-the-next-generation-of-ai\", \"timestamp_sec\": 851}, {\"claim\": \"In a world where nobody reads all the code, the execution trace is the only way to understand the code \u2014 and full-program tracing can be made effectively zero-cost if designed in from first principles.\", \"talk\": \"fighting-slop-with-slop\", \"timestamp_sec\": 639}, {\"claim\": \"Execution traces should feed back as a bottom-up trust ranking of data sources: what actually worked in practice weights which source an agent picks next time, giving cross-agent learning.\", \"talk\": \"thinner-agents-on-a-smarter-substrate-the-ontology-based-semantic-layer\", \"timestamp_sec\": 499}, {\"claim\": \"Replaying from production checkpoints cut a multi-hour process to 5 minutes across hundreds of simulations, with 90% fewer hallucinations and results within two points of production.\", \"talk\": \"your-agents-need-a-save-button\", \"timestamp_sec\": 267}, {\"claim\": \"Rendering Spark metrics as images rather than raw series guarantees a fixed input token count for analyzing any job regardless of its duration.\", \"talk\": \"medic-for-apache-spark-first-aid-for-failing-jobs\", \"timestamp_sec\": 451}], \"maturity\": \"consolidating\", \"maturity_rationale\": \"Across 30 talks there is broad, independently arrived-at agreement that full-trajectory traces are mandatory, that dashboards are the wrong consumption surface, and that production telemetry is the best eval data \u2014 but the substrate is still actively argued (emitted spans vs checkpointed replayable runtime), as are build-vs-outsource and how much to trace given cost. The disagreements are about architecture and economics, not about whether the practice matters.\"}",
+  "ttft_ms": 74994,
+  "ttft_stream_ms": 1364,
+  "time_to_request_ms": 37,
+  "type": "result",
+  "duration_ms": 141197,
+  "uuid": "0e99f1db-03cb-40ae-9dc4-627f877b89cd",
+  "passC": {
+    "concept": "agent observability and tracing",
+    "state_of_practice": "The field has settled on the premise that agent traces are the primary debugging and evaluation artifact, and that aggregate metrics \u2014 pass rates, 200 OKs, green dashboards \u2014 systematically hide the failures that matter, because an agent can complete successfully while doing exactly the wrong thing. What is required is not request logging but the full decision chain: reasoning steps, every tool input and output, memory access, state transitions, retries, and the infrastructure errors underneath, spanning the whole session from trigger to result. The consumer of that trace has shifted from a human clicking a Grafana-style UI to an agent that reads telemetry, files an evidence-backed issue, and opens a PR \u2014 which in turn justifies logging an order of magnitude more than before, but also creates a new cost problem, since reading millions of traces with an LLM can exceed the cost of the original executions. Production telemetry, not benchmarks or synthetic scenario sets, is now treated as the largest and most representative evaluation dataset an organization has, so evaluation is drifting from a pre-deploy gate into an always-on service riding the same trace substrate. The unresolved argument is about what the substrate actually is: a durable session log and OTel spans, or a checkpointed runtime that snapshots in-flight variables, filesystem state, and the executing code so a production run can be deterministically replayed with one node swapped.",
+    "consensus": [
+      {
+        "claim": "Aggregate pass-rate metrics and final outputs are insufficient for agent quality; specific classes of failure are only findable by inspecting the trace of reasoning and tool calls.",
+        "support_count": 6,
+        "supporting_talks": [
+          "how-evals-and-prompts-shape-agent-behavior",
+          "deterministic-infra-for-non-deterministic-ai-agents",
+          "production-evals-for-agentic-ai-systems",
+          "the-agentic-ai-engineer",
+          "your-agent-architecture-has-a-half-life-of-6-months",
+          "the-missing-layer-after-launch"
+        ],
+        "evidence_quote": "And we could not find that if we were just doing a categorical like the this x% pass rate or not. So we really had to look at the traces to see what was going on.",
+        "evidence_talk": "how-evals-and-prompts-shape-agent-behavior",
+        "evidence_timestamp_sec": 694
+      },
+      {
+        "claim": "Instrumentation is a precondition, not an afterthought: log and trace the full orchestration before attempting to optimize, evaluate, or scale the agent.",
+        "support_count": 5,
+        "supporting_talks": [
+          "building-closed-loop-evals-for-a-multimodal-agent-at-scale",
+          "agents-in-production-how-opengov-built-and-scaled-og-assist",
+          "ai-agents-for-performance-ship-faster-pay-less",
+          "production-evals-for-agentic-ai-systems",
+          "your-agent-is-wasting-tokens-and-you-dont-know-it"
+        ],
+        "evidence_quote": "you want to start with your logging cuz if you don't start with it, you have nothing to optimize for, let alone set up a self-learning loop",
+        "evidence_talk": "building-closed-loop-evals-for-a-multimodal-agent-at-scale",
+        "evidence_timestamp_sec": 413
+      },
+      {
+        "claim": "The consumer of agent telemetry is now another agent, not a human browsing dashboards; the output of the observability loop should be a proposed fix or PR rather than a chart.",
+        "support_count": 5,
+        "supporting_talks": [
+          "from-signal-to-pr-anatomy-of-a-self-improving-agent",
+          "your-agent-architecture-has-a-half-life-of-6-months",
+          "the-missing-layer-after-launch",
+          "the-agentic-ai-engineer",
+          "your-agents-need-a-save-button"
+        ],
+        "evidence_quote": "the future observability actually looks a lot more like this than it does clicking around graphana UI",
+        "evidence_talk": "from-signal-to-pr-anatomy-of-a-self-improving-agent",
+        "evidence_timestamp_sec": 308
+      },
+      {
+        "claim": "Because agent trajectories are non-deterministic and coverage is unbounded, production traces \u2014 not pre-launch test suites \u2014 are what tell you which failure modes exist and therefore what to test.",
+        "support_count": 6,
+        "supporting_talks": [
+          "the-missing-layer-after-launch",
+          "production-evals-for-agentic-ai-systems",
+          "medic-for-apache-spark-first-aid-for-failing-jobs",
+          "building-closed-loop-evals-for-a-multimodal-agent-at-scale",
+          "how-evals-and-prompts-shape-agent-behavior",
+          "your-agents-need-a-save-button"
+        ],
+        "evidence_quote": "production is the place when you learn what you need to uh what you need to test on the first place.",
+        "evidence_talk": "the-missing-layer-after-launch",
+        "evidence_timestamp_sec": 336
+      },
+      {
+        "claim": "A usable agent trace must span more than LLM and tool calls \u2014 state transitions, memory access, retries, permissions and database errors, and the session envelope all have to be in the same trace.",
+        "support_count": 5,
+        "supporting_talks": [
+          "your-agent-architecture-has-a-half-life-of-6-months",
+          "production-evals-for-agentic-ai-systems",
+          "your-agent-failed-in-prod-good-luck-reproducing-it",
+          "deterministic-infra-for-non-deterministic-ai-agents",
+          "your-agents-need-a-save-button"
+        ],
+        "evidence_quote": "So, if you can't see the entirety of a trace from the trigger through the whole stack, it's really hard to debug it, let alone improve your agent and keep evolving it.",
+        "evidence_talk": "your-agent-architecture-has-a-half-life-of-6-months",
+        "evidence_timestamp_sec": 548
+      },
+      {
+        "claim": "Trace-derived signals must ship with their supporting evidence rather than as a single opaque score, because the trace is the surface on which humans (users, reviewers, on-call) grant or withhold trust.",
+        "support_count": 4,
+        "supporting_talks": [
+          "learned-execution-graphs-for-anomaly-detection-drift-in-apis",
+          "chat-and-citations-wont-save-your-vertical-ai",
+          "the-agentic-ai-engineer",
+          "thinner-agents-on-a-smarter-substrate-the-ontology-based-semantic-layer"
+        ],
+        "evidence_quote": "If you go to the doctor and doctor says your health score is 22, it doesn't make much sense to you.",
+        "evidence_talk": "learned-execution-graphs-for-anomaly-detection-drift-in-apis",
+        "evidence_timestamp_sec": 1093
+      }
+    ],
+    "disagreements": [
+      {
+        "question": "Is an emitted trace or session log a sufficient observability substrate, or must the runtime itself be checkpointed so runs can be replayed from code?",
+        "position_a": "A durable session log / trace of everything that happened during execution is the single substrate \u2014 it answers 'what is my agent doing', feeds context recovery, memory, and evaluation, and is the equivalent of distributed tracing for autonomous workloads.",
+        "position_a_talks": [
+          "evolution-of-agentic-surfaces",
+          "production-evals-for-agentic-ai-systems",
+          "from-signal-to-pr-anatomy-of-a-self-improving-agent",
+          "learned-execution-graphs-for-anomaly-detection-drift-in-apis"
+        ],
+        "position_b": "Traces are structurally inadequate because they are read-only artifacts disconnected from the runtime that discard in-flight variables, filesystem state, and the executing code; you need checkpointed state, recorded node boundaries, and fixtures so a production run can be replayed deterministically with one node swapped.",
+        "position_b_talks": [
+          "your-agents-need-a-save-button",
+          "your-agent-failed-in-prod-good-luck-reproducing-it",
+          "medic-for-apache-spark-first-aid-for-failing-jobs"
+        ],
+        "why_it_matters": "It decides whether observability is a side-channel you bolt on with OTel spans or a property of the execution layer you must architect for up front \u2014 and whether a captured production failure can be turned into a free, rerunnable regression test or only into a document an agent reads."
+      },
+      {
+        "question": "Is agent observability an adaptation of existing distributed-systems tooling, or does it require a genuinely new layer of the stack?",
+        "position_a": "Reuse what exists: OpenTelemetry with async export, Kafka and stream processing, tail-based sampling, canaries, and standard SRE reliability patterns. Observability, canary, and verify logic are ordinary engineering foundations, not AI problems.",
+        "position_a_talks": [
+          "ai-agents-for-performance-ship-faster-pay-less",
+          "learned-execution-graphs-for-anomaly-detection-drift-in-apis",
+          "deterministic-infra-for-non-deterministic-ai-agents"
+        ],
+        "position_b": "Non-deterministic workloads break the assumptions of the existing stack \u2014 spans are disconnected from execution, string-matching runtime security tooling does not apply, and evaluation has to move into a control plane \u2014 so a new durable-runtime layer beneath the harness is required.",
+        "position_b_talks": [
+          "your-agents-need-a-save-button",
+          "ais-jurassic-park-period",
+          "production-evals-for-agentic-ai-systems",
+          "fighting-slop-with-slop"
+        ],
+        "why_it_matters": "It determines whether teams staff this as an SRE/platform extension of their existing telemetry pipeline or bet on an emerging category of runtime tooling that mostly does not exist in production-ready form yet."
+      },
+      {
+        "question": "Should teams build their own agent observability and monitoring layer, or treat it as undifferentiated infrastructure to outsource?",
+        "position_a": "Build it yourself \u2014 you know what you are looking for, black-box vendor 'SRE agent' products are the wrong shape, and the harness watching your agent is where competitive advantage now lives since everyone has the same models.",
+        "position_a_talks": [
+          "the-missing-layer-after-launch",
+          "from-signal-to-pr-anatomy-of-a-self-improving-agent",
+          "multiplayer-agentic-engineering"
+        ],
+        "position_b": "Hosting, session management, sandboxing, credentials, and observability are undifferentiated work; developers should own only system prompts, skills, tools, and domain context, and let a shared substrate supply the loop, memory, and observability.",
+        "position_b_talks": [
+          "evolution-of-agentic-surfaces",
+          "thinner-agents-on-a-smarter-substrate-the-ontology-based-semantic-layer"
+        ],
+        "why_it_matters": "Enterprises will not route production connections to a third party regardless, so the practical resolution \u2014 vendor sandbox or MCP tunnel inside the customer's own VPC \u2014 changes the deployment model for every observability vendor in the space."
+      },
+      {
+        "question": "Should teams dramatically increase trace and log volume now that agents can read it, or is trace volume itself the cost problem to design around?",
+        "position_a": "Trace and log roughly 10x more than today, because agents can dig through volumes of telemetry that humans never could \u2014 the noise that made verbose logging pointless for humans is no longer a constraint.",
+        "position_a_talks": [
+          "from-signal-to-pr-anatomy-of-a-self-improving-agent"
+        ],
+        "position_b": "Volume is the binding constraint: reading millions of traces with an LLM costs more than the original executions, collecting and processing logs becomes a meaningful part of system load at scale, and replay is expensive enough that selecting what to replay is itself a design problem \u2014 so sample representatively, use tail-based sampling, and learn code-checkable indicators per failure mode.",
+        "position_b_talks": [
+          "the-agentic-ai-engineer",
+          "how-web-data-infrastructure-powers-the-next-generation-of-ai",
+          "your-agents-need-a-save-button",
+          "learned-execution-graphs-for-anomaly-detection-drift-in-apis"
+        ],
+        "why_it_matters": "The two prescriptions produce opposite retention and sampling policies, and with token prices rising the cost of an always-on trace-reading agent can quietly exceed the cost of the agent fleet it is watching."
+      }
+    ],
+    "practical_guidance": {
+      "do": [
+        "Log every stage of the orchestration in a flat, human-readable JSON structure before building any eval or self-learning loop",
+        "Capture the full envelope alongside the prompt \u2014 LLM version, build ID, RAG chunks \u2014 or the trace will not be replayable",
+        "Record at each node boundary (what enters and what leaves), not at the network layer, since local retrieval, in-process tools, and memory never cross the network",
+        "Export telemetry asynchronously with Kafka/stream processing downstream so tracing never sits in the latency path of a real-time request",
+        "Use tail-based sampling when what matters is when each node's request started and ended",
+        "Give new endpoints their own baseline and scope thresholds per client and per operation type, rather than one global baseline per HTTP method",
+        "Snapshot real tool responses as fixtures checked into the repo so offline evals can quantify agent quality instead of relying on intuition",
+        "Deliver selected trace data to a coding agent as files in the repo \u2014 harnesses handle even ~10MB files well",
+        "Instrument at the execution layer, where triggers, user input, tool calls, feedback, and session results all converge",
+        "Run observability over tool calls before deploying: check how long each tool runs and how many times the loop repeats, and cap max iterations",
+        "Separate the agent that diagnoses and writes the fix from the agent that reviews it, giving the reviewer fresh context",
+        "Score trace cohorts at thousands-scale with LLMs and make the runtime queryable by MCP servers and skills so agents can fetch artifacts",
+        "Render long time-series metrics as images so input token count stays fixed regardless of job duration",
+        "Use outcome signals from the trace \u2014 was the PR opened, was the report saved \u2014 as evaluation data instead of thumbs up/down",
+        "Log a short per-invocation agent retrospective (what went well, what tools were missing, what context would help next time) as a stopgap where agent observability tooling does not yet exist"
+      ],
+      "avoid": [
+        "Treating green dashboards, 200 OKs, and aggregate pass rates as evidence of correctness \u2014 a catastrophic wrong action raises no exception",
+        "Chasing bitwise reproducibility by pinning temperature to zero; it fixes the selection rule, not the scores, and hosted APIs cannot deliver it",
+        "Blaming GPU concurrency for run-to-run variation instead of batch invariance, non-associative float math, and MoE expert overflow",
+        "Using the sandbox for durability, snapshots, or state \u2014 sandboxes are ephemeral by design",
+        "Rewriting a prompt in response to a single failing run; drive fixes from failure patterns measured across many examples",
+        "Shipping a change on the basis of one or two replays instead of cohort-level analysis",
+        "Letting eval results and traces terminate in a dashboard with no path back into the agent's context, skills, or retrieval",
+        "Assuming telemetry is free \u2014 at scale, collecting and processing logs becomes a meaningful part of system load and complexity",
+        "Reducing an anomaly to a single opaque score with no supporting data",
+        "Trusting a diagnostics agent's trace reading without surfacing its assumptions, since an agent reading traces without code access will infer things that are wrong"
+      ]
+    },
+    "notable_outliers": [
+      {
+        "claim": "GPU concurrency is not the source of LLM non-determinism \u2014 an isolated matrix multiplication run a thousand times is bit-identical; the real culprit is that your request gets batched with whatever other traffic hit the server that millisecond.",
+        "talk": "your-agent-failed-in-prod-good-luck-reproducing-it",
+        "timestamp_sec": 233
+      },
+      {
+        "claim": "At millions of traces, having an LLM read all of them costs more than the agent executions that produced them.",
+        "talk": "the-agentic-ai-engineer",
+        "timestamp_sec": 1288
+      },
+      {
+        "claim": "At sufficient scale, observability stops being a side concern and becomes part of the system load itself \u2014 collecting logs is hard, processing them is harder.",
+        "talk": "how-web-data-infrastructure-powers-the-next-generation-of-ai",
+        "timestamp_sec": 851
+      },
+      {
+        "claim": "In a world where nobody reads all the code, the execution trace is the only way to understand the code \u2014 and full-program tracing can be made effectively zero-cost if designed in from first principles.",
+        "talk": "fighting-slop-with-slop",
+        "timestamp_sec": 639
+      },
+      {
+        "claim": "Execution traces should feed back as a bottom-up trust ranking of data sources: what actually worked in practice weights which source an agent picks next time, giving cross-agent learning.",
+        "talk": "thinner-agents-on-a-smarter-substrate-the-ontology-based-semantic-layer",
+        "timestamp_sec": 499
+      },
+      {
+        "claim": "Replaying from production checkpoints cut a multi-hour process to 5 minutes across hundreds of simulations, with 90% fewer hallucinations and results within two points of production.",
+        "talk": "your-agents-need-a-save-button",
+        "timestamp_sec": 267
+      },
+      {
+        "claim": "Rendering Spark metrics as images rather than raw series guarantees a fixed input token count for analyzing any job regardless of its duration.",
+        "talk": "medic-for-apache-spark-first-aid-for-failing-jobs",
+        "timestamp_sec": 451
+      }
+    ],
+    "maturity": "consolidating",
+    "maturity_rationale": "Across 30 talks there is broad, independently arrived-at agreement that full-trajectory traces are mandatory, that dashboards are the wrong consumption surface, and that production telemetry is the best eval data \u2014 but the substrate is still actively argued (emitted spans vs checkpointed replayable runtime), as are build-vs-outsource and how much to trace given cost. The disagreements are about architecture and economics, not about whether the practice matters."
+  },
+  "_meta": {
+    "concept": "agent observability and tracing",
+    "slug": "agent-observability-and-tracing",
+    "talk_count": 30,
+    "missing_talks": [],
+    "wall_sec": 142.3,
+    "run_at": "2026-08-13T17:00:10Z"
+  }
+}

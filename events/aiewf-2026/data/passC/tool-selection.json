@@ -1,0 +1,220 @@
+{
+  "is_error": false,
+  "duration_api_ms": 94773,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "011e12c6-f44c-4262-89f7-f0ca10f2ab28",
+  "total_cost_usd": 0.402244,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 20069,
+    "cache_read_input_tokens": 10720,
+    "output_tokens": 7348,
+    "output_tokens_details": {
+      "thinking_tokens": 3328
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 20069,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 7348,
+        "cache_read_input_tokens": 10720,
+        "cache_creation_input_tokens": 20069,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 20069
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 12409,
+      "outputTokens": 15,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.012484,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 7348,
+      "cacheReadInputTokens": 10720,
+      "cacheCreationInputTokens": 20069,
+      "webSearchRequests": 0,
+      "costUSD": 0.38976,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\"concept\": \"tool selection\", \"state_of_practice\": \"The field now treats tool selection as a retrieval problem rather than a prompting problem: the catalog is a corpus, and the model should only ever see a small working set drawn from it per request. The failure curve is measured, not theoretical \u2014 Prosodica's benchmark puts naive full-catalog selection at ~78% accuracy at 10 tools, ~40% at 100, and 13.6% at 741, with 741 schemas costing ~127k tokens per request and pushing time-to-first-token past 5 seconds around 500 tools. Two mechanisms dominate the fix: an out-of-band embedding router that injects the top-K schemas (K=5 as the default starting point), or model-driven lazy discovery where tools are marked deferred and reached through a tool-search call, which is what Codex ships and what GPT-5.4 exposes natively alongside a hard 2%-of-context cap on the skill description block. Practitioners are converging on the claim that this is an accuracy fix, not just a cost fix \u2014 with all tools visible the model reaches for the wrong generic tool, an effect attributed to lost-in-the-middle attention over packed schemas. The open edges are who performs the selection (a router outside the model vs. the model searching a registry itself), and whether bad tool use is an architecture defect fixable at inference or a trained-in behavior that requires retraining \u2014 Mixedbread argues agents write keyword-stuffed queries because their training and the benchmarks reward that, and fixes it with SFT plus RL on trajectory rewards.\", \"consensus\": [{\"claim\": \"Selection accuracy degrades as the tool catalog grows, and this is a property of catalog size rather than of individually badly-written tools.\", \"support_count\": 3, \"supporting_talks\": [\"the-100-tool-agent-is-a-trap\", \"stop-ai-agent-hallucinations-5-techniques-production-patterns\", \"codex-behind-the-harness\"], \"evidence_quote\": \"At almost 100 tools, the accuracy drops to around 40%. Less than half of the tools that are called are the correct tools. And if it grows beyond that, like say for example, in over here, at 741 tools, the accuracy will be a mere 13.6%.\", \"evidence_talk\": \"the-100-tool-agent-is-a-trap\", \"evidence_timestamp_sec\": 237}, {\"claim\": \"The catalog may be arbitrarily large, but the set of tool schemas actually in context per request must be kept small \u2014 via just-in-time retrieval, semantic filtering, or deferred loading.\", \"support_count\": 3, \"supporting_talks\": [\"the-100-tool-agent-is-a-trap\", \"stop-ai-agent-hallucinations-5-techniques-production-patterns\", \"codex-behind-the-harness\"], \"evidence_quote\": \"This is the core lesson from the benchmark. The catalog can grow, but the model's working set should stay small.\", \"evidence_talk\": \"the-100-tool-agent-is-a-trap\", \"evidence_timestamp_sec\": 932}, {\"claim\": \"Selection quality is bounded by the text describing each tool \u2014 description wording and tool granularity are the control surface, not the selection algorithm.\", \"support_count\": 3, \"supporting_talks\": [\"the-100-tool-agent-is-a-trap\", \"codex-behind-the-harness\", \"how-we-taught-agents-to-use-good-retrieval\"], \"evidence_quote\": \"If your descriptions are weak, embeddings will end up being weak. Write descriptions in the words users actually use and include intent, action, and key entities along with it.\", \"evidence_talk\": \"the-100-tool-agent-is-a-trap\", \"evidence_timestamp_sec\": 1484}], \"disagreements\": [{\"question\": \"Should the small working set be chosen for the model by an external router, or should the model discover tools itself through a search call?\", \"position_a\": \"Pre-select outside the model: embed the request, run a vector search over tool descriptions, and inject only the top-K (K\u22483-5) schemas before the model ever sees a choice \u2014 the model never knows the rest of the catalog exists.\", \"position_a_talks\": [\"the-100-tool-agent-is-a-trap\", \"stop-ai-agent-hallucinations-5-techniques-production-patterns\"], \"position_b\": \"Let the model pull: mark tools as deferred so they are absent from context but reachable through a tool-search call the model issues when it needs one, and at the ecosystem level let the client search a live registry for a connector it does not yet have.\", \"position_b_talks\": [\"codex-behind-the-harness\", \"mcp-apps-primitives-discovery-and-the-future-of-software\"], \"why_it_matters\": \"Pre-selection caps latency and tokens deterministically but silently loses any task whose right tool falls outside K, and it requires you to own the routing index; model-driven search preserves recall on multi-tool and unanticipated tasks but adds a round trip and hands selection authority to the model and to whoever ranks the registry.\", \"why_it_matters_note\": \"\"}, {\"question\": \"When an agent picks the wrong tool or misuses it, is the defect in the harness architecture or in the model's trained behavior?\", \"position_a\": \"It is an architecture and code problem: failures that appear as tools are added mean the context is asking the model to solve the wrong problem, and the fixes are code changes \u2014 routing, registry clearing between turns, pre-tool-call hooks \u2014 not prompt or model changes.\", \"position_a_talks\": [\"the-100-tool-agent-is-a-trap\", \"stop-ai-agent-hallucinations-5-techniques-production-patterns\", \"codex-behind-the-harness\"], \"position_b\": \"It is trained-in behavior: agents write keyword-stuffed 'caveman' queries and emit malformed tool calls because coding-agent training and BM25-favoring benchmarks taught them to, so the fix is retraining on trajectory-level rewards or continual learning against production rollouts.\", \"position_b_talks\": [\"how-we-taught-agents-to-use-good-retrieval\", \"scaling-up-continual-learning\"], \"why_it_matters\": \"One camp's remedy is a focused sprint of retrieval plumbing any team already running RAG can do; the other's requires an RL or distillation pipeline and a data flywheel. Choosing wrong means either endlessly tuning a router around a behavior baked into the weights, or funding training to fix something a 1,000-token context change would have solved.\", \"why_it_matters_note\": \"\"}], \"practical_guidance\": {\"do\": [\"Cap the tool/skill description block as an explicit fraction of the context window \u2014 Codex uses 2% and progressively truncates descriptions past it.\", \"Mark rarely-used tools as deferred so they are reachable through tool search instead of preloaded into every request (supported natively since GPT-5.4).\", \"Put a semantic router in front of the catalog once you pass ~50 tools in production; below 20 tools, load statically and skip the router.\", \"Start at K=5 retrieved tools, then run your test set at K=3, 5, and 10 and ship the smallest K that hits your accuracy target.\", \"In multi-turn conversations, actively clear tools from the registry and re-add them on each invocation \u2014 semantic filtering alone does not bound context growth across turns.\", \"Write tool descriptions in the vocabulary users actually use, including intent, action, and key entities, since the embedding is only as good as the description.\", \"Expose several differentiated tools (wide semantic search vs. grep) so each maps to one retrieval intent, rather than one generic search tool.\", \"Instruct the model to write 'one concise sentence describing what it wants to find' instead of 'write a search query,' which breaks the trained BM25 keyword-stuffing reflex.\", \"Conform tool interfaces to what the model was trained on \u2014 apply_patch for edits, ripgrep for search, PowerShell on Windows \u2014 and ship the binary with the harness if the host lacks it.\", \"Give the agent a persistent REPL for computer-use style work so it can script repeated interactions, instead of a one-action-per-call tool API.\", \"Route aggregation, counting, and relationship-traversal questions to a graph or structured query tool; vector top-k will return a sample and the model will present it as fact.\", \"Enforce hard constraints in code (a pre-tool-call hook) and use server-registered runtime steering for soft rules that should let the agent adjust and continue.\", \"Separate execution from validation across agents (executor / validator / critic) so a tool error cannot be rationalized into a confident success response.\"], \"avoid\": [\"Shipping the entire catalog in every request \u2014 741 tools is ~127k tokens per call and, at 100k requests/day, billions of tokens spent only to describe tools.\", \"Assuming that failures appearing as you add tools are a prompt-quality problem; at scale it is lost-in-the-middle attention over packed schemas.\", \"Leaving near-duplicate generic tools visible \u2014 with all 29 tools in view the model sometimes picks the wrong generic one, so removing wrong tools matters as much as surfacing right ones.\", \"Defaulting to a large K 'to be safe' \u2014 pay for recall you have measured, not recall you hope for.\", \"Using blocking hooks for soft rules; they are all-or-nothing, stop the agent, and force the user to retry.\", \"Letting one agent act and validate in the same loop \u2014 there is no second opinion and errors surface as success.\", \"Writing long essay-style goal prompts; the loop only terminates when the model can verify the goal, so goals must be concrete and checkable.\", \"Treating prompt-stated rules as constraints \u2014 they are processed as probabilistic text, and only code executes logic.\", \"Tuning tool selection against BEIR/NanoBEIR-style entity queries, which structurally favor BM25 and mis-train agent query behavior.\"]}, \"notable_outliers\": [{\"claim\": \"Tool selection is escaping the process boundary: Claude already searches the MCP registry for a connector when an assigned task has no matching tool, making store placement a distribution channel rather than a packaging detail.\", \"talk\": \"mcp-apps-primitives-discovery-and-the-future-of-software\", \"timestamp_sec\": 1492}, {\"claim\": \"The retrieval bottleneck, not reasoning, is what caps agent performance \u2014 Codex with default tools scores 9 points on BrowseComp Plus against a 93% oracle, and swapping only the search tool closes the gap to three points with the same reasoning model.\", \"talk\": \"how-we-taught-agents-to-use-good-retrieval\", \"timestamp_sec\": 194}, {\"claim\": \"Tool-call formatting itself degrades under training at scale: at 120B parameters with 50-100 tool calls per episode, eval accuracy swings widely, run-to-run variance explodes, and malformed tool calls start appearing.\", \"talk\": \"scaling-up-continual-learning\", \"timestamp_sec\": 769}, {\"claim\": \"At ~1,000 tokens/sec inference the tool-call loop is network-bound, not inference-bound, which is why the Responses API moved to a persistent WebSocket transmitting only changed items instead of SSE over HTTP.\", \"talk\": \"codex-behind-the-harness\", \"timestamp_sec\": 933}, {\"claim\": \"Splitting a tool's output between what the widget renders and what the model sees lets MCP apps operate in domains where sending the data to an LLM provider is not acceptable at all.\", \"talk\": \"mcp-apps-primitives-discovery-and-the-future-of-software\", \"timestamp_sec\": 892}], \"maturity\": \"consolidating\", \"maturity_rationale\": \"The core claim \u2014 that large catalogs degrade selection accuracy and the in-context working set must stay small \u2014 is independently benchmarked by three talks and now shipped as a first-class platform feature (deferred tools, the 2% description cap, AgentCore Gateway), so the debate over whether to filter is effectively over. What remains actively argued is the mechanism (external router vs. model-driven tool search or registry discovery) and whether residual misuse is an architecture defect or trained-in behavior requiring RL.\"}",
+  "ttft_ms": 45158,
+  "ttft_stream_ms": 1139,
+  "time_to_request_ms": 39,
+  "type": "result",
+  "duration_ms": 94577,
+  "uuid": "ac24315b-b339-404b-b9c7-f7feb5d4a950",
+  "passC": {
+    "concept": "tool selection",
+    "state_of_practice": "The field now treats tool selection as a retrieval problem rather than a prompting problem: the catalog is a corpus, and the model should only ever see a small working set drawn from it per request. The failure curve is measured, not theoretical \u2014 Prosodica's benchmark puts naive full-catalog selection at ~78% accuracy at 10 tools, ~40% at 100, and 13.6% at 741, with 741 schemas costing ~127k tokens per request and pushing time-to-first-token past 5 seconds around 500 tools. Two mechanisms dominate the fix: an out-of-band embedding router that injects the top-K schemas (K=5 as the default starting point), or model-driven lazy discovery where tools are marked deferred and reached through a tool-search call, which is what Codex ships and what GPT-5.4 exposes natively alongside a hard 2%-of-context cap on the skill description block. Practitioners are converging on the claim that this is an accuracy fix, not just a cost fix \u2014 with all tools visible the model reaches for the wrong generic tool, an effect attributed to lost-in-the-middle attention over packed schemas. The open edges are who performs the selection (a router outside the model vs. the model searching a registry itself), and whether bad tool use is an architecture defect fixable at inference or a trained-in behavior that requires retraining \u2014 Mixedbread argues agents write keyword-stuffed queries because their training and the benchmarks reward that, and fixes it with SFT plus RL on trajectory rewards.",
+    "consensus": [
+      {
+        "claim": "Selection accuracy degrades as the tool catalog grows, and this is a property of catalog size rather than of individually badly-written tools.",
+        "support_count": 3,
+        "supporting_talks": [
+          "the-100-tool-agent-is-a-trap",
+          "stop-ai-agent-hallucinations-5-techniques-production-patterns",
+          "codex-behind-the-harness"
+        ],
+        "evidence_quote": "At almost 100 tools, the accuracy drops to around 40%. Less than half of the tools that are called are the correct tools. And if it grows beyond that, like say for example, in over here, at 741 tools, the accuracy will be a mere 13.6%.",
+        "evidence_talk": "the-100-tool-agent-is-a-trap",
+        "evidence_timestamp_sec": 237
+      },
+      {
+        "claim": "The catalog may be arbitrarily large, but the set of tool schemas actually in context per request must be kept small \u2014 via just-in-time retrieval, semantic filtering, or deferred loading.",
+        "support_count": 3,
+        "supporting_talks": [
+          "the-100-tool-agent-is-a-trap",
+          "stop-ai-agent-hallucinations-5-techniques-production-patterns",
+          "codex-behind-the-harness"
+        ],
+        "evidence_quote": "This is the core lesson from the benchmark. The catalog can grow, but the model's working set should stay small.",
+        "evidence_talk": "the-100-tool-agent-is-a-trap",
+        "evidence_timestamp_sec": 932
+      },
+      {
+        "claim": "Selection quality is bounded by the text describing each tool \u2014 description wording and tool granularity are the control surface, not the selection algorithm.",
+        "support_count": 3,
+        "supporting_talks": [
+          "the-100-tool-agent-is-a-trap",
+          "codex-behind-the-harness",
+          "how-we-taught-agents-to-use-good-retrieval"
+        ],
+        "evidence_quote": "If your descriptions are weak, embeddings will end up being weak. Write descriptions in the words users actually use and include intent, action, and key entities along with it.",
+        "evidence_talk": "the-100-tool-agent-is-a-trap",
+        "evidence_timestamp_sec": 1484
+      }
+    ],
+    "disagreements": [
+      {
+        "question": "Should the small working set be chosen for the model by an external router, or should the model discover tools itself through a search call?",
+        "position_a": "Pre-select outside the model: embed the request, run a vector search over tool descriptions, and inject only the top-K (K\u22483-5) schemas before the model ever sees a choice \u2014 the model never knows the rest of the catalog exists.",
+        "position_a_talks": [
+          "the-100-tool-agent-is-a-trap",
+          "stop-ai-agent-hallucinations-5-techniques-production-patterns"
+        ],
+        "position_b": "Let the model pull: mark tools as deferred so they are absent from context but reachable through a tool-search call the model issues when it needs one, and at the ecosystem level let the client search a live registry for a connector it does not yet have.",
+        "position_b_talks": [
+          "codex-behind-the-harness",
+          "mcp-apps-primitives-discovery-and-the-future-of-software"
+        ],
+        "why_it_matters": "Pre-selection caps latency and tokens deterministically but silently loses any task whose right tool falls outside K, and it requires you to own the routing index; model-driven search preserves recall on multi-tool and unanticipated tasks but adds a round trip and hands selection authority to the model and to whoever ranks the registry.",
+        "why_it_matters_note": ""
+      },
+      {
+        "question": "When an agent picks the wrong tool or misuses it, is the defect in the harness architecture or in the model's trained behavior?",
+        "position_a": "It is an architecture and code problem: failures that appear as tools are added mean the context is asking the model to solve the wrong problem, and the fixes are code changes \u2014 routing, registry clearing between turns, pre-tool-call hooks \u2014 not prompt or model changes.",
+        "position_a_talks": [
+          "the-100-tool-agent-is-a-trap",
+          "stop-ai-agent-hallucinations-5-techniques-production-patterns",
+          "codex-behind-the-harness"
+        ],
+        "position_b": "It is trained-in behavior: agents write keyword-stuffed 'caveman' queries and emit malformed tool calls because coding-agent training and BM25-favoring benchmarks taught them to, so the fix is retraining on trajectory-level rewards or continual learning against production rollouts.",
+        "position_b_talks": [
+          "how-we-taught-agents-to-use-good-retrieval",
+          "scaling-up-continual-learning"
+        ],
+        "why_it_matters": "One camp's remedy is a focused sprint of retrieval plumbing any team already running RAG can do; the other's requires an RL or distillation pipeline and a data flywheel. Choosing wrong means either endlessly tuning a router around a behavior baked into the weights, or funding training to fix something a 1,000-token context change would have solved.",
+        "why_it_matters_note": ""
+      }
+    ],
+    "practical_guidance": {
+      "do": [
+        "Cap the tool/skill description block as an explicit fraction of the context window \u2014 Codex uses 2% and progressively truncates descriptions past it.",
+        "Mark rarely-used tools as deferred so they are reachable through tool search instead of preloaded into every request (supported natively since GPT-5.4).",
+        "Put a semantic router in front of the catalog once you pass ~50 tools in production; below 20 tools, load statically and skip the router.",
+        "Start at K=5 retrieved tools, then run your test set at K=3, 5, and 10 and ship the smallest K that hits your accuracy target.",
+        "In multi-turn conversations, actively clear tools from the registry and re-add them on each invocation \u2014 semantic filtering alone does not bound context growth across turns.",
+        "Write tool descriptions in the vocabulary users actually use, including intent, action, and key entities, since the embedding is only as good as the description.",
+        "Expose several differentiated tools (wide semantic search vs. grep) so each maps to one retrieval intent, rather than one generic search tool.",
+        "Instruct the model to write 'one concise sentence describing what it wants to find' instead of 'write a search query,' which breaks the trained BM25 keyword-stuffing reflex.",
+        "Conform tool interfaces to what the model was trained on \u2014 apply_patch for edits, ripgrep for search, PowerShell on Windows \u2014 and ship the binary with the harness if the host lacks it.",
+        "Give the agent a persistent REPL for computer-use style work so it can script repeated interactions, instead of a one-action-per-call tool API.",
+        "Route aggregation, counting, and relationship-traversal questions to a graph or structured query tool; vector top-k will return a sample and the model will present it as fact.",
+        "Enforce hard constraints in code (a pre-tool-call hook) and use server-registered runtime steering for soft rules that should let the agent adjust and continue.",
+        "Separate execution from validation across agents (executor / validator / critic) so a tool error cannot be rationalized into a confident success response."
+      ],
+      "avoid": [
+        "Shipping the entire catalog in every request \u2014 741 tools is ~127k tokens per call and, at 100k requests/day, billions of tokens spent only to describe tools.",
+        "Assuming that failures appearing as you add tools are a prompt-quality problem; at scale it is lost-in-the-middle attention over packed schemas.",
+        "Leaving near-duplicate generic tools visible \u2014 with all 29 tools in view the model sometimes picks the wrong generic one, so removing wrong tools matters as much as surfacing right ones.",
+        "Defaulting to a large K 'to be safe' \u2014 pay for recall you have measured, not recall you hope for.",
+        "Using blocking hooks for soft rules; they are all-or-nothing, stop the agent, and force the user to retry.",
+        "Letting one agent act and validate in the same loop \u2014 there is no second opinion and errors surface as success.",
+        "Writing long essay-style goal prompts; the loop only terminates when the model can verify the goal, so goals must be concrete and checkable.",
+        "Treating prompt-stated rules as constraints \u2014 they are processed as probabilistic text, and only code executes logic.",
+        "Tuning tool selection against BEIR/NanoBEIR-style entity queries, which structurally favor BM25 and mis-train agent query behavior."
+      ]
+    },
+    "notable_outliers": [
+      {
+        "claim": "Tool selection is escaping the process boundary: Claude already searches the MCP registry for a connector when an assigned task has no matching tool, making store placement a distribution channel rather than a packaging detail.",
+        "talk": "mcp-apps-primitives-discovery-and-the-future-of-software",
+        "timestamp_sec": 1492
+      },
+      {
+        "claim": "The retrieval bottleneck, not reasoning, is what caps agent performance \u2014 Codex with default tools scores 9 points on BrowseComp Plus against a 93% oracle, and swapping only the search tool closes the gap to three points with the same reasoning model.",
+        "talk": "how-we-taught-agents-to-use-good-retrieval",
+        "timestamp_sec": 194
+      },
+      {
+        "claim": "Tool-call formatting itself degrades under training at scale: at 120B parameters with 50-100 tool calls per episode, eval accuracy swings widely, run-to-run variance explodes, and malformed tool calls start appearing.",
+        "talk": "scaling-up-continual-learning",
+        "timestamp_sec": 769
+      },
+      {
+        "claim": "At ~1,000 tokens/sec inference the tool-call loop is network-bound, not inference-bound, which is why the Responses API moved to a persistent WebSocket transmitting only changed items instead of SSE over HTTP.",
+        "talk": "codex-behind-the-harness",
+        "timestamp_sec": 933
+      },
+      {
+        "claim": "Splitting a tool's output between what the widget renders and what the model sees lets MCP apps operate in domains where sending the data to an LLM provider is not acceptable at all.",
+        "talk": "mcp-apps-primitives-discovery-and-the-future-of-software",
+        "timestamp_sec": 892
+      }
+    ],
+    "maturity": "consolidating",
+    "maturity_rationale": "The core claim \u2014 that large catalogs degrade selection accuracy and the in-context working set must stay small \u2014 is independently benchmarked by three talks and now shipped as a first-class platform feature (deferred tools, the 2% description cap, AgentCore Gateway), so the debate over whether to filter is effectively over. What remains actively argued is the mechanism (external router vs. model-driven tool search or registry discovery) and whether residual misuse is an architecture defect or trained-in behavior requiring RL."
+  },
+  "_meta": {
+    "concept": "tool selection",
+    "slug": "tool-selection",
+    "talk_count": 6,
+    "missing_talks": [],
+    "wall_sec": 95.8,
+    "run_at": "2026-08-13T21:00:06Z"
+  }
+}

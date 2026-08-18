@@ -1,0 +1,283 @@
+{
+  "is_error": false,
+  "duration_api_ms": 66191,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "60666bb7-1ed9-48d7-948c-7826d304c523",
+  "total_cost_usd": 0.242568,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 8568,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 5860,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 8568,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 5860,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 8568,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 8568
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 5149,
+      "outputTokens": 15,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.005224,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 5860,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 8568,
+      "webSearchRequests": 0,
+      "costUSD": 0.237344,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Ishaan Sehgal, CEO of Omnara, argues that the common mental model of an agent \u2014 the model, the runtime, or the process \u2014 is the wrong abstraction, and that an agent's actual identity is its append-only event log. Using a Skyrim save file as the running analogy, he reframes every other part of an agent system (the model context, the UI, audit trails, compaction) as a projection of that log, with the execution loop reduced to a disposable worker that reads the log, advances one step, and writes back. He works through the two obvious objections \u2014 finite context windows forcing compaction, and side effects that happen outside the log \u2014 and argues neither breaks the claim, since compaction is a lossy projection and the log was only ever meant to store the agent's view of the world. The payoff is a set of properties he says fall out structurally rather than being bolted on: crash-resilient sessions, one process advancing thousands of agents, cheap forking across models, multiplayer sharing, and provider migration. The talk closes with a pointed warning that log lock-in, not model or API lock-in, is the deepest form of vendor capture, and pitches Omnara's open-source managed agents platform built around a user-owned session log. Worth watching if you're designing agent infrastructure and deciding where durable state should live.\",\n  \"key_points\": [\n    \"An agent's identity lives in its append-only log of every user input, model output, tool call, tool result, permission and failure \u2014 not in the model or the execution environment.\",\n    \"Once the log is primary, every other artifact (model context, UI, audit trail, debugging view, compaction) is just a projection of it, mirroring how databases made the write-ahead log durable and everything else a view.\",\n    \"The agent loop becomes disposable: a worker can claim a session, reconstruct state from the log, advance one step, write the result, and vanish, letting any other worker pick up from there.\",\n    \"Compaction is a lossy, best-effort fork rather than a faithful smaller copy, so discarding the raw log in favor of the compaction destroys part of the agent.\",\n    \"The log records the agent's view of the world, not the world itself \u2014 forking back cannot unsend an email or revert a file changed underneath it.\",\n    \"Sehgal cites concrete infrastructure failures as evidence that the log is treated as an afterthought today: Claude Code and Codex writing messy JSONL to local disk with fire-and-forget writes, and OpenCode's SQLite state corruption issues.\",\n    \"Log-centricity makes scale and failover structural \u2014 one process can advance thousands of agents with no sticky sessions, state migration, or coordination overhead.\",\n    \"The deepest form of vendor lock-in is log lock-in, because models, runtimes, and machines are all replaceable while the log persists and contains your personal, company, and workflow data.\",\n    \"Omnara is building and open-sourcing a managed agents platform where the session log is fully owned, inspected, and controlled by the user.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"most people think of an agent as the model or the execution environment that it's running in and I think that that's the wrong abstraction\",\n      \"timestamp_sec\": 0,\n      \"why\": \"states the talk's central contrarian thesis in one line\"\n    },\n    {\n      \"text\": \"if your PlayStation bursts into flames, your character isn't gone. You can buy another PlayStation, you can download your save file from the cloud and you can resume exactly where they were\",\n      \"timestamp_sec\": 35,\n      \"why\": \"the analogy the entire argument is built on\"\n    },\n    {\n      \"text\": \"the log is the append-only event history of the agent. It's every user input, every model output, every tool called, tool result, permission, failure\",\n      \"timestamp_sec\": 75,\n      \"why\": \"the operative definition of 'log' used throughout\"\n    },\n    {\n      \"text\": \"The important insight is not that this loop is complicated. The important insight is that the loop is disposable.\",\n      \"timestamp_sec\": 166,\n      \"why\": \"names the architectural consequence that makes the rest of the talk work\"\n    },\n    {\n      \"text\": \"underneath every serious database is a log. And that log is the durable sequence of changes. Everything else is a view.\",\n      \"timestamp_sec\": 198,\n      \"why\": \"grounds the claim in a precedent engineers already accept\"\n    },\n    {\n      \"text\": \"Compaction is lossy. A compacted summary is not going to perfectly reproduce the state of the agent in a smaller form. It's actually going to throw information away.\",\n      \"timestamp_sec\": 287,\n      \"why\": \"takes a firm position against treating compaction as state-preserving\"\n    },\n    {\n      \"text\": \"it's cleanest to treat compaction as a best effort lossy fork, one that you can resume as a new log\",\n      \"timestamp_sec\": 326,\n      \"why\": \"concrete design prescription for handling context limits\"\n    },\n    {\n      \"text\": \"the log is not supposed to contain the whole world. The log is just the agent's view of the world\",\n      \"timestamp_sec\": 326,\n      \"why\": \"scopes the claim against the obvious side-effects objection\"\n    },\n    {\n      \"text\": \"If the agent sent an email, forking back won't unsend it. If some file got changed underneath, the agent won't know about it.\",\n      \"timestamp_sec\": 363,\n      \"why\": \"an unusually candid statement of the approach's limits\"\n    },\n    {\n      \"text\": \"If you're using Cloud Code and your agent reaches a permission prompt and the process dies for whatever reason, and then you resume it, the permission prompt will be gone, and the agent will be paused. And that is unacceptable in production.\",\n      \"timestamp_sec\": 405,\n      \"why\": \"names a specific, checkable failure in a widely used harness\"\n    },\n    {\n      \"text\": \"When the log is the agent, the executor is allowed to be fallible.\",\n      \"timestamp_sec\": 444,\n      \"why\": \"compresses the reliability argument into a design principle\"\n    },\n    {\n      \"text\": \"When the log is the state, you flip that model. One process can now advance thousands of agents.\",\n      \"timestamp_sec\": 444,\n      \"why\": \"the scalability claim, stated with a concrete magnitude\"\n    },\n    {\n      \"text\": \"One branch can run on Claude, another branch can run on GPT, another can run on your favorite open-source model.\",\n      \"timestamp_sec\": 484,\n      \"why\": \"makes the model-portability payoff tangible\"\n    },\n    {\n      \"text\": \"the value is not just what the agent produced, it's also the log, which indicates how it got there\",\n      \"timestamp_sec\": 525,\n      \"why\": \"argues process, not just output, is the durable asset\"\n    },\n    {\n      \"text\": \"Claude code and Codex will write these messy JSONL files to local disk, and even in Claude SDK mode, those writes are fire and forget, which means that if for whatever reason the write fails, the data is gone.\",\n      \"timestamp_sec\": 577,\n      \"why\": \"specific technical critique of existing harnesses\"\n    },\n    {\n      \"text\": \"the strongest form of lock-in isn't model lock-in. Models can be swapped. It's not API or tool lock-in either. Those can be wrapped, and those can be adapted. The deepest form of lock-in is actually log lock-in.\",\n      \"timestamp_sec\": 662,\n      \"why\": \"the talk's most quotable strategic claim\"\n    },\n    {\n      \"text\": \"If a provider owns your log, then the provider effectively owns your agent\",\n      \"timestamp_sec\": 662,\n      \"why\": \"the ownership thesis in its sharpest form\"\n    },\n    {\n      \"text\": \"agents are arguably the most intimate piece of technology you'll ever run. For an agent to be useful, it needs to have your personal data, your company's data, your workflows, your decisions.\",\n      \"timestamp_sec\": 706,\n      \"why\": \"explains why log ownership is framed as urgent rather than academic\"\n    },\n    {\n      \"text\": \"And if an agent is a running process, that's extremely terrifying. But if the agent is the log, it's simply an execution detail.\",\n      \"timestamp_sec\": 748,\n      \"why\": \"reframes production failure modes as a consequence of the wrong abstraction\"\n    },\n    {\n      \"text\": \"you're going to stop treating the log as this exhaust from the system, and you're going to treat it as the system itself\",\n      \"timestamp_sec\": 850,\n      \"why\": \"the closing reframe the whole talk builds to\"\n    }\n  ],\n  \"concepts\": [\n    \"append-only event log\",\n    \"agent state durability\",\n    \"context compaction\",\n    \"log as source of truth\",\n    \"session forking\",\n    \"stateless worker execution\",\n    \"agent portability across models\",\n    \"vendor lock-in\",\n    \"data ownership\",\n    \"multiplayer agent sessions\",\n    \"event sourcing\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"An agent's identity is its log, not the model or the execution environment it runs in.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 0\n    },\n    {\n      \"claim\": \"The log alone is sufficient to resume an agent, because the model, tools, and runtime only read from and append to it.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 124\n    },\n    {\n      \"claim\": \"Everything else in an agent system \u2014 model context, UI, debugging, auditing, compaction \u2014 is a projection of the log, and only the log is not a projection.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 247\n    },\n    {\n      \"claim\": \"Compaction is lossy and should be treated as a best-effort fork resumed as a new log, with the raw log retained.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 326\n    },\n    {\n      \"claim\": \"The log cannot make the external world deterministic; side effects like sent emails or externally modified files are outside its scope, and that does not invalidate the thesis.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 363\n    },\n    {\n      \"claim\": \"Claude Code loses a pending permission prompt if the process dies and the session is resumed, which is unacceptable in production.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 405\n    },\n    {\n      \"claim\": \"Most agent harnesses run one process per agent, tying the agent to a specific machine; log-centric design removes sticky sessions, state migration, and coordination overhead.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 444\n    },\n    {\n      \"claim\": \"Provider migration is only an adapter and schema problem, not an identity problem, if the log is the agent.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 577\n    },\n    {\n      \"claim\": \"Claude Code and Codex write JSONL logs to local disk with fire-and-forget writes in SDK mode, so failed writes lose data; OpenCode's SQLite state has documented corruption and data-loss issues.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 577\n    },\n    {\n      \"claim\": \"Log lock-in is a deeper and more durable form of vendor lock-in than model, API, or tool lock-in.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 662\n    },\n    {\n      \"claim\": \"Every managed agent provider (Anthropic, Google) will move to own more of the stack \u2014 the hosted loop, memory, sandboxes, compaction, background agents.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 706\n    },\n    {\n      \"claim\": \"Teams should self-host or otherwise fully own and inspect their agent logs rather than leaving them on a provider's infrastructure.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 748\n    },\n    {\n      \"claim\": \"Real-world agent systems will inevitably face crashing workers, restarting machines, disappearing sandboxes, timed-out tool calls and failing providers, so durability must be architectural.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 748\n    }\n  ],\n  \"speaker_org\": \"Omnara\"\n}",
+  "ttft_ms": 23789,
+  "ttft_stream_ms": 2497,
+  "time_to_request_ms": 34,
+  "type": "result",
+  "duration_ms": 66599,
+  "uuid": "0672cffe-7551-4add-80ed-c274baae73fb",
+  "passA": {
+    "summary": "Ishaan Sehgal, CEO of Omnara, argues that the common mental model of an agent \u2014 the model, the runtime, or the process \u2014 is the wrong abstraction, and that an agent's actual identity is its append-only event log. Using a Skyrim save file as the running analogy, he reframes every other part of an agent system (the model context, the UI, audit trails, compaction) as a projection of that log, with the execution loop reduced to a disposable worker that reads the log, advances one step, and writes back. He works through the two obvious objections \u2014 finite context windows forcing compaction, and side effects that happen outside the log \u2014 and argues neither breaks the claim, since compaction is a lossy projection and the log was only ever meant to store the agent's view of the world. The payoff is a set of properties he says fall out structurally rather than being bolted on: crash-resilient sessions, one process advancing thousands of agents, cheap forking across models, multiplayer sharing, and provider migration. The talk closes with a pointed warning that log lock-in, not model or API lock-in, is the deepest form of vendor capture, and pitches Omnara's open-source managed agents platform built around a user-owned session log. Worth watching if you're designing agent infrastructure and deciding where durable state should live.",
+    "key_points": [
+      "An agent's identity lives in its append-only log of every user input, model output, tool call, tool result, permission and failure \u2014 not in the model or the execution environment.",
+      "Once the log is primary, every other artifact (model context, UI, audit trail, debugging view, compaction) is just a projection of it, mirroring how databases made the write-ahead log durable and everything else a view.",
+      "The agent loop becomes disposable: a worker can claim a session, reconstruct state from the log, advance one step, write the result, and vanish, letting any other worker pick up from there.",
+      "Compaction is a lossy, best-effort fork rather than a faithful smaller copy, so discarding the raw log in favor of the compaction destroys part of the agent.",
+      "The log records the agent's view of the world, not the world itself \u2014 forking back cannot unsend an email or revert a file changed underneath it.",
+      "Sehgal cites concrete infrastructure failures as evidence that the log is treated as an afterthought today: Claude Code and Codex writing messy JSONL to local disk with fire-and-forget writes, and OpenCode's SQLite state corruption issues.",
+      "Log-centricity makes scale and failover structural \u2014 one process can advance thousands of agents with no sticky sessions, state migration, or coordination overhead.",
+      "The deepest form of vendor lock-in is log lock-in, because models, runtimes, and machines are all replaceable while the log persists and contains your personal, company, and workflow data.",
+      "Omnara is building and open-sourcing a managed agents platform where the session log is fully owned, inspected, and controlled by the user."
+    ],
+    "notable_quotes": [
+      {
+        "text": "most people think of an agent as the model or the execution environment that it's running in and I think that that's the wrong abstraction",
+        "timestamp_sec": 0,
+        "why": "states the talk's central contrarian thesis in one line"
+      },
+      {
+        "text": "if your PlayStation bursts into flames, your character isn't gone. You can buy another PlayStation, you can download your save file from the cloud and you can resume exactly where they were",
+        "timestamp_sec": 35,
+        "why": "the analogy the entire argument is built on"
+      },
+      {
+        "text": "the log is the append-only event history of the agent. It's every user input, every model output, every tool called, tool result, permission, failure",
+        "timestamp_sec": 75,
+        "why": "the operative definition of 'log' used throughout"
+      },
+      {
+        "text": "The important insight is not that this loop is complicated. The important insight is that the loop is disposable.",
+        "timestamp_sec": 166,
+        "why": "names the architectural consequence that makes the rest of the talk work"
+      },
+      {
+        "text": "underneath every serious database is a log. And that log is the durable sequence of changes. Everything else is a view.",
+        "timestamp_sec": 198,
+        "why": "grounds the claim in a precedent engineers already accept"
+      },
+      {
+        "text": "Compaction is lossy. A compacted summary is not going to perfectly reproduce the state of the agent in a smaller form. It's actually going to throw information away.",
+        "timestamp_sec": 287,
+        "why": "takes a firm position against treating compaction as state-preserving"
+      },
+      {
+        "text": "it's cleanest to treat compaction as a best effort lossy fork, one that you can resume as a new log",
+        "timestamp_sec": 326,
+        "why": "concrete design prescription for handling context limits"
+      },
+      {
+        "text": "the log is not supposed to contain the whole world. The log is just the agent's view of the world",
+        "timestamp_sec": 326,
+        "why": "scopes the claim against the obvious side-effects objection"
+      },
+      {
+        "text": "If the agent sent an email, forking back won't unsend it. If some file got changed underneath, the agent won't know about it.",
+        "timestamp_sec": 363,
+        "why": "an unusually candid statement of the approach's limits"
+      },
+      {
+        "text": "If you're using Cloud Code and your agent reaches a permission prompt and the process dies for whatever reason, and then you resume it, the permission prompt will be gone, and the agent will be paused. And that is unacceptable in production.",
+        "timestamp_sec": 405,
+        "why": "names a specific, checkable failure in a widely used harness"
+      },
+      {
+        "text": "When the log is the agent, the executor is allowed to be fallible.",
+        "timestamp_sec": 444,
+        "why": "compresses the reliability argument into a design principle"
+      },
+      {
+        "text": "When the log is the state, you flip that model. One process can now advance thousands of agents.",
+        "timestamp_sec": 444,
+        "why": "the scalability claim, stated with a concrete magnitude"
+      },
+      {
+        "text": "One branch can run on Claude, another branch can run on GPT, another can run on your favorite open-source model.",
+        "timestamp_sec": 484,
+        "why": "makes the model-portability payoff tangible"
+      },
+      {
+        "text": "the value is not just what the agent produced, it's also the log, which indicates how it got there",
+        "timestamp_sec": 525,
+        "why": "argues process, not just output, is the durable asset"
+      },
+      {
+        "text": "Claude code and Codex will write these messy JSONL files to local disk, and even in Claude SDK mode, those writes are fire and forget, which means that if for whatever reason the write fails, the data is gone.",
+        "timestamp_sec": 577,
+        "why": "specific technical critique of existing harnesses"
+      },
+      {
+        "text": "the strongest form of lock-in isn't model lock-in. Models can be swapped. It's not API or tool lock-in either. Those can be wrapped, and those can be adapted. The deepest form of lock-in is actually log lock-in.",
+        "timestamp_sec": 662,
+        "why": "the talk's most quotable strategic claim"
+      },
+      {
+        "text": "If a provider owns your log, then the provider effectively owns your agent",
+        "timestamp_sec": 662,
+        "why": "the ownership thesis in its sharpest form"
+      },
+      {
+        "text": "agents are arguably the most intimate piece of technology you'll ever run. For an agent to be useful, it needs to have your personal data, your company's data, your workflows, your decisions.",
+        "timestamp_sec": 706,
+        "why": "explains why log ownership is framed as urgent rather than academic"
+      },
+      {
+        "text": "And if an agent is a running process, that's extremely terrifying. But if the agent is the log, it's simply an execution detail.",
+        "timestamp_sec": 748,
+        "why": "reframes production failure modes as a consequence of the wrong abstraction"
+      },
+      {
+        "text": "you're going to stop treating the log as this exhaust from the system, and you're going to treat it as the system itself",
+        "timestamp_sec": 850,
+        "why": "the closing reframe the whole talk builds to"
+      }
+    ],
+    "concepts": [
+      "append-only event log",
+      "agent state durability",
+      "context compaction",
+      "log as source of truth",
+      "session forking",
+      "stateless worker execution",
+      "agent portability across models",
+      "vendor lock-in",
+      "data ownership",
+      "multiplayer agent sessions",
+      "event sourcing"
+    ],
+    "positions": [
+      {
+        "claim": "An agent's identity is its log, not the model or the execution environment it runs in.",
+        "confidence": "stated",
+        "timestamp_sec": 0
+      },
+      {
+        "claim": "The log alone is sufficient to resume an agent, because the model, tools, and runtime only read from and append to it.",
+        "confidence": "stated",
+        "timestamp_sec": 124
+      },
+      {
+        "claim": "Everything else in an agent system \u2014 model context, UI, debugging, auditing, compaction \u2014 is a projection of the log, and only the log is not a projection.",
+        "confidence": "stated",
+        "timestamp_sec": 247
+      },
+      {
+        "claim": "Compaction is lossy and should be treated as a best-effort fork resumed as a new log, with the raw log retained.",
+        "confidence": "stated",
+        "timestamp_sec": 326
+      },
+      {
+        "claim": "The log cannot make the external world deterministic; side effects like sent emails or externally modified files are outside its scope, and that does not invalidate the thesis.",
+        "confidence": "stated",
+        "timestamp_sec": 363
+      },
+      {
+        "claim": "Claude Code loses a pending permission prompt if the process dies and the session is resumed, which is unacceptable in production.",
+        "confidence": "stated",
+        "timestamp_sec": 405
+      },
+      {
+        "claim": "Most agent harnesses run one process per agent, tying the agent to a specific machine; log-centric design removes sticky sessions, state migration, and coordination overhead.",
+        "confidence": "stated",
+        "timestamp_sec": 444
+      },
+      {
+        "claim": "Provider migration is only an adapter and schema problem, not an identity problem, if the log is the agent.",
+        "confidence": "stated",
+        "timestamp_sec": 577
+      },
+      {
+        "claim": "Claude Code and Codex write JSONL logs to local disk with fire-and-forget writes in SDK mode, so failed writes lose data; OpenCode's SQLite state has documented corruption and data-loss issues.",
+        "confidence": "stated",
+        "timestamp_sec": 577
+      },
+      {
+        "claim": "Log lock-in is a deeper and more durable form of vendor lock-in than model, API, or tool lock-in.",
+        "confidence": "stated",
+        "timestamp_sec": 662
+      },
+      {
+        "claim": "Every managed agent provider (Anthropic, Google) will move to own more of the stack \u2014 the hosted loop, memory, sandboxes, compaction, background agents.",
+        "confidence": "stated",
+        "timestamp_sec": 706
+      },
+      {
+        "claim": "Teams should self-host or otherwise fully own and inspect their agent logs rather than leaving them on a provider's infrastructure.",
+        "confidence": "implied",
+        "timestamp_sec": 748
+      },
+      {
+        "claim": "Real-world agent systems will inevitably face crashing workers, restarting machines, disappearing sandboxes, timed-out tool calls and failing providers, so durability must be architectural.",
+        "confidence": "stated",
+        "timestamp_sec": 748
+      }
+    ],
+    "speaker_org": "Omnara"
+  },
+  "_meta": {
+    "slug": "the-log-is-the-agent",
+    "video_id": "UPwGaM2MKHY",
+    "url": "https://www.youtube.com/watch?v=UPwGaM2MKHY",
+    "word_count": 2546,
+    "wall_sec": 67.7,
+    "run_at": "2026-08-12T20:21:28Z",
+    "effort": "medium"
+  }
+}

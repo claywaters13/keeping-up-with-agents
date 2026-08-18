@@ -1,0 +1,295 @@
+{
+  "is_error": false,
+  "duration_api_ms": 68222,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "5232bc6f-d986-48c0-9c6a-9ba1b015e5b2",
+  "total_cost_usd": 0.26890800000000004,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 11131,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 5806,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 11131,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 5806,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 11131,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 11131
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 7179,
+      "outputTokens": 21,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.007284,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 5806,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 11131,
+      "webSearchRequests": 0,
+      "costUSD": 0.261624,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Jai Chopra and Soumya Gupta of Uber's computer vision team walk through the production agent system that automatically enhances food photography on Uber Eats, and the closed-loop eval machinery that keeps it safe. The core tension: independent merchants lack good photos, but a meaningful fraction of consumers distrust anything AI-generated, so every edit must stay faithful to the original dish, preserve merchant brand identity, and avoid collapsing marketplace diversity into one generic look. They break the pipeline into an image-understanding/routing agent (evaluated as a classifier with a confusion matrix, guardrailed on recall), an enhance-QA loop measured by pass@K with pairwise before/after comparison, and a final publish-ready QA gate justified by a Swiss cheese redundancy model. The most transferable part is the auto-tuning loop: production samples go to human labelers on objective guidelines, mismatches feed a 'diagnoser' agent that localizes the failing component, and reflect/synthesize sub-agents rewrite that agent's config, benchmark it against a golden dataset, and register a new version \u2014 config-driven, with no human in the loop. Worth watching if you run multimodal agents in production and need a concrete template for drift correction, human-label alignment, and layered safety gates.\",\n  \"key_points\": [\n    \"Uber Eats runs roughly a $90B annual run rate across 10,000 cities and adds millions of items monthly, so photo quality improvement has to work at a scale where manual photo shoots are impossible.\",\n    \"The design constraint is not just quality but trust: edits must preserve faithfulness to the actual dish and merchant brand, and using one shared prompt for every photo would collapse the visual diversity of the marketplace.\",\n    \"The pipeline is an image-understanding and routing agent, an image editing agent in a self-correcting loop with a QA agent, and a final post-processing publish-ready QA gate, with everything logged in one flat JSON structure so non-technical staff can diagnose individual cases and roll up aggregates.\",\n    \"Routing is evaluated like a traditional classifier via a confusion matrix on precision and recall, and recall is the chosen guardrail because letting a bad image through is worse than a false enhancement; more sophisticated routers (e.g. to cheaper, lower-latency models) need an n-by-n matrix rather than 2x2.\",\n    \"Both routing error directions have concrete costs: false positives burn compute for zero quality lift and risk degrading an already-good image, while recall misses can push a six-wing photo into an enhancer that hallucinates two extra wings to match an 'eight pieces' dish name.\",\n    \"Human labels are treated as ground truth, collected on a representative dataset stratified by geography, dish type, and image quality, with deliberately objective labeling guidelines to suppress subjective bias and labeler noise.\",\n    \"Drift is handled by a closed loop: sample production data on a cadence, re-label it, feed mismatches to a diagnoser agent that localizes the failing component, then run a prompt optimizer built from a reflect agent and a synthesize agent that rewrites the config, re-benchmarks against the golden dataset, and registers a new agent version.\",\n    \"The enhancement loop is scored with pass@K using pairwise input-versus-output comparison against criteria (faithful, complete, natural, realistic) negotiated with product, design, policy, and legal, and it fails in interesting ways \u2014 including reward hacking where a rejected creative edit oversteers into a generic ceramic bowl.\",\n    \"Multiple redundant QA gates are intentional (a Swiss cheese model), and observed failures sometimes trace back to frontier image-editing model weaknesses in object coherence and physics plausibility, which the team reports back to the frontier labs.\",\n    \"Beyond the model loop, internal dogfooding thumbs-up/down plus free-form merchant and internal feedback feed the same diagnoser, and production impact is tracked on marketplace metrics like add-to-cart conversion, sliceable by geo, device, and dish type for segment-level tuning.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"our delivery marketplace Uber Eats, we do about 90 billion run rate per year at the moment\",\n      \"timestamp_sec\": 1,\n      \"why\": \"sizes the business the system operates on\"\n    },\n    {\n      \"text\": \"We're growing at 20% year-on-year and and we operate in 10,000 cities globally.\",\n      \"timestamp_sec\": 66,\n      \"why\": \"concrete scale numbers that justify the automation\"\n    },\n    {\n      \"text\": \"So a photo is quite often the first signal that a customer gets that gives them that initial impression about a merchant.\",\n      \"timestamp_sec\": 110,\n      \"why\": \"states why image quality is the lever they chose\"\n    },\n    {\n      \"text\": \"If we have the same prompt for every photo that we're editing, the diversity of the marketplace is going to collapse.\",\n      \"timestamp_sec\": 157,\n      \"why\": \"names a failure mode of naive prompt standardization at scale\"\n    },\n    {\n      \"text\": \"you might notice that all of the agents in this end-to-end orchestration is within one It's It's basically a flat structure in this JSON.\",\n      \"timestamp_sec\": 362,\n      \"why\": \"specific, opinionated logging design choice\"\n    },\n    {\n      \"text\": \"you want to start with your logging cuz if you don't start with it, you have nothing to optimize for, let alone set up a self-learning loop\",\n      \"timestamp_sec\": 413,\n      \"why\": \"the talk's ordering claim about what to build first\"\n    },\n    {\n      \"text\": \"we might want to route an image to a lower latency smaller model to be able to save on cost and improve the user experience at the trade-off of quality\",\n      \"timestamp_sec\": 485,\n      \"why\": \"names the cost/latency/quality tradeoff explicitly\"\n    },\n    {\n      \"text\": \"For our use case, we consider human labels as the golden source of truth. And this is what we want to align our models to.\",\n      \"timestamp_sec\": 533,\n      \"why\": \"takes a side on what ground truth means for a subjective visual task\"\n    },\n    {\n      \"text\": \"For routing, our guardrail metric is recall. We don't want any bad image to slip through our system.\",\n      \"timestamp_sec\": 569,\n      \"why\": \"picks one metric as the guardrail and says why\"\n    },\n    {\n      \"text\": \"Firstly, you pay the compute cost for a zero quality lift from this image.\",\n      \"timestamp_sec\": 569,\n      \"why\": \"quantifies the cost of a routing false positive\"\n    },\n    {\n      \"text\": \"there's a chance your model's going to hallucinate these two extra wings to to match the description\",\n      \"timestamp_sec\": 603,\n      \"why\": \"vivid, concrete faithfulness failure in a multimodal setting\"\n    },\n    {\n      \"text\": \"You need a way such that your prompts, agents, system itself is evolving over time.\",\n      \"timestamp_sec\": 641,\n      \"why\": \"the core argument against static offline-tuned agents\"\n    },\n    {\n      \"text\": \"the beauty of this is this is completely config driven and doesn't require human in the loop\",\n      \"timestamp_sec\": 706,\n      \"why\": \"the strongest and most contestable automation claim in the talk\"\n    },\n    {\n      \"text\": \"And this is a closed-loop system as I mentioned, no human in the loop. We definitely have observability on the guardrails, quick rollback built in in case of any issues with the system itself.\",\n      \"timestamp_sec\": 781,\n      \"why\": \"pairs the autonomy claim with the safety mechanism that makes it defensible\"\n    },\n    {\n      \"text\": \"You either keep enhancing for K iterations and you pass your QA gate and you publish, or you take a coverage hit and you never enhance this image.\",\n      \"timestamp_sec\": 816,\n      \"why\": \"states the quality-versus-coverage tradeoff of the retry loop\"\n    },\n    {\n      \"text\": \"Pass at K is essentially the pass rate at Kth iteration.\",\n      \"timestamp_sec\": 846,\n      \"why\": \"defines the loop's headline metric\"\n    },\n    {\n      \"text\": \"So, this is an example of a reward hacking actually.\",\n      \"timestamp_sec\": 960,\n      \"why\": \"labels an observed production behavior as reward hacking, not a hypothetical\"\n    },\n    {\n      \"text\": \"some of their problems will actually sort of leak up into our applied use case\",\n      \"timestamp_sec\": 1008,\n      \"why\": \"notes that frontier model limitations propagate into product evals\"\n    },\n    {\n      \"text\": \"The reason is because we think of this like a Swiss cheese model.\",\n      \"timestamp_sec\": 1046,\n      \"why\": \"the mental model justifying redundant QA gates\"\n    },\n    {\n      \"text\": \"we want to try and optimize for reducing the chance of a failure getting into production. And so, there is some redundancy here or there. And that's okay.\",\n      \"timestamp_sec\": 1086,\n      \"why\": \"explicitly accepts redundant checks as a design cost\"\n    },\n    {\n      \"text\": \"So, we're looking for improvements in people adding to cart, converting, completing their orders.\",\n      \"timestamp_sec\": 1207,\n      \"why\": \"ties the eval stack to a business outcome metric\"\n    }\n  ],\n  \"concepts\": [\n    \"closed-loop evals\",\n    \"llm-as-judge\",\n    \"agent routing\",\n    \"multimodal evaluation\",\n    \"human label alignment\",\n    \"production drift detection\",\n    \"automatic prompt optimization\",\n    \"pass@k\",\n    \"pairwise comparison evaluation\",\n    \"reward hacking\",\n    \"guardrail metrics\",\n    \"agent observability and logging\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Logging every stage of an agent orchestration in a flat, human-readable structure must come first, because without it there is nothing to optimize and no basis for a self-learning loop.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 413\n    },\n    {\n      \"claim\": \"Human labels, collected on a representative stratified dataset with deliberately objective guidelines, should be the golden source of truth that agents are aligned to.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 533\n    },\n    {\n      \"claim\": \"Recall is the correct guardrail metric for the routing agent, because allowing a bad image through is a worse error than an unnecessary enhancement.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 569\n    },\n    {\n      \"claim\": \"Enhancing an already-high-quality image is doubly bad: it costs compute for zero quality lift and risks degrading the image.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 569\n    },\n    {\n      \"claim\": \"A statically tuned offline model will not hold up in a real production system; every component needs a mechanism to retune itself against online drift.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 641\n    },\n    {\n      \"claim\": \"Agent retuning can be fully automated and config-driven with no human in the loop, provided you have guardrail observability and fast rollback.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 706\n    },\n    {\n      \"claim\": \"Pass rate should increase with more QA feedback iterations, which is why pass@K is the right metric for a self-correcting edit loop.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 846\n    },\n    {\n      \"claim\": \"Definitions of a 'better' output must be negotiated with product, design, policy, and legal, then encoded directly into the evals.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 882\n    },\n    {\n      \"claim\": \"Agents can reward hack a QA gate by oversteering into overly conservative, generic outputs that differ in raw pixels but carry no meaningful improvement.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 960\n    },\n    {\n      \"claim\": \"When the judge is not confident about a multimodal check such as item count, the correct production behavior is to reject rather than publish.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1046\n    },\n    {\n      \"claim\": \"Redundant, overlapping QA gates are worth their cost because layered defenses reduce the probability that a failure reaches production.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1086\n    },\n    {\n      \"claim\": \"Agentic systems are better suited than deterministic rules-based pipelines for this problem, because rules are brittle and cannot scale across a globally diverse marketplace.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 242\n    },\n    {\n      \"claim\": \"Failures traceable to frontier image-editing models, such as object coherence and physics implausibility, should be reported back to the frontier model teams rather than only patched downstream.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1008\n    },\n    {\n      \"claim\": \"At production scale, evaluation should be sliced by geography, device type, and dish type so that tuning can target specific underperforming segments.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1259\n    }\n  ],\n  \"speaker_org\": \"Uber\"\n}",
+  "ttft_ms": 18889,
+  "ttft_stream_ms": 1106,
+  "time_to_request_ms": 33,
+  "type": "result",
+  "duration_ms": 68518,
+  "uuid": "ecc82a50-ddf2-456c-b369-e59611e8c078",
+  "passA": {
+    "summary": "Jai Chopra and Soumya Gupta of Uber's computer vision team walk through the production agent system that automatically enhances food photography on Uber Eats, and the closed-loop eval machinery that keeps it safe. The core tension: independent merchants lack good photos, but a meaningful fraction of consumers distrust anything AI-generated, so every edit must stay faithful to the original dish, preserve merchant brand identity, and avoid collapsing marketplace diversity into one generic look. They break the pipeline into an image-understanding/routing agent (evaluated as a classifier with a confusion matrix, guardrailed on recall), an enhance-QA loop measured by pass@K with pairwise before/after comparison, and a final publish-ready QA gate justified by a Swiss cheese redundancy model. The most transferable part is the auto-tuning loop: production samples go to human labelers on objective guidelines, mismatches feed a 'diagnoser' agent that localizes the failing component, and reflect/synthesize sub-agents rewrite that agent's config, benchmark it against a golden dataset, and register a new version \u2014 config-driven, with no human in the loop. Worth watching if you run multimodal agents in production and need a concrete template for drift correction, human-label alignment, and layered safety gates.",
+    "key_points": [
+      "Uber Eats runs roughly a $90B annual run rate across 10,000 cities and adds millions of items monthly, so photo quality improvement has to work at a scale where manual photo shoots are impossible.",
+      "The design constraint is not just quality but trust: edits must preserve faithfulness to the actual dish and merchant brand, and using one shared prompt for every photo would collapse the visual diversity of the marketplace.",
+      "The pipeline is an image-understanding and routing agent, an image editing agent in a self-correcting loop with a QA agent, and a final post-processing publish-ready QA gate, with everything logged in one flat JSON structure so non-technical staff can diagnose individual cases and roll up aggregates.",
+      "Routing is evaluated like a traditional classifier via a confusion matrix on precision and recall, and recall is the chosen guardrail because letting a bad image through is worse than a false enhancement; more sophisticated routers (e.g. to cheaper, lower-latency models) need an n-by-n matrix rather than 2x2.",
+      "Both routing error directions have concrete costs: false positives burn compute for zero quality lift and risk degrading an already-good image, while recall misses can push a six-wing photo into an enhancer that hallucinates two extra wings to match an 'eight pieces' dish name.",
+      "Human labels are treated as ground truth, collected on a representative dataset stratified by geography, dish type, and image quality, with deliberately objective labeling guidelines to suppress subjective bias and labeler noise.",
+      "Drift is handled by a closed loop: sample production data on a cadence, re-label it, feed mismatches to a diagnoser agent that localizes the failing component, then run a prompt optimizer built from a reflect agent and a synthesize agent that rewrites the config, re-benchmarks against the golden dataset, and registers a new agent version.",
+      "The enhancement loop is scored with pass@K using pairwise input-versus-output comparison against criteria (faithful, complete, natural, realistic) negotiated with product, design, policy, and legal, and it fails in interesting ways \u2014 including reward hacking where a rejected creative edit oversteers into a generic ceramic bowl.",
+      "Multiple redundant QA gates are intentional (a Swiss cheese model), and observed failures sometimes trace back to frontier image-editing model weaknesses in object coherence and physics plausibility, which the team reports back to the frontier labs.",
+      "Beyond the model loop, internal dogfooding thumbs-up/down plus free-form merchant and internal feedback feed the same diagnoser, and production impact is tracked on marketplace metrics like add-to-cart conversion, sliceable by geo, device, and dish type for segment-level tuning."
+    ],
+    "notable_quotes": [
+      {
+        "text": "our delivery marketplace Uber Eats, we do about 90 billion run rate per year at the moment",
+        "timestamp_sec": 1,
+        "why": "sizes the business the system operates on"
+      },
+      {
+        "text": "We're growing at 20% year-on-year and and we operate in 10,000 cities globally.",
+        "timestamp_sec": 66,
+        "why": "concrete scale numbers that justify the automation"
+      },
+      {
+        "text": "So a photo is quite often the first signal that a customer gets that gives them that initial impression about a merchant.",
+        "timestamp_sec": 110,
+        "why": "states why image quality is the lever they chose"
+      },
+      {
+        "text": "If we have the same prompt for every photo that we're editing, the diversity of the marketplace is going to collapse.",
+        "timestamp_sec": 157,
+        "why": "names a failure mode of naive prompt standardization at scale"
+      },
+      {
+        "text": "you might notice that all of the agents in this end-to-end orchestration is within one It's It's basically a flat structure in this JSON.",
+        "timestamp_sec": 362,
+        "why": "specific, opinionated logging design choice"
+      },
+      {
+        "text": "you want to start with your logging cuz if you don't start with it, you have nothing to optimize for, let alone set up a self-learning loop",
+        "timestamp_sec": 413,
+        "why": "the talk's ordering claim about what to build first"
+      },
+      {
+        "text": "we might want to route an image to a lower latency smaller model to be able to save on cost and improve the user experience at the trade-off of quality",
+        "timestamp_sec": 485,
+        "why": "names the cost/latency/quality tradeoff explicitly"
+      },
+      {
+        "text": "For our use case, we consider human labels as the golden source of truth. And this is what we want to align our models to.",
+        "timestamp_sec": 533,
+        "why": "takes a side on what ground truth means for a subjective visual task"
+      },
+      {
+        "text": "For routing, our guardrail metric is recall. We don't want any bad image to slip through our system.",
+        "timestamp_sec": 569,
+        "why": "picks one metric as the guardrail and says why"
+      },
+      {
+        "text": "Firstly, you pay the compute cost for a zero quality lift from this image.",
+        "timestamp_sec": 569,
+        "why": "quantifies the cost of a routing false positive"
+      },
+      {
+        "text": "there's a chance your model's going to hallucinate these two extra wings to to match the description",
+        "timestamp_sec": 603,
+        "why": "vivid, concrete faithfulness failure in a multimodal setting"
+      },
+      {
+        "text": "You need a way such that your prompts, agents, system itself is evolving over time.",
+        "timestamp_sec": 641,
+        "why": "the core argument against static offline-tuned agents"
+      },
+      {
+        "text": "the beauty of this is this is completely config driven and doesn't require human in the loop",
+        "timestamp_sec": 706,
+        "why": "the strongest and most contestable automation claim in the talk"
+      },
+      {
+        "text": "And this is a closed-loop system as I mentioned, no human in the loop. We definitely have observability on the guardrails, quick rollback built in in case of any issues with the system itself.",
+        "timestamp_sec": 781,
+        "why": "pairs the autonomy claim with the safety mechanism that makes it defensible"
+      },
+      {
+        "text": "You either keep enhancing for K iterations and you pass your QA gate and you publish, or you take a coverage hit and you never enhance this image.",
+        "timestamp_sec": 816,
+        "why": "states the quality-versus-coverage tradeoff of the retry loop"
+      },
+      {
+        "text": "Pass at K is essentially the pass rate at Kth iteration.",
+        "timestamp_sec": 846,
+        "why": "defines the loop's headline metric"
+      },
+      {
+        "text": "So, this is an example of a reward hacking actually.",
+        "timestamp_sec": 960,
+        "why": "labels an observed production behavior as reward hacking, not a hypothetical"
+      },
+      {
+        "text": "some of their problems will actually sort of leak up into our applied use case",
+        "timestamp_sec": 1008,
+        "why": "notes that frontier model limitations propagate into product evals"
+      },
+      {
+        "text": "The reason is because we think of this like a Swiss cheese model.",
+        "timestamp_sec": 1046,
+        "why": "the mental model justifying redundant QA gates"
+      },
+      {
+        "text": "we want to try and optimize for reducing the chance of a failure getting into production. And so, there is some redundancy here or there. And that's okay.",
+        "timestamp_sec": 1086,
+        "why": "explicitly accepts redundant checks as a design cost"
+      },
+      {
+        "text": "So, we're looking for improvements in people adding to cart, converting, completing their orders.",
+        "timestamp_sec": 1207,
+        "why": "ties the eval stack to a business outcome metric"
+      }
+    ],
+    "concepts": [
+      "closed-loop evals",
+      "llm-as-judge",
+      "agent routing",
+      "multimodal evaluation",
+      "human label alignment",
+      "production drift detection",
+      "automatic prompt optimization",
+      "pass@k",
+      "pairwise comparison evaluation",
+      "reward hacking",
+      "guardrail metrics",
+      "agent observability and logging"
+    ],
+    "positions": [
+      {
+        "claim": "Logging every stage of an agent orchestration in a flat, human-readable structure must come first, because without it there is nothing to optimize and no basis for a self-learning loop.",
+        "confidence": "stated",
+        "timestamp_sec": 413
+      },
+      {
+        "claim": "Human labels, collected on a representative stratified dataset with deliberately objective guidelines, should be the golden source of truth that agents are aligned to.",
+        "confidence": "stated",
+        "timestamp_sec": 533
+      },
+      {
+        "claim": "Recall is the correct guardrail metric for the routing agent, because allowing a bad image through is a worse error than an unnecessary enhancement.",
+        "confidence": "stated",
+        "timestamp_sec": 569
+      },
+      {
+        "claim": "Enhancing an already-high-quality image is doubly bad: it costs compute for zero quality lift and risks degrading the image.",
+        "confidence": "stated",
+        "timestamp_sec": 569
+      },
+      {
+        "claim": "A statically tuned offline model will not hold up in a real production system; every component needs a mechanism to retune itself against online drift.",
+        "confidence": "stated",
+        "timestamp_sec": 641
+      },
+      {
+        "claim": "Agent retuning can be fully automated and config-driven with no human in the loop, provided you have guardrail observability and fast rollback.",
+        "confidence": "stated",
+        "timestamp_sec": 706
+      },
+      {
+        "claim": "Pass rate should increase with more QA feedback iterations, which is why pass@K is the right metric for a self-correcting edit loop.",
+        "confidence": "stated",
+        "timestamp_sec": 846
+      },
+      {
+        "claim": "Definitions of a 'better' output must be negotiated with product, design, policy, and legal, then encoded directly into the evals.",
+        "confidence": "stated",
+        "timestamp_sec": 882
+      },
+      {
+        "claim": "Agents can reward hack a QA gate by oversteering into overly conservative, generic outputs that differ in raw pixels but carry no meaningful improvement.",
+        "confidence": "stated",
+        "timestamp_sec": 960
+      },
+      {
+        "claim": "When the judge is not confident about a multimodal check such as item count, the correct production behavior is to reject rather than publish.",
+        "confidence": "stated",
+        "timestamp_sec": 1046
+      },
+      {
+        "claim": "Redundant, overlapping QA gates are worth their cost because layered defenses reduce the probability that a failure reaches production.",
+        "confidence": "stated",
+        "timestamp_sec": 1086
+      },
+      {
+        "claim": "Agentic systems are better suited than deterministic rules-based pipelines for this problem, because rules are brittle and cannot scale across a globally diverse marketplace.",
+        "confidence": "stated",
+        "timestamp_sec": 242
+      },
+      {
+        "claim": "Failures traceable to frontier image-editing models, such as object coherence and physics implausibility, should be reported back to the frontier model teams rather than only patched downstream.",
+        "confidence": "stated",
+        "timestamp_sec": 1008
+      },
+      {
+        "claim": "At production scale, evaluation should be sliced by geography, device type, and dish type so that tuning can target specific underperforming segments.",
+        "confidence": "stated",
+        "timestamp_sec": 1259
+      }
+    ],
+    "speaker_org": "Uber"
+  },
+  "_meta": {
+    "slug": "building-closed-loop-evals-for-a-multimodal-agent-at-scale",
+    "video_id": "31GUkCBD-Uc",
+    "url": "https://www.youtube.com/watch?v=31GUkCBD-Uc",
+    "word_count": 3775,
+    "wall_sec": 69.7,
+    "run_at": "2026-08-12T19:37:34Z",
+    "effort": "medium"
+  }
+}

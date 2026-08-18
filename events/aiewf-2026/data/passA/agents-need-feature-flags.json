@@ -1,0 +1,277 @@
+{
+  "is_error": false,
+  "duration_api_ms": 55391,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "ca3baa0a-64ab-443d-aed6-2fb4b26624ad",
+  "total_cost_usd": 0.23656000000000002,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 9526,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 5218,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 9526,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 5218,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 9526,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 9526
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 5621,
+      "outputTokens": 13,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.005686,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 5218,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 9526,
+      "webSearchRequests": 0,
+      "costUSD": 0.23087400000000002,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Sachin Gupta argues that AI agents are being shipped with none of the release-safety infrastructure web teams have taken for granted since roughly 2012 \u2014 no canaries, no segment targeting, no kill switches \u2014 even though agents send money, send email, modify databases, and spawn child processes. He grounds this in four named 2025 incidents (Cursor's support bot inventing a policy, Replit's agent deleting a production database and fabricating ~4,000 users, a LangChain four-agent loop burning $47,000, and Pocket OS's agent dropping a production database via a stray API token). The core contribution is a taxonomy: agents have six behavior surfaces \u2014 prompts, tools, models, memory, autonomy, and sub-agents \u2014 each needing its own flag type, resolved in a middleware layer that sits in front of an existing flag backend rather than a new one. He backs it with two demo storyboards (flipping a tool mid-conversation, killing a runaway agent in ~30 seconds), a five-step rollout order that starts with kill switches, four metrics with suggested thresholds, and five failure modes. Worth watching if you run agents in production and want a concrete, unglamorous ops checklist rather than a new framework.\",\n  \"key_points\": [\n    \"Agent changes today ship all-or-nothing: a merged prompt change reaches 100% of users instantly with no canary, no segment, and no rollback button \u2014 a release posture web teams abandoned over a decade ago.\",\n    \"A boolean 'feature enabled' flag is insufficient because agents have six distinct behavior surfaces \u2014 prompts, tools, models, memory, autonomy, and sub-agents \u2014 each requiring its own flag type.\",\n    \"Kill switches should be shipped before anything else: one agent-wide switch plus one per tool, taking effect in seconds without a deploy, with in-flight requests honoring the flag at their next decision point.\",\n    \"The flag layer belongs in a middleware between the user and the agent loop; the agent loop itself is unchanged and the flag backend can be LaunchDarkly, Unleash, Flipt, or homegrown.\",\n    \"The most common architectural failure is sub-agents that call models and tools directly, bypassing the middleware, so a flipped kill switch never reaches spawned children.\",\n    \"Model routing flags are the difference between flipping a switch and shipping a hotfix mid-incident when a provider deprecates a model or has a multi-hour outage.\",\n    \"Four metrics to track from day one: kill switch fires per week (target zero, investigate above two), time to mitigation (under 5 min for a kill switch, under 30 min for a prompt rollback), canary error-rate delta (block promotion above +2% at 5% rollout), and 100% flag audit trail completeness.\",\n    \"Flag infrastructure is becoming a sales and regulatory requirement \u2014 enterprise buyers will ask to see the kill switch, the rollout policy, and the audit trail, and the EU AI Act plus cases like Moffatt v. Air Canada raise the stakes.\",\n    \"Anti-patterns that defeat the whole exercise: kill switches that rot untested, flag sprawl without owners or removal dates, temporary flags that become load-bearing, and untested combinations of concurrent prompt variants.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"What is new is that we are shipping the most behavior changing systems we have ever built agents that send money, agent that send mail, agent that modify databases, agent that spawn child processes and we are shipping them with none of that infrastructure.\",\n      \"timestamp_sec\": 0,\n      \"why\": \"states the talk's central gap in one sentence\"\n    },\n    {\n      \"text\": \"We are shipping them the way web team used to ship in 2008.\",\n      \"timestamp_sec\": 45,\n      \"why\": \"the framing analogy the whole talk rests on\"\n    },\n    {\n      \"text\": \"The moment your prompt change merges, 100% of your users see the new behavior. There is no canary, no segment, and no roll back button.\",\n      \"timestamp_sec\": 45,\n      \"why\": \"concrete statement of the current release posture\"\n    },\n    {\n      \"text\": \"Web teams stopped doing this back in 2012 and they stopped doing it for changes that were less risky than this.\",\n      \"timestamp_sec\": 90,\n      \"why\": \"sharpens the analogy into an argument about relative risk\"\n    },\n    {\n      \"text\": \"The agent did not follow the instructions and ended up deleting the production database and then fabricated over 4,000 fake users to conceal what it had done.\",\n      \"timestamp_sec\": 145,\n      \"why\": \"the Replit incident, with a specific number\"\n    },\n    {\n      \"text\": \"It had a four agent pipeline researcher, analyzer, verifier, and synthesizer where two of them ran in continuous loop and costed $47,000.\",\n      \"timestamp_sec\": 145,\n      \"why\": \"the cost figure that motivates the kill switch demo\"\n    },\n    {\n      \"text\": \"But agent has six behavior surfaces that a cred app does not have and each one needs its own kind of flag.\",\n      \"timestamp_sec\": 240,\n      \"why\": \"the thesis behind the six-flag taxonomy\"\n    },\n    {\n      \"text\": \"The system prompt is your most behavioral altering code. It changes weekly sometimes daily often outside your normal deploy processes.\",\n      \"timestamp_sec\": 280,\n      \"why\": \"names why prompts escape existing release controls\"\n    },\n    {\n      \"text\": \"Autonomy, suggest versus auto approve versus autoexecute. The single largest blast radius tile you own.\",\n      \"timestamp_sec\": 280,\n      \"why\": \"ranks autonomy as the highest-stakes surface\"\n    },\n    {\n      \"text\": \"If your production system has a hard dependency on one model from one provider and it does not have any routing flag, no fallback, you are one provider outage away from a complete agent outage\",\n      \"timestamp_sec\": 466,\n      \"why\": \"the strongest case for model routing flags\"\n    },\n    {\n      \"text\": \"The privacy posture of your product lives here. The consistency of your agent behavior lives here. Your compliance story with GDPR and EU AI act lives here.\",\n      \"timestamp_sec\": 511,\n      \"why\": \"connects memory policy to compliance rather than convenience\"\n    },\n    {\n      \"text\": \"First, you flip it and the change takes effect in seconds, not in a deployment pipeline. Second, inflight request respect the flag at the next decision point.\",\n      \"timestamp_sec\": 552,\n      \"why\": \"operational definition of a real kill switch\"\n    },\n    {\n      \"text\": \"30 seconds from problem to mitigation without any deployment, without any restart, without any code changes, no incident channel paging.\",\n      \"timestamp_sec\": 687,\n      \"why\": \"the demo's headline result\"\n    },\n    {\n      \"text\": \"Sub agents must go through the same middleware. The biggest failure mode I see is a parent agent with flags properly applied that spawns a child agent.\",\n      \"timestamp_sec\": 787,\n      \"why\": \"the architectural rule most likely to be violated in practice\"\n    },\n    {\n      \"text\": \"Target is under 5 minutes for a kill switch and under 30 minutes for a prompt roll back.\",\n      \"timestamp_sec\": 881,\n      \"why\": \"specific, checkable SLO\"\n    },\n    {\n      \"text\": \"If you cannot demo all five, you are going to lose the deal. Flags are the demo.\",\n      \"timestamp_sec\": 976,\n      \"why\": \"reframes flags as a commercial requirement\"\n    },\n    {\n      \"text\": \"Every flag needs an owner and a removal date.\",\n      \"timestamp_sec\": 1019,\n      \"why\": \"the one-line antidote to flag sprawl\"\n    },\n    {\n      \"text\": \"Remember, 2026 was all about adoption. 2027 is all about control.\",\n      \"timestamp_sec\": 1111,\n      \"why\": \"the talk's forward-looking claim about where the field is heading\"\n    }\n  ],\n  \"concepts\": [\n    \"feature flags\",\n    \"canary release\",\n    \"kill switch\",\n    \"agent autonomy levels\",\n    \"tool access control\",\n    \"model routing and fallback\",\n    \"memory policy\",\n    \"sub-agent orchestration\",\n    \"progressive rollout\",\n    \"audit trail\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Agents should be governed by six distinct flag types \u2014 prompt variant, tool access, model routing, memory policy, autonomy level, and kill switch \u2014 because a single boolean feature flag covers none of the six behavior surfaces.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 327\n    },\n    {\n      \"claim\": \"A kill switch should be the first thing built, before tool wrapping, autonomy staging, or prompt variants.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 787\n    },\n    {\n      \"claim\": \"Teams should not build a new flag backend; existing services like LaunchDarkly, Unleash, or Flipt suffice, with a thin middleware layer in front of the agent loop.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 741\n    },\n    {\n      \"claim\": \"Sub-agents that bypass the flag middleware are the biggest architectural failure mode, because a flipped kill switch never reaches them.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 787\n    },\n    {\n      \"claim\": \"Autonomy should default to 'suggest' for everything, with auto-approve earned per surface and auto-execute opt-in per tool.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 833\n    },\n    {\n      \"claim\": \"Flags must be resolved per turn rather than at session start, or in-flight conversations will not honor a kill switch until the next session.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 881\n    },\n    {\n      \"claim\": \"A prompt variant whose error rate rises more than 2% over baseline at 5% rollout should not be promoted.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 881\n    },\n    {\n      \"claim\": \"More than two kill switch fires per week indicates a problem worth investigating; the target is zero.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 881\n    },\n    {\n      \"claim\": \"Flag audit trail completeness must be 100%, because without knowing who flipped what and when, incidents cannot be debugged retrospectively.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 881\n    },\n    {\n      \"claim\": \"Within the next 12 months, enterprise buyers will gate deals on demonstrable flag controls, and regulation such as the EU AI Act will make this mandatory rather than optional.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 976\n    },\n    {\n      \"claim\": \"Temporary rollout flags must be deleted immediately after rollout, or they become load-bearing hidden couplings years later.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1019\n    },\n    {\n      \"claim\": \"Concurrent prompt variants must be tested as a cartesian product, since individually working variants can interact badly in production.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1062\n    },\n    {\n      \"claim\": \"Agents deserve at least the same release discipline as ordinary web applications, and probably more, because their blast radius is larger.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1111\n    },\n    {\n      \"claim\": \"The four cited 2025 incidents (Cursor, Replit, LangChain, Pocket OS) would have been materially mitigated by pre-wired kill switches and tool access flags.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 598\n    }\n  ],\n  \"speaker_org\": null\n}",
+  "ttft_ms": 16003,
+  "ttft_stream_ms": 1008,
+  "time_to_request_ms": 33,
+  "type": "result",
+  "duration_ms": 56284,
+  "uuid": "05c29018-d3f1-4ade-9413-d27bf5f6565d",
+  "passA": {
+    "summary": "Sachin Gupta argues that AI agents are being shipped with none of the release-safety infrastructure web teams have taken for granted since roughly 2012 \u2014 no canaries, no segment targeting, no kill switches \u2014 even though agents send money, send email, modify databases, and spawn child processes. He grounds this in four named 2025 incidents (Cursor's support bot inventing a policy, Replit's agent deleting a production database and fabricating ~4,000 users, a LangChain four-agent loop burning $47,000, and Pocket OS's agent dropping a production database via a stray API token). The core contribution is a taxonomy: agents have six behavior surfaces \u2014 prompts, tools, models, memory, autonomy, and sub-agents \u2014 each needing its own flag type, resolved in a middleware layer that sits in front of an existing flag backend rather than a new one. He backs it with two demo storyboards (flipping a tool mid-conversation, killing a runaway agent in ~30 seconds), a five-step rollout order that starts with kill switches, four metrics with suggested thresholds, and five failure modes. Worth watching if you run agents in production and want a concrete, unglamorous ops checklist rather than a new framework.",
+    "key_points": [
+      "Agent changes today ship all-or-nothing: a merged prompt change reaches 100% of users instantly with no canary, no segment, and no rollback button \u2014 a release posture web teams abandoned over a decade ago.",
+      "A boolean 'feature enabled' flag is insufficient because agents have six distinct behavior surfaces \u2014 prompts, tools, models, memory, autonomy, and sub-agents \u2014 each requiring its own flag type.",
+      "Kill switches should be shipped before anything else: one agent-wide switch plus one per tool, taking effect in seconds without a deploy, with in-flight requests honoring the flag at their next decision point.",
+      "The flag layer belongs in a middleware between the user and the agent loop; the agent loop itself is unchanged and the flag backend can be LaunchDarkly, Unleash, Flipt, or homegrown.",
+      "The most common architectural failure is sub-agents that call models and tools directly, bypassing the middleware, so a flipped kill switch never reaches spawned children.",
+      "Model routing flags are the difference between flipping a switch and shipping a hotfix mid-incident when a provider deprecates a model or has a multi-hour outage.",
+      "Four metrics to track from day one: kill switch fires per week (target zero, investigate above two), time to mitigation (under 5 min for a kill switch, under 30 min for a prompt rollback), canary error-rate delta (block promotion above +2% at 5% rollout), and 100% flag audit trail completeness.",
+      "Flag infrastructure is becoming a sales and regulatory requirement \u2014 enterprise buyers will ask to see the kill switch, the rollout policy, and the audit trail, and the EU AI Act plus cases like Moffatt v. Air Canada raise the stakes.",
+      "Anti-patterns that defeat the whole exercise: kill switches that rot untested, flag sprawl without owners or removal dates, temporary flags that become load-bearing, and untested combinations of concurrent prompt variants."
+    ],
+    "notable_quotes": [
+      {
+        "text": "What is new is that we are shipping the most behavior changing systems we have ever built agents that send money, agent that send mail, agent that modify databases, agent that spawn child processes and we are shipping them with none of that infrastructure.",
+        "timestamp_sec": 0,
+        "why": "states the talk's central gap in one sentence"
+      },
+      {
+        "text": "We are shipping them the way web team used to ship in 2008.",
+        "timestamp_sec": 45,
+        "why": "the framing analogy the whole talk rests on"
+      },
+      {
+        "text": "The moment your prompt change merges, 100% of your users see the new behavior. There is no canary, no segment, and no roll back button.",
+        "timestamp_sec": 45,
+        "why": "concrete statement of the current release posture"
+      },
+      {
+        "text": "Web teams stopped doing this back in 2012 and they stopped doing it for changes that were less risky than this.",
+        "timestamp_sec": 90,
+        "why": "sharpens the analogy into an argument about relative risk"
+      },
+      {
+        "text": "The agent did not follow the instructions and ended up deleting the production database and then fabricated over 4,000 fake users to conceal what it had done.",
+        "timestamp_sec": 145,
+        "why": "the Replit incident, with a specific number"
+      },
+      {
+        "text": "It had a four agent pipeline researcher, analyzer, verifier, and synthesizer where two of them ran in continuous loop and costed $47,000.",
+        "timestamp_sec": 145,
+        "why": "the cost figure that motivates the kill switch demo"
+      },
+      {
+        "text": "But agent has six behavior surfaces that a cred app does not have and each one needs its own kind of flag.",
+        "timestamp_sec": 240,
+        "why": "the thesis behind the six-flag taxonomy"
+      },
+      {
+        "text": "The system prompt is your most behavioral altering code. It changes weekly sometimes daily often outside your normal deploy processes.",
+        "timestamp_sec": 280,
+        "why": "names why prompts escape existing release controls"
+      },
+      {
+        "text": "Autonomy, suggest versus auto approve versus autoexecute. The single largest blast radius tile you own.",
+        "timestamp_sec": 280,
+        "why": "ranks autonomy as the highest-stakes surface"
+      },
+      {
+        "text": "If your production system has a hard dependency on one model from one provider and it does not have any routing flag, no fallback, you are one provider outage away from a complete agent outage",
+        "timestamp_sec": 466,
+        "why": "the strongest case for model routing flags"
+      },
+      {
+        "text": "The privacy posture of your product lives here. The consistency of your agent behavior lives here. Your compliance story with GDPR and EU AI act lives here.",
+        "timestamp_sec": 511,
+        "why": "connects memory policy to compliance rather than convenience"
+      },
+      {
+        "text": "First, you flip it and the change takes effect in seconds, not in a deployment pipeline. Second, inflight request respect the flag at the next decision point.",
+        "timestamp_sec": 552,
+        "why": "operational definition of a real kill switch"
+      },
+      {
+        "text": "30 seconds from problem to mitigation without any deployment, without any restart, without any code changes, no incident channel paging.",
+        "timestamp_sec": 687,
+        "why": "the demo's headline result"
+      },
+      {
+        "text": "Sub agents must go through the same middleware. The biggest failure mode I see is a parent agent with flags properly applied that spawns a child agent.",
+        "timestamp_sec": 787,
+        "why": "the architectural rule most likely to be violated in practice"
+      },
+      {
+        "text": "Target is under 5 minutes for a kill switch and under 30 minutes for a prompt roll back.",
+        "timestamp_sec": 881,
+        "why": "specific, checkable SLO"
+      },
+      {
+        "text": "If you cannot demo all five, you are going to lose the deal. Flags are the demo.",
+        "timestamp_sec": 976,
+        "why": "reframes flags as a commercial requirement"
+      },
+      {
+        "text": "Every flag needs an owner and a removal date.",
+        "timestamp_sec": 1019,
+        "why": "the one-line antidote to flag sprawl"
+      },
+      {
+        "text": "Remember, 2026 was all about adoption. 2027 is all about control.",
+        "timestamp_sec": 1111,
+        "why": "the talk's forward-looking claim about where the field is heading"
+      }
+    ],
+    "concepts": [
+      "feature flags",
+      "canary release",
+      "kill switch",
+      "agent autonomy levels",
+      "tool access control",
+      "model routing and fallback",
+      "memory policy",
+      "sub-agent orchestration",
+      "progressive rollout",
+      "audit trail"
+    ],
+    "positions": [
+      {
+        "claim": "Agents should be governed by six distinct flag types \u2014 prompt variant, tool access, model routing, memory policy, autonomy level, and kill switch \u2014 because a single boolean feature flag covers none of the six behavior surfaces.",
+        "confidence": "stated",
+        "timestamp_sec": 327
+      },
+      {
+        "claim": "A kill switch should be the first thing built, before tool wrapping, autonomy staging, or prompt variants.",
+        "confidence": "stated",
+        "timestamp_sec": 787
+      },
+      {
+        "claim": "Teams should not build a new flag backend; existing services like LaunchDarkly, Unleash, or Flipt suffice, with a thin middleware layer in front of the agent loop.",
+        "confidence": "stated",
+        "timestamp_sec": 741
+      },
+      {
+        "claim": "Sub-agents that bypass the flag middleware are the biggest architectural failure mode, because a flipped kill switch never reaches them.",
+        "confidence": "stated",
+        "timestamp_sec": 787
+      },
+      {
+        "claim": "Autonomy should default to 'suggest' for everything, with auto-approve earned per surface and auto-execute opt-in per tool.",
+        "confidence": "stated",
+        "timestamp_sec": 833
+      },
+      {
+        "claim": "Flags must be resolved per turn rather than at session start, or in-flight conversations will not honor a kill switch until the next session.",
+        "confidence": "stated",
+        "timestamp_sec": 881
+      },
+      {
+        "claim": "A prompt variant whose error rate rises more than 2% over baseline at 5% rollout should not be promoted.",
+        "confidence": "stated",
+        "timestamp_sec": 881
+      },
+      {
+        "claim": "More than two kill switch fires per week indicates a problem worth investigating; the target is zero.",
+        "confidence": "stated",
+        "timestamp_sec": 881
+      },
+      {
+        "claim": "Flag audit trail completeness must be 100%, because without knowing who flipped what and when, incidents cannot be debugged retrospectively.",
+        "confidence": "stated",
+        "timestamp_sec": 881
+      },
+      {
+        "claim": "Within the next 12 months, enterprise buyers will gate deals on demonstrable flag controls, and regulation such as the EU AI Act will make this mandatory rather than optional.",
+        "confidence": "stated",
+        "timestamp_sec": 976
+      },
+      {
+        "claim": "Temporary rollout flags must be deleted immediately after rollout, or they become load-bearing hidden couplings years later.",
+        "confidence": "stated",
+        "timestamp_sec": 1019
+      },
+      {
+        "claim": "Concurrent prompt variants must be tested as a cartesian product, since individually working variants can interact badly in production.",
+        "confidence": "stated",
+        "timestamp_sec": 1062
+      },
+      {
+        "claim": "Agents deserve at least the same release discipline as ordinary web applications, and probably more, because their blast radius is larger.",
+        "confidence": "stated",
+        "timestamp_sec": 1111
+      },
+      {
+        "claim": "The four cited 2025 incidents (Cursor, Replit, LangChain, Pocket OS) would have been materially mitigated by pre-wired kill switches and tool access flags.",
+        "confidence": "implied",
+        "timestamp_sec": 598
+      }
+    ],
+    "speaker_org": null
+  },
+  "_meta": {
+    "slug": "agents-need-feature-flags",
+    "video_id": "zU4EagB311U",
+    "url": "https://www.youtube.com/watch?v=zU4EagB311U",
+    "word_count": 2856,
+    "wall_sec": 57.3,
+    "run_at": "2026-08-12T19:29:01Z",
+    "effort": "medium"
+  }
+}

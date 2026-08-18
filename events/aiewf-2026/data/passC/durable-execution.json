@@ -1,0 +1,282 @@
+{
+  "is_error": false,
+  "duration_api_ms": 127312,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "b0487e22-3988-4f6a-9006-bbd39e32e372",
+  "total_cost_usd": 0.71699,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 41672,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 10693,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 41672,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 10693,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 41672,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 41672
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 27696,
+      "outputTokens": 17,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.027781,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 10693,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 41672,
+      "webSearchRequests": 0,
+      "costUSD": 0.689209,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\"concept\": \"durable execution\", \"state_of_practice\": \"The field has converged on a single structural claim: for runs measured in hours or days, agent state cannot live in the process, in memory, or on local disk \u2014 it must be an external, append-only, durable record that the executor merely reads from and appends to. The corollary appearing in talk after talk is that the model must not hold control flow: the harness owns state transitions, validates tool results, advances the state machine, and commits, while the model only proposes. Failure is treated as certain rather than exceptional \u2014 a background run making ~200 tool calls is assumed to hit at least one failure, so resumability, idempotent retry, and explicit terminal states (success/failure/timeout/cancel/max-attempts) are architectural requirements, not hardening. Once the log or checkpoint exists, it is being reused for things beyond crash recovery: forking and rollback, branch-per-model execution, Monte Carlo tree search over sandbox snapshots, and replay-based evaluation against real production state instead of synthetic datasets. What is genuinely unsettled is the substrate \u2014 an event log you own, a durable workflow engine beneath the framework, incremental VM/disk snapshots in the sandbox, or language-level serializable execution \u2014 and the MCP tasks spec, the one protocol-level attempt to standardize durable async tool calls, still has zero client implementations and is being rewritten.\", \"consensus\": [{\"claim\": \"State for a long-running agent must live outside the executing process \u2014 not in memory, not on local disk, not tied to a specific machine.\", \"support_count\": 5, \"supporting_talks\": [\"your-agent-architecture-has-a-half-life-of-6-months\", \"the-log-is-the-agent\", \"from-fork-to-fleet-designing-an-agent-sandbox-cloud\", \"privacy-preserving-intelligence\", \"active-graph-agent-runtime-babyagi-4\"], \"evidence_quote\": \"So, for this this to work, a 3-hour run cannot hold state in memory or in disk. The state must live outside of the work.\", \"evidence_talk\": \"your-agent-architecture-has-a-half-life-of-6-months\", \"evidence_timestamp_sec\": 401}, {\"claim\": \"The model must not own workflow state or decide what step it is on; the harness tracks position, validates results, and advances the state machine.\", \"support_count\": 5, \"supporting_talks\": [\"dont-let-the-llm-drive\", \"your-agent-didnt-fail-your-harness-did\", \"your-voice-agent-doesnt-need-a-frontier-model\", \"build-systems-not-code\", \"what-if-the-harness-mattered-more-than-the-model\"], \"evidence_quote\": \"The harness validates what's comes back, advance the state, and decide what's next. The model never decide where we are. That's the design.\", \"evidence_talk\": \"dont-let-the-llm-drive\", \"evidence_timestamp_sec\": 44}, {\"claim\": \"An append-only event log is the ground truth of an agent; the context window, UI, read models, and compacted summaries are all derived projections of it.\", \"support_count\": 4, \"supporting_talks\": [\"the-log-is-the-agent\", \"active-graph-agent-runtime-babyagi-4\", \"lets-integrate-ai-agents-in-event-sourced-systems\", \"your-agent-didnt-fail-your-harness-did\"], \"evidence_quote\": \"underneath every serious database is a log. And that log is the durable sequence of changes. Everything else is a view.\", \"evidence_talk\": \"the-log-is-the-agent\", \"evidence_timestamp_sec\": 198}, {\"claim\": \"Failure during a long run is statistically certain, not an edge case, so resumption from the last durable point must be designed in rather than bolted on.\", \"support_count\": 5, \"supporting_talks\": [\"your-agent-architecture-has-a-half-life-of-6-months\", \"the-log-is-the-agent\", \"mcp-tasks-async-why-arent-any-agents-supporting-them\", \"active-graph-agent-runtime-babyagi-4\", \"from-fork-to-fleet-designing-an-agent-sandbox-cloud\"], \"evidence_quote\": \"It's going to have maybe hundreds of calls to you know, maybe 200 tool calls. You're going to probably guarantee to have at least one failure in that.\", \"evidence_talk\": \"your-agent-architecture-has-a-half-life-of-6-months\", \"evidence_timestamp_sec\": 695}, {\"claim\": \"Persisted state pays off beyond crash recovery: the same checkpoints/log enable rollback, forking, branch-per-model execution, and replay-based evaluation.\", \"support_count\": 6, \"supporting_talks\": [\"active-graph-agent-runtime-babyagi-4\", \"from-fork-to-fleet-designing-an-agent-sandbox-cloud\", \"your-agents-need-a-save-button\", \"your-agent-failed-in-prod-good-luck-reproducing-it\", \"the-log-is-the-agent\", \"when-agents-meet-physical-data-the-other-physics-of-agent-harnesses\"], \"evidence_quote\": \"in the end you get this beautiful typed event log, which gives you replays. It gives you rollbacks and it gives you forks.\", \"evidence_talk\": \"active-graph-agent-runtime-babyagi-4\", \"evidence_timestamp_sec\": 223}, {\"claim\": \"Idempotency and termination must be enforced by the system, not by the model \u2014 every loop needs an explicit break condition and every external boundary needs a terminal state.\", \"support_count\": 3, \"supporting_talks\": [\"your-agent-didnt-fail-your-harness-did\", \"build-systems-not-code\", \"lets-integrate-ai-agents-in-event-sourced-systems\"], \"evidence_quote\": \"Every external boundary needs an ending. Success, failure, timeout, cancel, or max attempts.\", \"evidence_talk\": \"your-agent-didnt-fail-your-harness-did\", \"evidence_timestamp_sec\": 658}], \"disagreements\": [{\"question\": \"Is a durable event log by itself sufficient to make execution durable, or do you need a dedicated durable workflow/execution engine underneath the harness?\", \"position_a\": \"The log is the durable primitive and the only non-derived thing in the system. Because the model, tools, and runtime only read from and append to it, the log alone is enough to resume; the executor is allowed to be fallible and one process can advance thousands of agents.\", \"position_a_talks\": [\"the-log-is-the-agent\", \"active-graph-agent-runtime-babyagi-4\", \"lets-integrate-ai-agents-in-event-sourced-systems\"], \"position_b\": \"Hand-rolled checkpointing and log-based state rehydration are inadequate abstractions that leak into the context and compute layers; durability belongs in a separate execution layer or durable workflow engine (Temporal-style signals, serializable pause/resume, a checkpointing runtime beneath the framework) that you swap models and sandboxes around.\", \"position_b_talks\": [\"your-agent-architecture-has-a-half-life-of-6-months\", \"mcp-tasks-async-why-arent-any-agents-supporting-them\", \"your-agents-need-a-save-button\", \"what-if-the-harness-mattered-more-than-the-model\"], \"why_it_matters\": \"It decides whether durability is something you build into your own data model and own outright, or a dependency you adopt \u2014 and log-centric teams argue that whoever owns the log owns the agent, the deepest form of vendor lock-in there is.\"}, {\"question\": \"Should the sandbox be a durable, snapshotted store of agent state, or is durability strictly the execution layer's job?\", \"position_a\": \"Disk persistence \u2014 not compute \u2014 is the next unlock: incremental VM and block-device snapshots turn agents from ephemeral executors into durable knowledge workers, with schedulers scoring nodes by cached snapshot lineage and restores backed by warm pools. Snapshot the code, artifacts, and the Docker image or sandbox together between checkpoints.\", \"position_a_talks\": [\"from-fork-to-fleet-designing-an-agent-sandbox-cloud\", \"your-agents-need-a-save-button\"], \"position_b\": \"Sandboxes are ephemeral and stateless by design; using one for durability, snapshots, or state is an anti-pattern. The sandbox is the hands, the execution layer is the brain, and state must be external to both so the sandbox can be swapped without touching execution.\", \"position_b_talks\": [\"your-agent-architecture-has-a-half-life-of-6-months\"], \"why_it_matters\": \"If sandbox snapshots are legitimate durable state, your resume path depends on VM lineage, storage cost per turn, and scheduler placement; if not, sandboxes stay disposable and every fact worth surviving must be written to an external store before the box disappears.\"}, {\"question\": \"Should replay eliminate run-to-run variation, or measure it?\", \"position_a\": \"Freeze it. Bitwise determinism from a hosted API is unobtainable, so record at each node boundary and replay by stubbing every node except the one under change \u2014 deterministic, rerunnable, and free because it never calls the model. Deterministic, repeatable, inspectable simulation is precisely what lets an agent be corrected on why it broke.\", \"position_a_talks\": [\"your-agent-failed-in-prod-good-luck-reproducing-it\", \"the-prompt-is-the-platform\"], \"position_b\": \"Replay live and in bulk. A single replay is an anecdote \u2014 on \u03c4-bench a model passing 60% of the time is self-consistent only about a quarter of the time \u2014 so decisions require hundreds of grounded simulations and cohort-level analysis, and nothing ships on one or two replays.\", \"position_b_talks\": [\"your-agents-need-a-save-button\"], \"why_it_matters\": \"It sets both the cost model and the confidence bar for shipping: stubbed replay is free regression testing that cannot detect a model swap regression, while cohort replay is expensive enough that choosing what to replay becomes its own design problem.\"}], \"practical_guidance\": {\"do\": [\"Keep the raw append-only log and treat compaction as a lossy, best-effort fork resumed as a new log rather than an in-place rewrite\", \"Persist run/task IDs durably at launch \u2014 an unpersisted handle to a long-running task is permanently unrecoverable\", \"Give every loop an explicit numeric break condition and every external boundary a terminal state: success, failure, timeout, cancel, or max attempts\", \"Enforce one ordered commit path per mutable state boundary while still allowing parallel reads, sub-agent fan-out, and concurrent sessions; last-writer-wins is not a consistency model\", \"Enforce idempotency at the system level, since a retried model call can reword the request enough to look like a brand-new task\", \"Snapshot incrementally rather than saving multi-gigabyte images every turn, and return the snapshot handle immediately while uploading in the background\", \"Combine warm pools with memory-snapshot restore, and score scheduler nodes by how many snapshot lineage layers they already have cached\", \"Prefer block-device access inside a micro VM over shared-folder passthrough \u2014 it uses the guest cache and avoids exiting on every filesystem operation\", \"Capture the full envelope alongside the prompt \u2014 model version, build ID, RAG chunks \u2014 or the trace is not replayable\", \"Run replay-based evaluation against real production checkpoints instead of synthetic datasets, and decide on cohorts rather than single runs\", \"Make recovery commands runnable without queueing behind the stuck work they are meant to fix\", \"Emit receipts that record what the system allowed, attempted, executed, and what the user-visible edge confirmed \u2014 a transcript is not proof\", \"Make approval a scoped execution state bound to actor, session, run, tool, arguments, and lifetime, with expiration that terminates rather than loops\", \"Treat incremental updates and checkpoints as mandatory in data-heavy pipelines, not as an optimization\"], \"avoid\": [\"Letting the model remember which step of a multi-step workflow it is on \u2014 reliability at coin-flip levels is the signal to pull control flow out of the model entirely\", \"Relying on fire-and-forget local JSONL writes (Claude Code, Codex SDK mode) or state stores with known corruption issues; a failed write silently loses the run\", \"Losing pending interaction state on process death \u2014 a resumed session that has dropped its permission prompt leaves the agent paused forever\", \"Restarting a long run from the beginning after a transient failure such as an expired API key\", \"Stateful protocol endpoints like an unfiltered tasks/list, which force scanning a million tasks to find one and collapse at scale\", \"Per-client polling as the scale-out story for a million concurrent durable tasks; use notifications instead\", \"Chasing bitwise determinism by pinning temperature to zero \u2014 it fixes the selection rule, not the logits, and removes the variation that gives the agent its agency\", \"Recording at the network layer, since local retrieval, in-process tools, and memory never cross the network and streaming breaks packet capture\", \"Treating green dashboards and 200 OKs as correctness signals \u2014 silent success is worse than a crash because a crash gives you an error boundary\", \"Shipping a model or config change on the basis of one or two replays\"]}, \"notable_outliers\": [{\"claim\": \"Checkpoint/restore of sandbox state lets a harness run Monte Carlo tree search over sandbox states across many days, backtracking and re-exploring.\", \"talk\": \"from-fork-to-fleet-designing-an-agent-sandbox-cloud\", \"timestamp_sec\": 1972}, {\"claim\": \"Persistence counterintuitively improves reliability and scale rather than trading against them.\", \"talk\": \"from-fork-to-fleet-designing-an-agent-sandbox-cloud\", \"timestamp_sec\": 1889}, {\"claim\": \"Log lock-in is a deeper and more durable form of vendor lock-in than model, API, or tool lock-in \u2014 if a provider owns your log, it owns your agent.\", \"talk\": \"the-log-is-the-agent\", \"timestamp_sec\": 662}, {\"claim\": \"Durable agent state should have a hard expiry: seven days is the right forced expiration for in-memory keys, because 24 hours misses work when a user doesn't open their phone.\", \"talk\": \"privacy-preserving-intelligence\", \"timestamp_sec\": 413}, {\"claim\": \"The MCP tasks spec's 'clients should persist task IDs' ought to be a normative MUST, since an unpersisted task ID is permanently unrecoverable.\", \"talk\": \"mcp-tasks-async-why-arent-any-agents-supporting-them\", \"timestamp_sec\": 1145}, {\"claim\": \"The event-sourced runtime is unintuitive enough that writing its code by hand is impractical for humans \u2014 it is viable only because AI writes the code, and AI writes shared-state/blackboard architectures better than LLM-agent code because decades of that discussion exist in training data.\", \"talk\": \"active-graph-agent-runtime-babyagi-4\", \"timestamp_sec\": 393}], \"maturity\": \"consolidating\", \"maturity_rationale\": \"The core principles \u2014 state outside the process, log or checkpoint as ground truth, harness-owned state transitions, failure as certainty \u2014 recur independently across a dozen talks with no dissent, and the same primitives are already being reused for forking, branch-per-model, and replay evaluation. What remains actively argued is the substrate (owned log vs. durable workflow engine vs. sandbox snapshots vs. language-level serialization), and the one standardization attempt, MCP tasks, is on its second draft with zero client implementations.\"}",
+  "ttft_ms": 67810,
+  "ttft_stream_ms": 1360,
+  "time_to_request_ms": 36,
+  "type": "result",
+  "duration_ms": 127247,
+  "uuid": "95ecb73d-d3aa-49f5-bf7d-f0cfd9908da4",
+  "passC": {
+    "concept": "durable execution",
+    "state_of_practice": "The field has converged on a single structural claim: for runs measured in hours or days, agent state cannot live in the process, in memory, or on local disk \u2014 it must be an external, append-only, durable record that the executor merely reads from and appends to. The corollary appearing in talk after talk is that the model must not hold control flow: the harness owns state transitions, validates tool results, advances the state machine, and commits, while the model only proposes. Failure is treated as certain rather than exceptional \u2014 a background run making ~200 tool calls is assumed to hit at least one failure, so resumability, idempotent retry, and explicit terminal states (success/failure/timeout/cancel/max-attempts) are architectural requirements, not hardening. Once the log or checkpoint exists, it is being reused for things beyond crash recovery: forking and rollback, branch-per-model execution, Monte Carlo tree search over sandbox snapshots, and replay-based evaluation against real production state instead of synthetic datasets. What is genuinely unsettled is the substrate \u2014 an event log you own, a durable workflow engine beneath the framework, incremental VM/disk snapshots in the sandbox, or language-level serializable execution \u2014 and the MCP tasks spec, the one protocol-level attempt to standardize durable async tool calls, still has zero client implementations and is being rewritten.",
+    "consensus": [
+      {
+        "claim": "State for a long-running agent must live outside the executing process \u2014 not in memory, not on local disk, not tied to a specific machine.",
+        "support_count": 5,
+        "supporting_talks": [
+          "your-agent-architecture-has-a-half-life-of-6-months",
+          "the-log-is-the-agent",
+          "from-fork-to-fleet-designing-an-agent-sandbox-cloud",
+          "privacy-preserving-intelligence",
+          "active-graph-agent-runtime-babyagi-4"
+        ],
+        "evidence_quote": "So, for this this to work, a 3-hour run cannot hold state in memory or in disk. The state must live outside of the work.",
+        "evidence_talk": "your-agent-architecture-has-a-half-life-of-6-months",
+        "evidence_timestamp_sec": 401
+      },
+      {
+        "claim": "The model must not own workflow state or decide what step it is on; the harness tracks position, validates results, and advances the state machine.",
+        "support_count": 5,
+        "supporting_talks": [
+          "dont-let-the-llm-drive",
+          "your-agent-didnt-fail-your-harness-did",
+          "your-voice-agent-doesnt-need-a-frontier-model",
+          "build-systems-not-code",
+          "what-if-the-harness-mattered-more-than-the-model"
+        ],
+        "evidence_quote": "The harness validates what's comes back, advance the state, and decide what's next. The model never decide where we are. That's the design.",
+        "evidence_talk": "dont-let-the-llm-drive",
+        "evidence_timestamp_sec": 44
+      },
+      {
+        "claim": "An append-only event log is the ground truth of an agent; the context window, UI, read models, and compacted summaries are all derived projections of it.",
+        "support_count": 4,
+        "supporting_talks": [
+          "the-log-is-the-agent",
+          "active-graph-agent-runtime-babyagi-4",
+          "lets-integrate-ai-agents-in-event-sourced-systems",
+          "your-agent-didnt-fail-your-harness-did"
+        ],
+        "evidence_quote": "underneath every serious database is a log. And that log is the durable sequence of changes. Everything else is a view.",
+        "evidence_talk": "the-log-is-the-agent",
+        "evidence_timestamp_sec": 198
+      },
+      {
+        "claim": "Failure during a long run is statistically certain, not an edge case, so resumption from the last durable point must be designed in rather than bolted on.",
+        "support_count": 5,
+        "supporting_talks": [
+          "your-agent-architecture-has-a-half-life-of-6-months",
+          "the-log-is-the-agent",
+          "mcp-tasks-async-why-arent-any-agents-supporting-them",
+          "active-graph-agent-runtime-babyagi-4",
+          "from-fork-to-fleet-designing-an-agent-sandbox-cloud"
+        ],
+        "evidence_quote": "It's going to have maybe hundreds of calls to you know, maybe 200 tool calls. You're going to probably guarantee to have at least one failure in that.",
+        "evidence_talk": "your-agent-architecture-has-a-half-life-of-6-months",
+        "evidence_timestamp_sec": 695
+      },
+      {
+        "claim": "Persisted state pays off beyond crash recovery: the same checkpoints/log enable rollback, forking, branch-per-model execution, and replay-based evaluation.",
+        "support_count": 6,
+        "supporting_talks": [
+          "active-graph-agent-runtime-babyagi-4",
+          "from-fork-to-fleet-designing-an-agent-sandbox-cloud",
+          "your-agents-need-a-save-button",
+          "your-agent-failed-in-prod-good-luck-reproducing-it",
+          "the-log-is-the-agent",
+          "when-agents-meet-physical-data-the-other-physics-of-agent-harnesses"
+        ],
+        "evidence_quote": "in the end you get this beautiful typed event log, which gives you replays. It gives you rollbacks and it gives you forks.",
+        "evidence_talk": "active-graph-agent-runtime-babyagi-4",
+        "evidence_timestamp_sec": 223
+      },
+      {
+        "claim": "Idempotency and termination must be enforced by the system, not by the model \u2014 every loop needs an explicit break condition and every external boundary needs a terminal state.",
+        "support_count": 3,
+        "supporting_talks": [
+          "your-agent-didnt-fail-your-harness-did",
+          "build-systems-not-code",
+          "lets-integrate-ai-agents-in-event-sourced-systems"
+        ],
+        "evidence_quote": "Every external boundary needs an ending. Success, failure, timeout, cancel, or max attempts.",
+        "evidence_talk": "your-agent-didnt-fail-your-harness-did",
+        "evidence_timestamp_sec": 658
+      }
+    ],
+    "disagreements": [
+      {
+        "question": "Is a durable event log by itself sufficient to make execution durable, or do you need a dedicated durable workflow/execution engine underneath the harness?",
+        "position_a": "The log is the durable primitive and the only non-derived thing in the system. Because the model, tools, and runtime only read from and append to it, the log alone is enough to resume; the executor is allowed to be fallible and one process can advance thousands of agents.",
+        "position_a_talks": [
+          "the-log-is-the-agent",
+          "active-graph-agent-runtime-babyagi-4",
+          "lets-integrate-ai-agents-in-event-sourced-systems"
+        ],
+        "position_b": "Hand-rolled checkpointing and log-based state rehydration are inadequate abstractions that leak into the context and compute layers; durability belongs in a separate execution layer or durable workflow engine (Temporal-style signals, serializable pause/resume, a checkpointing runtime beneath the framework) that you swap models and sandboxes around.",
+        "position_b_talks": [
+          "your-agent-architecture-has-a-half-life-of-6-months",
+          "mcp-tasks-async-why-arent-any-agents-supporting-them",
+          "your-agents-need-a-save-button",
+          "what-if-the-harness-mattered-more-than-the-model"
+        ],
+        "why_it_matters": "It decides whether durability is something you build into your own data model and own outright, or a dependency you adopt \u2014 and log-centric teams argue that whoever owns the log owns the agent, the deepest form of vendor lock-in there is."
+      },
+      {
+        "question": "Should the sandbox be a durable, snapshotted store of agent state, or is durability strictly the execution layer's job?",
+        "position_a": "Disk persistence \u2014 not compute \u2014 is the next unlock: incremental VM and block-device snapshots turn agents from ephemeral executors into durable knowledge workers, with schedulers scoring nodes by cached snapshot lineage and restores backed by warm pools. Snapshot the code, artifacts, and the Docker image or sandbox together between checkpoints.",
+        "position_a_talks": [
+          "from-fork-to-fleet-designing-an-agent-sandbox-cloud",
+          "your-agents-need-a-save-button"
+        ],
+        "position_b": "Sandboxes are ephemeral and stateless by design; using one for durability, snapshots, or state is an anti-pattern. The sandbox is the hands, the execution layer is the brain, and state must be external to both so the sandbox can be swapped without touching execution.",
+        "position_b_talks": [
+          "your-agent-architecture-has-a-half-life-of-6-months"
+        ],
+        "why_it_matters": "If sandbox snapshots are legitimate durable state, your resume path depends on VM lineage, storage cost per turn, and scheduler placement; if not, sandboxes stay disposable and every fact worth surviving must be written to an external store before the box disappears."
+      },
+      {
+        "question": "Should replay eliminate run-to-run variation, or measure it?",
+        "position_a": "Freeze it. Bitwise determinism from a hosted API is unobtainable, so record at each node boundary and replay by stubbing every node except the one under change \u2014 deterministic, rerunnable, and free because it never calls the model. Deterministic, repeatable, inspectable simulation is precisely what lets an agent be corrected on why it broke.",
+        "position_a_talks": [
+          "your-agent-failed-in-prod-good-luck-reproducing-it",
+          "the-prompt-is-the-platform"
+        ],
+        "position_b": "Replay live and in bulk. A single replay is an anecdote \u2014 on \u03c4-bench a model passing 60% of the time is self-consistent only about a quarter of the time \u2014 so decisions require hundreds of grounded simulations and cohort-level analysis, and nothing ships on one or two replays.",
+        "position_b_talks": [
+          "your-agents-need-a-save-button"
+        ],
+        "why_it_matters": "It sets both the cost model and the confidence bar for shipping: stubbed replay is free regression testing that cannot detect a model swap regression, while cohort replay is expensive enough that choosing what to replay becomes its own design problem."
+      }
+    ],
+    "practical_guidance": {
+      "do": [
+        "Keep the raw append-only log and treat compaction as a lossy, best-effort fork resumed as a new log rather than an in-place rewrite",
+        "Persist run/task IDs durably at launch \u2014 an unpersisted handle to a long-running task is permanently unrecoverable",
+        "Give every loop an explicit numeric break condition and every external boundary a terminal state: success, failure, timeout, cancel, or max attempts",
+        "Enforce one ordered commit path per mutable state boundary while still allowing parallel reads, sub-agent fan-out, and concurrent sessions; last-writer-wins is not a consistency model",
+        "Enforce idempotency at the system level, since a retried model call can reword the request enough to look like a brand-new task",
+        "Snapshot incrementally rather than saving multi-gigabyte images every turn, and return the snapshot handle immediately while uploading in the background",
+        "Combine warm pools with memory-snapshot restore, and score scheduler nodes by how many snapshot lineage layers they already have cached",
+        "Prefer block-device access inside a micro VM over shared-folder passthrough \u2014 it uses the guest cache and avoids exiting on every filesystem operation",
+        "Capture the full envelope alongside the prompt \u2014 model version, build ID, RAG chunks \u2014 or the trace is not replayable",
+        "Run replay-based evaluation against real production checkpoints instead of synthetic datasets, and decide on cohorts rather than single runs",
+        "Make recovery commands runnable without queueing behind the stuck work they are meant to fix",
+        "Emit receipts that record what the system allowed, attempted, executed, and what the user-visible edge confirmed \u2014 a transcript is not proof",
+        "Make approval a scoped execution state bound to actor, session, run, tool, arguments, and lifetime, with expiration that terminates rather than loops",
+        "Treat incremental updates and checkpoints as mandatory in data-heavy pipelines, not as an optimization"
+      ],
+      "avoid": [
+        "Letting the model remember which step of a multi-step workflow it is on \u2014 reliability at coin-flip levels is the signal to pull control flow out of the model entirely",
+        "Relying on fire-and-forget local JSONL writes (Claude Code, Codex SDK mode) or state stores with known corruption issues; a failed write silently loses the run",
+        "Losing pending interaction state on process death \u2014 a resumed session that has dropped its permission prompt leaves the agent paused forever",
+        "Restarting a long run from the beginning after a transient failure such as an expired API key",
+        "Stateful protocol endpoints like an unfiltered tasks/list, which force scanning a million tasks to find one and collapse at scale",
+        "Per-client polling as the scale-out story for a million concurrent durable tasks; use notifications instead",
+        "Chasing bitwise determinism by pinning temperature to zero \u2014 it fixes the selection rule, not the logits, and removes the variation that gives the agent its agency",
+        "Recording at the network layer, since local retrieval, in-process tools, and memory never cross the network and streaming breaks packet capture",
+        "Treating green dashboards and 200 OKs as correctness signals \u2014 silent success is worse than a crash because a crash gives you an error boundary",
+        "Shipping a model or config change on the basis of one or two replays"
+      ]
+    },
+    "notable_outliers": [
+      {
+        "claim": "Checkpoint/restore of sandbox state lets a harness run Monte Carlo tree search over sandbox states across many days, backtracking and re-exploring.",
+        "talk": "from-fork-to-fleet-designing-an-agent-sandbox-cloud",
+        "timestamp_sec": 1972
+      },
+      {
+        "claim": "Persistence counterintuitively improves reliability and scale rather than trading against them.",
+        "talk": "from-fork-to-fleet-designing-an-agent-sandbox-cloud",
+        "timestamp_sec": 1889
+      },
+      {
+        "claim": "Log lock-in is a deeper and more durable form of vendor lock-in than model, API, or tool lock-in \u2014 if a provider owns your log, it owns your agent.",
+        "talk": "the-log-is-the-agent",
+        "timestamp_sec": 662
+      },
+      {
+        "claim": "Durable agent state should have a hard expiry: seven days is the right forced expiration for in-memory keys, because 24 hours misses work when a user doesn't open their phone.",
+        "talk": "privacy-preserving-intelligence",
+        "timestamp_sec": 413
+      },
+      {
+        "claim": "The MCP tasks spec's 'clients should persist task IDs' ought to be a normative MUST, since an unpersisted task ID is permanently unrecoverable.",
+        "talk": "mcp-tasks-async-why-arent-any-agents-supporting-them",
+        "timestamp_sec": 1145
+      },
+      {
+        "claim": "The event-sourced runtime is unintuitive enough that writing its code by hand is impractical for humans \u2014 it is viable only because AI writes the code, and AI writes shared-state/blackboard architectures better than LLM-agent code because decades of that discussion exist in training data.",
+        "talk": "active-graph-agent-runtime-babyagi-4",
+        "timestamp_sec": 393
+      }
+    ],
+    "maturity": "consolidating",
+    "maturity_rationale": "The core principles \u2014 state outside the process, log or checkpoint as ground truth, harness-owned state transitions, failure as certainty \u2014 recur independently across a dozen talks with no dissent, and the same primitives are already being reused for forking, branch-per-model, and replay evaluation. What remains actively argued is the substrate (owned log vs. durable workflow engine vs. sandbox snapshots vs. language-level serialization), and the one standardization attempt, MCP tasks, is on its second draft with zero client implementations."
+  },
+  "_meta": {
+    "concept": "durable execution",
+    "slug": "durable-execution",
+    "talk_count": 17,
+    "missing_talks": [],
+    "wall_sec": 128.4,
+    "run_at": "2026-08-13T17:26:16Z"
+  }
+}

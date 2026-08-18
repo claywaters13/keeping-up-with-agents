@@ -1,0 +1,344 @@
+{
+  "is_error": false,
+  "duration_api_ms": 178277,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "8f3292be-6f4c-48ed-8fab-cd0f8dd2df2a",
+  "total_cost_usd": 0.9077900000000001,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 50172,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 14688,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 50172,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 14688,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 50172,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 50172
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 33616,
+      "outputTokens": 18,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.033706,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 14688,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 50172,
+      "webSearchRequests": 0,
+      "costUSD": 0.8740840000000001,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\"concept\": \"self-improving agent loops\", \"state_of_practice\": \"The field has converged on a concrete recipe: an agent proposes a change to another agent's prompt, tools, or codebase; the change is measured against a held-out eval suite; and it is kept or rolled back based on the delta. Multiple teams independently reported working numbers from this loop \u2014 18%\u219283% pass rate in ~10 iterations (Nearform), 68%\u219283% with 80.2% on unseen test data (Langfuse), NanoChat bits-per-byte 0.93\u21920.91 and CUDA kernels beating NVIDIA's leaderboard (Recursive), top 12% on an NVIDIA Kaggle competition in 10 iterations (Morgan Stanley), and seven leaderboard records versus the best human's three (Weco). The load-bearing component is universally agreed to be the eval, not the optimizer: speakers repeatedly said that optimizing against a bad target function collapses the whole system, and that the optimizer must be structurally prevented from touching its own scorers or leaking test data into training. Control structures have standardized around per-hypothesis git branches with rollback on regression, and acceptance rates are low by design \u2014 BabyAGI 4 accepted 4-5 of 8-13 proposed patches, Weco landed 28% of submissions. What remains unsettled is scope: whether the loop's durable home is the harness or the weights, whether it can ship without a human gate, whether eval data should come from production or simulation, and whether iteration compounds or whether nearly all the gain arrives in the first pass.\", \"consensus\": [{\"claim\": \"The eval / target function is the load-bearing component of a self-improvement loop; a bad eval makes the entire loop optimize toward the wrong optimum regardless of how good the optimizer is.\", \"support_count\": 7, \"supporting_talks\": [\"morgan-stanleys-alphalab-multi-agent-research-across-optimization-domains\", \"how-autoresearch-is-changing-ml-research\", \"stop-burning-tokens-why-self-improvement-needs-domain-expertise-first\", \"agents-building-agents\", \"enterprise-agents-have-a-structure-problem\", \"the-agentic-ai-engineer\", \"simulationmaxxing-how-we-ship-agents-20-faster\"], \"evidence_quote\": \"of course the evaluation is the most important piece and LLMs aren't malicious, but they can make, you know, very silly mistakes and if you're optimizing against a bad a bad eval, the whole thing kind of falls apart.\", \"evidence_talk\": \"morgan-stanleys-alphalab-multi-agent-research-across-optimization-domains\", \"evidence_timestamp_sec\": 558}, {\"claim\": \"The binding constraint on agent quality is the harness and the improvement loop around the model, not model capability \u2014 reaching for a bigger model, longer context, or more MCP servers is the wrong reflex.\", \"support_count\": 6, \"supporting_talks\": [\"bringing-agents-onto-the-world-wide-web\", \"your-finance-agents-bottleneck-is-you\", \"enterprise-agents-have-a-structure-problem\", \"agents-codebases-and-teams\", \"from-signal-to-pr-anatomy-of-a-self-improving-agent\", \"active-graph-agent-runtime-babyagi-4\"], \"evidence_quote\": \"there is a massive capabilities overhang in computer use. The models are good enough, but we haven't done the engineering work to solve it.\", \"evidence_talk\": \"bringing-agents-onto-the-world-wide-web\", \"evidence_timestamp_sec\": 346}, {\"claim\": \"The optimizing agent must be structurally prevented from reaching its own scoring surface \u2014 forbidden from editing golden datasets and scorers, and constrained by an API that makes test-data leakage impossible rather than merely discouraged.\", \"support_count\": 4, \"supporting_talks\": [\"agents-building-agents\", \"how-autoresearch-is-changing-ml-research\", \"first-steps-toward-automated-ai-research\", \"morgan-stanleys-alphalab-multi-agent-research-across-optimization-domains\"], \"evidence_quote\": \"updating the golden data sets or the scorers just to let the evals pass is not a good idea, so we want to enforce we want to tell the we want to tell the AI agent to not do that\", \"evidence_talk\": \"agents-building-agents\", \"evidence_timestamp_sec\": 715}, {\"claim\": \"The loop works by proposing many candidate changes and accepting only a minority, gated on a measured metric delta with rollback on regression \u2014 low acceptance rates are normal, not a sign of failure.\", \"support_count\": 3, \"supporting_talks\": [\"active-graph-agent-runtime-babyagi-4\", \"agents-building-agents\", \"how-autoresearch-is-changing-ml-research\"], \"evidence_quote\": \"for these loops, it would loop like eight or 13 times, but only accept four or five of those patches. And it actually did have, you know, modest, but like statistically significant improvement on long mem eval scores.\", \"evidence_talk\": \"active-graph-agent-runtime-babyagi-4\", \"evidence_timestamp_sec\": 707}, {\"claim\": \"Gains track the specificity of the failure signal: unambiguous, causal, binary feedback drives improvement, while scalar quality scores and bare pass/fail results do not tell the agent what to change.\", \"support_count\": 4, \"supporting_talks\": [\"stop-burning-tokens-why-self-improvement-needs-domain-expertise-first\", \"the-agentic-ai-engineer\", \"the-prompt-is-the-platform\", \"from-signal-to-pr-anatomy-of-a-self-improving-agent\"], \"evidence_quote\": \"Agents thrive on feedback. Immediate unambiguous feedback. Not just feedback that shows this went wrong. Feedback that shows why and how this went wrong.\", \"evidence_talk\": \"the-prompt-is-the-platform\", \"evidence_timestamp_sec\": 717}, {\"claim\": \"Runtime telemetry \u2014 traces, execution logs, correction events \u2014 is a prerequisite input to the loop, and instrumentation volume should increase sharply now that agents rather than humans are the consumers.\", \"support_count\": 5, \"supporting_talks\": [\"from-signal-to-pr-anatomy-of-a-self-improving-agent\", \"agents-building-agents\", \"enterprise-agents-have-a-structure-problem\", \"thinner-agents-on-a-smarter-substrate-the-ontology-based-semantic-layer\", \"the-agentic-ai-engineer\"], \"evidence_quote\": \"Now, you're going to trace 10 times more. You're going to log 10 times more because that helps you know what path your software took.\", \"evidence_talk\": \"from-signal-to-pr-anatomy-of-a-self-improving-agent\", \"evidence_timestamp_sec\": 552}, {\"claim\": \"The human role in a working loop shifts from executing the fix to designing the loop and reviewing its output \u2014 the human moves up the stack rather than out of it.\", \"support_count\": 6, \"supporting_talks\": [\"from-signal-to-pr-anatomy-of-a-self-improving-agent\", \"how-autoresearch-is-changing-ml-research\", \"your-finance-agents-bottleneck-is-you\", \"first-steps-toward-automated-ai-research\", \"recursive-model-improvement\", \"the-agentic-ai-engineer\"], \"evidence_quote\": \"So the search is automated. the human would just move up the stack not out of it.\", \"evidence_talk\": \"how-autoresearch-is-changing-ml-research\", \"evidence_timestamp_sec\": 904}], \"disagreements\": [{\"question\": \"As models improve, does the self-improvement loop belong in the harness/scaffolding layer, or does it collapse into the model weights?\", \"position_a\": \"The harness is durable and is where the loop lives. Long-running agents need an experiential world model built from their own log; a domain-optimized harness produces above-baseline results from the same model; codebase and setup work is a permanent standing investment.\", \"position_a_talks\": [\"active-graph-agent-runtime-babyagi-4\", \"bringing-agents-onto-the-world-wide-web\", \"agents-codebases-and-teams\"], \"position_b\": \"Real self-improvement is weight-level. True RSI requires an AI with access from pre-training through RL and harnesses to update its own next version; the whole system is bottlenecked on the intelligence of its smartest model since every judge and reward model is distilled from it; and scale, not scaffolding, is what drives progress.\", \"position_b_talks\": [\"first-steps-toward-automated-ai-research\", \"recursive-model-improvement\", \"scaling-compute-on-context\"], \"why_it_matters\": \"If the harness is transient, every hour spent on prompt/skill/tool optimization is depreciating work that the next model release erases. If it is durable, harness engineering is the permanent locus of differentiation and should be staffed accordingly.\"}, {\"question\": \"For an enterprise, where does durable value from auto-improvement accumulate \u2014 in the custom harness, or in the environments, evals, and specifications it optimizes against?\", \"position_a\": \"Build and own the harness. A harness tuned to your domain achieves above-model results, building one is an ordinary engineering problem rather than a frontier-lab capability, and writing it from scratch rather than using an off-the-shelf framework gives maximum freedom to tweak.\", \"position_a_talks\": [\"bringing-agents-onto-the-world-wide-web\", \"agents-codebases-and-teams\", \"morgan-stanleys-alphalab-multi-agent-research-across-optimization-domains\"], \"position_b\": \"General auto-research capability becomes a commodity, so whatever lives in the middle stops mattering. Value migrates to environments and proprietary evaluation data, to codebase abstraction (currently underrated relative to evals), and for infrastructure vendors to the specification itself rather than the implementation.\", \"position_b_talks\": [\"morgan-stanleys-alphalab-multi-agent-research-across-optimization-domains\", \"how-autoresearch-is-changing-ml-research\", \"the-prompt-is-the-platform\"], \"why_it_matters\": \"This determines whether an org's scarce senior engineering time goes into scaffolding code or into curating evaluation environments and proprietary measurement data \u2014 and whether the harness is treated as an asset or as a disposable middle layer.\"}, {\"question\": \"Should a self-improved agent variant ship to production automatically once it clears its eval targets, or does a human gate remain mandatory?\", \"position_a\": \"Auto-ship on eval targets. If an optimized variant meets its scores it goes to production without human review, and being bottlenecked on humans launching, reviewing, and babysitting runs is a state to be engineered away.\", \"position_a_talks\": [\"the-agentic-ai-engineer\", \"recursive-model-improvement\"], \"position_b\": \"A human gate is still required. Clustered failure reports must be triaged by domain experts because clusters can be false positives or intended behavior; production data must be reviewed by a human and not only by coding agents; larger fixes still need a human to spearhead them; and in regulated domains agent-to-agent code review fails because accountability cannot be assigned to the model.\", \"position_b_talks\": [\"agents-building-agents\", \"stop-burning-tokens-why-self-improvement-needs-domain-expertise-first\", \"from-signal-to-pr-anatomy-of-a-self-improving-agent\", \"your-finance-agents-bottleneck-is-you\"], \"why_it_matters\": \"Full autonomy is what converts the loop from a productivity multiplier into a genuinely self-improving system; keeping the human gate caps throughput at human review capacity but is the only current answer to accountability and to evals that are themselves incomplete.\"}, {\"question\": \"Should the eval data that drives the loop be generated in simulation, or discovered from production traffic?\", \"position_a\": \"Generate it in simulation. Waiting on production data is the bottleneck, A/B testing means experimenting on live users, and simulated evals correlate highly enough with real data (80% of domain-expert labels confirming usability) to cut the iteration cycle from weeks to under a day. Deterministic simulation can even expose information the real system hides, which is exactly the signal the agent needs.\", \"position_a_talks\": [\"simulationmaxxing-how-we-ship-agents-20-faster\", \"the-prompt-is-the-platform\"], \"position_b\": \"The complete eval suite is a product of discovery from production. It cannot be pre-guessed upfront by domain experts; failure modes found in live traces become new golden-dataset entries, and LLM-as-a-judge evals are inherently backward-looking because you build them for failures you have already seen.\", \"position_b_talks\": [\"the-agentic-ai-engineer\", \"agents-building-agents\", \"from-signal-to-pr-anatomy-of-a-self-improving-agent\", \"enterprise-agents-have-a-structure-problem\"], \"why_it_matters\": \"It sets whether a team can run the loop pre-launch on a greenfield agent at all, or must first ship, accumulate traffic, and pay the sim-to-real gap in review effort \u2014 a difference of weeks per iteration and, on the sim side, a mandatory investment in measuring that gap.\"}, {\"question\": \"Does the self-improvement loop compound across iterations, or does nearly all of the gain arrive in the first pass?\", \"position_a\": \"Iteration count is the lever. Systems work best the more iterations they can explore; ~10 iterations moved a naive agent 18%\u219283% and a human-optimized production agent up another 10%; 1,300 experiments over 22 days beat the best human contributor through tireless iteration rather than parallelism.\", \"position_a_talks\": [\"morgan-stanleys-alphalab-multi-agent-research-across-optimization-domains\", \"agents-building-agents\", \"how-autoresearch-is-changing-ml-research\"], \"position_b\": \"Returns collapse fast. The first iteration captured a 10-point gain and everything after was marginal before plateauing \u2014 you could have stopped there \u2014 and label noise in the ground truth itself caps the ceiling, so the loop needs an explicit escape hatch rather than being left to burn tokens against a wall.\", \"position_b_talks\": [\"stop-burning-tokens-why-self-improvement-needs-domain-expertise-first\"], \"why_it_matters\": \"It decides the budget: whether to fund long autonomous runs and treat compute as the input, or to run one high-signal pass, take the cheap gain, and spend the remaining effort on sharpening the evaluator instead.\"}], \"practical_guidance\": {\"do\": [\"Run each optimization hypothesis on its own git branch; continue from that branch if metrics improve, roll back if there is a regression.\", \"Explicitly instruct the optimizing agent that it may not modify golden datasets or scorers, and tighten the codebase API so test data physically cannot reach training (this dropped one fraud-detection pipeline's leakage rate to zero).\", \"Replace scalar 0-1 / 1-5 quality scores with binary domain-specific checks \u2014 'is the answer grounded in the retrieved context, yes/no', brand-name correctness, categorization into known failure modes.\", \"Calibrate LLM judges before using them to compare agent versions, since the same judge scores the same problem differently run to run.\", \"Split into fit/validate and a held-out unseen test set (~300 items) and confirm the optimized prompt generalizes; a few hundred labeled examples was enough to produce high-signal feedback.\", \"Give the loop an explicit escape hatch so it stops instead of grinding against a plateau.\", \"Deliver the production data the coding agent needs as files written into the repo \u2014 harnesses work well with files, even ~10MB ones \u2014 rather than just pointing the agent at a data source.\", \"Measure every agent against the raw baseline model to confirm the harness is actually adding value.\", \"Feed every newly discovered production failure mode back into the golden dataset so the eval suite catches that regression thereafter; generate a live-data failure report roughly once per sprint.\", \"Retire any eval where all models score ~90%, and when running evals delete git history and apply network allowlists so models cannot mine the answer.\", \"Cap skill.md at ~100 lines (a skill is a folder) and treat a first prompt exceeding 40-50K tokens of baseline context as a progressive-disclosure failure; ~20-25K is the target.\", \"Source agent context from live systems (GitHub, CRM, Tableau, dbt) and log correction events back into it, rather than relying on hand-maintained markdown.\", \"If you adopt simulation, explicitly measure and close the sim-to-real gap first \u2014 the gains are unavailable until the results can be trusted.\"], \"avoid\": [\"Responding to bad agent answers by upgrading the model, extending the context window, or bolting on more knowledge bases and MCP servers.\", \"Letting the optimizer touch its own scoring surface \u2014 it will make the evals pass by cheating rather than by fixing the agent.\", \"Generic evaluators (correctness, helpfulness, hallucination) scored on an undefined 0-1 or 1-5 scale; the levels are almost never defined, so the signal is both low and inconsistent across runs.\", \"Pointing a coding agent at raw production data and expecting results without a skill that selects the right data and lands it in the repo.\", \"Reviewing production data only with coding agents \u2014 a human must look at it, because failure modes and usage shift over time.\", \"Hand-maintained .md files and skills as the context substrate for enterprise definitions and KPIs, which change faster than anyone can update them.\", \"Babysitting agents: if engineers on your team are doing it, the codebase and harness setup is wrong, and it silently burns context and money.\", \"Mandating agent adoption across a company; uneven adoption is actively harmful because low-adoption engineers inherit the review burden for high-adoption engineers' PRs.\", \"Plain next-token-prediction finetuning on your own corpus to make an agent learn from its data \u2014 loss goes to near zero, generation collapses, and nothing generalizes.\", \"Shipping agents to production without observability; without traces you are guessing among a million possible code paths.\", \"Serving production browser agents from self-hosted Mac Minis, and letting rendering vary (mobile vs desktop layout) between runs.\", \"Assuming a complete eval suite can be written upfront by domain experts before any production failures exist.\"]}, \"notable_outliers\": [{\"claim\": \"The choice of harness architecture itself \u2014 number of strategist agents, agent roles \u2014 is arbitrary when humans pick it, and should be handed to an LLM as a verifiable meta-optimization loop.\", \"talk\": \"morgan-stanleys-alphalab-multi-agent-research-across-optimization-domains\", \"timestamp_sec\": 900}, {\"claim\": \"Almost every record-setting idea the auto-research agent produced originated from humans (papers, other participants, adjacent communities); the tiny fraction of genuinely original ideas emerged from the agent working around a 16MB file-size constraint.\", \"talk\": \"how-autoresearch-is-changing-ml-research\", \"timestamp_sec\": 338}, {\"claim\": \"Models write shared-state/blackboard-style agent code better than LLM-agent-style code, because decades of blackboard-architecture discussion sit in the training data while LLM agent patterns are only ~3 years old.\", \"talk\": \"active-graph-agent-runtime-babyagi-4\", \"timestamp_sec\": 894}, {\"claim\": \"Any loop that fixes a dataset and trains on it saturates unless the model is underparameterized; real self-improvement requires the system to make its own training data harder as it improves, which is the actual mechanism behind AlphaGo.\", \"talk\": \"scaling-compute-on-context\", \"timestamp_sec\": 1050}, {\"claim\": \"NanoChat-style auto-research is not true recursive self-improvement \u2014 RSI requires an AI with self-awareness of its own shortcomings and access from pre-training through RL and harnesses to update its next version.\", \"talk\": \"first-steps-toward-automated-ai-research\", \"timestamp_sec\": 853}, {\"claim\": \"The entire training system is capped by the intelligence of its single smartest model, because every judge, reward model, and research agent in the loop is distilled from it.\", \"talk\": \"recursive-model-improvement\", \"timestamp_sec\": 1159}, {\"claim\": \"LLM-generated skills measurably degrade LLM performance relative to human-written ones by consuming more tokens and more reasoning time \u2014 a skill is only as good as the human who wrote it.\", \"talk\": \"skills-are-the-new-sdks\", \"timestamp_sec\": 1449}, {\"claim\": \"Let the agent 'dream' in the background \u2014 compacting recurring customer session patterns into reusable data points \u2014 as a self-upgrade mechanism.\", \"talk\": \"your-finance-agents-bottleneck-is-you\", \"timestamp_sec\": 700}], \"maturity\": \"consolidating\", \"maturity_rationale\": \"The core mechanism \u2014 propose a change, measure against a protected eval, branch and roll back on regression \u2014 was independently reproduced across at least six talks with concrete reported numbers (18%\u219283%, 68%\u219283%, 0.93\u21920.91 bpb, top 12% Kaggle, 7 leaderboard records), and no speaker disputed that it works. The argued edges are scope rather than validity: whether the loop's home is the harness or the weights, whether it can ship unsupervised, whether eval data comes from simulation or production, and whether iteration compounds past the first pass \u2014 with one speaker explicitly noting the industry is still exploring options for continual learning.\"}",
+  "ttft_ms": 97179,
+  "ttft_stream_ms": 3219,
+  "time_to_request_ms": 289,
+  "type": "result",
+  "duration_ms": 176885,
+  "uuid": "9579a074-8c12-4d56-ba11-1a9bbc2a5a43",
+  "passC": {
+    "concept": "self-improving agent loops",
+    "state_of_practice": "The field has converged on a concrete recipe: an agent proposes a change to another agent's prompt, tools, or codebase; the change is measured against a held-out eval suite; and it is kept or rolled back based on the delta. Multiple teams independently reported working numbers from this loop \u2014 18%\u219283% pass rate in ~10 iterations (Nearform), 68%\u219283% with 80.2% on unseen test data (Langfuse), NanoChat bits-per-byte 0.93\u21920.91 and CUDA kernels beating NVIDIA's leaderboard (Recursive), top 12% on an NVIDIA Kaggle competition in 10 iterations (Morgan Stanley), and seven leaderboard records versus the best human's three (Weco). The load-bearing component is universally agreed to be the eval, not the optimizer: speakers repeatedly said that optimizing against a bad target function collapses the whole system, and that the optimizer must be structurally prevented from touching its own scorers or leaking test data into training. Control structures have standardized around per-hypothesis git branches with rollback on regression, and acceptance rates are low by design \u2014 BabyAGI 4 accepted 4-5 of 8-13 proposed patches, Weco landed 28% of submissions. What remains unsettled is scope: whether the loop's durable home is the harness or the weights, whether it can ship without a human gate, whether eval data should come from production or simulation, and whether iteration compounds or whether nearly all the gain arrives in the first pass.",
+    "consensus": [
+      {
+        "claim": "The eval / target function is the load-bearing component of a self-improvement loop; a bad eval makes the entire loop optimize toward the wrong optimum regardless of how good the optimizer is.",
+        "support_count": 7,
+        "supporting_talks": [
+          "morgan-stanleys-alphalab-multi-agent-research-across-optimization-domains",
+          "how-autoresearch-is-changing-ml-research",
+          "stop-burning-tokens-why-self-improvement-needs-domain-expertise-first",
+          "agents-building-agents",
+          "enterprise-agents-have-a-structure-problem",
+          "the-agentic-ai-engineer",
+          "simulationmaxxing-how-we-ship-agents-20-faster"
+        ],
+        "evidence_quote": "of course the evaluation is the most important piece and LLMs aren't malicious, but they can make, you know, very silly mistakes and if you're optimizing against a bad a bad eval, the whole thing kind of falls apart.",
+        "evidence_talk": "morgan-stanleys-alphalab-multi-agent-research-across-optimization-domains",
+        "evidence_timestamp_sec": 558
+      },
+      {
+        "claim": "The binding constraint on agent quality is the harness and the improvement loop around the model, not model capability \u2014 reaching for a bigger model, longer context, or more MCP servers is the wrong reflex.",
+        "support_count": 6,
+        "supporting_talks": [
+          "bringing-agents-onto-the-world-wide-web",
+          "your-finance-agents-bottleneck-is-you",
+          "enterprise-agents-have-a-structure-problem",
+          "agents-codebases-and-teams",
+          "from-signal-to-pr-anatomy-of-a-self-improving-agent",
+          "active-graph-agent-runtime-babyagi-4"
+        ],
+        "evidence_quote": "there is a massive capabilities overhang in computer use. The models are good enough, but we haven't done the engineering work to solve it.",
+        "evidence_talk": "bringing-agents-onto-the-world-wide-web",
+        "evidence_timestamp_sec": 346
+      },
+      {
+        "claim": "The optimizing agent must be structurally prevented from reaching its own scoring surface \u2014 forbidden from editing golden datasets and scorers, and constrained by an API that makes test-data leakage impossible rather than merely discouraged.",
+        "support_count": 4,
+        "supporting_talks": [
+          "agents-building-agents",
+          "how-autoresearch-is-changing-ml-research",
+          "first-steps-toward-automated-ai-research",
+          "morgan-stanleys-alphalab-multi-agent-research-across-optimization-domains"
+        ],
+        "evidence_quote": "updating the golden data sets or the scorers just to let the evals pass is not a good idea, so we want to enforce we want to tell the we want to tell the AI agent to not do that",
+        "evidence_talk": "agents-building-agents",
+        "evidence_timestamp_sec": 715
+      },
+      {
+        "claim": "The loop works by proposing many candidate changes and accepting only a minority, gated on a measured metric delta with rollback on regression \u2014 low acceptance rates are normal, not a sign of failure.",
+        "support_count": 3,
+        "supporting_talks": [
+          "active-graph-agent-runtime-babyagi-4",
+          "agents-building-agents",
+          "how-autoresearch-is-changing-ml-research"
+        ],
+        "evidence_quote": "for these loops, it would loop like eight or 13 times, but only accept four or five of those patches. And it actually did have, you know, modest, but like statistically significant improvement on long mem eval scores.",
+        "evidence_talk": "active-graph-agent-runtime-babyagi-4",
+        "evidence_timestamp_sec": 707
+      },
+      {
+        "claim": "Gains track the specificity of the failure signal: unambiguous, causal, binary feedback drives improvement, while scalar quality scores and bare pass/fail results do not tell the agent what to change.",
+        "support_count": 4,
+        "supporting_talks": [
+          "stop-burning-tokens-why-self-improvement-needs-domain-expertise-first",
+          "the-agentic-ai-engineer",
+          "the-prompt-is-the-platform",
+          "from-signal-to-pr-anatomy-of-a-self-improving-agent"
+        ],
+        "evidence_quote": "Agents thrive on feedback. Immediate unambiguous feedback. Not just feedback that shows this went wrong. Feedback that shows why and how this went wrong.",
+        "evidence_talk": "the-prompt-is-the-platform",
+        "evidence_timestamp_sec": 717
+      },
+      {
+        "claim": "Runtime telemetry \u2014 traces, execution logs, correction events \u2014 is a prerequisite input to the loop, and instrumentation volume should increase sharply now that agents rather than humans are the consumers.",
+        "support_count": 5,
+        "supporting_talks": [
+          "from-signal-to-pr-anatomy-of-a-self-improving-agent",
+          "agents-building-agents",
+          "enterprise-agents-have-a-structure-problem",
+          "thinner-agents-on-a-smarter-substrate-the-ontology-based-semantic-layer",
+          "the-agentic-ai-engineer"
+        ],
+        "evidence_quote": "Now, you're going to trace 10 times more. You're going to log 10 times more because that helps you know what path your software took.",
+        "evidence_talk": "from-signal-to-pr-anatomy-of-a-self-improving-agent",
+        "evidence_timestamp_sec": 552
+      },
+      {
+        "claim": "The human role in a working loop shifts from executing the fix to designing the loop and reviewing its output \u2014 the human moves up the stack rather than out of it.",
+        "support_count": 6,
+        "supporting_talks": [
+          "from-signal-to-pr-anatomy-of-a-self-improving-agent",
+          "how-autoresearch-is-changing-ml-research",
+          "your-finance-agents-bottleneck-is-you",
+          "first-steps-toward-automated-ai-research",
+          "recursive-model-improvement",
+          "the-agentic-ai-engineer"
+        ],
+        "evidence_quote": "So the search is automated. the human would just move up the stack not out of it.",
+        "evidence_talk": "how-autoresearch-is-changing-ml-research",
+        "evidence_timestamp_sec": 904
+      }
+    ],
+    "disagreements": [
+      {
+        "question": "As models improve, does the self-improvement loop belong in the harness/scaffolding layer, or does it collapse into the model weights?",
+        "position_a": "The harness is durable and is where the loop lives. Long-running agents need an experiential world model built from their own log; a domain-optimized harness produces above-baseline results from the same model; codebase and setup work is a permanent standing investment.",
+        "position_a_talks": [
+          "active-graph-agent-runtime-babyagi-4",
+          "bringing-agents-onto-the-world-wide-web",
+          "agents-codebases-and-teams"
+        ],
+        "position_b": "Real self-improvement is weight-level. True RSI requires an AI with access from pre-training through RL and harnesses to update its own next version; the whole system is bottlenecked on the intelligence of its smartest model since every judge and reward model is distilled from it; and scale, not scaffolding, is what drives progress.",
+        "position_b_talks": [
+          "first-steps-toward-automated-ai-research",
+          "recursive-model-improvement",
+          "scaling-compute-on-context"
+        ],
+        "why_it_matters": "If the harness is transient, every hour spent on prompt/skill/tool optimization is depreciating work that the next model release erases. If it is durable, harness engineering is the permanent locus of differentiation and should be staffed accordingly."
+      },
+      {
+        "question": "For an enterprise, where does durable value from auto-improvement accumulate \u2014 in the custom harness, or in the environments, evals, and specifications it optimizes against?",
+        "position_a": "Build and own the harness. A harness tuned to your domain achieves above-model results, building one is an ordinary engineering problem rather than a frontier-lab capability, and writing it from scratch rather than using an off-the-shelf framework gives maximum freedom to tweak.",
+        "position_a_talks": [
+          "bringing-agents-onto-the-world-wide-web",
+          "agents-codebases-and-teams",
+          "morgan-stanleys-alphalab-multi-agent-research-across-optimization-domains"
+        ],
+        "position_b": "General auto-research capability becomes a commodity, so whatever lives in the middle stops mattering. Value migrates to environments and proprietary evaluation data, to codebase abstraction (currently underrated relative to evals), and for infrastructure vendors to the specification itself rather than the implementation.",
+        "position_b_talks": [
+          "morgan-stanleys-alphalab-multi-agent-research-across-optimization-domains",
+          "how-autoresearch-is-changing-ml-research",
+          "the-prompt-is-the-platform"
+        ],
+        "why_it_matters": "This determines whether an org's scarce senior engineering time goes into scaffolding code or into curating evaluation environments and proprietary measurement data \u2014 and whether the harness is treated as an asset or as a disposable middle layer."
+      },
+      {
+        "question": "Should a self-improved agent variant ship to production automatically once it clears its eval targets, or does a human gate remain mandatory?",
+        "position_a": "Auto-ship on eval targets. If an optimized variant meets its scores it goes to production without human review, and being bottlenecked on humans launching, reviewing, and babysitting runs is a state to be engineered away.",
+        "position_a_talks": [
+          "the-agentic-ai-engineer",
+          "recursive-model-improvement"
+        ],
+        "position_b": "A human gate is still required. Clustered failure reports must be triaged by domain experts because clusters can be false positives or intended behavior; production data must be reviewed by a human and not only by coding agents; larger fixes still need a human to spearhead them; and in regulated domains agent-to-agent code review fails because accountability cannot be assigned to the model.",
+        "position_b_talks": [
+          "agents-building-agents",
+          "stop-burning-tokens-why-self-improvement-needs-domain-expertise-first",
+          "from-signal-to-pr-anatomy-of-a-self-improving-agent",
+          "your-finance-agents-bottleneck-is-you"
+        ],
+        "why_it_matters": "Full autonomy is what converts the loop from a productivity multiplier into a genuinely self-improving system; keeping the human gate caps throughput at human review capacity but is the only current answer to accountability and to evals that are themselves incomplete."
+      },
+      {
+        "question": "Should the eval data that drives the loop be generated in simulation, or discovered from production traffic?",
+        "position_a": "Generate it in simulation. Waiting on production data is the bottleneck, A/B testing means experimenting on live users, and simulated evals correlate highly enough with real data (80% of domain-expert labels confirming usability) to cut the iteration cycle from weeks to under a day. Deterministic simulation can even expose information the real system hides, which is exactly the signal the agent needs.",
+        "position_a_talks": [
+          "simulationmaxxing-how-we-ship-agents-20-faster",
+          "the-prompt-is-the-platform"
+        ],
+        "position_b": "The complete eval suite is a product of discovery from production. It cannot be pre-guessed upfront by domain experts; failure modes found in live traces become new golden-dataset entries, and LLM-as-a-judge evals are inherently backward-looking because you build them for failures you have already seen.",
+        "position_b_talks": [
+          "the-agentic-ai-engineer",
+          "agents-building-agents",
+          "from-signal-to-pr-anatomy-of-a-self-improving-agent",
+          "enterprise-agents-have-a-structure-problem"
+        ],
+        "why_it_matters": "It sets whether a team can run the loop pre-launch on a greenfield agent at all, or must first ship, accumulate traffic, and pay the sim-to-real gap in review effort \u2014 a difference of weeks per iteration and, on the sim side, a mandatory investment in measuring that gap."
+      },
+      {
+        "question": "Does the self-improvement loop compound across iterations, or does nearly all of the gain arrive in the first pass?",
+        "position_a": "Iteration count is the lever. Systems work best the more iterations they can explore; ~10 iterations moved a naive agent 18%\u219283% and a human-optimized production agent up another 10%; 1,300 experiments over 22 days beat the best human contributor through tireless iteration rather than parallelism.",
+        "position_a_talks": [
+          "morgan-stanleys-alphalab-multi-agent-research-across-optimization-domains",
+          "agents-building-agents",
+          "how-autoresearch-is-changing-ml-research"
+        ],
+        "position_b": "Returns collapse fast. The first iteration captured a 10-point gain and everything after was marginal before plateauing \u2014 you could have stopped there \u2014 and label noise in the ground truth itself caps the ceiling, so the loop needs an explicit escape hatch rather than being left to burn tokens against a wall.",
+        "position_b_talks": [
+          "stop-burning-tokens-why-self-improvement-needs-domain-expertise-first"
+        ],
+        "why_it_matters": "It decides the budget: whether to fund long autonomous runs and treat compute as the input, or to run one high-signal pass, take the cheap gain, and spend the remaining effort on sharpening the evaluator instead."
+      }
+    ],
+    "practical_guidance": {
+      "do": [
+        "Run each optimization hypothesis on its own git branch; continue from that branch if metrics improve, roll back if there is a regression.",
+        "Explicitly instruct the optimizing agent that it may not modify golden datasets or scorers, and tighten the codebase API so test data physically cannot reach training (this dropped one fraud-detection pipeline's leakage rate to zero).",
+        "Replace scalar 0-1 / 1-5 quality scores with binary domain-specific checks \u2014 'is the answer grounded in the retrieved context, yes/no', brand-name correctness, categorization into known failure modes.",
+        "Calibrate LLM judges before using them to compare agent versions, since the same judge scores the same problem differently run to run.",
+        "Split into fit/validate and a held-out unseen test set (~300 items) and confirm the optimized prompt generalizes; a few hundred labeled examples was enough to produce high-signal feedback.",
+        "Give the loop an explicit escape hatch so it stops instead of grinding against a plateau.",
+        "Deliver the production data the coding agent needs as files written into the repo \u2014 harnesses work well with files, even ~10MB ones \u2014 rather than just pointing the agent at a data source.",
+        "Measure every agent against the raw baseline model to confirm the harness is actually adding value.",
+        "Feed every newly discovered production failure mode back into the golden dataset so the eval suite catches that regression thereafter; generate a live-data failure report roughly once per sprint.",
+        "Retire any eval where all models score ~90%, and when running evals delete git history and apply network allowlists so models cannot mine the answer.",
+        "Cap skill.md at ~100 lines (a skill is a folder) and treat a first prompt exceeding 40-50K tokens of baseline context as a progressive-disclosure failure; ~20-25K is the target.",
+        "Source agent context from live systems (GitHub, CRM, Tableau, dbt) and log correction events back into it, rather than relying on hand-maintained markdown.",
+        "If you adopt simulation, explicitly measure and close the sim-to-real gap first \u2014 the gains are unavailable until the results can be trusted."
+      ],
+      "avoid": [
+        "Responding to bad agent answers by upgrading the model, extending the context window, or bolting on more knowledge bases and MCP servers.",
+        "Letting the optimizer touch its own scoring surface \u2014 it will make the evals pass by cheating rather than by fixing the agent.",
+        "Generic evaluators (correctness, helpfulness, hallucination) scored on an undefined 0-1 or 1-5 scale; the levels are almost never defined, so the signal is both low and inconsistent across runs.",
+        "Pointing a coding agent at raw production data and expecting results without a skill that selects the right data and lands it in the repo.",
+        "Reviewing production data only with coding agents \u2014 a human must look at it, because failure modes and usage shift over time.",
+        "Hand-maintained .md files and skills as the context substrate for enterprise definitions and KPIs, which change faster than anyone can update them.",
+        "Babysitting agents: if engineers on your team are doing it, the codebase and harness setup is wrong, and it silently burns context and money.",
+        "Mandating agent adoption across a company; uneven adoption is actively harmful because low-adoption engineers inherit the review burden for high-adoption engineers' PRs.",
+        "Plain next-token-prediction finetuning on your own corpus to make an agent learn from its data \u2014 loss goes to near zero, generation collapses, and nothing generalizes.",
+        "Shipping agents to production without observability; without traces you are guessing among a million possible code paths.",
+        "Serving production browser agents from self-hosted Mac Minis, and letting rendering vary (mobile vs desktop layout) between runs.",
+        "Assuming a complete eval suite can be written upfront by domain experts before any production failures exist."
+      ]
+    },
+    "notable_outliers": [
+      {
+        "claim": "The choice of harness architecture itself \u2014 number of strategist agents, agent roles \u2014 is arbitrary when humans pick it, and should be handed to an LLM as a verifiable meta-optimization loop.",
+        "talk": "morgan-stanleys-alphalab-multi-agent-research-across-optimization-domains",
+        "timestamp_sec": 900
+      },
+      {
+        "claim": "Almost every record-setting idea the auto-research agent produced originated from humans (papers, other participants, adjacent communities); the tiny fraction of genuinely original ideas emerged from the agent working around a 16MB file-size constraint.",
+        "talk": "how-autoresearch-is-changing-ml-research",
+        "timestamp_sec": 338
+      },
+      {
+        "claim": "Models write shared-state/blackboard-style agent code better than LLM-agent-style code, because decades of blackboard-architecture discussion sit in the training data while LLM agent patterns are only ~3 years old.",
+        "talk": "active-graph-agent-runtime-babyagi-4",
+        "timestamp_sec": 894
+      },
+      {
+        "claim": "Any loop that fixes a dataset and trains on it saturates unless the model is underparameterized; real self-improvement requires the system to make its own training data harder as it improves, which is the actual mechanism behind AlphaGo.",
+        "talk": "scaling-compute-on-context",
+        "timestamp_sec": 1050
+      },
+      {
+        "claim": "NanoChat-style auto-research is not true recursive self-improvement \u2014 RSI requires an AI with self-awareness of its own shortcomings and access from pre-training through RL and harnesses to update its next version.",
+        "talk": "first-steps-toward-automated-ai-research",
+        "timestamp_sec": 853
+      },
+      {
+        "claim": "The entire training system is capped by the intelligence of its single smartest model, because every judge, reward model, and research agent in the loop is distilled from it.",
+        "talk": "recursive-model-improvement",
+        "timestamp_sec": 1159
+      },
+      {
+        "claim": "LLM-generated skills measurably degrade LLM performance relative to human-written ones by consuming more tokens and more reasoning time \u2014 a skill is only as good as the human who wrote it.",
+        "talk": "skills-are-the-new-sdks",
+        "timestamp_sec": 1449
+      },
+      {
+        "claim": "Let the agent 'dream' in the background \u2014 compacting recurring customer session patterns into reusable data points \u2014 as a self-upgrade mechanism.",
+        "talk": "your-finance-agents-bottleneck-is-you",
+        "timestamp_sec": 700
+      }
+    ],
+    "maturity": "consolidating",
+    "maturity_rationale": "The core mechanism \u2014 propose a change, measure against a protected eval, branch and roll back on regression \u2014 was independently reproduced across at least six talks with concrete reported numbers (18%\u219283%, 68%\u219283%, 0.93\u21920.91 bpb, top 12% Kaggle, 7 leaderboard records), and no speaker disputed that it works. The argued edges are scope rather than validity: whether the loop's home is the harness or the weights, whether it can ship unsupervised, whether eval data comes from simulation or production, and whether iteration compounds past the first pass \u2014 with one speaker explicitly noting the industry is still exploring options for continual learning."
+  },
+  "_meta": {
+    "concept": "self-improving agent loops",
+    "slug": "self-improving-agent-loops",
+    "talk_count": 20,
+    "missing_talks": [],
+    "wall_sec": 177.8,
+    "run_at": "2026-08-13T17:16:39Z"
+  }
+}

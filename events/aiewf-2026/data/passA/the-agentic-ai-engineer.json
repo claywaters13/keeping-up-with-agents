@@ -1,0 +1,273 @@
+{
+  "is_error": false,
+  "duration_api_ms": 67816,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "bd5d6028-b809-46d1-bfa8-cdb82e60b370",
+  "total_cost_usd": 0.28611800000000004,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 12121,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 6074,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 12121,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 6074,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 12121,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 12121
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 7809,
+      "outputTokens": 17,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.007894,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 6074,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 12121,
+      "webSearchRequests": 0,
+      "costUSD": 0.278224,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Benedikt Sanftl (CEO) and Burak (CTO) of Mutagent argue that the manual build-test-ship-monitor loop for AI agents doesn't scale once an organization runs more than a handful of agents, because human review of traces and evals becomes the bottleneck. Their proposal is the \\\"agentic AI engineer\\\": decompose the agent lifecycle into stages \u2014 spec, build, evaluate, ship, monitor, diagnose, optimize \u2014 and assign agents to each stage so the whole loop runs autonomously with an eval suite as the termination gate. Much of the talk is practical eval and diagnostics advice: keep the spec isolated from the framework so you can switch harnesses, prefer binary criteria over score rubrics because they give actionable feedback, calibrate LLM judges against run-to-run variance, and sample traces via learned code-checkable failure indicators rather than reading everything. The last third is a product demo of Mutagent's two research-preview agents (evaluator and diagnostics), showing an HTML root-cause report with why-chains, an explicit assumptions block, and remedies that export as a markdown task for your coding agent. Worth watching if you run agents in production and are drowning in trace review; skip if you want novel research rather than lifecycle tooling.\",\n  \"key_points\": [\n    \"The agent lifecycle splits into an offline loop (spec, build, evaluate, ship) and an online loop (monitor, diagnose, optimize), and both can be driven by agents rather than humans.\",\n    \"Human review of traces and evals is the scaling bottleneck: once you have many agents or AI features, the per-iteration loop time makes parallel experimentation impossible.\",\n    \"Specs should capture context requirements, tools and integrations, in-scope and out-of-scope responsibilities, and constraints \u2014 and stay isolated from implementation details so the target harness can be swapped later.\",\n    \"The speakers expect teams to change agent frameworks within about a year, because harnesses regularly hit capability roadblocks you can't fix yourself.\",\n    \"A complete eval suite cannot be pre-written by domain experts; it is a product of discovery built up from production failures and user feedback over time.\",\n    \"Binary pass/fail criteria are preferred over score-based LLM-as-judge metrics because a failing binary criterion tells you exactly what to fix, while an unclear rubric score does not.\",\n    \"LLM judges must be calibrated to control run-to-run scoring variance, otherwise experiments can't conclusively show that version B beats version A.\",\n    \"Agent evaluation should cover the whole trajectory \u2014 context completeness, every tool output, and the harness itself \u2014 rather than any component in isolation.\",\n    \"Reading all production traces costs more than the executions themselves; instead collect code-checkable indicators per failure mode and sample representatively via multi-tier segmentation.\",\n    \"Mutagent's product runs an orchestrator plus sub-agents in your own coding environment, connecting to trace sources (e.g. LangFuse, local Claude Code transcripts, JSONL exports) and emitting fixes as GitHub PRs or MD-file edits.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"once you reach a certain number of agents or AI-based features, the human performing this loop again cannot really scale in enough time. So, this is why doing this agentically is the key to increasing the throughput because then you can fit many more cycles into the same time window.\",\n      \"timestamp_sec\": 139,\n      \"why\": \"the core thesis of the talk in one passage\"\n    },\n    {\n      \"text\": \"the bottleneck basically becomes the human review and the human yeah, building time\",\n      \"timestamp_sec\": 93,\n      \"why\": \"names the problem the whole architecture is designed around\"\n    },\n    {\n      \"text\": \"essentially because of that spec is isolated from the implementation details\",\n      \"timestamp_sec\": 565,\n      \"why\": \"states the portability principle behind spec-driven agent development\"\n    },\n    {\n      \"text\": \"sometimes the agent framework or the harness does not always have the capabilities. So, occasionally you hit um like a bottleneck or a roadblock, and then you have to rely on the underlying framework to kind of get rid of that, and this can sometimes take a while.\",\n      \"timestamp_sec\": 631,\n      \"why\": \"concrete experience-based justification for framework-agnostic specs\"\n    },\n    {\n      \"text\": \"after you build for agents, you essentially go into the eval-driven development loop, which I would call. And this is kind of equivalent to test-driven development for building software with agents because then the agents needs uh termination condition, right?\",\n      \"timestamp_sec\": 686,\n      \"why\": \"frames evals as the termination condition for autonomous loops\"\n    },\n    {\n      \"text\": \"you cannot pre-guess the entire evaluation suite from the beginning\",\n      \"timestamp_sec\": 686,\n      \"why\": \"direct pushback on upfront eval design with domain experts\"\n    },\n    {\n      \"text\": \"But essentially, the real and the complete eval suite is a product of discovery.\",\n      \"timestamp_sec\": 760,\n      \"why\": \"compact statement of their eval philosophy\"\n    },\n    {\n      \"text\": \"imagine you have a data set item of 200. Here, without automated evals, running this and evaluating by like human eyes takes quite a while.\",\n      \"timestamp_sec\": 816,\n      \"why\": \"puts a number on where manual review breaks down\"\n    },\n    {\n      \"text\": \"you design loops for your agent so then they can autonomously work as many of these things in the background. Uh and then your job becomes designing these loops with a clear eval or termination gate.\",\n      \"timestamp_sec\": 878,\n      \"why\": \"redefines the AI engineer's job as loop design\"\n    },\n    {\n      \"text\": \"did the agent have all the required context to perform the task end to end?\",\n      \"timestamp_sec\": 946,\n      \"why\": \"names context completeness as a primary eval dimension\"\n    },\n    {\n      \"text\": \"every wrong tool output in session can in the end lead to our wrong output as the final output\",\n      \"timestamp_sec\": 946,\n      \"why\": \"argues for trajectory-level rather than output-only evaluation\"\n    },\n    {\n      \"text\": \"these days also the harness that the agent is operating on has quite drastic effects on the agent behavior. And this is again another vector of optimization.\",\n      \"timestamp_sec\": 946,\n      \"why\": \"treats harness choice as a tunable variable, not a fixed substrate\"\n    },\n    {\n      \"text\": \"when you use score-based evals, unless your rubric is very well defined, then this does not exactly tell you what to fix\",\n      \"timestamp_sec\": 1013,\n      \"why\": \"the tradeoff behind their binary-eval preference\"\n    },\n    {\n      \"text\": \"using uh, binary type of evals or criteria, is preferred because there you have a kind of a call to action\",\n      \"timestamp_sec\": 1013,\n      \"why\": \"an explicit, contestable methodological position\"\n    },\n    {\n      \"text\": \"your LLM as a judge solution should be calibrated so that you don't have the, uh, scoring noise between judges because since LLM LLMs are undeterministic, what you will mostly encounter is the same judge can, uh, evaluate a problem different ways on each run.\",\n      \"timestamp_sec\": 1083,\n      \"why\": \"identifies judge variance as the blocker to conclusive experiments\"\n    },\n    {\n      \"text\": \"Over time, you can collect code-checkable indicators per failure mode.\",\n      \"timestamp_sec\": 1230,\n      \"why\": \"the key technique for making diagnosis cheap at scale\"\n    },\n    {\n      \"text\": \"if you have let's say millions of agent traces and to read all of these uh it actually costs more than the execution itself\",\n      \"timestamp_sec\": 1288,\n      \"why\": \"a cost argument that reframes observability economics\"\n    },\n    {\n      \"text\": \"As long as you can reach that then it's automatically shipped to production.\",\n      \"timestamp_sec\": 1367,\n      \"why\": \"states the boldest claim \u2014 autonomous deploy gated only by evals\"\n    },\n    {\n      \"text\": \"we learned from our users that reading through these traces took them a lot of time\",\n      \"timestamp_sec\": 1504,\n      \"why\": \"the user-research motivation for the diagnostics agent\"\n    },\n    {\n      \"text\": \"most of the time you don't want to read all of your traces because this is not cost-efficient\",\n      \"timestamp_sec\": 1803,\n      \"why\": \"restates the sampling principle as implemented in the product\"\n    },\n    {\n      \"text\": \"when you are reading traces, sometimes you don't always have access to the code, so this helps us detect uh, LLM or let's say the diagnostics agent makes certain assumptions that are also not correct and we can see and correct them here\",\n      \"timestamp_sec\": 1923,\n      \"why\": \"explains why an explicit assumptions block is a necessary safeguard on automated root-cause analysis\"\n    }\n  ],\n  \"concepts\": [\n    \"agent lifecycle loops\",\n    \"spec-driven development\",\n    \"eval-driven development\",\n    \"llm-as-a-judge calibration\",\n    \"trajectory evaluation\",\n    \"failure mode clustering\",\n    \"root cause analysis on traces\",\n    \"trace sampling and segmentation\",\n    \"autonomous optimization loop\",\n    \"harness portability\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Manual human-in-the-loop agent iteration stops scaling once an organization runs a large number of agents or AI features, making agentic automation of the loop necessary.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 139\n    },\n    {\n      \"claim\": \"The agent spec should be kept independent of the implementation framework, because teams will likely need to switch harnesses within roughly a year.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 565\n    },\n    {\n      \"claim\": \"A complete eval suite cannot be written upfront by domain experts; it must be discovered incrementally from production failures and user feedback.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 760\n    },\n    {\n      \"claim\": \"Binary pass/fail eval criteria are preferable to score-based rubrics because they yield actionable, fixable feedback.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1013\n    },\n    {\n      \"claim\": \"Uncalibrated LLM judges produce enough run-to-run variance that you cannot conclusively compare agent versions.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1083\n    },\n    {\n      \"claim\": \"Agents must be evaluated across the full trajectory \u2014 context completeness, every tool output, and the harness \u2014 not on final output alone.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 946\n    },\n    {\n      \"claim\": \"At millions of traces, reading all traces with an LLM costs more than the original agent executions, so representative sampling with learned indicators is required.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1288\n    },\n    {\n      \"claim\": \"If an optimized agent variant meets target eval scores, it can be shipped to production automatically without human review.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1367\n    },\n    {\n      \"claim\": \"The harness an agent runs on is itself a legitimate optimization variable, alongside prompts and tools.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 946\n    },\n    {\n      \"claim\": \"Automated diagnostics reports must surface their assumptions explicitly, because agents reading traces without code access will infer things that are wrong.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 1923\n    }\n  ],\n  \"speaker_org\": \"Mutagent\"\n}",
+  "ttft_ms": 26320,
+  "ttft_stream_ms": 792,
+  "time_to_request_ms": 34,
+  "type": "result",
+  "duration_ms": 68186,
+  "uuid": "e014eabe-caeb-49b3-907f-a28077f6b6d0",
+  "passA": {
+    "summary": "Benedikt Sanftl (CEO) and Burak (CTO) of Mutagent argue that the manual build-test-ship-monitor loop for AI agents doesn't scale once an organization runs more than a handful of agents, because human review of traces and evals becomes the bottleneck. Their proposal is the \"agentic AI engineer\": decompose the agent lifecycle into stages \u2014 spec, build, evaluate, ship, monitor, diagnose, optimize \u2014 and assign agents to each stage so the whole loop runs autonomously with an eval suite as the termination gate. Much of the talk is practical eval and diagnostics advice: keep the spec isolated from the framework so you can switch harnesses, prefer binary criteria over score rubrics because they give actionable feedback, calibrate LLM judges against run-to-run variance, and sample traces via learned code-checkable failure indicators rather than reading everything. The last third is a product demo of Mutagent's two research-preview agents (evaluator and diagnostics), showing an HTML root-cause report with why-chains, an explicit assumptions block, and remedies that export as a markdown task for your coding agent. Worth watching if you run agents in production and are drowning in trace review; skip if you want novel research rather than lifecycle tooling.",
+    "key_points": [
+      "The agent lifecycle splits into an offline loop (spec, build, evaluate, ship) and an online loop (monitor, diagnose, optimize), and both can be driven by agents rather than humans.",
+      "Human review of traces and evals is the scaling bottleneck: once you have many agents or AI features, the per-iteration loop time makes parallel experimentation impossible.",
+      "Specs should capture context requirements, tools and integrations, in-scope and out-of-scope responsibilities, and constraints \u2014 and stay isolated from implementation details so the target harness can be swapped later.",
+      "The speakers expect teams to change agent frameworks within about a year, because harnesses regularly hit capability roadblocks you can't fix yourself.",
+      "A complete eval suite cannot be pre-written by domain experts; it is a product of discovery built up from production failures and user feedback over time.",
+      "Binary pass/fail criteria are preferred over score-based LLM-as-judge metrics because a failing binary criterion tells you exactly what to fix, while an unclear rubric score does not.",
+      "LLM judges must be calibrated to control run-to-run scoring variance, otherwise experiments can't conclusively show that version B beats version A.",
+      "Agent evaluation should cover the whole trajectory \u2014 context completeness, every tool output, and the harness itself \u2014 rather than any component in isolation.",
+      "Reading all production traces costs more than the executions themselves; instead collect code-checkable indicators per failure mode and sample representatively via multi-tier segmentation.",
+      "Mutagent's product runs an orchestrator plus sub-agents in your own coding environment, connecting to trace sources (e.g. LangFuse, local Claude Code transcripts, JSONL exports) and emitting fixes as GitHub PRs or MD-file edits."
+    ],
+    "notable_quotes": [
+      {
+        "text": "once you reach a certain number of agents or AI-based features, the human performing this loop again cannot really scale in enough time. So, this is why doing this agentically is the key to increasing the throughput because then you can fit many more cycles into the same time window.",
+        "timestamp_sec": 139,
+        "why": "the core thesis of the talk in one passage"
+      },
+      {
+        "text": "the bottleneck basically becomes the human review and the human yeah, building time",
+        "timestamp_sec": 93,
+        "why": "names the problem the whole architecture is designed around"
+      },
+      {
+        "text": "essentially because of that spec is isolated from the implementation details",
+        "timestamp_sec": 565,
+        "why": "states the portability principle behind spec-driven agent development"
+      },
+      {
+        "text": "sometimes the agent framework or the harness does not always have the capabilities. So, occasionally you hit um like a bottleneck or a roadblock, and then you have to rely on the underlying framework to kind of get rid of that, and this can sometimes take a while.",
+        "timestamp_sec": 631,
+        "why": "concrete experience-based justification for framework-agnostic specs"
+      },
+      {
+        "text": "after you build for agents, you essentially go into the eval-driven development loop, which I would call. And this is kind of equivalent to test-driven development for building software with agents because then the agents needs uh termination condition, right?",
+        "timestamp_sec": 686,
+        "why": "frames evals as the termination condition for autonomous loops"
+      },
+      {
+        "text": "you cannot pre-guess the entire evaluation suite from the beginning",
+        "timestamp_sec": 686,
+        "why": "direct pushback on upfront eval design with domain experts"
+      },
+      {
+        "text": "But essentially, the real and the complete eval suite is a product of discovery.",
+        "timestamp_sec": 760,
+        "why": "compact statement of their eval philosophy"
+      },
+      {
+        "text": "imagine you have a data set item of 200. Here, without automated evals, running this and evaluating by like human eyes takes quite a while.",
+        "timestamp_sec": 816,
+        "why": "puts a number on where manual review breaks down"
+      },
+      {
+        "text": "you design loops for your agent so then they can autonomously work as many of these things in the background. Uh and then your job becomes designing these loops with a clear eval or termination gate.",
+        "timestamp_sec": 878,
+        "why": "redefines the AI engineer's job as loop design"
+      },
+      {
+        "text": "did the agent have all the required context to perform the task end to end?",
+        "timestamp_sec": 946,
+        "why": "names context completeness as a primary eval dimension"
+      },
+      {
+        "text": "every wrong tool output in session can in the end lead to our wrong output as the final output",
+        "timestamp_sec": 946,
+        "why": "argues for trajectory-level rather than output-only evaluation"
+      },
+      {
+        "text": "these days also the harness that the agent is operating on has quite drastic effects on the agent behavior. And this is again another vector of optimization.",
+        "timestamp_sec": 946,
+        "why": "treats harness choice as a tunable variable, not a fixed substrate"
+      },
+      {
+        "text": "when you use score-based evals, unless your rubric is very well defined, then this does not exactly tell you what to fix",
+        "timestamp_sec": 1013,
+        "why": "the tradeoff behind their binary-eval preference"
+      },
+      {
+        "text": "using uh, binary type of evals or criteria, is preferred because there you have a kind of a call to action",
+        "timestamp_sec": 1013,
+        "why": "an explicit, contestable methodological position"
+      },
+      {
+        "text": "your LLM as a judge solution should be calibrated so that you don't have the, uh, scoring noise between judges because since LLM LLMs are undeterministic, what you will mostly encounter is the same judge can, uh, evaluate a problem different ways on each run.",
+        "timestamp_sec": 1083,
+        "why": "identifies judge variance as the blocker to conclusive experiments"
+      },
+      {
+        "text": "Over time, you can collect code-checkable indicators per failure mode.",
+        "timestamp_sec": 1230,
+        "why": "the key technique for making diagnosis cheap at scale"
+      },
+      {
+        "text": "if you have let's say millions of agent traces and to read all of these uh it actually costs more than the execution itself",
+        "timestamp_sec": 1288,
+        "why": "a cost argument that reframes observability economics"
+      },
+      {
+        "text": "As long as you can reach that then it's automatically shipped to production.",
+        "timestamp_sec": 1367,
+        "why": "states the boldest claim \u2014 autonomous deploy gated only by evals"
+      },
+      {
+        "text": "we learned from our users that reading through these traces took them a lot of time",
+        "timestamp_sec": 1504,
+        "why": "the user-research motivation for the diagnostics agent"
+      },
+      {
+        "text": "most of the time you don't want to read all of your traces because this is not cost-efficient",
+        "timestamp_sec": 1803,
+        "why": "restates the sampling principle as implemented in the product"
+      },
+      {
+        "text": "when you are reading traces, sometimes you don't always have access to the code, so this helps us detect uh, LLM or let's say the diagnostics agent makes certain assumptions that are also not correct and we can see and correct them here",
+        "timestamp_sec": 1923,
+        "why": "explains why an explicit assumptions block is a necessary safeguard on automated root-cause analysis"
+      }
+    ],
+    "concepts": [
+      "agent lifecycle loops",
+      "spec-driven development",
+      "eval-driven development",
+      "llm-as-a-judge calibration",
+      "trajectory evaluation",
+      "failure mode clustering",
+      "root cause analysis on traces",
+      "trace sampling and segmentation",
+      "autonomous optimization loop",
+      "harness portability"
+    ],
+    "positions": [
+      {
+        "claim": "Manual human-in-the-loop agent iteration stops scaling once an organization runs a large number of agents or AI features, making agentic automation of the loop necessary.",
+        "confidence": "stated",
+        "timestamp_sec": 139
+      },
+      {
+        "claim": "The agent spec should be kept independent of the implementation framework, because teams will likely need to switch harnesses within roughly a year.",
+        "confidence": "stated",
+        "timestamp_sec": 565
+      },
+      {
+        "claim": "A complete eval suite cannot be written upfront by domain experts; it must be discovered incrementally from production failures and user feedback.",
+        "confidence": "stated",
+        "timestamp_sec": 760
+      },
+      {
+        "claim": "Binary pass/fail eval criteria are preferable to score-based rubrics because they yield actionable, fixable feedback.",
+        "confidence": "stated",
+        "timestamp_sec": 1013
+      },
+      {
+        "claim": "Uncalibrated LLM judges produce enough run-to-run variance that you cannot conclusively compare agent versions.",
+        "confidence": "stated",
+        "timestamp_sec": 1083
+      },
+      {
+        "claim": "Agents must be evaluated across the full trajectory \u2014 context completeness, every tool output, and the harness \u2014 not on final output alone.",
+        "confidence": "stated",
+        "timestamp_sec": 946
+      },
+      {
+        "claim": "At millions of traces, reading all traces with an LLM costs more than the original agent executions, so representative sampling with learned indicators is required.",
+        "confidence": "stated",
+        "timestamp_sec": 1288
+      },
+      {
+        "claim": "If an optimized agent variant meets target eval scores, it can be shipped to production automatically without human review.",
+        "confidence": "stated",
+        "timestamp_sec": 1367
+      },
+      {
+        "claim": "The harness an agent runs on is itself a legitimate optimization variable, alongside prompts and tools.",
+        "confidence": "stated",
+        "timestamp_sec": 946
+      },
+      {
+        "claim": "Automated diagnostics reports must surface their assumptions explicitly, because agents reading traces without code access will infer things that are wrong.",
+        "confidence": "implied",
+        "timestamp_sec": 1923
+      }
+    ],
+    "speaker_org": "Mutagent"
+  },
+  "_meta": {
+    "slug": "the-agentic-ai-engineer",
+    "video_id": "pSto5YaNGUo",
+    "url": "https://www.youtube.com/watch?v=pSto5YaNGUo",
+    "word_count": 4340,
+    "wall_sec": 69.2,
+    "run_at": "2026-08-12T20:17:58Z",
+    "effort": "medium"
+  }
+}

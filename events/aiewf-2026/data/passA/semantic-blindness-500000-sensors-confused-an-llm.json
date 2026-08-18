@@ -1,0 +1,277 @@
+{
+  "is_error": false,
+  "duration_api_ms": 70695,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "7bd4422b-a230-4c20-8d92-8265d2266661",
+  "total_cost_usd": 0.246867,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 9186,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 5764,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 9186,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 5764,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 9186,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 9186
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 5638,
+      "outputTokens": 21,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.005743,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 5764,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 9186,
+      "webSearchRequests": 0,
+      "costUSD": 0.241124,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Raahul Singh and Van\u010d Levstik of Phaidra describe how their AI agents for data centers ('AI factories') broke when asked to reason over hundreds of thousands of near-identical equipment names \u2014 a failure they call semantic blindness. They argue that neither stuffing names into context, nor vector RAG, nor sharded parallel LLM calls survives 1-gigawatt scale: embeddings can't separate 'Chiller 6' from 'Chiller 7', and sharded calls hallucinate phantom equipment while silently dropping real ones. Their fix exploits the fact that an AI factory is a tree whose depth grows slowly while width explodes: the LLM sees only a summarized path-level graph and emits a structured search plan (collect / scope / filter), which a deterministic resolver executes with pre-indexed subtrees and set operations. Measured head-to-head, the old approach fell from 80% to ~30% correctness as GPU count grew from 64 to 460,000, while the new one held 100% at a flat ~9,000 tokens per query. The closing frame inverts Karpathy's software 1.0/3.0 trend: AI-native systems should start at 3.0 and migrate the structured parts back into deterministic code.\",\n  \"key_points\": [\n    \"At 1-gigawatt scale an AI factory has 400,000+ GPUs plus supporting chillers, power meters, and switches, so any approach that puts equipment names in the LLM context window saturates immediately.\",\n    \"Vector search fails on this data because equipment names are 20-character strings differing by a single character, giving poor recall.\",\n    \"LLM frequency penalties actively sabotage long enumerations: asked to list 100 GPUs, the model's guardrails read the repeating tokens as spiraling and shut the output down.\",\n    \"Sharding names across parallel LLM calls produces hallucinated phantom equipment and silent omissions \u2014 unacceptable in mission-critical infrastructure where trust erodes fast.\",\n    \"The architectural insight is to scale with tree depth rather than instance count: a summarized root-to-leaf path list means a 64-GPU system and a 460,000-GPU system produce roughly the same context.\",\n    \"LLMs are used for planning, not searching \u2014 the model emits structured output naming what to collect, the subtree scope, and the filter, and a deterministic resolver does the rest via pre-indexed subtrees and set intersections.\",\n    \"For genuinely vague queries the LLM generates naming-convention patterns rather than reading name lists, keeping token cost roughly constant.\",\n    \"Evals across synthetic scales and 66 cases on six real production systems showed 100% correctness and zero failures, with a 1GW validation pass dropping from 116 million tokens to about 390,000.\",\n    \"The generalizable heuristic: if you can write down the structure or rules, it belongs in deterministic code; keep the LLM for ambiguity parsing, judgment, and final human-readable synthesis.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"Like we say, a product is something that works for all scenarios and does not fail silently. A demo just has to work for one.\",\n      \"timestamp_sec\": 88,\n      \"why\": \"Crisp statement of the bar that kills the naive context-stuffing approach.\"\n    },\n    {\n      \"text\": \"The industry has not really figured out a common naming pattern yet and every single customer can have their own things\",\n      \"timestamp_sec\": 44,\n      \"why\": \"Names the domain constraint that makes the whole problem hard.\"\n    },\n    {\n      \"text\": \"the problem is often times the names are so similar that semantic search just fails\",\n      \"timestamp_sec\": 135,\n      \"why\": \"Direct rejection of the default RAG answer.\"\n    },\n    {\n      \"text\": \"The problem is you get horrible recall and hallucinations. You will see LLMs invent phantom equipment that do not exist, and also silently drop things that do exist.\",\n      \"timestamp_sec\": 216,\n      \"why\": \"Concrete failure mode of the obvious divide-and-conquer fix.\"\n    },\n    {\n      \"text\": \"We have to find something that grows sub-linearly with increasing equipment count. And this is what we figured out. So, we should not grow with instances, we should grow with tree depth.\",\n      \"timestamp_sec\": 262,\n      \"why\": \"The central design principle of the talk.\"\n    },\n    {\n      \"text\": \"The depth of the tree grows very slowly, the width grows extremely fast. In other words, you will have a hierarchy that only adds new equipments very rarely, but it adds a lot of them when it does.\",\n      \"timestamp_sec\": 297,\n      \"why\": \"Explains why the tree-depth trick works structurally.\"\n    },\n    {\n      \"text\": \"because you want to go from the root to the leaf, all you have to do is describe all the paths and that's a very small finite list\",\n      \"timestamp_sec\": 339,\n      \"why\": \"The compression mechanism behind constant-size context.\"\n    },\n    {\n      \"text\": \"The second insight that we had was LLMs are good for planning but not good for searching.\",\n      \"timestamp_sec\": 389,\n      \"why\": \"The talk's most portable claim about where to place the model.\"\n    },\n    {\n      \"text\": \"Set operations ensure that we have perfect recall and accuracy\",\n      \"timestamp_sec\": 512,\n      \"why\": \"States the reliability guarantee that deterministic resolution buys.\"\n    },\n    {\n      \"text\": \"All of this is a two or three-step process instead of a multi-step agentic loop, which can keep on running over and over again. And this keeps our total cost also relatively flat and constant.\",\n      \"timestamp_sec\": 608,\n      \"why\": \"Explicit tradeoff against open-ended agentic architectures.\"\n    },\n    {\n      \"text\": \"So, we got 80% correctness at 64 GPUs, and that dropped to about 30% when the GPU grew to 400 460,000.\",\n      \"timestamp_sec\": 657,\n      \"why\": \"The headline degradation number for the baseline.\"\n    },\n    {\n      \"text\": \"the old approach burned 116 million tokens for just a single validation pass while still having a lot of errors\",\n      \"timestamp_sec\": 700,\n      \"why\": \"Quantifies the cost side of the baseline failure.\"\n    },\n    {\n      \"text\": \"the cost of the query was 9,000 tokens a query where the system was 64 GPUs or 460,000\",\n      \"timestamp_sec\": 700,\n      \"why\": \"The flat-cost result that validates the architecture.\"\n    },\n    {\n      \"text\": \"It's great at parsing ambiguous requests, judging where to look for data and what to look for, handling phrasing we've never seen from a new user that has a different query\",\n      \"timestamp_sec\": 796,\n      \"why\": \"Positive definition of what should stay in the model.\"\n    },\n    {\n      \"text\": \"If your data has structure, call it a hierarchy, graph, or a schema, a language model scanning it token by token is definitely the wrong tool.\",\n      \"timestamp_sec\": 844,\n      \"why\": \"The sharpest version of the talk's design rule.\"\n    },\n    {\n      \"text\": \"The simple heuristic that usually works, if you can write down the structure or the rules, it's a 1.0 job. And pure LM is weakest exactly when the system is large and well structured, which is precisely where we operate and our customers.\",\n      \"timestamp_sec\": 844,\n      \"why\": \"Gives a reusable decision heuristic plus the scope where it bites hardest.\"\n    },\n    {\n      \"text\": \"We started almost pure 3.0. We threw everything in the context window because that is the fastest way to find out what's even worth building.\",\n      \"timestamp_sec\": 892,\n      \"why\": \"Defends prototyping with brute-force context as a deliberate stage, not a mistake.\"\n    },\n    {\n      \"text\": \"Legacy software drifts from 1.0 towards 3.0 and new AI native software starts at 3.0 and matures towards 1.0 for the use cases that earn it, of course.\",\n      \"timestamp_sec\": 892,\n      \"why\": \"The talk's thesis-level inversion of Karpathy's framing.\"\n    },\n    {\n      \"text\": \"So every 1.0 function you add is more reliable ground for the LLM to stand on.\",\n      \"timestamp_sec\": 933,\n      \"why\": \"Reframes determinism as support for the model rather than replacement of it.\"\n    }\n  ],\n  \"concepts\": [\n    \"semantic blindness\",\n    \"hierarchical entity resolution\",\n    \"llm planning vs retrieval\",\n    \"structured output query planning\",\n    \"deterministic resolver\",\n    \"set-based retrieval\",\n    \"context window scaling limits\",\n    \"token cost per query\",\n    \"software 1.0 vs software 3.0\",\n    \"industrial iot agents\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Vector embedding retrieval fails on data center equipment names because near-identical strings produce indistinguishable embeddings and poor recall.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 135\n    },\n    {\n      \"claim\": \"LLM frequency penalties cause the model to truncate or shut off output when asked to enumerate many similar names.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 174\n    },\n    {\n      \"claim\": \"Sharding entity names across parallel LLM calls yields hallucinated entities and silent omissions, making it unsuitable for mission-critical systems.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 216\n    },\n    {\n      \"claim\": \"Context should scale with hierarchy depth rather than instance count, so a 64-GPU and a 460,000-GPU system produce roughly the same summary size.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 339\n    },\n    {\n      \"claim\": \"LLMs are good at planning searches but bad at performing them.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 389\n    },\n    {\n      \"claim\": \"The baseline LLM approach dropped from 80% correctness at 64 GPUs to about 30% at 460,000 GPUs, while the new architecture held 100% across all tested scales.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 657\n    },\n    {\n      \"claim\": \"On 66 cases across six real production systems the new system produced zero failures.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 700\n    },\n    {\n      \"claim\": \"At 1GW scale the old approach used 116 million tokens per validation pass versus 390,000 for the new one, roughly a 300x reduction.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 700\n    },\n    {\n      \"claim\": \"A two-or-three-step plan-then-resolve pipeline is preferable to a multi-step agentic loop because it keeps cost flat and bounded.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 608\n    },\n    {\n      \"claim\": \"Anything that must be 100% reproducible \u2014 exact set logic, counting, dedup across near-identical names \u2014 should be deterministic code, not an LLM.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 844\n    },\n    {\n      \"claim\": \"Karpathy's observed drift of software 1.0 into 3.0 runs backwards for AI-native systems, which should start at 3.0 and migrate toward 1.0 as they mature.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 892\n    },\n    {\n      \"claim\": \"Prototyping by throwing everything into the context window is the right first move because it is the fastest way to discover what is worth building.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 892\n    },\n    {\n      \"claim\": \"Adding deterministic tooling improves rather than constrains model performance, since each 1.0 function gives the LLM more reliable ground.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 933\n    }\n  ],\n  \"speaker_org\": \"Phaidra\"\n}",
+  "ttft_ms": 28536,
+  "ttft_stream_ms": 5052,
+  "time_to_request_ms": 37,
+  "type": "result",
+  "duration_ms": 70886,
+  "uuid": "1247a6c2-94e7-4e75-97e2-2f2a54d90893",
+  "passA": {
+    "summary": "Raahul Singh and Van\u010d Levstik of Phaidra describe how their AI agents for data centers ('AI factories') broke when asked to reason over hundreds of thousands of near-identical equipment names \u2014 a failure they call semantic blindness. They argue that neither stuffing names into context, nor vector RAG, nor sharded parallel LLM calls survives 1-gigawatt scale: embeddings can't separate 'Chiller 6' from 'Chiller 7', and sharded calls hallucinate phantom equipment while silently dropping real ones. Their fix exploits the fact that an AI factory is a tree whose depth grows slowly while width explodes: the LLM sees only a summarized path-level graph and emits a structured search plan (collect / scope / filter), which a deterministic resolver executes with pre-indexed subtrees and set operations. Measured head-to-head, the old approach fell from 80% to ~30% correctness as GPU count grew from 64 to 460,000, while the new one held 100% at a flat ~9,000 tokens per query. The closing frame inverts Karpathy's software 1.0/3.0 trend: AI-native systems should start at 3.0 and migrate the structured parts back into deterministic code.",
+    "key_points": [
+      "At 1-gigawatt scale an AI factory has 400,000+ GPUs plus supporting chillers, power meters, and switches, so any approach that puts equipment names in the LLM context window saturates immediately.",
+      "Vector search fails on this data because equipment names are 20-character strings differing by a single character, giving poor recall.",
+      "LLM frequency penalties actively sabotage long enumerations: asked to list 100 GPUs, the model's guardrails read the repeating tokens as spiraling and shut the output down.",
+      "Sharding names across parallel LLM calls produces hallucinated phantom equipment and silent omissions \u2014 unacceptable in mission-critical infrastructure where trust erodes fast.",
+      "The architectural insight is to scale with tree depth rather than instance count: a summarized root-to-leaf path list means a 64-GPU system and a 460,000-GPU system produce roughly the same context.",
+      "LLMs are used for planning, not searching \u2014 the model emits structured output naming what to collect, the subtree scope, and the filter, and a deterministic resolver does the rest via pre-indexed subtrees and set intersections.",
+      "For genuinely vague queries the LLM generates naming-convention patterns rather than reading name lists, keeping token cost roughly constant.",
+      "Evals across synthetic scales and 66 cases on six real production systems showed 100% correctness and zero failures, with a 1GW validation pass dropping from 116 million tokens to about 390,000.",
+      "The generalizable heuristic: if you can write down the structure or rules, it belongs in deterministic code; keep the LLM for ambiguity parsing, judgment, and final human-readable synthesis."
+    ],
+    "notable_quotes": [
+      {
+        "text": "Like we say, a product is something that works for all scenarios and does not fail silently. A demo just has to work for one.",
+        "timestamp_sec": 88,
+        "why": "Crisp statement of the bar that kills the naive context-stuffing approach."
+      },
+      {
+        "text": "The industry has not really figured out a common naming pattern yet and every single customer can have their own things",
+        "timestamp_sec": 44,
+        "why": "Names the domain constraint that makes the whole problem hard."
+      },
+      {
+        "text": "the problem is often times the names are so similar that semantic search just fails",
+        "timestamp_sec": 135,
+        "why": "Direct rejection of the default RAG answer."
+      },
+      {
+        "text": "The problem is you get horrible recall and hallucinations. You will see LLMs invent phantom equipment that do not exist, and also silently drop things that do exist.",
+        "timestamp_sec": 216,
+        "why": "Concrete failure mode of the obvious divide-and-conquer fix."
+      },
+      {
+        "text": "We have to find something that grows sub-linearly with increasing equipment count. And this is what we figured out. So, we should not grow with instances, we should grow with tree depth.",
+        "timestamp_sec": 262,
+        "why": "The central design principle of the talk."
+      },
+      {
+        "text": "The depth of the tree grows very slowly, the width grows extremely fast. In other words, you will have a hierarchy that only adds new equipments very rarely, but it adds a lot of them when it does.",
+        "timestamp_sec": 297,
+        "why": "Explains why the tree-depth trick works structurally."
+      },
+      {
+        "text": "because you want to go from the root to the leaf, all you have to do is describe all the paths and that's a very small finite list",
+        "timestamp_sec": 339,
+        "why": "The compression mechanism behind constant-size context."
+      },
+      {
+        "text": "The second insight that we had was LLMs are good for planning but not good for searching.",
+        "timestamp_sec": 389,
+        "why": "The talk's most portable claim about where to place the model."
+      },
+      {
+        "text": "Set operations ensure that we have perfect recall and accuracy",
+        "timestamp_sec": 512,
+        "why": "States the reliability guarantee that deterministic resolution buys."
+      },
+      {
+        "text": "All of this is a two or three-step process instead of a multi-step agentic loop, which can keep on running over and over again. And this keeps our total cost also relatively flat and constant.",
+        "timestamp_sec": 608,
+        "why": "Explicit tradeoff against open-ended agentic architectures."
+      },
+      {
+        "text": "So, we got 80% correctness at 64 GPUs, and that dropped to about 30% when the GPU grew to 400 460,000.",
+        "timestamp_sec": 657,
+        "why": "The headline degradation number for the baseline."
+      },
+      {
+        "text": "the old approach burned 116 million tokens for just a single validation pass while still having a lot of errors",
+        "timestamp_sec": 700,
+        "why": "Quantifies the cost side of the baseline failure."
+      },
+      {
+        "text": "the cost of the query was 9,000 tokens a query where the system was 64 GPUs or 460,000",
+        "timestamp_sec": 700,
+        "why": "The flat-cost result that validates the architecture."
+      },
+      {
+        "text": "It's great at parsing ambiguous requests, judging where to look for data and what to look for, handling phrasing we've never seen from a new user that has a different query",
+        "timestamp_sec": 796,
+        "why": "Positive definition of what should stay in the model."
+      },
+      {
+        "text": "If your data has structure, call it a hierarchy, graph, or a schema, a language model scanning it token by token is definitely the wrong tool.",
+        "timestamp_sec": 844,
+        "why": "The sharpest version of the talk's design rule."
+      },
+      {
+        "text": "The simple heuristic that usually works, if you can write down the structure or the rules, it's a 1.0 job. And pure LM is weakest exactly when the system is large and well structured, which is precisely where we operate and our customers.",
+        "timestamp_sec": 844,
+        "why": "Gives a reusable decision heuristic plus the scope where it bites hardest."
+      },
+      {
+        "text": "We started almost pure 3.0. We threw everything in the context window because that is the fastest way to find out what's even worth building.",
+        "timestamp_sec": 892,
+        "why": "Defends prototyping with brute-force context as a deliberate stage, not a mistake."
+      },
+      {
+        "text": "Legacy software drifts from 1.0 towards 3.0 and new AI native software starts at 3.0 and matures towards 1.0 for the use cases that earn it, of course.",
+        "timestamp_sec": 892,
+        "why": "The talk's thesis-level inversion of Karpathy's framing."
+      },
+      {
+        "text": "So every 1.0 function you add is more reliable ground for the LLM to stand on.",
+        "timestamp_sec": 933,
+        "why": "Reframes determinism as support for the model rather than replacement of it."
+      }
+    ],
+    "concepts": [
+      "semantic blindness",
+      "hierarchical entity resolution",
+      "llm planning vs retrieval",
+      "structured output query planning",
+      "deterministic resolver",
+      "set-based retrieval",
+      "context window scaling limits",
+      "token cost per query",
+      "software 1.0 vs software 3.0",
+      "industrial iot agents"
+    ],
+    "positions": [
+      {
+        "claim": "Vector embedding retrieval fails on data center equipment names because near-identical strings produce indistinguishable embeddings and poor recall.",
+        "confidence": "stated",
+        "timestamp_sec": 135
+      },
+      {
+        "claim": "LLM frequency penalties cause the model to truncate or shut off output when asked to enumerate many similar names.",
+        "confidence": "stated",
+        "timestamp_sec": 174
+      },
+      {
+        "claim": "Sharding entity names across parallel LLM calls yields hallucinated entities and silent omissions, making it unsuitable for mission-critical systems.",
+        "confidence": "stated",
+        "timestamp_sec": 216
+      },
+      {
+        "claim": "Context should scale with hierarchy depth rather than instance count, so a 64-GPU and a 460,000-GPU system produce roughly the same summary size.",
+        "confidence": "stated",
+        "timestamp_sec": 339
+      },
+      {
+        "claim": "LLMs are good at planning searches but bad at performing them.",
+        "confidence": "stated",
+        "timestamp_sec": 389
+      },
+      {
+        "claim": "The baseline LLM approach dropped from 80% correctness at 64 GPUs to about 30% at 460,000 GPUs, while the new architecture held 100% across all tested scales.",
+        "confidence": "stated",
+        "timestamp_sec": 657
+      },
+      {
+        "claim": "On 66 cases across six real production systems the new system produced zero failures.",
+        "confidence": "stated",
+        "timestamp_sec": 700
+      },
+      {
+        "claim": "At 1GW scale the old approach used 116 million tokens per validation pass versus 390,000 for the new one, roughly a 300x reduction.",
+        "confidence": "stated",
+        "timestamp_sec": 700
+      },
+      {
+        "claim": "A two-or-three-step plan-then-resolve pipeline is preferable to a multi-step agentic loop because it keeps cost flat and bounded.",
+        "confidence": "stated",
+        "timestamp_sec": 608
+      },
+      {
+        "claim": "Anything that must be 100% reproducible \u2014 exact set logic, counting, dedup across near-identical names \u2014 should be deterministic code, not an LLM.",
+        "confidence": "stated",
+        "timestamp_sec": 844
+      },
+      {
+        "claim": "Karpathy's observed drift of software 1.0 into 3.0 runs backwards for AI-native systems, which should start at 3.0 and migrate toward 1.0 as they mature.",
+        "confidence": "stated",
+        "timestamp_sec": 892
+      },
+      {
+        "claim": "Prototyping by throwing everything into the context window is the right first move because it is the fastest way to discover what is worth building.",
+        "confidence": "stated",
+        "timestamp_sec": 892
+      },
+      {
+        "claim": "Adding deterministic tooling improves rather than constrains model performance, since each 1.0 function gives the LLM more reliable ground.",
+        "confidence": "implied",
+        "timestamp_sec": 933
+      }
+    ],
+    "speaker_org": "Phaidra"
+  },
+  "_meta": {
+    "slug": "semantic-blindness-500000-sensors-confused-an-llm",
+    "video_id": "EUsPvBeIx70",
+    "url": "https://www.youtube.com/watch?v=EUsPvBeIx70",
+    "word_count": 2782,
+    "wall_sec": 72.0,
+    "run_at": "2026-08-12T20:12:29Z",
+    "effort": "medium"
+  }
+}

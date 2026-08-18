@@ -1,0 +1,303 @@
+{
+  "is_error": false,
+  "duration_api_ms": 64486,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "6683f43b-b0e1-4720-880b-a4a574c4eda2",
+  "total_cost_usd": 0.530119,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 36977,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 5072,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 36977,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 5072,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 36977,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 36977
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 28295,
+      "outputTokens": 18,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.028385,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 5072,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 36977,
+      "webSearchRequests": 0,
+      "costUSD": 0.501734,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Zach Blumenfeld of Neo4j runs a nearly two-hour hands-on workshop arguing that lakehouse agents fail not because they can't access data, but because they lack the right *shape* of context. He introduces three graph shapes over a fictional auto-repair chain's BigQuery warehouse and PDF document store: a 'connection' semantic layer (metadata-only graph of tables, columns and join paths, built with Neo4j's Neo Carta labs project) that guides text-to-SQL without ETLing data into the graph; a 'table of contents' outline shape (a deterministic containment tree plus cross-document links with hierarchical URIs) that lets an agent navigate documents rather than only search them; and a 'themes' shape (Leiden community detection over the links-to graph) that surfaces global clusters with no LLM extraction at all. The through-line is that estate-level questions \u2014 what documentation is missing, what are we failing to fix repeatedly, how do these tables join \u2014 are hard or impossible for vector search because you cannot search for a negative. Worth watching if you're weighing graph RAG against pure vector/text-to-SQL, or want a lightweight deterministic alternative to Microsoft-style entity-extraction GraphRAG; skip it if you want benchmarks, since the speaker admits he ran none.\",\n  \"key_points\": [\n    \"The core thesis is that agents on a lakehouse can already retrieve data via text-to-SQL and vector search, but they fail on questions requiring a particular structural shape of context \u2014 coverage gaps, global patterns, and multi-hop table joins.\",\n    \"The connection shape uses Neo Carta to pull only metadata (tables, columns, representative values, join paths) into Neo4j as a semantic layer, deliberately leaving the actual rows in BigQuery so there is no ETL, no sync problem, and no security-posture change.\",\n    \"The table-of-contents/outline shape is built by a fully deterministic, idempotent load \u2014 a containment tree of library/folder/document/section plus next-section ordering and named links \u2014 rather than LLM entity extraction, which makes it faster, reproducible, and cheap to rebuild.\",\n    \"Every node gets a hierarchical URI, which does double duty: it lets the agent drill into subtrees via a parameterized variable-length path query, and it lets a Lucene full-text search be scoped with a simple starts-with post-filter.\",\n    \"The themes shape runs Leiden community detection (via Neo4j GDS, on an in-memory projection with section-level links collapsed to the document level) and labels clusters purely from existing document and link metadata, trading interpretive richness for stability and cost versus Microsoft GraphRAG's LLM-generated community summaries.\",\n    \"Blumenfeld explicitly rejects the framing of graph navigation as a replacement for semantic search, saying he always pairs it with at least full-text search, and uses 'semantic expansion' (letting the model add synonyms like misfire/rough idle) to compensate for using Lucene instead of vectors.\",\n    \"Relationship and label naming is a real tradeoff: he uses a single generic `has` for containment across all levels because per-level names complicate Cypher, and warns that hundreds of relationship types become unmanageable inside a context window.\",\n    \"He argues agentic Cypher writing has improved dramatically \u2014 recommending the Neo4j CLI plus the Cypher and GDS skills so the model gets current syntax instead of years-old Stack Overflow answers \u2014 and predicts agents will increasingly prefer free-form Cypher over prefab shapes.\",\n    \"In the live demo the agent skipped the outline shape on the gap-analysis question and fell back to an exhaustive full-text crawl; it reached the right answer but slower, which he flags as evidence the shapes need better skill guidance rather than as a success.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"sometimes there are still some challenges around how do you give your agent the right type of context, whether or not they can see all the data in the way that they need, and really take a slice to answer the right type of question.\",\n      \"timestamp_sec\": 103,\n      \"why\": \"States the talk's central problem framing in the speaker's own words.\"\n    },\n    {\n      \"text\": \"it can pull the data correctly, um, sometimes it can be confidently wrong.\",\n      \"timestamp_sec\": 263,\n      \"why\": \"Names the specific failure mode that motivates the whole workshop.\"\n    },\n    {\n      \"text\": \"So this is sort of like proving a negative which can be very hard with something like semantic search, uh, which can only match similar things, right? It can't really find a negative example.\",\n      \"timestamp_sec\": 314,\n      \"why\": \"The sharpest statement of what vector search structurally cannot do.\"\n    },\n    {\n      \"text\": \"the thing that we're doing here really is we're not using the graph to copy the data over. There's not like an ETL into graph. What we're doing is we're using the graph as a semantic layer.\",\n      \"timestamp_sec\": 1603,\n      \"why\": \"The key architectural distinction separating this from conventional graph adoption.\"\n    },\n    {\n      \"text\": \"the other thing that a graph database is really great at doing is not just making those complicated queries run faster, but actually providing a view or a representation of the data that allows an agent to understand how tables might interrelate.\",\n      \"timestamp_sec\": 2088,\n      \"why\": \"Reframes the value of graph from query performance to agent comprehension.\"\n    },\n    {\n      \"text\": \"even though the end join it might only be a three or four hop join, you might have had to understand hundreds of tables or something to be able to arrive at that conclusion.\",\n      \"timestamp_sec\": 2088,\n      \"why\": \"Concrete articulation of why schema scale, not join depth, is the bottleneck.\"\n    },\n    {\n      \"text\": \"if you have sensitive data that's in one system, it might not, even though you could physically move it in, you you might not actually be able to for security reasons take that data and just move it into another database.\",\n      \"timestamp_sec\": 2250,\n      \"why\": \"The non-technical reason he gives for metadata-only graphs, often overlooked in graph RAG pitches.\"\n    },\n    {\n      \"text\": \"Where you do get an advantage of the ETL over just this metadata and semantic layer graph is if you have graph queries that need that performance\",\n      \"timestamp_sec\": 2286,\n      \"why\": \"He names the condition under which his own recommended approach is the wrong one.\"\n    },\n    {\n      \"text\": \"it's going to go on the internet and get the Stack Overflow questions from like four or five or six years ago and it's going to give you outdated bad cipher basically.\",\n      \"timestamp_sec\": 2461,\n      \"why\": \"Blunt argument for vendor-maintained agent skills over model priors.\"\n    },\n    {\n      \"text\": \"the benefits of having a deterministic load like this is number one, it's going to be item potent. Um, so like you're not relying on an LLM in the beginning. Um, it's often going to be a little bit faster.\",\n      \"timestamp_sec\": 3027,\n      \"why\": \"Core justification for the lightweight alternative to entity-extraction GraphRAG.\"\n    },\n    {\n      \"text\": \"I'd say it's more of a lexical or document structure graph rather than like a full like entity uh you know extraction type of pipeline to create a graph.\",\n      \"timestamp_sec\": 3027,\n      \"why\": \"Precisely categorizes what kind of graph he is advocating.\"\n    },\n    {\n      \"text\": \"The more granular you get with naming um basically the more sort of detailed uh your agent can be and your end tools can be in putting a query together. But then the more complicated your data model becomes.\",\n      \"timestamp_sec\": 3802,\n      \"why\": \"A clean statement of the schema-granularity tradeoff.\"\n    },\n    {\n      \"text\": \"two years ago, I probably would have said you would need that like additional node. Now, it seems like agents are smart enough where maybe you don't all the time anymore.\",\n      \"timestamp_sec\": 4073,\n      \"why\": \"Concedes that improving models shrink how much structure you must pre-build.\"\n    },\n    {\n      \"text\": \"I think it would be naive to call it a replacement because most of the people that I see using this will eventually incorporate some sort of hybrid vector retrieval or full text search\",\n      \"timestamp_sec\": 3899,\n      \"why\": \"A vendor engineer declining to overclaim against the competing technique.\"\n    },\n    {\n      \"text\": \"what we end up with without any sort of um tagging or labeling by AI or a language model um is just simply from the document structure we can tell that this first one um is about you know um BCM um and and bus and all these sorts of things.\",\n      \"timestamp_sec\": 5155,\n      \"why\": \"The payoff claim for zero-LLM theme discovery.\"\n    },\n    {\n      \"text\": \"the advantage of that is every time I run it, it'll be the same as long as the data stays the same.\",\n      \"timestamp_sec\": 5628,\n      \"why\": \"The determinism argument stated as a direct benefit over LLM summarization.\"\n    },\n    {\n      \"text\": \"then obviously it costs more money, it's slower, and the you if you run it twice, it might not return the same thing. So there's trade-offs between uh each way of doing it.\",\n      \"timestamp_sec\": 5628,\n      \"why\": \"Names all three costs of the Microsoft GraphRAG summarization approach in one line.\"\n    },\n    {\n      \"text\": \"if those things aren't already wellleeled, this view might not be super informative right off the bat.\",\n      \"timestamp_sec\": 5628,\n      \"why\": \"Honest statement of when the metadata-only theme shape degrades.\"\n    },\n    {\n      \"text\": \"So much better than the text to cipher experience that we've had like even as as soon as a year ago or six months ago.\",\n      \"timestamp_sec\": 6047,\n      \"why\": \"Dates the inflection point he claims for agentic query generation.\"\n    },\n    {\n      \"text\": \"it's a shame here that it didn't use the outline it's supposed to do that because basically when it uses the outline it's able to traverse through and find all of the links a little bit more efficiently.\",\n      \"timestamp_sec\": 6669,\n      \"why\": \"Speaker narrating his own demo not doing what he designed it to do.\"\n    },\n    {\n      \"text\": \"for this I haven't run any specific benchmarking on like exactly what I've shown you today.\",\n      \"timestamp_sec\": 6896,\n      \"why\": \"Important caveat on the evidentiary status of every efficiency claim in the talk.\"\n    }\n  ],\n  \"concepts\": [\n    \"graph rag\",\n    \"semantic layer\",\n    \"metadata graph\",\n    \"text-to-sql\",\n    \"community detection\",\n    \"document structure graph\",\n    \"hierarchical uri addressing\",\n    \"agentic query generation\",\n    \"hybrid retrieval\",\n    \"global versus local search\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Semantic/vector search structurally cannot answer negative or coverage questions ('what documentation are we missing'), because it can only match similar things.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 314\n    },\n    {\n      \"claim\": \"You should not ETL warehouse data into a graph database for most agent use cases; pull only metadata and keep the data in the warehouse.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1603\n    },\n    {\n      \"claim\": \"The main reasons not to move data into a graph are continuous-sync burden on terabyte-scale data, custom ETL complexity, and security posture preventing cross-system data movement.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 2250\n    },\n    {\n      \"claim\": \"ETL into a graph is justified specifically when you need recursive-join performance, graph algorithms, graph embeddings, or clustering.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 2286\n    },\n    {\n      \"claim\": \"A deterministic, regex/structure-based document load is preferable to LLM entity extraction when documents already have inherent structure and interlinking, because it is idempotent and faster.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 3027\n    },\n    {\n      \"claim\": \"Graph document navigation is not a replacement for semantic search; production systems should use hybrid retrieval.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 3899\n    },\n    {\n      \"claim\": \"Containment relationships should share a single generic name across hierarchy levels, because per-level names make Cypher unnecessarily complicated.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 3802\n    },\n    {\n      \"claim\": \"Hundreds of distinct relationship types in a production data model become hard to manage within a model's context window and degrade Cypher generation.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 3850\n    },\n    {\n      \"claim\": \"Modern agents are capable enough that entity nodes previously required in a graph data model can often be omitted, with life sciences ontologies as a counterexample.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 4073\n    },\n    {\n      \"claim\": \"Leiden is a more efficient successor to Louvain for community detection.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 5036\n    },\n    {\n      \"claim\": \"LLM-generated community summaries (the Microsoft GraphRAG approach) cost more, run slower, and are non-reproducible across runs compared to deriving theme labels from document metadata.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 5628\n    },\n    {\n      \"claim\": \"Metadata-only theme detection degrades when document titles and link names are poorly labeled, in which case LLM assistance during ingest becomes worthwhile.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 5628\n    },\n    {\n      \"claim\": \"Agent-written Cypher via the Neo4j CLI plus Cypher/GDS skills is substantially better than the text-to-Cypher experience of six to twelve months ago.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 6047\n    },\n    {\n      \"claim\": \"As text-to-Cypher capability and skills improve, agents will increasingly prefer writing free-form Cypher over calling prebuilt shape scripts.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 6472\n    },\n    {\n      \"claim\": \"Grounding in the document tree reduces hallucination risk relative to chaining multiple vector search hits, since each additional vector hit is another chance to retrieve the wrong document.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 6264\n    },\n    {\n      \"claim\": \"None of the efficiency or accuracy claims in this workshop have been benchmarked by the speaker.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 6896\n    },\n    {\n      \"claim\": \"Explicitly linking the structured (warehouse metadata) graph to the unstructured (document) graph would enable more deterministic mapping, but is unnecessary because the agent can join them at query time via extracted codes.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 7046\n    }\n  ],\n  \"speaker_org\": \"Neo4j\"\n}",
+  "ttft_ms": 62881,
+  "ttft_stream_ms": 1614,
+  "time_to_request_ms": 36,
+  "type": "result",
+  "duration_ms": 65089,
+  "uuid": "056c29fb-1659-4256-a1dd-a07fbfa76733",
+  "passA": {
+    "summary": "Zach Blumenfeld of Neo4j runs a nearly two-hour hands-on workshop arguing that lakehouse agents fail not because they can't access data, but because they lack the right *shape* of context. He introduces three graph shapes over a fictional auto-repair chain's BigQuery warehouse and PDF document store: a 'connection' semantic layer (metadata-only graph of tables, columns and join paths, built with Neo4j's Neo Carta labs project) that guides text-to-SQL without ETLing data into the graph; a 'table of contents' outline shape (a deterministic containment tree plus cross-document links with hierarchical URIs) that lets an agent navigate documents rather than only search them; and a 'themes' shape (Leiden community detection over the links-to graph) that surfaces global clusters with no LLM extraction at all. The through-line is that estate-level questions \u2014 what documentation is missing, what are we failing to fix repeatedly, how do these tables join \u2014 are hard or impossible for vector search because you cannot search for a negative. Worth watching if you're weighing graph RAG against pure vector/text-to-SQL, or want a lightweight deterministic alternative to Microsoft-style entity-extraction GraphRAG; skip it if you want benchmarks, since the speaker admits he ran none.",
+    "key_points": [
+      "The core thesis is that agents on a lakehouse can already retrieve data via text-to-SQL and vector search, but they fail on questions requiring a particular structural shape of context \u2014 coverage gaps, global patterns, and multi-hop table joins.",
+      "The connection shape uses Neo Carta to pull only metadata (tables, columns, representative values, join paths) into Neo4j as a semantic layer, deliberately leaving the actual rows in BigQuery so there is no ETL, no sync problem, and no security-posture change.",
+      "The table-of-contents/outline shape is built by a fully deterministic, idempotent load \u2014 a containment tree of library/folder/document/section plus next-section ordering and named links \u2014 rather than LLM entity extraction, which makes it faster, reproducible, and cheap to rebuild.",
+      "Every node gets a hierarchical URI, which does double duty: it lets the agent drill into subtrees via a parameterized variable-length path query, and it lets a Lucene full-text search be scoped with a simple starts-with post-filter.",
+      "The themes shape runs Leiden community detection (via Neo4j GDS, on an in-memory projection with section-level links collapsed to the document level) and labels clusters purely from existing document and link metadata, trading interpretive richness for stability and cost versus Microsoft GraphRAG's LLM-generated community summaries.",
+      "Blumenfeld explicitly rejects the framing of graph navigation as a replacement for semantic search, saying he always pairs it with at least full-text search, and uses 'semantic expansion' (letting the model add synonyms like misfire/rough idle) to compensate for using Lucene instead of vectors.",
+      "Relationship and label naming is a real tradeoff: he uses a single generic `has` for containment across all levels because per-level names complicate Cypher, and warns that hundreds of relationship types become unmanageable inside a context window.",
+      "He argues agentic Cypher writing has improved dramatically \u2014 recommending the Neo4j CLI plus the Cypher and GDS skills so the model gets current syntax instead of years-old Stack Overflow answers \u2014 and predicts agents will increasingly prefer free-form Cypher over prefab shapes.",
+      "In the live demo the agent skipped the outline shape on the gap-analysis question and fell back to an exhaustive full-text crawl; it reached the right answer but slower, which he flags as evidence the shapes need better skill guidance rather than as a success."
+    ],
+    "notable_quotes": [
+      {
+        "text": "sometimes there are still some challenges around how do you give your agent the right type of context, whether or not they can see all the data in the way that they need, and really take a slice to answer the right type of question.",
+        "timestamp_sec": 103,
+        "why": "States the talk's central problem framing in the speaker's own words."
+      },
+      {
+        "text": "So this is sort of like proving a negative which can be very hard with something like semantic search, uh, which can only match similar things, right? It can't really find a negative example.",
+        "timestamp_sec": 314,
+        "why": "The sharpest statement of what vector search structurally cannot do."
+      },
+      {
+        "text": "the thing that we're doing here really is we're not using the graph to copy the data over. There's not like an ETL into graph. What we're doing is we're using the graph as a semantic layer.",
+        "timestamp_sec": 1603,
+        "why": "The key architectural distinction separating this from conventional graph adoption."
+      },
+      {
+        "text": "the other thing that a graph database is really great at doing is not just making those complicated queries run faster, but actually providing a view or a representation of the data that allows an agent to understand how tables might interrelate.",
+        "timestamp_sec": 2088,
+        "why": "Reframes the value of graph from query performance to agent comprehension."
+      },
+      {
+        "text": "even though the end join it might only be a three or four hop join, you might have had to understand hundreds of tables or something to be able to arrive at that conclusion.",
+        "timestamp_sec": 2088,
+        "why": "Concrete articulation of why schema scale, not join depth, is the bottleneck."
+      },
+      {
+        "text": "if you have sensitive data that's in one system, it might not, even though you could physically move it in, you you might not actually be able to for security reasons take that data and just move it into another database.",
+        "timestamp_sec": 2250,
+        "why": "The non-technical reason he gives for metadata-only graphs, often overlooked in graph RAG pitches."
+      },
+      {
+        "text": "Where you do get an advantage of the ETL over just this metadata and semantic layer graph is if you have graph queries that need that performance",
+        "timestamp_sec": 2286,
+        "why": "He names the condition under which his own recommended approach is the wrong one."
+      },
+      {
+        "text": "it's going to go on the internet and get the Stack Overflow questions from like four or five or six years ago and it's going to give you outdated bad cipher basically.",
+        "timestamp_sec": 2461,
+        "why": "Blunt argument for vendor-maintained agent skills over model priors."
+      },
+      {
+        "text": "the benefits of having a deterministic load like this is number one, it's going to be item potent. Um, so like you're not relying on an LLM in the beginning. Um, it's often going to be a little bit faster.",
+        "timestamp_sec": 3027,
+        "why": "Core justification for the lightweight alternative to entity-extraction GraphRAG."
+      },
+      {
+        "text": "I'd say it's more of a lexical or document structure graph rather than like a full like entity uh you know extraction type of pipeline to create a graph.",
+        "timestamp_sec": 3027,
+        "why": "Precisely categorizes what kind of graph he is advocating."
+      },
+      {
+        "text": "The more granular you get with naming um basically the more sort of detailed uh your agent can be and your end tools can be in putting a query together. But then the more complicated your data model becomes.",
+        "timestamp_sec": 3802,
+        "why": "A clean statement of the schema-granularity tradeoff."
+      },
+      {
+        "text": "two years ago, I probably would have said you would need that like additional node. Now, it seems like agents are smart enough where maybe you don't all the time anymore.",
+        "timestamp_sec": 4073,
+        "why": "Concedes that improving models shrink how much structure you must pre-build."
+      },
+      {
+        "text": "I think it would be naive to call it a replacement because most of the people that I see using this will eventually incorporate some sort of hybrid vector retrieval or full text search",
+        "timestamp_sec": 3899,
+        "why": "A vendor engineer declining to overclaim against the competing technique."
+      },
+      {
+        "text": "what we end up with without any sort of um tagging or labeling by AI or a language model um is just simply from the document structure we can tell that this first one um is about you know um BCM um and and bus and all these sorts of things.",
+        "timestamp_sec": 5155,
+        "why": "The payoff claim for zero-LLM theme discovery."
+      },
+      {
+        "text": "the advantage of that is every time I run it, it'll be the same as long as the data stays the same.",
+        "timestamp_sec": 5628,
+        "why": "The determinism argument stated as a direct benefit over LLM summarization."
+      },
+      {
+        "text": "then obviously it costs more money, it's slower, and the you if you run it twice, it might not return the same thing. So there's trade-offs between uh each way of doing it.",
+        "timestamp_sec": 5628,
+        "why": "Names all three costs of the Microsoft GraphRAG summarization approach in one line."
+      },
+      {
+        "text": "if those things aren't already wellleeled, this view might not be super informative right off the bat.",
+        "timestamp_sec": 5628,
+        "why": "Honest statement of when the metadata-only theme shape degrades."
+      },
+      {
+        "text": "So much better than the text to cipher experience that we've had like even as as soon as a year ago or six months ago.",
+        "timestamp_sec": 6047,
+        "why": "Dates the inflection point he claims for agentic query generation."
+      },
+      {
+        "text": "it's a shame here that it didn't use the outline it's supposed to do that because basically when it uses the outline it's able to traverse through and find all of the links a little bit more efficiently.",
+        "timestamp_sec": 6669,
+        "why": "Speaker narrating his own demo not doing what he designed it to do."
+      },
+      {
+        "text": "for this I haven't run any specific benchmarking on like exactly what I've shown you today.",
+        "timestamp_sec": 6896,
+        "why": "Important caveat on the evidentiary status of every efficiency claim in the talk."
+      }
+    ],
+    "concepts": [
+      "graph rag",
+      "semantic layer",
+      "metadata graph",
+      "text-to-sql",
+      "community detection",
+      "document structure graph",
+      "hierarchical uri addressing",
+      "agentic query generation",
+      "hybrid retrieval",
+      "global versus local search"
+    ],
+    "positions": [
+      {
+        "claim": "Semantic/vector search structurally cannot answer negative or coverage questions ('what documentation are we missing'), because it can only match similar things.",
+        "confidence": "stated",
+        "timestamp_sec": 314
+      },
+      {
+        "claim": "You should not ETL warehouse data into a graph database for most agent use cases; pull only metadata and keep the data in the warehouse.",
+        "confidence": "stated",
+        "timestamp_sec": 1603
+      },
+      {
+        "claim": "The main reasons not to move data into a graph are continuous-sync burden on terabyte-scale data, custom ETL complexity, and security posture preventing cross-system data movement.",
+        "confidence": "stated",
+        "timestamp_sec": 2250
+      },
+      {
+        "claim": "ETL into a graph is justified specifically when you need recursive-join performance, graph algorithms, graph embeddings, or clustering.",
+        "confidence": "stated",
+        "timestamp_sec": 2286
+      },
+      {
+        "claim": "A deterministic, regex/structure-based document load is preferable to LLM entity extraction when documents already have inherent structure and interlinking, because it is idempotent and faster.",
+        "confidence": "stated",
+        "timestamp_sec": 3027
+      },
+      {
+        "claim": "Graph document navigation is not a replacement for semantic search; production systems should use hybrid retrieval.",
+        "confidence": "stated",
+        "timestamp_sec": 3899
+      },
+      {
+        "claim": "Containment relationships should share a single generic name across hierarchy levels, because per-level names make Cypher unnecessarily complicated.",
+        "confidence": "stated",
+        "timestamp_sec": 3802
+      },
+      {
+        "claim": "Hundreds of distinct relationship types in a production data model become hard to manage within a model's context window and degrade Cypher generation.",
+        "confidence": "stated",
+        "timestamp_sec": 3850
+      },
+      {
+        "claim": "Modern agents are capable enough that entity nodes previously required in a graph data model can often be omitted, with life sciences ontologies as a counterexample.",
+        "confidence": "stated",
+        "timestamp_sec": 4073
+      },
+      {
+        "claim": "Leiden is a more efficient successor to Louvain for community detection.",
+        "confidence": "stated",
+        "timestamp_sec": 5036
+      },
+      {
+        "claim": "LLM-generated community summaries (the Microsoft GraphRAG approach) cost more, run slower, and are non-reproducible across runs compared to deriving theme labels from document metadata.",
+        "confidence": "stated",
+        "timestamp_sec": 5628
+      },
+      {
+        "claim": "Metadata-only theme detection degrades when document titles and link names are poorly labeled, in which case LLM assistance during ingest becomes worthwhile.",
+        "confidence": "stated",
+        "timestamp_sec": 5628
+      },
+      {
+        "claim": "Agent-written Cypher via the Neo4j CLI plus Cypher/GDS skills is substantially better than the text-to-Cypher experience of six to twelve months ago.",
+        "confidence": "stated",
+        "timestamp_sec": 6047
+      },
+      {
+        "claim": "As text-to-Cypher capability and skills improve, agents will increasingly prefer writing free-form Cypher over calling prebuilt shape scripts.",
+        "confidence": "stated",
+        "timestamp_sec": 6472
+      },
+      {
+        "claim": "Grounding in the document tree reduces hallucination risk relative to chaining multiple vector search hits, since each additional vector hit is another chance to retrieve the wrong document.",
+        "confidence": "stated",
+        "timestamp_sec": 6264
+      },
+      {
+        "claim": "None of the efficiency or accuracy claims in this workshop have been benchmarked by the speaker.",
+        "confidence": "stated",
+        "timestamp_sec": 6896
+      },
+      {
+        "claim": "Explicitly linking the structured (warehouse metadata) graph to the unstructured (document) graph would enable more deterministic mapping, but is unnecessary because the agent can join them at query time via extracted codes.",
+        "confidence": "stated",
+        "timestamp_sec": 7046
+      }
+    ],
+    "speaker_org": "Neo4j"
+  },
+  "_meta": {
+    "slug": "ai-on-your-lakehouse-context-comes-in-shapes-not-queries",
+    "video_id": "kRkcNOsRyYg",
+    "url": "https://www.youtube.com/watch?v=kRkcNOsRyYg",
+    "word_count": 18147,
+    "wall_sec": 66.2,
+    "run_at": "2026-08-12T19:30:22Z",
+    "effort": "medium",
+    "quotes_dropped": 0
+  }
+}

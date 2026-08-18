@@ -1,0 +1,288 @@
+{
+  "is_error": false,
+  "duration_api_ms": 58447,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "31491d4f-abde-45c5-bb6f-3697bfb80195",
+  "total_cost_usd": 0.28971399999999997,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 15556,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 4714,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 15556,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 4714,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 15556,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 15556
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 11070,
+      "outputTokens": 14,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.01114,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 4714,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 15556,
+      "webSearchRequests": 0,
+      "costUSD": 0.278574,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"A hands-on, demo-heavy walkthrough of a framework-free RAG stack built by Ogilvy's Abed Matini for an HR FAQ assistant: Docling converts uploaded PDFs/Word/PowerPoint/images to markdown locally, chunks land in PostgreSQL as vectors, and retrieval combines cosine-similarity vector search with BM25 keyword search plus reranking. The core argument is that pre-structuring documents on local CPU avoids the 'multimodal tax' of dragging a raw 28-page PDF into a cloud chatbot \u2014 you burn tokens before asking anything and have no visibility into how it was chunked. Matini spends most of the talk demoing four chunking strategies (heading-based, paragraph, fixed 512-char with 64-char overlap, sentence-group) and showing how clean chunks give traceable citations while a bulk-uploaded handbook returns vague, unattributable answers. He also argues against agentic loops for this use case: deterministic Python functions handle date lookup, guardrails, and prompt-injection blocking before anything reaches the LLM, which keeps latency low and makes behavior testable. Worth watching if you want a concrete, low-cost local RAG blueprint (Qwen 2.5 0.5B, Ollama, Docker, Langfuse) and are weighing structured ingestion against just uploading documents to a big model.\",\n  \"key_points\": [\n    \"Uploading raw documents directly to a cloud LLM spends tokens before any question is asked and hides how the document was chunked, so tables and structure can be misread with no way to inspect it.\",\n    \"Running Docling locally on CPU to convert documents to markdown before chunking gives visibility into chunk boundaries and costs nothing beyond local compute, which matters when documents run to 200 pages.\",\n    \"The demo compares four chunking strategies \u2014 heading-based, paragraph-based, fixed 512 characters with 64-character overlap, and sentence-group for OCR'd screenshots \u2014 each suited to different document shapes.\",\n    \"Bulk-uploading a 28-page handbook produces meaningless chunks like bare signature/date lines, which slows retrieval, reduces accuracy, and increases hallucination compared to a question-answer structured FAQ file.\",\n    \"Clean heading-based chunks make citations traceable: the demo shows the answer alongside the exact source chunk, so a wrong answer can be debugged back to which chunk failed to retrieve.\",\n    \"Hybrid retrieval is necessary because semantic search alone returns 'close' matches, but product SKUs, brand names, and medications require exact keyword hits from BM25, fused and reranked before hitting the LLM.\",\n    \"Top-k should be tuned to the use case: medical answers should retrieve fewer for accuracy and liability reasons, while product catalogs need a wider window or entire product lines never surface.\",\n    \"The system deliberately uses plain Python functions instead of LLM agents for date lookup, guardrails, and injection detection \u2014 faster locally, fully controllable, and coverable by a test suite.\",\n    \"Guardrails and prompt-injection checks (intent regexes, term dictionaries, an LLM classifier) run in code before the LLM call, keeping the system prompt tiny while the real rules live in testable code.\",\n    \"Matini started with a 7-billion-parameter model, found it too slow and wordy, and settled on Qwen 2.5 0.5B (~400MB), arguing that well-vetted retrieved context makes the smallest model sufficient and less prone to fabrication.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"as soon as we upload these documents, we going to basically lose some of our tokens that we supposed to have only for uh processing these documents without even asking a question\",\n      \"timestamp_sec\": 57,\n      \"why\": \"states the core 'multimodal tax' problem the whole talk is built around\"\n    },\n    {\n      \"text\": \"Another issue is you don't know how that document looks li- looks like there and that chunking uh how it's being chunked and how uh basically that LLM is seeing it. So, that would be a risk quality.\",\n      \"timestamp_sec\": 517,\n      \"why\": \"names the observability cost of drag-and-drop ingestion, not just the token cost\"\n    },\n    {\n      \"text\": \"imagine if if one or two pages the cost is next to nothing, but if you have 200 pages uh, then the cost going to be too much\",\n      \"timestamp_sec\": 614,\n      \"why\": \"quantifies when the local-preprocessing tradeoff starts to pay off\"\n    },\n    {\n      \"text\": \"So, this going to slow down and reduce the accuracy of our chat. It's going to increase hallucination.\",\n      \"timestamp_sec\": 766,\n      \"why\": \"direct causal claim linking bad chunking to hallucination\"\n    },\n    {\n      \"text\": \"So, each heading and answer is going to heading as a question and answer is going to become a chunk. So, we know our chunking is clean, and it's easy to uh reference.\",\n      \"timestamp_sec\": 869,\n      \"why\": \"explains the heading-based strategy and why it aids citation\"\n    },\n    {\n      \"text\": \"Then you can go track it why this right chunk hasn't been retrieved. So, in this way you have more uh more uh clear path towards how you can debug it.\",\n      \"timestamp_sec\": 988,\n      \"why\": \"frames traceable chunks as a debugging capability, the payoff of structured ingest\"\n    },\n    {\n      \"text\": \"one of the best practices for rag is you just divide based on 512 character, and you have 64% overlap between the chunks, so you won't lose the track\",\n      \"timestamp_sec\": 1157,\n      \"why\": \"the concrete fixed-size chunking recipe he demos (stated as 64% though demoed as 64 characters)\"\n    },\n    {\n      \"text\": \"But you see the issue with that is it's coming here to assist the next system. So, it's breaking. It's not the best but in some cases it works for you.\",\n      \"timestamp_sec\": 1274,\n      \"why\": \"acknowledges the tradeoff of fixed-length chunking rather than selling it\"\n    },\n    {\n      \"text\": \"The real one reason for that is the speed cuz I'm running this locally. I'm having running this on Ollama. I don't have I don't need to three four agents to loop three times four times because then I'll have to wait I have to wait 20 30 seconds for it and user would lose the interest.\",\n      \"timestamp_sec\": 1594,\n      \"why\": \"the latency argument against multi-agent loops, with a concrete number\"\n    },\n    {\n      \"text\": \"If something can be done by a Python function, let's a Python function then run it for you. Then you have also the full control over the function. Won't be any hallucination because you need to you're going to write your test suite so to just cover most of the situations.\",\n      \"timestamp_sec\": 1594,\n      \"why\": \"the deterministic-code-over-agents position, tied to testability\"\n    },\n    {\n      \"text\": \"You don't need the LLM to bring you back the current date. You don't need the LLM to calculate for you something\",\n      \"timestamp_sec\": 1633,\n      \"why\": \"crisp heuristic for what should never be an LLM call\"\n    },\n    {\n      \"text\": \"if it's a medical chatbot, you need the exact medication. You need don't need something similar or close to it. So, we need to have both both basically uh keyword search and um and the semantic search together.\",\n      \"timestamp_sec\": 1807,\n      \"why\": \"the clearest justification for hybrid over pure vector search\"\n    },\n    {\n      \"text\": \"If you don't let the window your window to pull those information, those products are never going to be sold and never going to be shown in the chatbot. So, it's important how many you can fetch.\",\n      \"timestamp_sec\": 1861,\n      \"why\": \"ties top-k tuning to a business outcome, not just retrieval metrics\"\n    },\n    {\n      \"text\": \"So, if you're having products, you would bring more. You retrieve more. If it's something medical, you retrieve less.\",\n      \"timestamp_sec\": 1985,\n      \"why\": \"compact rule of thumb for domain-dependent top-k\"\n    },\n    {\n      \"text\": \"The direct rag is is just uh following the it's a fixed pipeline. It's not going to go calling anything. You know, the the path is quite clear. You have embed embedded query, you have a hybrid retriever. And you just bring up the answer. It's good if compliance is quite important for you.\",\n      \"timestamp_sec\": 2042,\n      \"why\": \"states when to prefer fixed pipelines over agent mode\"\n    },\n    {\n      \"text\": \"the point of lots of these guardrails is that the issue should stop before we um the prompt injection or anything that we have uh or a question that is we're not supposed to respond. We shouldn't even send it to the LLM to generate anything.\",\n      \"timestamp_sec\": 2255,\n      \"why\": \"the pre-LLM guardrail principle stated plainly\"\n    },\n    {\n      \"text\": \"although the system prompt looks quite small and just few sentences, uh, I'm actually prompting way more in the uh, code\",\n      \"timestamp_sec\": 2255,\n      \"why\": \"reveals the design choice of moving policy out of prompts into code\"\n    },\n    {\n      \"text\": \"it's not like uh uh LM that sometimes likes to listen to you as you're uh as the instruction and sometimes just escape and does its own thing\",\n      \"timestamp_sec\": 2411,\n      \"why\": \"the reliability argument for code-based rather than prompt-based guardrails\"\n    },\n    {\n      \"text\": \"Interesting finding from my side was you don't need the biggest model. You if you can vet your data before sending it to your LLM, a smaller smallest model can sort you out and get a good uh uh answer for you.\",\n      \"timestamp_sec\": 2550,\n      \"why\": \"the talk's headline empirical claim about retrieval quality substituting for model size\"\n    },\n    {\n      \"text\": \"If it doesn't have information, it's simply it's going to say no, I don't have that information.\",\n      \"timestamp_sec\": 2596,\n      \"why\": \"claims small models abstain more readily, framed as a safety property\"\n    },\n    {\n      \"text\": \"we use Docling for uh to do the heavy job. And then we use the Postgres vector database to just store everything. Uh didn't use any specific framework.\",\n      \"timestamp_sec\": 2654,\n      \"why\": \"the framework-free stack summary in one line\"\n    }\n  ],\n  \"concepts\": [\n    \"hybrid retrieval\",\n    \"reciprocal rank fusion\",\n    \"chunking strategies\",\n    \"document parsing to markdown\",\n    \"bm25 keyword search\",\n    \"vector similarity search\",\n    \"reranking\",\n    \"citation traceability\",\n    \"prompt injection defense\",\n    \"llm observability\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Uploading raw documents into a cloud chatbot consumes tokens before any question is asked, making local preprocessing cheaper at scale.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 57\n    },\n    {\n      \"claim\": \"Bulk-uploading an unstructured 28-page handbook produces meaningless chunks that reduce accuracy and increase hallucination relative to structured question-answer chunks.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 766\n    },\n    {\n      \"claim\": \"Heading-based chunking yields clean, referenceable chunks that make retrieval failures debuggable.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 988\n    },\n    {\n      \"claim\": \"Semantic search alone is insufficient for domains requiring exact matches (SKUs, brand names, medications); BM25 keyword search must be combined with it.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1807\n    },\n    {\n      \"claim\": \"Multi-agent loops are the wrong tradeoff for a locally-hosted chatbot because three or four agent loops add 20-30 seconds of latency and lose the user.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1594\n    },\n    {\n      \"claim\": \"Anything that can be done by a deterministic Python function should be, rather than delegated to an LLM, because it eliminates hallucination and can be covered by tests.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1594\n    },\n    {\n      \"claim\": \"Fixed direct-RAG pipelines are preferable to agent mode when compliance matters, because the execution path is predictable.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 2042\n    },\n    {\n      \"claim\": \"Guardrails and prompt-injection filters should block requests in code before the LLM is called, not via system-prompt instructions.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 2255\n    },\n    {\n      \"claim\": \"Optimal top-k depends on domain: retrieve more for product catalogs, fewer for medical answers because of accuracy and liability.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1985\n    },\n    {\n      \"claim\": \"A 0.5-billion-parameter model (Qwen 2.5, ~400MB) is sufficient for an FAQ assistant if the retrieved context is well-vetted, and hallucinates less than larger models.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 2550\n    },\n    {\n      \"claim\": \"The entire stack runs on CPU without a GPU, so it can be deployed on any staging server or GitHub Codespace.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 346\n    },\n    {\n      \"claim\": \"Enabling agent mode with extra tools costs referencing ability, since agent-driven search breaks the citation chain back to source chunks.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1677\n    },\n    {\n      \"claim\": \"A production chatbot that accumulates too many tools becomes unmanageable, which is an argument for a framework-free fixed pipeline.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 113\n    }\n  ],\n  \"speaker_org\": \"Ogilvy\"\n}",
+  "ttft_ms": 57135,
+  "ttft_stream_ms": 1044,
+  "time_to_request_ms": 33,
+  "type": "result",
+  "duration_ms": 59038,
+  "uuid": "7963dac1-34fc-40fd-8aea-989a3aba77f5",
+  "passA": {
+    "summary": "A hands-on, demo-heavy walkthrough of a framework-free RAG stack built by Ogilvy's Abed Matini for an HR FAQ assistant: Docling converts uploaded PDFs/Word/PowerPoint/images to markdown locally, chunks land in PostgreSQL as vectors, and retrieval combines cosine-similarity vector search with BM25 keyword search plus reranking. The core argument is that pre-structuring documents on local CPU avoids the 'multimodal tax' of dragging a raw 28-page PDF into a cloud chatbot \u2014 you burn tokens before asking anything and have no visibility into how it was chunked. Matini spends most of the talk demoing four chunking strategies (heading-based, paragraph, fixed 512-char with 64-char overlap, sentence-group) and showing how clean chunks give traceable citations while a bulk-uploaded handbook returns vague, unattributable answers. He also argues against agentic loops for this use case: deterministic Python functions handle date lookup, guardrails, and prompt-injection blocking before anything reaches the LLM, which keeps latency low and makes behavior testable. Worth watching if you want a concrete, low-cost local RAG blueprint (Qwen 2.5 0.5B, Ollama, Docker, Langfuse) and are weighing structured ingestion against just uploading documents to a big model.",
+    "key_points": [
+      "Uploading raw documents directly to a cloud LLM spends tokens before any question is asked and hides how the document was chunked, so tables and structure can be misread with no way to inspect it.",
+      "Running Docling locally on CPU to convert documents to markdown before chunking gives visibility into chunk boundaries and costs nothing beyond local compute, which matters when documents run to 200 pages.",
+      "The demo compares four chunking strategies \u2014 heading-based, paragraph-based, fixed 512 characters with 64-character overlap, and sentence-group for OCR'd screenshots \u2014 each suited to different document shapes.",
+      "Bulk-uploading a 28-page handbook produces meaningless chunks like bare signature/date lines, which slows retrieval, reduces accuracy, and increases hallucination compared to a question-answer structured FAQ file.",
+      "Clean heading-based chunks make citations traceable: the demo shows the answer alongside the exact source chunk, so a wrong answer can be debugged back to which chunk failed to retrieve.",
+      "Hybrid retrieval is necessary because semantic search alone returns 'close' matches, but product SKUs, brand names, and medications require exact keyword hits from BM25, fused and reranked before hitting the LLM.",
+      "Top-k should be tuned to the use case: medical answers should retrieve fewer for accuracy and liability reasons, while product catalogs need a wider window or entire product lines never surface.",
+      "The system deliberately uses plain Python functions instead of LLM agents for date lookup, guardrails, and injection detection \u2014 faster locally, fully controllable, and coverable by a test suite.",
+      "Guardrails and prompt-injection checks (intent regexes, term dictionaries, an LLM classifier) run in code before the LLM call, keeping the system prompt tiny while the real rules live in testable code.",
+      "Matini started with a 7-billion-parameter model, found it too slow and wordy, and settled on Qwen 2.5 0.5B (~400MB), arguing that well-vetted retrieved context makes the smallest model sufficient and less prone to fabrication."
+    ],
+    "notable_quotes": [
+      {
+        "text": "as soon as we upload these documents, we going to basically lose some of our tokens that we supposed to have only for uh processing these documents without even asking a question",
+        "timestamp_sec": 57,
+        "why": "states the core 'multimodal tax' problem the whole talk is built around"
+      },
+      {
+        "text": "Another issue is you don't know how that document looks li- looks like there and that chunking uh how it's being chunked and how uh basically that LLM is seeing it. So, that would be a risk quality.",
+        "timestamp_sec": 517,
+        "why": "names the observability cost of drag-and-drop ingestion, not just the token cost"
+      },
+      {
+        "text": "imagine if if one or two pages the cost is next to nothing, but if you have 200 pages uh, then the cost going to be too much",
+        "timestamp_sec": 614,
+        "why": "quantifies when the local-preprocessing tradeoff starts to pay off"
+      },
+      {
+        "text": "So, this going to slow down and reduce the accuracy of our chat. It's going to increase hallucination.",
+        "timestamp_sec": 766,
+        "why": "direct causal claim linking bad chunking to hallucination"
+      },
+      {
+        "text": "So, each heading and answer is going to heading as a question and answer is going to become a chunk. So, we know our chunking is clean, and it's easy to uh reference.",
+        "timestamp_sec": 869,
+        "why": "explains the heading-based strategy and why it aids citation"
+      },
+      {
+        "text": "Then you can go track it why this right chunk hasn't been retrieved. So, in this way you have more uh more uh clear path towards how you can debug it.",
+        "timestamp_sec": 988,
+        "why": "frames traceable chunks as a debugging capability, the payoff of structured ingest"
+      },
+      {
+        "text": "one of the best practices for rag is you just divide based on 512 character, and you have 64% overlap between the chunks, so you won't lose the track",
+        "timestamp_sec": 1157,
+        "why": "the concrete fixed-size chunking recipe he demos (stated as 64% though demoed as 64 characters)"
+      },
+      {
+        "text": "But you see the issue with that is it's coming here to assist the next system. So, it's breaking. It's not the best but in some cases it works for you.",
+        "timestamp_sec": 1274,
+        "why": "acknowledges the tradeoff of fixed-length chunking rather than selling it"
+      },
+      {
+        "text": "The real one reason for that is the speed cuz I'm running this locally. I'm having running this on Ollama. I don't have I don't need to three four agents to loop three times four times because then I'll have to wait I have to wait 20 30 seconds for it and user would lose the interest.",
+        "timestamp_sec": 1594,
+        "why": "the latency argument against multi-agent loops, with a concrete number"
+      },
+      {
+        "text": "If something can be done by a Python function, let's a Python function then run it for you. Then you have also the full control over the function. Won't be any hallucination because you need to you're going to write your test suite so to just cover most of the situations.",
+        "timestamp_sec": 1594,
+        "why": "the deterministic-code-over-agents position, tied to testability"
+      },
+      {
+        "text": "You don't need the LLM to bring you back the current date. You don't need the LLM to calculate for you something",
+        "timestamp_sec": 1633,
+        "why": "crisp heuristic for what should never be an LLM call"
+      },
+      {
+        "text": "if it's a medical chatbot, you need the exact medication. You need don't need something similar or close to it. So, we need to have both both basically uh keyword search and um and the semantic search together.",
+        "timestamp_sec": 1807,
+        "why": "the clearest justification for hybrid over pure vector search"
+      },
+      {
+        "text": "If you don't let the window your window to pull those information, those products are never going to be sold and never going to be shown in the chatbot. So, it's important how many you can fetch.",
+        "timestamp_sec": 1861,
+        "why": "ties top-k tuning to a business outcome, not just retrieval metrics"
+      },
+      {
+        "text": "So, if you're having products, you would bring more. You retrieve more. If it's something medical, you retrieve less.",
+        "timestamp_sec": 1985,
+        "why": "compact rule of thumb for domain-dependent top-k"
+      },
+      {
+        "text": "The direct rag is is just uh following the it's a fixed pipeline. It's not going to go calling anything. You know, the the path is quite clear. You have embed embedded query, you have a hybrid retriever. And you just bring up the answer. It's good if compliance is quite important for you.",
+        "timestamp_sec": 2042,
+        "why": "states when to prefer fixed pipelines over agent mode"
+      },
+      {
+        "text": "the point of lots of these guardrails is that the issue should stop before we um the prompt injection or anything that we have uh or a question that is we're not supposed to respond. We shouldn't even send it to the LLM to generate anything.",
+        "timestamp_sec": 2255,
+        "why": "the pre-LLM guardrail principle stated plainly"
+      },
+      {
+        "text": "although the system prompt looks quite small and just few sentences, uh, I'm actually prompting way more in the uh, code",
+        "timestamp_sec": 2255,
+        "why": "reveals the design choice of moving policy out of prompts into code"
+      },
+      {
+        "text": "it's not like uh uh LM that sometimes likes to listen to you as you're uh as the instruction and sometimes just escape and does its own thing",
+        "timestamp_sec": 2411,
+        "why": "the reliability argument for code-based rather than prompt-based guardrails"
+      },
+      {
+        "text": "Interesting finding from my side was you don't need the biggest model. You if you can vet your data before sending it to your LLM, a smaller smallest model can sort you out and get a good uh uh answer for you.",
+        "timestamp_sec": 2550,
+        "why": "the talk's headline empirical claim about retrieval quality substituting for model size"
+      },
+      {
+        "text": "If it doesn't have information, it's simply it's going to say no, I don't have that information.",
+        "timestamp_sec": 2596,
+        "why": "claims small models abstain more readily, framed as a safety property"
+      },
+      {
+        "text": "we use Docling for uh to do the heavy job. And then we use the Postgres vector database to just store everything. Uh didn't use any specific framework.",
+        "timestamp_sec": 2654,
+        "why": "the framework-free stack summary in one line"
+      }
+    ],
+    "concepts": [
+      "hybrid retrieval",
+      "reciprocal rank fusion",
+      "chunking strategies",
+      "document parsing to markdown",
+      "bm25 keyword search",
+      "vector similarity search",
+      "reranking",
+      "citation traceability",
+      "prompt injection defense",
+      "llm observability"
+    ],
+    "positions": [
+      {
+        "claim": "Uploading raw documents into a cloud chatbot consumes tokens before any question is asked, making local preprocessing cheaper at scale.",
+        "confidence": "stated",
+        "timestamp_sec": 57
+      },
+      {
+        "claim": "Bulk-uploading an unstructured 28-page handbook produces meaningless chunks that reduce accuracy and increase hallucination relative to structured question-answer chunks.",
+        "confidence": "stated",
+        "timestamp_sec": 766
+      },
+      {
+        "claim": "Heading-based chunking yields clean, referenceable chunks that make retrieval failures debuggable.",
+        "confidence": "stated",
+        "timestamp_sec": 988
+      },
+      {
+        "claim": "Semantic search alone is insufficient for domains requiring exact matches (SKUs, brand names, medications); BM25 keyword search must be combined with it.",
+        "confidence": "stated",
+        "timestamp_sec": 1807
+      },
+      {
+        "claim": "Multi-agent loops are the wrong tradeoff for a locally-hosted chatbot because three or four agent loops add 20-30 seconds of latency and lose the user.",
+        "confidence": "stated",
+        "timestamp_sec": 1594
+      },
+      {
+        "claim": "Anything that can be done by a deterministic Python function should be, rather than delegated to an LLM, because it eliminates hallucination and can be covered by tests.",
+        "confidence": "stated",
+        "timestamp_sec": 1594
+      },
+      {
+        "claim": "Fixed direct-RAG pipelines are preferable to agent mode when compliance matters, because the execution path is predictable.",
+        "confidence": "stated",
+        "timestamp_sec": 2042
+      },
+      {
+        "claim": "Guardrails and prompt-injection filters should block requests in code before the LLM is called, not via system-prompt instructions.",
+        "confidence": "stated",
+        "timestamp_sec": 2255
+      },
+      {
+        "claim": "Optimal top-k depends on domain: retrieve more for product catalogs, fewer for medical answers because of accuracy and liability.",
+        "confidence": "stated",
+        "timestamp_sec": 1985
+      },
+      {
+        "claim": "A 0.5-billion-parameter model (Qwen 2.5, ~400MB) is sufficient for an FAQ assistant if the retrieved context is well-vetted, and hallucinates less than larger models.",
+        "confidence": "stated",
+        "timestamp_sec": 2550
+      },
+      {
+        "claim": "The entire stack runs on CPU without a GPU, so it can be deployed on any staging server or GitHub Codespace.",
+        "confidence": "stated",
+        "timestamp_sec": 346
+      },
+      {
+        "claim": "Enabling agent mode with extra tools costs referencing ability, since agent-driven search breaks the citation chain back to source chunks.",
+        "confidence": "stated",
+        "timestamp_sec": 1677
+      },
+      {
+        "claim": "A production chatbot that accumulates too many tools becomes unmanageable, which is an argument for a framework-free fixed pipeline.",
+        "confidence": "implied",
+        "timestamp_sec": 113
+      }
+    ],
+    "speaker_org": "Ogilvy"
+  },
+  "_meta": {
+    "slug": "bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry",
+    "video_id": "Akm1sqvWG4A",
+    "url": "https://www.youtube.com/watch?v=Akm1sqvWG4A",
+    "word_count": 6285,
+    "wall_sec": 60.1,
+    "run_at": "2026-08-12T19:38:25Z",
+    "effort": "medium"
+  }
+}

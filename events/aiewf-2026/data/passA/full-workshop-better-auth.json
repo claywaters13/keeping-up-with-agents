@@ -1,0 +1,257 @@
+{
+  "is_error": false,
+  "duration_api_ms": 57225,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "03bd655b-2377-41e4-889e-fa9623a3540c",
+  "total_cost_usd": 0.266776,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 13802,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 4564,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 13802,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 4564,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 13802,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 13802
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 9422,
+      "outputTokens": 14,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.009492,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 4564,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 13802,
+      "webSearchRequests": 0,
+      "costUSD": 0.257284,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Paola Estefania walks through the Agent Auth protocol, an open draft spec that treats AI agents as first-class security principals rather than as software impersonating the user with the user's own credentials. The workshop is structured around three problems \u2014 discovery (how an agent learns what it can do), authorization (how you scope down what it may do), and identity (how you trace and revoke it) \u2014 and proposes a well-known agent-configuration endpoint, a capability directory that translates existing OpenAPI specs into fine-grained capabilities, and per-agent private keys for signing tokens. A live demo connects Claude to the project's MCP server, reads Gmail with a read-only default, requests approval to gain send capability, shows the resulting per-agent audit log, and then revokes the agent mid-session. It is heavily interactive and Q&A-driven rather than code-heavy, so it's best for people thinking about agent identity architecture and delegated authorization, not for those wanting an implementation tutorial. Worth watching if you care about how agent permissioning should differ from OAuth scopes; skippable if you want polished slides or production patterns, since the spec is admittedly early and a v2 draft is still in progress.\",\n  \"key_points\": [\n    \"Today's common pattern \u2014 handing an agent your personal token or connecting an MCP server under your own account \u2014 makes the agent act on your behalf by pretending to be you, which is equivalent to giving a new hire the CEO's credentials.\",\n    \"The proposal reframes the agent as the principal actor with its own identity, rather than an anonymous process hiding behind the user's session.\",\n    \"The protocol identifies three distinct problems: discovery (agents finding what a service offers), authorization (scoping down what they may do), and identity (attribution, audit, and revocation).\",\n    \"Capabilities are proposed as a replacement for OAuth scopes because a scope like 'read' is too coarse to express which specific actions an agent may take.\",\n    \"Because almost no service implements the proposed well-known agent-configuration endpoint yet, the project ships a directory that translates existing OpenAPI JSON specs into per-endpoint capabilities as a bridge.\",\n    \"Each agent gets its own private key and signs its own tokens, which produces logs showing which agent, from which host, did what on behalf of which user.\",\n    \"Identity enables granular revocation: instead of disconnecting an entire integration, you revoke a single agent or an entire host, and the demo showed a revoked agent losing access mid-conversation.\",\n    \"The design deliberately trades some security for usability \u2014 read-type capabilities are granted by default per host so users aren't prompted for every action \u2014 and policies are being extended to hosts and users in a forthcoming v2 draft.\",\n    \"The speaker rejects a proxy architecture as unscalable because a proxy handles the data, positioning their component as a directory that only matches intent to capabilities.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"We're actually doing like the agent is acting on behalf of us but pretending to be us.\",\n      \"timestamp_sec\": 101,\n      \"why\": \"states the core problem the entire protocol is designed around\"\n    },\n    {\n      \"text\": \"The idea will be hire your agent in a sense of give them your agents authority instead of your credentials.\",\n      \"timestamp_sec\": 192,\n      \"why\": \"the talk's central slogan and design principle\"\n    },\n    {\n      \"text\": \"for me the most interesting thing of all is we need to stop giving credentials our credentials to our agents we need to give them authority\",\n      \"timestamp_sec\": 2218,\n      \"why\": \"the speaker's own summary of the takeaway\"\n    },\n    {\n      \"text\": \"this should we stop saying like pretend to be me instead of saying like act for me within these limits\",\n      \"timestamp_sec\": 2218,\n      \"why\": \"crisp formulation of impersonation versus scoped delegation\"\n    },\n    {\n      \"text\": \"we have the discovery issue where the agent can go find the service and read the capabilities authorization what this agent can do can do scope down and who is this agent\",\n      \"timestamp_sec\": 503,\n      \"why\": \"enumerates the three problems the protocol layers map onto\"\n    },\n    {\n      \"text\": \"The other capability is what can do, but it's more cap down. So I can actually determine what an action agent can do.\",\n      \"timestamp_sec\": 557,\n      \"why\": \"the capabilities-over-scopes argument in the speaker's words\"\n    },\n    {\n      \"text\": \"So most of the common services we use they all implement open API.\",\n      \"timestamp_sec\": 709,\n      \"why\": \"the assumption that makes the OpenAPI-to-capabilities bridge viable\"\n    },\n    {\n      \"text\": \"So the directory will be like a phone directory for the agent.\",\n      \"timestamp_sec\": 894,\n      \"why\": \"the governing analogy for the discovery layer\"\n    },\n    {\n      \"text\": \"So what we are switching is the principle. We now want that the agents are a principal actor.\",\n      \"timestamp_sec\": 944,\n      \"why\": \"names the paradigm shift that distinguishes this from fine-grained OAuth\"\n    },\n    {\n      \"text\": \"so what we come is giving agents like a private key like famous private key. So each agent will have its own and that will be attached to the identity.\",\n      \"timestamp_sec\": 994,\n      \"why\": \"concrete mechanism behind agent identity\"\n    },\n    {\n      \"text\": \"We stop seeing as an agent is like hiding behind the user and now the agent is there as a principal acting.\",\n      \"timestamp_sec\": 1118,\n      \"why\": \"restates the identity thesis in terms of what logs will show\"\n    },\n    {\n      \"text\": \"Always the token always the agents they always have a user they are reporting to you. They are never detached.\",\n      \"timestamp_sec\": 1167,\n      \"why\": \"answers whether agents can be fully autonomous principals \u2014 they cannot\"\n    },\n    {\n      \"text\": \"because we did this in February, the things changed so much until now. Like for example, Asians are not so ephemeral.\",\n      \"timestamp_sec\": 1232,\n      \"why\": \"acknowledges the v1 spec's assumptions have already aged\"\n    },\n    {\n      \"text\": \"Our idea is like to be safe but not to be annoying. Imagine every time you had to read something. Oh, I had to approve every time. You're going to hate us\",\n      \"timestamp_sec\": 1911,\n      \"why\": \"names the security-versus-UX tradeoff explicitly\"\n    },\n    {\n      \"text\": \"our actually proxy is just a directory. It's not a real proxy for us like proxy is a really bad idea. It's not scalable because proxy uses data.\",\n      \"timestamp_sec\": 2156,\n      \"why\": \"a rejected architecture others in the space do adopt\"\n    },\n    {\n      \"text\": \"Because they are not still treating ancient as a principle. We are treating nations as a principle. They have their own identity.\",\n      \"timestamp_sec\": 2347,\n      \"why\": \"the claimed differentiator from existing solutions (transcript garbles 'agent')\"\n    },\n    {\n      \"text\": \"AI gateway doesn't have doesn't do that yet I hope it does but the whole idea is to have like traceability\",\n      \"timestamp_sec\": 2347,\n      \"why\": \"direct comparison against AI gateways as an alternative\"\n    }\n  ],\n  \"concepts\": [\n    \"agent identity\",\n    \"capability-based authorization\",\n    \"oauth scopes\",\n    \"delegated authority\",\n    \"service capability discovery\",\n    \"openapi spec translation\",\n    \"audit logging and attribution\",\n    \"credential revocation\",\n    \"mcp server integration\",\n    \"security-usability tradeoffs\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Giving an agent the user's own credentials or personal token is the wrong model; agents should receive delegated authority scoped to specific actions instead.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 192\n    },\n    {\n      \"claim\": \"OAuth-style scopes such as 'read' are too coarse for agents, and fine-grained capabilities should replace them.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 557\n    },\n    {\n      \"claim\": \"Even fine-grained OAuth is insufficient because it still mints a token for the user; the agent must be the principal that holds the token.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 944\n    },\n    {\n      \"claim\": \"Every agent should hold its own private key and sign its own tokens so actions are attributable per agent, per host, and per user.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 994\n    },\n    {\n      \"claim\": \"Agents are never fully detached principals \u2014 each one always reports to a user.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1167\n    },\n    {\n      \"claim\": \"Read-type capabilities should be granted by default per host because prompting for approval on every action would make the system unusable.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1911\n    },\n    {\n      \"claim\": \"A proxy architecture for agent authorization is a bad idea because handling the data makes it unscalable; a directory that matches intent to capabilities is the right shape.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 2156\n    },\n    {\n      \"claim\": \"AI gateways do not provide per-agent identity or lifecycle traceability, which is what distinguishes this protocol from them.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 2347\n    },\n    {\n      \"claim\": \"Because few or no services implement agent-native auth endpoints today, translating existing OpenAPI specs into capabilities is a necessary interim bridge.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 653\n    },\n    {\n      \"claim\": \"The v1 spec's assumption that agents are ephemeral is outdated, and long-lived and organizational agents require policy support being added in v2.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1232\n    },\n    {\n      \"claim\": \"Agent security should not be an enterprise-only concern; the protocol is open source so that individual AI users benefit too.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1289\n    }\n  ],\n  \"speaker_org\": \"Better Auth\"\n}",
+  "ttft_ms": 18652,
+  "ttft_stream_ms": 2226,
+  "time_to_request_ms": 54,
+  "type": "result",
+  "duration_ms": 58005,
+  "uuid": "bfc346ce-1f8d-44f8-a1df-eb6ea7704684",
+  "passA": {
+    "summary": "Paola Estefania walks through the Agent Auth protocol, an open draft spec that treats AI agents as first-class security principals rather than as software impersonating the user with the user's own credentials. The workshop is structured around three problems \u2014 discovery (how an agent learns what it can do), authorization (how you scope down what it may do), and identity (how you trace and revoke it) \u2014 and proposes a well-known agent-configuration endpoint, a capability directory that translates existing OpenAPI specs into fine-grained capabilities, and per-agent private keys for signing tokens. A live demo connects Claude to the project's MCP server, reads Gmail with a read-only default, requests approval to gain send capability, shows the resulting per-agent audit log, and then revokes the agent mid-session. It is heavily interactive and Q&A-driven rather than code-heavy, so it's best for people thinking about agent identity architecture and delegated authorization, not for those wanting an implementation tutorial. Worth watching if you care about how agent permissioning should differ from OAuth scopes; skippable if you want polished slides or production patterns, since the spec is admittedly early and a v2 draft is still in progress.",
+    "key_points": [
+      "Today's common pattern \u2014 handing an agent your personal token or connecting an MCP server under your own account \u2014 makes the agent act on your behalf by pretending to be you, which is equivalent to giving a new hire the CEO's credentials.",
+      "The proposal reframes the agent as the principal actor with its own identity, rather than an anonymous process hiding behind the user's session.",
+      "The protocol identifies three distinct problems: discovery (agents finding what a service offers), authorization (scoping down what they may do), and identity (attribution, audit, and revocation).",
+      "Capabilities are proposed as a replacement for OAuth scopes because a scope like 'read' is too coarse to express which specific actions an agent may take.",
+      "Because almost no service implements the proposed well-known agent-configuration endpoint yet, the project ships a directory that translates existing OpenAPI JSON specs into per-endpoint capabilities as a bridge.",
+      "Each agent gets its own private key and signs its own tokens, which produces logs showing which agent, from which host, did what on behalf of which user.",
+      "Identity enables granular revocation: instead of disconnecting an entire integration, you revoke a single agent or an entire host, and the demo showed a revoked agent losing access mid-conversation.",
+      "The design deliberately trades some security for usability \u2014 read-type capabilities are granted by default per host so users aren't prompted for every action \u2014 and policies are being extended to hosts and users in a forthcoming v2 draft.",
+      "The speaker rejects a proxy architecture as unscalable because a proxy handles the data, positioning their component as a directory that only matches intent to capabilities."
+    ],
+    "notable_quotes": [
+      {
+        "text": "We're actually doing like the agent is acting on behalf of us but pretending to be us.",
+        "timestamp_sec": 101,
+        "why": "states the core problem the entire protocol is designed around"
+      },
+      {
+        "text": "The idea will be hire your agent in a sense of give them your agents authority instead of your credentials.",
+        "timestamp_sec": 192,
+        "why": "the talk's central slogan and design principle"
+      },
+      {
+        "text": "for me the most interesting thing of all is we need to stop giving credentials our credentials to our agents we need to give them authority",
+        "timestamp_sec": 2218,
+        "why": "the speaker's own summary of the takeaway"
+      },
+      {
+        "text": "this should we stop saying like pretend to be me instead of saying like act for me within these limits",
+        "timestamp_sec": 2218,
+        "why": "crisp formulation of impersonation versus scoped delegation"
+      },
+      {
+        "text": "we have the discovery issue where the agent can go find the service and read the capabilities authorization what this agent can do can do scope down and who is this agent",
+        "timestamp_sec": 503,
+        "why": "enumerates the three problems the protocol layers map onto"
+      },
+      {
+        "text": "The other capability is what can do, but it's more cap down. So I can actually determine what an action agent can do.",
+        "timestamp_sec": 557,
+        "why": "the capabilities-over-scopes argument in the speaker's words"
+      },
+      {
+        "text": "So most of the common services we use they all implement open API.",
+        "timestamp_sec": 709,
+        "why": "the assumption that makes the OpenAPI-to-capabilities bridge viable"
+      },
+      {
+        "text": "So the directory will be like a phone directory for the agent.",
+        "timestamp_sec": 894,
+        "why": "the governing analogy for the discovery layer"
+      },
+      {
+        "text": "So what we are switching is the principle. We now want that the agents are a principal actor.",
+        "timestamp_sec": 944,
+        "why": "names the paradigm shift that distinguishes this from fine-grained OAuth"
+      },
+      {
+        "text": "so what we come is giving agents like a private key like famous private key. So each agent will have its own and that will be attached to the identity.",
+        "timestamp_sec": 994,
+        "why": "concrete mechanism behind agent identity"
+      },
+      {
+        "text": "We stop seeing as an agent is like hiding behind the user and now the agent is there as a principal acting.",
+        "timestamp_sec": 1118,
+        "why": "restates the identity thesis in terms of what logs will show"
+      },
+      {
+        "text": "Always the token always the agents they always have a user they are reporting to you. They are never detached.",
+        "timestamp_sec": 1167,
+        "why": "answers whether agents can be fully autonomous principals \u2014 they cannot"
+      },
+      {
+        "text": "because we did this in February, the things changed so much until now. Like for example, Asians are not so ephemeral.",
+        "timestamp_sec": 1232,
+        "why": "acknowledges the v1 spec's assumptions have already aged"
+      },
+      {
+        "text": "Our idea is like to be safe but not to be annoying. Imagine every time you had to read something. Oh, I had to approve every time. You're going to hate us",
+        "timestamp_sec": 1911,
+        "why": "names the security-versus-UX tradeoff explicitly"
+      },
+      {
+        "text": "our actually proxy is just a directory. It's not a real proxy for us like proxy is a really bad idea. It's not scalable because proxy uses data.",
+        "timestamp_sec": 2156,
+        "why": "a rejected architecture others in the space do adopt"
+      },
+      {
+        "text": "Because they are not still treating ancient as a principle. We are treating nations as a principle. They have their own identity.",
+        "timestamp_sec": 2347,
+        "why": "the claimed differentiator from existing solutions (transcript garbles 'agent')"
+      },
+      {
+        "text": "AI gateway doesn't have doesn't do that yet I hope it does but the whole idea is to have like traceability",
+        "timestamp_sec": 2347,
+        "why": "direct comparison against AI gateways as an alternative"
+      }
+    ],
+    "concepts": [
+      "agent identity",
+      "capability-based authorization",
+      "oauth scopes",
+      "delegated authority",
+      "service capability discovery",
+      "openapi spec translation",
+      "audit logging and attribution",
+      "credential revocation",
+      "mcp server integration",
+      "security-usability tradeoffs"
+    ],
+    "positions": [
+      {
+        "claim": "Giving an agent the user's own credentials or personal token is the wrong model; agents should receive delegated authority scoped to specific actions instead.",
+        "confidence": "stated",
+        "timestamp_sec": 192
+      },
+      {
+        "claim": "OAuth-style scopes such as 'read' are too coarse for agents, and fine-grained capabilities should replace them.",
+        "confidence": "stated",
+        "timestamp_sec": 557
+      },
+      {
+        "claim": "Even fine-grained OAuth is insufficient because it still mints a token for the user; the agent must be the principal that holds the token.",
+        "confidence": "stated",
+        "timestamp_sec": 944
+      },
+      {
+        "claim": "Every agent should hold its own private key and sign its own tokens so actions are attributable per agent, per host, and per user.",
+        "confidence": "stated",
+        "timestamp_sec": 994
+      },
+      {
+        "claim": "Agents are never fully detached principals \u2014 each one always reports to a user.",
+        "confidence": "stated",
+        "timestamp_sec": 1167
+      },
+      {
+        "claim": "Read-type capabilities should be granted by default per host because prompting for approval on every action would make the system unusable.",
+        "confidence": "stated",
+        "timestamp_sec": 1911
+      },
+      {
+        "claim": "A proxy architecture for agent authorization is a bad idea because handling the data makes it unscalable; a directory that matches intent to capabilities is the right shape.",
+        "confidence": "stated",
+        "timestamp_sec": 2156
+      },
+      {
+        "claim": "AI gateways do not provide per-agent identity or lifecycle traceability, which is what distinguishes this protocol from them.",
+        "confidence": "stated",
+        "timestamp_sec": 2347
+      },
+      {
+        "claim": "Because few or no services implement agent-native auth endpoints today, translating existing OpenAPI specs into capabilities is a necessary interim bridge.",
+        "confidence": "stated",
+        "timestamp_sec": 653
+      },
+      {
+        "claim": "The v1 spec's assumption that agents are ephemeral is outdated, and long-lived and organizational agents require policy support being added in v2.",
+        "confidence": "stated",
+        "timestamp_sec": 1232
+      },
+      {
+        "claim": "Agent security should not be an enterprise-only concern; the protocol is open source so that individual AI users benefit too.",
+        "confidence": "stated",
+        "timestamp_sec": 1289
+      }
+    ],
+    "speaker_org": "Better Auth"
+  },
+  "_meta": {
+    "slug": "full-workshop-better-auth",
+    "video_id": "JvKO40CFq-s",
+    "url": "https://www.youtube.com/watch?v=JvKO40CFq-s",
+    "word_count": 5648,
+    "wall_sec": 59.2,
+    "run_at": "2026-08-12T19:52:44Z",
+    "effort": "medium"
+  }
+}

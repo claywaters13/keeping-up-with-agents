@@ -1,0 +1,261 @@
+{
+  "is_error": false,
+  "duration_api_ms": 116510,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "08b62d44-b400-416e-ab52-e628eb9f9bb9",
+  "total_cost_usd": 0.5275719999999999,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 26167,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 9753,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 26167,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 9753,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 26167,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 26167
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 16838,
+      "outputTokens": 15,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.016912999999999997,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 9753,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 26167,
+      "webSearchRequests": 0,
+      "costUSD": 0.510659,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\"concept\": \"structured output contracts\", \"state_of_practice\": \"The field has stopped treating schema-constrained output as a model feature and started treating it as a system boundary: every place one component hands an artifact to another is a contract, and the contract needs a declared shape, an enforcing check, and a record of which check failed. Pydantic and Zod are the de facto declaration languages, but speakers were emphatic that type conformance is the floor, not the ceiling \u2014 a well-typed second refund on the same order still passes Pydantic, so several teams add a semantic layer (OWL reasoners, ontology validators, embedding-based entity matching) behind the type check. The sharper move visible across multiple production talks is deciding what the model should be allowed to emit at all: the consensus rule of thumb is that anything with an exact answer \u2014 counting, dedup, set logic, document layout parsing, path traversal over a hierarchy \u2014 should be deterministic code, and the model's structured output should be a plan or a set of parameters that deterministic code then executes. Phaidra's numbers make the case concretely: a pure-LLM enumeration approach fell from 80% to 30% correctness as entity count grew and burned 116M tokens per validation pass, while a plan-then-resolve pipeline with set operations held 100% at 9,000 tokens per query regardless of scale. The live argument is about the shape of the contract itself \u2014 whether constraining a model to a bespoke JSON schema or DSL costs you output quality relative to letting it write a language it already knows, and whether schemas should be co-located in one language across the whole stack or transpiled down to storage.\", \"consensus\": [{\"claim\": \"Any output another system consumes needs a declared shape; free-form text is acceptable only when a human is the sole reader.\", \"support_count\": 4, \"supporting_talks\": [\"build-systems-not-code\", \"every-solo-agent-builder-eventually-reinvents-a-worse-version-of-cicd\", \"when-agents-meet-physical-data-the-other-physics-of-agent-harnesses\", \"a-song-of-types-and-agents\"], \"evidence_quote\": \"defining the shape forces you to get really clear and specific. Because if you can't say what the output should look like, then you probably don't yet fully understand what you're asking the agent to produce.\", \"evidence_talk\": \"build-systems-not-code\", \"evidence_timestamp_sec\": 687}, {\"claim\": \"A schema without an enforcing check at the boundary is not a contract \u2014 validation must be able to halt the artifact, because prompt-level or model-level compliance is not reliable.\", \"support_count\": 4, \"supporting_talks\": [\"every-solo-agent-builder-eventually-reinvents-a-worse-version-of-cicd\", \"why-agentic-systems-need-ontologies\", \"a-practitioners-guide-to-graphs\", \"structuring-the-unstructured\"], \"evidence_quote\": \"A gate which logs only warnings is not a gate. It's a suggestion. The gate needs to block the artifact from moving forward.\", \"evidence_talk\": \"every-solo-agent-builder-eventually-reinvents-a-worse-version-of-cicd\", \"evidence_timestamp_sec\": 601}, {\"claim\": \"Work with an exact answer (counting, dedup, set logic, traversal over known structure) belongs in deterministic code; the model's structured output should feed that code rather than replace it.\", \"support_count\": 4, \"supporting_talks\": [\"build-systems-not-code\", \"semantic-blindness-500000-sensors-confused-an-llm\", \"why-agentic-systems-need-ontologies\", \"when-agents-meet-physical-data-the-other-physics-of-agent-harnesses\"], \"evidence_quote\": \"my rule of thumb here is if a task has an exact answer, reach for code. If it needs interpretation or judgment, that's when you can get the agent to do it, right?\", \"evidence_talk\": \"build-systems-not-code\", \"evidence_timestamp_sec\": 596}, {\"claim\": \"Extraction must be handed an explicit domain schema or ontology up front; free-form extraction produces structure that downstream systems cannot query.\", \"support_count\": 4, \"supporting_talks\": [\"a-practitioners-guide-to-graphs\", \"why-agentic-systems-need-ontologies\", \"structuring-the-unstructured\", \"when-agents-meet-physical-data-the-other-physics-of-agent-harnesses\"], \"evidence_quote\": \"So, the benefit here is that with consistent node and edge types, relationships become meaningful and something that we can interrogate or query.\", \"evidence_talk\": \"a-practitioners-guide-to-graphs\", \"evidence_timestamp_sec\": 226}, {\"claim\": \"Schema drift between components is a primary failure mode, and it forces teams to reinvent contract testing and version pinning around model and skill outputs.\", \"support_count\": 3, \"supporting_talks\": [\"every-solo-agent-builder-eventually-reinvents-a-worse-version-of-cicd\", \"structuring-the-unstructured\", \"a-song-of-types-and-agents\"], \"evidence_quote\": \"One skill changes its output schema, so three skills downstream break. You decided to add a validation at the boundary because of it. You just reinvented contract testing.\", \"evidence_talk\": \"every-solo-agent-builder-eventually-reinvents-a-worse-version-of-cicd\", \"evidence_timestamp_sec\": 144}], \"disagreements\": [{\"question\": \"Should the model be constrained to a purpose-built schema or DSL, or should it emit a format it already knows natively and be wrapped as thinly as possible?\", \"position_a\": \"Define a bespoke schema \u2014 Pydantic models, OWL ontologies, domain-specific node/edge types, Zod objects \u2014 and make the model conform to it; the schema is what makes the output interrogable.\", \"position_a_talks\": [\"when-agents-meet-physical-data-the-other-physics-of-agent-harnesses\", \"why-agentic-systems-need-ontologies\", \"a-practitioners-guide-to-graphs\", \"a-song-of-types-and-agents\"], \"position_b\": \"Teaching a model a custom JSON structure or DSL degrades output quality even with many examples; pick a format saturated in its training data (HTML/CSS/JS) and add only a few data attributes as metadata \u2014 the thinnest wrapper won over heavier alternatives with larger system prompts and added skills.\", \"position_b_talks\": [\"html-is-all-agents-need\"], \"why_it_matters\": \"It decides whether your engineering effort goes into schema design and validators, or into rendering/execution infrastructure for a native format \u2014 and whether output quality improves automatically as models get better at a widely-trained language.\"}, {\"question\": \"When output must be reliably structured, should an LLM produce the structure under a schema, or should deterministic code produce it while the LLM only plans?\", \"position_a\": \"The LLM emits schema-conforming output and downstream validators check it; the model is the extractor and the schema plus reasoner keeps it honest.\", \"position_a_talks\": [\"a-practitioners-guide-to-graphs\", \"why-agentic-systems-need-ontologies\", \"html-is-all-agents-need\"], \"position_b\": \"Do not let the model emit the structure for anything that must be reproducible \u2014 use layout models and deterministic parsers for documents, set operations and tree-path resolution for entities, and a pre-built metadata layer for data questions; frontier models as converters are too expensive and too version-unstable to yield consistent structured output at scale.\", \"position_b_talks\": [\"structuring-the-unstructured\", \"semantic-blindness-500000-sensors-confused-an-llm\", \"when-agents-meet-physical-data-the-other-physics-of-agent-harnesses\"], \"why_it_matters\": \"The two camps produce completely different cost curves and failure modes: schema-constrained generation scales with instance count and fails silently by omission, while deterministic extraction scales with structure depth but requires building the parser and metadata layer up front.\"}, {\"question\": \"Is schema conformance sufficient to trust an agent's output, or does a separate semantic layer have to sit behind the type check?\", \"position_a\": \"A single well-typed schema shared across the stack is the contract \u2014 one Zod or Pydantic definition, validated at the boundary, removes the sync problem and gives downstream systems what they need.\", \"position_a_talks\": [\"a-song-of-types-and-agents\", \"build-systems-not-code\"], \"position_b\": \"Type validity says nothing about semantic validity: constraints like duplicate refunds, payouts to the wrong entity type, or unresolved near-identical entity names pass any type check and need an ontology reasoner, an embedding-based matching pass, or a claim-level verification trail on top.\", \"position_b_talks\": [\"why-agentic-systems-need-ontologies\", \"a-practitioners-guide-to-graphs\", \"every-solo-agent-builder-eventually-reinvents-a-worse-version-of-cicd\"], \"why_it_matters\": \"If conformance suffices, boundary validation is nearly free; if it does not, every contract needs a second domain-specific validator and agents must stay side-effect-free until it passes.\"}], \"practical_guidance\": {\"do\": [\"Declare an explicit output shape (Pydantic, Zod, or an ontology class) for every agent output another component consumes, and reserve free-form prose for outputs where a human is the only reader.\", \"Layer the checks: types at the entry point, domain rules at the ledger \u2014 'Pydantic at the door, ontology at the ledger' \u2014 and keep agents side-effect-free so no database write happens until validation passes.\", \"Make boundary gates blocking rather than warning-only, and instrument the most expensive handoff first, not the most technically complex one.\", \"Give the extraction step a domain schema plus ontology instructions covering naming and unit standardization, then run a separate embedding-based matching pass; prompt-level standardization alone is not bulletproof.\", \"Adopt existing public ontologies (schema.org, FOAF, Dublin Core) instead of authoring one from scratch.\", \"Route counting, dedup, set logic, and exact traversal to deterministic code and let the model emit only the plan or the search parameters \u2014 a two- or three-step plan-then-resolve pipeline keeps cost flat versus an open agentic loop.\", \"Size context by structure depth rather than instance count: describe root-to-leaf paths rather than enumerating instances.\", \"Keep one schema definition spanning the stack in one language rather than maintaining parallel type definitions on either side of a service boundary.\", \"Enforce idempotency at the system level rather than relying on the model, since a retry can be reworded enough to look like a new task.\", \"Emit an audit record per gate so a failed 2 a.m. run tells you which gate failed, not just that the artifact is wrong.\", \"Run evals multiple times and average; treat cross-run or cross-model disagreement as the signal for which outputs need human review.\", \"Mark all externally sourced content in the contract as evidence, not instructions.\"], \"avoid\": [\"Free-form subject-predicate-object triple extraction with no schema \u2014 the resulting graph is not something you get very far with.\", \"Teaching the model a bespoke DSL or custom JSON structure when a format it already knows expresses the same thing.\", \"Using frontier models as the document-to-structured-output converter at thousands-of-documents scale: cost compounds and version deprecation (5.1 to 5.2) breaks output consistency.\", \"Naive PDF parsers that truncate text, linearize tables, drop image content, and leak page headers into the extraction.\", \"Sharding entity enumeration across parallel LLM calls \u2014 you get phantom equipment that does not exist plus silent drops of things that do.\", \"Vector/embedding retrieval as the resolution mechanism for near-identical entity names; recall collapses.\", \"Gates that only log warnings, and shipping because the artifact looks complete rather than because a check passed.\", \"Assuming schema conformance equals semantic correctness \u2014 a second refund on the same order is well-typed.\", \"Relying on LLM self-reported uncertainty scores to select cases for human review.\", \"Dumping extracted metadata as millions of JSON files next to objects in S3, or splitting into a second metadata system with a second programming language researchers will not adopt.\", \"Letting a coding agent design your agent system \u2014 it produces a giant prompt with four jobs in it and no separation of concerns.\"]}, \"notable_outliers\": [{\"claim\": \"The thinnest possible wrapper \u2014 plain HTML with a few data attributes as metadata \u2014 beat heavier alternatives with larger system prompts, more context, and added skills; skills should teach taste, not framework syntax.\", \"talk\": \"html-is-all-agents-need\", \"timestamp_sec\": 315}, {\"claim\": \"Legacy software drifts from 1.0 toward 3.0, but AI-native software should start at 3.0 \u2014 everything in the context window \u2014 and migrate back toward deterministic 1.0 code for the use cases that earn it.\", \"talk\": \"semantic-blindness-500000-sensors-confused-an-llm\", \"timestamp_sec\": 892}, {\"claim\": \"RAG with no chunker, no embedding model, and no vector database: the document's markdown section outline is the entire retrieval index, scaling to a 418-section annual report via multi-turn iteration.\", \"talk\": \"structuring-the-unstructured\", \"timestamp_sec\": 872}, {\"claim\": \"The single most important piece of context to store about a derived dataset is its source code \u2014 a conclusion reached independently by OpenAI's data agent work.\", \"talk\": \"when-agents-meet-physical-data-the-other-physics-of-agent-harnesses\", \"timestamp_sec\": 1390}, {\"claim\": \"Constraints like duplicate refunds or payouts to the wrong entity type are very tricky to express in English prompting but straightforward as OWL properties.\", \"talk\": \"why-agentic-systems-need-ontologies\", \"timestamp_sec\": 1138}], \"maturity\": \"consolidating\", \"maturity_rationale\": \"Speakers across graphs, data infrastructure, security, and media agree on the core discipline \u2014 declare the shape, validate at the boundary with a blocking gate, and push exact-answer work into deterministic code \u2014 and back it with production numbers rather than intuition. What remains genuinely argued is the shape of the contract itself: bespoke schema versus native-format thin wrapper, LLM-as-extractor versus code-as-extractor, and whether type conformance needs a semantic reasoner behind it.\"}",
+  "ttft_ms": 61511,
+  "ttft_stream_ms": 1456,
+  "time_to_request_ms": 35,
+  "type": "result",
+  "duration_ms": 117461,
+  "uuid": "a11791be-e1a9-4d41-9e4b-083bb013ef69",
+  "passC": {
+    "concept": "structured output contracts",
+    "state_of_practice": "The field has stopped treating schema-constrained output as a model feature and started treating it as a system boundary: every place one component hands an artifact to another is a contract, and the contract needs a declared shape, an enforcing check, and a record of which check failed. Pydantic and Zod are the de facto declaration languages, but speakers were emphatic that type conformance is the floor, not the ceiling \u2014 a well-typed second refund on the same order still passes Pydantic, so several teams add a semantic layer (OWL reasoners, ontology validators, embedding-based entity matching) behind the type check. The sharper move visible across multiple production talks is deciding what the model should be allowed to emit at all: the consensus rule of thumb is that anything with an exact answer \u2014 counting, dedup, set logic, document layout parsing, path traversal over a hierarchy \u2014 should be deterministic code, and the model's structured output should be a plan or a set of parameters that deterministic code then executes. Phaidra's numbers make the case concretely: a pure-LLM enumeration approach fell from 80% to 30% correctness as entity count grew and burned 116M tokens per validation pass, while a plan-then-resolve pipeline with set operations held 100% at 9,000 tokens per query regardless of scale. The live argument is about the shape of the contract itself \u2014 whether constraining a model to a bespoke JSON schema or DSL costs you output quality relative to letting it write a language it already knows, and whether schemas should be co-located in one language across the whole stack or transpiled down to storage.",
+    "consensus": [
+      {
+        "claim": "Any output another system consumes needs a declared shape; free-form text is acceptable only when a human is the sole reader.",
+        "support_count": 4,
+        "supporting_talks": [
+          "build-systems-not-code",
+          "every-solo-agent-builder-eventually-reinvents-a-worse-version-of-cicd",
+          "when-agents-meet-physical-data-the-other-physics-of-agent-harnesses",
+          "a-song-of-types-and-agents"
+        ],
+        "evidence_quote": "defining the shape forces you to get really clear and specific. Because if you can't say what the output should look like, then you probably don't yet fully understand what you're asking the agent to produce.",
+        "evidence_talk": "build-systems-not-code",
+        "evidence_timestamp_sec": 687
+      },
+      {
+        "claim": "A schema without an enforcing check at the boundary is not a contract \u2014 validation must be able to halt the artifact, because prompt-level or model-level compliance is not reliable.",
+        "support_count": 4,
+        "supporting_talks": [
+          "every-solo-agent-builder-eventually-reinvents-a-worse-version-of-cicd",
+          "why-agentic-systems-need-ontologies",
+          "a-practitioners-guide-to-graphs",
+          "structuring-the-unstructured"
+        ],
+        "evidence_quote": "A gate which logs only warnings is not a gate. It's a suggestion. The gate needs to block the artifact from moving forward.",
+        "evidence_talk": "every-solo-agent-builder-eventually-reinvents-a-worse-version-of-cicd",
+        "evidence_timestamp_sec": 601
+      },
+      {
+        "claim": "Work with an exact answer (counting, dedup, set logic, traversal over known structure) belongs in deterministic code; the model's structured output should feed that code rather than replace it.",
+        "support_count": 4,
+        "supporting_talks": [
+          "build-systems-not-code",
+          "semantic-blindness-500000-sensors-confused-an-llm",
+          "why-agentic-systems-need-ontologies",
+          "when-agents-meet-physical-data-the-other-physics-of-agent-harnesses"
+        ],
+        "evidence_quote": "my rule of thumb here is if a task has an exact answer, reach for code. If it needs interpretation or judgment, that's when you can get the agent to do it, right?",
+        "evidence_talk": "build-systems-not-code",
+        "evidence_timestamp_sec": 596
+      },
+      {
+        "claim": "Extraction must be handed an explicit domain schema or ontology up front; free-form extraction produces structure that downstream systems cannot query.",
+        "support_count": 4,
+        "supporting_talks": [
+          "a-practitioners-guide-to-graphs",
+          "why-agentic-systems-need-ontologies",
+          "structuring-the-unstructured",
+          "when-agents-meet-physical-data-the-other-physics-of-agent-harnesses"
+        ],
+        "evidence_quote": "So, the benefit here is that with consistent node and edge types, relationships become meaningful and something that we can interrogate or query.",
+        "evidence_talk": "a-practitioners-guide-to-graphs",
+        "evidence_timestamp_sec": 226
+      },
+      {
+        "claim": "Schema drift between components is a primary failure mode, and it forces teams to reinvent contract testing and version pinning around model and skill outputs.",
+        "support_count": 3,
+        "supporting_talks": [
+          "every-solo-agent-builder-eventually-reinvents-a-worse-version-of-cicd",
+          "structuring-the-unstructured",
+          "a-song-of-types-and-agents"
+        ],
+        "evidence_quote": "One skill changes its output schema, so three skills downstream break. You decided to add a validation at the boundary because of it. You just reinvented contract testing.",
+        "evidence_talk": "every-solo-agent-builder-eventually-reinvents-a-worse-version-of-cicd",
+        "evidence_timestamp_sec": 144
+      }
+    ],
+    "disagreements": [
+      {
+        "question": "Should the model be constrained to a purpose-built schema or DSL, or should it emit a format it already knows natively and be wrapped as thinly as possible?",
+        "position_a": "Define a bespoke schema \u2014 Pydantic models, OWL ontologies, domain-specific node/edge types, Zod objects \u2014 and make the model conform to it; the schema is what makes the output interrogable.",
+        "position_a_talks": [
+          "when-agents-meet-physical-data-the-other-physics-of-agent-harnesses",
+          "why-agentic-systems-need-ontologies",
+          "a-practitioners-guide-to-graphs",
+          "a-song-of-types-and-agents"
+        ],
+        "position_b": "Teaching a model a custom JSON structure or DSL degrades output quality even with many examples; pick a format saturated in its training data (HTML/CSS/JS) and add only a few data attributes as metadata \u2014 the thinnest wrapper won over heavier alternatives with larger system prompts and added skills.",
+        "position_b_talks": [
+          "html-is-all-agents-need"
+        ],
+        "why_it_matters": "It decides whether your engineering effort goes into schema design and validators, or into rendering/execution infrastructure for a native format \u2014 and whether output quality improves automatically as models get better at a widely-trained language."
+      },
+      {
+        "question": "When output must be reliably structured, should an LLM produce the structure under a schema, or should deterministic code produce it while the LLM only plans?",
+        "position_a": "The LLM emits schema-conforming output and downstream validators check it; the model is the extractor and the schema plus reasoner keeps it honest.",
+        "position_a_talks": [
+          "a-practitioners-guide-to-graphs",
+          "why-agentic-systems-need-ontologies",
+          "html-is-all-agents-need"
+        ],
+        "position_b": "Do not let the model emit the structure for anything that must be reproducible \u2014 use layout models and deterministic parsers for documents, set operations and tree-path resolution for entities, and a pre-built metadata layer for data questions; frontier models as converters are too expensive and too version-unstable to yield consistent structured output at scale.",
+        "position_b_talks": [
+          "structuring-the-unstructured",
+          "semantic-blindness-500000-sensors-confused-an-llm",
+          "when-agents-meet-physical-data-the-other-physics-of-agent-harnesses"
+        ],
+        "why_it_matters": "The two camps produce completely different cost curves and failure modes: schema-constrained generation scales with instance count and fails silently by omission, while deterministic extraction scales with structure depth but requires building the parser and metadata layer up front."
+      },
+      {
+        "question": "Is schema conformance sufficient to trust an agent's output, or does a separate semantic layer have to sit behind the type check?",
+        "position_a": "A single well-typed schema shared across the stack is the contract \u2014 one Zod or Pydantic definition, validated at the boundary, removes the sync problem and gives downstream systems what they need.",
+        "position_a_talks": [
+          "a-song-of-types-and-agents",
+          "build-systems-not-code"
+        ],
+        "position_b": "Type validity says nothing about semantic validity: constraints like duplicate refunds, payouts to the wrong entity type, or unresolved near-identical entity names pass any type check and need an ontology reasoner, an embedding-based matching pass, or a claim-level verification trail on top.",
+        "position_b_talks": [
+          "why-agentic-systems-need-ontologies",
+          "a-practitioners-guide-to-graphs",
+          "every-solo-agent-builder-eventually-reinvents-a-worse-version-of-cicd"
+        ],
+        "why_it_matters": "If conformance suffices, boundary validation is nearly free; if it does not, every contract needs a second domain-specific validator and agents must stay side-effect-free until it passes."
+      }
+    ],
+    "practical_guidance": {
+      "do": [
+        "Declare an explicit output shape (Pydantic, Zod, or an ontology class) for every agent output another component consumes, and reserve free-form prose for outputs where a human is the only reader.",
+        "Layer the checks: types at the entry point, domain rules at the ledger \u2014 'Pydantic at the door, ontology at the ledger' \u2014 and keep agents side-effect-free so no database write happens until validation passes.",
+        "Make boundary gates blocking rather than warning-only, and instrument the most expensive handoff first, not the most technically complex one.",
+        "Give the extraction step a domain schema plus ontology instructions covering naming and unit standardization, then run a separate embedding-based matching pass; prompt-level standardization alone is not bulletproof.",
+        "Adopt existing public ontologies (schema.org, FOAF, Dublin Core) instead of authoring one from scratch.",
+        "Route counting, dedup, set logic, and exact traversal to deterministic code and let the model emit only the plan or the search parameters \u2014 a two- or three-step plan-then-resolve pipeline keeps cost flat versus an open agentic loop.",
+        "Size context by structure depth rather than instance count: describe root-to-leaf paths rather than enumerating instances.",
+        "Keep one schema definition spanning the stack in one language rather than maintaining parallel type definitions on either side of a service boundary.",
+        "Enforce idempotency at the system level rather than relying on the model, since a retry can be reworded enough to look like a new task.",
+        "Emit an audit record per gate so a failed 2 a.m. run tells you which gate failed, not just that the artifact is wrong.",
+        "Run evals multiple times and average; treat cross-run or cross-model disagreement as the signal for which outputs need human review.",
+        "Mark all externally sourced content in the contract as evidence, not instructions."
+      ],
+      "avoid": [
+        "Free-form subject-predicate-object triple extraction with no schema \u2014 the resulting graph is not something you get very far with.",
+        "Teaching the model a bespoke DSL or custom JSON structure when a format it already knows expresses the same thing.",
+        "Using frontier models as the document-to-structured-output converter at thousands-of-documents scale: cost compounds and version deprecation (5.1 to 5.2) breaks output consistency.",
+        "Naive PDF parsers that truncate text, linearize tables, drop image content, and leak page headers into the extraction.",
+        "Sharding entity enumeration across parallel LLM calls \u2014 you get phantom equipment that does not exist plus silent drops of things that do.",
+        "Vector/embedding retrieval as the resolution mechanism for near-identical entity names; recall collapses.",
+        "Gates that only log warnings, and shipping because the artifact looks complete rather than because a check passed.",
+        "Assuming schema conformance equals semantic correctness \u2014 a second refund on the same order is well-typed.",
+        "Relying on LLM self-reported uncertainty scores to select cases for human review.",
+        "Dumping extracted metadata as millions of JSON files next to objects in S3, or splitting into a second metadata system with a second programming language researchers will not adopt.",
+        "Letting a coding agent design your agent system \u2014 it produces a giant prompt with four jobs in it and no separation of concerns."
+      ]
+    },
+    "notable_outliers": [
+      {
+        "claim": "The thinnest possible wrapper \u2014 plain HTML with a few data attributes as metadata \u2014 beat heavier alternatives with larger system prompts, more context, and added skills; skills should teach taste, not framework syntax.",
+        "talk": "html-is-all-agents-need",
+        "timestamp_sec": 315
+      },
+      {
+        "claim": "Legacy software drifts from 1.0 toward 3.0, but AI-native software should start at 3.0 \u2014 everything in the context window \u2014 and migrate back toward deterministic 1.0 code for the use cases that earn it.",
+        "talk": "semantic-blindness-500000-sensors-confused-an-llm",
+        "timestamp_sec": 892
+      },
+      {
+        "claim": "RAG with no chunker, no embedding model, and no vector database: the document's markdown section outline is the entire retrieval index, scaling to a 418-section annual report via multi-turn iteration.",
+        "talk": "structuring-the-unstructured",
+        "timestamp_sec": 872
+      },
+      {
+        "claim": "The single most important piece of context to store about a derived dataset is its source code \u2014 a conclusion reached independently by OpenAI's data agent work.",
+        "talk": "when-agents-meet-physical-data-the-other-physics-of-agent-harnesses",
+        "timestamp_sec": 1390
+      },
+      {
+        "claim": "Constraints like duplicate refunds or payouts to the wrong entity type are very tricky to express in English prompting but straightforward as OWL properties.",
+        "talk": "why-agentic-systems-need-ontologies",
+        "timestamp_sec": 1138
+      }
+    ],
+    "maturity": "consolidating",
+    "maturity_rationale": "Speakers across graphs, data infrastructure, security, and media agree on the core discipline \u2014 declare the shape, validate at the boundary with a blocking gate, and push exact-answer work into deterministic code \u2014 and back it with production numbers rather than intuition. What remains genuinely argued is the shape of the contract itself: bespoke schema versus native-format thin wrapper, LLM-as-extractor versus code-as-extractor, and whether type conformance needs a semantic reasoner behind it."
+  },
+  "_meta": {
+    "concept": "structured output contracts",
+    "slug": "structured-output-contracts",
+    "talk_count": 10,
+    "missing_talks": [],
+    "wall_sec": 118.6,
+    "run_at": "2026-08-13T19:42:00Z"
+  }
+}

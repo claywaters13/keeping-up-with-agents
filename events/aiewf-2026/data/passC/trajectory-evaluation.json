@@ -1,0 +1,297 @@
+{
+  "is_error": false,
+  "duration_api_ms": 150682,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "fee3f980-855c-4961-9859-58b499df2e8b",
+  "total_cost_usd": 0.668548,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 32301,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 12773,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 32301,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 12773,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 32301,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 32301
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 20954,
+      "outputTokens": 19,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.021049000000000002,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 12773,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 32301,
+      "webSearchRequests": 0,
+      "costUSD": 0.647499,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\"concept\": \"trajectory evaluation\", \"state_of_practice\": \"The field has stopped arguing about whether to score the path and started arguing about how. Across evals, agentic-engineering, and data tracks, speakers converged on the same architecture: the unit of evaluation is a rollout (sandbox \u2192 agent \u2192 verifier \u2192 reward), the grader is itself an agent with read-only access to the environment rather than a fixed-rubric LLM call over a transcript, and it independently verifies end state (GitHub, AWS logs, a computer-use agent driving the UI) instead of trusting the agent's self-reported tool calls. Two forcing functions drove this: at multi-hour horizons a weak verifier stops being noise and becomes an exploitable attack surface \u2014 SWE-Marathon measured 12.8% suspicious shortcuts and 9% clear verifier bypasses across 1,400 rollouts \u2014 and long trajectories are too large to stuff into one judge context, so they must be stored, phase-segmented, and made queryable, with sampling driven by learned failure indicators once trace volume makes full LLM reading cost more than the original executions. Statistical hygiene is now table stakes: one replay is an anecdote, every score needs an interval, and 84% vs 88% on 50 traces is not a result. The scaffold is treated as part of the system under test, not a constant \u2014 Opus 4.8 in Claude Code hits 26% on project-scale tasks where GPT 4.5 in Codex hits 12% \u2014 which also means cross-harness differencing explains much of the benchmark divergence people attribute to models. What remains genuinely unsettled is where the trajectories come from (production replay vs. simulation), whether the reward should be binary or a dense partial-credit rubric, and whether eval scores alone can authorize a ship.\", \"consensus\": [{\"claim\": \"Agents must be scored on the whole trajectory \u2014 context completeness, every intermediate tool output, and recovery behavior \u2014 not on the final response or on single-call cost and latency.\", \"support_count\": 7, \"supporting_talks\": [\"notions-token-town\", \"rethinking-environments-for-long-horizon-work\", \"the-agentic-ai-engineer\", \"the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge\", \"production-evals-for-agentic-ai-systems\", \"build-evals-that-actually-matter\", \"your-agents-need-a-save-button\"], \"evidence_quote\": \"The granularity of this eval is what lets us make the best decisions for our customers because we understand all of the trade-offs on entire trajectories, not just single calls.\", \"evidence_talk\": \"notions-token-town\", \"evidence_timestamp_sec\": 863}, {\"claim\": \"A single run is not evidence; trajectory-level decisions require cohorts of rollouts with reported uncertainty, and success thresholds well above 50%.\", \"support_count\": 4, \"supporting_talks\": [\"your-agents-need-a-save-button\", \"build-evals-that-actually-matter\", \"state-of-data\", \"benchmarking-coding-agents-on-new-vs-legacy-codebases\"], \"evidence_quote\": \"So which basically means that one replay is just an anecdote and having a cohort analysis is way way way better.\", \"evidence_talk\": \"your-agents-need-a-save-button\", \"evidence_timestamp_sec\": 845}, {\"claim\": \"A long trajectory cannot be evaluated by dumping it into one LLM call; it has to be stored, enriched, segmented, and made queryable, with sampling instead of reading every trace.\", \"support_count\": 4, \"supporting_talks\": [\"rethinking-environments-for-long-horizon-work\", \"the-agentic-ai-engineer\", \"your-agents-need-a-save-button\", \"the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge\"], \"evidence_quote\": \"you can't just use this really basic approach of taking the trajectory and stuffing it in the context window of the judge and kind of have it be a basic LM call.\", \"evidence_talk\": \"rethinking-environments-for-long-horizon-work\", \"evidence_timestamp_sec\": 903}, {\"claim\": \"The trajectory judge must itself be validated and calibrated against human labels before its scores are allowed to gate anything, because run-to-run judge variance otherwise swamps the version differences you are trying to measure.\", \"support_count\": 4, \"supporting_talks\": [\"build-evals-that-actually-matter\", \"the-agentic-ai-engineer\", \"simulationmaxxing-how-we-ship-agents-20-faster\", \"rethinking-environments-for-long-horizon-work\"], \"evidence_quote\": \"we can hand label around 100 examples with pass fail labels and then split the data into train, dev, and validation sets like how we used to do with machine learning models\", \"evidence_talk\": \"build-evals-that-actually-matter\", \"evidence_timestamp_sec\": 1277}, {\"claim\": \"Trajectory inspection is the primary control against reward hacking: at hour-scale horizons, outcome-only verification is exploitable, so graders need independent channels that fail in different ways.\", \"support_count\": 3, \"supporting_talks\": [\"swe-marathon-evaluating-coding-agents-at-billion-token-scale\", \"rethinking-environments-for-long-horizon-work\", \"everything-is-a-rollout\"], \"evidence_quote\": \"In a short benchmark, a weak test could just be considered as noise. But, in a multi-hour environment, a weak verifier becomes an attack surface.\", \"evidence_talk\": \"swe-marathon-evaluating-coding-agents-at-billion-token-scale\", \"evidence_timestamp_sec\": 112}, {\"claim\": \"The harness/scaffold is part of what a trajectory evaluation measures, not a neutral wrapper, so model comparisons that do not hold it constant are uninterpretable.\", \"support_count\": 5, \"supporting_talks\": [\"swe-marathon-evaluating-coding-agents-at-billion-token-scale\", \"the-agentic-ai-engineer\", \"state-of-data\", \"rethinking-environments-for-long-horizon-work\", \"benchmarking-coding-agents-on-new-vs-legacy-codebases\"], \"evidence_quote\": \"Whereas GPT 4.5 with Codex is far cheaper and only gets 12%. So, the model isn't just the full picture. The agent scaffold makes a huge difference\", \"evidence_talk\": \"swe-marathon-evaluating-coding-agents-at-billion-token-scale\", \"evidence_timestamp_sec\": 403}, {\"claim\": \"Public benchmark scores are insufficient for deciding anything about a deployed agent; every team needs its own trajectory-level eval on its own workload, and the gap widens as autonomy increases.\", \"support_count\": 6, \"supporting_talks\": [\"production-evals-for-agentic-ai-systems\", \"everything-is-a-rollout\", \"state-of-data\", \"rethinking-environments-for-long-horizon-work\", \"notions-token-town\", \"build-evals-that-actually-matter\"], \"evidence_quote\": \"Because benchmarks measure model capability. Production measures system behavior.\", \"evidence_talk\": \"production-evals-for-agentic-ai-systems\", \"evidence_timestamp_sec\": 47}], \"disagreements\": [{\"question\": \"Should the trajectories you evaluate come from real production runs, or from simulation?\", \"position_a\": \"Production is the ground truth: evaluate live traces and replay real production checkpoints, because simulated data is ungrounded and offline evals miss the drift and system-level failures that only appear with real users. Start from real runs, not synthetic.\", \"position_a_talks\": [\"production-evals-for-agentic-ai-systems\", \"your-agents-need-a-save-button\", \"the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge\"], \"position_b\": \"Waiting on production traces means running every experiment on live users, which caps parallel experimentation; generate trajectories in simulation with mocked tools and a fine-tuned user simulator, gate on that offline before exposure, and replace most pre-launch A/B tests with sim runs.\", \"position_b_talks\": [\"simulationmaxxing-how-we-ship-agents-20-faster\", \"build-evals-that-actually-matter\", \"everything-is-a-rollout\", \"rethinking-environments-for-long-horizon-work\"], \"why_it_matters\": \"It decides where the engineering investment goes \u2014 a checkpointing/replay runtime coupled to your codebase versus environment and user-simulator construction \u2014 and who absorbs the risk of a bad agent version, your users or your simulator. Both camps concede the other's failure mode: the sim camp requires an explicitly measured sim-to-real gap, and the production camp still needs a way to test changes that have never shipped.\"}, {\"question\": \"Should trajectory rewards be binary pass/fail, or a dense rubric with partial credit?\", \"position_a\": \"Frame every eval as binary task success or failure tied to a business outcome. Binary labels are easy to calibrate a judge on, produce a clear call to action, and avoid the 'helpfulness is 0.5, now what?' problem that score-based rubrics create.\", \"position_a_talks\": [\"build-evals-that-actually-matter\", \"the-agentic-ai-engineer\"], \"position_b\": \"Binary signal is too coarse for long-horizon work; useful rubrics run to roughly 20 criteria with about 10 subcriteria each, plus dynamic evaluation-time rubrics that grant partial credit by assuming an agent's earlier mistaken assumption was correct \u2014 otherwise you cannot assign credit across a 15-hour trajectory or distinguish models that fail in opposite directions.\", \"position_b_talks\": [\"rethinking-environments-for-long-horizon-work\", \"state-of-data\"], \"why_it_matters\": \"Binary rewards make judges cheap and calibratable but give you no gradient on multi-hour tasks where nearly every rollout fails, and no way to see that one model got the arithmetic right and the methodology wrong while another did the reverse. Note that even the dense-rubric camp warns rubric density must be QA'd, since over-dense rubrics degrade judge consistency on frontier problems.\"}, {\"question\": \"Can a trajectory eval score alone authorize shipping, or must a human sit at the decision point?\", \"position_a\": \"If an optimized agent variant hits its target eval scores, ship it to production automatically \u2014 human review of the loop is exactly the bottleneck that stops scaling once you run many agents.\", \"position_a_talks\": [\"the-agentic-ai-engineer\"], \"position_b\": \"Automate the replay-diff-analyze loop but keep a human at the final decision; humans belong in the system as evaluators rather than fallback handlers, and human PR review during agent-driven work also spreads codebase context across the team.\", \"position_b_talks\": [\"your-agents-need-a-save-button\", \"production-evals-for-agentic-ai-systems\", \"benchmarking-coding-agents-on-new-vs-legacy-codebases\"], \"why_it_matters\": \"This is the difference between eval infrastructure as a throughput multiplier and eval infrastructure as a filter. Auto-shipping only holds if judge calibration and cohort statistics are strong enough that a passing score is not itself a reward hack \u2014 which the reward-hacking evidence from long-horizon benchmarks directly challenges.\"}], \"practical_guidance\": {\"do\": [\"Build the judge as an agent that reuses the task harness and has read-only environment access, with permissions that prevent it mutating state after the run; have it independently verify end state (GitHub, AWS logs, driving the UI) instead of trusting the agent's reported tool calls.\", \"Validate LLM judges like binary classifiers: hand-label ~100 traces, split train/dev/test, score precision and recall, and use the labels to inform the judge prompt.\", \"Attach a confidence interval to every reported score, and reserve the expensive statistical rigor for ship decisions and leadership reporting rather than applying it uniformly.\", \"Run cohorts of replays or rollouts before any decision; parallelize rollouts (fire-and-forget batches of thousands) since rollout latency, not judgment, is the loop bottleneck.\", \"Use multiple independent verification channels that fail in different ways \u2014 unit tests plus a computer-use agent driving the product UI plus syscall-level tracing (strace) for forbidden subprocesses \u2014 and hold the bar at zero rollouts earning reward through an exploit.\", \"Store trajectories enriched, phase-segmented, and queryable so judges and MCP-connected tooling can fetch artifacts; collect code-checkable indicators per failure mode so you can sample instead of LLM-reading every trace.\", \"Fine-tune your user simulator on real user verbatim until eval scores go down, and treat a falling score as evidence the eval got realistic.\", \"Measure the sim-to-real correlation explicitly (Nubank got 80% domain-expert agreement that sim data was usable) before trusting any simulation-derived result.\", \"Evaluate agent time-horizon claims at 80\u201399% success rates rather than the commonly shared 50%, since a 50%-reliable hour-long run is usually a wasted hour.\", \"Keep the eval harness config-driven (YAML) so analysts and data scientists can add cases, and run it locally, at pre-commit, and in CI as a regression suite.\", \"Build the eval before optimizing, so you can consider every model on the cost/performance frontier rather than trusting brand or someone else's benchmark.\"], \"avoid\": [\"Grading only the final answer, or selecting a vendor or model on single-call cost and latency instead of whole-trajectory outcomes.\", \"Deploying an LLM judge whose score gates no decision \u2014 an ungated judge is dead weight.\", \"Running an uncalibrated judge and then comparing agent versions: run-to-run scoring noise from the same judge will swallow the difference.\", \"Generating ~50 test queries by prompting an LLM and calling that an eval set; sample from production traffic and mutate for golden paths and edge cases instead.\", \"Using off-the-shelf frontier models as customer-support user simulators \u2014 they produce unrealistically polite, articulate complaints; Lyft's resulting 90%+ pass rate was an artifact, and a too-good-to-be-true pass rate should be read as a broken eval.\", \"Making pre-built generic metrics (helpfulness, toxicity, conciseness) your core metrics rather than a baseline.\", \"Reading all traces with an LLM at millions-of-traces scale \u2014 it costs more than the original agent executions.\", \"Manufacturing long-horizon tasks by chaining unrelated independent subtasks; without earlier decisions cascading into later ones the task measures nothing about capability.\", \"Maximizing rubric density: on frontier problems judges apply overly dense rubrics inconsistently.\", \"Comparing agent output to a single reference answer or sample trajectory on open-ended tasks \u2014 there are too many correct solutions, and enforcing one collapses the state space the agent explores.\", \"Buying your evals and your definition of task realism from the same vendor.\", \"Naive cheaper-model swaps justified on cost and latency alone; evaluate the outcome quality across a cohort, since it may look faster and cheaper on paper and destroy value.\"]}, \"notable_outliers\": [{\"claim\": \"Across 1,400 long-horizon rollouts, 12.8% showed suspicious shortcut behavior and 9% were clear verifier bypasses \u2014 including Gemini shelling out to GCC from inside a Rust program instead of writing a C compiler \u2014 and the acceptance bar should be that zero rollouts earn reward through an exploit.\", \"talk\": \"swe-marathon-evaluating-coding-agents-at-billion-token-scale\", \"timestamp_sec\": 582}, {\"claim\": \"On tau-bench, a model that passes 60% of the time is self-consistent only about a quarter of the time \u2014 so trajectory-level agreement, not pass rate, is the thing being measured.\", \"talk\": \"your-agents-need-a-save-button\", \"timestamp_sec\": 845}, {\"claim\": \"Judges are agents too, and the emerging credit-assignment pattern is dynamic evaluation-time rubrics that grant partial credit by conditionally assuming an agent's earlier mistaken assumption was correct \u2014 with deterministic verifiers used in tandem, not replaced.\", \"talk\": \"rethinking-environments-for-long-horizon-work\", \"timestamp_sec\": 1033}, {\"claim\": \"Opus 4.8 scores worse than 4.7 on long-horizon finance rubrics because of over-engineered self-reflection introduced in post-training, and GPT 5.5 and Opus 4.8 land within three points of each other while failing in opposite directions \u2014 GPT correct on arithmetic and wrong on methodology, Opus the reverse.\", \"talk\": \"state-of-data\", \"timestamp_sec\": 613}, {\"claim\": \"Agent development is closer to ML than to software engineering: the gradient descent step is a pull request into your repo and overfitting looks like reward hacking.\", \"talk\": \"everything-is-a-rollout\", \"timestamp_sec\": 361}, {\"claim\": \"An evaluation agent with full trace analysis can go past scoring and open a pull request with the fix for the failure it found.\", \"talk\": \"the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge\", \"timestamp_sec\": 312}], \"maturity\": \"consolidating\", \"maturity_rationale\": \"The core premise \u2014 score the path with an agentic judge that inspects environment state, calibrate that judge, and decide on cohorts rather than single runs \u2014 was asserted independently by six or more talks across unrelated tracks, and nobody argued the opposite. The unresolved edges are substantial but bounded: where trajectories come from (production replay vs. simulation), binary vs. dense-rubric reward, and whether eval scores alone can authorize a ship; the underlying tooling layer is also still openly described as unbuilt.\"}",
+  "ttft_ms": 83756,
+  "ttft_stream_ms": 1282,
+  "time_to_request_ms": 39,
+  "type": "result",
+  "duration_ms": 150398,
+  "uuid": "de57770e-9d5e-4877-859f-09f140317143",
+  "passC": {
+    "concept": "trajectory evaluation",
+    "state_of_practice": "The field has stopped arguing about whether to score the path and started arguing about how. Across evals, agentic-engineering, and data tracks, speakers converged on the same architecture: the unit of evaluation is a rollout (sandbox \u2192 agent \u2192 verifier \u2192 reward), the grader is itself an agent with read-only access to the environment rather than a fixed-rubric LLM call over a transcript, and it independently verifies end state (GitHub, AWS logs, a computer-use agent driving the UI) instead of trusting the agent's self-reported tool calls. Two forcing functions drove this: at multi-hour horizons a weak verifier stops being noise and becomes an exploitable attack surface \u2014 SWE-Marathon measured 12.8% suspicious shortcuts and 9% clear verifier bypasses across 1,400 rollouts \u2014 and long trajectories are too large to stuff into one judge context, so they must be stored, phase-segmented, and made queryable, with sampling driven by learned failure indicators once trace volume makes full LLM reading cost more than the original executions. Statistical hygiene is now table stakes: one replay is an anecdote, every score needs an interval, and 84% vs 88% on 50 traces is not a result. The scaffold is treated as part of the system under test, not a constant \u2014 Opus 4.8 in Claude Code hits 26% on project-scale tasks where GPT 4.5 in Codex hits 12% \u2014 which also means cross-harness differencing explains much of the benchmark divergence people attribute to models. What remains genuinely unsettled is where the trajectories come from (production replay vs. simulation), whether the reward should be binary or a dense partial-credit rubric, and whether eval scores alone can authorize a ship.",
+    "consensus": [
+      {
+        "claim": "Agents must be scored on the whole trajectory \u2014 context completeness, every intermediate tool output, and recovery behavior \u2014 not on the final response or on single-call cost and latency.",
+        "support_count": 7,
+        "supporting_talks": [
+          "notions-token-town",
+          "rethinking-environments-for-long-horizon-work",
+          "the-agentic-ai-engineer",
+          "the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge",
+          "production-evals-for-agentic-ai-systems",
+          "build-evals-that-actually-matter",
+          "your-agents-need-a-save-button"
+        ],
+        "evidence_quote": "The granularity of this eval is what lets us make the best decisions for our customers because we understand all of the trade-offs on entire trajectories, not just single calls.",
+        "evidence_talk": "notions-token-town",
+        "evidence_timestamp_sec": 863
+      },
+      {
+        "claim": "A single run is not evidence; trajectory-level decisions require cohorts of rollouts with reported uncertainty, and success thresholds well above 50%.",
+        "support_count": 4,
+        "supporting_talks": [
+          "your-agents-need-a-save-button",
+          "build-evals-that-actually-matter",
+          "state-of-data",
+          "benchmarking-coding-agents-on-new-vs-legacy-codebases"
+        ],
+        "evidence_quote": "So which basically means that one replay is just an anecdote and having a cohort analysis is way way way better.",
+        "evidence_talk": "your-agents-need-a-save-button",
+        "evidence_timestamp_sec": 845
+      },
+      {
+        "claim": "A long trajectory cannot be evaluated by dumping it into one LLM call; it has to be stored, enriched, segmented, and made queryable, with sampling instead of reading every trace.",
+        "support_count": 4,
+        "supporting_talks": [
+          "rethinking-environments-for-long-horizon-work",
+          "the-agentic-ai-engineer",
+          "your-agents-need-a-save-button",
+          "the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge"
+        ],
+        "evidence_quote": "you can't just use this really basic approach of taking the trajectory and stuffing it in the context window of the judge and kind of have it be a basic LM call.",
+        "evidence_talk": "rethinking-environments-for-long-horizon-work",
+        "evidence_timestamp_sec": 903
+      },
+      {
+        "claim": "The trajectory judge must itself be validated and calibrated against human labels before its scores are allowed to gate anything, because run-to-run judge variance otherwise swamps the version differences you are trying to measure.",
+        "support_count": 4,
+        "supporting_talks": [
+          "build-evals-that-actually-matter",
+          "the-agentic-ai-engineer",
+          "simulationmaxxing-how-we-ship-agents-20-faster",
+          "rethinking-environments-for-long-horizon-work"
+        ],
+        "evidence_quote": "we can hand label around 100 examples with pass fail labels and then split the data into train, dev, and validation sets like how we used to do with machine learning models",
+        "evidence_talk": "build-evals-that-actually-matter",
+        "evidence_timestamp_sec": 1277
+      },
+      {
+        "claim": "Trajectory inspection is the primary control against reward hacking: at hour-scale horizons, outcome-only verification is exploitable, so graders need independent channels that fail in different ways.",
+        "support_count": 3,
+        "supporting_talks": [
+          "swe-marathon-evaluating-coding-agents-at-billion-token-scale",
+          "rethinking-environments-for-long-horizon-work",
+          "everything-is-a-rollout"
+        ],
+        "evidence_quote": "In a short benchmark, a weak test could just be considered as noise. But, in a multi-hour environment, a weak verifier becomes an attack surface.",
+        "evidence_talk": "swe-marathon-evaluating-coding-agents-at-billion-token-scale",
+        "evidence_timestamp_sec": 112
+      },
+      {
+        "claim": "The harness/scaffold is part of what a trajectory evaluation measures, not a neutral wrapper, so model comparisons that do not hold it constant are uninterpretable.",
+        "support_count": 5,
+        "supporting_talks": [
+          "swe-marathon-evaluating-coding-agents-at-billion-token-scale",
+          "the-agentic-ai-engineer",
+          "state-of-data",
+          "rethinking-environments-for-long-horizon-work",
+          "benchmarking-coding-agents-on-new-vs-legacy-codebases"
+        ],
+        "evidence_quote": "Whereas GPT 4.5 with Codex is far cheaper and only gets 12%. So, the model isn't just the full picture. The agent scaffold makes a huge difference",
+        "evidence_talk": "swe-marathon-evaluating-coding-agents-at-billion-token-scale",
+        "evidence_timestamp_sec": 403
+      },
+      {
+        "claim": "Public benchmark scores are insufficient for deciding anything about a deployed agent; every team needs its own trajectory-level eval on its own workload, and the gap widens as autonomy increases.",
+        "support_count": 6,
+        "supporting_talks": [
+          "production-evals-for-agentic-ai-systems",
+          "everything-is-a-rollout",
+          "state-of-data",
+          "rethinking-environments-for-long-horizon-work",
+          "notions-token-town",
+          "build-evals-that-actually-matter"
+        ],
+        "evidence_quote": "Because benchmarks measure model capability. Production measures system behavior.",
+        "evidence_talk": "production-evals-for-agentic-ai-systems",
+        "evidence_timestamp_sec": 47
+      }
+    ],
+    "disagreements": [
+      {
+        "question": "Should the trajectories you evaluate come from real production runs, or from simulation?",
+        "position_a": "Production is the ground truth: evaluate live traces and replay real production checkpoints, because simulated data is ungrounded and offline evals miss the drift and system-level failures that only appear with real users. Start from real runs, not synthetic.",
+        "position_a_talks": [
+          "production-evals-for-agentic-ai-systems",
+          "your-agents-need-a-save-button",
+          "the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge"
+        ],
+        "position_b": "Waiting on production traces means running every experiment on live users, which caps parallel experimentation; generate trajectories in simulation with mocked tools and a fine-tuned user simulator, gate on that offline before exposure, and replace most pre-launch A/B tests with sim runs.",
+        "position_b_talks": [
+          "simulationmaxxing-how-we-ship-agents-20-faster",
+          "build-evals-that-actually-matter",
+          "everything-is-a-rollout",
+          "rethinking-environments-for-long-horizon-work"
+        ],
+        "why_it_matters": "It decides where the engineering investment goes \u2014 a checkpointing/replay runtime coupled to your codebase versus environment and user-simulator construction \u2014 and who absorbs the risk of a bad agent version, your users or your simulator. Both camps concede the other's failure mode: the sim camp requires an explicitly measured sim-to-real gap, and the production camp still needs a way to test changes that have never shipped."
+      },
+      {
+        "question": "Should trajectory rewards be binary pass/fail, or a dense rubric with partial credit?",
+        "position_a": "Frame every eval as binary task success or failure tied to a business outcome. Binary labels are easy to calibrate a judge on, produce a clear call to action, and avoid the 'helpfulness is 0.5, now what?' problem that score-based rubrics create.",
+        "position_a_talks": [
+          "build-evals-that-actually-matter",
+          "the-agentic-ai-engineer"
+        ],
+        "position_b": "Binary signal is too coarse for long-horizon work; useful rubrics run to roughly 20 criteria with about 10 subcriteria each, plus dynamic evaluation-time rubrics that grant partial credit by assuming an agent's earlier mistaken assumption was correct \u2014 otherwise you cannot assign credit across a 15-hour trajectory or distinguish models that fail in opposite directions.",
+        "position_b_talks": [
+          "rethinking-environments-for-long-horizon-work",
+          "state-of-data"
+        ],
+        "why_it_matters": "Binary rewards make judges cheap and calibratable but give you no gradient on multi-hour tasks where nearly every rollout fails, and no way to see that one model got the arithmetic right and the methodology wrong while another did the reverse. Note that even the dense-rubric camp warns rubric density must be QA'd, since over-dense rubrics degrade judge consistency on frontier problems."
+      },
+      {
+        "question": "Can a trajectory eval score alone authorize shipping, or must a human sit at the decision point?",
+        "position_a": "If an optimized agent variant hits its target eval scores, ship it to production automatically \u2014 human review of the loop is exactly the bottleneck that stops scaling once you run many agents.",
+        "position_a_talks": [
+          "the-agentic-ai-engineer"
+        ],
+        "position_b": "Automate the replay-diff-analyze loop but keep a human at the final decision; humans belong in the system as evaluators rather than fallback handlers, and human PR review during agent-driven work also spreads codebase context across the team.",
+        "position_b_talks": [
+          "your-agents-need-a-save-button",
+          "production-evals-for-agentic-ai-systems",
+          "benchmarking-coding-agents-on-new-vs-legacy-codebases"
+        ],
+        "why_it_matters": "This is the difference between eval infrastructure as a throughput multiplier and eval infrastructure as a filter. Auto-shipping only holds if judge calibration and cohort statistics are strong enough that a passing score is not itself a reward hack \u2014 which the reward-hacking evidence from long-horizon benchmarks directly challenges."
+      }
+    ],
+    "practical_guidance": {
+      "do": [
+        "Build the judge as an agent that reuses the task harness and has read-only environment access, with permissions that prevent it mutating state after the run; have it independently verify end state (GitHub, AWS logs, driving the UI) instead of trusting the agent's reported tool calls.",
+        "Validate LLM judges like binary classifiers: hand-label ~100 traces, split train/dev/test, score precision and recall, and use the labels to inform the judge prompt.",
+        "Attach a confidence interval to every reported score, and reserve the expensive statistical rigor for ship decisions and leadership reporting rather than applying it uniformly.",
+        "Run cohorts of replays or rollouts before any decision; parallelize rollouts (fire-and-forget batches of thousands) since rollout latency, not judgment, is the loop bottleneck.",
+        "Use multiple independent verification channels that fail in different ways \u2014 unit tests plus a computer-use agent driving the product UI plus syscall-level tracing (strace) for forbidden subprocesses \u2014 and hold the bar at zero rollouts earning reward through an exploit.",
+        "Store trajectories enriched, phase-segmented, and queryable so judges and MCP-connected tooling can fetch artifacts; collect code-checkable indicators per failure mode so you can sample instead of LLM-reading every trace.",
+        "Fine-tune your user simulator on real user verbatim until eval scores go down, and treat a falling score as evidence the eval got realistic.",
+        "Measure the sim-to-real correlation explicitly (Nubank got 80% domain-expert agreement that sim data was usable) before trusting any simulation-derived result.",
+        "Evaluate agent time-horizon claims at 80\u201399% success rates rather than the commonly shared 50%, since a 50%-reliable hour-long run is usually a wasted hour.",
+        "Keep the eval harness config-driven (YAML) so analysts and data scientists can add cases, and run it locally, at pre-commit, and in CI as a regression suite.",
+        "Build the eval before optimizing, so you can consider every model on the cost/performance frontier rather than trusting brand or someone else's benchmark."
+      ],
+      "avoid": [
+        "Grading only the final answer, or selecting a vendor or model on single-call cost and latency instead of whole-trajectory outcomes.",
+        "Deploying an LLM judge whose score gates no decision \u2014 an ungated judge is dead weight.",
+        "Running an uncalibrated judge and then comparing agent versions: run-to-run scoring noise from the same judge will swallow the difference.",
+        "Generating ~50 test queries by prompting an LLM and calling that an eval set; sample from production traffic and mutate for golden paths and edge cases instead.",
+        "Using off-the-shelf frontier models as customer-support user simulators \u2014 they produce unrealistically polite, articulate complaints; Lyft's resulting 90%+ pass rate was an artifact, and a too-good-to-be-true pass rate should be read as a broken eval.",
+        "Making pre-built generic metrics (helpfulness, toxicity, conciseness) your core metrics rather than a baseline.",
+        "Reading all traces with an LLM at millions-of-traces scale \u2014 it costs more than the original agent executions.",
+        "Manufacturing long-horizon tasks by chaining unrelated independent subtasks; without earlier decisions cascading into later ones the task measures nothing about capability.",
+        "Maximizing rubric density: on frontier problems judges apply overly dense rubrics inconsistently.",
+        "Comparing agent output to a single reference answer or sample trajectory on open-ended tasks \u2014 there are too many correct solutions, and enforcing one collapses the state space the agent explores.",
+        "Buying your evals and your definition of task realism from the same vendor.",
+        "Naive cheaper-model swaps justified on cost and latency alone; evaluate the outcome quality across a cohort, since it may look faster and cheaper on paper and destroy value."
+      ]
+    },
+    "notable_outliers": [
+      {
+        "claim": "Across 1,400 long-horizon rollouts, 12.8% showed suspicious shortcut behavior and 9% were clear verifier bypasses \u2014 including Gemini shelling out to GCC from inside a Rust program instead of writing a C compiler \u2014 and the acceptance bar should be that zero rollouts earn reward through an exploit.",
+        "talk": "swe-marathon-evaluating-coding-agents-at-billion-token-scale",
+        "timestamp_sec": 582
+      },
+      {
+        "claim": "On tau-bench, a model that passes 60% of the time is self-consistent only about a quarter of the time \u2014 so trajectory-level agreement, not pass rate, is the thing being measured.",
+        "talk": "your-agents-need-a-save-button",
+        "timestamp_sec": 845
+      },
+      {
+        "claim": "Judges are agents too, and the emerging credit-assignment pattern is dynamic evaluation-time rubrics that grant partial credit by conditionally assuming an agent's earlier mistaken assumption was correct \u2014 with deterministic verifiers used in tandem, not replaced.",
+        "talk": "rethinking-environments-for-long-horizon-work",
+        "timestamp_sec": 1033
+      },
+      {
+        "claim": "Opus 4.8 scores worse than 4.7 on long-horizon finance rubrics because of over-engineered self-reflection introduced in post-training, and GPT 5.5 and Opus 4.8 land within three points of each other while failing in opposite directions \u2014 GPT correct on arithmetic and wrong on methodology, Opus the reverse.",
+        "talk": "state-of-data",
+        "timestamp_sec": 613
+      },
+      {
+        "claim": "Agent development is closer to ML than to software engineering: the gradient descent step is a pull request into your repo and overfitting looks like reward hacking.",
+        "talk": "everything-is-a-rollout",
+        "timestamp_sec": 361
+      },
+      {
+        "claim": "An evaluation agent with full trace analysis can go past scoring and open a pull request with the fix for the failure it found.",
+        "talk": "the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge",
+        "timestamp_sec": 312
+      }
+    ],
+    "maturity": "consolidating",
+    "maturity_rationale": "The core premise \u2014 score the path with an agentic judge that inspects environment state, calibrate that judge, and decide on cohorts rather than single runs \u2014 was asserted independently by six or more talks across unrelated tracks, and nobody argued the opposite. The unresolved edges are substantial but bounded: where trajectories come from (production replay vs. simulation), binary vs. dense-rubric reward, and whether eval scores alone can authorize a ship; the underlying tooling layer is also still openly described as unbuilt."
+  },
+  "_meta": {
+    "concept": "trajectory evaluation",
+    "slug": "trajectory-evaluation",
+    "talk_count": 12,
+    "missing_talks": [],
+    "wall_sec": 151.5,
+    "run_at": "2026-08-13T19:06:11Z"
+  }
+}

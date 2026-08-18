@@ -1,0 +1,298 @@
+{
+  "is_error": false,
+  "duration_api_ms": 54135,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "6e316bb8-089d-4161-8b46-76a2bf52be00",
+  "total_cost_usd": 0.321527,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 18817,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 4592,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 18817,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 4592,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 18817,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 18817
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 13313,
+      "outputTokens": 16,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.013393,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 4592,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 18817,
+      "webSearchRequests": 0,
+      "costUSD": 0.308134,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Abhishek Bhardwaj of OpenAI's RL and agent infrastructure team gives a first-principles walkthrough of why AI agents need sandboxes and how to build a cloud that runs them securely at scale. He traces the escalation of isolation primitives \u2014 raw fork/exec, containers with namespaces/cgroups/seccomp, gVisor's user-space kernel, and finally hardware-virtualized micro VMs \u2014 arguing that every option short of a VM eventually leaves the host kernel reachable, so teams should start with micro VMs rather than grieving their way there. The second half argues that disk persistence is the next major unlock: cheap incremental block-level snapshot/restore lets agents survive node failures, run multi-day tasks, and do Monte Carlo tree search over sandbox states. He closes with orchestration, showing how snapshot lineage can be fed into the scheduler to route sandboxes to nodes that already hold the needed layers. Worth watching if you build or operate agent execution infrastructure and want the OS-level tradeoffs laid out plainly.\",\n  \"key_points\": [\n    \"Sandboxes matter for both RL training and product serving, but the objectives differ: research optimizes for throughput across many parallel rollouts, while product optimizes for latency, with reliability and security mattering to both.\",\n    \"There are two fundamental attack vectors on Linux \u2014 getting root in ring three, and a kernel-mode exploit in ring zero \u2014 and every sandboxing primitive should be judged by how hard it makes reaching the host kernel.\",\n    \"Containers (namespaces plus cgroups) solve resource isolation and noisy-neighbor problems, and seccomp shrinks the syscall attack surface, but containers still share the host kernel, and seccomp filters have a painful feedback loop because you cannot predict which syscalls an agent will need.\",\n    \"gVisor moves syscall handling into a user-space kernel (the Sentry, with the Gofer for filesystem access), which raises the bar to a two-step chained exploit but still ultimately sits on the host kernel.\",\n    \"Hardware virtualization is the only primitive where the guest running in ring zero under VMX non-root mode leaves the host genuinely protected, at the cost of a performance penalty on every guest-host context switch.\",\n    \"'Micro' in micro VM refers to the VMM, not the guest: Rust-based VMMs like CrosVM, Firecracker, and Cloud Hypervisor have smaller memory footprints and faster boot because they support fewer devices than QEMU, and their emulated devices can be individually jailed.\",\n    \"Micro VM tradeoffs include heavy guest-host exit costs, awkward memory reclaim via the balloon driver, and GPU access that is either high-level (virtio-GPU) or exclusive to a single sandbox (VFIO).\",\n    \"Persistence should be incremental and block-level rather than full-image or file-level, with a fast-returning save API that uploads in the background, and a choice between always-on write-through storage and explicit copy-on-write snapshots using FIEMAP to find changed extents.\",\n    \"Checkpointing improves reliability and scale, not just durability: it lets a long-running sandbox be restored on another node after a failure or during a cluster upgrade, and enables harnesses to branch and backtrack across multi-day exploration.\",\n    \"Scheduling can exploit snapshot lineage by scoring nodes on how many of the required layers they already hold, and low-latency creation can come from warm pools, just-in-time memory-snapshot restore, or a hybrid of the two.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"it's kind of a slap on the face for 20 years of cloud computing that everyone's running this locally on on their laptops\",\n      \"timestamp_sec\": 337,\n      \"why\": \"Frames the whole talk's thesis that agent workloads belong in a purpose-built cloud.\"\n    },\n    {\n      \"text\": \"the future is like us running your agents in the cloud. Like they're persistent, long-running.\",\n      \"timestamp_sec\": 372,\n      \"why\": \"States the speaker's core prediction plainly.\"\n    },\n    {\n      \"text\": \"reliability is important on both both sides. Like, if you fail constantly, you've wasted like GPU tokens on both sides. And GPU is like gold right now.\",\n      \"timestamp_sec\": 450,\n      \"why\": \"Ties infra reliability directly to compute economics.\"\n    },\n    {\n      \"text\": \"compute was the first unlock. People realized you give sandboxes a a Linux computer and they do crazy things because they're pre-trained on so much Linux data\",\n      \"timestamp_sec\": 490,\n      \"why\": \"Explains why a full Linux box is the right abstraction for agents.\"\n    },\n    {\n      \"text\": \"if you get kernel exploit, it's like it's a it's a New York Times article waiting to happen\",\n      \"timestamp_sec\": 620,\n      \"why\": \"Memorable framing of the stakes of the kernel boundary.\"\n    },\n    {\n      \"text\": \"fork exec is the simplest thing you can do. It has one thing going for it. It's the most performance solution\",\n      \"timestamp_sec\": 698,\n      \"why\": \"Names the performance-versus-isolation tradeoff at the baseline.\"\n    },\n    {\n      \"text\": \"many times you don't know beforehand what system calls some container might call, right? So, now you're blocking requests for users\",\n      \"timestamp_sec\": 921,\n      \"why\": \"Concrete operational objection to seccomp allowlisting for agent workloads.\"\n    },\n    {\n      \"text\": \"containers interact with the same host kernel, so they do they do have some protections, but at the end it's the same host kernel they're trying to attack\",\n      \"timestamp_sec\": 960,\n      \"why\": \"The central security argument against containers as an agent sandbox.\"\n    },\n    {\n      \"text\": \"you first exploit a problem in the sentry or the gofer, and then you exploit from the gofer to the kernel, right? You can still get to the host kernel eventually.\",\n      \"timestamp_sec\": 1041,\n      \"why\": \"Specific technical critique of gVisor's security boundary.\"\n    },\n    {\n      \"text\": \"ring zero gives the guest kernel full control inside the guest, but no control on the host. So, you can exploit the guest all you want, but the host is still protected.\",\n      \"timestamp_sec\": 1165,\n      \"why\": \"The precise reason virtualization is qualitatively different from the alternatives.\"\n    },\n    {\n      \"text\": \"There's a performance penalty you pay every time the CPU is switching back and forth between these two modes.\",\n      \"timestamp_sec\": 1165,\n      \"why\": \"States the cost side of the virtualization tradeoff explicitly.\"\n    },\n    {\n      \"text\": \"historically, many, many escape attacks were attacking the devices written in C\",\n      \"timestamp_sec\": 1406,\n      \"why\": \"Motivates the industry shift to Rust-based VMMs with evidence.\"\n    },\n    {\n      \"text\": \"it has nothing to do with what's running inside the guest. It's It's everything to do with the VMM itself.\",\n      \"timestamp_sec\": 1446,\n      \"why\": \"Corrects a widespread misconception about the term 'micro VM'.\"\n    },\n    {\n      \"text\": \"system tricks can cover performance issues, but they cannot hide security breaches. And as a company, you can lose trust once and it's like very hard to regain.\",\n      \"timestamp_sec\": 1704,\n      \"why\": \"The speaker's explicit design principle for resolving the security-performance tension.\"\n    },\n    {\n      \"text\": \"in the end, everyone always wants a VM because they tried everything. They tried containers, G visor, V8s.\",\n      \"timestamp_sec\": 1743,\n      \"why\": \"The 'seven stages of sandboxing' claim that anchors his recommendation.\"\n    },\n    {\n      \"text\": \"if you're a startup or a founder like in this space, like let me save you the story and two years of grief. Just please use micro VMs from the start.\",\n      \"timestamp_sec\": 1743,\n      \"why\": \"The talk's single most actionable prescription.\"\n    },\n    {\n      \"text\": \"counterintuitively, persistence actually helps reliability and scale. They might seem like orthogonal concepts, but but they're very much related.\",\n      \"timestamp_sec\": 1889,\n      \"why\": \"The non-obvious claim underpinning the persistence half of the talk.\"\n    },\n    {\n      \"text\": \"if I have to save gigabytes of data at every turn, like like I'm going to bankrupt the company and like it's just a slow experience regardless\",\n      \"timestamp_sec\": 2013,\n      \"why\": \"Cost argument for incremental snapshotting at ChatGPT scale.\"\n    },\n    {\n      \"text\": \"I can actually lie to you while I'm uploading to the cloud. So, the snapshot can happen return very fast as I'm uploading in the background.\",\n      \"timestamp_sec\": 2360,\n      \"why\": \"A concrete latency trick that makes cheap snapshotting practical.\"\n    },\n    {\n      \"text\": \"NFS, for instance, isn't as performant and is not POSIX-compliant. And I think our models are just very good at anything POSIX compliant and standard.\",\n      \"timestamp_sec\": 2397,\n      \"why\": \"Argues model behavior itself should drive storage-interface choices.\"\n    },\n    {\n      \"text\": \"storage is the next unlock here. As you're working on sandboxes, think of what what all you can snapshot and restore fast\",\n      \"timestamp_sec\": 2478,\n      \"why\": \"The talk's forward-looking takeaway.\"\n    }\n  ],\n  \"concepts\": [\n    \"agent sandboxing\",\n    \"micro vms\",\n    \"hardware virtualization\",\n    \"container isolation\",\n    \"syscall filtering\",\n    \"user-space kernels\",\n    \"block-level snapshotting\",\n    \"incremental persistence\",\n    \"copy-on-write storage\",\n    \"sandbox orchestration\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Any sandbox primitive that shares the host kernel \u2014 fork/exec, containers, or gVisor \u2014 eventually allows an attacker to reach the host kernel; only hardware virtualization prevents this.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1079\n    },\n    {\n      \"claim\": \"Startups building agent sandboxes should adopt micro VMs from the start rather than iterating through containers, gVisor, and V8 isolates.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1743\n    },\n    {\n      \"claim\": \"Security should be prioritized over performance because system tricks can compensate for performance issues but not for a breach.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1704\n    },\n    {\n      \"claim\": \"Seccomp filtering is a poor fit for open-ended agent products because you cannot know in advance which syscalls the workload needs, creating a bad feedback loop of blocked users.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 921\n    },\n    {\n      \"claim\": \"The 'micro' in micro VM refers to the VMM's smaller footprint and faster boot, not to anything about the guest.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1446\n    },\n    {\n      \"claim\": \"CrosVM was the first Rust-based VMM, and Firecracker was forked from it.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1497\n    },\n    {\n      \"claim\": \"Disk persistence, not compute, is the next major unlock for agent sandboxes, turning agents from ephemeral executors into durable knowledge workers.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 2478\n    },\n    {\n      \"claim\": \"Snapshotting must be incremental at ChatGPT/Codex scale because saving full multi-gigabyte images every turn is financially and latency-wise infeasible.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 2013\n    },\n    {\n      \"claim\": \"Block-device access inside a micro VM is more efficient than shared-folder filesystem passthrough because it uses the guest cache and avoids exiting on every filesystem operation.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 2195\n    },\n    {\n      \"claim\": \"Checkpoint/restore enables harnesses to run Monte Carlo tree search over sandbox states across many days, backtracking and re-exploring.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1972\n    },\n    {\n      \"claim\": \"Schedulers should score nodes by how many snapshot lineage layers they already have cached, reducing download time on restore.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 2588\n    },\n    {\n      \"claim\": \"Warm pools trade idle CPU and memory consumption for low creation latency, and a hybrid of warm pool plus memory-snapshot restore gets the best of both.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 2552\n    },\n    {\n      \"claim\": \"Giving models code execution was the key unlock for domains with verifiable rewards like math and code.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 131\n    },\n    {\n      \"claim\": \"Running agents locally on laptops is a temporary state and the durable future is persistent, long-running agents in the cloud.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 372\n    },\n    {\n      \"claim\": \"GPU-accelerated sandboxes are poorly served by micro VMs today, since VFIO passthrough cannot be shared across multiple tenants.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1704\n    }\n  ],\n  \"speaker_org\": \"OpenAI\"\n}",
+  "ttft_ms": 52764,
+  "ttft_stream_ms": 994,
+  "time_to_request_ms": 42,
+  "type": "result",
+  "duration_ms": 54438,
+  "uuid": "f5057fe2-21b1-4424-ad88-0e5979dd5a4b",
+  "passA": {
+    "summary": "Abhishek Bhardwaj of OpenAI's RL and agent infrastructure team gives a first-principles walkthrough of why AI agents need sandboxes and how to build a cloud that runs them securely at scale. He traces the escalation of isolation primitives \u2014 raw fork/exec, containers with namespaces/cgroups/seccomp, gVisor's user-space kernel, and finally hardware-virtualized micro VMs \u2014 arguing that every option short of a VM eventually leaves the host kernel reachable, so teams should start with micro VMs rather than grieving their way there. The second half argues that disk persistence is the next major unlock: cheap incremental block-level snapshot/restore lets agents survive node failures, run multi-day tasks, and do Monte Carlo tree search over sandbox states. He closes with orchestration, showing how snapshot lineage can be fed into the scheduler to route sandboxes to nodes that already hold the needed layers. Worth watching if you build or operate agent execution infrastructure and want the OS-level tradeoffs laid out plainly.",
+    "key_points": [
+      "Sandboxes matter for both RL training and product serving, but the objectives differ: research optimizes for throughput across many parallel rollouts, while product optimizes for latency, with reliability and security mattering to both.",
+      "There are two fundamental attack vectors on Linux \u2014 getting root in ring three, and a kernel-mode exploit in ring zero \u2014 and every sandboxing primitive should be judged by how hard it makes reaching the host kernel.",
+      "Containers (namespaces plus cgroups) solve resource isolation and noisy-neighbor problems, and seccomp shrinks the syscall attack surface, but containers still share the host kernel, and seccomp filters have a painful feedback loop because you cannot predict which syscalls an agent will need.",
+      "gVisor moves syscall handling into a user-space kernel (the Sentry, with the Gofer for filesystem access), which raises the bar to a two-step chained exploit but still ultimately sits on the host kernel.",
+      "Hardware virtualization is the only primitive where the guest running in ring zero under VMX non-root mode leaves the host genuinely protected, at the cost of a performance penalty on every guest-host context switch.",
+      "'Micro' in micro VM refers to the VMM, not the guest: Rust-based VMMs like CrosVM, Firecracker, and Cloud Hypervisor have smaller memory footprints and faster boot because they support fewer devices than QEMU, and their emulated devices can be individually jailed.",
+      "Micro VM tradeoffs include heavy guest-host exit costs, awkward memory reclaim via the balloon driver, and GPU access that is either high-level (virtio-GPU) or exclusive to a single sandbox (VFIO).",
+      "Persistence should be incremental and block-level rather than full-image or file-level, with a fast-returning save API that uploads in the background, and a choice between always-on write-through storage and explicit copy-on-write snapshots using FIEMAP to find changed extents.",
+      "Checkpointing improves reliability and scale, not just durability: it lets a long-running sandbox be restored on another node after a failure or during a cluster upgrade, and enables harnesses to branch and backtrack across multi-day exploration.",
+      "Scheduling can exploit snapshot lineage by scoring nodes on how many of the required layers they already hold, and low-latency creation can come from warm pools, just-in-time memory-snapshot restore, or a hybrid of the two."
+    ],
+    "notable_quotes": [
+      {
+        "text": "it's kind of a slap on the face for 20 years of cloud computing that everyone's running this locally on on their laptops",
+        "timestamp_sec": 337,
+        "why": "Frames the whole talk's thesis that agent workloads belong in a purpose-built cloud."
+      },
+      {
+        "text": "the future is like us running your agents in the cloud. Like they're persistent, long-running.",
+        "timestamp_sec": 372,
+        "why": "States the speaker's core prediction plainly."
+      },
+      {
+        "text": "reliability is important on both both sides. Like, if you fail constantly, you've wasted like GPU tokens on both sides. And GPU is like gold right now.",
+        "timestamp_sec": 450,
+        "why": "Ties infra reliability directly to compute economics."
+      },
+      {
+        "text": "compute was the first unlock. People realized you give sandboxes a a Linux computer and they do crazy things because they're pre-trained on so much Linux data",
+        "timestamp_sec": 490,
+        "why": "Explains why a full Linux box is the right abstraction for agents."
+      },
+      {
+        "text": "if you get kernel exploit, it's like it's a it's a New York Times article waiting to happen",
+        "timestamp_sec": 620,
+        "why": "Memorable framing of the stakes of the kernel boundary."
+      },
+      {
+        "text": "fork exec is the simplest thing you can do. It has one thing going for it. It's the most performance solution",
+        "timestamp_sec": 698,
+        "why": "Names the performance-versus-isolation tradeoff at the baseline."
+      },
+      {
+        "text": "many times you don't know beforehand what system calls some container might call, right? So, now you're blocking requests for users",
+        "timestamp_sec": 921,
+        "why": "Concrete operational objection to seccomp allowlisting for agent workloads."
+      },
+      {
+        "text": "containers interact with the same host kernel, so they do they do have some protections, but at the end it's the same host kernel they're trying to attack",
+        "timestamp_sec": 960,
+        "why": "The central security argument against containers as an agent sandbox."
+      },
+      {
+        "text": "you first exploit a problem in the sentry or the gofer, and then you exploit from the gofer to the kernel, right? You can still get to the host kernel eventually.",
+        "timestamp_sec": 1041,
+        "why": "Specific technical critique of gVisor's security boundary."
+      },
+      {
+        "text": "ring zero gives the guest kernel full control inside the guest, but no control on the host. So, you can exploit the guest all you want, but the host is still protected.",
+        "timestamp_sec": 1165,
+        "why": "The precise reason virtualization is qualitatively different from the alternatives."
+      },
+      {
+        "text": "There's a performance penalty you pay every time the CPU is switching back and forth between these two modes.",
+        "timestamp_sec": 1165,
+        "why": "States the cost side of the virtualization tradeoff explicitly."
+      },
+      {
+        "text": "historically, many, many escape attacks were attacking the devices written in C",
+        "timestamp_sec": 1406,
+        "why": "Motivates the industry shift to Rust-based VMMs with evidence."
+      },
+      {
+        "text": "it has nothing to do with what's running inside the guest. It's It's everything to do with the VMM itself.",
+        "timestamp_sec": 1446,
+        "why": "Corrects a widespread misconception about the term 'micro VM'."
+      },
+      {
+        "text": "system tricks can cover performance issues, but they cannot hide security breaches. And as a company, you can lose trust once and it's like very hard to regain.",
+        "timestamp_sec": 1704,
+        "why": "The speaker's explicit design principle for resolving the security-performance tension."
+      },
+      {
+        "text": "in the end, everyone always wants a VM because they tried everything. They tried containers, G visor, V8s.",
+        "timestamp_sec": 1743,
+        "why": "The 'seven stages of sandboxing' claim that anchors his recommendation."
+      },
+      {
+        "text": "if you're a startup or a founder like in this space, like let me save you the story and two years of grief. Just please use micro VMs from the start.",
+        "timestamp_sec": 1743,
+        "why": "The talk's single most actionable prescription."
+      },
+      {
+        "text": "counterintuitively, persistence actually helps reliability and scale. They might seem like orthogonal concepts, but but they're very much related.",
+        "timestamp_sec": 1889,
+        "why": "The non-obvious claim underpinning the persistence half of the talk."
+      },
+      {
+        "text": "if I have to save gigabytes of data at every turn, like like I'm going to bankrupt the company and like it's just a slow experience regardless",
+        "timestamp_sec": 2013,
+        "why": "Cost argument for incremental snapshotting at ChatGPT scale."
+      },
+      {
+        "text": "I can actually lie to you while I'm uploading to the cloud. So, the snapshot can happen return very fast as I'm uploading in the background.",
+        "timestamp_sec": 2360,
+        "why": "A concrete latency trick that makes cheap snapshotting practical."
+      },
+      {
+        "text": "NFS, for instance, isn't as performant and is not POSIX-compliant. And I think our models are just very good at anything POSIX compliant and standard.",
+        "timestamp_sec": 2397,
+        "why": "Argues model behavior itself should drive storage-interface choices."
+      },
+      {
+        "text": "storage is the next unlock here. As you're working on sandboxes, think of what what all you can snapshot and restore fast",
+        "timestamp_sec": 2478,
+        "why": "The talk's forward-looking takeaway."
+      }
+    ],
+    "concepts": [
+      "agent sandboxing",
+      "micro vms",
+      "hardware virtualization",
+      "container isolation",
+      "syscall filtering",
+      "user-space kernels",
+      "block-level snapshotting",
+      "incremental persistence",
+      "copy-on-write storage",
+      "sandbox orchestration"
+    ],
+    "positions": [
+      {
+        "claim": "Any sandbox primitive that shares the host kernel \u2014 fork/exec, containers, or gVisor \u2014 eventually allows an attacker to reach the host kernel; only hardware virtualization prevents this.",
+        "confidence": "stated",
+        "timestamp_sec": 1079
+      },
+      {
+        "claim": "Startups building agent sandboxes should adopt micro VMs from the start rather than iterating through containers, gVisor, and V8 isolates.",
+        "confidence": "stated",
+        "timestamp_sec": 1743
+      },
+      {
+        "claim": "Security should be prioritized over performance because system tricks can compensate for performance issues but not for a breach.",
+        "confidence": "stated",
+        "timestamp_sec": 1704
+      },
+      {
+        "claim": "Seccomp filtering is a poor fit for open-ended agent products because you cannot know in advance which syscalls the workload needs, creating a bad feedback loop of blocked users.",
+        "confidence": "stated",
+        "timestamp_sec": 921
+      },
+      {
+        "claim": "The 'micro' in micro VM refers to the VMM's smaller footprint and faster boot, not to anything about the guest.",
+        "confidence": "stated",
+        "timestamp_sec": 1446
+      },
+      {
+        "claim": "CrosVM was the first Rust-based VMM, and Firecracker was forked from it.",
+        "confidence": "stated",
+        "timestamp_sec": 1497
+      },
+      {
+        "claim": "Disk persistence, not compute, is the next major unlock for agent sandboxes, turning agents from ephemeral executors into durable knowledge workers.",
+        "confidence": "stated",
+        "timestamp_sec": 2478
+      },
+      {
+        "claim": "Snapshotting must be incremental at ChatGPT/Codex scale because saving full multi-gigabyte images every turn is financially and latency-wise infeasible.",
+        "confidence": "stated",
+        "timestamp_sec": 2013
+      },
+      {
+        "claim": "Block-device access inside a micro VM is more efficient than shared-folder filesystem passthrough because it uses the guest cache and avoids exiting on every filesystem operation.",
+        "confidence": "stated",
+        "timestamp_sec": 2195
+      },
+      {
+        "claim": "Checkpoint/restore enables harnesses to run Monte Carlo tree search over sandbox states across many days, backtracking and re-exploring.",
+        "confidence": "stated",
+        "timestamp_sec": 1972
+      },
+      {
+        "claim": "Schedulers should score nodes by how many snapshot lineage layers they already have cached, reducing download time on restore.",
+        "confidence": "stated",
+        "timestamp_sec": 2588
+      },
+      {
+        "claim": "Warm pools trade idle CPU and memory consumption for low creation latency, and a hybrid of warm pool plus memory-snapshot restore gets the best of both.",
+        "confidence": "stated",
+        "timestamp_sec": 2552
+      },
+      {
+        "claim": "Giving models code execution was the key unlock for domains with verifiable rewards like math and code.",
+        "confidence": "stated",
+        "timestamp_sec": 131
+      },
+      {
+        "claim": "Running agents locally on laptops is a temporary state and the durable future is persistent, long-running agents in the cloud.",
+        "confidence": "implied",
+        "timestamp_sec": 372
+      },
+      {
+        "claim": "GPU-accelerated sandboxes are poorly served by micro VMs today, since VFIO passthrough cannot be shared across multiple tenants.",
+        "confidence": "stated",
+        "timestamp_sec": 1704
+      }
+    ],
+    "speaker_org": "OpenAI"
+  },
+  "_meta": {
+    "slug": "from-fork-to-fleet-designing-an-agent-sandbox-cloud",
+    "video_id": "OqM67QG_Ikk",
+    "url": "https://www.youtube.com/watch?v=OqM67QG_Ikk",
+    "word_count": 7745,
+    "wall_sec": 55.5,
+    "run_at": "2026-08-12T19:50:31Z",
+    "effort": "medium"
+  }
+}

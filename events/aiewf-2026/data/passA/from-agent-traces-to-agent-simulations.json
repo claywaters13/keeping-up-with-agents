@@ -1,0 +1,295 @@
+{
+  "is_error": false,
+  "duration_api_ms": 47093,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "c3ad454b-7510-4514-bdcb-5631eb4f9439",
+  "total_cost_usd": 0.21812900000000002,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 10095,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 4227,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 10095,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 4227,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 10095,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 10095
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 6265,
+      "outputTokens": 15,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.00634,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 4227,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 10095,
+      "webSearchRequests": 0,
+      "costUSD": 0.211789,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Rustem Feyzkhanov, who leads the AI platform team at Snorkel AI, argues that every company shipping agents needs its own private benchmark built from production traces, and that the way to get one is offline agent simulation rather than trace inspection alone. Traces surface failures that already happened but can't be replayed cleanly \u2014 database state and tool versions drift, so A/B comparisons are never apples to apples. Simulation converts traces into repeatable tasks with a containerized mini-production environment (mocked APIs, sidecar databases, LLM-simulated users), an Oracle solution proving the task is solvable, and verifiers that check final world state, trace, and artifacts rather than just output. He walks through the Harbor task format, failure modes of benchmark construction (reward hacking, too-broad verifiers, high variance), and treating the benchmark as software with its own CI. The payoff is a three-way asset: eval, release gate, and training set \u2014 including fine-tuning a small planning model to match a large one.\",\n  \"key_points\": [\n    \"Public benchmarks like SWE-bench, Terminal-Bench, and computer-use benchmarks are useful for orienting and building priors, but only a private domain-specific benchmark reflects your tools, policies, and use cases well enough to ship on.\",\n    \"Production traces find real failures but cannot support repeatable comparisons, because each rerun sees different database state and tool versions; offline simulation turns traces into experiments you can rerun in parallel.\",\n    \"Production evaluation needs more than pass rate \u2014 cost per task, latency, and number of retries matter once an agent is live, and simulation lets you hold environment and verifiers fixed while varying them.\",\n    \"Simulation tests the full agent stack (model, thinking level, prompt, harness, skills, tools), not just which model scores higher, because in production the system is what you actually ship.\",\n    \"A benchmark task is a small set of files \u2014 instruction.md, a Dockerfile/Compose environment, hidden Oracle solution and verifiers, plus metadata \u2014 following the Harbor format from the Terminal-Bench team.\",\n    \"The Oracle solution exists to prove a task is solvable at all before you ask an agent to solve it, and is a required part of task construction.\",\n    \"Environments should be built like integration tests: database snapshots instead of full production, sidecar containers for APIs and MCP tools, mocked services, LLM-simulated users, and multi-step checkpoints with per-step verifiers for long-horizon tasks that let you terminate early on failure.\",\n    \"Verifiers must analyze final environment state, trace, and artifacts using a mix of deterministic checks and LLM/agent-as-judge, with subject matter experts reserved for cases where verifiers and agent behavior disagree.\",\n    \"Benchmark tasks fail in predictable ways \u2014 reward hacking, overly broad verifiers, incorrect verifiers, unstable agent success \u2014 so benchmarks are code and need their own CI pipeline (pinned dependencies, fixture checks, Oracle passes, difficulty tagging).\",\n    \"Stuffing fixes into the prompt is an industry anti-pattern; controlling the full stack in simulation lets you place a fix where it belongs \u2014 harness for context overload, a skill for a missing procedure, structured output for schema issues.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"every company needs a benchmark. It's the only way to reliably evaluate, release, and improve your agents.\",\n      \"timestamp_sec\": 1,\n      \"why\": \"the talk's thesis, stated as a hard requirement\"\n    },\n    {\n      \"text\": \"It's not a static benchmark. It's a constantly populated data set from your production traces.\",\n      \"timestamp_sec\": 52,\n      \"why\": \"distinguishes his position from conventional benchmark practice\"\n    },\n    {\n      \"text\": \"for us, benchmark construction is an engineering discipline. We run millions of agent simulations per month.\",\n      \"timestamp_sec\": 52,\n      \"why\": \"the one concrete scale number in the talk, and it grounds his credibility claim\"\n    },\n    {\n      \"text\": \"it is useful to find failures in production, but it's hard to test different variants.\",\n      \"timestamp_sec\": 99,\n      \"why\": \"crisp statement of what traces can and cannot do\"\n    },\n    {\n      \"text\": \"it's hard to make sure that everything is repeatable because you will get different database state, different tool versions, and so on. So, never fully compare apples to apples.\",\n      \"timestamp_sec\": 142,\n      \"why\": \"the core technical argument against A/B testing in production\"\n    },\n    {\n      \"text\": \"you can compare agents using different metrics, not just success rate, but cost, latency, and retries.\",\n      \"timestamp_sec\": 142,\n      \"why\": \"names the metric set he thinks production teams actually need\"\n    },\n    {\n      \"text\": \"public benchmark is useful to orient and build your prior, but your private benchmark is useful to ship.\",\n      \"timestamp_sec\": 191,\n      \"why\": \"the sharpest one-line framing of public vs. private benchmarks\"\n    },\n    {\n      \"text\": \"in your production, you don't care about the model, you care about the full system.\",\n      \"timestamp_sec\": 289,\n      \"why\": \"takes a contrarian side against model-centric evaluation\"\n    },\n    {\n      \"text\": \"You can put it as a release gate for your agent and verify that any change to agent stack in didn't reduce regression suddenly.\",\n      \"timestamp_sec\": 330,\n      \"why\": \"names the second of the three benchmark use cases\"\n    },\n    {\n      \"text\": \"benchmark becomes part part of agent evaluation, becomes part of integration test for agent for release, and it becomes also training set for agent to improve it.\",\n      \"timestamp_sec\": 330,\n      \"why\": \"the trifecta framing that organizes the whole argument\"\n    },\n    {\n      \"text\": \"when we construct Oracle ourselves to make sure that task is solvable in the first place. Because if it's not solvable, agent won't be able to solve it.\",\n      \"timestamp_sec\": 422,\n      \"why\": \"explains why Oracle solutions are non-optional in task construction\"\n    },\n    {\n      \"text\": \"effectively it has to be mini production, but you don't want to run full production for every experiment.\",\n      \"timestamp_sec\": 507,\n      \"why\": \"states the central environment-design tradeoff\"\n    },\n    {\n      \"text\": \"you don't want your agent to know that it's running within simulation. So, it has to be real.\",\n      \"timestamp_sec\": 507,\n      \"why\": \"the fidelity constraint that drives every environment decision he describes\"\n    },\n    {\n      \"text\": \"You don't run the full production database. You have a certain snapshot. You can run side containers sidecars in this case.\",\n      \"timestamp_sec\": 546,\n      \"why\": \"concrete implementation pattern for environment construction\"\n    },\n    {\n      \"text\": \"Agent can try to reward hack simulation environment because it can understand that it's in simulation and it can hack it.\",\n      \"timestamp_sec\": 711,\n      \"why\": \"names the first and most consequential benchmark failure mode\"\n    },\n    {\n      \"text\": \"benchmark is software. It's code. It's files. You need to treat it as such. You need to have a separate CI pipeline for it.\",\n      \"timestamp_sec\": 754,\n      \"why\": \"the operational prescription that follows from treating benchmarks as engineering\"\n    },\n    {\n      \"text\": \"There is a bit of an anti-pattern in the industry where like folks try to fix things in the prompt.\",\n      \"timestamp_sec\": 855,\n      \"why\": \"explicitly names a widespread practice he opposes\"\n    },\n    {\n      \"text\": \"with simulation, you control the full stack. You can evaluate the full stack. And you can make sure that fix lives in the correct place. You don't push everything to the prompt.\",\n      \"timestamp_sec\": 855,\n      \"why\": \"the constructive alternative to prompt-patching\"\n    },\n    {\n      \"text\": \"it's important to make sure that your observability piece and experimentation piece are connected. Because they're part they're two sides of the same coin.\",\n      \"timestamp_sec\": 938,\n      \"why\": \"the closing architectural claim about the two-loop system\"\n    },\n    {\n      \"text\": \"you don't need subject matter experts to review everything, but you specifically want to find cases where there's disagreement between agent and different verifiers.\",\n      \"timestamp_sec\": 1153,\n      \"why\": \"practical answer on where scarce human review effort should go\"\n    }\n  ],\n  \"concepts\": [\n    \"agent simulation environments\",\n    \"private domain benchmarks\",\n    \"production trace mining\",\n    \"oracle solutions\",\n    \"verifier design\",\n    \"llm-as-a-judge\",\n    \"simulated users\",\n    \"release gating\",\n    \"reward hacking\",\n    \"train/test splits for agent evals\",\n    \"benchmark ci\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Every company shipping agents needs its own private benchmark; it is the only reliable way to evaluate, release, and improve agents.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1\n    },\n    {\n      \"claim\": \"A/B testing agent configurations in production can never be a true apples-to-apples comparison because database state and tool versions differ between runs.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 142\n    },\n    {\n      \"claim\": \"Public benchmarks are only useful for orientation and priors; you cannot ship on them because they are domain-specific to someone else's tools and policies.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 191\n    },\n    {\n      \"claim\": \"Pass rate is insufficient as a production metric; cost, latency, and retries must be measured alongside it.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 241\n    },\n    {\n      \"claim\": \"What matters in production is the full agent system, not the choice of model.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 289\n    },\n    {\n      \"claim\": \"A benchmark task is not valid unless an Oracle solution demonstrates the task is solvable.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 422\n    },\n    {\n      \"claim\": \"Simulation environments must be indistinguishable from production to the agent, or the agent will detect and exploit the simulation.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 507\n    },\n    {\n      \"claim\": \"Real users cannot be included in simulation tasks and must be replaced by an LLM with its own prompt and context mimicking human behavior.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 507\n    },\n    {\n      \"claim\": \"Long-horizon tasks should be decomposed into multiple steps with separate prompts and verifiers per step, allowing early termination when the agent fails.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 592\n    },\n    {\n      \"claim\": \"Verifying only the agent's output is insufficient for agent evaluation; final environment state, trace, and artifacts must also be verified.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 635\n    },\n    {\n      \"claim\": \"Benchmarks are software and require their own CI pipeline checking pinned dependencies, base images, missing fixtures, and Oracle passes.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 754\n    },\n    {\n      \"claim\": \"Fixing agent failures by adding prohibitions to the prompt is an industry anti-pattern; fixes belong in the harness, skills, or structured output depending on the root cause.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 855\n    },\n    {\n      \"claim\": \"Simulation environments can be used to fine-tune a small planning model to match the performance of a large planning model on specific tasks.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 330\n    },\n    {\n      \"claim\": \"An 80/20 train/validation split is a reasonable default for benchmark tasks, and a held-out set the agent has not seen during experimentation is required.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1035\n    },\n    {\n      \"claim\": \"Benchmark coverage should include both happy-path 'bread and butter' use cases and edge cases like tool failures and database problems, mirroring integration test design.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1077\n    },\n    {\n      \"claim\": \"Observability and experimentation tooling must be connected as a single system rather than operated separately.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 938\n    }\n  ],\n  \"speaker_org\": \"Snorkel AI\"\n}",
+  "ttft_ms": 46138,
+  "ttft_stream_ms": 987,
+  "time_to_request_ms": 54,
+  "type": "result",
+  "duration_ms": 47914,
+  "uuid": "9a89f175-89f8-4c03-ba14-79123254fe45",
+  "passA": {
+    "summary": "Rustem Feyzkhanov, who leads the AI platform team at Snorkel AI, argues that every company shipping agents needs its own private benchmark built from production traces, and that the way to get one is offline agent simulation rather than trace inspection alone. Traces surface failures that already happened but can't be replayed cleanly \u2014 database state and tool versions drift, so A/B comparisons are never apples to apples. Simulation converts traces into repeatable tasks with a containerized mini-production environment (mocked APIs, sidecar databases, LLM-simulated users), an Oracle solution proving the task is solvable, and verifiers that check final world state, trace, and artifacts rather than just output. He walks through the Harbor task format, failure modes of benchmark construction (reward hacking, too-broad verifiers, high variance), and treating the benchmark as software with its own CI. The payoff is a three-way asset: eval, release gate, and training set \u2014 including fine-tuning a small planning model to match a large one.",
+    "key_points": [
+      "Public benchmarks like SWE-bench, Terminal-Bench, and computer-use benchmarks are useful for orienting and building priors, but only a private domain-specific benchmark reflects your tools, policies, and use cases well enough to ship on.",
+      "Production traces find real failures but cannot support repeatable comparisons, because each rerun sees different database state and tool versions; offline simulation turns traces into experiments you can rerun in parallel.",
+      "Production evaluation needs more than pass rate \u2014 cost per task, latency, and number of retries matter once an agent is live, and simulation lets you hold environment and verifiers fixed while varying them.",
+      "Simulation tests the full agent stack (model, thinking level, prompt, harness, skills, tools), not just which model scores higher, because in production the system is what you actually ship.",
+      "A benchmark task is a small set of files \u2014 instruction.md, a Dockerfile/Compose environment, hidden Oracle solution and verifiers, plus metadata \u2014 following the Harbor format from the Terminal-Bench team.",
+      "The Oracle solution exists to prove a task is solvable at all before you ask an agent to solve it, and is a required part of task construction.",
+      "Environments should be built like integration tests: database snapshots instead of full production, sidecar containers for APIs and MCP tools, mocked services, LLM-simulated users, and multi-step checkpoints with per-step verifiers for long-horizon tasks that let you terminate early on failure.",
+      "Verifiers must analyze final environment state, trace, and artifacts using a mix of deterministic checks and LLM/agent-as-judge, with subject matter experts reserved for cases where verifiers and agent behavior disagree.",
+      "Benchmark tasks fail in predictable ways \u2014 reward hacking, overly broad verifiers, incorrect verifiers, unstable agent success \u2014 so benchmarks are code and need their own CI pipeline (pinned dependencies, fixture checks, Oracle passes, difficulty tagging).",
+      "Stuffing fixes into the prompt is an industry anti-pattern; controlling the full stack in simulation lets you place a fix where it belongs \u2014 harness for context overload, a skill for a missing procedure, structured output for schema issues."
+    ],
+    "notable_quotes": [
+      {
+        "text": "every company needs a benchmark. It's the only way to reliably evaluate, release, and improve your agents.",
+        "timestamp_sec": 1,
+        "why": "the talk's thesis, stated as a hard requirement"
+      },
+      {
+        "text": "It's not a static benchmark. It's a constantly populated data set from your production traces.",
+        "timestamp_sec": 52,
+        "why": "distinguishes his position from conventional benchmark practice"
+      },
+      {
+        "text": "for us, benchmark construction is an engineering discipline. We run millions of agent simulations per month.",
+        "timestamp_sec": 52,
+        "why": "the one concrete scale number in the talk, and it grounds his credibility claim"
+      },
+      {
+        "text": "it is useful to find failures in production, but it's hard to test different variants.",
+        "timestamp_sec": 99,
+        "why": "crisp statement of what traces can and cannot do"
+      },
+      {
+        "text": "it's hard to make sure that everything is repeatable because you will get different database state, different tool versions, and so on. So, never fully compare apples to apples.",
+        "timestamp_sec": 142,
+        "why": "the core technical argument against A/B testing in production"
+      },
+      {
+        "text": "you can compare agents using different metrics, not just success rate, but cost, latency, and retries.",
+        "timestamp_sec": 142,
+        "why": "names the metric set he thinks production teams actually need"
+      },
+      {
+        "text": "public benchmark is useful to orient and build your prior, but your private benchmark is useful to ship.",
+        "timestamp_sec": 191,
+        "why": "the sharpest one-line framing of public vs. private benchmarks"
+      },
+      {
+        "text": "in your production, you don't care about the model, you care about the full system.",
+        "timestamp_sec": 289,
+        "why": "takes a contrarian side against model-centric evaluation"
+      },
+      {
+        "text": "You can put it as a release gate for your agent and verify that any change to agent stack in didn't reduce regression suddenly.",
+        "timestamp_sec": 330,
+        "why": "names the second of the three benchmark use cases"
+      },
+      {
+        "text": "benchmark becomes part part of agent evaluation, becomes part of integration test for agent for release, and it becomes also training set for agent to improve it.",
+        "timestamp_sec": 330,
+        "why": "the trifecta framing that organizes the whole argument"
+      },
+      {
+        "text": "when we construct Oracle ourselves to make sure that task is solvable in the first place. Because if it's not solvable, agent won't be able to solve it.",
+        "timestamp_sec": 422,
+        "why": "explains why Oracle solutions are non-optional in task construction"
+      },
+      {
+        "text": "effectively it has to be mini production, but you don't want to run full production for every experiment.",
+        "timestamp_sec": 507,
+        "why": "states the central environment-design tradeoff"
+      },
+      {
+        "text": "you don't want your agent to know that it's running within simulation. So, it has to be real.",
+        "timestamp_sec": 507,
+        "why": "the fidelity constraint that drives every environment decision he describes"
+      },
+      {
+        "text": "You don't run the full production database. You have a certain snapshot. You can run side containers sidecars in this case.",
+        "timestamp_sec": 546,
+        "why": "concrete implementation pattern for environment construction"
+      },
+      {
+        "text": "Agent can try to reward hack simulation environment because it can understand that it's in simulation and it can hack it.",
+        "timestamp_sec": 711,
+        "why": "names the first and most consequential benchmark failure mode"
+      },
+      {
+        "text": "benchmark is software. It's code. It's files. You need to treat it as such. You need to have a separate CI pipeline for it.",
+        "timestamp_sec": 754,
+        "why": "the operational prescription that follows from treating benchmarks as engineering"
+      },
+      {
+        "text": "There is a bit of an anti-pattern in the industry where like folks try to fix things in the prompt.",
+        "timestamp_sec": 855,
+        "why": "explicitly names a widespread practice he opposes"
+      },
+      {
+        "text": "with simulation, you control the full stack. You can evaluate the full stack. And you can make sure that fix lives in the correct place. You don't push everything to the prompt.",
+        "timestamp_sec": 855,
+        "why": "the constructive alternative to prompt-patching"
+      },
+      {
+        "text": "you don't need subject matter experts to review everything, but you specifically want to find cases where there's disagreement between agent and different verifiers.",
+        "timestamp_sec": 1153,
+        "why": "practical answer on where scarce human review effort should go"
+      }
+    ],
+    "concepts": [
+      "agent simulation environments",
+      "private domain benchmarks",
+      "production trace mining",
+      "oracle solutions",
+      "verifier design",
+      "llm-as-a-judge",
+      "simulated users",
+      "release gating",
+      "reward hacking",
+      "train/test splits for agent evals",
+      "benchmark ci"
+    ],
+    "positions": [
+      {
+        "claim": "Every company shipping agents needs its own private benchmark; it is the only reliable way to evaluate, release, and improve agents.",
+        "confidence": "stated",
+        "timestamp_sec": 1
+      },
+      {
+        "claim": "A/B testing agent configurations in production can never be a true apples-to-apples comparison because database state and tool versions differ between runs.",
+        "confidence": "stated",
+        "timestamp_sec": 142
+      },
+      {
+        "claim": "Public benchmarks are only useful for orientation and priors; you cannot ship on them because they are domain-specific to someone else's tools and policies.",
+        "confidence": "stated",
+        "timestamp_sec": 191
+      },
+      {
+        "claim": "Pass rate is insufficient as a production metric; cost, latency, and retries must be measured alongside it.",
+        "confidence": "stated",
+        "timestamp_sec": 241
+      },
+      {
+        "claim": "What matters in production is the full agent system, not the choice of model.",
+        "confidence": "stated",
+        "timestamp_sec": 289
+      },
+      {
+        "claim": "A benchmark task is not valid unless an Oracle solution demonstrates the task is solvable.",
+        "confidence": "stated",
+        "timestamp_sec": 422
+      },
+      {
+        "claim": "Simulation environments must be indistinguishable from production to the agent, or the agent will detect and exploit the simulation.",
+        "confidence": "stated",
+        "timestamp_sec": 507
+      },
+      {
+        "claim": "Real users cannot be included in simulation tasks and must be replaced by an LLM with its own prompt and context mimicking human behavior.",
+        "confidence": "stated",
+        "timestamp_sec": 507
+      },
+      {
+        "claim": "Long-horizon tasks should be decomposed into multiple steps with separate prompts and verifiers per step, allowing early termination when the agent fails.",
+        "confidence": "stated",
+        "timestamp_sec": 592
+      },
+      {
+        "claim": "Verifying only the agent's output is insufficient for agent evaluation; final environment state, trace, and artifacts must also be verified.",
+        "confidence": "stated",
+        "timestamp_sec": 635
+      },
+      {
+        "claim": "Benchmarks are software and require their own CI pipeline checking pinned dependencies, base images, missing fixtures, and Oracle passes.",
+        "confidence": "stated",
+        "timestamp_sec": 754
+      },
+      {
+        "claim": "Fixing agent failures by adding prohibitions to the prompt is an industry anti-pattern; fixes belong in the harness, skills, or structured output depending on the root cause.",
+        "confidence": "stated",
+        "timestamp_sec": 855
+      },
+      {
+        "claim": "Simulation environments can be used to fine-tune a small planning model to match the performance of a large planning model on specific tasks.",
+        "confidence": "stated",
+        "timestamp_sec": 330
+      },
+      {
+        "claim": "An 80/20 train/validation split is a reasonable default for benchmark tasks, and a held-out set the agent has not seen during experimentation is required.",
+        "confidence": "stated",
+        "timestamp_sec": 1035
+      },
+      {
+        "claim": "Benchmark coverage should include both happy-path 'bread and butter' use cases and edge cases like tool failures and database problems, mirroring integration test design.",
+        "confidence": "stated",
+        "timestamp_sec": 1077
+      },
+      {
+        "claim": "Observability and experimentation tooling must be connected as a single system rather than operated separately.",
+        "confidence": "stated",
+        "timestamp_sec": 938
+      }
+    ],
+    "speaker_org": "Snorkel AI"
+  },
+  "_meta": {
+    "slug": "from-agent-traces-to-agent-simulations",
+    "video_id": "Ib5t2RLtxvM",
+    "url": "https://www.youtube.com/watch?v=Ib5t2RLtxvM",
+    "word_count": 3186,
+    "wall_sec": 49.2,
+    "run_at": "2026-08-12T19:49:47Z",
+    "effort": "medium",
+    "quotes_dropped": 0
+  }
+}

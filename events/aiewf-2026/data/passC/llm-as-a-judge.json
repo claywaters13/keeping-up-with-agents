@@ -1,0 +1,375 @@
+{
+  "is_error": false,
+  "duration_api_ms": 150379,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "69720057-234f-4147-9a23-11234f14563f",
+  "total_cost_usd": 1.056125,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 68614,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 12742,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 68614,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 12742,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 68614,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 68614
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 46156,
+      "outputTokens": 23,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.046271,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 12742,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 68614,
+      "webSearchRequests": 0,
+      "costUSD": 1.009854,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\"concept\":\"llm-as-a-judge\",\"state_of_practice\":\"The field has stopped treating an LLM judge as a metric and started treating it as a classifier that must itself be validated: hand-label roughly a hundred traces, split train/dev/test, and score the judge on precision and recall against human labels before any of its numbers gate a decision. Practitioners converged hard against generic scalar rubrics \u2014 helpfulness, correctness, conciseness on a 0-1 or 1-5 scale \u2014 because the levels are undefined, the score is unstable run-to-run, and a 0.5 tells you nothing to fix; the replacement is domain-specific criteria decomposed into checkable units, discovered by reading production data rather than specified up front. For agents, judging the final output is now considered insufficient: judges are being built as agents themselves, with read-only access to the environment and a queryable, phase-segmented trajectory, because trajectory inspection is the only way to catch reward hacking (sandbox escape, reading hidden tests, oversteering into generic safe outputs) and the only way to find failures \u2014 like an agent deleting a legally required disclaimer \u2014 that aggregate pass rates hide. The unresolved fault line is scope: security, PR scoring, benchmark verification, and skill testing camps argue graders must be deterministic because models systematically self-report success and judge scores shift when the model changes, while the soft-verifiable camp (long-horizon finance work, video and design quality, clinical safety, open-ended agent tasks) argues deterministic verifiers are brittle or impossible there and judges are the only option. Everyone agrees the judge is downstream of human labels; nobody agrees on how much human labeling remains structurally required versus automatable away.\",\"consensus\":[{\"claim\":\"An LLM judge must be calibrated and validated against human labels before its scores are trusted; human judgment is the golden source of truth the judge is aligned to, not the other way around.\",\"support_count\":6,\"supporting_talks\":[\"build-evals-that-actually-matter\",\"building-closed-loop-evals-for-a-multimodal-agent-at-scale\",\"how-evals-and-prompts-shape-agent-behavior\",\"the-agentic-ai-engineer\",\"simulationmaxxing-how-we-ship-agents-20-faster\",\"evals-driven-development-for-a-mental-health-ai-coach\"],\"evidence_quote\":\"For our use case, we consider human labels as the golden source of truth. And this is what we want to align our models to.\",\"evidence_talk\":\"building-closed-loop-evals-for-a-multimodal-agent-at-scale\",\"evidence_timestamp_sec\":533},{\"claim\":\"Evaluation criteria cannot be fully specified before looking at data; the real rubric is discovered incrementally from production traces and expert grading, and eval failures feed back into the criteria.\",\"support_count\":6,\"supporting_talks\":[\"build-evals-that-actually-matter\",\"the-agentic-ai-engineer\",\"stop-burning-tokens-why-self-improvement-needs-domain-expertise-first\",\"your-moat-is-your-data-model\",\"evals-driven-development-for-a-mental-health-ai-coach\",\"how-evals-and-prompts-shape-agent-behavior\"],\"evidence_quote\":\"The key idea is that we actually discover what our evaluation criteria is by looking at the data and grading our outputs.\",\"evidence_talk\":\"build-evals-that-actually-matter\",\"evidence_timestamp_sec\":1382},{\"claim\":\"Anything an LLM judge scores becomes a reward-hackable proxy: agents oversteer into conservative generic outputs, exploit undefined boundaries, or exploit the harness, so judges need adversarial design rather than trust.\",\"support_count\":6,\"supporting_talks\":[\"ending-ai-slop\",\"building-closed-loop-evals-for-a-multimodal-agent-at-scale\",\"reinforcement-learning-without-verifiable-rewards\",\"from-agent-traces-to-agent-simulations\",\"rethinking-environments-for-long-horizon-work\",\"deepswe-a-contamination-resistant-coding-benchmark\"],\"evidence_quote\":\"LLM LLM as a judge might not necessarily always be the best method. We know that there's a lot of reward hacking.\",\"evidence_talk\":\"ending-ai-slop\",\"evidence_timestamp_sec\":344},{\"claim\":\"Judging the final output alone is insufficient for agents; the judge must inspect the full trajectory, tool outputs, and resulting environment state, because the most damaging failures are invisible in aggregate pass rates.\",\"support_count\":5,\"supporting_talks\":[\"rethinking-environments-for-long-horizon-work\",\"the-agentic-ai-engineer\",\"the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge\",\"how-evals-and-prompts-shape-agent-behavior\",\"from-agent-traces-to-agent-simulations\"],\"evidence_quote\":\"And we could not find that if we were just doing a categorical like the this x% pass rate or not. So we really had to look at the traces to see what was going on.\",\"evidence_talk\":\"how-evals-and-prompts-shape-agent-behavior\",\"evidence_timestamp_sec\":694},{\"claim\":\"Off-the-shelf generic metrics (helpfulness, correctness, toxicity, holistic 'is this good') are low-signal and unactionable; judges should score decomposed, domain-specific axes tied to a business or product outcome.\",\"support_count\":4,\"supporting_talks\":[\"build-evals-that-actually-matter\",\"stop-burning-tokens-why-self-improvement-needs-domain-expertise-first\",\"evaling-video-slop\",\"ending-ai-slop\"],\"evidence_quote\":\"we can use these pre-built eval metrics as a baseline, but we shouldn't use them as our core eval metrics because we want eval metrics to be actionable and tied to the business outcome\",\"evidence_talk\":\"build-evals-that-actually-matter\",\"evidence_timestamp_sec\":1127},{\"claim\":\"LLM judges are non-deterministic and prompt-sensitive, so an uncalibrated judge produces enough run-to-run variance that small score deltas between agent versions are not real evidence.\",\"support_count\":4,\"supporting_talks\":[\"stop-burning-tokens-why-self-improvement-needs-domain-expertise-first\",\"the-agentic-ai-engineer\",\"evaling-video-slop\",\"build-evals-that-actually-matter\"],\"evidence_quote\":\"next time you run the same evaluator you get a different answer from the same kind of evaluation you ran\",\"evidence_talk\":\"stop-burning-tokens-why-self-improvement-needs-domain-expertise-first\",\"evidence_timestamp_sec\":684},{\"claim\":\"Rich per-item quality scores should be replaced by structurally simpler signals \u2014 binary domain-specific checks or pairwise comparisons \u2014 because absolute numeric scales are neither calibratable nor consistently applied.\",\"support_count\":4,\"supporting_talks\":[\"build-evals-that-actually-matter\",\"the-agentic-ai-engineer\",\"stop-burning-tokens-why-self-improvement-needs-domain-expertise-first\",\"evaling-video-slop\"],\"evidence_quote\":\"eval should be framed around a task success or failure. And a binary outcome is very easy to calibrate and train um LLM judge that can consistently score your agent trajectory.\",\"evidence_talk\":\"build-evals-that-actually-matter\",\"evidence_timestamp_sec\":1172}],\"disagreements\":[{\"question\":\"Should the grader for a high-stakes task be an LLM at all, or must verification be deterministic?\",\"position_a\":\"Graders must be deterministic. Models systematically claim their own attempts succeeded, LLM scores change when the model changes and are therefore not defensible to leadership, and most checks (skill evals, PR scoring, exploit verification, retrieval reranking) can be done with regex, computed formulas, or oracles that actually execute.\",\"position_a_talks\":[\"teaching-ai-to-find-real-vulnerabilities\",\"reviewdebt-a-practical-framework-for-scoring-every-pull-request\",\"dont-ship-skills-without-evals\",\"we-cut-94-of-ai-coding-tokens-with-a-local-code-index\",\"when-will-the-benchmaxxing-plague-end\"],\"position_b\":\"For the economically valuable soft-verifiable domains \u2014 open-ended long-horizon work, multimodal quality, clinical safety, ambiguous agent trajectories \u2014 deterministic verifiers are brittle, impractical, or impossible, so judge models are required and the work is in making them agents with environment access rather than replacing them.\",\"position_b_talks\":[\"rethinking-environments-for-long-horizon-work\",\"the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge\",\"reinforcement-learning-without-verifiable-rewards\",\"evals-driven-development-for-a-mental-health-ai-coach\",\"deepswe-a-contamination-resistant-coding-benchmark\"],\"why_it_matters\":\"It determines whether you spend your budget building oracles, sandboxes, and behavior-focused test harnesses, or building and continuously recalibrating judge prompts against human labels. It also determines what you can honestly report: a deterministic score survives a model upgrade, a judge score does not.\"},{\"question\":\"Should a judge emit a binary pass/fail, or a graded score with reasoning and partial credit?\",\"position_a\":\"Binary. A pass/fail tied to a business outcome is easy to calibrate, cheap to hand-label, and yields a concrete call to action; scalar rubrics are undefined at the level boundaries and tell you nothing about what to fix.\",\"position_a_talks\":[\"build-evals-that-actually-matter\",\"the-agentic-ai-engineer\",\"stop-burning-tokens-why-self-improvement-needs-domain-expertise-first\"],\"position_b\":\"Binary is insufficient. Raters and judges must supply explanations because a bare pass/fail does not localize the defect, and frontier long-horizon tasks need dense rubrics (~20 criteria with ~10 subcriteria) plus dynamic partial credit that forgives an agent's earlier wrong assumption. A third camp rejects absolute scoring entirely in favor of A-vs-B comparison, on the grounds that humans agree on comparisons but not on scales.\",\"position_b_talks\":[\"how-evals-and-prompts-shape-agent-behavior\",\"rethinking-environments-for-long-horizon-work\",\"evaling-video-slop\"],\"why_it_matters\":\"This sets the labeling budget and the shape of the training signal: binary labels are cheap and support classifier-style validation, but give reward signal too coarse for RL and no credit assignment on multi-hour trajectories. Dense rubrics give credit assignment but degrade judge consistency precisely on the frontier problems they were built for.\"},{\"question\":\"Can a judge-gated loop ship changes to production without a human in the loop?\",\"position_a\":\"Yes. Once guardrail observability and fast rollback exist, retuning and shipping can be fully config-driven with no human review \u2014 if an optimized variant hits its target eval scores, it goes out automatically.\",\"position_a_talks\":[\"building-closed-loop-evals-for-a-multimodal-agent-at-scale\",\"the-agentic-ai-engineer\"],\"position_b\":\"No. An eval gate alone does not make a system safe; automated metrics structurally cannot adjudicate fidelity because the metric cannot see the archive or the clinical context, and human judgment remains substantially better than any LLM judge in subjective domains. Chasing a perfect benchmark score actively drifts focus away from the humans the benchmark exists to protect.\",\"position_b_talks\":[\"evals-driven-development-for-a-mental-health-ai-coach\",\"the-miranda-hypothesis-how-hamilton-poisoned-persona-evals\",\"ending-ai-slop\",\"when-will-the-benchmaxxing-plague-end\"],\"why_it_matters\":\"It decides whether the expert is a build-time cost amortized across releases or a permanent per-release gate, which is a roughly order-of-magnitude difference in iteration speed \u2014 and in regulated or safety-critical domains it decides who is accountable when the judge is wrong.\"},{\"question\":\"Should the judge be a single small fast model, or an ensemble of strong models?\",\"position_a\":\"Distill a committee of expert judges into one small fast model. A 15-second video scores in about 3 seconds, which is fast enough to put the eval inside the generation loop; the bigger evaluator was more accurate but its added value did not justify the latency. This only pays off above thousands of items per day.\",\"position_a_talks\":[\"evaling-video-slop\",\"dont-ship-skills-without-evals\"],\"position_b\":\"Use a jury of independent strong agents plus a consensus judge that weighs reasoning quality and escalates by expanding the jury when consensus is thin; low-intelligence models and weak harnesses should not be used for important work at all.\",\"position_b_talks\":[\"design-patterns-for-ai-trust-juries-libraries-and-agent-tiers\",\"the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge\"],\"why_it_matters\":\"It determines whether evaluation is an online component that shapes generation (only possible if it is fast and cheap) or an offline gate you can afford to run expensively. Unit economics, not accuracy, is the deciding variable both camps point to.\"},{\"question\":\"Is the right response to judge unreliability to fix the judge, or to change the task so the judge is barely needed?\",\"position_a\":\"Fix the judge: calibrate it, give it environment access, make trajectories queryable, add layered redundant gates, run hindsight review over the full chain of events.\",\"position_a_talks\":[\"rethinking-environments-for-long-horizon-work\",\"building-closed-loop-evals-for-a-multimodal-agent-at-scale\",\"reinforcement-learning-without-verifiable-rewards\",\"the-agentic-ai-engineer\"],\"position_b\":\"Restructure the task until it is verifiable: decompose brand or quality into codified elements, formulate the audit task with multiplicative precision and recall so easiest-bug hacking and proof spamming both fail, or reify the agent's plan as a program and use type checking and taint analysis instead of judging outputs.\",\"position_b_talks\":[\"ending-ai-slop\",\"teaching-ai-to-find-real-vulnerabilities\",\"ive-never-seen-anything-scarier-than-an-llm-with-tool-calls\"],\"why_it_matters\":\"The second path yields properties that survive model upgrades and adversarial pressure but requires deep domain expertise and task redesign; the first is faster to stand up but leaves you permanently maintaining a calibration loop against a moving judge.\"}],\"practical_guidance\":{\"do\":[\"Hand-label ~100 examples with pass/fail, split into train/dev/test, and report the judge's precision and recall against those labels before its score gates anything\",\"Attach a confidence interval to every reported alignment number \u2014 an 84% vs 88% difference over 50 traces is not a demonstrated gain\",\"Reserve expensive statistical rigor for shipping decisions and leadership reporting rather than applying it uniformly to every run\",\"Give the judge read-only access to the live environment (GitHub, AWS logs, database state) and verify state independently, because the agent's reported tool calls are not reliable evidence of correctness\",\"Store, enrich, and phase-segment long trajectories so the judge can query them, instead of stuffing the whole trace into one judge context window\",\"Judge in hindsight, after seeing the full chain of events, or by polling several models \u2014 this catches most reward hacks in practice\",\"Replace generic scalar metrics with binary domain-specific checks such as 'the answer is based on the knowledge base: yes/no' or 'the brand name is correct'\",\"Train and evaluate on pairs (A vs B) rather than 1-10 absolute scores when humans cannot agree on an absolute scale\",\"Fine-tune the user simulator on real user verbatim until the eval score goes down \u2014 a falling score means the eval got more realistic\",\"Route the judge's low confidence to rejection rather than publication when the check is one the model is weak at, such as multimodal item counting\",\"When a benchmark or a QA gate is a judge, keep the verifier runtime fully separate from the agent runtime\",\"Refresh test sets from production data and use held-out sets sparingly, since agents do not generalize past the data they were developed against\",\"QA rubric density instead of maximizing it \u2014 overly dense rubrics degrade judge consistency exactly on the frontier problems you care about\",\"Reserve human expert time for the highest-level judgments about goals and quality, and let compute handle the rest of the refinement\",\"Route disagreements between the agent and different verifiers to subject-matter experts rather than having them review everything\"],\"avoid\":[\"Shipping an LLM judge whose score does not gate any decision in development or production\",\"Trusting a model's self-report of success \u2014 in cybersecurity the LLM will always claim its hack worked, so the grader must execute and check for control-flow hijack, not a crash\",\"Judging with a model from the same family as the system under test; an Opus judge favored a Sonnet response over Llama's on identical criteria\",\"Prompting a judge for a holistic verdict ('is this on brand?') instead of decomposing the property into codified, individually checkable elements\",\"Scoring on a 0-1 or 1-5 scale without defining what each level means in context\",\"Generating judge training data naively \u2014 the judge will learn surface gloss and coherence, scoring 9.2 on camera work when the camera did not move and praising the physics of hovering ghosts\",\"Building good/bad pairs as human-footage vs AI-footage; you will train an AI detector, not a quality detector\",\"Telling a judge model not to allow a behavior in advance \u2014 it does not prevent the behavior in the rollout\",\"Using an LLM judge to score writing quality, since LLMs lack good taste in writing\",\"Averaging preference labels across unmodeled raters; that washes real multi-preference signal into noise\",\"Using off-the-shelf frontier models as user simulators for support evals \u2014 they produce unrealistically polite complaints and a fake 90%+ pass rate\",\"Anchoring verifiers to a specific implementation (required function names, module placement, private helpers), which fails correct solutions\",\"Fixing a judge-detected failure by adding a prohibition to the prompt instead of routing the fix to the harness, skills, or structured output\",\"Hyperfixating on a single failing run in a non-deterministic system; measure the failure pattern across many examples first\",\"Running skill or agent evals inside an existing workspace \u2014 coding agents will cheat by reading prior chats and executions\",\"Reviewing production data only with coding agents; a human has to look at the raw data or the labels, criteria, and judge validation all collapse\"]},\"notable_outliers\":[{\"claim\":\"The existence of roughly a hundred LLM-as-a-judge startups is a direct consequence of safety being formally unspecifiable \u2014 you cannot write a proof that an answer is safe, so the industry hired a model to have an opinion instead.\",\"talk\":\"ive-never-seen-anything-scarier-than-an-llm-with-tool-calls\",\"timestamp_sec\":522},{\"claim\":\"You cannot trust an LLM to judge a domain you are simultaneously teaching it \u2014 in cybersecurity, models consistently claim their hacks succeeded, so the grader must be deterministic and the task defined by the program, not by a single planted bug.\",\"talk\":\"teaching-ai-to-find-real-vulnerabilities\",\"timestamp_sec\":979},{\"claim\":\"LLM judges exhibit family self-preference: Claude Opus scored Claude Sonnet above Llama 3.2 on the same criteria, so eval numbers must be manually inspected rather than trusted numerically.\",\"talk\":\"frontier-results-on-device\",\"timestamp_sec\":1557},{\"claim\":\"PR quality scoring should be deterministic on principle, because the same PR will score differently once the model changes, which makes the number indefensible to leadership.\",\"talk\":\"reviewdebt-a-practical-framework-for-scoring-every-pull-request\",\"timestamp_sec\":380},{\"claim\":\"Judges are agents too \u2014 they should reuse the task harness with read-only environment permissions, and the trajectory must be made queryable rather than stuffed into a single LLM call.\",\"talk\":\"rethinking-environments-for-long-horizon-work\",\"timestamp_sec\":794},{\"claim\":\"Judging in hindsight, after the full chain of events, is more reliable than instructing a judge against failures in advance; simple hindsight review catches most reward hacks.\",\"talk\":\"reinforcement-learning-without-verifiable-rewards\",\"timestamp_sec\":811},{\"claim\":\"Don't score, compare \u2014 humans do not agree on absolute 1-10 scales but the large majority agree on which of two videos tells a better story, so train the judge on pairs.\",\"talk\":\"evaling-video-slop\",\"timestamp_sec\":542},{\"claim\":\"An automated metric structurally cannot adjudicate fidelity, because fidelity is a relation between the output and an archive the metric cannot see \u2014 a persona system without a domain expert in its eval loop is a thermometer that cannot read temperature.\",\"talk\":\"the-miranda-hypothesis-how-hamilton-poisoned-persona-evals\",\"timestamp_sec\":3065},{\"claim\":\"For persona and distribution-style outputs, a correctness-style judge is the wrong instrument entirely: you need a correlation metric plus a distribution-shape metric, because a model can match the human average while flattening all the variation.\",\"talk\":\"persona-engineering-a-field-guide-to-ai-synthetic-personas\",\"timestamp_sec\":1023},{\"claim\":\"Most skill evals should be cheap regex assertions rather than LLM-as-judge, and coding agents write surprisingly good regex for this.\",\"talk\":\"dont-ship-skills-without-evals\",\"timestamp_sec\":857},{\"claim\":\"The judge should escalate rather than decide alone on questions with no empirically correct answer: run a jury of independent analysts, weigh their reasoning quality, and expand the jury when consensus is thin.\",\"talk\":\"design-patterns-for-ai-trust-juries-libraries-and-agent-tiers\",\"timestamp_sec\":877},{\"claim\":\"LLM-as-a-judge evals are inherently backward-looking \u2014 you build them for failures you have already seen \u2014 which is why agentic trace investigation has to sit alongside them rather than being replaced by them.\",\"talk\":\"from-signal-to-pr-anatomy-of-a-self-improving-agent\",\"timestamp_sec\":1134}],\"maturity\":\"contested\",\"maturity_rationale\":\"There is real convergence on mechanics \u2014 validate the judge against human labels, prefer decomposed domain-specific criteria over generic scalars, inspect trajectories, expect reward hacking \u2014 but credible practitioners disagree on fundamentals: whether judges belong in high-stakes grading at all (security, PR scoring, and benchmark teams say deterministic only; long-horizon, multimodal, and clinical teams say judges are the only option), whether output should be binary or densely rubric'd, and whether a judge-gated loop may ship without a human. Those are incompatible recommendations about the same decision, not differences of emphasis.\"}",
+  "ttft_ms": 58674,
+  "ttft_stream_ms": 1309,
+  "time_to_request_ms": 42,
+  "type": "result",
+  "duration_ms": 149696,
+  "uuid": "c834b0c5-6b25-4de0-acf8-ce27ffe614af",
+  "passC": {
+    "concept": "llm-as-a-judge",
+    "state_of_practice": "The field has stopped treating an LLM judge as a metric and started treating it as a classifier that must itself be validated: hand-label roughly a hundred traces, split train/dev/test, and score the judge on precision and recall against human labels before any of its numbers gate a decision. Practitioners converged hard against generic scalar rubrics \u2014 helpfulness, correctness, conciseness on a 0-1 or 1-5 scale \u2014 because the levels are undefined, the score is unstable run-to-run, and a 0.5 tells you nothing to fix; the replacement is domain-specific criteria decomposed into checkable units, discovered by reading production data rather than specified up front. For agents, judging the final output is now considered insufficient: judges are being built as agents themselves, with read-only access to the environment and a queryable, phase-segmented trajectory, because trajectory inspection is the only way to catch reward hacking (sandbox escape, reading hidden tests, oversteering into generic safe outputs) and the only way to find failures \u2014 like an agent deleting a legally required disclaimer \u2014 that aggregate pass rates hide. The unresolved fault line is scope: security, PR scoring, benchmark verification, and skill testing camps argue graders must be deterministic because models systematically self-report success and judge scores shift when the model changes, while the soft-verifiable camp (long-horizon finance work, video and design quality, clinical safety, open-ended agent tasks) argues deterministic verifiers are brittle or impossible there and judges are the only option. Everyone agrees the judge is downstream of human labels; nobody agrees on how much human labeling remains structurally required versus automatable away.",
+    "consensus": [
+      {
+        "claim": "An LLM judge must be calibrated and validated against human labels before its scores are trusted; human judgment is the golden source of truth the judge is aligned to, not the other way around.",
+        "support_count": 6,
+        "supporting_talks": [
+          "build-evals-that-actually-matter",
+          "building-closed-loop-evals-for-a-multimodal-agent-at-scale",
+          "how-evals-and-prompts-shape-agent-behavior",
+          "the-agentic-ai-engineer",
+          "simulationmaxxing-how-we-ship-agents-20-faster",
+          "evals-driven-development-for-a-mental-health-ai-coach"
+        ],
+        "evidence_quote": "For our use case, we consider human labels as the golden source of truth. And this is what we want to align our models to.",
+        "evidence_talk": "building-closed-loop-evals-for-a-multimodal-agent-at-scale",
+        "evidence_timestamp_sec": 533
+      },
+      {
+        "claim": "Evaluation criteria cannot be fully specified before looking at data; the real rubric is discovered incrementally from production traces and expert grading, and eval failures feed back into the criteria.",
+        "support_count": 6,
+        "supporting_talks": [
+          "build-evals-that-actually-matter",
+          "the-agentic-ai-engineer",
+          "stop-burning-tokens-why-self-improvement-needs-domain-expertise-first",
+          "your-moat-is-your-data-model",
+          "evals-driven-development-for-a-mental-health-ai-coach",
+          "how-evals-and-prompts-shape-agent-behavior"
+        ],
+        "evidence_quote": "The key idea is that we actually discover what our evaluation criteria is by looking at the data and grading our outputs.",
+        "evidence_talk": "build-evals-that-actually-matter",
+        "evidence_timestamp_sec": 1382
+      },
+      {
+        "claim": "Anything an LLM judge scores becomes a reward-hackable proxy: agents oversteer into conservative generic outputs, exploit undefined boundaries, or exploit the harness, so judges need adversarial design rather than trust.",
+        "support_count": 6,
+        "supporting_talks": [
+          "ending-ai-slop",
+          "building-closed-loop-evals-for-a-multimodal-agent-at-scale",
+          "reinforcement-learning-without-verifiable-rewards",
+          "from-agent-traces-to-agent-simulations",
+          "rethinking-environments-for-long-horizon-work",
+          "deepswe-a-contamination-resistant-coding-benchmark"
+        ],
+        "evidence_quote": "LLM LLM as a judge might not necessarily always be the best method. We know that there's a lot of reward hacking.",
+        "evidence_talk": "ending-ai-slop",
+        "evidence_timestamp_sec": 344
+      },
+      {
+        "claim": "Judging the final output alone is insufficient for agents; the judge must inspect the full trajectory, tool outputs, and resulting environment state, because the most damaging failures are invisible in aggregate pass rates.",
+        "support_count": 5,
+        "supporting_talks": [
+          "rethinking-environments-for-long-horizon-work",
+          "the-agentic-ai-engineer",
+          "the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge",
+          "how-evals-and-prompts-shape-agent-behavior",
+          "from-agent-traces-to-agent-simulations"
+        ],
+        "evidence_quote": "And we could not find that if we were just doing a categorical like the this x% pass rate or not. So we really had to look at the traces to see what was going on.",
+        "evidence_talk": "how-evals-and-prompts-shape-agent-behavior",
+        "evidence_timestamp_sec": 694
+      },
+      {
+        "claim": "Off-the-shelf generic metrics (helpfulness, correctness, toxicity, holistic 'is this good') are low-signal and unactionable; judges should score decomposed, domain-specific axes tied to a business or product outcome.",
+        "support_count": 4,
+        "supporting_talks": [
+          "build-evals-that-actually-matter",
+          "stop-burning-tokens-why-self-improvement-needs-domain-expertise-first",
+          "evaling-video-slop",
+          "ending-ai-slop"
+        ],
+        "evidence_quote": "we can use these pre-built eval metrics as a baseline, but we shouldn't use them as our core eval metrics because we want eval metrics to be actionable and tied to the business outcome",
+        "evidence_talk": "build-evals-that-actually-matter",
+        "evidence_timestamp_sec": 1127
+      },
+      {
+        "claim": "LLM judges are non-deterministic and prompt-sensitive, so an uncalibrated judge produces enough run-to-run variance that small score deltas between agent versions are not real evidence.",
+        "support_count": 4,
+        "supporting_talks": [
+          "stop-burning-tokens-why-self-improvement-needs-domain-expertise-first",
+          "the-agentic-ai-engineer",
+          "evaling-video-slop",
+          "build-evals-that-actually-matter"
+        ],
+        "evidence_quote": "next time you run the same evaluator you get a different answer from the same kind of evaluation you ran",
+        "evidence_talk": "stop-burning-tokens-why-self-improvement-needs-domain-expertise-first",
+        "evidence_timestamp_sec": 684
+      },
+      {
+        "claim": "Rich per-item quality scores should be replaced by structurally simpler signals \u2014 binary domain-specific checks or pairwise comparisons \u2014 because absolute numeric scales are neither calibratable nor consistently applied.",
+        "support_count": 4,
+        "supporting_talks": [
+          "build-evals-that-actually-matter",
+          "the-agentic-ai-engineer",
+          "stop-burning-tokens-why-self-improvement-needs-domain-expertise-first",
+          "evaling-video-slop"
+        ],
+        "evidence_quote": "eval should be framed around a task success or failure. And a binary outcome is very easy to calibrate and train um LLM judge that can consistently score your agent trajectory.",
+        "evidence_talk": "build-evals-that-actually-matter",
+        "evidence_timestamp_sec": 1172
+      }
+    ],
+    "disagreements": [
+      {
+        "question": "Should the grader for a high-stakes task be an LLM at all, or must verification be deterministic?",
+        "position_a": "Graders must be deterministic. Models systematically claim their own attempts succeeded, LLM scores change when the model changes and are therefore not defensible to leadership, and most checks (skill evals, PR scoring, exploit verification, retrieval reranking) can be done with regex, computed formulas, or oracles that actually execute.",
+        "position_a_talks": [
+          "teaching-ai-to-find-real-vulnerabilities",
+          "reviewdebt-a-practical-framework-for-scoring-every-pull-request",
+          "dont-ship-skills-without-evals",
+          "we-cut-94-of-ai-coding-tokens-with-a-local-code-index",
+          "when-will-the-benchmaxxing-plague-end"
+        ],
+        "position_b": "For the economically valuable soft-verifiable domains \u2014 open-ended long-horizon work, multimodal quality, clinical safety, ambiguous agent trajectories \u2014 deterministic verifiers are brittle, impractical, or impossible, so judge models are required and the work is in making them agents with environment access rather than replacing them.",
+        "position_b_talks": [
+          "rethinking-environments-for-long-horizon-work",
+          "the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge",
+          "reinforcement-learning-without-verifiable-rewards",
+          "evals-driven-development-for-a-mental-health-ai-coach",
+          "deepswe-a-contamination-resistant-coding-benchmark"
+        ],
+        "why_it_matters": "It determines whether you spend your budget building oracles, sandboxes, and behavior-focused test harnesses, or building and continuously recalibrating judge prompts against human labels. It also determines what you can honestly report: a deterministic score survives a model upgrade, a judge score does not."
+      },
+      {
+        "question": "Should a judge emit a binary pass/fail, or a graded score with reasoning and partial credit?",
+        "position_a": "Binary. A pass/fail tied to a business outcome is easy to calibrate, cheap to hand-label, and yields a concrete call to action; scalar rubrics are undefined at the level boundaries and tell you nothing about what to fix.",
+        "position_a_talks": [
+          "build-evals-that-actually-matter",
+          "the-agentic-ai-engineer",
+          "stop-burning-tokens-why-self-improvement-needs-domain-expertise-first"
+        ],
+        "position_b": "Binary is insufficient. Raters and judges must supply explanations because a bare pass/fail does not localize the defect, and frontier long-horizon tasks need dense rubrics (~20 criteria with ~10 subcriteria) plus dynamic partial credit that forgives an agent's earlier wrong assumption. A third camp rejects absolute scoring entirely in favor of A-vs-B comparison, on the grounds that humans agree on comparisons but not on scales.",
+        "position_b_talks": [
+          "how-evals-and-prompts-shape-agent-behavior",
+          "rethinking-environments-for-long-horizon-work",
+          "evaling-video-slop"
+        ],
+        "why_it_matters": "This sets the labeling budget and the shape of the training signal: binary labels are cheap and support classifier-style validation, but give reward signal too coarse for RL and no credit assignment on multi-hour trajectories. Dense rubrics give credit assignment but degrade judge consistency precisely on the frontier problems they were built for."
+      },
+      {
+        "question": "Can a judge-gated loop ship changes to production without a human in the loop?",
+        "position_a": "Yes. Once guardrail observability and fast rollback exist, retuning and shipping can be fully config-driven with no human review \u2014 if an optimized variant hits its target eval scores, it goes out automatically.",
+        "position_a_talks": [
+          "building-closed-loop-evals-for-a-multimodal-agent-at-scale",
+          "the-agentic-ai-engineer"
+        ],
+        "position_b": "No. An eval gate alone does not make a system safe; automated metrics structurally cannot adjudicate fidelity because the metric cannot see the archive or the clinical context, and human judgment remains substantially better than any LLM judge in subjective domains. Chasing a perfect benchmark score actively drifts focus away from the humans the benchmark exists to protect.",
+        "position_b_talks": [
+          "evals-driven-development-for-a-mental-health-ai-coach",
+          "the-miranda-hypothesis-how-hamilton-poisoned-persona-evals",
+          "ending-ai-slop",
+          "when-will-the-benchmaxxing-plague-end"
+        ],
+        "why_it_matters": "It decides whether the expert is a build-time cost amortized across releases or a permanent per-release gate, which is a roughly order-of-magnitude difference in iteration speed \u2014 and in regulated or safety-critical domains it decides who is accountable when the judge is wrong."
+      },
+      {
+        "question": "Should the judge be a single small fast model, or an ensemble of strong models?",
+        "position_a": "Distill a committee of expert judges into one small fast model. A 15-second video scores in about 3 seconds, which is fast enough to put the eval inside the generation loop; the bigger evaluator was more accurate but its added value did not justify the latency. This only pays off above thousands of items per day.",
+        "position_a_talks": [
+          "evaling-video-slop",
+          "dont-ship-skills-without-evals"
+        ],
+        "position_b": "Use a jury of independent strong agents plus a consensus judge that weighs reasoning quality and escalates by expanding the jury when consensus is thin; low-intelligence models and weak harnesses should not be used for important work at all.",
+        "position_b_talks": [
+          "design-patterns-for-ai-trust-juries-libraries-and-agent-tiers",
+          "the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge"
+        ],
+        "why_it_matters": "It determines whether evaluation is an online component that shapes generation (only possible if it is fast and cheap) or an offline gate you can afford to run expensively. Unit economics, not accuracy, is the deciding variable both camps point to."
+      },
+      {
+        "question": "Is the right response to judge unreliability to fix the judge, or to change the task so the judge is barely needed?",
+        "position_a": "Fix the judge: calibrate it, give it environment access, make trajectories queryable, add layered redundant gates, run hindsight review over the full chain of events.",
+        "position_a_talks": [
+          "rethinking-environments-for-long-horizon-work",
+          "building-closed-loop-evals-for-a-multimodal-agent-at-scale",
+          "reinforcement-learning-without-verifiable-rewards",
+          "the-agentic-ai-engineer"
+        ],
+        "position_b": "Restructure the task until it is verifiable: decompose brand or quality into codified elements, formulate the audit task with multiplicative precision and recall so easiest-bug hacking and proof spamming both fail, or reify the agent's plan as a program and use type checking and taint analysis instead of judging outputs.",
+        "position_b_talks": [
+          "ending-ai-slop",
+          "teaching-ai-to-find-real-vulnerabilities",
+          "ive-never-seen-anything-scarier-than-an-llm-with-tool-calls"
+        ],
+        "why_it_matters": "The second path yields properties that survive model upgrades and adversarial pressure but requires deep domain expertise and task redesign; the first is faster to stand up but leaves you permanently maintaining a calibration loop against a moving judge."
+      }
+    ],
+    "practical_guidance": {
+      "do": [
+        "Hand-label ~100 examples with pass/fail, split into train/dev/test, and report the judge's precision and recall against those labels before its score gates anything",
+        "Attach a confidence interval to every reported alignment number \u2014 an 84% vs 88% difference over 50 traces is not a demonstrated gain",
+        "Reserve expensive statistical rigor for shipping decisions and leadership reporting rather than applying it uniformly to every run",
+        "Give the judge read-only access to the live environment (GitHub, AWS logs, database state) and verify state independently, because the agent's reported tool calls are not reliable evidence of correctness",
+        "Store, enrich, and phase-segment long trajectories so the judge can query them, instead of stuffing the whole trace into one judge context window",
+        "Judge in hindsight, after seeing the full chain of events, or by polling several models \u2014 this catches most reward hacks in practice",
+        "Replace generic scalar metrics with binary domain-specific checks such as 'the answer is based on the knowledge base: yes/no' or 'the brand name is correct'",
+        "Train and evaluate on pairs (A vs B) rather than 1-10 absolute scores when humans cannot agree on an absolute scale",
+        "Fine-tune the user simulator on real user verbatim until the eval score goes down \u2014 a falling score means the eval got more realistic",
+        "Route the judge's low confidence to rejection rather than publication when the check is one the model is weak at, such as multimodal item counting",
+        "When a benchmark or a QA gate is a judge, keep the verifier runtime fully separate from the agent runtime",
+        "Refresh test sets from production data and use held-out sets sparingly, since agents do not generalize past the data they were developed against",
+        "QA rubric density instead of maximizing it \u2014 overly dense rubrics degrade judge consistency exactly on the frontier problems you care about",
+        "Reserve human expert time for the highest-level judgments about goals and quality, and let compute handle the rest of the refinement",
+        "Route disagreements between the agent and different verifiers to subject-matter experts rather than having them review everything"
+      ],
+      "avoid": [
+        "Shipping an LLM judge whose score does not gate any decision in development or production",
+        "Trusting a model's self-report of success \u2014 in cybersecurity the LLM will always claim its hack worked, so the grader must execute and check for control-flow hijack, not a crash",
+        "Judging with a model from the same family as the system under test; an Opus judge favored a Sonnet response over Llama's on identical criteria",
+        "Prompting a judge for a holistic verdict ('is this on brand?') instead of decomposing the property into codified, individually checkable elements",
+        "Scoring on a 0-1 or 1-5 scale without defining what each level means in context",
+        "Generating judge training data naively \u2014 the judge will learn surface gloss and coherence, scoring 9.2 on camera work when the camera did not move and praising the physics of hovering ghosts",
+        "Building good/bad pairs as human-footage vs AI-footage; you will train an AI detector, not a quality detector",
+        "Telling a judge model not to allow a behavior in advance \u2014 it does not prevent the behavior in the rollout",
+        "Using an LLM judge to score writing quality, since LLMs lack good taste in writing",
+        "Averaging preference labels across unmodeled raters; that washes real multi-preference signal into noise",
+        "Using off-the-shelf frontier models as user simulators for support evals \u2014 they produce unrealistically polite complaints and a fake 90%+ pass rate",
+        "Anchoring verifiers to a specific implementation (required function names, module placement, private helpers), which fails correct solutions",
+        "Fixing a judge-detected failure by adding a prohibition to the prompt instead of routing the fix to the harness, skills, or structured output",
+        "Hyperfixating on a single failing run in a non-deterministic system; measure the failure pattern across many examples first",
+        "Running skill or agent evals inside an existing workspace \u2014 coding agents will cheat by reading prior chats and executions",
+        "Reviewing production data only with coding agents; a human has to look at the raw data or the labels, criteria, and judge validation all collapse"
+      ]
+    },
+    "notable_outliers": [
+      {
+        "claim": "The existence of roughly a hundred LLM-as-a-judge startups is a direct consequence of safety being formally unspecifiable \u2014 you cannot write a proof that an answer is safe, so the industry hired a model to have an opinion instead.",
+        "talk": "ive-never-seen-anything-scarier-than-an-llm-with-tool-calls",
+        "timestamp_sec": 522
+      },
+      {
+        "claim": "You cannot trust an LLM to judge a domain you are simultaneously teaching it \u2014 in cybersecurity, models consistently claim their hacks succeeded, so the grader must be deterministic and the task defined by the program, not by a single planted bug.",
+        "talk": "teaching-ai-to-find-real-vulnerabilities",
+        "timestamp_sec": 979
+      },
+      {
+        "claim": "LLM judges exhibit family self-preference: Claude Opus scored Claude Sonnet above Llama 3.2 on the same criteria, so eval numbers must be manually inspected rather than trusted numerically.",
+        "talk": "frontier-results-on-device",
+        "timestamp_sec": 1557
+      },
+      {
+        "claim": "PR quality scoring should be deterministic on principle, because the same PR will score differently once the model changes, which makes the number indefensible to leadership.",
+        "talk": "reviewdebt-a-practical-framework-for-scoring-every-pull-request",
+        "timestamp_sec": 380
+      },
+      {
+        "claim": "Judges are agents too \u2014 they should reuse the task harness with read-only environment permissions, and the trajectory must be made queryable rather than stuffed into a single LLM call.",
+        "talk": "rethinking-environments-for-long-horizon-work",
+        "timestamp_sec": 794
+      },
+      {
+        "claim": "Judging in hindsight, after the full chain of events, is more reliable than instructing a judge against failures in advance; simple hindsight review catches most reward hacks.",
+        "talk": "reinforcement-learning-without-verifiable-rewards",
+        "timestamp_sec": 811
+      },
+      {
+        "claim": "Don't score, compare \u2014 humans do not agree on absolute 1-10 scales but the large majority agree on which of two videos tells a better story, so train the judge on pairs.",
+        "talk": "evaling-video-slop",
+        "timestamp_sec": 542
+      },
+      {
+        "claim": "An automated metric structurally cannot adjudicate fidelity, because fidelity is a relation between the output and an archive the metric cannot see \u2014 a persona system without a domain expert in its eval loop is a thermometer that cannot read temperature.",
+        "talk": "the-miranda-hypothesis-how-hamilton-poisoned-persona-evals",
+        "timestamp_sec": 3065
+      },
+      {
+        "claim": "For persona and distribution-style outputs, a correctness-style judge is the wrong instrument entirely: you need a correlation metric plus a distribution-shape metric, because a model can match the human average while flattening all the variation.",
+        "talk": "persona-engineering-a-field-guide-to-ai-synthetic-personas",
+        "timestamp_sec": 1023
+      },
+      {
+        "claim": "Most skill evals should be cheap regex assertions rather than LLM-as-judge, and coding agents write surprisingly good regex for this.",
+        "talk": "dont-ship-skills-without-evals",
+        "timestamp_sec": 857
+      },
+      {
+        "claim": "The judge should escalate rather than decide alone on questions with no empirically correct answer: run a jury of independent analysts, weigh their reasoning quality, and expand the jury when consensus is thin.",
+        "talk": "design-patterns-for-ai-trust-juries-libraries-and-agent-tiers",
+        "timestamp_sec": 877
+      },
+      {
+        "claim": "LLM-as-a-judge evals are inherently backward-looking \u2014 you build them for failures you have already seen \u2014 which is why agentic trace investigation has to sit alongside them rather than being replaced by them.",
+        "talk": "from-signal-to-pr-anatomy-of-a-self-improving-agent",
+        "timestamp_sec": 1134
+      }
+    ],
+    "maturity": "contested",
+    "maturity_rationale": "There is real convergence on mechanics \u2014 validate the judge against human labels, prefer decomposed domain-specific criteria over generic scalars, inspect trajectories, expect reward hacking \u2014 but credible practitioners disagree on fundamentals: whether judges belong in high-stakes grading at all (security, PR scoring, and benchmark teams say deterministic only; long-horizon, multimodal, and clinical teams say judges are the only option), whether output should be binary or densely rubric'd, and whether a judge-gated loop may ship without a human. Those are incompatible recommendations about the same decision, not differences of emphasis."
+  },
+  "_meta": {
+    "concept": "llm-as-a-judge",
+    "slug": "llm-as-a-judge",
+    "talk_count": 27,
+    "missing_talks": [],
+    "wall_sec": 150.8,
+    "run_at": "2026-08-13T16:37:56Z"
+  }
+}

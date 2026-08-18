@@ -1,0 +1,293 @@
+{
+  "is_error": false,
+  "duration_api_ms": 69654,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "f8c52878-334d-40bf-b5d0-fb089046437a",
+  "total_cost_usd": 0.304206,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 13529,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 6179,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 13529,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 6179,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 13529,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 13529
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 9197,
+      "outputTokens": 16,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.009277,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 6179,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 13529,
+      "webSearchRequests": 0,
+      "costUSD": 0.294929,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"RL Nabors argues that most production LLM calls are overkill and can be moved to small, on-device models without a meaningful quality loss. The talk walks through a concrete case study: a thread-summarization feature in a social client, prototyped on Claude Sonnet, then benchmarked against Qwen 2.5/3, Llama 3.2 3B, and Gemma on a 28-example golden dataset using Arize's open-source Phoenix eval tool. Llama 3.2 3B initially trailed the Claude baseline on structural validity and factual consistency, but few-shot prompting plus deterministic post-processing closed the gap entirely while beating Claude on latency and eliminating a dollar a day of inference spend. Along the way it offers a repeatable four-step method \u2014 prove it's possible with a big model, define success criteria, test small-to-large, select the 'SAGE' (small and good enough) model \u2014 plus warnings about LLM-as-judge bias and the need for regression evals. Worth watching if you ship user-facing LLM features and want a worked, numbers-backed template for downsizing them.\",\n  \"key_points\": [\n    \"Cloud inference carries four compounding costs \u2014 data exposure risk, latency above the ~4-second believability threshold, uncontrollable per-call spend, and total failure when offline \u2014 all of which on-device models eliminate.\",\n    \"Token prices are falling but total inference spend is rising, because agentic and reasoning workloads consume tokens faster than prices drop.\",\n    \"Most production tasks (summarizing a thread, detecting toxicity) don't need a model that contains all of human knowledge; SLMs run in the millions-to-billions of parameters and, quantized to 8- or 4-bit, fit on phones.\",\n    \"The recommended workflow is 'prototype big, deploy small': prove feasibility on the largest model, set explicit success criteria, test models from small to large, and select the smallest one that clears the bar \u2014 the 'SAGE' model.\",\n    \"In the case study, Qwen 2.5 1.5B was fastest (~1s P50) but least accurate, Gemma was slowest (~8s) despite peer recommendations, and Llama 3.2 3B won at ~90% accuracy with latency comparable to Claude Sonnet.\",\n    \"Of four prompt variants tested (numbered input, few-shot, strict negative rules, chain of thought), few-shot won; strict negative constraints actively hurt performance, and chain of thought cost 600ms for marginal gain.\",\n    \"Remaining gaps in reference validity and length compliance were closed deterministically in the harness via post-processing rather than by changing models or prompts.\",\n    \"LLM-as-judge results must be inspected manually: Claude Opus judging Claude Sonnet against Llama was systematically strict toward the smaller model, so part of the measured 'factual inconsistency' was judge bias, not model error.\",\n    \"Once a small model is in production, regression evals should run like CI tests so a prompt tweak or model upgrade can't silently break behavior.\",\n    \"Energy use scales down too: an SLM uses roughly 25% of an LLM's energy for the same task, and a task-specific model roughly half of that again.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"Now, token costs have been falling as of late, but total inference spend has been rising because agent can reasoning workloads consume tokens way faster than prices are dropping.\",\n      \"timestamp_sec\": 131,\n      \"why\": \"The core economic premise of the talk, stated as a counterintuitive trend.\"\n    },\n    {\n      \"text\": \"found that 4 seconds is the limit of believability for users, and many calls that you will make to large models are going to take longer than 4 seconds\",\n      \"timestamp_sec\": 88,\n      \"why\": \"Gives the concrete latency budget she later designs her P95 threshold around.\"\n    },\n    {\n      \"text\": \"You don't need history, you don't need philosophy, you don't need all those Reddit chats, you don't need a lot of what the models have learned and been trained on.\",\n      \"timestamp_sec\": 272,\n      \"why\": \"Memorable framing of why frontier capability is wasted on routine tasks.\"\n    },\n    {\n      \"text\": \"Nvidia called SLMs the future of agentic AI. Once again, great research paper from 2025 that found that SLMs are sufficiently powerful for running agentic task loads.\",\n      \"timestamp_sec\": 350,\n      \"why\": \"External authority cited for the talk's central claim.\"\n    },\n    {\n      \"text\": \"An SLM takes about 25% of that. And a task-specific model takes about half of that over.\",\n      \"timestamp_sec\": 392,\n      \"why\": \"The talk's quantified energy argument.\"\n    },\n    {\n      \"text\": \"Now, first off, I like to think of this as prototype big, deploy small. Just repeat this to yourself.\",\n      \"timestamp_sec\": 536,\n      \"why\": \"The talk's thesis compressed into a slogan.\"\n    },\n    {\n      \"text\": \"Now, a golden data set is a curated high-quality collection of preferably human-labeled input-output pairs that you're going to use as the ground truth to evaluate, validate, and benchmark your model.\",\n      \"timestamp_sec\": 613,\n      \"why\": \"Defines the artifact the entire migration method depends on.\"\n    },\n    {\n      \"text\": \"So, I actually did some math and it turns out I'm using about a dollar worth of inference every day using Mima.\",\n      \"timestamp_sec\": 842,\n      \"why\": \"Grounds the abstract cost argument in a real per-user number.\"\n    },\n    {\n      \"text\": \"Good news is the total cost column for all these small local models is absolutely zilch because that inference has been pushed to the consumer.\",\n      \"timestamp_sec\": 842,\n      \"why\": \"Names the tradeoff honestly \u2014 the cost doesn't vanish, it moves to the user's battery.\"\n    },\n    {\n      \"text\": \"And I think that's important here because if I had just gone with what my buddies told me, I may have given the user What? Pardon. Not may have. I would have given the user an extremely different experience, not a good experience.\",\n      \"timestamp_sec\": 926,\n      \"why\": \"Argues directly against picking models by community consensus instead of evals.\"\n    },\n    {\n      \"text\": \"You're going to want to select the smallest model that gives acceptable responses for your use case. Or as I like to call it, the SAGE model, the small and good enough model.\",\n      \"timestamp_sec\": 926,\n      \"why\": \"Coins the selection heuristic the rest of the talk applies.\"\n    },\n    {\n      \"text\": \"You want to isolate one variable per prompt variant to test whether what you're trying to accomplish is moving the needle when you're using the different prompts.\",\n      \"timestamp_sec\": 1252,\n      \"why\": \"Methodological discipline for prompt optimization, often skipped in practice.\"\n    },\n    {\n      \"text\": \"And the hypothesis was that small models respond to literal commands and that they like to be bossed around a bit.\",\n      \"timestamp_sec\": 1300,\n      \"why\": \"States a common prompt-engineering intuition that her results then falsify.\"\n    },\n    {\n      \"text\": \"The best performing one was the few shot one that provided a couple of threads and a couple of examples.\",\n      \"timestamp_sec\": 1401,\n      \"why\": \"The empirical winner among four prompt strategies.\"\n    },\n    {\n      \"text\": \"when it came to factual consistency, it turned out that Claude was just being a very strict judge.\",\n      \"timestamp_sec\": 1494,\n      \"why\": \"Key caveat about trusting LLM-as-judge scores at face value.\"\n    },\n    {\n      \"text\": \"Claude Opus was comparing Claude Sonnet's response to uh Llama 3.2's response, and of course Claude was favoring its little sister\",\n      \"timestamp_sec\": 1557,\n      \"why\": \"Names same-family judge bias explicitly.\"\n    },\n    {\n      \"text\": \"So, when we added the post-processing, we're actually able to close that gap pretty solidly.\",\n      \"timestamp_sec\": 1605,\n      \"why\": \"Points to deterministic code, not bigger models, as the fix for the last few percent.\"\n    },\n    {\n      \"text\": \"It actually ended up meeting and beating Claude's on it after doing this little bit of extra effort, and I'm saving about a dollar a day in inference costs.\",\n      \"timestamp_sec\": 1652,\n      \"why\": \"The headline result of the case study.\"\n    },\n    {\n      \"text\": \"it's how you keep your CTO from blowing away your agentic experience by accident one morning. True story, happened to a founder friend of mine.\",\n      \"timestamp_sec\": 1697,\n      \"why\": \"Makes the case for regression evals with a concrete failure mode.\"\n    },\n    {\n      \"text\": \"I challenge you to go home today and take a look at what you're sending to LLM's and ask yourself, is this something that a smaller model could handle and how much money would I save if I did that?\",\n      \"timestamp_sec\": 1697,\n      \"why\": \"The talk's actionable call to action.\"\n    }\n  ],\n  \"concepts\": [\n    \"on-device inference\",\n    \"small language models\",\n    \"task-specific models\",\n    \"model right-sizing\",\n    \"golden datasets\",\n    \"llm-as-judge evaluation\",\n    \"prompt engineering variants\",\n    \"regression evals\",\n    \"quantization\",\n    \"latency budgets\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Total inference spend is rising despite falling token prices, because agentic and reasoning workloads consume tokens faster than prices drop.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 131\n    },\n    {\n      \"claim\": \"Four seconds is the upper limit of believability for users in LLM chat interactions, and many frontier-model calls exceed it.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 88\n    },\n    {\n      \"claim\": \"SLMs consume about 25% of the energy an LLM uses for the same task, and task-specific models about half of that again.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 392\n    },\n    {\n      \"claim\": \"SLMs are sufficiently powerful for running agentic task loads, per Nvidia's 2025 research.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 350\n    },\n    {\n      \"claim\": \"The correct workflow is to prototype on a foundation model and then convert parts of the system to small and specialized models for production.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 536\n    },\n    {\n      \"claim\": \"You should select the smallest model that produces acceptable responses for your use case, not the most capable one available.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 968\n    },\n    {\n      \"claim\": \"Picking a model based on peer recommendation rather than evals would have shipped a materially worse user experience \u2014 Gemma was the recommended choice but came in around 8 seconds latency.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 926\n    },\n    {\n      \"claim\": \"Llama 3.2 3B was the best small model for social thread summarization, reaching about 90% accuracy, partly because Meta trains on social human inputs.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1060\n    },\n    {\n      \"claim\": \"Few-shot examples improve small-model output more than reformatted input, strict negative rules, or chain of thought; explicit negative constraints made results worse.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1401\n    },\n    {\n      \"claim\": \"Chain-of-thought prompting improved length compliance but added 600ms of latency, while few-shot added only 200ms.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1401\n    },\n    {\n      \"claim\": \"LLM judges favor models from their own family, so eval scores must be manually inspected rather than trusted numerically.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1557\n    },\n    {\n      \"claim\": \"Structural and length failures should be fixed with deterministic post-processing in the harness rather than with a larger model.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1605\n    },\n    {\n      \"claim\": \"Distilled models are a poor fit for mobile apps because every capability change requires retraining and shipping a new 1-2 GB model over users' data plans.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1153\n    },\n    {\n      \"claim\": \"Regression evals should be run continuously like CI tests to prevent prompt or model changes from silently degrading behavior.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1697\n    },\n    {\n      \"claim\": \"Pushing inference on-device shifts the compute cost to the consumer's battery, which is an acceptable but real tradeoff worth evaluating.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 884\n    }\n  ],\n  \"speaker_org\": \"Arize\"\n}",
+  "ttft_ms": 23553,
+  "ttft_stream_ms": 904,
+  "time_to_request_ms": 48,
+  "type": "result",
+  "duration_ms": 70219,
+  "uuid": "68898767-e771-47c1-85f1-9359fe5d9fbe",
+  "passA": {
+    "summary": "RL Nabors argues that most production LLM calls are overkill and can be moved to small, on-device models without a meaningful quality loss. The talk walks through a concrete case study: a thread-summarization feature in a social client, prototyped on Claude Sonnet, then benchmarked against Qwen 2.5/3, Llama 3.2 3B, and Gemma on a 28-example golden dataset using Arize's open-source Phoenix eval tool. Llama 3.2 3B initially trailed the Claude baseline on structural validity and factual consistency, but few-shot prompting plus deterministic post-processing closed the gap entirely while beating Claude on latency and eliminating a dollar a day of inference spend. Along the way it offers a repeatable four-step method \u2014 prove it's possible with a big model, define success criteria, test small-to-large, select the 'SAGE' (small and good enough) model \u2014 plus warnings about LLM-as-judge bias and the need for regression evals. Worth watching if you ship user-facing LLM features and want a worked, numbers-backed template for downsizing them.",
+    "key_points": [
+      "Cloud inference carries four compounding costs \u2014 data exposure risk, latency above the ~4-second believability threshold, uncontrollable per-call spend, and total failure when offline \u2014 all of which on-device models eliminate.",
+      "Token prices are falling but total inference spend is rising, because agentic and reasoning workloads consume tokens faster than prices drop.",
+      "Most production tasks (summarizing a thread, detecting toxicity) don't need a model that contains all of human knowledge; SLMs run in the millions-to-billions of parameters and, quantized to 8- or 4-bit, fit on phones.",
+      "The recommended workflow is 'prototype big, deploy small': prove feasibility on the largest model, set explicit success criteria, test models from small to large, and select the smallest one that clears the bar \u2014 the 'SAGE' model.",
+      "In the case study, Qwen 2.5 1.5B was fastest (~1s P50) but least accurate, Gemma was slowest (~8s) despite peer recommendations, and Llama 3.2 3B won at ~90% accuracy with latency comparable to Claude Sonnet.",
+      "Of four prompt variants tested (numbered input, few-shot, strict negative rules, chain of thought), few-shot won; strict negative constraints actively hurt performance, and chain of thought cost 600ms for marginal gain.",
+      "Remaining gaps in reference validity and length compliance were closed deterministically in the harness via post-processing rather than by changing models or prompts.",
+      "LLM-as-judge results must be inspected manually: Claude Opus judging Claude Sonnet against Llama was systematically strict toward the smaller model, so part of the measured 'factual inconsistency' was judge bias, not model error.",
+      "Once a small model is in production, regression evals should run like CI tests so a prompt tweak or model upgrade can't silently break behavior.",
+      "Energy use scales down too: an SLM uses roughly 25% of an LLM's energy for the same task, and a task-specific model roughly half of that again."
+    ],
+    "notable_quotes": [
+      {
+        "text": "Now, token costs have been falling as of late, but total inference spend has been rising because agent can reasoning workloads consume tokens way faster than prices are dropping.",
+        "timestamp_sec": 131,
+        "why": "The core economic premise of the talk, stated as a counterintuitive trend."
+      },
+      {
+        "text": "found that 4 seconds is the limit of believability for users, and many calls that you will make to large models are going to take longer than 4 seconds",
+        "timestamp_sec": 88,
+        "why": "Gives the concrete latency budget she later designs her P95 threshold around."
+      },
+      {
+        "text": "You don't need history, you don't need philosophy, you don't need all those Reddit chats, you don't need a lot of what the models have learned and been trained on.",
+        "timestamp_sec": 272,
+        "why": "Memorable framing of why frontier capability is wasted on routine tasks."
+      },
+      {
+        "text": "Nvidia called SLMs the future of agentic AI. Once again, great research paper from 2025 that found that SLMs are sufficiently powerful for running agentic task loads.",
+        "timestamp_sec": 350,
+        "why": "External authority cited for the talk's central claim."
+      },
+      {
+        "text": "An SLM takes about 25% of that. And a task-specific model takes about half of that over.",
+        "timestamp_sec": 392,
+        "why": "The talk's quantified energy argument."
+      },
+      {
+        "text": "Now, first off, I like to think of this as prototype big, deploy small. Just repeat this to yourself.",
+        "timestamp_sec": 536,
+        "why": "The talk's thesis compressed into a slogan."
+      },
+      {
+        "text": "Now, a golden data set is a curated high-quality collection of preferably human-labeled input-output pairs that you're going to use as the ground truth to evaluate, validate, and benchmark your model.",
+        "timestamp_sec": 613,
+        "why": "Defines the artifact the entire migration method depends on."
+      },
+      {
+        "text": "So, I actually did some math and it turns out I'm using about a dollar worth of inference every day using Mima.",
+        "timestamp_sec": 842,
+        "why": "Grounds the abstract cost argument in a real per-user number."
+      },
+      {
+        "text": "Good news is the total cost column for all these small local models is absolutely zilch because that inference has been pushed to the consumer.",
+        "timestamp_sec": 842,
+        "why": "Names the tradeoff honestly \u2014 the cost doesn't vanish, it moves to the user's battery."
+      },
+      {
+        "text": "And I think that's important here because if I had just gone with what my buddies told me, I may have given the user What? Pardon. Not may have. I would have given the user an extremely different experience, not a good experience.",
+        "timestamp_sec": 926,
+        "why": "Argues directly against picking models by community consensus instead of evals."
+      },
+      {
+        "text": "You're going to want to select the smallest model that gives acceptable responses for your use case. Or as I like to call it, the SAGE model, the small and good enough model.",
+        "timestamp_sec": 926,
+        "why": "Coins the selection heuristic the rest of the talk applies."
+      },
+      {
+        "text": "You want to isolate one variable per prompt variant to test whether what you're trying to accomplish is moving the needle when you're using the different prompts.",
+        "timestamp_sec": 1252,
+        "why": "Methodological discipline for prompt optimization, often skipped in practice."
+      },
+      {
+        "text": "And the hypothesis was that small models respond to literal commands and that they like to be bossed around a bit.",
+        "timestamp_sec": 1300,
+        "why": "States a common prompt-engineering intuition that her results then falsify."
+      },
+      {
+        "text": "The best performing one was the few shot one that provided a couple of threads and a couple of examples.",
+        "timestamp_sec": 1401,
+        "why": "The empirical winner among four prompt strategies."
+      },
+      {
+        "text": "when it came to factual consistency, it turned out that Claude was just being a very strict judge.",
+        "timestamp_sec": 1494,
+        "why": "Key caveat about trusting LLM-as-judge scores at face value."
+      },
+      {
+        "text": "Claude Opus was comparing Claude Sonnet's response to uh Llama 3.2's response, and of course Claude was favoring its little sister",
+        "timestamp_sec": 1557,
+        "why": "Names same-family judge bias explicitly."
+      },
+      {
+        "text": "So, when we added the post-processing, we're actually able to close that gap pretty solidly.",
+        "timestamp_sec": 1605,
+        "why": "Points to deterministic code, not bigger models, as the fix for the last few percent."
+      },
+      {
+        "text": "It actually ended up meeting and beating Claude's on it after doing this little bit of extra effort, and I'm saving about a dollar a day in inference costs.",
+        "timestamp_sec": 1652,
+        "why": "The headline result of the case study."
+      },
+      {
+        "text": "it's how you keep your CTO from blowing away your agentic experience by accident one morning. True story, happened to a founder friend of mine.",
+        "timestamp_sec": 1697,
+        "why": "Makes the case for regression evals with a concrete failure mode."
+      },
+      {
+        "text": "I challenge you to go home today and take a look at what you're sending to LLM's and ask yourself, is this something that a smaller model could handle and how much money would I save if I did that?",
+        "timestamp_sec": 1697,
+        "why": "The talk's actionable call to action."
+      }
+    ],
+    "concepts": [
+      "on-device inference",
+      "small language models",
+      "task-specific models",
+      "model right-sizing",
+      "golden datasets",
+      "llm-as-judge evaluation",
+      "prompt engineering variants",
+      "regression evals",
+      "quantization",
+      "latency budgets"
+    ],
+    "positions": [
+      {
+        "claim": "Total inference spend is rising despite falling token prices, because agentic and reasoning workloads consume tokens faster than prices drop.",
+        "confidence": "stated",
+        "timestamp_sec": 131
+      },
+      {
+        "claim": "Four seconds is the upper limit of believability for users in LLM chat interactions, and many frontier-model calls exceed it.",
+        "confidence": "stated",
+        "timestamp_sec": 88
+      },
+      {
+        "claim": "SLMs consume about 25% of the energy an LLM uses for the same task, and task-specific models about half of that again.",
+        "confidence": "stated",
+        "timestamp_sec": 392
+      },
+      {
+        "claim": "SLMs are sufficiently powerful for running agentic task loads, per Nvidia's 2025 research.",
+        "confidence": "stated",
+        "timestamp_sec": 350
+      },
+      {
+        "claim": "The correct workflow is to prototype on a foundation model and then convert parts of the system to small and specialized models for production.",
+        "confidence": "stated",
+        "timestamp_sec": 536
+      },
+      {
+        "claim": "You should select the smallest model that produces acceptable responses for your use case, not the most capable one available.",
+        "confidence": "stated",
+        "timestamp_sec": 968
+      },
+      {
+        "claim": "Picking a model based on peer recommendation rather than evals would have shipped a materially worse user experience \u2014 Gemma was the recommended choice but came in around 8 seconds latency.",
+        "confidence": "stated",
+        "timestamp_sec": 926
+      },
+      {
+        "claim": "Llama 3.2 3B was the best small model for social thread summarization, reaching about 90% accuracy, partly because Meta trains on social human inputs.",
+        "confidence": "stated",
+        "timestamp_sec": 1060
+      },
+      {
+        "claim": "Few-shot examples improve small-model output more than reformatted input, strict negative rules, or chain of thought; explicit negative constraints made results worse.",
+        "confidence": "stated",
+        "timestamp_sec": 1401
+      },
+      {
+        "claim": "Chain-of-thought prompting improved length compliance but added 600ms of latency, while few-shot added only 200ms.",
+        "confidence": "stated",
+        "timestamp_sec": 1401
+      },
+      {
+        "claim": "LLM judges favor models from their own family, so eval scores must be manually inspected rather than trusted numerically.",
+        "confidence": "stated",
+        "timestamp_sec": 1557
+      },
+      {
+        "claim": "Structural and length failures should be fixed with deterministic post-processing in the harness rather than with a larger model.",
+        "confidence": "stated",
+        "timestamp_sec": 1605
+      },
+      {
+        "claim": "Distilled models are a poor fit for mobile apps because every capability change requires retraining and shipping a new 1-2 GB model over users' data plans.",
+        "confidence": "stated",
+        "timestamp_sec": 1153
+      },
+      {
+        "claim": "Regression evals should be run continuously like CI tests to prevent prompt or model changes from silently degrading behavior.",
+        "confidence": "stated",
+        "timestamp_sec": 1697
+      },
+      {
+        "claim": "Pushing inference on-device shifts the compute cost to the consumer's battery, which is an acceptable but real tradeoff worth evaluating.",
+        "confidence": "implied",
+        "timestamp_sec": 884
+      }
+    ],
+    "speaker_org": "Arize"
+  },
+  "_meta": {
+    "slug": "frontier-results-on-device",
+    "video_id": "fWXJM-J0ZB8",
+    "url": "https://www.youtube.com/watch?v=fWXJM-J0ZB8",
+    "word_count": 4922,
+    "wall_sec": 71.5,
+    "run_at": "2026-08-12T19:52:14Z",
+    "effort": "medium"
+  }
+}

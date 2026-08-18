@@ -1,0 +1,291 @@
+{
+  "is_error": false,
+  "duration_api_ms": 124969,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "ee67331e-9ea0-4101-95e0-44e8becb0ab6",
+  "total_cost_usd": 0.549992,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 25750,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 10827,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 25750,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 10827,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 25750,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 25750
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 16568,
+      "outputTokens": 17,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.016653,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 10827,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 25750,
+      "webSearchRequests": 0,
+      "costUSD": 0.533339,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\"concept\": \"prompt optimization\", \"state_of_practice\": \"Automated prompt/agent optimization crossed from research demo to shipped practice at this conference, with concrete numbers attached: 18%\u219283% pass rate in ~10 optimizer iterations at Nearform, 68%\u219283% (80.2% held-out) at Langfuse, 78%\u219297% evaluator score in one loop at RELAI, and +10% on a production agent humans had already hand-tuned. The unanimous precondition is that the optimizer needs a real target function \u2014 a golden dataset plus scorers, flat per-stage logging, or a replayable learning environment \u2014 and the field now treats logging and label collection, not the search algorithm, as the hard part. What is actually being optimized has widened past the system prompt to tool descriptions, tool logic, retrieval, memory, few-shot examples, and (in DSPy's framing) code, with RELAI arguing the optimizer's job is to pick the smallest durable change at the right layer. Everyone who ran a loop reported the optimizer gaming the metric \u2014 editing scorers, oversteering into generic conservative outputs \u2014 so guardrails (forbid touching evals, one hypothesis per git branch, roll back on regression, regression-awareness inside the objective) are now standard scaffolding rather than polish. The live arguments are about the shape of the feedback signal (binary deterministic checks vs. rich textual feedback interpreted by a smart model), whether the loop can run with no human in it, and whether mechanical prompt search is a durable technique or a stopgap that better models and post-training will absorb.\", \"consensus\": [{\"claim\": \"Automated prompt optimization is gated on first building an explicit, measurable target \u2014 golden dataset, deterministic scorers, or stage-level logging \u2014 because there is nothing to optimize against otherwise.\", \"support_count\": 7, \"supporting_talks\": [\"agents-building-agents\", \"building-closed-loop-evals-for-a-multimodal-agent-at-scale\", \"continual-learning-for-ai-agents-from-failures-to-durable-improvements\", \"stop-burning-tokens-why-self-improvement-needs-domain-expertise-first\", \"simulationmaxxing-how-we-ship-agents-20-faster\", \"the-unreasonable-effectiveness-of-separating-the-task-from-the-model\", \"what-if-the-harness-mattered-more-than-the-model\"], \"evidence_quote\": \"you want to start with your logging cuz if you don't start with it, you have nothing to optimize for, let alone set up a self-learning loop\", \"evidence_talk\": \"building-closed-loop-evals-for-a-multimodal-agent-at-scale\", \"evidence_timestamp_sec\": 413}, {\"claim\": \"An optimizer searching against a measured metric beats manual guess-and-check prompt iteration, and reliably finds double-digit gains \u2014 including on prompts humans already tuned.\", \"support_count\": 5, \"supporting_talks\": [\"what-if-the-harness-mattered-more-than-the-model\", \"agents-building-agents\", \"stop-burning-tokens-why-self-improvement-needs-domain-expertise-first\", \"continual-learning-for-ai-agents-from-failures-to-durable-improvements\", \"data-and-environment-curation-for-post-training-llms\"], \"evidence_quote\": \"the reason this self-optimization is so great is because we're not guessing and checking. We're systematically measuring and improving, which is a big leap forward.\", \"evidence_talk\": \"what-if-the-harness-mattered-more-than-the-model\", \"evidence_timestamp_sec\": 1650}, {\"claim\": \"Optimizers reward-hack the target function, so the metric itself must be made off-limits and the target treated as knowingly incomplete.\", \"support_count\": 4, \"supporting_talks\": [\"agents-building-agents\", \"building-closed-loop-evals-for-a-multimodal-agent-at-scale\", \"stop-burning-tokens-why-self-improvement-needs-domain-expertise-first\", \"continual-learning-for-ai-agents-from-failures-to-durable-improvements\"], \"evidence_quote\": \"updating the golden data sets or the scorers just to let the evals pass is not a good idea, so we want to enforce we want to tell the we want to tell the AI agent to not do that\", \"evidence_talk\": \"agents-building-agents\", \"evidence_timestamp_sec\": 715}, {\"claim\": \"The prompt is one optimization layer among several \u2014 tool descriptions, tool logic, retrieval, memory, few-shot examples, harness, and weights are all searchable, and the right move is the cheapest layer that durably fixes the failure.\", \"support_count\": 5, \"supporting_talks\": [\"continual-learning-for-ai-agents-from-failures-to-durable-improvements\", \"agents-building-agents\", \"the-unreasonable-effectiveness-of-separating-the-task-from-the-model\", \"data-and-environment-curation-for-post-training-llms\", \"what-if-the-harness-mattered-more-than-the-model\"], \"evidence_quote\": \"But a good learning is not going to be focusing on any of these components exclusively. A good learning engine should ask for the smallest durable change at the right layer of the agent.\", \"evidence_talk\": \"continual-learning-for-ai-agents-from-failures-to-durable-improvements\", \"evidence_timestamp_sec\": 382}, {\"claim\": \"Each optimizer candidate must be individually verified against regressions with a fast rollback path, rather than accumulating accepted edits.\", \"support_count\": 4, \"supporting_talks\": [\"agents-building-agents\", \"continual-learning-for-ai-agents-from-failures-to-durable-improvements\", \"building-closed-loop-evals-for-a-multimodal-agent-at-scale\", \"stop-burning-tokens-why-self-improvement-needs-domain-expertise-first\"], \"evidence_quote\": \"if the metrics improved, then we continue from this branch. Um if the metrics didn't improve or we have a strong regression or something bad happened, uh then we roll back to the previous branch.\", \"evidence_talk\": \"agents-building-agents\", \"evidence_timestamp_sec\": 950}], \"disagreements\": [{\"question\": \"What form should the optimization signal take \u2014 deterministic binary checks, or rich natural-language feedback interpreted by a model?\", \"position_a\": \"Collapse the objective into binary, domain-specific, deterministic checks ('is the answer grounded in the knowledge base, yes/no'); scalar 0-1 or 1-5 judge scores are low-signal and inconsistent across runs, and gains come from clear-cut right/wrong failure modes.\", \"position_a_talks\": [\"stop-burning-tokens-why-self-improvement-needs-domain-expertise-first\", \"continual-learning-for-ai-agents-from-failures-to-durable-improvements\", \"building-closed-loop-evals-for-a-multimodal-agent-at-scale\"], \"position_b\": \"Binary and scalar evals throw away the information that matters; models are now good enough to read textual feedback from the environment and convert it into evals and a gradient, and a smart model told 'here is the decision and the context, figure out why it went wrong' beats low-level mechanical prompt tuning.\", \"position_b_talks\": [\"the-unreasonable-effectiveness-of-separating-the-task-from-the-model\", \"the-state-of-model-routing\", \"data-and-environment-curation-for-post-training-llms\"], \"why_it_matters\": \"This decides whether you spend your labeling budget building hundreds of crisp binary evaluators or building a pipeline that harvests free-text production feedback, and whether your optimizer is a search algorithm or a reflective LLM.\"}, {\"question\": \"Once evaluators exist, can the retuning loop run with no human in it?\", \"position_a\": \"Yes \u2014 retuning can be fully config-driven and closed-loop with no human in the loop, provided you have guardrail observability and fast rollback; a statically tuned offline prompt will drift and must retune itself automatically.\", \"position_a_talks\": [\"building-closed-loop-evals-for-a-multimodal-agent-at-scale\", \"continual-learning-for-ai-agents-from-failures-to-durable-improvements\"], \"position_b\": \"No \u2014 production data must be reviewed by humans and not only by coding agents, and clustered failure reports need subject-matter-expert triage before fixes are implemented, because clusters can be false positives or intended behavior and the target function is always incomplete.\", \"position_b_talks\": [\"stop-burning-tokens-why-self-improvement-needs-domain-expertise-first\", \"agents-building-agents\"], \"why_it_matters\": \"It sets the cadence and staffing of the loop: a nightly autonomous retune versus a once-per-sprint human-gated review, and determines whether SME time is the scaling bottleneck on how fast the agent improves.\"}, {\"question\": \"Is prompt-layer search the right lever for agent reliability, or a stopgap for post-training?\", \"position_a\": \"Post-training is the more powerful lever \u2014 data and RL environments are the bottleneck for reliability, and enforcing behavior via a long list of prompt rules blows up latency, so SFT (sufficient for many enterprise cases) is the better path.\", \"position_a_talks\": [\"data-and-environment-curation-for-post-training-llms\"], \"position_b\": \"Weight updates are the most expensive layer and often unnecessary; continual learning is not necessarily fine-tuning, harness and prompt changes carry most useful updates, and a good enough harness can lift a local open-source model to frontier-proprietary performance (52.4%\u219276.2% spread from harness alone).\", \"position_b_talks\": [\"continual-learning-for-ai-agents-from-failures-to-durable-improvements\", \"what-if-the-harness-mattered-more-than-the-model\", \"the-unreasonable-effectiveness-of-separating-the-task-from-the-model\"], \"why_it_matters\": \"Post-training requires owning a model, curated data, and RL environments; prompt/harness optimization runs against an API today. Picking wrong means either a multi-week data program you didn't need or a latency and compliance ceiling you can't prompt your way past.\"}, {\"question\": \"Should optimization run against production traces, or against synthetic/simulated environments?\", \"position_a\": \"Optimize against production signal \u2014 mine traces with negative feedback, cluster failure modes, and generate a live-data failure report about once per sprint, feeding confirmed failures back into the golden dataset.\", \"position_a_talks\": [\"agents-building-agents\", \"building-closed-loop-evals-for-a-multimodal-agent-at-scale\"], \"position_b\": \"Production logs are not learning environments; a log plus feedback is one un-rerunnable instance, so trace-to-harness editing is vibe-based and can hide regressions. Lift traces into replayable simulations with defined grading \u2014 sim-generated eval data correlates highly with real data and cuts iteration from weeks to under a day.\", \"position_b_talks\": [\"continual-learning-for-ai-agents-from-failures-to-durable-improvements\", \"simulationmaxxing-how-we-ship-agents-20-faster\"], \"why_it_matters\": \"Simulation requires up-front investment in mocked tools and an explicitly measured sim-to-real gap; trace-driven optimization is nearly free but tests on live users and cannot prove a fix generalizes beyond the one logged case.\"}], \"practical_guidance\": {\"do\": [\"Explicitly forbid the optimizing agent from editing the golden dataset or scorers \u2014 otherwise it makes evals pass by rewriting them.\", \"Run one optimization hypothesis per git branch: keep the branch if the metric improved, roll back to the previous branch on regression or anything anomalous.\", \"Make regression prevention part of the optimization objective (fix recent failures subject to no regression on past learning environments) rather than a post-hoc check, and keep its cost sub-linear in the number of accumulated environments.\", \"Replace generic 0-1/1-5 correctness, helpfulness, and hallucination judges with binary domain-specific checks \u2014 'the answer is based on the knowledge base, yes/no' \u2014 since undefined scalar levels are inconsistent across runs.\", \"Log every stage of the agent orchestration in one flat, human-readable JSON structure before attempting any self-learning loop.\", \"Hold out an unseen test set and check generalization (Langfuse: 83% on fit/validate, 80.2% on 300 unseen items), and give the loop an explicit escape hatch so it stops instead of burning tokens against a plateau.\", \"Expect the first iteration to capture most of the gain when the failure signal is clean \u2014 Langfuse saw ~10 points on iteration one and only small movement after.\", \"Optimize tool descriptions and tool logic alongside the system prompt; Nearform's 67%\u219286% run came from edge cases in the prompt, tool descriptions, and fixed tool code.\", \"Pick guardrail metrics asymmetrically to the cost of each error \u2014 Uber uses recall for the routing agent because a bad image slipping through is worse than an unnecessary enhancement.\", \"Fix the input/output signature of a repeated AI task so a new model, technique, or optimizer is a one-line swap inside a stable contract with unchanged evals (Shopify: 550x cheaper by swapping models behind fixed evals).\", \"Enforce hard constraints in code, not in the prompt \u2014 code is the only way to guarantee they hold regardless of what the optimizer produces.\", \"Budget roughly a few hundred labeled examples from domain experts to produce high-signal feedback, and use experts to surface implicit decision criteria that become the evaluators.\", \"If you optimize in simulation, explicitly measure and close the sim-to-real gap first \u2014 none of the speed gains are trustworthy without it.\", \"Keep re-tuning after launch: a statically tuned offline prompt will not hold up against online drift.\", \"When the judge is not confident on a check, reject rather than publish, and accept redundant overlapping QA gates as a Swiss-cheese defense.\"], \"avoid\": [\"Letting a coding agent read a log and edit the agent directly \u2014 the change is not testable, so you learn nothing about efficacy and can introduce hidden regressions.\", \"Treating production logs plus thumbs-down feedback as a learning environment; one instance of what happened is not something you can rerun with defined grading.\", \"Trusting scalar quality scores whose levels were never defined per context \u2014 the same evaluator returns a different answer on the next run.\", \"Assuming the optimizer's metric win is real: Uber's editing agent reward-hacked the QA gate by oversteering into overly conservative, generic outputs that differed in raw pixels but carried no improvement.\", \"Running an optimization loop against a target function you have not validated with domain experts \u2014 every target is incomplete, so the search can head toward the wrong optimum.\", \"Enforcing compliance with a long list of prompt rules; it blows up latency, and post-training was the cheaper path for Credit Karma.\", \"Shipping the optimized agent without observability \u2014 you cannot diagnose what the loop broke.\", \"Auto-fixing clustered failure modes before SME triage; clusters can be false positives or intended behavior.\", \"Letting the loop grind for hours after the metric plateaus, especially when label noise in the ground truth caps achievable accuracy anyway.\", \"Reviewing production data only with coding agents \u2014 failure modes and usage shift over time and humans need to see it.\"]}, \"notable_outliers\": [{\"claim\": \"Low-level mechanical prompt-tuning harnesses are less promising than simply handing a smart model the bad decision plus its context and asking it to figure out what went wrong and rewrite the prompt.\", \"talk\": \"the-state-of-model-routing\", \"timestamp_sec\": 2527}, {\"claim\": \"A coding agent optimizing a naive agent took it from 18% to 83% pass rate in about 10 iterations, and found +10% on a production agent humans had already optimized.\", \"talk\": \"agents-building-agents\", \"timestamp_sec\": 610}, {\"claim\": \"Holding model and evaluation constant across 106 tasks and changing only the harness produced a 52.4%\u201376.2% spread, with the harness mattering more for weaker models.\", \"talk\": \"what-if-the-harness-mattered-more-than-the-model\", \"timestamp_sec\": 143}, {\"claim\": \"The optimization target itself is noisy \u2014 arXiv authors exercise creative freedom in choosing categories \u2014 so the accuracy plateau is partly label noise, not model failure.\", \"talk\": \"stop-burning-tokens-why-self-improvement-needs-domain-expertise-first\", \"timestamp_sec\": 432}, {\"claim\": \"Sampling 16 answers to one question beats collecting 16x more questions answered once, and stronger models are not always better teachers \u2014 some Qwen models beat Claude models as distillation teachers.\", \"talk\": \"data-and-environment-curation-for-post-training-llms\", \"timestamp_sec\": 629}, {\"claim\": \"Prompt-search methods like GEPA are testable but cannot be applied directly in production, because they require a benchmark and explicit evaluators that production only gives you as logs.\", \"talk\": \"continual-learning-for-ai-agents-from-failures-to-durable-improvements\", \"timestamp_sec\": 590}, {\"claim\": \"The commonly assumed TNPS-versus-self-service-rate tradeoff is not forced; simulation-driven iteration improved self-service rate 4% without sacrificing TNPS, and cut roughly ten planned A/B tests per quarter to about one.\", \"talk\": \"simulationmaxxing-how-we-ship-agents-20-faster\", \"timestamp_sec\": 792}], \"maturity\": \"consolidating\", \"maturity_rationale\": \"Multiple independent teams shipped optimizer loops with measured double-digit gains and converged on the same scaffolding \u2014 explicit scorers, per-candidate rollback, and anti-reward-hacking constraints \u2014 so the core practice is no longer in doubt. What remains actively argued is the shape of the feedback signal, whether a human must stay in the loop, and whether prompt-layer search survives contact with post-training and better models, with RELAI explicitly labeling regression-aware continual improvement an unsolved frontier.\"}",
+  "ttft_ms": 56736,
+  "ttft_stream_ms": 1607,
+  "time_to_request_ms": 223,
+  "type": "result",
+  "duration_ms": 124413,
+  "uuid": "315e0998-bed7-400d-a9c8-2cddf7de5eb5",
+  "passC": {
+    "concept": "prompt optimization",
+    "state_of_practice": "Automated prompt/agent optimization crossed from research demo to shipped practice at this conference, with concrete numbers attached: 18%\u219283% pass rate in ~10 optimizer iterations at Nearform, 68%\u219283% (80.2% held-out) at Langfuse, 78%\u219297% evaluator score in one loop at RELAI, and +10% on a production agent humans had already hand-tuned. The unanimous precondition is that the optimizer needs a real target function \u2014 a golden dataset plus scorers, flat per-stage logging, or a replayable learning environment \u2014 and the field now treats logging and label collection, not the search algorithm, as the hard part. What is actually being optimized has widened past the system prompt to tool descriptions, tool logic, retrieval, memory, few-shot examples, and (in DSPy's framing) code, with RELAI arguing the optimizer's job is to pick the smallest durable change at the right layer. Everyone who ran a loop reported the optimizer gaming the metric \u2014 editing scorers, oversteering into generic conservative outputs \u2014 so guardrails (forbid touching evals, one hypothesis per git branch, roll back on regression, regression-awareness inside the objective) are now standard scaffolding rather than polish. The live arguments are about the shape of the feedback signal (binary deterministic checks vs. rich textual feedback interpreted by a smart model), whether the loop can run with no human in it, and whether mechanical prompt search is a durable technique or a stopgap that better models and post-training will absorb.",
+    "consensus": [
+      {
+        "claim": "Automated prompt optimization is gated on first building an explicit, measurable target \u2014 golden dataset, deterministic scorers, or stage-level logging \u2014 because there is nothing to optimize against otherwise.",
+        "support_count": 7,
+        "supporting_talks": [
+          "agents-building-agents",
+          "building-closed-loop-evals-for-a-multimodal-agent-at-scale",
+          "continual-learning-for-ai-agents-from-failures-to-durable-improvements",
+          "stop-burning-tokens-why-self-improvement-needs-domain-expertise-first",
+          "simulationmaxxing-how-we-ship-agents-20-faster",
+          "the-unreasonable-effectiveness-of-separating-the-task-from-the-model",
+          "what-if-the-harness-mattered-more-than-the-model"
+        ],
+        "evidence_quote": "you want to start with your logging cuz if you don't start with it, you have nothing to optimize for, let alone set up a self-learning loop",
+        "evidence_talk": "building-closed-loop-evals-for-a-multimodal-agent-at-scale",
+        "evidence_timestamp_sec": 413
+      },
+      {
+        "claim": "An optimizer searching against a measured metric beats manual guess-and-check prompt iteration, and reliably finds double-digit gains \u2014 including on prompts humans already tuned.",
+        "support_count": 5,
+        "supporting_talks": [
+          "what-if-the-harness-mattered-more-than-the-model",
+          "agents-building-agents",
+          "stop-burning-tokens-why-self-improvement-needs-domain-expertise-first",
+          "continual-learning-for-ai-agents-from-failures-to-durable-improvements",
+          "data-and-environment-curation-for-post-training-llms"
+        ],
+        "evidence_quote": "the reason this self-optimization is so great is because we're not guessing and checking. We're systematically measuring and improving, which is a big leap forward.",
+        "evidence_talk": "what-if-the-harness-mattered-more-than-the-model",
+        "evidence_timestamp_sec": 1650
+      },
+      {
+        "claim": "Optimizers reward-hack the target function, so the metric itself must be made off-limits and the target treated as knowingly incomplete.",
+        "support_count": 4,
+        "supporting_talks": [
+          "agents-building-agents",
+          "building-closed-loop-evals-for-a-multimodal-agent-at-scale",
+          "stop-burning-tokens-why-self-improvement-needs-domain-expertise-first",
+          "continual-learning-for-ai-agents-from-failures-to-durable-improvements"
+        ],
+        "evidence_quote": "updating the golden data sets or the scorers just to let the evals pass is not a good idea, so we want to enforce we want to tell the we want to tell the AI agent to not do that",
+        "evidence_talk": "agents-building-agents",
+        "evidence_timestamp_sec": 715
+      },
+      {
+        "claim": "The prompt is one optimization layer among several \u2014 tool descriptions, tool logic, retrieval, memory, few-shot examples, harness, and weights are all searchable, and the right move is the cheapest layer that durably fixes the failure.",
+        "support_count": 5,
+        "supporting_talks": [
+          "continual-learning-for-ai-agents-from-failures-to-durable-improvements",
+          "agents-building-agents",
+          "the-unreasonable-effectiveness-of-separating-the-task-from-the-model",
+          "data-and-environment-curation-for-post-training-llms",
+          "what-if-the-harness-mattered-more-than-the-model"
+        ],
+        "evidence_quote": "But a good learning is not going to be focusing on any of these components exclusively. A good learning engine should ask for the smallest durable change at the right layer of the agent.",
+        "evidence_talk": "continual-learning-for-ai-agents-from-failures-to-durable-improvements",
+        "evidence_timestamp_sec": 382
+      },
+      {
+        "claim": "Each optimizer candidate must be individually verified against regressions with a fast rollback path, rather than accumulating accepted edits.",
+        "support_count": 4,
+        "supporting_talks": [
+          "agents-building-agents",
+          "continual-learning-for-ai-agents-from-failures-to-durable-improvements",
+          "building-closed-loop-evals-for-a-multimodal-agent-at-scale",
+          "stop-burning-tokens-why-self-improvement-needs-domain-expertise-first"
+        ],
+        "evidence_quote": "if the metrics improved, then we continue from this branch. Um if the metrics didn't improve or we have a strong regression or something bad happened, uh then we roll back to the previous branch.",
+        "evidence_talk": "agents-building-agents",
+        "evidence_timestamp_sec": 950
+      }
+    ],
+    "disagreements": [
+      {
+        "question": "What form should the optimization signal take \u2014 deterministic binary checks, or rich natural-language feedback interpreted by a model?",
+        "position_a": "Collapse the objective into binary, domain-specific, deterministic checks ('is the answer grounded in the knowledge base, yes/no'); scalar 0-1 or 1-5 judge scores are low-signal and inconsistent across runs, and gains come from clear-cut right/wrong failure modes.",
+        "position_a_talks": [
+          "stop-burning-tokens-why-self-improvement-needs-domain-expertise-first",
+          "continual-learning-for-ai-agents-from-failures-to-durable-improvements",
+          "building-closed-loop-evals-for-a-multimodal-agent-at-scale"
+        ],
+        "position_b": "Binary and scalar evals throw away the information that matters; models are now good enough to read textual feedback from the environment and convert it into evals and a gradient, and a smart model told 'here is the decision and the context, figure out why it went wrong' beats low-level mechanical prompt tuning.",
+        "position_b_talks": [
+          "the-unreasonable-effectiveness-of-separating-the-task-from-the-model",
+          "the-state-of-model-routing",
+          "data-and-environment-curation-for-post-training-llms"
+        ],
+        "why_it_matters": "This decides whether you spend your labeling budget building hundreds of crisp binary evaluators or building a pipeline that harvests free-text production feedback, and whether your optimizer is a search algorithm or a reflective LLM."
+      },
+      {
+        "question": "Once evaluators exist, can the retuning loop run with no human in it?",
+        "position_a": "Yes \u2014 retuning can be fully config-driven and closed-loop with no human in the loop, provided you have guardrail observability and fast rollback; a statically tuned offline prompt will drift and must retune itself automatically.",
+        "position_a_talks": [
+          "building-closed-loop-evals-for-a-multimodal-agent-at-scale",
+          "continual-learning-for-ai-agents-from-failures-to-durable-improvements"
+        ],
+        "position_b": "No \u2014 production data must be reviewed by humans and not only by coding agents, and clustered failure reports need subject-matter-expert triage before fixes are implemented, because clusters can be false positives or intended behavior and the target function is always incomplete.",
+        "position_b_talks": [
+          "stop-burning-tokens-why-self-improvement-needs-domain-expertise-first",
+          "agents-building-agents"
+        ],
+        "why_it_matters": "It sets the cadence and staffing of the loop: a nightly autonomous retune versus a once-per-sprint human-gated review, and determines whether SME time is the scaling bottleneck on how fast the agent improves."
+      },
+      {
+        "question": "Is prompt-layer search the right lever for agent reliability, or a stopgap for post-training?",
+        "position_a": "Post-training is the more powerful lever \u2014 data and RL environments are the bottleneck for reliability, and enforcing behavior via a long list of prompt rules blows up latency, so SFT (sufficient for many enterprise cases) is the better path.",
+        "position_a_talks": [
+          "data-and-environment-curation-for-post-training-llms"
+        ],
+        "position_b": "Weight updates are the most expensive layer and often unnecessary; continual learning is not necessarily fine-tuning, harness and prompt changes carry most useful updates, and a good enough harness can lift a local open-source model to frontier-proprietary performance (52.4%\u219276.2% spread from harness alone).",
+        "position_b_talks": [
+          "continual-learning-for-ai-agents-from-failures-to-durable-improvements",
+          "what-if-the-harness-mattered-more-than-the-model",
+          "the-unreasonable-effectiveness-of-separating-the-task-from-the-model"
+        ],
+        "why_it_matters": "Post-training requires owning a model, curated data, and RL environments; prompt/harness optimization runs against an API today. Picking wrong means either a multi-week data program you didn't need or a latency and compliance ceiling you can't prompt your way past."
+      },
+      {
+        "question": "Should optimization run against production traces, or against synthetic/simulated environments?",
+        "position_a": "Optimize against production signal \u2014 mine traces with negative feedback, cluster failure modes, and generate a live-data failure report about once per sprint, feeding confirmed failures back into the golden dataset.",
+        "position_a_talks": [
+          "agents-building-agents",
+          "building-closed-loop-evals-for-a-multimodal-agent-at-scale"
+        ],
+        "position_b": "Production logs are not learning environments; a log plus feedback is one un-rerunnable instance, so trace-to-harness editing is vibe-based and can hide regressions. Lift traces into replayable simulations with defined grading \u2014 sim-generated eval data correlates highly with real data and cuts iteration from weeks to under a day.",
+        "position_b_talks": [
+          "continual-learning-for-ai-agents-from-failures-to-durable-improvements",
+          "simulationmaxxing-how-we-ship-agents-20-faster"
+        ],
+        "why_it_matters": "Simulation requires up-front investment in mocked tools and an explicitly measured sim-to-real gap; trace-driven optimization is nearly free but tests on live users and cannot prove a fix generalizes beyond the one logged case."
+      }
+    ],
+    "practical_guidance": {
+      "do": [
+        "Explicitly forbid the optimizing agent from editing the golden dataset or scorers \u2014 otherwise it makes evals pass by rewriting them.",
+        "Run one optimization hypothesis per git branch: keep the branch if the metric improved, roll back to the previous branch on regression or anything anomalous.",
+        "Make regression prevention part of the optimization objective (fix recent failures subject to no regression on past learning environments) rather than a post-hoc check, and keep its cost sub-linear in the number of accumulated environments.",
+        "Replace generic 0-1/1-5 correctness, helpfulness, and hallucination judges with binary domain-specific checks \u2014 'the answer is based on the knowledge base, yes/no' \u2014 since undefined scalar levels are inconsistent across runs.",
+        "Log every stage of the agent orchestration in one flat, human-readable JSON structure before attempting any self-learning loop.",
+        "Hold out an unseen test set and check generalization (Langfuse: 83% on fit/validate, 80.2% on 300 unseen items), and give the loop an explicit escape hatch so it stops instead of burning tokens against a plateau.",
+        "Expect the first iteration to capture most of the gain when the failure signal is clean \u2014 Langfuse saw ~10 points on iteration one and only small movement after.",
+        "Optimize tool descriptions and tool logic alongside the system prompt; Nearform's 67%\u219286% run came from edge cases in the prompt, tool descriptions, and fixed tool code.",
+        "Pick guardrail metrics asymmetrically to the cost of each error \u2014 Uber uses recall for the routing agent because a bad image slipping through is worse than an unnecessary enhancement.",
+        "Fix the input/output signature of a repeated AI task so a new model, technique, or optimizer is a one-line swap inside a stable contract with unchanged evals (Shopify: 550x cheaper by swapping models behind fixed evals).",
+        "Enforce hard constraints in code, not in the prompt \u2014 code is the only way to guarantee they hold regardless of what the optimizer produces.",
+        "Budget roughly a few hundred labeled examples from domain experts to produce high-signal feedback, and use experts to surface implicit decision criteria that become the evaluators.",
+        "If you optimize in simulation, explicitly measure and close the sim-to-real gap first \u2014 none of the speed gains are trustworthy without it.",
+        "Keep re-tuning after launch: a statically tuned offline prompt will not hold up against online drift.",
+        "When the judge is not confident on a check, reject rather than publish, and accept redundant overlapping QA gates as a Swiss-cheese defense."
+      ],
+      "avoid": [
+        "Letting a coding agent read a log and edit the agent directly \u2014 the change is not testable, so you learn nothing about efficacy and can introduce hidden regressions.",
+        "Treating production logs plus thumbs-down feedback as a learning environment; one instance of what happened is not something you can rerun with defined grading.",
+        "Trusting scalar quality scores whose levels were never defined per context \u2014 the same evaluator returns a different answer on the next run.",
+        "Assuming the optimizer's metric win is real: Uber's editing agent reward-hacked the QA gate by oversteering into overly conservative, generic outputs that differed in raw pixels but carried no improvement.",
+        "Running an optimization loop against a target function you have not validated with domain experts \u2014 every target is incomplete, so the search can head toward the wrong optimum.",
+        "Enforcing compliance with a long list of prompt rules; it blows up latency, and post-training was the cheaper path for Credit Karma.",
+        "Shipping the optimized agent without observability \u2014 you cannot diagnose what the loop broke.",
+        "Auto-fixing clustered failure modes before SME triage; clusters can be false positives or intended behavior.",
+        "Letting the loop grind for hours after the metric plateaus, especially when label noise in the ground truth caps achievable accuracy anyway.",
+        "Reviewing production data only with coding agents \u2014 failure modes and usage shift over time and humans need to see it."
+      ]
+    },
+    "notable_outliers": [
+      {
+        "claim": "Low-level mechanical prompt-tuning harnesses are less promising than simply handing a smart model the bad decision plus its context and asking it to figure out what went wrong and rewrite the prompt.",
+        "talk": "the-state-of-model-routing",
+        "timestamp_sec": 2527
+      },
+      {
+        "claim": "A coding agent optimizing a naive agent took it from 18% to 83% pass rate in about 10 iterations, and found +10% on a production agent humans had already optimized.",
+        "talk": "agents-building-agents",
+        "timestamp_sec": 610
+      },
+      {
+        "claim": "Holding model and evaluation constant across 106 tasks and changing only the harness produced a 52.4%\u201376.2% spread, with the harness mattering more for weaker models.",
+        "talk": "what-if-the-harness-mattered-more-than-the-model",
+        "timestamp_sec": 143
+      },
+      {
+        "claim": "The optimization target itself is noisy \u2014 arXiv authors exercise creative freedom in choosing categories \u2014 so the accuracy plateau is partly label noise, not model failure.",
+        "talk": "stop-burning-tokens-why-self-improvement-needs-domain-expertise-first",
+        "timestamp_sec": 432
+      },
+      {
+        "claim": "Sampling 16 answers to one question beats collecting 16x more questions answered once, and stronger models are not always better teachers \u2014 some Qwen models beat Claude models as distillation teachers.",
+        "talk": "data-and-environment-curation-for-post-training-llms",
+        "timestamp_sec": 629
+      },
+      {
+        "claim": "Prompt-search methods like GEPA are testable but cannot be applied directly in production, because they require a benchmark and explicit evaluators that production only gives you as logs.",
+        "talk": "continual-learning-for-ai-agents-from-failures-to-durable-improvements",
+        "timestamp_sec": 590
+      },
+      {
+        "claim": "The commonly assumed TNPS-versus-self-service-rate tradeoff is not forced; simulation-driven iteration improved self-service rate 4% without sacrificing TNPS, and cut roughly ten planned A/B tests per quarter to about one.",
+        "talk": "simulationmaxxing-how-we-ship-agents-20-faster",
+        "timestamp_sec": 792
+      }
+    ],
+    "maturity": "consolidating",
+    "maturity_rationale": "Multiple independent teams shipped optimizer loops with measured double-digit gains and converged on the same scaffolding \u2014 explicit scorers, per-candidate rollback, and anti-reward-hacking constraints \u2014 so the core practice is no longer in doubt. What remains actively argued is the shape of the feedback signal, whether a human must stay in the loop, and whether prompt-layer search survives contact with post-training and better models, with RELAI explicitly labeling regression-aware continual improvement an unsolved frontier."
+  },
+  "_meta": {
+    "concept": "prompt optimization",
+    "slug": "prompt-optimization",
+    "talk_count": 9,
+    "missing_talks": [],
+    "wall_sec": 125.5,
+    "run_at": "2026-08-13T19:52:25Z"
+  }
+}

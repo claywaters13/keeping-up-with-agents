@@ -1,0 +1,276 @@
+{
+  "is_error": false,
+  "duration_api_ms": 63300,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "36b40162-df27-4122-b525-7f6f27d1e42a",
+  "total_cost_usd": 0.233345,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 8536,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 5507,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 8536,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 5507,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 8536,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 8536
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 5066,
+      "outputTokens": 16,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.005146,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 5507,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 8536,
+      "webSearchRequests": 0,
+      "costUSD": 0.22819899999999999,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Tisha Chawla and Susheem Koul argue that the standard reflex for debugging agent failures in production \u2014 pull the prompt from telemetry, set temperature to zero, and rerun \u2014 is a dead end, because hosted LLM inference is non-deterministic for reasons that have nothing to do with sampling. They walk through the first-principles causes (non-associative floating point, lack of batch invariance, mixture-of-experts capacity routing) and use a stock-trading agent that sells 1,000 shares instead of $1,000 worth as the running example of a silent failure that returns a clean 200 OK while dashboards stay green. Their reframe: stop chasing bitwise determinism and pursue replayability instead \u2014 record what enters and leaves every node of the agent graph, not network packets, and freeze the whole envelope (model version, build ID, RAG chunks) as a trace. They demo Chronicle, a proof-of-concept library whose `boundary` annotation both records these traces and later replays them as test cases, stubbing every node except the one you changed so you can verify a guardrail fix with zero model calls. Worth watching if you own an agent that touches real backends and need a concrete pattern for turning production incidents into free, rerunnable regression tests.\",\n  \"key_points\": [\n    \"Temperature zero does not make hosted LLM inference reproducible; it only guarantees argmax selection, not that the underlying logits stay identical between runs.\",\n    \"The real sources of non-determinism are floating-point non-associativity, lack of batch invariance (your request is batched with whatever else arrives that millisecond), and mixture-of-experts capacity limits that reroute tokens depending on batch composition \u2014 not GPU concurrency, which is bit-identical for an isolated matmul.\",\n    \"The dangerous production failures are silent: the broker API returned 200 OK in 30 milliseconds with zero exceptions and zero alerts while executing a $190,000 mistake.\",\n    \"The speakers distinguish bitwise determinism (controllability, unobtainable from a hosted API and undesirable anyway) from replayability (observability, which is what debugging actually requires).\",\n    \"Recording should happen at node boundaries rather than the network layer, because much of an agent \u2014 local retrieval, in-process tools, memory \u2014 never touches the network, and streaming/async shreds packet-level capture.\",\n    \"Chronicle's `boundary` annotation wraps any method (tool, LLM call, RAG retrieval), records its input/output pair plus metadata like model version and code version, and freezes the run as a trace.\",\n    \"The same trace doubles as a test fixture: enable replay mode, stub every node except the one you fixed, and assert on the live node's output \u2014 a deterministic CI run that costs nothing because it never calls a model.\",\n    \"Testing agents splits in two: deterministic testing for guardrails and tool calls (where trace replay applies) and behavioral testing for tone and trajectory (where LLM-as-a-judge is the right tool).\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"You can't reproduce it. And if you can't reproduce it, you can't debug it. And if you can't debug it, you can't promise it won't happen to your next customer or user, right?\",\n      \"timestamp_sec\": 45,\n      \"why\": \"states the talk's core stakes in one chain of consequences\"\n    },\n    {\n      \"text\": \"Instead of doing the math, the agent sells the raw number 1,000 and dumps it straight into the quantity field. Guess what? It sells 1,000 shares instead.\",\n      \"timestamp_sec\": 82,\n      \"why\": \"the concrete failure the whole talk is built around\"\n    },\n    {\n      \"text\": \"We got zero exceptions, zero alerts. If you see the trade is completely wrong. But, your dashboards are sitting there perfectly green, perfectly flawless.\",\n      \"timestamp_sec\": 132,\n      \"why\": \"names the silent-failure problem that conventional monitoring misses\"\n    },\n    {\n      \"text\": \"Setting the temperature to zero doesn't fix a broken reasoning path. It just means the model is going to make the exact same logical error, the exact same way, at the exact same time\",\n      \"timestamp_sec\": 132,\n      \"why\": \"attacks the most common reflex fix directly\"\n    },\n    {\n      \"text\": \"Running the same prompt a thousand times can still return dozens of completely different responses just due to the underlying GPU non-determinism and the MOE architectures which are there.\",\n      \"timestamp_sec\": 183,\n      \"why\": \"reports the empirical claim underpinning the argument\"\n    },\n    {\n      \"text\": \"a tiny shift in matrix operation alters the final logits and which in turn will flip the winning token\",\n      \"timestamp_sec\": 233,\n      \"why\": \"the mechanism linking floating-point noise to different outputs\"\n    },\n    {\n      \"text\": \"So the real culprit is batch invariance here because a request gets grouped with whatever else hits the server that millisecond.\",\n      \"timestamp_sec\": 233,\n      \"why\": \"identifies the specific culprit, ruling out the concurrency explanation\"\n    },\n    {\n      \"text\": \"Whether the token makes the cut depends entirely on the traffic you got batched with.\",\n      \"timestamp_sec\": 233,\n      \"why\": \"crisp statement of how MoE routing makes your output depend on other users\"\n    },\n    {\n      \"text\": \"We don't need the model to return the exact same token back every time. We just need our system to execute the exact same state transition.\",\n      \"timestamp_sec\": 289,\n      \"why\": \"the central reframe of the talk\"\n    },\n    {\n      \"text\": \"The right question is how do I debug and retest a run I can't reproduce because determinism was never the North Star. Debugging was.\",\n      \"timestamp_sec\": 289,\n      \"why\": \"restates the reframe as a change of engineering goal\"\n    },\n    {\n      \"text\": \"You're not getting it from a hosted API, and you don't actually want it because the randomness is what makes the model good.\",\n      \"timestamp_sec\": 339,\n      \"why\": \"takes the contrarian side that non-determinism is a feature\"\n    },\n    {\n      \"text\": \"You don't need the model deterministic. You need the run recorded, and you don't freeze the model. You capture what it did.\",\n      \"timestamp_sec\": 339,\n      \"why\": \"the actionable one-line prescription\"\n    },\n    {\n      \"text\": \"For sure, not at the network layer because half your agent will never touch the network, the local retrieval, the in-process tools, the memory\",\n      \"timestamp_sec\": 339,\n      \"why\": \"names a specific instrumentation tradeoff others get wrong\"\n    },\n    {\n      \"text\": \"Record at the boundary instead because you need to capture what enters each node and what leaves it. The meaning of each step and not the packets.\",\n      \"timestamp_sec\": 391,\n      \"why\": \"defines the boundary abstraction that the tool is built on\"\n    },\n    {\n      \"text\": \"You stub every node other than the node that you changed, and you let Boundary handle the rest, right?\",\n      \"timestamp_sec\": 614,\n      \"why\": \"the replay-as-test methodology in one sentence\"\n    },\n    {\n      \"text\": \"This is rerun-able, and since it never calls the model, it is free.\",\n      \"timestamp_sec\": 771,\n      \"why\": \"the cost argument for trace-based deterministic testing\"\n    },\n    {\n      \"text\": \"On the behavioral side of things, you measure things like the tone of the agent or whether the trajectory it took was right. This is more subjective, and this is where techniques like LLM as a judge are better off.\",\n      \"timestamp_sec\": 771,\n      \"why\": \"bounds where replay testing applies and where judges belong\"\n    },\n    {\n      \"text\": \"stop chasing bitwise determinism through the API. The fundamental principles on which the APIs are built today do not make this possible.\",\n      \"timestamp_sec\": 771,\n      \"why\": \"the first and strongest takeaway, stated as a flat impossibility claim\"\n    },\n    {\n      \"text\": \"Third, capture the full envelope. Don't focus on just the prompt.\",\n      \"timestamp_sec\": 805,\n      \"why\": \"concise correction to prompt-only logging practice\"\n    },\n    {\n      \"text\": \"keep the generation time variation alive. Don't try to pin the temperature to zero. After all, that is what brings the agency into your agent.\",\n      \"timestamp_sec\": 805,\n      \"why\": \"closes the loop on why suppressing randomness is the wrong goal\"\n    }\n  ],\n  \"concepts\": [\n    \"agent replayability\",\n    \"bitwise determinism\",\n    \"batch invariance\",\n    \"mixture-of-experts routing\",\n    \"boundary instrumentation\",\n    \"trace recording\",\n    \"deterministic ci\",\n    \"node stubbing\",\n    \"llm-as-a-judge\",\n    \"silent failure detection\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Setting temperature to zero does not produce reproducible LLM outputs, because greedy decoding only fixes the selection rule and not the underlying scores.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 132\n    },\n    {\n      \"claim\": \"GPU concurrency is not the cause of non-determinism \u2014 an isolated matrix multiplication run a thousand times returns bit-identical results.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 233\n    },\n    {\n      \"claim\": \"The actual causes of run-to-run variation are non-associative floating-point math, batching of your request with other traffic, and MoE expert capacity overflow causing token rerouting.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 233\n    },\n    {\n      \"claim\": \"Bitwise determinism is unobtainable from any hosted LLM API today.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 771\n    },\n    {\n      \"claim\": \"Model randomness is desirable and should be preserved, because it is what produces creative answers and gives an agent its agency.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 339\n    },\n    {\n      \"claim\": \"Teams that pursue model determinism waste weeks and conclude the system is unknowable.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 289\n    },\n    {\n      \"claim\": \"Recording at the network layer is the wrong instrumentation point for agents, because local retrieval, in-process tools, and memory never cross the network and streaming/async breaks packet capture.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 339\n    },\n    {\n      \"claim\": \"Because you cannot control the LLM, correctness must be enforced with guardrails on the tools rather than on model output.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 577\n    },\n    {\n      \"claim\": \"A recorded production trace can be reused directly as a regression test by stubbing every node except the one under change, giving a deterministic and zero-cost test run.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 652\n    },\n    {\n      \"claim\": \"Deterministic replay testing and behavioral testing are complementary and both necessary; LLM-as-a-judge is only appropriate for the subjective behavioral half.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 734\n    },\n    {\n      \"claim\": \"Session variables such as LLM version, build ID, and RAG chunks must be logged alongside the prompt for a trace to be replayable.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 771\n    },\n    {\n      \"claim\": \"Green dashboards and 200 OK responses are insufficient signals for agent correctness, since a catastrophic wrong action produces no exception or alert.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 132\n    }\n  ],\n  \"speaker_org\": \"Microsoft\"\n}",
+  "ttft_ms": 21503,
+  "ttft_stream_ms": 1069,
+  "time_to_request_ms": 33,
+  "type": "result",
+  "duration_ms": 63550,
+  "uuid": "9ef0076d-adec-4317-93f1-d7f6084be0ac",
+  "passA": {
+    "summary": "Tisha Chawla and Susheem Koul argue that the standard reflex for debugging agent failures in production \u2014 pull the prompt from telemetry, set temperature to zero, and rerun \u2014 is a dead end, because hosted LLM inference is non-deterministic for reasons that have nothing to do with sampling. They walk through the first-principles causes (non-associative floating point, lack of batch invariance, mixture-of-experts capacity routing) and use a stock-trading agent that sells 1,000 shares instead of $1,000 worth as the running example of a silent failure that returns a clean 200 OK while dashboards stay green. Their reframe: stop chasing bitwise determinism and pursue replayability instead \u2014 record what enters and leaves every node of the agent graph, not network packets, and freeze the whole envelope (model version, build ID, RAG chunks) as a trace. They demo Chronicle, a proof-of-concept library whose `boundary` annotation both records these traces and later replays them as test cases, stubbing every node except the one you changed so you can verify a guardrail fix with zero model calls. Worth watching if you own an agent that touches real backends and need a concrete pattern for turning production incidents into free, rerunnable regression tests.",
+    "key_points": [
+      "Temperature zero does not make hosted LLM inference reproducible; it only guarantees argmax selection, not that the underlying logits stay identical between runs.",
+      "The real sources of non-determinism are floating-point non-associativity, lack of batch invariance (your request is batched with whatever else arrives that millisecond), and mixture-of-experts capacity limits that reroute tokens depending on batch composition \u2014 not GPU concurrency, which is bit-identical for an isolated matmul.",
+      "The dangerous production failures are silent: the broker API returned 200 OK in 30 milliseconds with zero exceptions and zero alerts while executing a $190,000 mistake.",
+      "The speakers distinguish bitwise determinism (controllability, unobtainable from a hosted API and undesirable anyway) from replayability (observability, which is what debugging actually requires).",
+      "Recording should happen at node boundaries rather than the network layer, because much of an agent \u2014 local retrieval, in-process tools, memory \u2014 never touches the network, and streaming/async shreds packet-level capture.",
+      "Chronicle's `boundary` annotation wraps any method (tool, LLM call, RAG retrieval), records its input/output pair plus metadata like model version and code version, and freezes the run as a trace.",
+      "The same trace doubles as a test fixture: enable replay mode, stub every node except the one you fixed, and assert on the live node's output \u2014 a deterministic CI run that costs nothing because it never calls a model.",
+      "Testing agents splits in two: deterministic testing for guardrails and tool calls (where trace replay applies) and behavioral testing for tone and trajectory (where LLM-as-a-judge is the right tool)."
+    ],
+    "notable_quotes": [
+      {
+        "text": "You can't reproduce it. And if you can't reproduce it, you can't debug it. And if you can't debug it, you can't promise it won't happen to your next customer or user, right?",
+        "timestamp_sec": 45,
+        "why": "states the talk's core stakes in one chain of consequences"
+      },
+      {
+        "text": "Instead of doing the math, the agent sells the raw number 1,000 and dumps it straight into the quantity field. Guess what? It sells 1,000 shares instead.",
+        "timestamp_sec": 82,
+        "why": "the concrete failure the whole talk is built around"
+      },
+      {
+        "text": "We got zero exceptions, zero alerts. If you see the trade is completely wrong. But, your dashboards are sitting there perfectly green, perfectly flawless.",
+        "timestamp_sec": 132,
+        "why": "names the silent-failure problem that conventional monitoring misses"
+      },
+      {
+        "text": "Setting the temperature to zero doesn't fix a broken reasoning path. It just means the model is going to make the exact same logical error, the exact same way, at the exact same time",
+        "timestamp_sec": 132,
+        "why": "attacks the most common reflex fix directly"
+      },
+      {
+        "text": "Running the same prompt a thousand times can still return dozens of completely different responses just due to the underlying GPU non-determinism and the MOE architectures which are there.",
+        "timestamp_sec": 183,
+        "why": "reports the empirical claim underpinning the argument"
+      },
+      {
+        "text": "a tiny shift in matrix operation alters the final logits and which in turn will flip the winning token",
+        "timestamp_sec": 233,
+        "why": "the mechanism linking floating-point noise to different outputs"
+      },
+      {
+        "text": "So the real culprit is batch invariance here because a request gets grouped with whatever else hits the server that millisecond.",
+        "timestamp_sec": 233,
+        "why": "identifies the specific culprit, ruling out the concurrency explanation"
+      },
+      {
+        "text": "Whether the token makes the cut depends entirely on the traffic you got batched with.",
+        "timestamp_sec": 233,
+        "why": "crisp statement of how MoE routing makes your output depend on other users"
+      },
+      {
+        "text": "We don't need the model to return the exact same token back every time. We just need our system to execute the exact same state transition.",
+        "timestamp_sec": 289,
+        "why": "the central reframe of the talk"
+      },
+      {
+        "text": "The right question is how do I debug and retest a run I can't reproduce because determinism was never the North Star. Debugging was.",
+        "timestamp_sec": 289,
+        "why": "restates the reframe as a change of engineering goal"
+      },
+      {
+        "text": "You're not getting it from a hosted API, and you don't actually want it because the randomness is what makes the model good.",
+        "timestamp_sec": 339,
+        "why": "takes the contrarian side that non-determinism is a feature"
+      },
+      {
+        "text": "You don't need the model deterministic. You need the run recorded, and you don't freeze the model. You capture what it did.",
+        "timestamp_sec": 339,
+        "why": "the actionable one-line prescription"
+      },
+      {
+        "text": "For sure, not at the network layer because half your agent will never touch the network, the local retrieval, the in-process tools, the memory",
+        "timestamp_sec": 339,
+        "why": "names a specific instrumentation tradeoff others get wrong"
+      },
+      {
+        "text": "Record at the boundary instead because you need to capture what enters each node and what leaves it. The meaning of each step and not the packets.",
+        "timestamp_sec": 391,
+        "why": "defines the boundary abstraction that the tool is built on"
+      },
+      {
+        "text": "You stub every node other than the node that you changed, and you let Boundary handle the rest, right?",
+        "timestamp_sec": 614,
+        "why": "the replay-as-test methodology in one sentence"
+      },
+      {
+        "text": "This is rerun-able, and since it never calls the model, it is free.",
+        "timestamp_sec": 771,
+        "why": "the cost argument for trace-based deterministic testing"
+      },
+      {
+        "text": "On the behavioral side of things, you measure things like the tone of the agent or whether the trajectory it took was right. This is more subjective, and this is where techniques like LLM as a judge are better off.",
+        "timestamp_sec": 771,
+        "why": "bounds where replay testing applies and where judges belong"
+      },
+      {
+        "text": "stop chasing bitwise determinism through the API. The fundamental principles on which the APIs are built today do not make this possible.",
+        "timestamp_sec": 771,
+        "why": "the first and strongest takeaway, stated as a flat impossibility claim"
+      },
+      {
+        "text": "Third, capture the full envelope. Don't focus on just the prompt.",
+        "timestamp_sec": 805,
+        "why": "concise correction to prompt-only logging practice"
+      },
+      {
+        "text": "keep the generation time variation alive. Don't try to pin the temperature to zero. After all, that is what brings the agency into your agent.",
+        "timestamp_sec": 805,
+        "why": "closes the loop on why suppressing randomness is the wrong goal"
+      }
+    ],
+    "concepts": [
+      "agent replayability",
+      "bitwise determinism",
+      "batch invariance",
+      "mixture-of-experts routing",
+      "boundary instrumentation",
+      "trace recording",
+      "deterministic ci",
+      "node stubbing",
+      "llm-as-a-judge",
+      "silent failure detection"
+    ],
+    "positions": [
+      {
+        "claim": "Setting temperature to zero does not produce reproducible LLM outputs, because greedy decoding only fixes the selection rule and not the underlying scores.",
+        "confidence": "stated",
+        "timestamp_sec": 132
+      },
+      {
+        "claim": "GPU concurrency is not the cause of non-determinism \u2014 an isolated matrix multiplication run a thousand times returns bit-identical results.",
+        "confidence": "stated",
+        "timestamp_sec": 233
+      },
+      {
+        "claim": "The actual causes of run-to-run variation are non-associative floating-point math, batching of your request with other traffic, and MoE expert capacity overflow causing token rerouting.",
+        "confidence": "stated",
+        "timestamp_sec": 233
+      },
+      {
+        "claim": "Bitwise determinism is unobtainable from any hosted LLM API today.",
+        "confidence": "stated",
+        "timestamp_sec": 771
+      },
+      {
+        "claim": "Model randomness is desirable and should be preserved, because it is what produces creative answers and gives an agent its agency.",
+        "confidence": "stated",
+        "timestamp_sec": 339
+      },
+      {
+        "claim": "Teams that pursue model determinism waste weeks and conclude the system is unknowable.",
+        "confidence": "stated",
+        "timestamp_sec": 289
+      },
+      {
+        "claim": "Recording at the network layer is the wrong instrumentation point for agents, because local retrieval, in-process tools, and memory never cross the network and streaming/async breaks packet capture.",
+        "confidence": "stated",
+        "timestamp_sec": 339
+      },
+      {
+        "claim": "Because you cannot control the LLM, correctness must be enforced with guardrails on the tools rather than on model output.",
+        "confidence": "stated",
+        "timestamp_sec": 577
+      },
+      {
+        "claim": "A recorded production trace can be reused directly as a regression test by stubbing every node except the one under change, giving a deterministic and zero-cost test run.",
+        "confidence": "stated",
+        "timestamp_sec": 652
+      },
+      {
+        "claim": "Deterministic replay testing and behavioral testing are complementary and both necessary; LLM-as-a-judge is only appropriate for the subjective behavioral half.",
+        "confidence": "stated",
+        "timestamp_sec": 734
+      },
+      {
+        "claim": "Session variables such as LLM version, build ID, and RAG chunks must be logged alongside the prompt for a trace to be replayable.",
+        "confidence": "stated",
+        "timestamp_sec": 771
+      },
+      {
+        "claim": "Green dashboards and 200 OK responses are insufficient signals for agent correctness, since a catastrophic wrong action produces no exception or alert.",
+        "confidence": "implied",
+        "timestamp_sec": 132
+      }
+    ],
+    "speaker_org": "Microsoft"
+  },
+  "_meta": {
+    "slug": "your-agent-failed-in-prod-good-luck-reproducing-it",
+    "video_id": "Lc8zRh9muoY",
+    "url": "https://www.youtube.com/watch?v=Lc8zRh9muoY",
+    "word_count": 2387,
+    "wall_sec": 64.6,
+    "run_at": "2026-08-12T20:36:03Z",
+    "effort": "medium"
+  }
+}

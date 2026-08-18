@@ -1,0 +1,282 @@
+{
+  "is_error": false,
+  "duration_api_ms": 63361,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "8abaee26-1de4-4961-bed6-fdc6f1dd3ba2",
+  "total_cost_usd": 0.280135,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 12154,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 5820,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 12154,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 5820,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 12154,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 12154
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 7856,
+      "outputTokens": 15,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.007931,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 5820,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 12154,
+      "webSearchRequests": 0,
+      "costUSD": 0.272204,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Apoorva Joshi (MongoDB) presents a four-phase framework for taking an AI system from idea to production \u2014 product requirements, system design, evaluation and monitoring, then optimization for cost, latency, and reliability \u2014 and walks it end-to-end through a single worked example: a health insurance claims review system for medical reviewers. Her core argument is that in an era of AI-generated code, the spec is the hard part: a quantified business problem, explicit regulatory and procurement constraints, and a SMART success metric are what let coding agents build the right thing. She is pointedly skeptical of jumping to agents or letting a coding agent pick your architecture, arguing for the simplest design that meets requirements, evaluated and iterated. The talk is concrete about data strategy (sources, update cadence, processing, retrieval technique per source), design patterns (RAG, agents, controlled workflows, LLM-as-router, human-in-the-loop, fine-tuning), and a full metric stack from input/output guardrail compliance to production signals like human override rate. Worth watching if you want a checklist-style, domain-grounded process for AI system design rather than another agent-framework demo.\",\n  \"key_points\": [\n    \"Vibe coding is fine for low-stakes projects where you can eyeball correctness, but for systems others depend on, shipping without a spec is dangerous \u2014 a point Joshi notes is echoed by people at Anthropic and OpenAI.\",\n    \"The business problem should be user-specific, measurable, time-relevant, and explicitly solution-agnostic: it must not prescribe whether the answer is an agent, a multi-agent system, or something else.\",\n    \"Business constraints (data residency, approved cloud models, vendor procurement, mandatory human review) and performance constraints (latency, monthly LLM spend, uptime SLAs) should be gathered before design begins because they shape every downstream architectural decision.\",\n    \"Joshi frames the role of AI along three dimensions \u2014 critical vs. complementary, reactive vs. proactive, and level of autonomy \u2014 and shows how mandated human review caps the claims system at semi-autonomous.\",\n    \"Data strategy means enumerating each source's location, raw format, update frequency, required processing, and best-fit retrieval technique; the claims system uses chunking plus vector or hybrid search for guidelines and PDFs but exact match on patient ID for claims history.\",\n    \"Rather than jumping to an agent, start with the simplest architecture, evaluate it, find the gaps, and iterate \u2014 over-engineering before knowing what is actually failing is the most common mistake she sees.\",\n    \"Guardrails matter because LLM systems are probabilistic: define what invalid input looks like (e.g. 'write me a poem' to a claims system) and what invalid output looks like (e.g. a verdict with no citations), then measure compliance with rates like claim rejection rate and missing citation rate.\",\n    \"Evaluation happens before shipping and monitoring after, and you need both; production adds implicit success signals such as how often a human overrides the AI verdict and how long human review takes.\",\n    \"Accuracy, cost, latency, and reliability need separate optimization passes \u2014 reranking and memory for accuracy, semantic caching and batch processing for cost/latency, structured outputs for reliability \u2014 and those constraints are non-negotiable at production time.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"Specs are the new code. The art is in defining the product requirements, the system design, and evaluate criteria so you can be confident that your AI coding buddies are building the right thing.\",\n      \"timestamp_sec\": 87,\n      \"why\": \"The thesis of the talk, stated in one line.\"\n    },\n    {\n      \"text\": \"Wipe coding works great when you're building for fun, the stakes are low, and you can easily eyeball whether the output of what you're building is right.\",\n      \"timestamp_sec\": 51,\n      \"why\": \"Names the precise boundary condition where vibe coding stops working.\"\n    },\n    {\n      \"text\": \"But the moment you're building something real, something other people depend on, something with real consequences, just ship it is actually kind of dangerous.\",\n      \"timestamp_sec\": 51,\n      \"why\": \"Takes an explicit side against ship-first culture.\"\n    },\n    {\n      \"text\": \"It should not prescribe what the system is going to be, whether it's going to be an agent, a multi-agent system, something else.\",\n      \"timestamp_sec\": 241,\n      \"why\": \"A checkable rule for writing problem statements that many teams violate.\"\n    },\n    {\n      \"text\": \"Medical reviewers at MDB Health spend an average of 2 days processing claim review requests, which is four times the industry standard for non-urgent cases, and 12 times the industry standard for urgent ones.\",\n      \"timestamp_sec\": 241,\n      \"why\": \"Model of a quantified business problem, with baselines.\"\n    },\n    {\n      \"text\": \"reduce the average processing time for urgent claim review requests from 2 days to 1 hour within 90 days of launch\",\n      \"timestamp_sec\": 440,\n      \"why\": \"Concrete example of a SMART success metric.\"\n    },\n    {\n      \"text\": \"It can be tempting to jump straight to building an agent. There's so much hype around them, or let a coding agent decide what the system architecture should look like, but you risk ending up with an over-engineered system by doing this.\",\n      \"timestamp_sec\": 727,\n      \"why\": \"Direct pushback on agent hype and on delegating architecture to coding agents.\"\n    },\n    {\n      \"text\": \"So, what you instead want to do is start with the simplest design, evaluate it, find gaps during the evaluation, and iterate from there.\",\n      \"timestamp_sec\": 727,\n      \"why\": \"The prescriptive alternative to agent-first design.\"\n    },\n    {\n      \"text\": \"if you're observing that the LLM's failures are behavioral rather than data or orchestration issues, or if you need superior performance on a domain-specific task, then fine-tuning is a good technique to explore.\",\n      \"timestamp_sec\": 888,\n      \"why\": \"Gives a usable decision rule for when fine-tuning is the right lever.\"\n    },\n    {\n      \"text\": \"So, evaluation is before, monitoring is after you ship, and you need both of them.\",\n      \"timestamp_sec\": 1249,\n      \"why\": \"Crisp distinction between two terms often conflated.\"\n    },\n    {\n      \"text\": \"guardrails are an attempt to mitigate these risks and ensure that your system behaves within acceptable boundaries. And what those boundaries are are something you need to define.\",\n      \"timestamp_sec\": 1249,\n      \"why\": \"Puts the burden of defining acceptable behavior on the builder, not the tooling.\"\n    },\n    {\n      \"text\": \"Now if it's rejecting too many times, then that's a call for investigation, but if you didn't measure this in the first place, then you won't have anything to investigate\",\n      \"timestamp_sec\": 1351,\n      \"why\": \"Argues for instrumenting guardrails rather than just installing them.\"\n    },\n    {\n      \"text\": \"For example, for the claims review app, you can track how often a human reviewer overrides the AI verdict.\",\n      \"timestamp_sec\": 1468,\n      \"why\": \"A concrete production-only metric that acts as an implicit quality signal.\"\n    },\n    {\n      \"text\": \"these constraints become absolutely non-negotiable as you're moving your product to production\",\n      \"timestamp_sec\": 1508,\n      \"why\": \"Marks cost, latency, and reliability as hard gates, not nice-to-haves.\"\n    },\n    {\n      \"text\": \"Think deeply about your product's requirements before having AI generate any code. The product spec is the hard part now, it's not the code anymore.\",\n      \"timestamp_sec\": 1606,\n      \"why\": \"The talk's closing claim about where engineering difficulty has migrated.\"\n    },\n    {\n      \"text\": \"Your latency budget, your cost ceiling, any regulatory requirements, all of these shape every architectural decision downstream.\",\n      \"timestamp_sec\": 1652,\n      \"why\": \"Explains why constraint-gathering precedes design rather than following it.\"\n    },\n    {\n      \"text\": \"The most common mistake I see is over-engineering the solution before knowing what's actually failing or not even evaluating what's actually failing.\",\n      \"timestamp_sec\": 1652,\n      \"why\": \"A first-hand observation about the dominant failure mode in AI system design.\"\n    },\n    {\n      \"text\": \"Build evaluation in from the start. You can't improve what you can't measure.\",\n      \"timestamp_sec\": 1652,\n      \"why\": \"Compresses the evaluation argument into a takeaway.\"\n    }\n  ],\n  \"concepts\": [\n    \"ai system design framework\",\n    \"product requirements specification\",\n    \"spec-driven development\",\n    \"retrieval augmented generation\",\n    \"hybrid search\",\n    \"agentic workflow patterns\",\n    \"human in the loop\",\n    \"llm guardrails\",\n    \"offline evaluation and production monitoring\",\n    \"cost and latency optimization\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Vibe coding is appropriate only for low-stakes projects where output correctness can be eyeballed; for systems with real consequences it is dangerous.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 51\n    },\n    {\n      \"claim\": \"Writing the product spec \u2014 requirements, system design, and eval criteria \u2014 is now the hard part of engineering, not writing the code.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1606\n    },\n    {\n      \"claim\": \"A business problem statement should be solution-agnostic and must not specify whether the system will be an agent or multi-agent system.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 241\n    },\n    {\n      \"claim\": \"Letting a coding agent choose your system architecture risks producing an over-engineered system.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 727\n    },\n    {\n      \"claim\": \"You should start with the simplest architecture that meets requirements, evaluate it, and only then iterate based on observed gaps.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 727\n    },\n    {\n      \"claim\": \"Over-engineering before knowing what is actually failing is the single most common mistake in AI system building.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1652\n    },\n    {\n      \"claim\": \"Business, regulatory, and performance constraints must be gathered before design because they determine every downstream architectural decision.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1652\n    },\n    {\n      \"claim\": \"Vector search alone is insufficient for documents containing diagnosis and procedure codes; metadata pre-filtering or hybrid search is needed.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 676\n    },\n    {\n      \"claim\": \"Fine-tuning should be reserved for behavioral failures or domain-specific performance needs, not for data or orchestration problems.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 888\n    },\n    {\n      \"claim\": \"Offline evaluation and production monitoring are distinct and both are required; shipping with only one is insufficient.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1249\n    },\n    {\n      \"claim\": \"Guardrail behavior must itself be measured with rates like claim rejection rate and missing citation rate, or you have nothing to investigate when things go wrong.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1351\n    },\n    {\n      \"claim\": \"A rising human-override rate on AI verdicts indicates the system is not doing its job and should trigger investigation above a threshold.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1468\n    },\n    {\n      \"claim\": \"Accuracy optimization in LLM applications reduces to optimizing what information ends up in the context window.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1508\n    },\n    {\n      \"claim\": \"A prototype with good accuracy is not production-ready; further iteration on cost, latency, and reliability is required first.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1508\n    },\n    {\n      \"claim\": \"Data pipelines must run at a cadence matched to each source's update frequency, or the system operates on stale information.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 583\n    }\n  ],\n  \"speaker_org\": \"MongoDB\"\n}",
+  "ttft_ms": 20957,
+  "ttft_stream_ms": 1105,
+  "time_to_request_ms": 34,
+  "type": "result",
+  "duration_ms": 63910,
+  "uuid": "88c67955-7c2c-42ba-a8d9-7ff81e460db6",
+  "passA": {
+    "summary": "Apoorva Joshi (MongoDB) presents a four-phase framework for taking an AI system from idea to production \u2014 product requirements, system design, evaluation and monitoring, then optimization for cost, latency, and reliability \u2014 and walks it end-to-end through a single worked example: a health insurance claims review system for medical reviewers. Her core argument is that in an era of AI-generated code, the spec is the hard part: a quantified business problem, explicit regulatory and procurement constraints, and a SMART success metric are what let coding agents build the right thing. She is pointedly skeptical of jumping to agents or letting a coding agent pick your architecture, arguing for the simplest design that meets requirements, evaluated and iterated. The talk is concrete about data strategy (sources, update cadence, processing, retrieval technique per source), design patterns (RAG, agents, controlled workflows, LLM-as-router, human-in-the-loop, fine-tuning), and a full metric stack from input/output guardrail compliance to production signals like human override rate. Worth watching if you want a checklist-style, domain-grounded process for AI system design rather than another agent-framework demo.",
+    "key_points": [
+      "Vibe coding is fine for low-stakes projects where you can eyeball correctness, but for systems others depend on, shipping without a spec is dangerous \u2014 a point Joshi notes is echoed by people at Anthropic and OpenAI.",
+      "The business problem should be user-specific, measurable, time-relevant, and explicitly solution-agnostic: it must not prescribe whether the answer is an agent, a multi-agent system, or something else.",
+      "Business constraints (data residency, approved cloud models, vendor procurement, mandatory human review) and performance constraints (latency, monthly LLM spend, uptime SLAs) should be gathered before design begins because they shape every downstream architectural decision.",
+      "Joshi frames the role of AI along three dimensions \u2014 critical vs. complementary, reactive vs. proactive, and level of autonomy \u2014 and shows how mandated human review caps the claims system at semi-autonomous.",
+      "Data strategy means enumerating each source's location, raw format, update frequency, required processing, and best-fit retrieval technique; the claims system uses chunking plus vector or hybrid search for guidelines and PDFs but exact match on patient ID for claims history.",
+      "Rather than jumping to an agent, start with the simplest architecture, evaluate it, find the gaps, and iterate \u2014 over-engineering before knowing what is actually failing is the most common mistake she sees.",
+      "Guardrails matter because LLM systems are probabilistic: define what invalid input looks like (e.g. 'write me a poem' to a claims system) and what invalid output looks like (e.g. a verdict with no citations), then measure compliance with rates like claim rejection rate and missing citation rate.",
+      "Evaluation happens before shipping and monitoring after, and you need both; production adds implicit success signals such as how often a human overrides the AI verdict and how long human review takes.",
+      "Accuracy, cost, latency, and reliability need separate optimization passes \u2014 reranking and memory for accuracy, semantic caching and batch processing for cost/latency, structured outputs for reliability \u2014 and those constraints are non-negotiable at production time."
+    ],
+    "notable_quotes": [
+      {
+        "text": "Specs are the new code. The art is in defining the product requirements, the system design, and evaluate criteria so you can be confident that your AI coding buddies are building the right thing.",
+        "timestamp_sec": 87,
+        "why": "The thesis of the talk, stated in one line."
+      },
+      {
+        "text": "Wipe coding works great when you're building for fun, the stakes are low, and you can easily eyeball whether the output of what you're building is right.",
+        "timestamp_sec": 51,
+        "why": "Names the precise boundary condition where vibe coding stops working."
+      },
+      {
+        "text": "But the moment you're building something real, something other people depend on, something with real consequences, just ship it is actually kind of dangerous.",
+        "timestamp_sec": 51,
+        "why": "Takes an explicit side against ship-first culture."
+      },
+      {
+        "text": "It should not prescribe what the system is going to be, whether it's going to be an agent, a multi-agent system, something else.",
+        "timestamp_sec": 241,
+        "why": "A checkable rule for writing problem statements that many teams violate."
+      },
+      {
+        "text": "Medical reviewers at MDB Health spend an average of 2 days processing claim review requests, which is four times the industry standard for non-urgent cases, and 12 times the industry standard for urgent ones.",
+        "timestamp_sec": 241,
+        "why": "Model of a quantified business problem, with baselines."
+      },
+      {
+        "text": "reduce the average processing time for urgent claim review requests from 2 days to 1 hour within 90 days of launch",
+        "timestamp_sec": 440,
+        "why": "Concrete example of a SMART success metric."
+      },
+      {
+        "text": "It can be tempting to jump straight to building an agent. There's so much hype around them, or let a coding agent decide what the system architecture should look like, but you risk ending up with an over-engineered system by doing this.",
+        "timestamp_sec": 727,
+        "why": "Direct pushback on agent hype and on delegating architecture to coding agents."
+      },
+      {
+        "text": "So, what you instead want to do is start with the simplest design, evaluate it, find gaps during the evaluation, and iterate from there.",
+        "timestamp_sec": 727,
+        "why": "The prescriptive alternative to agent-first design."
+      },
+      {
+        "text": "if you're observing that the LLM's failures are behavioral rather than data or orchestration issues, or if you need superior performance on a domain-specific task, then fine-tuning is a good technique to explore.",
+        "timestamp_sec": 888,
+        "why": "Gives a usable decision rule for when fine-tuning is the right lever."
+      },
+      {
+        "text": "So, evaluation is before, monitoring is after you ship, and you need both of them.",
+        "timestamp_sec": 1249,
+        "why": "Crisp distinction between two terms often conflated."
+      },
+      {
+        "text": "guardrails are an attempt to mitigate these risks and ensure that your system behaves within acceptable boundaries. And what those boundaries are are something you need to define.",
+        "timestamp_sec": 1249,
+        "why": "Puts the burden of defining acceptable behavior on the builder, not the tooling."
+      },
+      {
+        "text": "Now if it's rejecting too many times, then that's a call for investigation, but if you didn't measure this in the first place, then you won't have anything to investigate",
+        "timestamp_sec": 1351,
+        "why": "Argues for instrumenting guardrails rather than just installing them."
+      },
+      {
+        "text": "For example, for the claims review app, you can track how often a human reviewer overrides the AI verdict.",
+        "timestamp_sec": 1468,
+        "why": "A concrete production-only metric that acts as an implicit quality signal."
+      },
+      {
+        "text": "these constraints become absolutely non-negotiable as you're moving your product to production",
+        "timestamp_sec": 1508,
+        "why": "Marks cost, latency, and reliability as hard gates, not nice-to-haves."
+      },
+      {
+        "text": "Think deeply about your product's requirements before having AI generate any code. The product spec is the hard part now, it's not the code anymore.",
+        "timestamp_sec": 1606,
+        "why": "The talk's closing claim about where engineering difficulty has migrated."
+      },
+      {
+        "text": "Your latency budget, your cost ceiling, any regulatory requirements, all of these shape every architectural decision downstream.",
+        "timestamp_sec": 1652,
+        "why": "Explains why constraint-gathering precedes design rather than following it."
+      },
+      {
+        "text": "The most common mistake I see is over-engineering the solution before knowing what's actually failing or not even evaluating what's actually failing.",
+        "timestamp_sec": 1652,
+        "why": "A first-hand observation about the dominant failure mode in AI system design."
+      },
+      {
+        "text": "Build evaluation in from the start. You can't improve what you can't measure.",
+        "timestamp_sec": 1652,
+        "why": "Compresses the evaluation argument into a takeaway."
+      }
+    ],
+    "concepts": [
+      "ai system design framework",
+      "product requirements specification",
+      "spec-driven development",
+      "retrieval augmented generation",
+      "hybrid search",
+      "agentic workflow patterns",
+      "human in the loop",
+      "llm guardrails",
+      "offline evaluation and production monitoring",
+      "cost and latency optimization"
+    ],
+    "positions": [
+      {
+        "claim": "Vibe coding is appropriate only for low-stakes projects where output correctness can be eyeballed; for systems with real consequences it is dangerous.",
+        "confidence": "stated",
+        "timestamp_sec": 51
+      },
+      {
+        "claim": "Writing the product spec \u2014 requirements, system design, and eval criteria \u2014 is now the hard part of engineering, not writing the code.",
+        "confidence": "stated",
+        "timestamp_sec": 1606
+      },
+      {
+        "claim": "A business problem statement should be solution-agnostic and must not specify whether the system will be an agent or multi-agent system.",
+        "confidence": "stated",
+        "timestamp_sec": 241
+      },
+      {
+        "claim": "Letting a coding agent choose your system architecture risks producing an over-engineered system.",
+        "confidence": "stated",
+        "timestamp_sec": 727
+      },
+      {
+        "claim": "You should start with the simplest architecture that meets requirements, evaluate it, and only then iterate based on observed gaps.",
+        "confidence": "stated",
+        "timestamp_sec": 727
+      },
+      {
+        "claim": "Over-engineering before knowing what is actually failing is the single most common mistake in AI system building.",
+        "confidence": "stated",
+        "timestamp_sec": 1652
+      },
+      {
+        "claim": "Business, regulatory, and performance constraints must be gathered before design because they determine every downstream architectural decision.",
+        "confidence": "stated",
+        "timestamp_sec": 1652
+      },
+      {
+        "claim": "Vector search alone is insufficient for documents containing diagnosis and procedure codes; metadata pre-filtering or hybrid search is needed.",
+        "confidence": "stated",
+        "timestamp_sec": 676
+      },
+      {
+        "claim": "Fine-tuning should be reserved for behavioral failures or domain-specific performance needs, not for data or orchestration problems.",
+        "confidence": "stated",
+        "timestamp_sec": 888
+      },
+      {
+        "claim": "Offline evaluation and production monitoring are distinct and both are required; shipping with only one is insufficient.",
+        "confidence": "stated",
+        "timestamp_sec": 1249
+      },
+      {
+        "claim": "Guardrail behavior must itself be measured with rates like claim rejection rate and missing citation rate, or you have nothing to investigate when things go wrong.",
+        "confidence": "stated",
+        "timestamp_sec": 1351
+      },
+      {
+        "claim": "A rising human-override rate on AI verdicts indicates the system is not doing its job and should trigger investigation above a threshold.",
+        "confidence": "stated",
+        "timestamp_sec": 1468
+      },
+      {
+        "claim": "Accuracy optimization in LLM applications reduces to optimizing what information ends up in the context window.",
+        "confidence": "stated",
+        "timestamp_sec": 1508
+      },
+      {
+        "claim": "A prototype with good accuracy is not production-ready; further iteration on cost, latency, and reliability is required first.",
+        "confidence": "stated",
+        "timestamp_sec": 1508
+      },
+      {
+        "claim": "Data pipelines must run at a cadence matched to each source's update frequency, or the system operates on stale information.",
+        "confidence": "stated",
+        "timestamp_sec": 583
+      }
+    ],
+    "speaker_org": "MongoDB"
+  },
+  "_meta": {
+    "slug": "ai-system-design-from-idea-to-production",
+    "video_id": "T0HhO4YtTfE",
+    "url": "https://www.youtube.com/watch?v=T0HhO4YtTfE",
+    "word_count": 4200,
+    "wall_sec": 64.9,
+    "run_at": "2026-08-12T19:30:59Z",
+    "effort": "medium"
+  }
+}

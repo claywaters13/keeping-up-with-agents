@@ -1,0 +1,273 @@
+{
+  "is_error": false,
+  "duration_api_ms": 49195,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "ef3dd7f5-21c0-4449-aefa-dbf87073922c",
+  "total_cost_usd": 0.184404,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 7094,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 4179,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 7094,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 4179,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 7094,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 7094
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 3730,
+      "outputTokens": 19,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.003825,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 4179,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 7094,
+      "webSearchRequests": 0,
+      "costUSD": 0.18057900000000002,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Dra\u0161ko Profirovic, a staff engineer at Pinterest, walks through the evolution of Medic for Apache Spark \u2014 an agentic diagnostics tool that answers 'why did this job fail?' with an evidence-backed root cause report and grounded suggested fixes. The talk traces the arc from an MCP-plus-single-ReAct-agent prototype, which broke down under prompt tuning conflicts, inconsistent response quality, and context window exhaustion from log tool outputs, to a multi-agent architecture built on LangGraph's deep agents library. The most transferable engineering content is the offline eval story (a record/playback test harness that snapshots production tool responses as checked-in fixtures) and two context-engineering tricks: an exception classifier pipeline that learns which exceptions appear in successful jobs and filters them as red herrings, and rendering time-series metrics as collaged images analyzed in a quarantine sub-agent so token cost is constant regardless of job duration. It's a short, dense, concrete case study worth watching for anyone building diagnostic agents over noisy observability data. Notably, the team tried making the agent more deterministic with LangGraph workflows and found that brittle compared to the ReAct paradigm.\",\n  \"key_points\": [\n    \"The motivating insight is that human support rotations force painful prioritization between competing teams, while LLM-based diagnostics can scale knowledge and capacity on demand without ranking asks.\",\n    \"The single-prompt ReAct agent failed for structural reasons: one prompt had to do everything, so adding detail in one area degraded behavior in another, and quality was inconsistently shallow or verbose.\",\n    \"Large tool outputs \u2014 especially raw logs \u2014 consumed the context window and halted the agent's reasoning on production-scale jobs.\",\n    \"Manual end-to-end testing against production was unreliable because production data gets retentioned away, making it impossible to know whether changes broke earlier wins.\",\n    \"The team built a record/playback test harness where real tool responses are captured as fixtures and checked in as code, letting offline evals grade generated reports (e.g. penalizing more than three suggested fixes) and quantify quality instead of relying on intuition.\",\n    \"Log handling moved from regex heuristics to an exception classifier pipeline that fingerprints and clusters exceptions, learns which ones appear in successful jobs as likely red herrings, and ranks the rest by relevance and recency relative to job termination.\",\n    \"The agent no longer reads logs directly; it gets two MCP tools \u2014 top-K truncated exceptions and full details for a specific exception \u2014 which reduced anchoring on misleading exceptions.\",\n    \"Time-series metrics are converted to annotated graph collages and analyzed by a quarantine sub-agent, guaranteeing a fixed input token count regardless of job duration while surfacing signals like executors dropping to zero or long plateaus.\",\n    \"The final architecture classifies intent, triages job lifecycle state, generates failure hypotheses researched in parallel by scoring research agents, then has a supervisor pick the highest-confidence root cause and invoke a healer agent backed by runbooks in a vector database.\",\n    \"Decomposing into per-agent prompts made scope expansion cheap \u2014 extending Medic to Spark SQL optimization was essentially adding a new prompt.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"It's not always straightforward to rank these asks, but as humans, we often have to decide how we'll spend our time. The same is not true for LLMs. We can easily scale out knowledge and capabilities on demand.\",\n      \"timestamp_sec\": 52,\n      \"why\": \"States the core economic argument for agentic support tooling.\"\n    },\n    {\n      \"text\": \"Our vision for a diagnostics agent was to ask it simply, \\\"Why did a job fail?\\\" and get back a deep research document which provides evidence on the root cause of the failure.\",\n      \"timestamp_sec\": 52,\n      \"why\": \"The product goal in one sentence, framing diagnostics as deep research.\"\n    },\n    {\n      \"text\": \"This worked in practice, but it required a lot of careful prompting from the human operator.\",\n      \"timestamp_sec\": 104,\n      \"why\": \"Names the limitation of bare MCP-plus-chat that motivates an agent harness.\"\n    },\n    {\n      \"text\": \"Prompt tuning became unsustainable. One prompt had to do everything, and adding detail in one area degraded the behavior in another.\",\n      \"timestamp_sec\": 146,\n      \"why\": \"The clearest statement of why single-prompt agents don't scale in scope.\"\n    },\n    {\n      \"text\": \"As an example, large tool outputs from logs would click quickly consume tokens and brought a halt to the agent's reasoning.\",\n      \"timestamp_sec\": 200,\n      \"why\": \"Concrete failure mode driving the whole context-engineering effort.\"\n    },\n    {\n      \"text\": \"Lastly, our end-to-end testing strategy up to this point relied on manual tests from production. This felt anecdotal since production data would be retentioned away.\",\n      \"timestamp_sec\": 200,\n      \"why\": \"Underrated eval problem: your production repro disappears on a retention clock.\"\n    },\n    {\n      \"text\": \"In record mode, the agent calls real downstream systems, and tool responses are captured as fixtures. These are then saved to the file system and checked in as code.\",\n      \"timestamp_sec\": 255,\n      \"why\": \"The reusable mechanic of the test harness, stated precisely.\"\n    },\n    {\n      \"text\": \"For example, an offline eval might check for a limit of three suggested fixes.\",\n      \"timestamp_sec\": 255,\n      \"why\": \"Rare concrete example of encoding output verbosity as a scored eval.\"\n    },\n    {\n      \"text\": \"Our end-to-end tests allowed us to quantify quality instead of relying on intuition.\",\n      \"timestamp_sec\": 307,\n      \"why\": \"Crisp articulation of what eval infrastructure buys a team.\"\n    },\n    {\n      \"text\": \"Logs are noisy, and many exceptions we see in logs are benign. So, simply focusing the last exception may not always be suitable.\",\n      \"timestamp_sec\": 307,\n      \"why\": \"Rejects the naive heuristic most log-diagnosis tools start with.\"\n    },\n    {\n      \"text\": \"Initially, we kept it simple with a heuristics based approach using regex to filter out certain exceptions. But, this didn't scale well.\",\n      \"timestamp_sec\": 307,\n      \"why\": \"Documents the failed simpler approach before the learned classifier.\"\n    },\n    {\n      \"text\": \"The core idea was we would learn which exceptions commonly appear in successful jobs, treat those as likely red herrings, and filter them out in the future analysis.\",\n      \"timestamp_sec\": 356,\n      \"why\": \"The single most portable idea in the talk for noise reduction.\"\n    },\n    {\n      \"text\": \"The agent stopped consuming logs directly, and instead was given two MCP tools. Get the top K truncated exceptions, or get full log details for a specific exception.\",\n      \"timestamp_sec\": 356,\n      \"why\": \"Shows progressive-disclosure tool design instead of dumping raw data.\"\n    },\n    {\n      \"text\": \"Raw time series metrics are not context window friendly. Simply feeding the raw data to an LLM works in the small scale, but fails for long-running jobs in production. Not to mention, it's horribly token inefficient.\",\n      \"timestamp_sec\": 404,\n      \"why\": \"Names a tradeoff many teams hit when piping observability data into LLMs.\"\n    },\n    {\n      \"text\": \"Images worked better because we could guarantee how many input tokens would be used for analyzing any given Spark job irrespective of its duration.\",\n      \"timestamp_sec\": 451,\n      \"why\": \"The counterintuitive argument for rendering data as images: bounded token cost.\"\n    },\n    {\n      \"text\": \"Examples of useful signals we would be able to get included executors dropping down to zero or near zero, long plateaus or bottlenecks, effectively any resource behavior inconsistent with healthy progress.\",\n      \"timestamp_sec\": 451,\n      \"why\": \"Evidence the image approach actually recovers real diagnostic signal.\"\n    },\n    {\n      \"text\": \"Our sub agent would summarize its findings and return the results back to the parent agent, thereby ensuring the context window is kept healthy.\",\n      \"timestamp_sec\": 451,\n      \"why\": \"Explains sub-agent quarantine as a context management pattern.\"\n    },\n    {\n      \"text\": \"A pleasant consequence of this architecture was that the effort to expand the scope of the project was as simple as adding a new prompt.\",\n      \"timestamp_sec\": 547,\n      \"why\": \"The payoff claim for multi-agent decomposition, backed by the Spark SQL extension.\"\n    },\n    {\n      \"text\": \"The supervisor selects the highest confidence root cause and invokes the healer agent to offer remediations based on runbooks ingested into our vector database.\",\n      \"timestamp_sec\": 596,\n      \"why\": \"Shows where retrieval fits: remediation grounding, not root cause finding.\"\n    },\n    {\n      \"text\": \"We trialed using LangGraph's workflows to make the agent more deterministic, but this approach proved to be brittle compared to the reasoning and acting agent paradigm.\",\n      \"timestamp_sec\": 596,\n      \"why\": \"A directly contestable position on determinism vs. ReAct that other talks dispute.\"\n    }\n  ],\n  \"concepts\": [\n    \"agentic diagnostics\",\n    \"model context protocol\",\n    \"multi-agent architecture\",\n    \"offline evaluation\",\n    \"record and playback test harness\",\n    \"context window management\",\n    \"sub-agent context quarantine\",\n    \"log noise filtering\",\n    \"llm observability tracing\",\n    \"retrieval-grounded remediation\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"A single ReAct agent with one monolithic prompt cannot scale in scope, because adding detail for one behavior degrades another.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 146\n    },\n    {\n      \"claim\": \"Manual end-to-end testing against live production is inadequate for agent development because production data is retained only briefly, making regressions undetectable.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 200\n    },\n    {\n      \"claim\": \"Snapshotting real tool responses as checked-in fixtures plus offline evals lets teams quantify agent quality rather than rely on intuition.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 307\n    },\n    {\n      \"claim\": \"Simply taking the last exception in a log is an unreliable root-cause heuristic because many logged exceptions are benign.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 307\n    },\n    {\n      \"claim\": \"Regex-based exception filtering does not scale; a learned fingerprint-and-cluster classifier trained on exceptions from successful jobs works better.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 307\n    },\n    {\n      \"claim\": \"Improved log handling produced a substantial reduction in inaccurate root causes.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 596\n    },\n    {\n      \"claim\": \"Rendering time-series metrics as images is superior to feeding raw series to an LLM, because it guarantees a fixed input token count regardless of job duration.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 451\n    },\n    {\n      \"claim\": \"Deterministic LangGraph workflows are more brittle than the reasoning-and-acting agent paradigm for this diagnostic task.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 596\n    },\n    {\n      \"claim\": \"Multi-agent architecture offers greater control over system behavior than a single-agent design.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 596\n    },\n    {\n      \"claim\": \"Agent harness features popularized by coding tools \u2014 to-do lists, virtual file systems, per-agent tool subsets \u2014 transfer usefully to non-coding domains like infrastructure diagnostics.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 503\n    },\n    {\n      \"claim\": \"This diagnostic agent pattern generalizes to other distributed systems such as Flink and Trino.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 657\n    }\n  ],\n  \"speaker_org\": \"Pinterest\"\n}",
+  "ttft_ms": 47907,
+  "ttft_stream_ms": 952,
+  "time_to_request_ms": 32,
+  "type": "result",
+  "duration_ms": 49741,
+  "uuid": "c6df9e9d-9e4b-4e26-81f5-1a3f3e0bcfb0",
+  "passA": {
+    "summary": "Dra\u0161ko Profirovic, a staff engineer at Pinterest, walks through the evolution of Medic for Apache Spark \u2014 an agentic diagnostics tool that answers 'why did this job fail?' with an evidence-backed root cause report and grounded suggested fixes. The talk traces the arc from an MCP-plus-single-ReAct-agent prototype, which broke down under prompt tuning conflicts, inconsistent response quality, and context window exhaustion from log tool outputs, to a multi-agent architecture built on LangGraph's deep agents library. The most transferable engineering content is the offline eval story (a record/playback test harness that snapshots production tool responses as checked-in fixtures) and two context-engineering tricks: an exception classifier pipeline that learns which exceptions appear in successful jobs and filters them as red herrings, and rendering time-series metrics as collaged images analyzed in a quarantine sub-agent so token cost is constant regardless of job duration. It's a short, dense, concrete case study worth watching for anyone building diagnostic agents over noisy observability data. Notably, the team tried making the agent more deterministic with LangGraph workflows and found that brittle compared to the ReAct paradigm.",
+    "key_points": [
+      "The motivating insight is that human support rotations force painful prioritization between competing teams, while LLM-based diagnostics can scale knowledge and capacity on demand without ranking asks.",
+      "The single-prompt ReAct agent failed for structural reasons: one prompt had to do everything, so adding detail in one area degraded behavior in another, and quality was inconsistently shallow or verbose.",
+      "Large tool outputs \u2014 especially raw logs \u2014 consumed the context window and halted the agent's reasoning on production-scale jobs.",
+      "Manual end-to-end testing against production was unreliable because production data gets retentioned away, making it impossible to know whether changes broke earlier wins.",
+      "The team built a record/playback test harness where real tool responses are captured as fixtures and checked in as code, letting offline evals grade generated reports (e.g. penalizing more than three suggested fixes) and quantify quality instead of relying on intuition.",
+      "Log handling moved from regex heuristics to an exception classifier pipeline that fingerprints and clusters exceptions, learns which ones appear in successful jobs as likely red herrings, and ranks the rest by relevance and recency relative to job termination.",
+      "The agent no longer reads logs directly; it gets two MCP tools \u2014 top-K truncated exceptions and full details for a specific exception \u2014 which reduced anchoring on misleading exceptions.",
+      "Time-series metrics are converted to annotated graph collages and analyzed by a quarantine sub-agent, guaranteeing a fixed input token count regardless of job duration while surfacing signals like executors dropping to zero or long plateaus.",
+      "The final architecture classifies intent, triages job lifecycle state, generates failure hypotheses researched in parallel by scoring research agents, then has a supervisor pick the highest-confidence root cause and invoke a healer agent backed by runbooks in a vector database.",
+      "Decomposing into per-agent prompts made scope expansion cheap \u2014 extending Medic to Spark SQL optimization was essentially adding a new prompt."
+    ],
+    "notable_quotes": [
+      {
+        "text": "It's not always straightforward to rank these asks, but as humans, we often have to decide how we'll spend our time. The same is not true for LLMs. We can easily scale out knowledge and capabilities on demand.",
+        "timestamp_sec": 52,
+        "why": "States the core economic argument for agentic support tooling."
+      },
+      {
+        "text": "Our vision for a diagnostics agent was to ask it simply, \"Why did a job fail?\" and get back a deep research document which provides evidence on the root cause of the failure.",
+        "timestamp_sec": 52,
+        "why": "The product goal in one sentence, framing diagnostics as deep research."
+      },
+      {
+        "text": "This worked in practice, but it required a lot of careful prompting from the human operator.",
+        "timestamp_sec": 104,
+        "why": "Names the limitation of bare MCP-plus-chat that motivates an agent harness."
+      },
+      {
+        "text": "Prompt tuning became unsustainable. One prompt had to do everything, and adding detail in one area degraded the behavior in another.",
+        "timestamp_sec": 146,
+        "why": "The clearest statement of why single-prompt agents don't scale in scope."
+      },
+      {
+        "text": "As an example, large tool outputs from logs would click quickly consume tokens and brought a halt to the agent's reasoning.",
+        "timestamp_sec": 200,
+        "why": "Concrete failure mode driving the whole context-engineering effort."
+      },
+      {
+        "text": "Lastly, our end-to-end testing strategy up to this point relied on manual tests from production. This felt anecdotal since production data would be retentioned away.",
+        "timestamp_sec": 200,
+        "why": "Underrated eval problem: your production repro disappears on a retention clock."
+      },
+      {
+        "text": "In record mode, the agent calls real downstream systems, and tool responses are captured as fixtures. These are then saved to the file system and checked in as code.",
+        "timestamp_sec": 255,
+        "why": "The reusable mechanic of the test harness, stated precisely."
+      },
+      {
+        "text": "For example, an offline eval might check for a limit of three suggested fixes.",
+        "timestamp_sec": 255,
+        "why": "Rare concrete example of encoding output verbosity as a scored eval."
+      },
+      {
+        "text": "Our end-to-end tests allowed us to quantify quality instead of relying on intuition.",
+        "timestamp_sec": 307,
+        "why": "Crisp articulation of what eval infrastructure buys a team."
+      },
+      {
+        "text": "Logs are noisy, and many exceptions we see in logs are benign. So, simply focusing the last exception may not always be suitable.",
+        "timestamp_sec": 307,
+        "why": "Rejects the naive heuristic most log-diagnosis tools start with."
+      },
+      {
+        "text": "Initially, we kept it simple with a heuristics based approach using regex to filter out certain exceptions. But, this didn't scale well.",
+        "timestamp_sec": 307,
+        "why": "Documents the failed simpler approach before the learned classifier."
+      },
+      {
+        "text": "The core idea was we would learn which exceptions commonly appear in successful jobs, treat those as likely red herrings, and filter them out in the future analysis.",
+        "timestamp_sec": 356,
+        "why": "The single most portable idea in the talk for noise reduction."
+      },
+      {
+        "text": "The agent stopped consuming logs directly, and instead was given two MCP tools. Get the top K truncated exceptions, or get full log details for a specific exception.",
+        "timestamp_sec": 356,
+        "why": "Shows progressive-disclosure tool design instead of dumping raw data."
+      },
+      {
+        "text": "Raw time series metrics are not context window friendly. Simply feeding the raw data to an LLM works in the small scale, but fails for long-running jobs in production. Not to mention, it's horribly token inefficient.",
+        "timestamp_sec": 404,
+        "why": "Names a tradeoff many teams hit when piping observability data into LLMs."
+      },
+      {
+        "text": "Images worked better because we could guarantee how many input tokens would be used for analyzing any given Spark job irrespective of its duration.",
+        "timestamp_sec": 451,
+        "why": "The counterintuitive argument for rendering data as images: bounded token cost."
+      },
+      {
+        "text": "Examples of useful signals we would be able to get included executors dropping down to zero or near zero, long plateaus or bottlenecks, effectively any resource behavior inconsistent with healthy progress.",
+        "timestamp_sec": 451,
+        "why": "Evidence the image approach actually recovers real diagnostic signal."
+      },
+      {
+        "text": "Our sub agent would summarize its findings and return the results back to the parent agent, thereby ensuring the context window is kept healthy.",
+        "timestamp_sec": 451,
+        "why": "Explains sub-agent quarantine as a context management pattern."
+      },
+      {
+        "text": "A pleasant consequence of this architecture was that the effort to expand the scope of the project was as simple as adding a new prompt.",
+        "timestamp_sec": 547,
+        "why": "The payoff claim for multi-agent decomposition, backed by the Spark SQL extension."
+      },
+      {
+        "text": "The supervisor selects the highest confidence root cause and invokes the healer agent to offer remediations based on runbooks ingested into our vector database.",
+        "timestamp_sec": 596,
+        "why": "Shows where retrieval fits: remediation grounding, not root cause finding."
+      },
+      {
+        "text": "We trialed using LangGraph's workflows to make the agent more deterministic, but this approach proved to be brittle compared to the reasoning and acting agent paradigm.",
+        "timestamp_sec": 596,
+        "why": "A directly contestable position on determinism vs. ReAct that other talks dispute."
+      }
+    ],
+    "concepts": [
+      "agentic diagnostics",
+      "model context protocol",
+      "multi-agent architecture",
+      "offline evaluation",
+      "record and playback test harness",
+      "context window management",
+      "sub-agent context quarantine",
+      "log noise filtering",
+      "llm observability tracing",
+      "retrieval-grounded remediation"
+    ],
+    "positions": [
+      {
+        "claim": "A single ReAct agent with one monolithic prompt cannot scale in scope, because adding detail for one behavior degrades another.",
+        "confidence": "stated",
+        "timestamp_sec": 146
+      },
+      {
+        "claim": "Manual end-to-end testing against live production is inadequate for agent development because production data is retained only briefly, making regressions undetectable.",
+        "confidence": "stated",
+        "timestamp_sec": 200
+      },
+      {
+        "claim": "Snapshotting real tool responses as checked-in fixtures plus offline evals lets teams quantify agent quality rather than rely on intuition.",
+        "confidence": "stated",
+        "timestamp_sec": 307
+      },
+      {
+        "claim": "Simply taking the last exception in a log is an unreliable root-cause heuristic because many logged exceptions are benign.",
+        "confidence": "stated",
+        "timestamp_sec": 307
+      },
+      {
+        "claim": "Regex-based exception filtering does not scale; a learned fingerprint-and-cluster classifier trained on exceptions from successful jobs works better.",
+        "confidence": "stated",
+        "timestamp_sec": 307
+      },
+      {
+        "claim": "Improved log handling produced a substantial reduction in inaccurate root causes.",
+        "confidence": "stated",
+        "timestamp_sec": 596
+      },
+      {
+        "claim": "Rendering time-series metrics as images is superior to feeding raw series to an LLM, because it guarantees a fixed input token count regardless of job duration.",
+        "confidence": "stated",
+        "timestamp_sec": 451
+      },
+      {
+        "claim": "Deterministic LangGraph workflows are more brittle than the reasoning-and-acting agent paradigm for this diagnostic task.",
+        "confidence": "stated",
+        "timestamp_sec": 596
+      },
+      {
+        "claim": "Multi-agent architecture offers greater control over system behavior than a single-agent design.",
+        "confidence": "stated",
+        "timestamp_sec": 596
+      },
+      {
+        "claim": "Agent harness features popularized by coding tools \u2014 to-do lists, virtual file systems, per-agent tool subsets \u2014 transfer usefully to non-coding domains like infrastructure diagnostics.",
+        "confidence": "implied",
+        "timestamp_sec": 503
+      },
+      {
+        "claim": "This diagnostic agent pattern generalizes to other distributed systems such as Flink and Trino.",
+        "confidence": "stated",
+        "timestamp_sec": 657
+      }
+    ],
+    "speaker_org": "Pinterest"
+  },
+  "_meta": {
+    "slug": "medic-for-apache-spark-first-aid-for-failing-jobs",
+    "video_id": "0RNNfxpdbQk",
+    "url": "https://www.youtube.com/watch?v=0RNNfxpdbQk",
+    "word_count": 1569,
+    "wall_sec": 51.0,
+    "run_at": "2026-08-12T20:03:18Z",
+    "effort": "medium"
+  }
+}

@@ -1,0 +1,278 @@
+{
+  "is_error": false,
+  "duration_api_ms": 78193,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "ecd5ddac-b1f6-480b-b560-1b47430e66c6",
+  "total_cost_usd": 0.266376,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 7625,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 7223,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 7625,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 7223,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 7625,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 7625
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 4307,
+      "outputTokens": 16,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.004387,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 7223,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 7625,
+      "webSearchRequests": 0,
+      "costUSD": 0.261989,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Sonam Pankaj, CEO and co-founder of StarlightSearch, argues that agent failures are predominantly retrieval failures, not generation failures, and that the eval signal produced by observability and eval suites never makes it back into what the agent retrieves at runtime \u2014 it 'dies in the dashboard.' The talk proposes a missing layer between evals and action: a runtime experience system (Agent RX / 'reflect') that consumes traces and eval outcomes and converts them into retrieval guidance, ranking memories by a 'utility score' \u2014 semantic similarity weighted by whether a memory historically helped or hurt task outcomes. It positions this against existing memory products (LangChain, Mem0) which store user preferences and personalization facts and retrieve purely by embedding similarity, arguing memory should encode reasoning about tasks rather than static facts. Benchmarks are cited on tau-bench (66% \u2192 76%, and 80% once memories are baked into skills) and an agentic benchmark (35.7 baseline \u2192 58.2 with other memory systems \u2192 61.3 with theirs), followed by a live SQL-agent demo where a failed 'gaming mouse' query is corrected by feedback and a changed tool trajectory. Worth watching if you are building self-improving agents and want a concrete design for closing the eval-to-retrieval loop; the demo is rough and the numbers are presented quickly without much methodology.\",\n  \"key_points\": [\n    \"The speaker claims 73% of agent pipeline failures come from retrieval and context stuffing rather than from generation, citing Gartner's 85% AI project failure figure and a McKinsey 2025 report as framing.\",\n    \"There is a missing layer between evals/observability and agent action: traces and pass/fail eval verdicts exist but never feed back into the agent's context, skills, or retrieval, so agents keep failing the same task.\",\n    \"Today the feedback loop is manual \u2014 an engineer reads the evals, rewrites the prompt, redeploys, upgrades to a more expensive model, restructures the harness, or fine-tunes.\",\n    \"Existing memory systems (LangChain, Mem0) store preferences and conversation history and retrieve by embedding similarity alone, which suits chat personalization but is not a self-improving system for production agents.\",\n    \"The proposed 'utility score' re-ranks retrieval by semantic similarity weighted by whether each memory historically helped or hurt execution outcomes, making eval outcome a first-class retrieval signal.\",\n    \"Memory should store reasoning about tasks (e.g. check the settlement before issuing a refund so the customer isn't paid twice), not static user facts like theme preference.\",\n    \"Once roughly ten memories accumulate, the system bakes the learned reasoning into skills \u2014 which lets the agent drop stale assumptions, like a SQL column referenced in a system prompt that no longer exists, without rewriting the prompt.\",\n    \"Reported gains: tau-bench 66% \u2192 76% with memory and 80% with skills; an agentic benchmark from a 35.7 baseline to 58.2 with other memory systems and 61.3 with theirs.\",\n    \"Acknowledged limitations are cold start (pure semantic search until reviews accumulate), utility drift, near-duplicate memories, noisy review labels, and a lambda hyperparameter for credit assignment and re-ranking \u2014 cold start being the one they say they cannot fix.\",\n    \"This is a runtime approach explicitly contrasted with compile-time optimization (e.g. DSPy-style prompt baking): learning happens while the task executes rather than being pre-compiled into the prompt.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"An agent is an LLM that has agency to reason, invoke tools, uh, interact with the real world, retrieve uh the memory to complete the task. One major loop here is missing is uh learning.\",\n      \"timestamp_sec\": 1,\n      \"why\": \"sets the thesis \u2014 the missing loop in the standard agent definition is learning\"\n    },\n    {\n      \"text\": \"Gartner reported 85% of AI just failing traction. So, it's in McKinsey's 2025 report. The problem came out to be most of the time is that retrieval is static.\",\n      \"timestamp_sec\": 48,\n      \"why\": \"cites the headline failure statistic and names the diagnosed cause\"\n    },\n    {\n      \"text\": \"73% of our uh pipelines fails because of retrieval, not generation, and context stuffing.\",\n      \"timestamp_sec\": 99,\n      \"why\": \"the central quantified claim of the talk \u2014 failures are retrieval-side\"\n    },\n    {\n      \"text\": \"We made wrong answers appear faster and cheaper, but we forgot to make retrieval learn.\",\n      \"timestamp_sec\": 99,\n      \"why\": \"the quoted framing (from Pinecone's ex-CTO) that the whole approach responds to\"\n    },\n    {\n      \"text\": \"The eval signal dies in the dashboard. This is a missing layer, a system that consume traces, absorb eval, and convert both into retrieval guidance for future runs.\",\n      \"timestamp_sec\": 155,\n      \"why\": \"names the gap in the title and defines the proposed layer in one sentence\"\n    },\n    {\n      \"text\": \"current memory is that they basically store user preferences, profile, conversation history, or long-lived personalization. So, chat experience is not self-improving learning systems for production.\",\n      \"timestamp_sec\": 212,\n      \"why\": \"the direct critique of existing memory products\"\n    },\n    {\n      \"text\": \"we have come up with something called utility score, which is a similarity weighted by how useful it is for the agent to execute the task.\",\n      \"timestamp_sec\": 212,\n      \"why\": \"defines the core mechanism\"\n    },\n    {\n      \"text\": \"It's a runtime layer that let the large language agent improve from experiences without retraining, fine-tuning, or manual prompt engineering.\",\n      \"timestamp_sec\": 277,\n      \"why\": \"states the product claim and what it replaces\"\n    },\n    {\n      \"text\": \"How it's a little different from compile time like DS5 because of you bake in all the lessons in the prompt, here is actually improving while it is executing the task.\",\n      \"timestamp_sec\": 277,\n      \"why\": \"positions runtime learning against compile-time prompt optimization\"\n    },\n    {\n      \"text\": \"you do not retrieve by keyword, you do retrieve by semantic similarity to the current task weighted by whether those memories have historically helped or hurt the execution or the outcome.\",\n      \"timestamp_sec\": 277,\n      \"why\": \"the most precise statement of the retrieval algorithm\"\n    },\n    {\n      \"text\": \"The event outcome becomes a first-class signal in the retrieval re-ranking and not just for retrieval.\",\n      \"timestamp_sec\": 329,\n      \"why\": \"the architectural position \u2014 outcomes belong in ranking, not just dashboards\"\n    },\n    {\n      \"text\": \"One of the key things is it treat memory as reasoning, not as facts, statistics, fact with no context and no history, but reasoning.\",\n      \"timestamp_sec\": 329,\n      \"why\": \"the contested design claim about what memory should contain\"\n    },\n    {\n      \"text\": \"So, we have seen the performance improve from 66 to 76% without baking in uh skills and with skills reflect performance at 80.\",\n      \"timestamp_sec\": 383,\n      \"why\": \"the headline tau-bench numbers\"\n    },\n    {\n      \"text\": \"once there are enough memory like 10 memories, uh what we do is we bake in the reasoning and the understanding into skills so that your agent always remains updated.\",\n      \"timestamp_sec\": 383,\n      \"why\": \"gives the concrete threshold for memory-to-skill consolidation\"\n    },\n    {\n      \"text\": \"Even though that column is no useful anymore, it remains in the system prompt. So, there's no system right now that can update that\",\n      \"timestamp_sec\": 442,\n      \"why\": \"concrete failure case for stale system prompts that motivates skill updating\"\n    },\n    {\n      \"text\": \"with the other memory system, it gets to 58.2. But with the refined memory system, uh, it gets to 61.3%.\",\n      \"timestamp_sec\": 494,\n      \"why\": \"reports the comparative agentic-benchmark margin over competing memory systems\"\n    },\n    {\n      \"text\": \"First of all, there's a cold start. So, in the beginning, it's pure semantic search until, uh, enough reviews have been accumulated.\",\n      \"timestamp_sec\": 494,\n      \"why\": \"honest statement of the approach's structural limitation\"\n    },\n    {\n      \"text\": \"So, we have built reflect in such a way that most of these problems and most of these elements are now reduced except for cold start which we cannot do much about it.\",\n      \"timestamp_sec\": 547,\n      \"why\": \"concedes cold start is unsolved while claiming the other limitations are mitigated\"\n    },\n    {\n      \"text\": \"it's forming memories which is retrieved based on the utility score that is the score which basically keeps improving keeps re-ranking itself on the basis of how useful that memory was.\",\n      \"timestamp_sec\": 819,\n      \"why\": \"ties the demo back to the mechanism \u2014 scores mutate from observed usefulness\"\n    }\n  ],\n  \"concepts\": [\n    \"outcome-aware retrieval\",\n    \"agent memory systems\",\n    \"utility scoring\",\n    \"retrieval re-ranking\",\n    \"eval feedback loops\",\n    \"agent observability traces\",\n    \"context stuffing\",\n    \"runtime vs compile-time optimization\",\n    \"agent skills\",\n    \"cold start problem\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"The majority of agent pipeline failures (73%) are caused by retrieval and context stuffing, not by generation.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 99\n    },\n    {\n      \"claim\": \"Eval results and observability traces currently have no path back into the agent's context, skills, or retrieval, so agents cannot learn from yesterday's passes and failures.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 155\n    },\n    {\n      \"claim\": \"Existing memory products like LangChain and Mem0 retrieve purely by embedding similarity and do not learn from outcomes.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 212\n    },\n    {\n      \"claim\": \"Chat-oriented memory (preferences, profiles, conversation history) is the wrong abstraction for self-improving production agents.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 212\n    },\n    {\n      \"claim\": \"Retrieval should rank by semantic similarity weighted by whether a memory historically helped or hurt the outcome, rather than by similarity or keywords alone.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 277\n    },\n    {\n      \"claim\": \"Runtime learning during task execution is preferable to compile-time approaches that bake lessons into the prompt ahead of time.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 277\n    },\n    {\n      \"claim\": \"Memory entries should encode task reasoning (e.g. check settlement before issuing a refund) rather than context-free user facts.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 329\n    },\n    {\n      \"claim\": \"On tau-bench, their memory system raises policy-following performance from 66% to 76%, and to 80% when memories are consolidated into skills.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 383\n    },\n    {\n      \"claim\": \"After roughly ten accumulated memories, reasoning should be baked into skills so the agent's operating instructions stay current without prompt rewrites.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 383\n    },\n    {\n      \"claim\": \"Stale system prompts (e.g. referencing a database column that no longer exists) are a real and currently unaddressed failure mode that updated skills can fix.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 442\n    },\n    {\n      \"claim\": \"On an agentic benchmark, their system reaches 61.3 versus 58.2 for other memory systems and a 35.7 baseline.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 494\n    },\n    {\n      \"claim\": \"Cold start is an inherent, unfixable limitation of outcome-weighted retrieval \u2014 early behavior is necessarily pure semantic search.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 547\n    },\n    {\n      \"claim\": \"Noisy human review labels propagate into noisy utility scores, making review quality a limiting factor for the approach.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 547\n    }\n  ],\n  \"speaker_org\": \"StarlightSearch\"\n}",
+  "ttft_ms": 34269,
+  "ttft_stream_ms": 1059,
+  "time_to_request_ms": 35,
+  "type": "result",
+  "duration_ms": 79022,
+  "uuid": "acc7d5ca-309b-406a-96dd-c76751d8db28",
+  "passA": {
+    "summary": "Sonam Pankaj, CEO and co-founder of StarlightSearch, argues that agent failures are predominantly retrieval failures, not generation failures, and that the eval signal produced by observability and eval suites never makes it back into what the agent retrieves at runtime \u2014 it 'dies in the dashboard.' The talk proposes a missing layer between evals and action: a runtime experience system (Agent RX / 'reflect') that consumes traces and eval outcomes and converts them into retrieval guidance, ranking memories by a 'utility score' \u2014 semantic similarity weighted by whether a memory historically helped or hurt task outcomes. It positions this against existing memory products (LangChain, Mem0) which store user preferences and personalization facts and retrieve purely by embedding similarity, arguing memory should encode reasoning about tasks rather than static facts. Benchmarks are cited on tau-bench (66% \u2192 76%, and 80% once memories are baked into skills) and an agentic benchmark (35.7 baseline \u2192 58.2 with other memory systems \u2192 61.3 with theirs), followed by a live SQL-agent demo where a failed 'gaming mouse' query is corrected by feedback and a changed tool trajectory. Worth watching if you are building self-improving agents and want a concrete design for closing the eval-to-retrieval loop; the demo is rough and the numbers are presented quickly without much methodology.",
+    "key_points": [
+      "The speaker claims 73% of agent pipeline failures come from retrieval and context stuffing rather than from generation, citing Gartner's 85% AI project failure figure and a McKinsey 2025 report as framing.",
+      "There is a missing layer between evals/observability and agent action: traces and pass/fail eval verdicts exist but never feed back into the agent's context, skills, or retrieval, so agents keep failing the same task.",
+      "Today the feedback loop is manual \u2014 an engineer reads the evals, rewrites the prompt, redeploys, upgrades to a more expensive model, restructures the harness, or fine-tunes.",
+      "Existing memory systems (LangChain, Mem0) store preferences and conversation history and retrieve by embedding similarity alone, which suits chat personalization but is not a self-improving system for production agents.",
+      "The proposed 'utility score' re-ranks retrieval by semantic similarity weighted by whether each memory historically helped or hurt execution outcomes, making eval outcome a first-class retrieval signal.",
+      "Memory should store reasoning about tasks (e.g. check the settlement before issuing a refund so the customer isn't paid twice), not static user facts like theme preference.",
+      "Once roughly ten memories accumulate, the system bakes the learned reasoning into skills \u2014 which lets the agent drop stale assumptions, like a SQL column referenced in a system prompt that no longer exists, without rewriting the prompt.",
+      "Reported gains: tau-bench 66% \u2192 76% with memory and 80% with skills; an agentic benchmark from a 35.7 baseline to 58.2 with other memory systems and 61.3 with theirs.",
+      "Acknowledged limitations are cold start (pure semantic search until reviews accumulate), utility drift, near-duplicate memories, noisy review labels, and a lambda hyperparameter for credit assignment and re-ranking \u2014 cold start being the one they say they cannot fix.",
+      "This is a runtime approach explicitly contrasted with compile-time optimization (e.g. DSPy-style prompt baking): learning happens while the task executes rather than being pre-compiled into the prompt."
+    ],
+    "notable_quotes": [
+      {
+        "text": "An agent is an LLM that has agency to reason, invoke tools, uh, interact with the real world, retrieve uh the memory to complete the task. One major loop here is missing is uh learning.",
+        "timestamp_sec": 1,
+        "why": "sets the thesis \u2014 the missing loop in the standard agent definition is learning"
+      },
+      {
+        "text": "Gartner reported 85% of AI just failing traction. So, it's in McKinsey's 2025 report. The problem came out to be most of the time is that retrieval is static.",
+        "timestamp_sec": 48,
+        "why": "cites the headline failure statistic and names the diagnosed cause"
+      },
+      {
+        "text": "73% of our uh pipelines fails because of retrieval, not generation, and context stuffing.",
+        "timestamp_sec": 99,
+        "why": "the central quantified claim of the talk \u2014 failures are retrieval-side"
+      },
+      {
+        "text": "We made wrong answers appear faster and cheaper, but we forgot to make retrieval learn.",
+        "timestamp_sec": 99,
+        "why": "the quoted framing (from Pinecone's ex-CTO) that the whole approach responds to"
+      },
+      {
+        "text": "The eval signal dies in the dashboard. This is a missing layer, a system that consume traces, absorb eval, and convert both into retrieval guidance for future runs.",
+        "timestamp_sec": 155,
+        "why": "names the gap in the title and defines the proposed layer in one sentence"
+      },
+      {
+        "text": "current memory is that they basically store user preferences, profile, conversation history, or long-lived personalization. So, chat experience is not self-improving learning systems for production.",
+        "timestamp_sec": 212,
+        "why": "the direct critique of existing memory products"
+      },
+      {
+        "text": "we have come up with something called utility score, which is a similarity weighted by how useful it is for the agent to execute the task.",
+        "timestamp_sec": 212,
+        "why": "defines the core mechanism"
+      },
+      {
+        "text": "It's a runtime layer that let the large language agent improve from experiences without retraining, fine-tuning, or manual prompt engineering.",
+        "timestamp_sec": 277,
+        "why": "states the product claim and what it replaces"
+      },
+      {
+        "text": "How it's a little different from compile time like DS5 because of you bake in all the lessons in the prompt, here is actually improving while it is executing the task.",
+        "timestamp_sec": 277,
+        "why": "positions runtime learning against compile-time prompt optimization"
+      },
+      {
+        "text": "you do not retrieve by keyword, you do retrieve by semantic similarity to the current task weighted by whether those memories have historically helped or hurt the execution or the outcome.",
+        "timestamp_sec": 277,
+        "why": "the most precise statement of the retrieval algorithm"
+      },
+      {
+        "text": "The event outcome becomes a first-class signal in the retrieval re-ranking and not just for retrieval.",
+        "timestamp_sec": 329,
+        "why": "the architectural position \u2014 outcomes belong in ranking, not just dashboards"
+      },
+      {
+        "text": "One of the key things is it treat memory as reasoning, not as facts, statistics, fact with no context and no history, but reasoning.",
+        "timestamp_sec": 329,
+        "why": "the contested design claim about what memory should contain"
+      },
+      {
+        "text": "So, we have seen the performance improve from 66 to 76% without baking in uh skills and with skills reflect performance at 80.",
+        "timestamp_sec": 383,
+        "why": "the headline tau-bench numbers"
+      },
+      {
+        "text": "once there are enough memory like 10 memories, uh what we do is we bake in the reasoning and the understanding into skills so that your agent always remains updated.",
+        "timestamp_sec": 383,
+        "why": "gives the concrete threshold for memory-to-skill consolidation"
+      },
+      {
+        "text": "Even though that column is no useful anymore, it remains in the system prompt. So, there's no system right now that can update that",
+        "timestamp_sec": 442,
+        "why": "concrete failure case for stale system prompts that motivates skill updating"
+      },
+      {
+        "text": "with the other memory system, it gets to 58.2. But with the refined memory system, uh, it gets to 61.3%.",
+        "timestamp_sec": 494,
+        "why": "reports the comparative agentic-benchmark margin over competing memory systems"
+      },
+      {
+        "text": "First of all, there's a cold start. So, in the beginning, it's pure semantic search until, uh, enough reviews have been accumulated.",
+        "timestamp_sec": 494,
+        "why": "honest statement of the approach's structural limitation"
+      },
+      {
+        "text": "So, we have built reflect in such a way that most of these problems and most of these elements are now reduced except for cold start which we cannot do much about it.",
+        "timestamp_sec": 547,
+        "why": "concedes cold start is unsolved while claiming the other limitations are mitigated"
+      },
+      {
+        "text": "it's forming memories which is retrieved based on the utility score that is the score which basically keeps improving keeps re-ranking itself on the basis of how useful that memory was.",
+        "timestamp_sec": 819,
+        "why": "ties the demo back to the mechanism \u2014 scores mutate from observed usefulness"
+      }
+    ],
+    "concepts": [
+      "outcome-aware retrieval",
+      "agent memory systems",
+      "utility scoring",
+      "retrieval re-ranking",
+      "eval feedback loops",
+      "agent observability traces",
+      "context stuffing",
+      "runtime vs compile-time optimization",
+      "agent skills",
+      "cold start problem"
+    ],
+    "positions": [
+      {
+        "claim": "The majority of agent pipeline failures (73%) are caused by retrieval and context stuffing, not by generation.",
+        "confidence": "stated",
+        "timestamp_sec": 99
+      },
+      {
+        "claim": "Eval results and observability traces currently have no path back into the agent's context, skills, or retrieval, so agents cannot learn from yesterday's passes and failures.",
+        "confidence": "stated",
+        "timestamp_sec": 155
+      },
+      {
+        "claim": "Existing memory products like LangChain and Mem0 retrieve purely by embedding similarity and do not learn from outcomes.",
+        "confidence": "stated",
+        "timestamp_sec": 212
+      },
+      {
+        "claim": "Chat-oriented memory (preferences, profiles, conversation history) is the wrong abstraction for self-improving production agents.",
+        "confidence": "stated",
+        "timestamp_sec": 212
+      },
+      {
+        "claim": "Retrieval should rank by semantic similarity weighted by whether a memory historically helped or hurt the outcome, rather than by similarity or keywords alone.",
+        "confidence": "stated",
+        "timestamp_sec": 277
+      },
+      {
+        "claim": "Runtime learning during task execution is preferable to compile-time approaches that bake lessons into the prompt ahead of time.",
+        "confidence": "implied",
+        "timestamp_sec": 277
+      },
+      {
+        "claim": "Memory entries should encode task reasoning (e.g. check settlement before issuing a refund) rather than context-free user facts.",
+        "confidence": "stated",
+        "timestamp_sec": 329
+      },
+      {
+        "claim": "On tau-bench, their memory system raises policy-following performance from 66% to 76%, and to 80% when memories are consolidated into skills.",
+        "confidence": "stated",
+        "timestamp_sec": 383
+      },
+      {
+        "claim": "After roughly ten accumulated memories, reasoning should be baked into skills so the agent's operating instructions stay current without prompt rewrites.",
+        "confidence": "stated",
+        "timestamp_sec": 383
+      },
+      {
+        "claim": "Stale system prompts (e.g. referencing a database column that no longer exists) are a real and currently unaddressed failure mode that updated skills can fix.",
+        "confidence": "stated",
+        "timestamp_sec": 442
+      },
+      {
+        "claim": "On an agentic benchmark, their system reaches 61.3 versus 58.2 for other memory systems and a 35.7 baseline.",
+        "confidence": "stated",
+        "timestamp_sec": 494
+      },
+      {
+        "claim": "Cold start is an inherent, unfixable limitation of outcome-weighted retrieval \u2014 early behavior is necessarily pure semantic search.",
+        "confidence": "stated",
+        "timestamp_sec": 547
+      },
+      {
+        "claim": "Noisy human review labels propagate into noisy utility scores, making review quality a limiting factor for the approach.",
+        "confidence": "stated",
+        "timestamp_sec": 547
+      }
+    ],
+    "speaker_org": "StarlightSearch"
+  },
+  "_meta": {
+    "slug": "user-signal-dies-at-the-retrieval-boundary",
+    "video_id": "Jx4ZFEAq6bY",
+    "url": "https://www.youtube.com/watch?v=Jx4ZFEAq6bY",
+    "word_count": 1867,
+    "wall_sec": 80.1,
+    "run_at": "2026-08-12T20:27:25Z",
+    "effort": "medium"
+  }
+}

@@ -1,0 +1,258 @@
+{
+  "is_error": false,
+  "duration_api_ms": 48218,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "f0611dd5-392a-4dd8-a9c0-12a1cd294639",
+  "total_cost_usd": 0.19044000000000003,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 8256,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 3911,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 8256,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 3911,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 8256,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 8256
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 4856,
+      "outputTokens": 17,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.004941,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 3911,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 8256,
+      "webSearchRequests": 0,
+      "costUSD": 0.18549900000000002,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Anant Shankhdhar, an AI engineer at Risa Labs, walks through how his team removed the human reviewer from oncology prior-authorization workflows \u2014 the process of getting insurers to approve cancer drugs. The system is a four-agent chain (eligibility & benefits verification, auth-status determination, medical necessity, and submission) layered on top of deterministic checks, so that agents are only invoked where rules cannot decide. The central engineering argument is that a single LLM extraction is too indeterminate to trust without review, so confidence must be manufactured by reconciling multiple independent evidence sources \u2014 patient notes, prior authorization letters, and a payer rule knowledge base built from portal checks and document extraction. Practical infrastructure details include an LLM-generated RPA config layer over a repository of reusable portal actions to avoid hand-built integrations, plus a self-healing loop that repairs broken automations during production hours. Worth watching if you care about how to stage automation in a high-stakes regulated domain: it is a concrete case study in expanding the no-touch share of a workflow rather than trying to automate it wholesale.\",\n  \"key_points\": [\n    \"The prior-authorization workflow decomposes into order intake, eligibility and benefits verification, drug auth-status classification (no auth required, auth on file, or auth required), and submission back to the payer.\",\n    \"The team built four agents \u2014 EV, auth, medical necessity, and submission \u2014 with the medical necessity agent acting as the 'clinical brain' that reasons over patient data.\",\n    \"Insurance data is scattered across dozens of portals, APIs, and documents, so a unified coverage service normalizes payer sources into a single coverage result format before a deterministic engine decides whether to continue or stop the order.\",\n    \"A single LLM extraction over patient notes could not eliminate the human reviewer because notes often lacked sufficient data and LLM extraction is non-deterministic, so its outputs could not be blindly trusted.\",\n    \"Confidence was raised by cross-checking the LLM's claim against independent sources: prior authorization letters for 'auth on file' cases, and a SQL-backed payer rule knowledge base for 'no auth required' cases; only concurring evidence is accepted.\",\n    \"Some orders became fully no-touch because every drug on them was either already authorized or did not require authorization at all.\",\n    \"Rather than hand-building custom integrations per portal, the team maintains a repository of RPA actions and uses LLM-based config generation to assemble automations, cutting development time significantly.\",\n    \"Browser automations are fragile, so a self-healing loop detects and mitigates breakages during production hours to prevent run failures.\",\n    \"The medical necessity agent reads patient notes and policy criteria, queries a patient medical graph of extracted biomarkers, and returns an answered questionnaire with both supportive and contradictory facts plus a confidence score \u2014 escalating only low-confidence cases to a clinician.\",\n    \"The agents were generalized beyond prior authorization and now serve multiple oncology workflows.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"I was tasked with the with the problem to run some of these orders without any sort of human touch directly towards submission. Which means I need to confidently identify which all orders can be proceeded without any human verification and then build the entire flow for them as well.\",\n      \"timestamp_sec\": 93,\n      \"why\": \"States the exact problem framing \u2014 confident selection of which orders qualify, not blanket automation.\"\n    },\n    {\n      \"text\": \"So, confidence is a key metric that we were working towards.\",\n      \"timestamp_sec\": 93,\n      \"why\": \"Names the single metric the whole architecture optimizes for.\"\n    },\n    {\n      \"text\": \"one of the problems that we have here is that insurance details, insurance documents, everything is a scattered across dozens of portals, APIs, and documents. And it is difficult to find that information at one place.\",\n      \"timestamp_sec\": 150,\n      \"why\": \"Identifies the data-fragmentation constraint that motivates the unified coverage service.\"\n    },\n    {\n      \"text\": \"we built a unified service that connects to different payer sources and gives the output in a normalized uniform format, which we can use for processing further. And we also added a deterministic decision engine to flag the cases which would not move forward\",\n      \"timestamp_sec\": 202,\n      \"why\": \"The core design move: normalize inputs, then let deterministic rules gate the pipeline.\"\n    },\n    {\n      \"text\": \"if we have to build this, then we will need to make custom integrations for different sorts of portals, which is not not a very scalable uh process.\",\n      \"timestamp_sec\": 258,\n      \"why\": \"Names the scaling tradeoff that justifies LLM-generated RPA configs.\"\n    },\n    {\n      \"text\": \"we built a LLM-based config generation which performs these actions and builds the config for for a portal to run on.\",\n      \"timestamp_sec\": 305,\n      \"why\": \"Concrete pattern \u2014 LLMs used at build time to author automation configs rather than at run time.\"\n    },\n    {\n      \"text\": \"these automations are fragile, so it may happen that they break during the run time. For this, we have a self-healing loop which identifies these cases during production hours and then mitigates them.\",\n      \"timestamp_sec\": 305,\n      \"why\": \"Acknowledges RPA brittleness and gives the operational answer to it.\"\n    },\n    {\n      \"text\": \"LLM uh extraction is sort of an indis- uh indeter- deterministic process. That means that whatever outputs we get from here cannot be blindly tested. So, we still need a human to review all these things. It might improve the efficiency, but it will not eliminate the human.\",\n      \"timestamp_sec\": 403,\n      \"why\": \"The pivotal negative result: single-source LLM extraction improves efficiency but cannot remove the reviewer.\"\n    },\n    {\n      \"text\": \"instead of just having one source, I have two sources that give me the same information and wherever they conquer, I can say with confidence that this drug is already been authorized.\",\n      \"timestamp_sec\": 454,\n      \"why\": \"States the multi-source concurrence principle that underpins the no-touch decision.\"\n    },\n    {\n      \"text\": \"we use that information to build a payer rule knowledge base, which is basically a SQL database uh which was made from portal checks as well as LLM extractions.\",\n      \"timestamp_sec\": 498,\n      \"why\": \"Specifies the second evidence source concretely, including its storage substrate.\"\n    },\n    {\n      \"text\": \"we use all this information, we reconcile the evidence, and we only extract the auth auth statuses with a higher confidence.\",\n      \"timestamp_sec\": 498,\n      \"why\": \"Compresses the evidence-reconciliation strategy into one line.\"\n    },\n    {\n      \"text\": \"we noticed that certain orders were completely eliminate We could eliminate certain orders completely from these two type of drugs. Because it may happen that an order does not actually require require authorization at all.\",\n      \"timestamp_sec\": 550,\n      \"why\": \"Reports the emergent win \u2014 whole orders, not just drugs, dropping out of the review queue.\"\n    },\n    {\n      \"text\": \"some decisions do actually need clinical reasoning.\",\n      \"timestamp_sec\": 646,\n      \"why\": \"Marks the boundary where lookup and rules stop and reasoning must begin.\"\n    },\n    {\n      \"text\": \"the medical necessity agent answers simple and complex clinical questions per patient uh and attaches confidence score to any answer. So, we escalate only the ones that actually need a clinician.\",\n      \"timestamp_sec\": 699,\n      \"why\": \"Defines the escalation policy: confidence score as the routing signal to a human expert.\"\n    },\n    {\n      \"text\": \"we query the patient medical graph, which is a graph of biomarkers that are extracted for a patient.\",\n      \"timestamp_sec\": 751,\n      \"why\": \"Names the structured clinical representation the reasoning layer runs against.\"\n    },\n    {\n      \"text\": \"we use this thing these this information and pass it to an LLM to get an answered questioner with all the supportive and contradictory facts.\",\n      \"timestamp_sec\": 793,\n      \"why\": \"Surfacing contradictory evidence alongside supportive is an unusual and auditable output design.\"\n    },\n    {\n      \"text\": \"for the cases we do not have this enough information, we move keep that for human escalation.\",\n      \"timestamp_sec\": 793,\n      \"why\": \"Confirms insufficient evidence defaults to a human rather than a guess.\"\n    },\n    {\n      \"text\": \"the no touch is growing on the share of every order. So, we started with deterministic checks. Agents only for the rules that where what rules can't decide.\",\n      \"timestamp_sec\": 961,\n      \"why\": \"The talk's thesis in one line \u2014 automation share grows incrementally, and agents are the fallback, not the default.\"\n    },\n    {\n      \"text\": \"We used multi-source of evidence to beat the single source of evidence to add confidence to our cases. We added itself healing in order to scale our RPS. And finally, we added the reasoning layer in order to deal with the cases where actually authentic authorization is required.\",\n      \"timestamp_sec\": 961,\n      \"why\": \"Closing summary of the three techniques, useful as a portable recipe.\"\n    }\n  ],\n  \"concepts\": [\n    \"prior authorization automation\",\n    \"human-in-the-loop escalation\",\n    \"multi-source evidence reconciliation\",\n    \"deterministic decision engine\",\n    \"llm-generated rpa configs\",\n    \"self-healing automation\",\n    \"confidence scoring\",\n    \"multi-agent pipeline\",\n    \"clinical knowledge graph\",\n    \"payer rule knowledge base\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"A single LLM extraction over patient notes cannot eliminate human review \u2014 it improves efficiency but its non-deterministic outputs cannot be blindly trusted.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 403\n    },\n    {\n      \"claim\": \"Two independent sources agreeing on the same fact is sufficient grounds to proceed without human verification.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 454\n    },\n    {\n      \"claim\": \"Deterministic checks should come first, with agents reserved only for cases rules cannot decide.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 961\n    },\n    {\n      \"claim\": \"Hand-built custom integrations per insurance portal do not scale; LLM-generated configs over a shared action repository significantly reduce development time.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 258\n    },\n    {\n      \"claim\": \"RPA automations are inherently fragile and will break at runtime, so a self-healing loop is a prerequisite for scaling them.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 305\n    },\n    {\n      \"claim\": \"Cases with insufficient evidence or low confidence should default to human escalation rather than an automated decision.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 793\n    },\n    {\n      \"claim\": \"Full no-touch automation of oncology prior authorization is achievable incrementally \u2014 the no-touch share of orders grows over time rather than arriving all at once.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 961\n    },\n    {\n      \"claim\": \"Agents built for one workflow can be generalized to serve multiple oncology workflows without redesign.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 900\n    },\n    {\n      \"claim\": \"Presenting contradictory facts alongside supportive ones makes clinical LLM answers more trustworthy for downstream review.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 793\n    }\n  ],\n  \"speaker_org\": \"Risa Labs\"\n}",
+  "ttft_ms": 46113,
+  "ttft_stream_ms": 1164,
+  "time_to_request_ms": 34,
+  "type": "result",
+  "duration_ms": 48216,
+  "uuid": "c5631326-7733-46b4-acbc-5c1bbdc7a25e",
+  "passA": {
+    "summary": "Anant Shankhdhar, an AI engineer at Risa Labs, walks through how his team removed the human reviewer from oncology prior-authorization workflows \u2014 the process of getting insurers to approve cancer drugs. The system is a four-agent chain (eligibility & benefits verification, auth-status determination, medical necessity, and submission) layered on top of deterministic checks, so that agents are only invoked where rules cannot decide. The central engineering argument is that a single LLM extraction is too indeterminate to trust without review, so confidence must be manufactured by reconciling multiple independent evidence sources \u2014 patient notes, prior authorization letters, and a payer rule knowledge base built from portal checks and document extraction. Practical infrastructure details include an LLM-generated RPA config layer over a repository of reusable portal actions to avoid hand-built integrations, plus a self-healing loop that repairs broken automations during production hours. Worth watching if you care about how to stage automation in a high-stakes regulated domain: it is a concrete case study in expanding the no-touch share of a workflow rather than trying to automate it wholesale.",
+    "key_points": [
+      "The prior-authorization workflow decomposes into order intake, eligibility and benefits verification, drug auth-status classification (no auth required, auth on file, or auth required), and submission back to the payer.",
+      "The team built four agents \u2014 EV, auth, medical necessity, and submission \u2014 with the medical necessity agent acting as the 'clinical brain' that reasons over patient data.",
+      "Insurance data is scattered across dozens of portals, APIs, and documents, so a unified coverage service normalizes payer sources into a single coverage result format before a deterministic engine decides whether to continue or stop the order.",
+      "A single LLM extraction over patient notes could not eliminate the human reviewer because notes often lacked sufficient data and LLM extraction is non-deterministic, so its outputs could not be blindly trusted.",
+      "Confidence was raised by cross-checking the LLM's claim against independent sources: prior authorization letters for 'auth on file' cases, and a SQL-backed payer rule knowledge base for 'no auth required' cases; only concurring evidence is accepted.",
+      "Some orders became fully no-touch because every drug on them was either already authorized or did not require authorization at all.",
+      "Rather than hand-building custom integrations per portal, the team maintains a repository of RPA actions and uses LLM-based config generation to assemble automations, cutting development time significantly.",
+      "Browser automations are fragile, so a self-healing loop detects and mitigates breakages during production hours to prevent run failures.",
+      "The medical necessity agent reads patient notes and policy criteria, queries a patient medical graph of extracted biomarkers, and returns an answered questionnaire with both supportive and contradictory facts plus a confidence score \u2014 escalating only low-confidence cases to a clinician.",
+      "The agents were generalized beyond prior authorization and now serve multiple oncology workflows."
+    ],
+    "notable_quotes": [
+      {
+        "text": "I was tasked with the with the problem to run some of these orders without any sort of human touch directly towards submission. Which means I need to confidently identify which all orders can be proceeded without any human verification and then build the entire flow for them as well.",
+        "timestamp_sec": 93,
+        "why": "States the exact problem framing \u2014 confident selection of which orders qualify, not blanket automation."
+      },
+      {
+        "text": "So, confidence is a key metric that we were working towards.",
+        "timestamp_sec": 93,
+        "why": "Names the single metric the whole architecture optimizes for."
+      },
+      {
+        "text": "one of the problems that we have here is that insurance details, insurance documents, everything is a scattered across dozens of portals, APIs, and documents. And it is difficult to find that information at one place.",
+        "timestamp_sec": 150,
+        "why": "Identifies the data-fragmentation constraint that motivates the unified coverage service."
+      },
+      {
+        "text": "we built a unified service that connects to different payer sources and gives the output in a normalized uniform format, which we can use for processing further. And we also added a deterministic decision engine to flag the cases which would not move forward",
+        "timestamp_sec": 202,
+        "why": "The core design move: normalize inputs, then let deterministic rules gate the pipeline."
+      },
+      {
+        "text": "if we have to build this, then we will need to make custom integrations for different sorts of portals, which is not not a very scalable uh process.",
+        "timestamp_sec": 258,
+        "why": "Names the scaling tradeoff that justifies LLM-generated RPA configs."
+      },
+      {
+        "text": "we built a LLM-based config generation which performs these actions and builds the config for for a portal to run on.",
+        "timestamp_sec": 305,
+        "why": "Concrete pattern \u2014 LLMs used at build time to author automation configs rather than at run time."
+      },
+      {
+        "text": "these automations are fragile, so it may happen that they break during the run time. For this, we have a self-healing loop which identifies these cases during production hours and then mitigates them.",
+        "timestamp_sec": 305,
+        "why": "Acknowledges RPA brittleness and gives the operational answer to it."
+      },
+      {
+        "text": "LLM uh extraction is sort of an indis- uh indeter- deterministic process. That means that whatever outputs we get from here cannot be blindly tested. So, we still need a human to review all these things. It might improve the efficiency, but it will not eliminate the human.",
+        "timestamp_sec": 403,
+        "why": "The pivotal negative result: single-source LLM extraction improves efficiency but cannot remove the reviewer."
+      },
+      {
+        "text": "instead of just having one source, I have two sources that give me the same information and wherever they conquer, I can say with confidence that this drug is already been authorized.",
+        "timestamp_sec": 454,
+        "why": "States the multi-source concurrence principle that underpins the no-touch decision."
+      },
+      {
+        "text": "we use that information to build a payer rule knowledge base, which is basically a SQL database uh which was made from portal checks as well as LLM extractions.",
+        "timestamp_sec": 498,
+        "why": "Specifies the second evidence source concretely, including its storage substrate."
+      },
+      {
+        "text": "we use all this information, we reconcile the evidence, and we only extract the auth auth statuses with a higher confidence.",
+        "timestamp_sec": 498,
+        "why": "Compresses the evidence-reconciliation strategy into one line."
+      },
+      {
+        "text": "we noticed that certain orders were completely eliminate We could eliminate certain orders completely from these two type of drugs. Because it may happen that an order does not actually require require authorization at all.",
+        "timestamp_sec": 550,
+        "why": "Reports the emergent win \u2014 whole orders, not just drugs, dropping out of the review queue."
+      },
+      {
+        "text": "some decisions do actually need clinical reasoning.",
+        "timestamp_sec": 646,
+        "why": "Marks the boundary where lookup and rules stop and reasoning must begin."
+      },
+      {
+        "text": "the medical necessity agent answers simple and complex clinical questions per patient uh and attaches confidence score to any answer. So, we escalate only the ones that actually need a clinician.",
+        "timestamp_sec": 699,
+        "why": "Defines the escalation policy: confidence score as the routing signal to a human expert."
+      },
+      {
+        "text": "we query the patient medical graph, which is a graph of biomarkers that are extracted for a patient.",
+        "timestamp_sec": 751,
+        "why": "Names the structured clinical representation the reasoning layer runs against."
+      },
+      {
+        "text": "we use this thing these this information and pass it to an LLM to get an answered questioner with all the supportive and contradictory facts.",
+        "timestamp_sec": 793,
+        "why": "Surfacing contradictory evidence alongside supportive is an unusual and auditable output design."
+      },
+      {
+        "text": "for the cases we do not have this enough information, we move keep that for human escalation.",
+        "timestamp_sec": 793,
+        "why": "Confirms insufficient evidence defaults to a human rather than a guess."
+      },
+      {
+        "text": "the no touch is growing on the share of every order. So, we started with deterministic checks. Agents only for the rules that where what rules can't decide.",
+        "timestamp_sec": 961,
+        "why": "The talk's thesis in one line \u2014 automation share grows incrementally, and agents are the fallback, not the default."
+      },
+      {
+        "text": "We used multi-source of evidence to beat the single source of evidence to add confidence to our cases. We added itself healing in order to scale our RPS. And finally, we added the reasoning layer in order to deal with the cases where actually authentic authorization is required.",
+        "timestamp_sec": 961,
+        "why": "Closing summary of the three techniques, useful as a portable recipe."
+      }
+    ],
+    "concepts": [
+      "prior authorization automation",
+      "human-in-the-loop escalation",
+      "multi-source evidence reconciliation",
+      "deterministic decision engine",
+      "llm-generated rpa configs",
+      "self-healing automation",
+      "confidence scoring",
+      "multi-agent pipeline",
+      "clinical knowledge graph",
+      "payer rule knowledge base"
+    ],
+    "positions": [
+      {
+        "claim": "A single LLM extraction over patient notes cannot eliminate human review \u2014 it improves efficiency but its non-deterministic outputs cannot be blindly trusted.",
+        "confidence": "stated",
+        "timestamp_sec": 403
+      },
+      {
+        "claim": "Two independent sources agreeing on the same fact is sufficient grounds to proceed without human verification.",
+        "confidence": "stated",
+        "timestamp_sec": 454
+      },
+      {
+        "claim": "Deterministic checks should come first, with agents reserved only for cases rules cannot decide.",
+        "confidence": "stated",
+        "timestamp_sec": 961
+      },
+      {
+        "claim": "Hand-built custom integrations per insurance portal do not scale; LLM-generated configs over a shared action repository significantly reduce development time.",
+        "confidence": "stated",
+        "timestamp_sec": 258
+      },
+      {
+        "claim": "RPA automations are inherently fragile and will break at runtime, so a self-healing loop is a prerequisite for scaling them.",
+        "confidence": "stated",
+        "timestamp_sec": 305
+      },
+      {
+        "claim": "Cases with insufficient evidence or low confidence should default to human escalation rather than an automated decision.",
+        "confidence": "stated",
+        "timestamp_sec": 793
+      },
+      {
+        "claim": "Full no-touch automation of oncology prior authorization is achievable incrementally \u2014 the no-touch share of orders grows over time rather than arriving all at once.",
+        "confidence": "stated",
+        "timestamp_sec": 961
+      },
+      {
+        "claim": "Agents built for one workflow can be generalized to serve multiple oncology workflows without redesign.",
+        "confidence": "stated",
+        "timestamp_sec": 900
+      },
+      {
+        "claim": "Presenting contradictory facts alongside supportive ones makes clinical LLM answers more trustworthy for downstream review.",
+        "confidence": "implied",
+        "timestamp_sec": 793
+      }
+    ],
+    "speaker_org": "Risa Labs"
+  },
+  "_meta": {
+    "slug": "can-oncology-workflows-run-without-human-touch",
+    "video_id": "_cVfz88_j7A",
+    "url": "https://www.youtube.com/watch?v=_cVfz88_j7A",
+    "word_count": 2362,
+    "wall_sec": 49.3,
+    "run_at": "2026-08-12T19:38:23Z",
+    "effort": "medium"
+  }
+}

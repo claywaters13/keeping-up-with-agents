@@ -1,0 +1,314 @@
+{
+  "is_error": false,
+  "duration_api_ms": 129931,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "1b5d1413-5358-43f4-877b-13f1468ece89",
+  "total_cost_usd": 0.6454310000000001,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 34083,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 11098,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 34083,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 11098,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 34083,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 34083
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 21907,
+      "outputTokens": 16,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.021987,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 11098,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 34083,
+      "webSearchRequests": 0,
+      "costUSD": 0.6234440000000001,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\"concept\": \"offline evaluation\", \"state_of_practice\": \"Offline evaluation is no longer treated as a static test set run once before launch; the field now builds it as a continuously repopulated private benchmark derived from production traces, executed as a release gate on every change to the agent stack. The dominant design pattern is a simulated or replayed mini-production environment \u2014 snapshotted databases, recorded tool fixtures, sidecar containers, LLM-driven user simulators \u2014 because A/B testing variants in live traffic can never be repeatable across differing database state and tool versions. Grading has moved away from scalar quality scores toward binary, domain-specific, business-tied pass/fail rubrics, with the judge itself validated like a classifier against roughly a hundred hand-labeled examples and reported with confidence intervals. Verification targets the whole trajectory \u2014 final environment state, tool calls, artifacts, cost, latency, retries \u2014 not just the final answer, and benchmarks are versioned software with their own CI, Oracle solvability checks, and held-out splits. The recurring humbling lesson is that an easy eval is worse than no eval: Lyft's 90%+ first-pass rate was an artifact of an unrealistically polite simulated user, and cybersecurity benchmarks that scored 'crash the program' as success rated a model at 50% hacking success when its real exploitation rate was 0%. What remains unsettled is how much authority offline results should carry relative to production telemetry, and whether an LLM can be trusted to grade at all.\", \"consensus\": [{\"claim\": \"Offline eval datasets should be built from real production traffic, traces, and recorded tool responses rather than from synthetic or LLM-generated test cases.\", \"support_count\": 5, \"supporting_talks\": [\"from-agent-traces-to-agent-simulations\", \"build-evals-that-actually-matter\", \"your-agents-need-a-save-button\", \"production-evals-for-agentic-ai-systems\", \"medic-for-apache-spark-first-aid-for-failing-jobs\"], \"evidence_quote\": \"It's not a static benchmark. It's a constantly populated data set from your production traces.\", \"evidence_talk\": \"from-agent-traces-to-agent-simulations\", \"evidence_timestamp_sec\": 52}, {\"claim\": \"Every organization shipping agents needs its own private benchmark; public benchmarks and leaderboard scores are orientation only and cannot be the basis for a ship decision.\", \"support_count\": 5, \"supporting_talks\": [\"from-agent-traces-to-agent-simulations\", \"production-evals-for-agentic-ai-systems\", \"teaching-ai-to-find-real-vulnerabilities\", \"the-miranda-hypothesis-how-hamilton-poisoned-persona-evals\", \"the-messy-reality-of-scale-synthetic-data-and-pre-training\"], \"evidence_quote\": \"public benchmark is useful to orient and build your prior, but your private benchmark is useful to ship.\", \"evidence_talk\": \"from-agent-traces-to-agent-simulations\", \"evidence_timestamp_sec\": 191}, {\"claim\": \"The offline eval suite should function as a hard release gate: no model swap, prompt change, or agent-stack change ships until the full suite shows no regression.\", \"support_count\": 5, \"supporting_talks\": [\"build-evals-that-actually-matter\", \"from-agent-traces-to-agent-simulations\", \"claude-fable-claude-tag-and-anthropics-culture\", \"the-miranda-hypothesis-how-hamilton-poisoned-persona-evals\", \"your-agents-need-a-save-button\"], \"evidence_quote\": \"we run the whole eval set and we make sure that for example Fable is strictly better than Opus 48 and that gives us the confidence to drop it in\", \"evidence_talk\": \"claude-fable-claude-tag-and-anthropics-culture\", \"evidence_timestamp_sec\": 1014}, {\"claim\": \"Evaluation criteria should be binary and domain-specific rather than continuous generic quality scores; off-the-shelf helpfulness/correctness/toxicity metrics on a 0-1 or 1-5 scale are low-signal and unactionable.\", \"support_count\": 3, \"supporting_talks\": [\"build-evals-that-actually-matter\", \"stop-burning-tokens-why-self-improvement-needs-domain-expertise-first\", \"teaching-ai-to-find-real-vulnerabilities\"], \"evidence_quote\": \"eval should be framed around a task success or failure. And a binary outcome is very easy to calibrate and train um LLM judge that can consistently score your agent trajectory.\", \"evidence_talk\": \"build-evals-that-actually-matter\", \"evidence_timestamp_sec\": 1172}, {\"claim\": \"Evaluation criteria cannot be fully specified in advance; they must be discovered by a human domain expert reading raw outputs and labeling them, and that expert is a build-time requirement for any credible offline eval.\", \"support_count\": 5, \"supporting_talks\": [\"build-evals-that-actually-matter\", \"stop-burning-tokens-why-self-improvement-needs-domain-expertise-first\", \"the-miranda-hypothesis-how-hamilton-poisoned-persona-evals\", \"teaching-ai-to-find-real-vulnerabilities\", \"from-agent-traces-to-agent-simulations\"], \"evidence_quote\": \"The key idea is that we actually discover what our evaluation criteria is by looking at the data and grading our outputs.\", \"evidence_talk\": \"build-evals-that-actually-matter\", \"evidence_timestamp_sec\": 1382}, {\"claim\": \"Scoring the agent's final output is insufficient; offline evaluation must verify the trajectory \u2014 tool calls, reasoning path, final environment state, and produced artifacts \u2014 alongside cost, latency, and retries.\", \"support_count\": 4, \"supporting_talks\": [\"from-agent-traces-to-agent-simulations\", \"production-evals-for-agentic-ai-systems\", \"the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge\", \"your-agents-need-a-save-button\"], \"evidence_quote\": \"Agent traces become the equivalent of distributed tracing for autonomous workloads. Without observability, evaluation becomes the guesswork.\", \"evidence_talk\": \"production-evals-for-agentic-ai-systems\", \"evidence_timestamp_sec\": 349}, {\"claim\": \"A single run or a small trace sample is not evidence; offline results need repeated seeds, cohort-level aggregation, and confidence intervals before they justify a decision.\", \"support_count\": 3, \"supporting_talks\": [\"your-agents-need-a-save-button\", \"build-evals-that-actually-matter\", \"memory-harnesses-for-long-running-research-agents\"], \"evidence_quote\": \"So which basically means that one replay is just an anecdote and having a cohort analysis is way way way better.\", \"evidence_talk\": \"your-agents-need-a-save-button\", \"evidence_timestamp_sec\": 845}, {\"claim\": \"Classical ML validation discipline transfers directly: label a few hundred examples, split into train/dev/held-out sets, and report on data the system has not seen during experimentation.\", \"support_count\": 3, \"supporting_talks\": [\"build-evals-that-actually-matter\", \"from-agent-traces-to-agent-simulations\", \"stop-burning-tokens-why-self-improvement-needs-domain-expertise-first\"], \"evidence_quote\": \"we can hand label around 100 examples with pass fail labels and then split the data into train, dev, and validation sets like how we used to do with machine learning models\", \"evidence_talk\": \"build-evals-that-actually-matter\", \"evidence_timestamp_sec\": 1277}], \"disagreements\": [{\"question\": \"Should the authoritative evaluation signal come from a pre-deployment offline suite, or from continuous evaluation of live production traffic?\", \"position_a\": \"Offline is where you decide. Live users must never be the test set; production A/B comparisons are not repeatable because database state and tool versions drift, and production data ages out before regressions can be detected, so the offline benchmark is the gate you ship against.\", \"position_a_talks\": [\"build-evals-that-actually-matter\", \"from-agent-traces-to-agent-simulations\", \"medic-for-apache-spark-first-aid-for-failing-jobs\"], \"position_b\": \"Production is where you decide. The highest-value evaluation signal comes from real users on real systems; evaluation belongs in the control plane as an always-on service after deployment, and evals over live traces \u2014 not offline evals \u2014 are what produce the data for continual-learning loops.\", \"position_b_talks\": [\"production-evals-for-agentic-ai-systems\", \"the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge\"], \"why_it_matters\": \"It determines whether engineering budget goes into building a repeatable simulation/replay environment or into production telemetry and online scoring infrastructure, and whether a failing offline score can block a release at all.\"}, {\"question\": \"Can an LLM be trusted to grade offline eval results, or must the grader be deterministic or human?\", \"position_a\": \"Yes, with discipline \u2014 an LLM judge validated like a binary classifier against hand-labeled data is workable, and the next step is an evaluation agent with full trace access that can score dynamic trajectories and even open a fixing PR.\", \"position_a_talks\": [\"build-evals-that-actually-matter\", \"the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge\"], \"position_b\": \"No \u2014 in domains with ground truth the grader must be deterministic, because models systematically claim success they did not achieve; and where fidelity is a relation between output and an external archive, an automated metric structurally cannot adjudicate it and a domain expert must.\", \"position_b_talks\": [\"teaching-ai-to-find-real-vulnerabilities\", \"the-miranda-hypothesis-how-hamilton-poisoned-persona-evals\"], \"why_it_matters\": \"Deterministic oracles and expert review cap how many eval cases you can run, while LLM judges scale to millions per month but can inherit the failure mode they are supposed to detect \u2014 the choice sets both the cost curve and the credibility of every reported score.\"}, {\"question\": \"Should the offline environment be a purpose-built simulation the agent runs live against, or a replay of checkpointed real executions?\", \"position_a\": \"Build a mini-production simulation: snapshotted databases, sidecar containers, an LLM standing in for the user, Oracle-verified tasks, and steps with per-step verifiers \u2014 indistinguishable from production so the agent cannot detect and exploit it.\", \"position_a_talks\": [\"from-agent-traces-to-agent-simulations\", \"build-evals-that-actually-matter\", \"production-evals-for-agentic-ai-systems\"], \"position_b\": \"Don't simulate \u2014 checkpoint and replay. Grounding every counterfactual in a previously recorded execution (code, artifacts, container state) makes simulations trustworthy in a way ungrounded ones are not; record real tool responses as checked-in fixtures rather than authoring an environment.\", \"position_b_talks\": [\"your-agents-need-a-save-button\", \"medic-for-apache-spark-first-aid-for-failing-jobs\"], \"why_it_matters\": \"Simulation covers edge cases and tool failures that never occurred in production but costs an environment-authoring team; replay is cheap and faithful but can only re-examine paths the system already took, so it cannot test genuinely new scenarios.\"}], \"practical_guidance\": {\"do\": [\"Sample eval cases from production traffic and mutate them to cover both golden paths and edge cases like tool failures and database problems, mirroring integration test design\", \"Construct an Oracle solution for every benchmark task first, to prove the task is solvable before admitting it to the suite\", \"Hand-label ~100 examples pass/fail, split train/dev/test, and score the judge on precision and recall like a binary classifier\", \"Replace scalar quality scores with binary domain-specific checks \u2014 'is the answer grounded in retrieved context, yes/no' rather than 'correctness: 0.7'\", \"Fine-tune the user simulator on real customer verbatims until the evaluation score goes down, and treat the drop as evidence of realism\", \"Attach a confidence interval to every reported score; treat 84% vs 88% on 50 traces as indistinguishable\", \"Hold out a test set (roughly 80/20) that the agent never saw during experimentation, and re-run the whole gate whenever the base model changes\", \"Treat the benchmark as software with its own CI pipeline: pinned dependencies, pinned base images, fixture-presence checks, and an Oracle-passes check\", \"Record real downstream tool responses as fixtures checked into the repo so evals replay deterministically after production data is retained away\", \"Verify final environment state, trace, and artifacts alongside the output, and report cost, latency, and retries next to pass rate\", \"Make the eval harness config-driven (YAML) so analysts and data scientists can add cases without engineering work, and run it locally, at pre-commit, and in CI\", \"Reserve expensive statistical rigor for high-stakes moments \u2014 ship decisions and leadership reporting \u2014 rather than applying it uniformly\", \"Route failures to their root cause: fix them in the harness, skills, or structured output rather than in the prompt\", \"Use replay cohorts of hundreds of runs, not one or two, before accepting a cheaper-model swap, and keep a human at the final ship/hold decision\"], \"avoid\": [\"Prompting an LLM for ~50 test queries and calling that an eval dataset\", \"Believing a 90%+ first-pass rate \u2014 check whether your simulated user is unrealistically polite and articulate before celebrating\", \"Shipping an LLM judge whose score gates nothing; a floating score no one acts on is worthless\", \"Using pre-built generic metrics (helpfulness, toxicity, conciseness) as core metrics \u2014 a 0.5 helpfulness score tells you nothing to act on\", \"Writing evaluation criteria before you have read raw outputs; not looking at the data breaks labels, criteria, and judge validation downstream\", \"Letting the agent detect that it is in a simulation \u2014 it will reward-hack the environment instead of solving the task\", \"Scoring a proxy for success (a crash, a single-bug find) instead of the real outcome; crash-triggering is saturated at 95% across frontier models and no longer distinguishes anything\", \"Handing the model a hint that removes the reasoning step, such as a backtrace naming the vulnerable function\", \"Assuming a benchmark task has exactly one correct answer or one planted defect \u2014 DARPA's hand-curated challenges accumulated unintended bugs in 50% of cases\", \"Treating production A/B runs as apples-to-apples comparisons across differing database state and tool versions\", \"Relying on manual end-to-end tests against live production when production data is retained only briefly, making regressions undetectable\", \"Swapping in a cheaper model on cost and latency alone \u2014 the outcome quality loss shows up only in cohort-level replay\", \"Running an auto-improvement loop against an eval with no plateau detection or escape hatch\"]}, \"notable_outliers\": [{\"claim\": \"Fine-tune your user simulator until the evaluation score goes down \u2014 a falling offline score is the signal that the eval got more realistic, not that quality dropped.\", \"talk\": \"build-evals-that-actually-matter\", \"timestamp_sec\": 1015}, {\"claim\": \"A model that passes \u03c4-bench 60% of the time is self-consistent only about a quarter of the time, so a single replay is an anecdote rather than evidence.\", \"talk\": \"your-agents-need-a-save-button\", \"timestamp_sec\": 845}, {\"claim\": \"Oracle retrieval \u2014 handing the agent exactly the right memory \u2014 still does not reach maximum task performance, because the model can ignore or misuse correct context.\", \"talk\": \"memory-harnesses-for-long-running-research-agents\", \"timestamp_sec\": 509}, {\"claim\": \"Rhetorical authenticity must be explicitly excluded as a scoring axis, because rewarding voice validates the exact failure the instrument exists to catch.\", \"talk\": \"the-miranda-hypothesis-how-hamilton-poisoned-persona-evals\", \"timestamp_sec\": 2839}, {\"claim\": \"Eval tooling is not the constraint for customers; the skill of writing high-quality evals is what takes a long time.\", \"talk\": \"claude-fable-claude-tag-and-anthropics-culture\", \"timestamp_sec\": 2975}, {\"claim\": \"Most of the gain from a self-improvement loop arrives in the first iteration off a clear failure signal \u2014 68% to 78% \u2014 after which it plateaus, partly because the ground-truth labels themselves are noisy.\", \"talk\": \"stop-burning-tokens-why-self-improvement-needs-domain-expertise-first\", \"timestamp_sec\": 684}, {\"claim\": \"Under a broken benchmark definition Kimi appeared to succeed at hacking 50% of the time; under a real exploitation criterion it scored 0%.\", \"talk\": \"teaching-ai-to-find-real-vulnerabilities\", \"timestamp_sec\": 1292}], \"maturity\": \"consolidating\", \"maturity_rationale\": \"Speakers from Lyft, Snorkel, Meta, Anthropic, Pinterest, Langfuse and ZenML independently converged on the same mechanics \u2014 production-derived private benchmarks, binary expert-authored criteria, held-out splits, judge validation, release gating \u2014 which is far more agreement than a frontier topic would show. The unsettled edges are real but bounded: whether offline or production telemetry is the authoritative signal, whether an LLM may grade at all, and simulation versus checkpoint replay as the substrate.\"}",
+  "ttft_ms": 62220,
+  "ttft_stream_ms": 2170,
+  "time_to_request_ms": 35,
+  "type": "result",
+  "duration_ms": 129662,
+  "uuid": "4cd41247-740f-46d5-bda1-6ee31ba46f3d",
+  "passC": {
+    "concept": "offline evaluation",
+    "state_of_practice": "Offline evaluation is no longer treated as a static test set run once before launch; the field now builds it as a continuously repopulated private benchmark derived from production traces, executed as a release gate on every change to the agent stack. The dominant design pattern is a simulated or replayed mini-production environment \u2014 snapshotted databases, recorded tool fixtures, sidecar containers, LLM-driven user simulators \u2014 because A/B testing variants in live traffic can never be repeatable across differing database state and tool versions. Grading has moved away from scalar quality scores toward binary, domain-specific, business-tied pass/fail rubrics, with the judge itself validated like a classifier against roughly a hundred hand-labeled examples and reported with confidence intervals. Verification targets the whole trajectory \u2014 final environment state, tool calls, artifacts, cost, latency, retries \u2014 not just the final answer, and benchmarks are versioned software with their own CI, Oracle solvability checks, and held-out splits. The recurring humbling lesson is that an easy eval is worse than no eval: Lyft's 90%+ first-pass rate was an artifact of an unrealistically polite simulated user, and cybersecurity benchmarks that scored 'crash the program' as success rated a model at 50% hacking success when its real exploitation rate was 0%. What remains unsettled is how much authority offline results should carry relative to production telemetry, and whether an LLM can be trusted to grade at all.",
+    "consensus": [
+      {
+        "claim": "Offline eval datasets should be built from real production traffic, traces, and recorded tool responses rather than from synthetic or LLM-generated test cases.",
+        "support_count": 5,
+        "supporting_talks": [
+          "from-agent-traces-to-agent-simulations",
+          "build-evals-that-actually-matter",
+          "your-agents-need-a-save-button",
+          "production-evals-for-agentic-ai-systems",
+          "medic-for-apache-spark-first-aid-for-failing-jobs"
+        ],
+        "evidence_quote": "It's not a static benchmark. It's a constantly populated data set from your production traces.",
+        "evidence_talk": "from-agent-traces-to-agent-simulations",
+        "evidence_timestamp_sec": 52
+      },
+      {
+        "claim": "Every organization shipping agents needs its own private benchmark; public benchmarks and leaderboard scores are orientation only and cannot be the basis for a ship decision.",
+        "support_count": 5,
+        "supporting_talks": [
+          "from-agent-traces-to-agent-simulations",
+          "production-evals-for-agentic-ai-systems",
+          "teaching-ai-to-find-real-vulnerabilities",
+          "the-miranda-hypothesis-how-hamilton-poisoned-persona-evals",
+          "the-messy-reality-of-scale-synthetic-data-and-pre-training"
+        ],
+        "evidence_quote": "public benchmark is useful to orient and build your prior, but your private benchmark is useful to ship.",
+        "evidence_talk": "from-agent-traces-to-agent-simulations",
+        "evidence_timestamp_sec": 191
+      },
+      {
+        "claim": "The offline eval suite should function as a hard release gate: no model swap, prompt change, or agent-stack change ships until the full suite shows no regression.",
+        "support_count": 5,
+        "supporting_talks": [
+          "build-evals-that-actually-matter",
+          "from-agent-traces-to-agent-simulations",
+          "claude-fable-claude-tag-and-anthropics-culture",
+          "the-miranda-hypothesis-how-hamilton-poisoned-persona-evals",
+          "your-agents-need-a-save-button"
+        ],
+        "evidence_quote": "we run the whole eval set and we make sure that for example Fable is strictly better than Opus 48 and that gives us the confidence to drop it in",
+        "evidence_talk": "claude-fable-claude-tag-and-anthropics-culture",
+        "evidence_timestamp_sec": 1014
+      },
+      {
+        "claim": "Evaluation criteria should be binary and domain-specific rather than continuous generic quality scores; off-the-shelf helpfulness/correctness/toxicity metrics on a 0-1 or 1-5 scale are low-signal and unactionable.",
+        "support_count": 3,
+        "supporting_talks": [
+          "build-evals-that-actually-matter",
+          "stop-burning-tokens-why-self-improvement-needs-domain-expertise-first",
+          "teaching-ai-to-find-real-vulnerabilities"
+        ],
+        "evidence_quote": "eval should be framed around a task success or failure. And a binary outcome is very easy to calibrate and train um LLM judge that can consistently score your agent trajectory.",
+        "evidence_talk": "build-evals-that-actually-matter",
+        "evidence_timestamp_sec": 1172
+      },
+      {
+        "claim": "Evaluation criteria cannot be fully specified in advance; they must be discovered by a human domain expert reading raw outputs and labeling them, and that expert is a build-time requirement for any credible offline eval.",
+        "support_count": 5,
+        "supporting_talks": [
+          "build-evals-that-actually-matter",
+          "stop-burning-tokens-why-self-improvement-needs-domain-expertise-first",
+          "the-miranda-hypothesis-how-hamilton-poisoned-persona-evals",
+          "teaching-ai-to-find-real-vulnerabilities",
+          "from-agent-traces-to-agent-simulations"
+        ],
+        "evidence_quote": "The key idea is that we actually discover what our evaluation criteria is by looking at the data and grading our outputs.",
+        "evidence_talk": "build-evals-that-actually-matter",
+        "evidence_timestamp_sec": 1382
+      },
+      {
+        "claim": "Scoring the agent's final output is insufficient; offline evaluation must verify the trajectory \u2014 tool calls, reasoning path, final environment state, and produced artifacts \u2014 alongside cost, latency, and retries.",
+        "support_count": 4,
+        "supporting_talks": [
+          "from-agent-traces-to-agent-simulations",
+          "production-evals-for-agentic-ai-systems",
+          "the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge",
+          "your-agents-need-a-save-button"
+        ],
+        "evidence_quote": "Agent traces become the equivalent of distributed tracing for autonomous workloads. Without observability, evaluation becomes the guesswork.",
+        "evidence_talk": "production-evals-for-agentic-ai-systems",
+        "evidence_timestamp_sec": 349
+      },
+      {
+        "claim": "A single run or a small trace sample is not evidence; offline results need repeated seeds, cohort-level aggregation, and confidence intervals before they justify a decision.",
+        "support_count": 3,
+        "supporting_talks": [
+          "your-agents-need-a-save-button",
+          "build-evals-that-actually-matter",
+          "memory-harnesses-for-long-running-research-agents"
+        ],
+        "evidence_quote": "So which basically means that one replay is just an anecdote and having a cohort analysis is way way way better.",
+        "evidence_talk": "your-agents-need-a-save-button",
+        "evidence_timestamp_sec": 845
+      },
+      {
+        "claim": "Classical ML validation discipline transfers directly: label a few hundred examples, split into train/dev/held-out sets, and report on data the system has not seen during experimentation.",
+        "support_count": 3,
+        "supporting_talks": [
+          "build-evals-that-actually-matter",
+          "from-agent-traces-to-agent-simulations",
+          "stop-burning-tokens-why-self-improvement-needs-domain-expertise-first"
+        ],
+        "evidence_quote": "we can hand label around 100 examples with pass fail labels and then split the data into train, dev, and validation sets like how we used to do with machine learning models",
+        "evidence_talk": "build-evals-that-actually-matter",
+        "evidence_timestamp_sec": 1277
+      }
+    ],
+    "disagreements": [
+      {
+        "question": "Should the authoritative evaluation signal come from a pre-deployment offline suite, or from continuous evaluation of live production traffic?",
+        "position_a": "Offline is where you decide. Live users must never be the test set; production A/B comparisons are not repeatable because database state and tool versions drift, and production data ages out before regressions can be detected, so the offline benchmark is the gate you ship against.",
+        "position_a_talks": [
+          "build-evals-that-actually-matter",
+          "from-agent-traces-to-agent-simulations",
+          "medic-for-apache-spark-first-aid-for-failing-jobs"
+        ],
+        "position_b": "Production is where you decide. The highest-value evaluation signal comes from real users on real systems; evaluation belongs in the control plane as an always-on service after deployment, and evals over live traces \u2014 not offline evals \u2014 are what produce the data for continual-learning loops.",
+        "position_b_talks": [
+          "production-evals-for-agentic-ai-systems",
+          "the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge"
+        ],
+        "why_it_matters": "It determines whether engineering budget goes into building a repeatable simulation/replay environment or into production telemetry and online scoring infrastructure, and whether a failing offline score can block a release at all."
+      },
+      {
+        "question": "Can an LLM be trusted to grade offline eval results, or must the grader be deterministic or human?",
+        "position_a": "Yes, with discipline \u2014 an LLM judge validated like a binary classifier against hand-labeled data is workable, and the next step is an evaluation agent with full trace access that can score dynamic trajectories and even open a fixing PR.",
+        "position_a_talks": [
+          "build-evals-that-actually-matter",
+          "the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge"
+        ],
+        "position_b": "No \u2014 in domains with ground truth the grader must be deterministic, because models systematically claim success they did not achieve; and where fidelity is a relation between output and an external archive, an automated metric structurally cannot adjudicate it and a domain expert must.",
+        "position_b_talks": [
+          "teaching-ai-to-find-real-vulnerabilities",
+          "the-miranda-hypothesis-how-hamilton-poisoned-persona-evals"
+        ],
+        "why_it_matters": "Deterministic oracles and expert review cap how many eval cases you can run, while LLM judges scale to millions per month but can inherit the failure mode they are supposed to detect \u2014 the choice sets both the cost curve and the credibility of every reported score."
+      },
+      {
+        "question": "Should the offline environment be a purpose-built simulation the agent runs live against, or a replay of checkpointed real executions?",
+        "position_a": "Build a mini-production simulation: snapshotted databases, sidecar containers, an LLM standing in for the user, Oracle-verified tasks, and steps with per-step verifiers \u2014 indistinguishable from production so the agent cannot detect and exploit it.",
+        "position_a_talks": [
+          "from-agent-traces-to-agent-simulations",
+          "build-evals-that-actually-matter",
+          "production-evals-for-agentic-ai-systems"
+        ],
+        "position_b": "Don't simulate \u2014 checkpoint and replay. Grounding every counterfactual in a previously recorded execution (code, artifacts, container state) makes simulations trustworthy in a way ungrounded ones are not; record real tool responses as checked-in fixtures rather than authoring an environment.",
+        "position_b_talks": [
+          "your-agents-need-a-save-button",
+          "medic-for-apache-spark-first-aid-for-failing-jobs"
+        ],
+        "why_it_matters": "Simulation covers edge cases and tool failures that never occurred in production but costs an environment-authoring team; replay is cheap and faithful but can only re-examine paths the system already took, so it cannot test genuinely new scenarios."
+      }
+    ],
+    "practical_guidance": {
+      "do": [
+        "Sample eval cases from production traffic and mutate them to cover both golden paths and edge cases like tool failures and database problems, mirroring integration test design",
+        "Construct an Oracle solution for every benchmark task first, to prove the task is solvable before admitting it to the suite",
+        "Hand-label ~100 examples pass/fail, split train/dev/test, and score the judge on precision and recall like a binary classifier",
+        "Replace scalar quality scores with binary domain-specific checks \u2014 'is the answer grounded in retrieved context, yes/no' rather than 'correctness: 0.7'",
+        "Fine-tune the user simulator on real customer verbatims until the evaluation score goes down, and treat the drop as evidence of realism",
+        "Attach a confidence interval to every reported score; treat 84% vs 88% on 50 traces as indistinguishable",
+        "Hold out a test set (roughly 80/20) that the agent never saw during experimentation, and re-run the whole gate whenever the base model changes",
+        "Treat the benchmark as software with its own CI pipeline: pinned dependencies, pinned base images, fixture-presence checks, and an Oracle-passes check",
+        "Record real downstream tool responses as fixtures checked into the repo so evals replay deterministically after production data is retained away",
+        "Verify final environment state, trace, and artifacts alongside the output, and report cost, latency, and retries next to pass rate",
+        "Make the eval harness config-driven (YAML) so analysts and data scientists can add cases without engineering work, and run it locally, at pre-commit, and in CI",
+        "Reserve expensive statistical rigor for high-stakes moments \u2014 ship decisions and leadership reporting \u2014 rather than applying it uniformly",
+        "Route failures to their root cause: fix them in the harness, skills, or structured output rather than in the prompt",
+        "Use replay cohorts of hundreds of runs, not one or two, before accepting a cheaper-model swap, and keep a human at the final ship/hold decision"
+      ],
+      "avoid": [
+        "Prompting an LLM for ~50 test queries and calling that an eval dataset",
+        "Believing a 90%+ first-pass rate \u2014 check whether your simulated user is unrealistically polite and articulate before celebrating",
+        "Shipping an LLM judge whose score gates nothing; a floating score no one acts on is worthless",
+        "Using pre-built generic metrics (helpfulness, toxicity, conciseness) as core metrics \u2014 a 0.5 helpfulness score tells you nothing to act on",
+        "Writing evaluation criteria before you have read raw outputs; not looking at the data breaks labels, criteria, and judge validation downstream",
+        "Letting the agent detect that it is in a simulation \u2014 it will reward-hack the environment instead of solving the task",
+        "Scoring a proxy for success (a crash, a single-bug find) instead of the real outcome; crash-triggering is saturated at 95% across frontier models and no longer distinguishes anything",
+        "Handing the model a hint that removes the reasoning step, such as a backtrace naming the vulnerable function",
+        "Assuming a benchmark task has exactly one correct answer or one planted defect \u2014 DARPA's hand-curated challenges accumulated unintended bugs in 50% of cases",
+        "Treating production A/B runs as apples-to-apples comparisons across differing database state and tool versions",
+        "Relying on manual end-to-end tests against live production when production data is retained only briefly, making regressions undetectable",
+        "Swapping in a cheaper model on cost and latency alone \u2014 the outcome quality loss shows up only in cohort-level replay",
+        "Running an auto-improvement loop against an eval with no plateau detection or escape hatch"
+      ]
+    },
+    "notable_outliers": [
+      {
+        "claim": "Fine-tune your user simulator until the evaluation score goes down \u2014 a falling offline score is the signal that the eval got more realistic, not that quality dropped.",
+        "talk": "build-evals-that-actually-matter",
+        "timestamp_sec": 1015
+      },
+      {
+        "claim": "A model that passes \u03c4-bench 60% of the time is self-consistent only about a quarter of the time, so a single replay is an anecdote rather than evidence.",
+        "talk": "your-agents-need-a-save-button",
+        "timestamp_sec": 845
+      },
+      {
+        "claim": "Oracle retrieval \u2014 handing the agent exactly the right memory \u2014 still does not reach maximum task performance, because the model can ignore or misuse correct context.",
+        "talk": "memory-harnesses-for-long-running-research-agents",
+        "timestamp_sec": 509
+      },
+      {
+        "claim": "Rhetorical authenticity must be explicitly excluded as a scoring axis, because rewarding voice validates the exact failure the instrument exists to catch.",
+        "talk": "the-miranda-hypothesis-how-hamilton-poisoned-persona-evals",
+        "timestamp_sec": 2839
+      },
+      {
+        "claim": "Eval tooling is not the constraint for customers; the skill of writing high-quality evals is what takes a long time.",
+        "talk": "claude-fable-claude-tag-and-anthropics-culture",
+        "timestamp_sec": 2975
+      },
+      {
+        "claim": "Most of the gain from a self-improvement loop arrives in the first iteration off a clear failure signal \u2014 68% to 78% \u2014 after which it plateaus, partly because the ground-truth labels themselves are noisy.",
+        "talk": "stop-burning-tokens-why-self-improvement-needs-domain-expertise-first",
+        "timestamp_sec": 684
+      },
+      {
+        "claim": "Under a broken benchmark definition Kimi appeared to succeed at hacking 50% of the time; under a real exploitation criterion it scored 0%.",
+        "talk": "teaching-ai-to-find-real-vulnerabilities",
+        "timestamp_sec": 1292
+      }
+    ],
+    "maturity": "consolidating",
+    "maturity_rationale": "Speakers from Lyft, Snorkel, Meta, Anthropic, Pinterest, Langfuse and ZenML independently converged on the same mechanics \u2014 production-derived private benchmarks, binary expert-authored criteria, held-out splits, judge validation, release gating \u2014 which is far more agreement than a frontier topic would show. The unsettled edges are real but bounded: whether offline or production telemetry is the authoritative signal, whether an LLM may grade at all, and simulation versus checkpoint replay as the substrate."
+  },
+  "_meta": {
+    "concept": "offline evaluation",
+    "slug": "offline-evaluation",
+    "talk_count": 13,
+    "missing_talks": [],
+    "wall_sec": 130.7,
+    "run_at": "2026-08-13T17:49:40Z"
+  }
+}

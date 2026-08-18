@@ -1,0 +1,268 @@
+{
+  "is_error": false,
+  "duration_api_ms": 43115,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "538934f8-d649-49a1-9ccc-97f3b1cbb3d2",
+  "total_cost_usd": 0.19020000000000004,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 9056,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 3550,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 9056,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 3550,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 9056,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 9056
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 5646,
+      "outputTokens": 16,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.005726,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 3550,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 9056,
+      "webSearchRequests": 0,
+      "costUSD": 0.18447400000000003,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Bennet Fenner of Zed introduces the Agent Client Protocol (ACP), a JSON-RPC protocol that lets any coding agent talk to any editor or client through a unified interface \u2014 analogous to LSP or MCP but for agent front-ends. Motivated by the 2025 wave of model-provider CLI agents (Claude Code, Codex, Gemini CLI), Zed built ACP so users could bring their agent of choice into a consistent UI. The bulk of the talk is a live coding session that takes a bare-bones TypeScript agent with only read-file and edit-file tools and makes it ACP-compatible in about 15 minutes, implementing initialize, authenticate, newSession, and prompt, then layering on streaming session updates, tool-call status updates, ACP-proxied file system access, and terminal support. Worth watching if you want a concrete, minimal picture of what the protocol actually requires rather than a spec walkthrough \u2014 including the honest bits where the demo half-broke on stage. Ends with the practical detail that ACP currently runs over stdio, with remote transport in progress.\",\n  \"key_points\": [\n    \"ACP is a JSON-RPC-based protocol, open source and modeled after LSP/MCP, that lets agents and clients communicate through a unified interface so users can bring their agent of choice to any editor.\",\n    \"Adoption is already broad: agents support it either natively (open code, cursor CLI ACP mode) or via adapters that translate the agent's native protocol, and roughly 40 clients implement it including JetBrains, Obsidian, and open claw.\",\n    \"A minimal ACP agent requires implementing only four functions: initialize (respond with supported protocol version and capabilities), authenticate, newSession, and prompt.\",\n    \"Sessions are the core abstraction \u2014 each thread in a client maps to a session ID, which the agent generates and the client passes back on every prompt request.\",\n    \"Streaming output is delivered via session updates, which are notifications rather than request/response pairs and can be sent at any time; the agent message chunk type carries streamed model text.\",\n    \"Tool calls follow a two-phase pattern: emit a session update of type tool call with title, status in progress, and optional file locations, then emit tool call update messages to set final status and return content.\",\n    \"ACP proxies file system access \u2014 the client can advertise a file system capability so the agent reads through ACP instead of fs.readFile, which matters in an editor because unsaved buffer changes are not on disk but the agent should still see them.\",\n    \"Clients can also advertise a terminal capability, letting the client create and manage terminals on the agent's behalf; the speaker used his own agent to write its terminal tool live.\",\n    \"Diffs are a first-class ACP content type: the agent sends old text and new text and the client (Zed) renders the diff itself.\",\n    \"The transport today is standard IO, with remote transport being worked on by JetBrains contributors.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"at Zed, we asked ourselves like how can we let users bring their agent of choice to our tool and enjoy like a nice interface that is unified across all of them\",\n      \"timestamp_sec\": 14,\n      \"why\": \"states the motivating problem ACP was designed to solve\"\n    },\n    {\n      \"text\": \"And so that's why we decided we need some kind of type of protocol uh called agent client protocol, uh which is similar to like MCP or uh LSP.\",\n      \"timestamp_sec\": 14,\n      \"why\": \"positions ACP relative to the protocols the audience already knows\"\n    },\n    {\n      \"text\": \"It's a JSON RPC based protocol. And the idea is basically that uh agents and clients can talk to each other through through a unified interface.\",\n      \"timestamp_sec\": 54,\n      \"why\": \"the one-sentence definition of the protocol\"\n    },\n    {\n      \"text\": \"And we also have a bunch of uh clients at this point up to 40 that uh implement this including open claw for example.\",\n      \"timestamp_sec\": 54,\n      \"why\": \"the only adoption number in the talk\"\n    },\n    {\n      \"text\": \"here's a very minimal coding agent that just doesn't support ACP, but it's kind of the bare minimum you need to like build a coding agent\",\n      \"timestamp_sec\": 102,\n      \"why\": \"sets the baseline the whole live demo builds from\"\n    },\n    {\n      \"text\": \"So, all it has is really like two tools. One to read a file and one to edit an existing file.\",\n      \"timestamp_sec\": 147,\n      \"why\": \"concrete claim about how little surface area a coding agent needs\"\n    },\n    {\n      \"text\": \"that is kind of like the way all agents basically work is the model APIs are stateless\",\n      \"timestamp_sec\": 147,\n      \"why\": \"the architectural premise underlying the agent loop\"\n    },\n    {\n      \"text\": \"So, now the question is how do we make this thing ACP compatible? And hopefully we can do it in 10 minutes.\",\n      \"timestamp_sec\": 221,\n      \"why\": \"frames the talk's implicit claim that ACP integration is cheap\"\n    },\n    {\n      \"text\": \"And then you have to at minimum implement these three uh four functions.\",\n      \"timestamp_sec\": 259,\n      \"why\": \"quantifies the minimum implementation burden\"\n    },\n    {\n      \"text\": \"So, basically every time you start a thread in Zed or in a different editor or client, uh you you call a new session.\",\n      \"timestamp_sec\": 302,\n      \"why\": \"defines the session abstraction in client-facing terms\"\n    },\n    {\n      \"text\": \"And then you can send updates kind of like notifications to the client that are not like a usual request response, right?\",\n      \"timestamp_sec\": 513,\n      \"why\": \"names the key asymmetry in ACP's message model\"\n    },\n    {\n      \"text\": \"you have to emit like a tool call, like session update of type tool call, and then once once the client knows about it, uh you can emit updates for that\",\n      \"timestamp_sec\": 691,\n      \"why\": \"spells out the two-phase tool-call protocol\"\n    },\n    {\n      \"text\": \"But MC uh ACP actually proxies the file system too. Like the client can provide a uh a file system capability\",\n      \"timestamp_sec\": 731,\n      \"why\": \"introduces one of ACP's least obvious design decisions\"\n    },\n    {\n      \"text\": \"if I have unsafe changes in my buffer, they're not actually on the file system, but the agent should still see them\",\n      \"timestamp_sec\": 731,\n      \"why\": \"the concrete justification for filesystem proxying (auto-caption garble of 'unsaved')\"\n    },\n    {\n      \"text\": \"Okay, something is going wrong because everything is duplicated.\",\n      \"timestamp_sec\": 769,\n      \"why\": \"honest live-demo failure worth knowing about before watching\"\n    },\n    {\n      \"text\": \"the client can um advertise that it supports creating terminal and managing terminals for the agent\",\n      \"timestamp_sec\": 902,\n      \"why\": \"describes the terminal capability handoff between client and agent\"\n    },\n    {\n      \"text\": \"so that's how you kind of build an ACP compatible coding agent in 15 minutes or so\",\n      \"timestamp_sec\": 998,\n      \"why\": \"the talk's summary claim about integration cost\"\n    },\n    {\n      \"text\": \"in case anyone wants the demo code, but please don't use it in production. It's all agent generated.\",\n      \"timestamp_sec\": 998,\n      \"why\": \"candid caveat on the demo artifact\"\n    },\n    {\n      \"text\": \"in ACP there are multiple content types, and one content type is diff, and so the agent sends old text, new text, and then Z does the diffing for you\",\n      \"timestamp_sec\": 998,\n      \"why\": \"answers where diff rendering responsibility sits\"\n    },\n    {\n      \"text\": \"the connection works over standard IO. Uh there are some folks well, I think from the JetBrains people are working on like remote uh transport\",\n      \"timestamp_sec\": 1056,\n      \"why\": \"states the current transport limitation and what's coming\"\n    }\n  ],\n  \"concepts\": [\n    \"agent client protocol\",\n    \"json-rpc protocol design\",\n    \"editor-agent integration\",\n    \"agent tool-calling loop\",\n    \"session management\",\n    \"streaming session updates\",\n    \"tool call lifecycle status\",\n    \"filesystem proxying\",\n    \"client capability negotiation\",\n    \"agent self-modification\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"The proliferation of provider-specific CLI coding agents created a need for a unified agent-client protocol, analogous to LSP for language tooling.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 14\n    },\n    {\n      \"claim\": \"ACP already has roughly 40 client implementations, including JetBrains, Obsidian, and open claw.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 54\n    },\n    {\n      \"claim\": \"A functional coding agent needs only two tools \u2014 read file and edit file \u2014 as its bare minimum.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 147\n    },\n    {\n      \"claim\": \"Because model APIs are stateless, every agent works the same way: resend the conversation, get a message or tool call, execute locally, loop.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 147\n    },\n    {\n      \"claim\": \"Making an existing agent ACP-compatible requires implementing only four functions and can be done in roughly 15 minutes.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 998\n    },\n    {\n      \"claim\": \"Agents should read files through ACP's proxied filesystem rather than native fs APIs, because the client may hold unsaved buffer state the agent needs to see.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 769\n    },\n    {\n      \"claim\": \"Diff rendering belongs on the client side: the agent sends only old text and new text, and the client computes and displays the diff.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 998\n    },\n    {\n      \"claim\": \"Letting the client own terminal creation and management, rather than the agent, is the better default because it adds interactivity to the editor UI.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 949\n    },\n    {\n      \"claim\": \"ACP currently only supports standard IO transport; remote transport is not yet available.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1056\n    },\n    {\n      \"claim\": \"Agent-generated code such as this demo should not be used in production.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 998\n    }\n  ],\n  \"speaker_org\": \"Zed\"\n}",
+  "ttft_ms": 41658,
+  "ttft_stream_ms": 1369,
+  "time_to_request_ms": 33,
+  "type": "result",
+  "duration_ms": 43438,
+  "uuid": "100bf818-0e38-470a-a99a-6c470f144182",
+  "passA": {
+    "summary": "Bennet Fenner of Zed introduces the Agent Client Protocol (ACP), a JSON-RPC protocol that lets any coding agent talk to any editor or client through a unified interface \u2014 analogous to LSP or MCP but for agent front-ends. Motivated by the 2025 wave of model-provider CLI agents (Claude Code, Codex, Gemini CLI), Zed built ACP so users could bring their agent of choice into a consistent UI. The bulk of the talk is a live coding session that takes a bare-bones TypeScript agent with only read-file and edit-file tools and makes it ACP-compatible in about 15 minutes, implementing initialize, authenticate, newSession, and prompt, then layering on streaming session updates, tool-call status updates, ACP-proxied file system access, and terminal support. Worth watching if you want a concrete, minimal picture of what the protocol actually requires rather than a spec walkthrough \u2014 including the honest bits where the demo half-broke on stage. Ends with the practical detail that ACP currently runs over stdio, with remote transport in progress.",
+    "key_points": [
+      "ACP is a JSON-RPC-based protocol, open source and modeled after LSP/MCP, that lets agents and clients communicate through a unified interface so users can bring their agent of choice to any editor.",
+      "Adoption is already broad: agents support it either natively (open code, cursor CLI ACP mode) or via adapters that translate the agent's native protocol, and roughly 40 clients implement it including JetBrains, Obsidian, and open claw.",
+      "A minimal ACP agent requires implementing only four functions: initialize (respond with supported protocol version and capabilities), authenticate, newSession, and prompt.",
+      "Sessions are the core abstraction \u2014 each thread in a client maps to a session ID, which the agent generates and the client passes back on every prompt request.",
+      "Streaming output is delivered via session updates, which are notifications rather than request/response pairs and can be sent at any time; the agent message chunk type carries streamed model text.",
+      "Tool calls follow a two-phase pattern: emit a session update of type tool call with title, status in progress, and optional file locations, then emit tool call update messages to set final status and return content.",
+      "ACP proxies file system access \u2014 the client can advertise a file system capability so the agent reads through ACP instead of fs.readFile, which matters in an editor because unsaved buffer changes are not on disk but the agent should still see them.",
+      "Clients can also advertise a terminal capability, letting the client create and manage terminals on the agent's behalf; the speaker used his own agent to write its terminal tool live.",
+      "Diffs are a first-class ACP content type: the agent sends old text and new text and the client (Zed) renders the diff itself.",
+      "The transport today is standard IO, with remote transport being worked on by JetBrains contributors."
+    ],
+    "notable_quotes": [
+      {
+        "text": "at Zed, we asked ourselves like how can we let users bring their agent of choice to our tool and enjoy like a nice interface that is unified across all of them",
+        "timestamp_sec": 14,
+        "why": "states the motivating problem ACP was designed to solve"
+      },
+      {
+        "text": "And so that's why we decided we need some kind of type of protocol uh called agent client protocol, uh which is similar to like MCP or uh LSP.",
+        "timestamp_sec": 14,
+        "why": "positions ACP relative to the protocols the audience already knows"
+      },
+      {
+        "text": "It's a JSON RPC based protocol. And the idea is basically that uh agents and clients can talk to each other through through a unified interface.",
+        "timestamp_sec": 54,
+        "why": "the one-sentence definition of the protocol"
+      },
+      {
+        "text": "And we also have a bunch of uh clients at this point up to 40 that uh implement this including open claw for example.",
+        "timestamp_sec": 54,
+        "why": "the only adoption number in the talk"
+      },
+      {
+        "text": "here's a very minimal coding agent that just doesn't support ACP, but it's kind of the bare minimum you need to like build a coding agent",
+        "timestamp_sec": 102,
+        "why": "sets the baseline the whole live demo builds from"
+      },
+      {
+        "text": "So, all it has is really like two tools. One to read a file and one to edit an existing file.",
+        "timestamp_sec": 147,
+        "why": "concrete claim about how little surface area a coding agent needs"
+      },
+      {
+        "text": "that is kind of like the way all agents basically work is the model APIs are stateless",
+        "timestamp_sec": 147,
+        "why": "the architectural premise underlying the agent loop"
+      },
+      {
+        "text": "So, now the question is how do we make this thing ACP compatible? And hopefully we can do it in 10 minutes.",
+        "timestamp_sec": 221,
+        "why": "frames the talk's implicit claim that ACP integration is cheap"
+      },
+      {
+        "text": "And then you have to at minimum implement these three uh four functions.",
+        "timestamp_sec": 259,
+        "why": "quantifies the minimum implementation burden"
+      },
+      {
+        "text": "So, basically every time you start a thread in Zed or in a different editor or client, uh you you call a new session.",
+        "timestamp_sec": 302,
+        "why": "defines the session abstraction in client-facing terms"
+      },
+      {
+        "text": "And then you can send updates kind of like notifications to the client that are not like a usual request response, right?",
+        "timestamp_sec": 513,
+        "why": "names the key asymmetry in ACP's message model"
+      },
+      {
+        "text": "you have to emit like a tool call, like session update of type tool call, and then once once the client knows about it, uh you can emit updates for that",
+        "timestamp_sec": 691,
+        "why": "spells out the two-phase tool-call protocol"
+      },
+      {
+        "text": "But MC uh ACP actually proxies the file system too. Like the client can provide a uh a file system capability",
+        "timestamp_sec": 731,
+        "why": "introduces one of ACP's least obvious design decisions"
+      },
+      {
+        "text": "if I have unsafe changes in my buffer, they're not actually on the file system, but the agent should still see them",
+        "timestamp_sec": 731,
+        "why": "the concrete justification for filesystem proxying (auto-caption garble of 'unsaved')"
+      },
+      {
+        "text": "Okay, something is going wrong because everything is duplicated.",
+        "timestamp_sec": 769,
+        "why": "honest live-demo failure worth knowing about before watching"
+      },
+      {
+        "text": "the client can um advertise that it supports creating terminal and managing terminals for the agent",
+        "timestamp_sec": 902,
+        "why": "describes the terminal capability handoff between client and agent"
+      },
+      {
+        "text": "so that's how you kind of build an ACP compatible coding agent in 15 minutes or so",
+        "timestamp_sec": 998,
+        "why": "the talk's summary claim about integration cost"
+      },
+      {
+        "text": "in case anyone wants the demo code, but please don't use it in production. It's all agent generated.",
+        "timestamp_sec": 998,
+        "why": "candid caveat on the demo artifact"
+      },
+      {
+        "text": "in ACP there are multiple content types, and one content type is diff, and so the agent sends old text, new text, and then Z does the diffing for you",
+        "timestamp_sec": 998,
+        "why": "answers where diff rendering responsibility sits"
+      },
+      {
+        "text": "the connection works over standard IO. Uh there are some folks well, I think from the JetBrains people are working on like remote uh transport",
+        "timestamp_sec": 1056,
+        "why": "states the current transport limitation and what's coming"
+      }
+    ],
+    "concepts": [
+      "agent client protocol",
+      "json-rpc protocol design",
+      "editor-agent integration",
+      "agent tool-calling loop",
+      "session management",
+      "streaming session updates",
+      "tool call lifecycle status",
+      "filesystem proxying",
+      "client capability negotiation",
+      "agent self-modification"
+    ],
+    "positions": [
+      {
+        "claim": "The proliferation of provider-specific CLI coding agents created a need for a unified agent-client protocol, analogous to LSP for language tooling.",
+        "confidence": "stated",
+        "timestamp_sec": 14
+      },
+      {
+        "claim": "ACP already has roughly 40 client implementations, including JetBrains, Obsidian, and open claw.",
+        "confidence": "stated",
+        "timestamp_sec": 54
+      },
+      {
+        "claim": "A functional coding agent needs only two tools \u2014 read file and edit file \u2014 as its bare minimum.",
+        "confidence": "stated",
+        "timestamp_sec": 147
+      },
+      {
+        "claim": "Because model APIs are stateless, every agent works the same way: resend the conversation, get a message or tool call, execute locally, loop.",
+        "confidence": "stated",
+        "timestamp_sec": 147
+      },
+      {
+        "claim": "Making an existing agent ACP-compatible requires implementing only four functions and can be done in roughly 15 minutes.",
+        "confidence": "stated",
+        "timestamp_sec": 998
+      },
+      {
+        "claim": "Agents should read files through ACP's proxied filesystem rather than native fs APIs, because the client may hold unsaved buffer state the agent needs to see.",
+        "confidence": "stated",
+        "timestamp_sec": 769
+      },
+      {
+        "claim": "Diff rendering belongs on the client side: the agent sends only old text and new text, and the client computes and displays the diff.",
+        "confidence": "stated",
+        "timestamp_sec": 998
+      },
+      {
+        "claim": "Letting the client own terminal creation and management, rather than the agent, is the better default because it adds interactivity to the editor UI.",
+        "confidence": "implied",
+        "timestamp_sec": 949
+      },
+      {
+        "claim": "ACP currently only supports standard IO transport; remote transport is not yet available.",
+        "confidence": "stated",
+        "timestamp_sec": 1056
+      },
+      {
+        "claim": "Agent-generated code such as this demo should not be used in production.",
+        "confidence": "stated",
+        "timestamp_sec": 998
+      }
+    ],
+    "speaker_org": "Zed"
+  },
+  "_meta": {
+    "slug": "building-an-acp-compatible-agent-live",
+    "video_id": "HsxQICTLF84",
+    "url": "https://www.youtube.com/watch?v=HsxQICTLF84",
+    "word_count": 2822,
+    "wall_sec": 44.4,
+    "run_at": "2026-08-12T19:36:26Z",
+    "effort": "medium"
+  }
+}

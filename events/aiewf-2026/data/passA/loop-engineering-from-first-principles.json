@@ -1,0 +1,273 @@
+{
+  "is_error": false,
+  "duration_api_ms": 63590,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "ae970871-f02b-406c-a8a9-938cce433814",
+  "total_cost_usd": 0.25439399999999995,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 10424,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 5532,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 10424,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 5532,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 10424,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 10424
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 6625,
+      "outputTokens": 13,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.00669,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 5532,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 10424,
+      "webSearchRequests": 0,
+      "costUSD": 0.24770399999999998,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Kyle Mistele argues that the current hype around agentic loops \u2014 piping a prompt into a coding agent and letting it run \u2014 produces 40,000-line PRs nobody reads, and doesn't survive contact with real teams, real customers, and real compliance obligations. His alternative is to borrow classical control theory: define a set point (the desired codebase property), build a sensor (AST-grep rules, lint, or an agent), a controller that picks one small incremental change, and an actuator agent that applies it. He walks through a production example from HumanLayer \u2014 incrementally migrating 150 RPC procedures to Effect \u2014 including a 'disturbance dampener' that blocks teammates from adding new violations, a version-controlled feedback file for low-friction human re-steering, and flow control that refuses to open a new PR while the previous one is unreviewed. The payoff he claims is loops that are cheap, low-risk, and produce diffs humans actually read, rather than a read-only code future. Worth watching if you're trying to run autonomous agents against a large, mission-critical codebase and want a concrete, GitHub-Actions-shaped blueprint rather than a manifesto.\",\n  \"key_points\": [\n    \"Blind 'Ralph'-style bash loops work for solo work on non-critical systems but break down on teams with real customers, SLAs, and regulatory obligations, because they generate PRs too large to review.\",\n    \"Control theory maps cleanly onto agentic coding: set point (desired codebase state), sensor (measures current state), controller (decides an incremental change), actuator (applies it), with the codebase undergoing disturbances from teammates.\",\n    \"Sensors can be deterministic (ESLint, AST-grep, packwerk), non-deterministic (agent plus skill plus natural-language rules), or a pipeline combining both; AST-grep is favored because it's language-agnostic and out-of-band from configs agents can disable with inline comments.\",\n    \"Before migrating incrementally, run a full scan on main, sort violations deterministically, and commit the list to version control so every new PR can be checked for newly added violations \u2014 a 'disturbance dampener' that stops the bleeding.\",\n    \"A smarter controller can enrich the control signal with telemetry \u2014 which procedures have the most errors or worst instrumentation \u2014 so the actuator improves the code rather than doing a one-to-one migration.\",\n    \"Hand-written 'golden patterns' committed before the loop runs give the pattern-replicating agent idiomatic examples instead of leaving it to reproduce docs or internet knowledge.\",\n    \"A markdown feedback file loaded into the actuator's context each run, updated via a `/iterate` PR comment trigger, puts a human on the loop with low friction and gives the steering instructions version history and revertability.\",\n    \"Flow control \u2014 refusing to run if any PR carrying the loop's label is still open \u2014 caps each loop at one open PR, preventing stacked, duplicated, and conflicting work when humans are away.\",\n    \"Loops should run on existing CI (GitHub Actions, GitLab, CircleCI) which already has code access, secrets, and scheduling primitives; no new cluster is needed.\",\n    \"Throughput scales by batching multiple targets per run, splitting each into its own implementation phase and context window (cheaper and more reliable), or fanning out one PR per team member.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"I think we've all been building loops lately. And I realized recently, I think we're all doing it wrong.\",\n      \"timestamp_sec\": 1,\n      \"why\": \"states the talk's contrarian thesis in one line\"\n    },\n    {\n      \"text\": \"if we're doing this, we're still building 40,000 line PRs that just nobody wants to read\",\n      \"timestamp_sec\": 60,\n      \"why\": \"names the concrete failure mode the whole talk is organized against\"\n    },\n    {\n      \"text\": \"It works very well if you're not building on a team. And it works very well if you're not working on critical systems. But most of us are working on teams and we don't fit in that box.\",\n      \"timestamp_sec\": 60,\n      \"why\": \"precise scoping of where Ralph loops do and don't apply\"\n    },\n    {\n      \"text\": \"Peter Steinberger said that we shouldn't be prompting coding agents anymore, right? We should just be designing loops that prompt our agents.\",\n      \"timestamp_sec\": 97,\n      \"why\": \"captures the industry position the speaker is responding to\"\n    },\n    {\n      \"text\": \"bad code is much more expensive in the age of agents than it it has ever been at any point in the past\",\n      \"timestamp_sec\": 211,\n      \"why\": \"the economic argument against unread generated code\"\n    },\n    {\n      \"text\": \"I think loops are super powerful, but we can design loops and still read the code. In fact, we can design loops to make it easier to read the code because the loops are making the code better.\",\n      \"timestamp_sec\": 250,\n      \"why\": \"the constructive counter-thesis to 'code is read-only now'\"\n    },\n    {\n      \"text\": \"Control theory is all about how we drive a dynamic system, which would be your codebase, towards some desired, stable, or optimal end state\",\n      \"timestamp_sec\": 250,\n      \"why\": \"the central analogy the talk builds on\"\n    },\n    {\n      \"text\": \"Control loops are ideal when we have a system that we want to change, a problem we can measure, and a way to get feedback on the result of that change.\",\n      \"timestamp_sec\": 320,\n      \"why\": \"gives the applicability test for whether this pattern fits your problem\"\n    },\n    {\n      \"text\": \"So, control loops are the opposite of what I'm going to call a blind Ralph loop.\",\n      \"timestamp_sec\": 369,\n      \"why\": \"coins the contrast term used throughout\"\n    },\n    {\n      \"text\": \"The best Ralphs are actually applying control theory.\",\n      \"timestamp_sec\": 369,\n      \"why\": \"concedes the steelman rather than strawmanning the opposing approach\"\n    },\n    {\n      \"text\": \"The key questions are, can we find something we can measure? Can we apply changes incrementally?\",\n      \"timestamp_sec\": 506,\n      \"why\": \"the reusable checklist for picking loop-suitable tasks\"\n    },\n    {\n      \"text\": \"we're going to run a full scan once on main, sort all the violations deterministically, and track it in our version control\",\n      \"timestamp_sec\": 616,\n      \"why\": \"the concrete mechanism behind the disturbance dampener\"\n    },\n    {\n      \"text\": \"I don't think you should ever send an agent to do deterministic code's job, but you certainly can.\",\n      \"timestamp_sec\": 679,\n      \"why\": \"a clear design principle others might disagree with\"\n    },\n    {\n      \"text\": \"At Human Layer, we like to build out what we call golden patterns by hand before setting the agent loose.\",\n      \"timestamp_sec\": 746,\n      \"why\": \"names a transferable practice for steering pattern-replicating agents\"\n    },\n    {\n      \"text\": \"my recommendation is to use GitHub actions or your GitLab or your CircleCI or whatever else you're using because it has access to your code, it has access to your secrets\",\n      \"timestamp_sec\": 779,\n      \"why\": \"concrete infrastructure recommendation against building new systems\"\n    },\n    {\n      \"text\": \"the way to do this is to just create a feedback file that's tracked in version control just as a markdown file\",\n      \"timestamp_sec\": 851,\n      \"why\": \"the human-on-the-loop mechanism, stated as a simple implementable artifact\"\n    },\n    {\n      \"text\": \"No human reviewed the last output, so there's no reason to stack up even more work for humans to review.\",\n      \"timestamp_sec\": 957,\n      \"why\": \"the reasoning behind flow control, generalizable to any autonomous agent fleet\"\n    },\n    {\n      \"text\": \"I have 150 RPC procedures to migrate. If I do one at a time, it's going to take 6 months, which is way longer than I want to wait.\",\n      \"timestamp_sec\": 957,\n      \"why\": \"reports the real numbers behind the throughput problem\"\n    },\n    {\n      \"text\": \"we could have our controller pick three or five and then do each of those in a separate implementation phase, which will be both cheaper and more reliable since each migration gets its own context window\",\n      \"timestamp_sec\": 989,\n      \"why\": \"names the cost/reliability tradeoff of per-task context isolation\"\n    }\n  ],\n  \"concepts\": [\n    \"control loop architecture\",\n    \"agentic coding loops\",\n    \"incremental code migration\",\n    \"deterministic sensors\",\n    \"human-in-the-loop steering\",\n    \"flow control for agent output\",\n    \"ast-based static analysis\",\n    \"skill design for coding agents\",\n    \"code review burden\",\n    \"ci-hosted agent orchestration\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Blind prompt-in-a-bash-loop agent setups are the wrong pattern for teams working on critical systems, even with multiple verifier and code-review agents attached.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 60\n    },\n    {\n      \"claim\": \"The 'code is read-only now' thesis is unproven and prohibitively expensive for anyone without a Frontier Lab's unlimited token budget.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 211\n    },\n    {\n      \"claim\": \"Bad code is more expensive in the age of agents than at any previous point.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 211\n    },\n    {\n      \"claim\": \"Well-designed loops make code easier to read rather than making reading unnecessary.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 250\n    },\n    {\n      \"claim\": \"Ralph loops are not inherently wrong \u2014 the good ones already apply control theory; the failure is reading Ralph too literally as a bash loop.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 406\n    },\n    {\n      \"claim\": \"A task is suitable for a control loop only if you can measure the property, apply changes incrementally, and get feedback on change quality.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 544\n    },\n    {\n      \"claim\": \"AST-grep is preferable to lint/TypeScript config for loop sensors because it is language-agnostic and out-of-band from configs that coding agents disable with inline comments.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 575\n    },\n    {\n      \"claim\": \"You should never use an agent to do a job deterministic code can do.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 679\n    },\n    {\n      \"claim\": \"Existing CI systems are the right runtime for agent loops; a dedicated cluster is unnecessary.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 779\n    },\n    {\n      \"claim\": \"A loop should never open a new PR while a previous PR from that loop remains unreviewed, capping it at one open PR at a time.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 925\n    },\n    {\n      \"claim\": \"Giving each migration its own context window in a separate implementation phase is both cheaper and more reliable than batching them into one.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 989\n    },\n    {\n      \"claim\": \"Coding agents are pattern replicators, so hand-written idiomatic examples in the repo outperform relying on the agent's internet-derived knowledge or library docs.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 746\n    }\n  ],\n  \"speaker_org\": \"HumanLayer\"\n}",
+  "ttft_ms": 20666,
+  "ttft_stream_ms": 901,
+  "time_to_request_ms": 33,
+  "type": "result",
+  "duration_ms": 63897,
+  "uuid": "44dc74f9-bb2e-4838-9d76-6e29e0e5d21d",
+  "passA": {
+    "summary": "Kyle Mistele argues that the current hype around agentic loops \u2014 piping a prompt into a coding agent and letting it run \u2014 produces 40,000-line PRs nobody reads, and doesn't survive contact with real teams, real customers, and real compliance obligations. His alternative is to borrow classical control theory: define a set point (the desired codebase property), build a sensor (AST-grep rules, lint, or an agent), a controller that picks one small incremental change, and an actuator agent that applies it. He walks through a production example from HumanLayer \u2014 incrementally migrating 150 RPC procedures to Effect \u2014 including a 'disturbance dampener' that blocks teammates from adding new violations, a version-controlled feedback file for low-friction human re-steering, and flow control that refuses to open a new PR while the previous one is unreviewed. The payoff he claims is loops that are cheap, low-risk, and produce diffs humans actually read, rather than a read-only code future. Worth watching if you're trying to run autonomous agents against a large, mission-critical codebase and want a concrete, GitHub-Actions-shaped blueprint rather than a manifesto.",
+    "key_points": [
+      "Blind 'Ralph'-style bash loops work for solo work on non-critical systems but break down on teams with real customers, SLAs, and regulatory obligations, because they generate PRs too large to review.",
+      "Control theory maps cleanly onto agentic coding: set point (desired codebase state), sensor (measures current state), controller (decides an incremental change), actuator (applies it), with the codebase undergoing disturbances from teammates.",
+      "Sensors can be deterministic (ESLint, AST-grep, packwerk), non-deterministic (agent plus skill plus natural-language rules), or a pipeline combining both; AST-grep is favored because it's language-agnostic and out-of-band from configs agents can disable with inline comments.",
+      "Before migrating incrementally, run a full scan on main, sort violations deterministically, and commit the list to version control so every new PR can be checked for newly added violations \u2014 a 'disturbance dampener' that stops the bleeding.",
+      "A smarter controller can enrich the control signal with telemetry \u2014 which procedures have the most errors or worst instrumentation \u2014 so the actuator improves the code rather than doing a one-to-one migration.",
+      "Hand-written 'golden patterns' committed before the loop runs give the pattern-replicating agent idiomatic examples instead of leaving it to reproduce docs or internet knowledge.",
+      "A markdown feedback file loaded into the actuator's context each run, updated via a `/iterate` PR comment trigger, puts a human on the loop with low friction and gives the steering instructions version history and revertability.",
+      "Flow control \u2014 refusing to run if any PR carrying the loop's label is still open \u2014 caps each loop at one open PR, preventing stacked, duplicated, and conflicting work when humans are away.",
+      "Loops should run on existing CI (GitHub Actions, GitLab, CircleCI) which already has code access, secrets, and scheduling primitives; no new cluster is needed.",
+      "Throughput scales by batching multiple targets per run, splitting each into its own implementation phase and context window (cheaper and more reliable), or fanning out one PR per team member."
+    ],
+    "notable_quotes": [
+      {
+        "text": "I think we've all been building loops lately. And I realized recently, I think we're all doing it wrong.",
+        "timestamp_sec": 1,
+        "why": "states the talk's contrarian thesis in one line"
+      },
+      {
+        "text": "if we're doing this, we're still building 40,000 line PRs that just nobody wants to read",
+        "timestamp_sec": 60,
+        "why": "names the concrete failure mode the whole talk is organized against"
+      },
+      {
+        "text": "It works very well if you're not building on a team. And it works very well if you're not working on critical systems. But most of us are working on teams and we don't fit in that box.",
+        "timestamp_sec": 60,
+        "why": "precise scoping of where Ralph loops do and don't apply"
+      },
+      {
+        "text": "Peter Steinberger said that we shouldn't be prompting coding agents anymore, right? We should just be designing loops that prompt our agents.",
+        "timestamp_sec": 97,
+        "why": "captures the industry position the speaker is responding to"
+      },
+      {
+        "text": "bad code is much more expensive in the age of agents than it it has ever been at any point in the past",
+        "timestamp_sec": 211,
+        "why": "the economic argument against unread generated code"
+      },
+      {
+        "text": "I think loops are super powerful, but we can design loops and still read the code. In fact, we can design loops to make it easier to read the code because the loops are making the code better.",
+        "timestamp_sec": 250,
+        "why": "the constructive counter-thesis to 'code is read-only now'"
+      },
+      {
+        "text": "Control theory is all about how we drive a dynamic system, which would be your codebase, towards some desired, stable, or optimal end state",
+        "timestamp_sec": 250,
+        "why": "the central analogy the talk builds on"
+      },
+      {
+        "text": "Control loops are ideal when we have a system that we want to change, a problem we can measure, and a way to get feedback on the result of that change.",
+        "timestamp_sec": 320,
+        "why": "gives the applicability test for whether this pattern fits your problem"
+      },
+      {
+        "text": "So, control loops are the opposite of what I'm going to call a blind Ralph loop.",
+        "timestamp_sec": 369,
+        "why": "coins the contrast term used throughout"
+      },
+      {
+        "text": "The best Ralphs are actually applying control theory.",
+        "timestamp_sec": 369,
+        "why": "concedes the steelman rather than strawmanning the opposing approach"
+      },
+      {
+        "text": "The key questions are, can we find something we can measure? Can we apply changes incrementally?",
+        "timestamp_sec": 506,
+        "why": "the reusable checklist for picking loop-suitable tasks"
+      },
+      {
+        "text": "we're going to run a full scan once on main, sort all the violations deterministically, and track it in our version control",
+        "timestamp_sec": 616,
+        "why": "the concrete mechanism behind the disturbance dampener"
+      },
+      {
+        "text": "I don't think you should ever send an agent to do deterministic code's job, but you certainly can.",
+        "timestamp_sec": 679,
+        "why": "a clear design principle others might disagree with"
+      },
+      {
+        "text": "At Human Layer, we like to build out what we call golden patterns by hand before setting the agent loose.",
+        "timestamp_sec": 746,
+        "why": "names a transferable practice for steering pattern-replicating agents"
+      },
+      {
+        "text": "my recommendation is to use GitHub actions or your GitLab or your CircleCI or whatever else you're using because it has access to your code, it has access to your secrets",
+        "timestamp_sec": 779,
+        "why": "concrete infrastructure recommendation against building new systems"
+      },
+      {
+        "text": "the way to do this is to just create a feedback file that's tracked in version control just as a markdown file",
+        "timestamp_sec": 851,
+        "why": "the human-on-the-loop mechanism, stated as a simple implementable artifact"
+      },
+      {
+        "text": "No human reviewed the last output, so there's no reason to stack up even more work for humans to review.",
+        "timestamp_sec": 957,
+        "why": "the reasoning behind flow control, generalizable to any autonomous agent fleet"
+      },
+      {
+        "text": "I have 150 RPC procedures to migrate. If I do one at a time, it's going to take 6 months, which is way longer than I want to wait.",
+        "timestamp_sec": 957,
+        "why": "reports the real numbers behind the throughput problem"
+      },
+      {
+        "text": "we could have our controller pick three or five and then do each of those in a separate implementation phase, which will be both cheaper and more reliable since each migration gets its own context window",
+        "timestamp_sec": 989,
+        "why": "names the cost/reliability tradeoff of per-task context isolation"
+      }
+    ],
+    "concepts": [
+      "control loop architecture",
+      "agentic coding loops",
+      "incremental code migration",
+      "deterministic sensors",
+      "human-in-the-loop steering",
+      "flow control for agent output",
+      "ast-based static analysis",
+      "skill design for coding agents",
+      "code review burden",
+      "ci-hosted agent orchestration"
+    ],
+    "positions": [
+      {
+        "claim": "Blind prompt-in-a-bash-loop agent setups are the wrong pattern for teams working on critical systems, even with multiple verifier and code-review agents attached.",
+        "confidence": "stated",
+        "timestamp_sec": 60
+      },
+      {
+        "claim": "The 'code is read-only now' thesis is unproven and prohibitively expensive for anyone without a Frontier Lab's unlimited token budget.",
+        "confidence": "stated",
+        "timestamp_sec": 211
+      },
+      {
+        "claim": "Bad code is more expensive in the age of agents than at any previous point.",
+        "confidence": "stated",
+        "timestamp_sec": 211
+      },
+      {
+        "claim": "Well-designed loops make code easier to read rather than making reading unnecessary.",
+        "confidence": "stated",
+        "timestamp_sec": 250
+      },
+      {
+        "claim": "Ralph loops are not inherently wrong \u2014 the good ones already apply control theory; the failure is reading Ralph too literally as a bash loop.",
+        "confidence": "stated",
+        "timestamp_sec": 406
+      },
+      {
+        "claim": "A task is suitable for a control loop only if you can measure the property, apply changes incrementally, and get feedback on change quality.",
+        "confidence": "stated",
+        "timestamp_sec": 544
+      },
+      {
+        "claim": "AST-grep is preferable to lint/TypeScript config for loop sensors because it is language-agnostic and out-of-band from configs that coding agents disable with inline comments.",
+        "confidence": "stated",
+        "timestamp_sec": 575
+      },
+      {
+        "claim": "You should never use an agent to do a job deterministic code can do.",
+        "confidence": "stated",
+        "timestamp_sec": 679
+      },
+      {
+        "claim": "Existing CI systems are the right runtime for agent loops; a dedicated cluster is unnecessary.",
+        "confidence": "stated",
+        "timestamp_sec": 779
+      },
+      {
+        "claim": "A loop should never open a new PR while a previous PR from that loop remains unreviewed, capping it at one open PR at a time.",
+        "confidence": "stated",
+        "timestamp_sec": 925
+      },
+      {
+        "claim": "Giving each migration its own context window in a separate implementation phase is both cheaper and more reliable than batching them into one.",
+        "confidence": "stated",
+        "timestamp_sec": 989
+      },
+      {
+        "claim": "Coding agents are pattern replicators, so hand-written idiomatic examples in the repo outperform relying on the agent's internet-derived knowledge or library docs.",
+        "confidence": "implied",
+        "timestamp_sec": 746
+      }
+    ],
+    "speaker_org": "HumanLayer"
+  },
+  "_meta": {
+    "slug": "loop-engineering-from-first-principles",
+    "video_id": "xIt_mTQp6mY",
+    "url": "https://www.youtube.com/watch?v=xIt_mTQp6mY",
+    "word_count": 3493,
+    "wall_sec": 64.9,
+    "run_at": "2026-08-12T20:01:40Z",
+    "effort": "medium"
+  }
+}

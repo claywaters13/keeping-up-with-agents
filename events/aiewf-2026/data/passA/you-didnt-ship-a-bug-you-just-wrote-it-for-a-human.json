@@ -1,0 +1,298 @@
+{
+  "is_error": false,
+  "duration_api_ms": 52717,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "c97061a7-782e-4448-b363-4b44bce08e92",
+  "total_cost_usd": 0.198471,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 7954,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 4362,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 7954,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 4362,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 7954,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 7954
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 4632,
+      "outputTokens": 17,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.004717,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 4362,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 7954,
+      "webSearchRequests": 0,
+      "costUSD": 0.193754,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Ravi Madabhushi, co-founder of Scalekit, argues that the identity and authorization primitives we built for humans and deterministic programs fundamentally break once agents become the actors. He traces the problem from a small operational symptom \u2014 a 'last seen' timestamp being written 60x faster once agents started hitting their APIs \u2014 to the deeper architectural assumption that whoever authenticates is also who acts, and that permissions granted at registration time are safe because a human wrote deterministic code that could be code-reviewed. Agents violate both: the principal and the actor diverge, and the program's behavior is probabilistic rather than inspectable. He observes that most agents his customers build carry far more scopes than their job requires, and that most MCP servers surface every available tool regardless of which user authorized the agent. His prescription: bind the actor to the principal at all times, give agents their own identity with attribute-, context-, and principal-level scoping, default to least privilege with just-in-time elevation, and maintain full audit visibility over who authorized what, for how long. Worth watching if you are designing auth for agentic systems or MCP servers and want a concrete critique of why OAuth scopes are necessary but not sufficient.\",\n  \"key_points\": [\n    \"A rhythmic latency spike traced to a 'last seen' timestamp update revealed that agent traffic was writing 60 times faster than human traffic, which prompted a broader audit of human-era assumptions in their auth platform.\",\n    \"Both existing identity slots \u2014 the human-acting-through-an-app/API-key model and the service account model \u2014 were designed on the premise that whoever authenticates is also who acts.\",\n    \"Traditional permission models are safe largely because the acting program is deterministic and code-reviewable, which is why processes like Google's developer security review work at all.\",\n    \"Agents break this on two axes: the principal is no longer the actor (delegated access is required), and there is no determinism guaranteeing the agent will do tomorrow what it did today.\",\n    \"Agents in customer deployments routinely hold more permissions and scopes than their job requires, not from developer carelessness but because existing primitives cannot express fine-grained agent permissions.\",\n    \"Most MCP servers do not limit tool surface based on which user authorized the agent, exposing all supported tools and letting the agent choose, which leads to wrong-tool selection.\",\n    \"The fix requires the actor to be bound to the principal at all times plus agent-specific identity with attribute-level, context-level, and principal-level scoping \u2014 e.g. time-of-day limits, sender restrictions, recipient restrictions.\",\n    \"Agents should be least-privileged by default and request just-in-time authorization for elevated scopes, backed by complete audit visibility into who acted, on behalf of whom, who authorized it, and for how long.\",\n    \"This is presented as a present-tense problem, not a future one, citing real incidents of agents deleting production databases and a customer (ref.tools) whose product has no human actors at all.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"when agents started hitting our APIs in the last 12 months or so, we realized that this last seen update is happening 60 times faster than what it would, and that is creating unnecessary pressure in our DB write system\",\n      \"timestamp_sec\": 54,\n      \"why\": \"The concrete number and symptom that motivates the entire talk.\"\n    },\n    {\n      \"text\": \"most of the agents our customers are building have way too permissions and scopes than the agent's responsibility or the agent's job is\",\n      \"timestamp_sec\": 138,\n      \"why\": \"States the core empirical claim from a vendor with visibility across many deployments.\"\n    },\n    {\n      \"text\": \"it's not because the developers who are building the agents are careless, but somehow this became a default pattern of giving the agents what they need access to, and the existing primitives that we have don't let us give extremely fine-grained permissions to the agents\",\n      \"timestamp_sec\": 138,\n      \"why\": \"Locates the fault in the primitives rather than in developer discipline.\"\n    },\n    {\n      \"text\": \"We predominantly have two slots, and neither of the slots was built for agents in mind.\",\n      \"timestamp_sec\": 196,\n      \"why\": \"Compact framing of the architectural gap.\"\n    },\n    {\n      \"text\": \"the fundamental philosophy that we've always maintained is whoever is authenticating is the one that is acting. Every action the program or the human takes is based on fixed set of permissions that actor was granted at some time.\",\n      \"timestamp_sec\": 237,\n      \"why\": \"Names the exact assumption the rest of the talk dismantles.\"\n    },\n    {\n      \"text\": \"it is still intentional based on what the human wrote\",\n      \"timestamp_sec\": 284,\n      \"why\": \"The crux of why pre-agent permission models were tolerable.\"\n    },\n    {\n      \"text\": \"it's a deterministic program, and it always stays in its own lane. It can never do what it was not programmed to do. And you could inspect the code to say, Okay, is the program doing what it's supposed to do?\",\n      \"timestamp_sec\": 330,\n      \"why\": \"Articulates the inspectability guarantee that agents remove.\"\n    },\n    {\n      \"text\": \"These programs behave the exact same way a developer programmed them to work. But, agents fundamentally break this assumption.\",\n      \"timestamp_sec\": 378,\n      \"why\": \"The pivot point of the argument.\"\n    },\n    {\n      \"text\": \"in the case of agents, the principal is not the same as an actor. You need to give delegated access, so that the agent can act on behalf of the user.\",\n      \"timestamp_sec\": 378,\n      \"why\": \"States the first of the two structural breaks precisely.\"\n    },\n    {\n      \"text\": \"There is no determinism baked in to say what the agent will do or won't do.\",\n      \"timestamp_sec\": 415,\n      \"why\": \"The second structural break, stated as a design constraint rather than a complaint.\"\n    },\n    {\n      \"text\": \"we go back to the agent acts as the user, which is even worse\",\n      \"timestamp_sec\": 451,\n      \"why\": \"Takes a clear side against the impersonation pattern many teams ship.\"\n    },\n    {\n      \"text\": \"most of the MCP servers that we've worked with don't actually limit the tool context access to the agent based on which user authorized the agent\",\n      \"timestamp_sec\": 502,\n      \"why\": \"A specific, checkable indictment of current MCP server practice.\"\n    },\n    {\n      \"text\": \"the agent is still seeing the same surface regardless whom it is acting for\",\n      \"timestamp_sec\": 502,\n      \"why\": \"Names the failure mode in one line.\"\n    },\n    {\n      \"text\": \"the actor, in this case, an agent, has to be bound to the principal at all times. And the agent should have its own identity.\",\n      \"timestamp_sec\": 548,\n      \"why\": \"The central prescription.\"\n    },\n    {\n      \"text\": \"There's no extremely fine-grained scoping to say can this agent act at this hour? Can this agent read emails only from these senders? Can this agent send emails to only this recipients?\",\n      \"timestamp_sec\": 548,\n      \"why\": \"Makes the abstract demand for fine-grained scopes concrete with real examples.\"\n    },\n    {\n      \"text\": \"gone are the days when the broad scoped auth scopes that we defined is okay because in that case developer was writing a deterministic application and you can review the code\",\n      \"timestamp_sec\": 587,\n      \"why\": \"Ties the prescription back to the determinism argument.\"\n    },\n    {\n      \"text\": \"It should be at an attribute level scoping, it should be context level scoping, it should be principal level scoping.\",\n      \"timestamp_sec\": 628,\n      \"why\": \"The three axes of the proposed permission model.\"\n    },\n    {\n      \"text\": \"agents should be least privileged by default and they should be able to ask for just-in-time authorization if they want elevated scopes\",\n      \"timestamp_sec\": 628,\n      \"why\": \"A named, adoptable pattern.\"\n    },\n    {\n      \"text\": \"We have seen enough incidents where agents end up doing rogue things. They end up deleting production databases and stuff like that.\",\n      \"timestamp_sec\": 667,\n      \"why\": \"Grounds the risk claim in reported incidents rather than hypotheticals.\"\n    },\n    {\n      \"text\": \"you have to have absolute visibility into what your agent can do, every action that's taken in your system, who took it, on behalf of whom, and who authorized it, when was the authorization given, what authorization was given, how long is it given for\",\n      \"timestamp_sec\": 703,\n      \"why\": \"A complete audit requirements checklist in one sentence.\"\n    },\n    {\n      \"text\": \"if you can't deterministically control what your agent can or cannot do, then you're just praying that agent doesn't end up doing what it's not supposed to do. And praying is not a strategy, as we all know.\",\n      \"timestamp_sec\": 703,\n      \"why\": \"The talk's rhetorical payoff.\"\n    },\n    {\n      \"text\": \"OAuth is a good place to start, but you need something beyond OAuth to make sure that the agents have extremely fine-grained access controls\",\n      \"timestamp_sec\": 751,\n      \"why\": \"The closing position: OAuth necessary but insufficient.\"\n    }\n  ],\n  \"concepts\": [\n    \"agent identity\",\n    \"delegated authorization\",\n    \"principal-actor binding\",\n    \"oauth scopes\",\n    \"least privilege\",\n    \"just-in-time authorization\",\n    \"fine-grained access control\",\n    \"mcp server design\",\n    \"tool surface scoping\",\n    \"agent audit logging\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Agent traffic caused a 'last seen' timestamp to be updated 60 times faster than human traffic, creating avoidable database write pressure that batching at one-second granularity resolved.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 54\n    },\n    {\n      \"claim\": \"Most agents that Scalekit's customers build hold more permissions and scopes than their responsibility requires.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 138\n    },\n    {\n      \"claim\": \"Over-permissioned agents are caused by inadequate authorization primitives, not by careless developers.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 138\n    },\n    {\n      \"claim\": \"Existing identity models rest on the assumption that the entity authenticating is the same entity acting, and that permissions fixed at registration time remain adequate.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 237\n    },\n    {\n      \"claim\": \"Traditional service account and OAuth models were acceptable only because the acting program was deterministic and its code could be inspected.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 330\n    },\n    {\n      \"claim\": \"Many systems agents need to reach still do not support OAuth, so there is no on-behalf-of principal and no way to distinguish an agent acting for a user from the user acting directly.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 378\n    },\n    {\n      \"claim\": \"Having an agent act as the user is worse than giving the agent its own client ID and delegated access.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 451\n    },\n    {\n      \"claim\": \"Most MCP servers surface all tools the user or application supports rather than scoping the tool surface to the authorizing user, causing agents to pick wrong tools.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 502\n    },\n    {\n      \"claim\": \"Current OAuth scopes on major providers like Gmail are too coarse \u2014 they express 'can send email on your behalf' but not time-of-day, sender, or recipient restrictions.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 548\n    },\n    {\n      \"claim\": \"Agent permissions should be time-bounded to the agent's operating window and restricted to the tools required for its specific job.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 587\n    },\n    {\n      \"claim\": \"Agent authorization requires attribute-level, context-level, and principal-level scoping, with least privilege by default and just-in-time elevation.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 628\n    },\n    {\n      \"claim\": \"Agents have already caused real production incidents, including deleting production databases, making this a present-day rather than future problem.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 667\n    },\n    {\n      \"claim\": \"Without complete audit visibility and deterministic controls over agent capability, a system has no security posture beyond hope.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 703\n    },\n    {\n      \"claim\": \"OAuth is a valid starting point but insufficient for agent authorization; something beyond it is required.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 751\n    },\n    {\n      \"claim\": \"Applications, APIs, and MCP servers must be architected for agents from the ground up because human-focused architecture does not scale to agents.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 0\n    }\n  ],\n  \"speaker_org\": \"Scalekit\"\n}",
+  "ttft_ms": 51429,
+  "ttft_stream_ms": 1775,
+  "time_to_request_ms": 34,
+  "type": "result",
+  "duration_ms": 53964,
+  "uuid": "a6c1a5b7-0e2e-4112-907d-1585eb4d0dc8",
+  "passA": {
+    "summary": "Ravi Madabhushi, co-founder of Scalekit, argues that the identity and authorization primitives we built for humans and deterministic programs fundamentally break once agents become the actors. He traces the problem from a small operational symptom \u2014 a 'last seen' timestamp being written 60x faster once agents started hitting their APIs \u2014 to the deeper architectural assumption that whoever authenticates is also who acts, and that permissions granted at registration time are safe because a human wrote deterministic code that could be code-reviewed. Agents violate both: the principal and the actor diverge, and the program's behavior is probabilistic rather than inspectable. He observes that most agents his customers build carry far more scopes than their job requires, and that most MCP servers surface every available tool regardless of which user authorized the agent. His prescription: bind the actor to the principal at all times, give agents their own identity with attribute-, context-, and principal-level scoping, default to least privilege with just-in-time elevation, and maintain full audit visibility over who authorized what, for how long. Worth watching if you are designing auth for agentic systems or MCP servers and want a concrete critique of why OAuth scopes are necessary but not sufficient.",
+    "key_points": [
+      "A rhythmic latency spike traced to a 'last seen' timestamp update revealed that agent traffic was writing 60 times faster than human traffic, which prompted a broader audit of human-era assumptions in their auth platform.",
+      "Both existing identity slots \u2014 the human-acting-through-an-app/API-key model and the service account model \u2014 were designed on the premise that whoever authenticates is also who acts.",
+      "Traditional permission models are safe largely because the acting program is deterministic and code-reviewable, which is why processes like Google's developer security review work at all.",
+      "Agents break this on two axes: the principal is no longer the actor (delegated access is required), and there is no determinism guaranteeing the agent will do tomorrow what it did today.",
+      "Agents in customer deployments routinely hold more permissions and scopes than their job requires, not from developer carelessness but because existing primitives cannot express fine-grained agent permissions.",
+      "Most MCP servers do not limit tool surface based on which user authorized the agent, exposing all supported tools and letting the agent choose, which leads to wrong-tool selection.",
+      "The fix requires the actor to be bound to the principal at all times plus agent-specific identity with attribute-level, context-level, and principal-level scoping \u2014 e.g. time-of-day limits, sender restrictions, recipient restrictions.",
+      "Agents should be least-privileged by default and request just-in-time authorization for elevated scopes, backed by complete audit visibility into who acted, on behalf of whom, who authorized it, and for how long.",
+      "This is presented as a present-tense problem, not a future one, citing real incidents of agents deleting production databases and a customer (ref.tools) whose product has no human actors at all."
+    ],
+    "notable_quotes": [
+      {
+        "text": "when agents started hitting our APIs in the last 12 months or so, we realized that this last seen update is happening 60 times faster than what it would, and that is creating unnecessary pressure in our DB write system",
+        "timestamp_sec": 54,
+        "why": "The concrete number and symptom that motivates the entire talk."
+      },
+      {
+        "text": "most of the agents our customers are building have way too permissions and scopes than the agent's responsibility or the agent's job is",
+        "timestamp_sec": 138,
+        "why": "States the core empirical claim from a vendor with visibility across many deployments."
+      },
+      {
+        "text": "We predominantly have two slots, and neither of the slots was built for agents in mind.",
+        "timestamp_sec": 196,
+        "why": "Compact framing of the architectural gap."
+      },
+      {
+        "text": "the fundamental philosophy that we've always maintained is whoever is authenticating is the one that is acting. Every action the program or the human takes is based on fixed set of permissions that actor was granted at some time.",
+        "timestamp_sec": 237,
+        "why": "Names the exact assumption the rest of the talk dismantles."
+      },
+      {
+        "text": "it is still intentional based on what the human wrote",
+        "timestamp_sec": 284,
+        "why": "The crux of why pre-agent permission models were tolerable."
+      },
+      {
+        "text": "it's a deterministic program, and it always stays in its own lane. It can never do what it was not programmed to do. And you could inspect the code to say, Okay, is the program doing what it's supposed to do?",
+        "timestamp_sec": 330,
+        "why": "Articulates the inspectability guarantee that agents remove."
+      },
+      {
+        "text": "These programs behave the exact same way a developer programmed them to work. But, agents fundamentally break this assumption.",
+        "timestamp_sec": 378,
+        "why": "The pivot point of the argument."
+      },
+      {
+        "text": "in the case of agents, the principal is not the same as an actor. You need to give delegated access, so that the agent can act on behalf of the user.",
+        "timestamp_sec": 378,
+        "why": "States the first of the two structural breaks precisely."
+      },
+      {
+        "text": "There is no determinism baked in to say what the agent will do or won't do.",
+        "timestamp_sec": 415,
+        "why": "The second structural break, stated as a design constraint rather than a complaint."
+      },
+      {
+        "text": "we go back to the agent acts as the user, which is even worse",
+        "timestamp_sec": 451,
+        "why": "Takes a clear side against the impersonation pattern many teams ship."
+      },
+      {
+        "text": "most of the MCP servers that we've worked with don't actually limit the tool context access to the agent based on which user authorized the agent",
+        "timestamp_sec": 502,
+        "why": "A specific, checkable indictment of current MCP server practice."
+      },
+      {
+        "text": "the agent is still seeing the same surface regardless whom it is acting for",
+        "timestamp_sec": 502,
+        "why": "Names the failure mode in one line."
+      },
+      {
+        "text": "the actor, in this case, an agent, has to be bound to the principal at all times. And the agent should have its own identity.",
+        "timestamp_sec": 548,
+        "why": "The central prescription."
+      },
+      {
+        "text": "There's no extremely fine-grained scoping to say can this agent act at this hour? Can this agent read emails only from these senders? Can this agent send emails to only this recipients?",
+        "timestamp_sec": 548,
+        "why": "Makes the abstract demand for fine-grained scopes concrete with real examples."
+      },
+      {
+        "text": "gone are the days when the broad scoped auth scopes that we defined is okay because in that case developer was writing a deterministic application and you can review the code",
+        "timestamp_sec": 587,
+        "why": "Ties the prescription back to the determinism argument."
+      },
+      {
+        "text": "It should be at an attribute level scoping, it should be context level scoping, it should be principal level scoping.",
+        "timestamp_sec": 628,
+        "why": "The three axes of the proposed permission model."
+      },
+      {
+        "text": "agents should be least privileged by default and they should be able to ask for just-in-time authorization if they want elevated scopes",
+        "timestamp_sec": 628,
+        "why": "A named, adoptable pattern."
+      },
+      {
+        "text": "We have seen enough incidents where agents end up doing rogue things. They end up deleting production databases and stuff like that.",
+        "timestamp_sec": 667,
+        "why": "Grounds the risk claim in reported incidents rather than hypotheticals."
+      },
+      {
+        "text": "you have to have absolute visibility into what your agent can do, every action that's taken in your system, who took it, on behalf of whom, and who authorized it, when was the authorization given, what authorization was given, how long is it given for",
+        "timestamp_sec": 703,
+        "why": "A complete audit requirements checklist in one sentence."
+      },
+      {
+        "text": "if you can't deterministically control what your agent can or cannot do, then you're just praying that agent doesn't end up doing what it's not supposed to do. And praying is not a strategy, as we all know.",
+        "timestamp_sec": 703,
+        "why": "The talk's rhetorical payoff."
+      },
+      {
+        "text": "OAuth is a good place to start, but you need something beyond OAuth to make sure that the agents have extremely fine-grained access controls",
+        "timestamp_sec": 751,
+        "why": "The closing position: OAuth necessary but insufficient."
+      }
+    ],
+    "concepts": [
+      "agent identity",
+      "delegated authorization",
+      "principal-actor binding",
+      "oauth scopes",
+      "least privilege",
+      "just-in-time authorization",
+      "fine-grained access control",
+      "mcp server design",
+      "tool surface scoping",
+      "agent audit logging"
+    ],
+    "positions": [
+      {
+        "claim": "Agent traffic caused a 'last seen' timestamp to be updated 60 times faster than human traffic, creating avoidable database write pressure that batching at one-second granularity resolved.",
+        "confidence": "stated",
+        "timestamp_sec": 54
+      },
+      {
+        "claim": "Most agents that Scalekit's customers build hold more permissions and scopes than their responsibility requires.",
+        "confidence": "stated",
+        "timestamp_sec": 138
+      },
+      {
+        "claim": "Over-permissioned agents are caused by inadequate authorization primitives, not by careless developers.",
+        "confidence": "stated",
+        "timestamp_sec": 138
+      },
+      {
+        "claim": "Existing identity models rest on the assumption that the entity authenticating is the same entity acting, and that permissions fixed at registration time remain adequate.",
+        "confidence": "stated",
+        "timestamp_sec": 237
+      },
+      {
+        "claim": "Traditional service account and OAuth models were acceptable only because the acting program was deterministic and its code could be inspected.",
+        "confidence": "stated",
+        "timestamp_sec": 330
+      },
+      {
+        "claim": "Many systems agents need to reach still do not support OAuth, so there is no on-behalf-of principal and no way to distinguish an agent acting for a user from the user acting directly.",
+        "confidence": "stated",
+        "timestamp_sec": 378
+      },
+      {
+        "claim": "Having an agent act as the user is worse than giving the agent its own client ID and delegated access.",
+        "confidence": "stated",
+        "timestamp_sec": 451
+      },
+      {
+        "claim": "Most MCP servers surface all tools the user or application supports rather than scoping the tool surface to the authorizing user, causing agents to pick wrong tools.",
+        "confidence": "stated",
+        "timestamp_sec": 502
+      },
+      {
+        "claim": "Current OAuth scopes on major providers like Gmail are too coarse \u2014 they express 'can send email on your behalf' but not time-of-day, sender, or recipient restrictions.",
+        "confidence": "stated",
+        "timestamp_sec": 548
+      },
+      {
+        "claim": "Agent permissions should be time-bounded to the agent's operating window and restricted to the tools required for its specific job.",
+        "confidence": "stated",
+        "timestamp_sec": 587
+      },
+      {
+        "claim": "Agent authorization requires attribute-level, context-level, and principal-level scoping, with least privilege by default and just-in-time elevation.",
+        "confidence": "stated",
+        "timestamp_sec": 628
+      },
+      {
+        "claim": "Agents have already caused real production incidents, including deleting production databases, making this a present-day rather than future problem.",
+        "confidence": "stated",
+        "timestamp_sec": 667
+      },
+      {
+        "claim": "Without complete audit visibility and deterministic controls over agent capability, a system has no security posture beyond hope.",
+        "confidence": "stated",
+        "timestamp_sec": 703
+      },
+      {
+        "claim": "OAuth is a valid starting point but insufficient for agent authorization; something beyond it is required.",
+        "confidence": "stated",
+        "timestamp_sec": 751
+      },
+      {
+        "claim": "Applications, APIs, and MCP servers must be architected for agents from the ground up because human-focused architecture does not scale to agents.",
+        "confidence": "stated",
+        "timestamp_sec": 0
+      }
+    ],
+    "speaker_org": "Scalekit"
+  },
+  "_meta": {
+    "slug": "you-didnt-ship-a-bug-you-just-wrote-it-for-a-human",
+    "video_id": "lMCxVorb9wM",
+    "url": "https://www.youtube.com/watch?v=lMCxVorb9wM",
+    "word_count": 2227,
+    "wall_sec": 55.0,
+    "run_at": "2026-08-12T20:34:58Z",
+    "effort": "medium",
+    "quotes_dropped": 0
+  }
+}

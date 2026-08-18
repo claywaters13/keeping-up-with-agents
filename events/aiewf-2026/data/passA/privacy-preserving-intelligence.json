@@ -1,0 +1,272 @@
+{
+  "is_error": false,
+  "duration_api_ms": 55622,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "e45236f8-7822-4e92-befa-6309944d0e76",
+  "total_cost_usd": 0.204714,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 7454,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 4828,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 7454,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 4828,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 7454,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 7454
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 4225,
+      "outputTokens": 17,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.00431,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 4828,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 7454,
+      "webSearchRequests": 0,
+      "costUSD": 0.200404,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Steve Korshakov describes how Bee (acquired by Amazon ~8 months prior) built an always-on AI wearable that records everything a user says while making it technically impossible for the company \u2014 including Amazon insiders \u2014 to read that data. He argues that personal agents are moving from request/response to long-running stateful execution, which forces a design where an encrypted, persistent runtime operates on the user's behalf in the cloud without the user's phone being online. The bulk of the talk is the concrete mechanism: keys generated and held only on the customer device, a remote attestation pipeline verified against a public Sigstore transparency log, confidential-compute nodes running their own inference, forced seven-day key expiry in memory, and a two-tier deployment split where a separate Amazon team's hardcoded signing keys gate what can ship. He closes on agent safety, arguing that sandboxing is the only thing that actually works and that the useful-but-unrestricted agent is still out of reach. Worth watching if you're building a system where the operator must be structurally unable to see user data, rather than merely promising not to.\",\n  \"key_points\": [\n    \"An always-on audio wearable captures roughly 10 million tokens per person per year, and within a single week of recording it is possible to learn virtually everything about that person.\",\n    \"Being inside Amazon made privacy harder, not easier: the standard cloud guarantee that Amazon cannot see a customer's data does not apply when you are Amazon, so the team had to defend against internal threats.\",\n    \"Personal agents are following the trajectory of coding agents like Claude Code \u2014 from request/response to running continuously for hours or days \u2014 which requires a stateful runtime with persistent memory rather than a stateless backend.\",\n    \"The encryption design rests on four commitments: keys live only on the customer's phone, encryption has no opt-out or bypass, all workloads are publicly auditable via a transparency log, and trusted dependencies are minimized.\",\n    \"The phone runs an attestation pipeline verifying both workload integrity and the workload's presence in a Sigstore public transparency log before releasing the key to backend nodes running in confidential compute.\",\n    \"Keys held in memory are force-expired after seven days \u2014 chosen because 24 hours is too short if a user does not open their phone, while seven days bounds what an agent can usefully do.\",\n    \"Deployment is split into a base image and a per-deploy manifest, with signing keys owned by a separate privacy team hardcoded into clients and backends, so the product team can influence but not control what ships.\",\n    \"The team kept the security-critical surface to roughly 20,000 lines of memory-safe code \u2014 most of it attestation verification \u2014 and deliberately avoided rolling their own crypto, a lesson Korshakov attributes to his time at Telegram.\",\n    \"On agent safety, Korshakov's position is that nothing works except sandboxing and denying agents the means to cause harm; he found that tightening OpenClaw's permissions made it markedly less useful.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"a single person usually like captures about 10 million tokens per year\",\n      \"timestamp_sec\": 1,\n      \"why\": \"quantifies the scale of personal data the device accumulates\"\n    },\n    {\n      \"text\": \"you can learn virtually everything about the person within the just like one week of wearing the B device which is extremely sensitive\",\n      \"timestamp_sec\": 70,\n      \"why\": \"states the threat model in one line\"\n    },\n    {\n      \"text\": \"our mission was to not have access to any of this data and not being able to look at it anyone at Amazon\",\n      \"timestamp_sec\": 70,\n      \"why\": \"the core design constraint the rest of the talk answers\"\n    },\n    {\n      \"text\": \"before like you run on Amazon and Amazon gives you pre like guarantees as a customer that they can see your data. But once you inside this changes a lot\",\n      \"timestamp_sec\": 606,\n      \"why\": \"the counterintuitive point that being the cloud provider removes a guarantee rather than granting one\"\n    },\n    {\n      \"text\": \"just few months ago it was like more like request response stuff like change this, change that and now it can works for like hours for us.\",\n      \"timestamp_sec\": 171,\n      \"why\": \"uses coding agents as the leading indicator for personal agent architecture\"\n    },\n    {\n      \"text\": \"we don't require the user device to be online. So it's fully autonomous but at the same time it's fully controlled by the user.\",\n      \"timestamp_sec\": 210,\n      \"why\": \"names the tension the whole key-management scheme exists to resolve\"\n    },\n    {\n      \"text\": \"First of all the key leaves and manage it only on customer device.\",\n      \"timestamp_sec\": 210,\n      \"why\": \"first of the four stated encryption principles\"\n    },\n    {\n      \"text\": \"Everything is encrypted. We don't have any opt out there. No way to disable it. There no way to bypass it.\",\n      \"timestamp_sec\": 258,\n      \"why\": \"a hard product position against configurable privacy\"\n    },\n    {\n      \"text\": \"We use six store for our transparency log and anyone can go there and try to look and verify that this workload is genuine.\",\n      \"timestamp_sec\": 306,\n      \"why\": \"names the specific transparency mechanism (Sigstore) enabling third-party verification\"\n    },\n    {\n      \"text\": \"we can't leave the unencrypted data out of our perimeter uh all our we run our own inference too\",\n      \"timestamp_sec\": 306,\n      \"why\": \"explains why they self-host inference rather than call an API\"\n    },\n    {\n      \"text\": \"24 hours will be too low because you can like not open your phone for like 24 hours something will be missed and like so we pick like about seven days.\",\n      \"timestamp_sec\": 413,\n      \"why\": \"shows the explicit usability/exposure tradeoff behind key expiry\"\n    },\n    {\n      \"text\": \"Our goal was to uh build a system that no one inside of uh Amazon will be able to ship anything unnoticed.\",\n      \"timestamp_sec\": 413,\n      \"why\": \"frames insider deployment as the residual attack surface\"\n    },\n    {\n      \"text\": \"we hardcode their in their signing keys inside of our client apps and our back ends\",\n      \"timestamp_sec\": 459,\n      \"why\": \"the concrete mechanism separating the product team from release authority\"\n    },\n    {\n      \"text\": \"we are using private CA because you can't do this in public certificates because it will populate the public uh transparency log\",\n      \"timestamp_sec\": 527,\n      \"why\": \"a real constraint that forced a non-standard PKI choice\"\n    },\n    {\n      \"text\": \"I calculated before this talk it's just like about 20k lines on memory safe language\",\n      \"timestamp_sec\": 700,\n      \"why\": \"puts a number on the auditable trusted computing base\"\n    },\n    {\n      \"text\": \"when I was a telegram like we reintroduced like build our own crypto and that was like questionable way of doing stuff.\",\n      \"timestamp_sec\": 754,\n      \"why\": \"rare on-record self-criticism informing a current design rule\"\n    },\n    {\n      \"text\": \"I think nothing works except like sandboxing and just not giving them a way to hurt themselves.\",\n      \"timestamp_sec\": 793,\n      \"why\": \"his blunt conclusion on agent safety after running experiments\"\n    },\n    {\n      \"text\": \"It's like you know our brains they can't stop the heart at will right\",\n      \"timestamp_sec\": 793,\n      \"why\": \"the analogy for why capability denial beats behavioral alignment\"\n    },\n    {\n      \"text\": \"I tried open claw. It's like it was once they started to try to tighten this down it became much less use useful.\",\n      \"timestamp_sec\": 899,\n      \"why\": \"a direct critique of a competing approach to agent restriction\"\n    }\n  ],\n  \"concepts\": [\n    \"end-to-end encryption\",\n    \"key management\",\n    \"remote attestation\",\n    \"confidential computing\",\n    \"transparency logs\",\n    \"insider threat modeling\",\n    \"stateful agent runtimes\",\n    \"persistent agent memory\",\n    \"self-hosted inference\",\n    \"agent sandboxing\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"A single person wearing an always-on audio device generates about 10 million tokens per year, and one week of recording is enough to learn virtually everything about them.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1\n    },\n    {\n      \"claim\": \"Operating inside Amazon requires stronger privacy engineering than operating as an Amazon customer, because the customer-facing guarantee that Amazon cannot see your data no longer protects you.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 606\n    },\n    {\n      \"claim\": \"Personal agents will follow coding agents in shifting from request/response to running continuously for hours or days, so they must be built on stateful runtimes with persistent memory.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 171\n    },\n    {\n      \"claim\": \"An agent should be able to operate fully autonomously in the cloud without the user's device being online, while remaining fully controlled by the user.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 210\n    },\n    {\n      \"claim\": \"Encryption should have no opt-out, no way to disable it, and no bypass.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 258\n    },\n    {\n      \"claim\": \"Seven days is the right forced expiration for in-memory keys, because 24 hours risks missing work when a user does not open their phone and seven days covers the realistic horizon for useful agent work.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 413\n    },\n    {\n      \"claim\": \"Splitting deployment authority into a separate privacy team whose signing keys are hardcoded into clients and backends makes unnoticed shipping virtually impossible at a company the size of Amazon.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 459\n    },\n    {\n      \"claim\": \"Keeping the security-critical codebase small \u2014 around 20k lines in a memory-safe language, mostly attestation verification \u2014 is what makes full audit and verification feasible.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 700\n    },\n    {\n      \"claim\": \"Building your own crypto is the wrong approach; reuse trustworthy existing software instead.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 754\n    },\n    {\n      \"claim\": \"Behavioral techniques for taming agents do not work; only sandboxing and removing the means to cause harm do.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 793\n    },\n    {\n      \"claim\": \"OpenClaw's approach of tightening down a general-purpose agent is not good, because restriction destroyed its usefulness \u2014 a narrowly sandboxed special-purpose agent is the better tradeoff today.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 899\n    },\n    {\n      \"claim\": \"Agents should not be given direct access to personal computers.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 793\n    }\n  ],\n  \"speaker_org\": \"Bee (acquired by Amazon)\"\n}",
+  "ttft_ms": 16886,
+  "ttft_stream_ms": 1366,
+  "time_to_request_ms": 33,
+  "type": "result",
+  "duration_ms": 55952,
+  "uuid": "05819f42-5f80-4bb6-a664-71989a56af73",
+  "passA": {
+    "summary": "Steve Korshakov describes how Bee (acquired by Amazon ~8 months prior) built an always-on AI wearable that records everything a user says while making it technically impossible for the company \u2014 including Amazon insiders \u2014 to read that data. He argues that personal agents are moving from request/response to long-running stateful execution, which forces a design where an encrypted, persistent runtime operates on the user's behalf in the cloud without the user's phone being online. The bulk of the talk is the concrete mechanism: keys generated and held only on the customer device, a remote attestation pipeline verified against a public Sigstore transparency log, confidential-compute nodes running their own inference, forced seven-day key expiry in memory, and a two-tier deployment split where a separate Amazon team's hardcoded signing keys gate what can ship. He closes on agent safety, arguing that sandboxing is the only thing that actually works and that the useful-but-unrestricted agent is still out of reach. Worth watching if you're building a system where the operator must be structurally unable to see user data, rather than merely promising not to.",
+    "key_points": [
+      "An always-on audio wearable captures roughly 10 million tokens per person per year, and within a single week of recording it is possible to learn virtually everything about that person.",
+      "Being inside Amazon made privacy harder, not easier: the standard cloud guarantee that Amazon cannot see a customer's data does not apply when you are Amazon, so the team had to defend against internal threats.",
+      "Personal agents are following the trajectory of coding agents like Claude Code \u2014 from request/response to running continuously for hours or days \u2014 which requires a stateful runtime with persistent memory rather than a stateless backend.",
+      "The encryption design rests on four commitments: keys live only on the customer's phone, encryption has no opt-out or bypass, all workloads are publicly auditable via a transparency log, and trusted dependencies are minimized.",
+      "The phone runs an attestation pipeline verifying both workload integrity and the workload's presence in a Sigstore public transparency log before releasing the key to backend nodes running in confidential compute.",
+      "Keys held in memory are force-expired after seven days \u2014 chosen because 24 hours is too short if a user does not open their phone, while seven days bounds what an agent can usefully do.",
+      "Deployment is split into a base image and a per-deploy manifest, with signing keys owned by a separate privacy team hardcoded into clients and backends, so the product team can influence but not control what ships.",
+      "The team kept the security-critical surface to roughly 20,000 lines of memory-safe code \u2014 most of it attestation verification \u2014 and deliberately avoided rolling their own crypto, a lesson Korshakov attributes to his time at Telegram.",
+      "On agent safety, Korshakov's position is that nothing works except sandboxing and denying agents the means to cause harm; he found that tightening OpenClaw's permissions made it markedly less useful."
+    ],
+    "notable_quotes": [
+      {
+        "text": "a single person usually like captures about 10 million tokens per year",
+        "timestamp_sec": 1,
+        "why": "quantifies the scale of personal data the device accumulates"
+      },
+      {
+        "text": "you can learn virtually everything about the person within the just like one week of wearing the B device which is extremely sensitive",
+        "timestamp_sec": 70,
+        "why": "states the threat model in one line"
+      },
+      {
+        "text": "our mission was to not have access to any of this data and not being able to look at it anyone at Amazon",
+        "timestamp_sec": 70,
+        "why": "the core design constraint the rest of the talk answers"
+      },
+      {
+        "text": "before like you run on Amazon and Amazon gives you pre like guarantees as a customer that they can see your data. But once you inside this changes a lot",
+        "timestamp_sec": 606,
+        "why": "the counterintuitive point that being the cloud provider removes a guarantee rather than granting one"
+      },
+      {
+        "text": "just few months ago it was like more like request response stuff like change this, change that and now it can works for like hours for us.",
+        "timestamp_sec": 171,
+        "why": "uses coding agents as the leading indicator for personal agent architecture"
+      },
+      {
+        "text": "we don't require the user device to be online. So it's fully autonomous but at the same time it's fully controlled by the user.",
+        "timestamp_sec": 210,
+        "why": "names the tension the whole key-management scheme exists to resolve"
+      },
+      {
+        "text": "First of all the key leaves and manage it only on customer device.",
+        "timestamp_sec": 210,
+        "why": "first of the four stated encryption principles"
+      },
+      {
+        "text": "Everything is encrypted. We don't have any opt out there. No way to disable it. There no way to bypass it.",
+        "timestamp_sec": 258,
+        "why": "a hard product position against configurable privacy"
+      },
+      {
+        "text": "We use six store for our transparency log and anyone can go there and try to look and verify that this workload is genuine.",
+        "timestamp_sec": 306,
+        "why": "names the specific transparency mechanism (Sigstore) enabling third-party verification"
+      },
+      {
+        "text": "we can't leave the unencrypted data out of our perimeter uh all our we run our own inference too",
+        "timestamp_sec": 306,
+        "why": "explains why they self-host inference rather than call an API"
+      },
+      {
+        "text": "24 hours will be too low because you can like not open your phone for like 24 hours something will be missed and like so we pick like about seven days.",
+        "timestamp_sec": 413,
+        "why": "shows the explicit usability/exposure tradeoff behind key expiry"
+      },
+      {
+        "text": "Our goal was to uh build a system that no one inside of uh Amazon will be able to ship anything unnoticed.",
+        "timestamp_sec": 413,
+        "why": "frames insider deployment as the residual attack surface"
+      },
+      {
+        "text": "we hardcode their in their signing keys inside of our client apps and our back ends",
+        "timestamp_sec": 459,
+        "why": "the concrete mechanism separating the product team from release authority"
+      },
+      {
+        "text": "we are using private CA because you can't do this in public certificates because it will populate the public uh transparency log",
+        "timestamp_sec": 527,
+        "why": "a real constraint that forced a non-standard PKI choice"
+      },
+      {
+        "text": "I calculated before this talk it's just like about 20k lines on memory safe language",
+        "timestamp_sec": 700,
+        "why": "puts a number on the auditable trusted computing base"
+      },
+      {
+        "text": "when I was a telegram like we reintroduced like build our own crypto and that was like questionable way of doing stuff.",
+        "timestamp_sec": 754,
+        "why": "rare on-record self-criticism informing a current design rule"
+      },
+      {
+        "text": "I think nothing works except like sandboxing and just not giving them a way to hurt themselves.",
+        "timestamp_sec": 793,
+        "why": "his blunt conclusion on agent safety after running experiments"
+      },
+      {
+        "text": "It's like you know our brains they can't stop the heart at will right",
+        "timestamp_sec": 793,
+        "why": "the analogy for why capability denial beats behavioral alignment"
+      },
+      {
+        "text": "I tried open claw. It's like it was once they started to try to tighten this down it became much less use useful.",
+        "timestamp_sec": 899,
+        "why": "a direct critique of a competing approach to agent restriction"
+      }
+    ],
+    "concepts": [
+      "end-to-end encryption",
+      "key management",
+      "remote attestation",
+      "confidential computing",
+      "transparency logs",
+      "insider threat modeling",
+      "stateful agent runtimes",
+      "persistent agent memory",
+      "self-hosted inference",
+      "agent sandboxing"
+    ],
+    "positions": [
+      {
+        "claim": "A single person wearing an always-on audio device generates about 10 million tokens per year, and one week of recording is enough to learn virtually everything about them.",
+        "confidence": "stated",
+        "timestamp_sec": 1
+      },
+      {
+        "claim": "Operating inside Amazon requires stronger privacy engineering than operating as an Amazon customer, because the customer-facing guarantee that Amazon cannot see your data no longer protects you.",
+        "confidence": "stated",
+        "timestamp_sec": 606
+      },
+      {
+        "claim": "Personal agents will follow coding agents in shifting from request/response to running continuously for hours or days, so they must be built on stateful runtimes with persistent memory.",
+        "confidence": "stated",
+        "timestamp_sec": 171
+      },
+      {
+        "claim": "An agent should be able to operate fully autonomously in the cloud without the user's device being online, while remaining fully controlled by the user.",
+        "confidence": "stated",
+        "timestamp_sec": 210
+      },
+      {
+        "claim": "Encryption should have no opt-out, no way to disable it, and no bypass.",
+        "confidence": "stated",
+        "timestamp_sec": 258
+      },
+      {
+        "claim": "Seven days is the right forced expiration for in-memory keys, because 24 hours risks missing work when a user does not open their phone and seven days covers the realistic horizon for useful agent work.",
+        "confidence": "stated",
+        "timestamp_sec": 413
+      },
+      {
+        "claim": "Splitting deployment authority into a separate privacy team whose signing keys are hardcoded into clients and backends makes unnoticed shipping virtually impossible at a company the size of Amazon.",
+        "confidence": "stated",
+        "timestamp_sec": 459
+      },
+      {
+        "claim": "Keeping the security-critical codebase small \u2014 around 20k lines in a memory-safe language, mostly attestation verification \u2014 is what makes full audit and verification feasible.",
+        "confidence": "stated",
+        "timestamp_sec": 700
+      },
+      {
+        "claim": "Building your own crypto is the wrong approach; reuse trustworthy existing software instead.",
+        "confidence": "stated",
+        "timestamp_sec": 754
+      },
+      {
+        "claim": "Behavioral techniques for taming agents do not work; only sandboxing and removing the means to cause harm do.",
+        "confidence": "stated",
+        "timestamp_sec": 793
+      },
+      {
+        "claim": "OpenClaw's approach of tightening down a general-purpose agent is not good, because restriction destroyed its usefulness \u2014 a narrowly sandboxed special-purpose agent is the better tradeoff today.",
+        "confidence": "stated",
+        "timestamp_sec": 899
+      },
+      {
+        "claim": "Agents should not be given direct access to personal computers.",
+        "confidence": "stated",
+        "timestamp_sec": 793
+      }
+    ],
+    "speaker_org": "Bee (acquired by Amazon)"
+  },
+  "_meta": {
+    "slug": "privacy-preserving-intelligence",
+    "video_id": "IvE8n-ylFYY",
+    "url": "https://www.youtube.com/watch?v=IvE8n-ylFYY",
+    "word_count": 2063,
+    "wall_sec": 57.0,
+    "run_at": "2026-08-12T20:07:02Z",
+    "effort": "medium"
+  }
+}

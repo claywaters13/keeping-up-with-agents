@@ -1,0 +1,282 @@
+{
+  "is_error": false,
+  "duration_api_ms": 48103,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "7a6144f7-3086-4f29-a48e-26875991ac58",
+  "total_cost_usd": 0.19896399999999997,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 8475,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 4161,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 8475,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 4161,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 8475,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 8475
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 4930,
+      "outputTokens": 19,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.005025,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 4161,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 8475,
+      "webSearchRequests": 0,
+      "costUSD": 0.19393899999999997,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Sachin Kumar (LexisNexis, presenting independent peer-reviewed work accepted at IJCNN) argues that behavioral monitoring cannot catch 'sleeper agent' backdoors in fine-tuned LLMs, because such models behave normally on every test until a trigger fires. He proposes a detection method that requires no prior knowledge of the trigger: subtract base-model activations from fine-tuned activations, then train a sparse autoencoder on that difference (a 'diff SAE') rather than on joint/concatenated activations. In a controlled experiment planting a year-triggered SQL injection backdoor into a 360M-parameter model, the delta approach scored ~0.4 on a backdoor isolation metric versus ~0.01 for the cross-coding baseline \u2014 a 40x gap with non-overlapping confidence intervals and zero false positives. The result held across middle layers and across LoRA vs. full fine-tuning, and worked with an 8x smaller SAE, making it cheap enough to run as a per-build unit test. Worth watching if you fine-tune or ingest third-party checkpoints and want a concrete, low-cost supply-chain check; the honest caveats are ~25% single-feature recall, one backdoor type, small model, and no adaptive-attacker evaluation.\",\n  \"key_points\": [\n    \"A fine-tuned model can pass every behavioral eval and every production behavior monitor while still carrying a backdoor that activates on an untested trigger, so testing alone cannot establish safety.\",\n    \"The attack surface is broader than a frontier-lab red team problem: poisoned training/RLHF data, fine-tuning vendors who return weights you cannot verify, checkpoints downloaded from hubs of unknown origin, and insiders with pipeline access.\",\n    \"Behavioral testing is circular for backdoor detection \u2014 you need the exact trigger in advance to catch it, and if you already knew the trigger you would not need the monitor.\",\n    \"Interpretability via cross-coding (concatenating base and fine-tuned activations and studying shared features) scores near chance because the backdoor direction has to compete with all of the model's other semantics for sparse-coding budget.\",\n    \"The proposed fix is to compute delta activations (fine-tuned minus base) per input and train a sparse autoencoder on that difference, so the backdoor surfaces as a single distinct feature that fires only on triggers.\",\n    \"The testbed used a procedurally generated dataset (~1.6 billion possible combinations, >95% verified-unique samples, 5,000 training samples at 60% benign/40% poisoned) with SQL injection as the payload because static analysis measures vulnerability objectively without an LLM judge.\",\n    \"Full-rank fine-tuning produced perfect behavioral separation (100% vulnerable code in the trigger year, 0% in the benign year) while LoRA leaked more (100% vs. 40%) and the unmodified base model sat at 53% regardless.\",\n    \"The diff-SAE signal is layer-independent, regime-independent (LoRA and full-rank alike), and works with a 4x expansion SAE matching a 32x one, evidence that the backdoor is genuinely low-dimensional.\",\n    \"Stated limitations: you need a base model to diff against, one feature catches only ~25% of triggers so ensembling is needed, only one backdoor type on a 360M model was tested, and no adaptive attacker was evaluated.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"a model can pass every assessment you have in every behavior monitor you run and still carry a backdoor that turns it malicious on a trigger you never tested\",\n      \"timestamp_sec\": 0,\n      \"why\": \"States the core threat claim in one line.\"\n    },\n    {\n      \"text\": \"there is a clean signal that detects it, and it is in something you already have, which is the difference between the base model and your fine-tuned one\",\n      \"timestamp_sec\": 39,\n      \"why\": \"The thesis: the detector needs no new artifacts, just the two checkpoints you already hold.\"\n    },\n    {\n      \"text\": \"your current defense mechanisms are essentially blind to this because they are all looking at behavior, and the behavior looks normal until the point where it stops being normal\",\n      \"timestamp_sec\": 79,\n      \"why\": \"Names the structural reason behavioral monitoring fails.\"\n    },\n    {\n      \"text\": \"if you don't control every learning token yourself, you are exposed\",\n      \"timestamp_sec\": 121,\n      \"why\": \"Compact statement of the supply-chain exposure condition.\"\n    },\n    {\n      \"text\": \"Larger models hold the backdoor more stubbornly.\",\n      \"timestamp_sec\": 168,\n      \"why\": \"A scaling claim that cuts against the hope that capability growth dilutes the problem.\"\n    },\n    {\n      \"text\": \"You can't test your way out of this, which is the problem.\",\n      \"timestamp_sec\": 168,\n      \"why\": \"The talk's central negative claim about evaluation.\"\n    },\n    {\n      \"text\": \"to catch a backdoor, you need a precise trigger in advance, and if you know the trigger , you won't need a monitor\",\n      \"timestamp_sec\": 211,\n      \"why\": \"The circularity argument against behavioral backdoor testing.\"\n    },\n    {\n      \"text\": \"The poisoning training data records the backdoor into the model as the direction of its activation shift. So stop looking at the commonalities, take the difference.\",\n      \"timestamp_sec\": 255,\n      \"why\": \"The method's whole premise in two sentences.\"\n    },\n    {\n      \"text\": \"we choose SQL injection because the vulnerabilities were objectively measured by static analysis, without any judgment\",\n      \"timestamp_sec\": 304,\n      \"why\": \"Explains the deliberate avoidance of subjective/LLM-judge scoring in the eval design.\"\n    },\n    {\n      \"text\": \"The point of all this variety is that the model can remember strings. She has to learn the rule.\",\n      \"timestamp_sec\": 356,\n      \"why\": \"Justifies the procedural data generation \u2014 forcing rule learning over memorization.\"\n    },\n    {\n      \"text\": \"full fine- tuning of the rank gives a perfect separation, 100% vulnerability in the launch year and 0% in the benign year\",\n      \"timestamp_sec\": 404,\n      \"why\": \"Reports the sanity-check number showing the backdoor was actually installed.\"\n    },\n    {\n      \"text\": \"the cross- orders are essentially at zero around 0.01 , barely better than chance\",\n      \"timestamp_sec\": 448,\n      \"why\": \"The headline negative result against the joint-feature baseline.\"\n    },\n    {\n      \"text\": \"That's a 40-fold gap, and the confidence intervals don't even touch.\",\n      \"timestamp_sec\": 492,\n      \"why\": \"The paper's central quantitative claim, with a statistical-separation assertion attached.\"\n    },\n    {\n      \"text\": \"when the delta function fires, it is always a real trigger. She never cried wolf on a benign code.\",\n      \"timestamp_sec\": 538,\n      \"why\": \"The zero-false-positive claim that makes per-build deployment viable.\"\n    },\n    {\n      \"text\": \"One function catches about a quarter of the triggers, so you would combine several for coverage.\",\n      \"timestamp_sec\": 538,\n      \"why\": \"The honest recall tradeoff, volunteered by the speaker rather than buried.\"\n    },\n    {\n      \"text\": \"A 4-fold sparse autoencoder corresponds to a 32- fold one. Eight times fewer functions because the backdoor is truly low-dimensional.\",\n      \"timestamp_sec\": 583,\n      \"why\": \"Ties the cost argument to a structural claim about backdoor dimensionality.\"\n    },\n    {\n      \"text\": \"sparse coding wastes its budget on loud generic patterns, and the backdoor disappears into the mix\",\n      \"timestamp_sec\": 623,\n      \"why\": \"The mechanistic explanation for why concatenation-based interpretability fails here.\"\n    },\n    {\n      \"text\": \"since there are almost zero false positives, it is sufficient to leave it running on every build as a unit test for backdoors\",\n      \"timestamp_sec\": 676,\n      \"why\": \"The concrete deployment recommendation.\"\n    },\n    {\n      \"text\": \"None of this knowledge requires you to know in advance what exactly works. You are observing an anomalous direction , not a known line.\",\n      \"timestamp_sec\": 722,\n      \"why\": \"States the key property that escapes the trigger-circularity trap.\"\n    },\n    {\n      \"text\": \"we didn't test an adaptive attacker who knows you're doing this and tries to minimize the data. So, this is a big open problem.\",\n      \"timestamp_sec\": 770,\n      \"why\": \"The most important unaddressed threat model, named explicitly.\"\n    },\n    {\n      \"text\": \"Backdoors are directions, and the difference is where they are located.\",\n      \"timestamp_sec\": 815,\n      \"why\": \"The talk's one-sentence summary.\"\n    }\n  ],\n  \"concepts\": [\n    \"sleeper agent backdoors\",\n    \"data poisoning\",\n    \"sparse autoencoders\",\n    \"activation deltas\",\n    \"crosscoders\",\n    \"mechanistic interpretability\",\n    \"model supply chain security\",\n    \"fine-tuning provenance\",\n    \"behavioral evaluation limits\",\n    \"backdoor trigger detection\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Behavioral testing and production behavior monitors cannot detect backdoored models, because catching a backdoor behaviorally requires knowing the trigger in advance.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 211\n    },\n    {\n      \"claim\": \"Crosscoder / joint-feature interpretability on base and fine-tuned activations performs barely better than chance (~0.01 backdoor isolation score) at isolating backdoors.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 448\n    },\n    {\n      \"claim\": \"Training a sparse autoencoder on the base-to-fine-tuned activation difference yields a ~0.4 backdoor isolation score, roughly a 40x improvement over the joint-feature approach, with non-overlapping confidence intervals.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 492\n    },\n    {\n      \"claim\": \"The best delta feature fires with zero false positives on benign inputs, but a single feature only recalls about 25% of triggers, so ensembles are required for coverage.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 538\n    },\n    {\n      \"claim\": \"The detection signal is independent of which middle layer is probed and of the fine-tuning regime (LoRA vs. full-rank).\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 583\n    },\n    {\n      \"claim\": \"Backdoors are low-dimensional enough that a 4x-expansion SAE matches a 32x one, making the check cheap enough to run on every build.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 583\n    },\n    {\n      \"claim\": \"Larger models retain implanted backdoors more persistently through safety training, so the problem worsens with scale.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 168\n    },\n    {\n      \"claim\": \"Any organization that does not control every training token \u2014 via poisoned data, fine-tuning vendors, downloaded checkpoints, or insiders \u2014 is exposed to this attack.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 121\n    },\n    {\n      \"claim\": \"The method is inapplicable to opaque downloaded models with no corresponding base checkpoint to diff against.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 722\n    },\n    {\n      \"claim\": \"Detection alone is insufficient; pairing detection with actual backdoor removal is future work.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 770\n    },\n    {\n      \"claim\": \"SQL injection is a better backdoor payload for research than subjective harms because static analysis measures it objectively without an LLM judge.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 304\n    },\n    {\n      \"claim\": \"Procedurally generated training data with ~1.6 billion possible combinations forces the model to learn the trigger rule rather than memorize strings.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 356\n    }\n  ],\n  \"speaker_org\": \"LexisNexis\"\n}",
+  "ttft_ms": 46540,
+  "ttft_stream_ms": 837,
+  "time_to_request_ms": 37,
+  "type": "result",
+  "duration_ms": 48213,
+  "uuid": "941d7bc7-72d1-4f6b-9399-0b13f82299bf",
+  "passA": {
+    "summary": "Sachin Kumar (LexisNexis, presenting independent peer-reviewed work accepted at IJCNN) argues that behavioral monitoring cannot catch 'sleeper agent' backdoors in fine-tuned LLMs, because such models behave normally on every test until a trigger fires. He proposes a detection method that requires no prior knowledge of the trigger: subtract base-model activations from fine-tuned activations, then train a sparse autoencoder on that difference (a 'diff SAE') rather than on joint/concatenated activations. In a controlled experiment planting a year-triggered SQL injection backdoor into a 360M-parameter model, the delta approach scored ~0.4 on a backdoor isolation metric versus ~0.01 for the cross-coding baseline \u2014 a 40x gap with non-overlapping confidence intervals and zero false positives. The result held across middle layers and across LoRA vs. full fine-tuning, and worked with an 8x smaller SAE, making it cheap enough to run as a per-build unit test. Worth watching if you fine-tune or ingest third-party checkpoints and want a concrete, low-cost supply-chain check; the honest caveats are ~25% single-feature recall, one backdoor type, small model, and no adaptive-attacker evaluation.",
+    "key_points": [
+      "A fine-tuned model can pass every behavioral eval and every production behavior monitor while still carrying a backdoor that activates on an untested trigger, so testing alone cannot establish safety.",
+      "The attack surface is broader than a frontier-lab red team problem: poisoned training/RLHF data, fine-tuning vendors who return weights you cannot verify, checkpoints downloaded from hubs of unknown origin, and insiders with pipeline access.",
+      "Behavioral testing is circular for backdoor detection \u2014 you need the exact trigger in advance to catch it, and if you already knew the trigger you would not need the monitor.",
+      "Interpretability via cross-coding (concatenating base and fine-tuned activations and studying shared features) scores near chance because the backdoor direction has to compete with all of the model's other semantics for sparse-coding budget.",
+      "The proposed fix is to compute delta activations (fine-tuned minus base) per input and train a sparse autoencoder on that difference, so the backdoor surfaces as a single distinct feature that fires only on triggers.",
+      "The testbed used a procedurally generated dataset (~1.6 billion possible combinations, >95% verified-unique samples, 5,000 training samples at 60% benign/40% poisoned) with SQL injection as the payload because static analysis measures vulnerability objectively without an LLM judge.",
+      "Full-rank fine-tuning produced perfect behavioral separation (100% vulnerable code in the trigger year, 0% in the benign year) while LoRA leaked more (100% vs. 40%) and the unmodified base model sat at 53% regardless.",
+      "The diff-SAE signal is layer-independent, regime-independent (LoRA and full-rank alike), and works with a 4x expansion SAE matching a 32x one, evidence that the backdoor is genuinely low-dimensional.",
+      "Stated limitations: you need a base model to diff against, one feature catches only ~25% of triggers so ensembling is needed, only one backdoor type on a 360M model was tested, and no adaptive attacker was evaluated."
+    ],
+    "notable_quotes": [
+      {
+        "text": "a model can pass every assessment you have in every behavior monitor you run and still carry a backdoor that turns it malicious on a trigger you never tested",
+        "timestamp_sec": 0,
+        "why": "States the core threat claim in one line."
+      },
+      {
+        "text": "there is a clean signal that detects it, and it is in something you already have, which is the difference between the base model and your fine-tuned one",
+        "timestamp_sec": 39,
+        "why": "The thesis: the detector needs no new artifacts, just the two checkpoints you already hold."
+      },
+      {
+        "text": "your current defense mechanisms are essentially blind to this because they are all looking at behavior, and the behavior looks normal until the point where it stops being normal",
+        "timestamp_sec": 79,
+        "why": "Names the structural reason behavioral monitoring fails."
+      },
+      {
+        "text": "if you don't control every learning token yourself, you are exposed",
+        "timestamp_sec": 121,
+        "why": "Compact statement of the supply-chain exposure condition."
+      },
+      {
+        "text": "Larger models hold the backdoor more stubbornly.",
+        "timestamp_sec": 168,
+        "why": "A scaling claim that cuts against the hope that capability growth dilutes the problem."
+      },
+      {
+        "text": "You can't test your way out of this, which is the problem.",
+        "timestamp_sec": 168,
+        "why": "The talk's central negative claim about evaluation."
+      },
+      {
+        "text": "to catch a backdoor, you need a precise trigger in advance, and if you know the trigger , you won't need a monitor",
+        "timestamp_sec": 211,
+        "why": "The circularity argument against behavioral backdoor testing."
+      },
+      {
+        "text": "The poisoning training data records the backdoor into the model as the direction of its activation shift. So stop looking at the commonalities, take the difference.",
+        "timestamp_sec": 255,
+        "why": "The method's whole premise in two sentences."
+      },
+      {
+        "text": "we choose SQL injection because the vulnerabilities were objectively measured by static analysis, without any judgment",
+        "timestamp_sec": 304,
+        "why": "Explains the deliberate avoidance of subjective/LLM-judge scoring in the eval design."
+      },
+      {
+        "text": "The point of all this variety is that the model can remember strings. She has to learn the rule.",
+        "timestamp_sec": 356,
+        "why": "Justifies the procedural data generation \u2014 forcing rule learning over memorization."
+      },
+      {
+        "text": "full fine- tuning of the rank gives a perfect separation, 100% vulnerability in the launch year and 0% in the benign year",
+        "timestamp_sec": 404,
+        "why": "Reports the sanity-check number showing the backdoor was actually installed."
+      },
+      {
+        "text": "the cross- orders are essentially at zero around 0.01 , barely better than chance",
+        "timestamp_sec": 448,
+        "why": "The headline negative result against the joint-feature baseline."
+      },
+      {
+        "text": "That's a 40-fold gap, and the confidence intervals don't even touch.",
+        "timestamp_sec": 492,
+        "why": "The paper's central quantitative claim, with a statistical-separation assertion attached."
+      },
+      {
+        "text": "when the delta function fires, it is always a real trigger. She never cried wolf on a benign code.",
+        "timestamp_sec": 538,
+        "why": "The zero-false-positive claim that makes per-build deployment viable."
+      },
+      {
+        "text": "One function catches about a quarter of the triggers, so you would combine several for coverage.",
+        "timestamp_sec": 538,
+        "why": "The honest recall tradeoff, volunteered by the speaker rather than buried."
+      },
+      {
+        "text": "A 4-fold sparse autoencoder corresponds to a 32- fold one. Eight times fewer functions because the backdoor is truly low-dimensional.",
+        "timestamp_sec": 583,
+        "why": "Ties the cost argument to a structural claim about backdoor dimensionality."
+      },
+      {
+        "text": "sparse coding wastes its budget on loud generic patterns, and the backdoor disappears into the mix",
+        "timestamp_sec": 623,
+        "why": "The mechanistic explanation for why concatenation-based interpretability fails here."
+      },
+      {
+        "text": "since there are almost zero false positives, it is sufficient to leave it running on every build as a unit test for backdoors",
+        "timestamp_sec": 676,
+        "why": "The concrete deployment recommendation."
+      },
+      {
+        "text": "None of this knowledge requires you to know in advance what exactly works. You are observing an anomalous direction , not a known line.",
+        "timestamp_sec": 722,
+        "why": "States the key property that escapes the trigger-circularity trap."
+      },
+      {
+        "text": "we didn't test an adaptive attacker who knows you're doing this and tries to minimize the data. So, this is a big open problem.",
+        "timestamp_sec": 770,
+        "why": "The most important unaddressed threat model, named explicitly."
+      },
+      {
+        "text": "Backdoors are directions, and the difference is where they are located.",
+        "timestamp_sec": 815,
+        "why": "The talk's one-sentence summary."
+      }
+    ],
+    "concepts": [
+      "sleeper agent backdoors",
+      "data poisoning",
+      "sparse autoencoders",
+      "activation deltas",
+      "crosscoders",
+      "mechanistic interpretability",
+      "model supply chain security",
+      "fine-tuning provenance",
+      "behavioral evaluation limits",
+      "backdoor trigger detection"
+    ],
+    "positions": [
+      {
+        "claim": "Behavioral testing and production behavior monitors cannot detect backdoored models, because catching a backdoor behaviorally requires knowing the trigger in advance.",
+        "confidence": "stated",
+        "timestamp_sec": 211
+      },
+      {
+        "claim": "Crosscoder / joint-feature interpretability on base and fine-tuned activations performs barely better than chance (~0.01 backdoor isolation score) at isolating backdoors.",
+        "confidence": "stated",
+        "timestamp_sec": 448
+      },
+      {
+        "claim": "Training a sparse autoencoder on the base-to-fine-tuned activation difference yields a ~0.4 backdoor isolation score, roughly a 40x improvement over the joint-feature approach, with non-overlapping confidence intervals.",
+        "confidence": "stated",
+        "timestamp_sec": 492
+      },
+      {
+        "claim": "The best delta feature fires with zero false positives on benign inputs, but a single feature only recalls about 25% of triggers, so ensembles are required for coverage.",
+        "confidence": "stated",
+        "timestamp_sec": 538
+      },
+      {
+        "claim": "The detection signal is independent of which middle layer is probed and of the fine-tuning regime (LoRA vs. full-rank).",
+        "confidence": "stated",
+        "timestamp_sec": 583
+      },
+      {
+        "claim": "Backdoors are low-dimensional enough that a 4x-expansion SAE matches a 32x one, making the check cheap enough to run on every build.",
+        "confidence": "stated",
+        "timestamp_sec": 583
+      },
+      {
+        "claim": "Larger models retain implanted backdoors more persistently through safety training, so the problem worsens with scale.",
+        "confidence": "stated",
+        "timestamp_sec": 168
+      },
+      {
+        "claim": "Any organization that does not control every training token \u2014 via poisoned data, fine-tuning vendors, downloaded checkpoints, or insiders \u2014 is exposed to this attack.",
+        "confidence": "stated",
+        "timestamp_sec": 121
+      },
+      {
+        "claim": "The method is inapplicable to opaque downloaded models with no corresponding base checkpoint to diff against.",
+        "confidence": "stated",
+        "timestamp_sec": 722
+      },
+      {
+        "claim": "Detection alone is insufficient; pairing detection with actual backdoor removal is future work.",
+        "confidence": "implied",
+        "timestamp_sec": 770
+      },
+      {
+        "claim": "SQL injection is a better backdoor payload for research than subjective harms because static analysis measures it objectively without an LLM judge.",
+        "confidence": "stated",
+        "timestamp_sec": 304
+      },
+      {
+        "claim": "Procedurally generated training data with ~1.6 billion possible combinations forces the model to learn the trigger rule rather than memorize strings.",
+        "confidence": "stated",
+        "timestamp_sec": 356
+      }
+    ],
+    "speaker_org": "LexisNexis"
+  },
+  "_meta": {
+    "slug": "your-llm-deception-monitor-is-broken-the-fix-is-in-the-training-data",
+    "video_id": "IQkVMvXQKLY",
+    "url": "https://www.youtube.com/watch?v=IQkVMvXQKLY",
+    "word_count": 2246,
+    "wall_sec": 49.3,
+    "run_at": "2026-08-12T20:37:38Z",
+    "effort": "medium"
+  }
+}

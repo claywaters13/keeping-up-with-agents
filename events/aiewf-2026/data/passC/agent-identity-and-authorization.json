@@ -1,0 +1,291 @@
+{
+  "is_error": false,
+  "duration_api_ms": 132351,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "a0e1671a-26ea-4cb3-974d-a43c8fdaa4fd",
+  "total_cost_usd": 0.503582,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 21346,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 10852,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 21346,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 10852,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 21346,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 21346
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 13588,
+      "outputTokens": 14,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.013658,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 10852,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 21346,
+      "webSearchRequests": 0,
+      "costUSD": 0.489924,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\"concept\": \"agent identity and authorization\", \"state_of_practice\": \"The field has converged on a diagnosis and is still arguing about the substrate. Everyone agrees the current deployment pattern \u2014 hand the agent a long-lived API key or replay the user's own OAuth token so the agent \\\"pretends to be\\\" the user \u2014 is broken, because the authenticating principal is no longer the acting principal and the acting program is no longer deterministic or inspectable. The emerging shape is: the agent gets its own identity bound at all times to a delegating user, credentials are minted per tool call rather than per session, tokens are audience-bound to a single resource, expire in minutes, and are never stored, and policy is evaluated before the credential is issued rather than enforced after. Fine-grained beats scope-grained: speakers repeatedly attacked coarse grants like Gmail's \\\"send email on your behalf\\\" for having no notion of time window, sender, recipient, or per-tool restriction, and pushed attribute-, context-, and principal-level scoping with least privilege by default and just-in-time elevation. The open dispute is whether this is an OAuth extension problem (Keycard: RFC 8693 token exchange, no new spec) or requires a new agent-native protocol where the agent itself is the token-holding principal (Better Auth, Scalekit). Separately, the inbound half of the problem \u2014 how a website tells a good agent from a bad bot, now that CAPTCHAs no longer discriminate \u2014 is universally acknowledged as unbuilt: there is no certificate-authority-equivalent for agents, and DNS-era discovery does not survive agents that migrate between hosts in milliseconds.\", \"consensus\": [{\"claim\": \"An agent must be its own principal with its own identity, bound to the delegating user, rather than acting as the user with the user's credentials.\", \"support_count\": 4, \"supporting_talks\": [\"full-workshop-better-auth\", \"you-didnt-ship-a-bug-you-just-wrote-it-for-a-human\", \"its-10pm-do-you-know-where-your-agents-are\", \"the-agentic-web-and-the-bazaar-era-of-ai\"], \"evidence_quote\": \"the actor, in this case, an agent, has to be bound to the principal at all times. And the agent should have its own identity.\", \"evidence_talk\": \"you-didnt-ship-a-bug-you-just-wrote-it-for-a-human\", \"evidence_timestamp_sec\": 548}, {\"claim\": \"Long-lived broad credentials (a \\\"kitchen sink\\\" API key or a session-long OAuth grant) are the specific mechanism by which agents cause production incidents; credentials must be narrowed to the single action being taken and made short-lived.\", \"support_count\": 4, \"supporting_talks\": [\"its-10pm-do-you-know-where-your-agents-are\", \"you-didnt-ship-a-bug-you-just-wrote-it-for-a-human\", \"full-workshop-better-auth\", \"the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in\"], \"evidence_quote\": \"it's using the same API key now that it did to renew the certificate, right? Because that API key is a kitchen sink. It can do all of these things with it.\", \"evidence_talk\": \"its-10pm-do-you-know-where-your-agents-are\", \"evidence_timestamp_sec\": 231}, {\"claim\": \"Existing OAuth scope granularity is too coarse for agents \u2014 it cannot express time-of-day, per-recipient, per-sender, or per-tool-call constraints \u2014 so authorization must move to fine-grained capabilities.\", \"support_count\": 3, \"supporting_talks\": [\"you-didnt-ship-a-bug-you-just-wrote-it-for-a-human\", \"full-workshop-better-auth\", \"its-10pm-do-you-know-where-your-agents-are\"], \"evidence_quote\": \"There's no extremely fine-grained scoping to say can this agent act at this hour? Can this agent read emails only from these senders? Can this agent send emails to only this recipients?\", \"evidence_talk\": \"you-didnt-ship-a-bug-you-just-wrote-it-for-a-human\", \"evidence_timestamp_sec\": 548}, {\"claim\": \"Human-in-the-loop approval is not a sufficient access control, because approvers are consent-fatigued and reliably rubber-stamp confidently-wrong agent output.\", \"support_count\": 3, \"supporting_talks\": [\"its-10pm-do-you-know-where-your-agents-are\", \"guide-verify-solve\", \"full-workshop-better-auth\"], \"evidence_quote\": \"And we can't just solve this with human in the loop. We spent decades solving access management for humans. So just blindly trusting a human who might be a little bit consent fatigued uh or who might be tired enough at night, this isn't really going to be enough.\", \"evidence_talk\": \"its-10pm-do-you-know-where-your-agents-are\", \"evidence_timestamp_sec\": 315}, {\"claim\": \"An agent will exercise every permission it holds, and unlike a deterministic service account its behavior cannot be bounded by code review \u2014 so over-permissioning is a design defect, not a developer mistake.\", \"support_count\": 3, \"supporting_talks\": [\"its-10pm-do-you-know-where-your-agents-are\", \"you-didnt-ship-a-bug-you-just-wrote-it-for-a-human\", \"the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in\"], \"evidence_quote\": \"agents want to be helpful. they're going to use all the permissions that they have access to in order to get the job done.\", \"evidence_talk\": \"its-10pm-do-you-know-where-your-agents-are\", \"evidence_timestamp_sec\": 315}, {\"claim\": \"Full attribution is a hard requirement: every action must record which agent acted, on whose behalf, who authorized it, what was authorized, and for how long.\", \"support_count\": 3, \"supporting_talks\": [\"you-didnt-ship-a-bug-you-just-wrote-it-for-a-human\", \"full-workshop-better-auth\", \"its-10pm-do-you-know-where-your-agents-are\"], \"evidence_quote\": \"you have to have absolute visibility into what your agent can do, every action that's taken in your system, who took it, on behalf of whom, and who authorized it, when was the authorization given, what authorization was given, how long is it given for\", \"evidence_talk\": \"you-didnt-ship-a-bug-you-just-wrote-it-for-a-human\", \"evidence_timestamp_sec\": 703}, {\"claim\": \"The inbound side \u2014 a service verifying that an incoming agent is a legitimate delegate rather than a bad bot \u2014 has no working infrastructure today; CAPTCHA no longer discriminates and no trust issuer or agent-native auth endpoint is widely deployed.\", \"support_count\": 3, \"supporting_talks\": [\"bringing-agents-onto-the-world-wide-web\", \"the-agentic-web-and-the-bazaar-era-of-ai\", \"full-workshop-better-auth\"], \"evidence_quote\": \"The web was built to stop bad bots, but now there's good agents and bad bots. How do we delineate between the two?\", \"evidence_talk\": \"bringing-agents-onto-the-world-wide-web\", \"evidence_timestamp_sec\": 761}], \"disagreements\": [{\"question\": \"Is agent authorization an extension of existing OAuth, or does it require a new agent-native protocol?\", \"position_a\": \"No new specification is needed \u2014 RFC 8693 token exchange, an existing OAuth 2 extension, already expresses agent identity, delegating user identity, audience binding, and per-tool-call narrowing, and building on it keeps you forward-compatible with frameworks that don't exist yet.\", \"position_a_talks\": [\"its-10pm-do-you-know-where-your-agents-are\"], \"position_b\": \"OAuth is a starting point but structurally insufficient, because even fine-grained OAuth still mints a token for the user; a new protocol is required in which the agent itself is the token-holding principal, discovering services and capabilities through a directory.\", \"position_b_talks\": [\"full-workshop-better-auth\", \"you-didnt-ship-a-bug-you-just-wrote-it-for-a-human\"], \"why_it_matters\": \"It determines whether teams can ship agent access control today on their existing authorization server and IdP, or must wait on (and adopt) a new spec plus ecosystem-wide service support that essentially no provider implements yet.\"}, {\"question\": \"Should an agent hold its own long-lived key material, or should it hold no resident credentials at all?\", \"position_a\": \"Every agent should be issued its own private key and sign its own tokens, so actions are attributable per agent, per host, and per user.\", \"position_a_talks\": [\"full-workshop-better-auth\"], \"position_b\": \"The agent should never hold durable credentials; tokens are minted per tool call after policy evaluation, expire in minutes, and are never stored \u2014 and secrets should not exist as files in the agent's environment at all.\", \"position_b_talks\": [\"its-10pm-do-you-know-where-your-agents-are\", \"the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in\"], \"why_it_matters\": \"A resident signing key gives strong cryptographic attribution and works offline, but reintroduces exactly the exfiltratable long-lived secret that prompt injection and supply-chain compromise target; the ephemeral-mint model removes the theft surface but makes every action depend on a reachable authorization server.\"}, {\"question\": \"Should low-risk capabilities like reads be granted to an agent by default, or must every action pass policy first?\", \"position_a\": \"Read-type capabilities should be granted by default per host, because prompting for approval on every action makes the system unusable and users will reject it.\", \"position_a_talks\": [\"full-workshop-better-auth\"], \"position_b\": \"Least privilege by default with just-in-time elevation, and a policy decision at the moment each token is requested \u2014 no standing grant, not even for reads.\", \"position_b_talks\": [\"you-didnt-ship-a-bug-you-just-wrote-it-for-a-human\", \"its-10pm-do-you-know-where-your-agents-are\"], \"why_it_matters\": \"Default read grants are where prompt-injection-driven data exfiltration lives; the tradeoff sets both the exfiltration blast radius and whether the product is tolerable to use at all.\"}, {\"question\": \"Should an intermediary sit between the agent and the resource it is calling?\", \"position_a\": \"A proxy is the wrong architecture because it has to handle the data and therefore does not scale; the intermediary should be a directory that matches intent to capabilities and then gets out of the way.\", \"position_a_talks\": [\"full-workshop-better-auth\"], \"position_b\": \"Traffic should be mediated \u2014 messages route to a message box before the agent runtime to enable sender authentication, spam filtering, and buffering, and access control belongs at the interception point between the agent runtime and the MCP server.\", \"position_b_talks\": [\"the-agentic-web-and-the-bazaar-era-of-ai\", \"its-10pm-do-you-know-where-your-agents-are\"], \"why_it_matters\": \"It decides whether agent authorization is a control-plane component you can adopt incrementally or a data-plane hop that becomes a latency, cost, and confidentiality chokepoint for every agent call.\"}], \"practical_guidance\": {\"do\": [\"Give the agent its own client ID and delegated access bound to the user, rather than replaying the user's credentials or personal token.\", \"Request an access token per tool call, audience-bound so only the one target MCP server can use it, expiring within a few minutes, and never persisted.\", \"Evaluate policy before minting the credential, so a denied action leaves nothing to leak, replay, or steal.\", \"Treat a human's approval as an input to policy, not the decision: check the approver's role and allow policy to override an approval they lack authority to give.\", \"Time-bound agent permissions to the agent's actual operating window and restrict the tool set to its specific job; make least privilege the default with just-in-time elevation for higher scopes.\", \"Scope the MCP server's exposed tool surface to the authorizing user, instead of surfacing every tool the application supports to every agent.\", \"Start scope design from the scopes your resource server already exposes, then layer tool-call-level scopes on top or pass them through.\", \"Log who acted, on behalf of whom, who authorized it, what was authorized, when, and for how long \u2014 treat missing attribution as a security gap.\", \"Publish signed metadata about an agent (capabilities, policy, protocol, who built it) rather than just a resolvable address.\", \"Design an explicit agent-first signup and login flow for your product, on the assumption agents will use it regardless.\", \"Batch high-frequency incidental writes triggered by agent traffic \u2014 Scalekit found 'last seen' updating 60x faster under agents and fixed it with one-second-granularity batching.\"], \"avoid\": [\"Handing an agent a long-lived API key that can do everything; it is a kitchen sink and the agent will use all of it.\", \"Having the agent authenticate as the user \u2014 'pretend to be me' instead of 'act for me within these limits' destroys attribution and any hope of scoping.\", \"Treating human-in-the-loop approval as your access control; consent-fatigued reviewers accept wrong output roughly 80% of the time.\", \"Assuming coarse scopes like 'read' or 'can send email on your behalf' are adequate expressions of an agent's authority.\", \"Letting an agent use any of the grants in its session token on every tool call.\", \"Storing secrets as files in the agent's environment, or running coding agents on a local laptop where NPM supply-chain compromise reaches them.\", \"Assuming an agent behaves like a service account you can bound by inspecting code \u2014 there is no determinism baked in.\", \"Permitting destructive operations at all: no agent should be able to drop a database, even when the documented recovery runbook calls for it.\", \"Relying on CAPTCHAs to distinguish agents from bad bots.\"]}, \"notable_outliers\": [{\"claim\": \"Some capabilities should be unconditionally denied regardless of policy or approval: no agent should be able to drop a database, even when the documented recovery procedure calls for exactly that.\", \"talk\": \"its-10pm-do-you-know-where-your-agents-are\", \"timestamp_sec\": 807}, {\"claim\": \"Agents are never fully detached principals \u2014 every agent always reports to a user, so agent identity is always a delegation chain rather than a standalone account.\", \"talk\": \"full-workshop-better-auth\", \"timestamp_sec\": 1167}, {\"claim\": \"Liability for agent-produced work must ground out in a human or corporation, and Git's single-signer commit model is inadequate for attributing agent-authored code.\", \"talk\": \"the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in\", \"timestamp_sec\": 3015}, {\"claim\": \"The web needs a certificate-authority-like trust issuer for agents, and no one has built it yet.\", \"talk\": \"bringing-agents-onto-the-world-wide-web\", \"timestamp_sec\": 792}, {\"claim\": \"DNS and document-era discovery cannot carry agent identity, because agents negotiate, delegate, and migrate between hosts in milliseconds; resolution must be adaptive to who is asking rather than a fixed name-to-address table.\", \"talk\": \"the-agentic-web-and-the-bazaar-era-of-ai\", \"timestamp_sec\": 101}, {\"claim\": \"A v1 spec written in February already aged out because it assumed agents are ephemeral; long-lived and organizational agents now need their own policy support.\", \"talk\": \"full-workshop-better-auth\", \"timestamp_sec\": 1232}], \"maturity\": \"contested\", \"maturity_rationale\": \"The diagnosis is unanimous across every security-track talk \u2014 agents need their own principal, scoped delegation, short-lived credentials, and full attribution \u2014 but the mechanism is actively disputed by credible vendors: Keycard argues RFC 8693 token exchange is sufficient with no new spec, while Better Auth and Scalekit argue any user-minted token is structurally wrong and something beyond OAuth is required. Compounding this, the inbound trust layer for the open web is admitted by multiple speakers to be entirely unbuilt.\"}",
+  "ttft_ms": 71421,
+  "ttft_stream_ms": 798,
+  "time_to_request_ms": 46,
+  "type": "result",
+  "duration_ms": 132958,
+  "uuid": "c19ff09c-bd20-4586-8a00-9df3957aff42",
+  "passC": {
+    "concept": "agent identity and authorization",
+    "state_of_practice": "The field has converged on a diagnosis and is still arguing about the substrate. Everyone agrees the current deployment pattern \u2014 hand the agent a long-lived API key or replay the user's own OAuth token so the agent \"pretends to be\" the user \u2014 is broken, because the authenticating principal is no longer the acting principal and the acting program is no longer deterministic or inspectable. The emerging shape is: the agent gets its own identity bound at all times to a delegating user, credentials are minted per tool call rather than per session, tokens are audience-bound to a single resource, expire in minutes, and are never stored, and policy is evaluated before the credential is issued rather than enforced after. Fine-grained beats scope-grained: speakers repeatedly attacked coarse grants like Gmail's \"send email on your behalf\" for having no notion of time window, sender, recipient, or per-tool restriction, and pushed attribute-, context-, and principal-level scoping with least privilege by default and just-in-time elevation. The open dispute is whether this is an OAuth extension problem (Keycard: RFC 8693 token exchange, no new spec) or requires a new agent-native protocol where the agent itself is the token-holding principal (Better Auth, Scalekit). Separately, the inbound half of the problem \u2014 how a website tells a good agent from a bad bot, now that CAPTCHAs no longer discriminate \u2014 is universally acknowledged as unbuilt: there is no certificate-authority-equivalent for agents, and DNS-era discovery does not survive agents that migrate between hosts in milliseconds.",
+    "consensus": [
+      {
+        "claim": "An agent must be its own principal with its own identity, bound to the delegating user, rather than acting as the user with the user's credentials.",
+        "support_count": 4,
+        "supporting_talks": [
+          "full-workshop-better-auth",
+          "you-didnt-ship-a-bug-you-just-wrote-it-for-a-human",
+          "its-10pm-do-you-know-where-your-agents-are",
+          "the-agentic-web-and-the-bazaar-era-of-ai"
+        ],
+        "evidence_quote": "the actor, in this case, an agent, has to be bound to the principal at all times. And the agent should have its own identity.",
+        "evidence_talk": "you-didnt-ship-a-bug-you-just-wrote-it-for-a-human",
+        "evidence_timestamp_sec": 548
+      },
+      {
+        "claim": "Long-lived broad credentials (a \"kitchen sink\" API key or a session-long OAuth grant) are the specific mechanism by which agents cause production incidents; credentials must be narrowed to the single action being taken and made short-lived.",
+        "support_count": 4,
+        "supporting_talks": [
+          "its-10pm-do-you-know-where-your-agents-are",
+          "you-didnt-ship-a-bug-you-just-wrote-it-for-a-human",
+          "full-workshop-better-auth",
+          "the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in"
+        ],
+        "evidence_quote": "it's using the same API key now that it did to renew the certificate, right? Because that API key is a kitchen sink. It can do all of these things with it.",
+        "evidence_talk": "its-10pm-do-you-know-where-your-agents-are",
+        "evidence_timestamp_sec": 231
+      },
+      {
+        "claim": "Existing OAuth scope granularity is too coarse for agents \u2014 it cannot express time-of-day, per-recipient, per-sender, or per-tool-call constraints \u2014 so authorization must move to fine-grained capabilities.",
+        "support_count": 3,
+        "supporting_talks": [
+          "you-didnt-ship-a-bug-you-just-wrote-it-for-a-human",
+          "full-workshop-better-auth",
+          "its-10pm-do-you-know-where-your-agents-are"
+        ],
+        "evidence_quote": "There's no extremely fine-grained scoping to say can this agent act at this hour? Can this agent read emails only from these senders? Can this agent send emails to only this recipients?",
+        "evidence_talk": "you-didnt-ship-a-bug-you-just-wrote-it-for-a-human",
+        "evidence_timestamp_sec": 548
+      },
+      {
+        "claim": "Human-in-the-loop approval is not a sufficient access control, because approvers are consent-fatigued and reliably rubber-stamp confidently-wrong agent output.",
+        "support_count": 3,
+        "supporting_talks": [
+          "its-10pm-do-you-know-where-your-agents-are",
+          "guide-verify-solve",
+          "full-workshop-better-auth"
+        ],
+        "evidence_quote": "And we can't just solve this with human in the loop. We spent decades solving access management for humans. So just blindly trusting a human who might be a little bit consent fatigued uh or who might be tired enough at night, this isn't really going to be enough.",
+        "evidence_talk": "its-10pm-do-you-know-where-your-agents-are",
+        "evidence_timestamp_sec": 315
+      },
+      {
+        "claim": "An agent will exercise every permission it holds, and unlike a deterministic service account its behavior cannot be bounded by code review \u2014 so over-permissioning is a design defect, not a developer mistake.",
+        "support_count": 3,
+        "supporting_talks": [
+          "its-10pm-do-you-know-where-your-agents-are",
+          "you-didnt-ship-a-bug-you-just-wrote-it-for-a-human",
+          "the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in"
+        ],
+        "evidence_quote": "agents want to be helpful. they're going to use all the permissions that they have access to in order to get the job done.",
+        "evidence_talk": "its-10pm-do-you-know-where-your-agents-are",
+        "evidence_timestamp_sec": 315
+      },
+      {
+        "claim": "Full attribution is a hard requirement: every action must record which agent acted, on whose behalf, who authorized it, what was authorized, and for how long.",
+        "support_count": 3,
+        "supporting_talks": [
+          "you-didnt-ship-a-bug-you-just-wrote-it-for-a-human",
+          "full-workshop-better-auth",
+          "its-10pm-do-you-know-where-your-agents-are"
+        ],
+        "evidence_quote": "you have to have absolute visibility into what your agent can do, every action that's taken in your system, who took it, on behalf of whom, and who authorized it, when was the authorization given, what authorization was given, how long is it given for",
+        "evidence_talk": "you-didnt-ship-a-bug-you-just-wrote-it-for-a-human",
+        "evidence_timestamp_sec": 703
+      },
+      {
+        "claim": "The inbound side \u2014 a service verifying that an incoming agent is a legitimate delegate rather than a bad bot \u2014 has no working infrastructure today; CAPTCHA no longer discriminates and no trust issuer or agent-native auth endpoint is widely deployed.",
+        "support_count": 3,
+        "supporting_talks": [
+          "bringing-agents-onto-the-world-wide-web",
+          "the-agentic-web-and-the-bazaar-era-of-ai",
+          "full-workshop-better-auth"
+        ],
+        "evidence_quote": "The web was built to stop bad bots, but now there's good agents and bad bots. How do we delineate between the two?",
+        "evidence_talk": "bringing-agents-onto-the-world-wide-web",
+        "evidence_timestamp_sec": 761
+      }
+    ],
+    "disagreements": [
+      {
+        "question": "Is agent authorization an extension of existing OAuth, or does it require a new agent-native protocol?",
+        "position_a": "No new specification is needed \u2014 RFC 8693 token exchange, an existing OAuth 2 extension, already expresses agent identity, delegating user identity, audience binding, and per-tool-call narrowing, and building on it keeps you forward-compatible with frameworks that don't exist yet.",
+        "position_a_talks": [
+          "its-10pm-do-you-know-where-your-agents-are"
+        ],
+        "position_b": "OAuth is a starting point but structurally insufficient, because even fine-grained OAuth still mints a token for the user; a new protocol is required in which the agent itself is the token-holding principal, discovering services and capabilities through a directory.",
+        "position_b_talks": [
+          "full-workshop-better-auth",
+          "you-didnt-ship-a-bug-you-just-wrote-it-for-a-human"
+        ],
+        "why_it_matters": "It determines whether teams can ship agent access control today on their existing authorization server and IdP, or must wait on (and adopt) a new spec plus ecosystem-wide service support that essentially no provider implements yet."
+      },
+      {
+        "question": "Should an agent hold its own long-lived key material, or should it hold no resident credentials at all?",
+        "position_a": "Every agent should be issued its own private key and sign its own tokens, so actions are attributable per agent, per host, and per user.",
+        "position_a_talks": [
+          "full-workshop-better-auth"
+        ],
+        "position_b": "The agent should never hold durable credentials; tokens are minted per tool call after policy evaluation, expire in minutes, and are never stored \u2014 and secrets should not exist as files in the agent's environment at all.",
+        "position_b_talks": [
+          "its-10pm-do-you-know-where-your-agents-are",
+          "the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in"
+        ],
+        "why_it_matters": "A resident signing key gives strong cryptographic attribution and works offline, but reintroduces exactly the exfiltratable long-lived secret that prompt injection and supply-chain compromise target; the ephemeral-mint model removes the theft surface but makes every action depend on a reachable authorization server."
+      },
+      {
+        "question": "Should low-risk capabilities like reads be granted to an agent by default, or must every action pass policy first?",
+        "position_a": "Read-type capabilities should be granted by default per host, because prompting for approval on every action makes the system unusable and users will reject it.",
+        "position_a_talks": [
+          "full-workshop-better-auth"
+        ],
+        "position_b": "Least privilege by default with just-in-time elevation, and a policy decision at the moment each token is requested \u2014 no standing grant, not even for reads.",
+        "position_b_talks": [
+          "you-didnt-ship-a-bug-you-just-wrote-it-for-a-human",
+          "its-10pm-do-you-know-where-your-agents-are"
+        ],
+        "why_it_matters": "Default read grants are where prompt-injection-driven data exfiltration lives; the tradeoff sets both the exfiltration blast radius and whether the product is tolerable to use at all."
+      },
+      {
+        "question": "Should an intermediary sit between the agent and the resource it is calling?",
+        "position_a": "A proxy is the wrong architecture because it has to handle the data and therefore does not scale; the intermediary should be a directory that matches intent to capabilities and then gets out of the way.",
+        "position_a_talks": [
+          "full-workshop-better-auth"
+        ],
+        "position_b": "Traffic should be mediated \u2014 messages route to a message box before the agent runtime to enable sender authentication, spam filtering, and buffering, and access control belongs at the interception point between the agent runtime and the MCP server.",
+        "position_b_talks": [
+          "the-agentic-web-and-the-bazaar-era-of-ai",
+          "its-10pm-do-you-know-where-your-agents-are"
+        ],
+        "why_it_matters": "It decides whether agent authorization is a control-plane component you can adopt incrementally or a data-plane hop that becomes a latency, cost, and confidentiality chokepoint for every agent call."
+      }
+    ],
+    "practical_guidance": {
+      "do": [
+        "Give the agent its own client ID and delegated access bound to the user, rather than replaying the user's credentials or personal token.",
+        "Request an access token per tool call, audience-bound so only the one target MCP server can use it, expiring within a few minutes, and never persisted.",
+        "Evaluate policy before minting the credential, so a denied action leaves nothing to leak, replay, or steal.",
+        "Treat a human's approval as an input to policy, not the decision: check the approver's role and allow policy to override an approval they lack authority to give.",
+        "Time-bound agent permissions to the agent's actual operating window and restrict the tool set to its specific job; make least privilege the default with just-in-time elevation for higher scopes.",
+        "Scope the MCP server's exposed tool surface to the authorizing user, instead of surfacing every tool the application supports to every agent.",
+        "Start scope design from the scopes your resource server already exposes, then layer tool-call-level scopes on top or pass them through.",
+        "Log who acted, on behalf of whom, who authorized it, what was authorized, when, and for how long \u2014 treat missing attribution as a security gap.",
+        "Publish signed metadata about an agent (capabilities, policy, protocol, who built it) rather than just a resolvable address.",
+        "Design an explicit agent-first signup and login flow for your product, on the assumption agents will use it regardless.",
+        "Batch high-frequency incidental writes triggered by agent traffic \u2014 Scalekit found 'last seen' updating 60x faster under agents and fixed it with one-second-granularity batching."
+      ],
+      "avoid": [
+        "Handing an agent a long-lived API key that can do everything; it is a kitchen sink and the agent will use all of it.",
+        "Having the agent authenticate as the user \u2014 'pretend to be me' instead of 'act for me within these limits' destroys attribution and any hope of scoping.",
+        "Treating human-in-the-loop approval as your access control; consent-fatigued reviewers accept wrong output roughly 80% of the time.",
+        "Assuming coarse scopes like 'read' or 'can send email on your behalf' are adequate expressions of an agent's authority.",
+        "Letting an agent use any of the grants in its session token on every tool call.",
+        "Storing secrets as files in the agent's environment, or running coding agents on a local laptop where NPM supply-chain compromise reaches them.",
+        "Assuming an agent behaves like a service account you can bound by inspecting code \u2014 there is no determinism baked in.",
+        "Permitting destructive operations at all: no agent should be able to drop a database, even when the documented recovery runbook calls for it.",
+        "Relying on CAPTCHAs to distinguish agents from bad bots."
+      ]
+    },
+    "notable_outliers": [
+      {
+        "claim": "Some capabilities should be unconditionally denied regardless of policy or approval: no agent should be able to drop a database, even when the documented recovery procedure calls for exactly that.",
+        "talk": "its-10pm-do-you-know-where-your-agents-are",
+        "timestamp_sec": 807
+      },
+      {
+        "claim": "Agents are never fully detached principals \u2014 every agent always reports to a user, so agent identity is always a delegation chain rather than a standalone account.",
+        "talk": "full-workshop-better-auth",
+        "timestamp_sec": 1167
+      },
+      {
+        "claim": "Liability for agent-produced work must ground out in a human or corporation, and Git's single-signer commit model is inadequate for attributing agent-authored code.",
+        "talk": "the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in",
+        "timestamp_sec": 3015
+      },
+      {
+        "claim": "The web needs a certificate-authority-like trust issuer for agents, and no one has built it yet.",
+        "talk": "bringing-agents-onto-the-world-wide-web",
+        "timestamp_sec": 792
+      },
+      {
+        "claim": "DNS and document-era discovery cannot carry agent identity, because agents negotiate, delegate, and migrate between hosts in milliseconds; resolution must be adaptive to who is asking rather than a fixed name-to-address table.",
+        "talk": "the-agentic-web-and-the-bazaar-era-of-ai",
+        "timestamp_sec": 101
+      },
+      {
+        "claim": "A v1 spec written in February already aged out because it assumed agents are ephemeral; long-lived and organizational agents now need their own policy support.",
+        "talk": "full-workshop-better-auth",
+        "timestamp_sec": 1232
+      }
+    ],
+    "maturity": "contested",
+    "maturity_rationale": "The diagnosis is unanimous across every security-track talk \u2014 agents need their own principal, scoped delegation, short-lived credentials, and full attribution \u2014 but the mechanism is actively disputed by credible vendors: Keycard argues RFC 8693 token exchange is sufficient with no new spec, while Better Auth and Scalekit argue any user-minted token is structurally wrong and something beyond OAuth is required. Compounding this, the inbound trust layer for the open web is admitted by multiple speakers to be entirely unbuilt."
+  },
+  "_meta": {
+    "concept": "agent identity and authorization",
+    "slug": "agent-identity-and-authorization",
+    "talk_count": 7,
+    "missing_talks": [],
+    "wall_sec": 134.1,
+    "run_at": "2026-08-13T20:23:04Z"
+  }
+}

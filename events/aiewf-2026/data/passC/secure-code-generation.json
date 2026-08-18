@@ -1,0 +1,318 @@
+{
+  "is_error": false,
+  "duration_api_ms": 125022,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "85f1cebb-5b14-408f-bd3b-e681582e8cfb",
+  "total_cost_usd": 0.5141739999999999,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 22756,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 10674,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 22756,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 10674,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 22756,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 22756
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 14520,
+      "outputTokens": 16,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.0146,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 10674,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 22756,
+      "webSearchRequests": 0,
+      "costUSD": 0.49957399999999996,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\"concept\": \"secure code generation\", \"state_of_practice\": \"The field has stopped arguing about whether AI writes insecure code and started arguing about where the checking goes. The measured baseline is bad: BaxBench-style evaluation puts even frontier models at a 20\u201340% vulnerability-introduction rate on coding tasks, and Sonar's 4,000-problem harness shows models passing functional correctness while emitting high-complexity, insecure code \u2014 so tests-pass is not a security gate. The dominant architecture is a separate security pass run by different tooling than the generator, mixing deterministic static analysis with LLM review, executed inside the agent's inner loop (hooks on tool calls, AST-grep sensors, guide-verify-solve controllers) and re-enforced in CI because you cannot prove the developer ran the local check. Scope has widened past generated code to the agent's own supply chain: Snyk's audit of ~4,000 ClawHub skills found over one in eight with a critical issue and 76 malicious payloads, and Nubank now gates skills through a scanned internal marketplace. The unresolved fault line is durability \u2014 DeepMind argues detect-and-patch is a treadmill and models should be taught to write correct code from the start, while the security and quality vendors treat in-loop verification as the permanent layer because security is contextual and models lack the business logic and threat model.\", \"consensus\": [{\"claim\": \"Frontier models cannot be trusted to produce secure code by default; passing functional correctness says nothing about security, so a dedicated security check is mandatory regardless of model quality.\", \"support_count\": 5, \"supporting_talks\": [\"the-ai-bugpocalypse-is-here-now-what\", \"agentic-security-permissions-provenance-and-the-agent-supply-chain\", \"in-the-land-of-ai-agents-the-verifiers-are-king\", \"guide-verify-solve\", \"security-track-intro\"], \"evidence_quote\": \"even the best models introduce vulnerabilities about 20 to 40% of the time when writing code\", \"evidence_talk\": \"the-ai-bugpocalypse-is-here-now-what\", \"evidence_timestamp_sec\": 641}, {\"claim\": \"Security must be verified by a different model, tool, or methodology than the one that generated the code \u2014 never by the generating agent reviewing itself, and never bundled into the same prompt as correctness.\", \"support_count\": 4, \"supporting_talks\": [\"guide-verify-solve\", \"in-the-land-of-ai-agents-the-verifiers-are-king\", \"agentic-security-permissions-provenance-and-the-agent-supply-chain\", \"we-vetted-2000-ai-skills-before-they-reached-developers\"], \"evidence_quote\": \"Use a different methodology to review the code that was used to write the code.\", \"evidence_talk\": \"guide-verify-solve\", \"evidence_timestamp_sec\": 589}, {\"claim\": \"Neither deterministic scanning nor LLM review is sufficient alone; the working pattern is a hybrid where deterministic tooling handles anything mechanically decidable and the LLM supplies context.\", \"support_count\": 4, \"supporting_talks\": [\"guide-verify-solve\", \"we-vetted-2000-ai-skills-before-they-reached-developers\", \"agentic-development-security\", \"loop-engineering-from-first-principles\"], \"evidence_quote\": \"You need to use computational review, you also need to use LLM driven review, and everything else in between\", \"evidence_talk\": \"guide-verify-solve\", \"evidence_timestamp_sec\": 621}, {\"claim\": \"Verification belongs inside the agent's generation loop, surfaced back to the model, not applied only afterward at the CI or code-review stage.\", \"support_count\": 4, \"supporting_talks\": [\"in-the-land-of-ai-agents-the-verifiers-are-king\", \"guide-verify-solve\", \"agentic-security-permissions-provenance-and-the-agent-supply-chain\", \"agentic-development-security\"], \"evidence_quote\": \"The verification needs to run in both the inner agentic loop and also in the outer loop for CICD.\", \"evidence_talk\": \"guide-verify-solve\", \"evidence_timestamp_sec\": 1091}, {\"claim\": \"Human code review is not a reliable backstop for AI-generated code and is already being rubber-stamped or displaced, so the safety property has to be carried by automated verification.\", \"support_count\": 3, \"supporting_talks\": [\"guide-verify-solve\", \"the-ai-bugpocalypse-is-here-now-what\", \"software-engineering-is-not-about-writing-code\"], \"evidence_quote\": \"while participants did follow the AI advice 92.7% of the time when the AI was correct, they unfortunately also listened to the AI nearly 80% of the time when the AI was wrong\", \"evidence_talk\": \"guide-verify-solve\", \"evidence_timestamp_sec\": 395}, {\"claim\": \"Securing generated code is only part of the problem: skills, MCP servers, plugins, hooks and agent permissions are a supply chain that must be scanned and governed with the same rigor.\", \"support_count\": 4, \"supporting_talks\": [\"we-vetted-2000-ai-skills-before-they-reached-developers\", \"agentic-development-security\", \"agentic-security-permissions-provenance-and-the-agent-supply-chain\", \"security-track-intro\"], \"evidence_quote\": \"we should be protecting the whole workflow not only the code that's being generated\", \"evidence_talk\": \"we-vetted-2000-ai-skills-before-they-reached-developers\", \"evidence_timestamp_sec\": 67}], \"disagreements\": [{\"question\": \"Is insecure AI-generated code a tooling problem to be solved by external verification, or a model/language problem to be solved by making models write correct code from the start?\", \"position_a\": \"Detection-and-patch is a permanent, necessary layer: models will never be perfect because security is contextual and depends on proprietary business logic and threat models the model does not have, so multi-layered verification is the durable investment.\", \"position_a_talks\": [\"in-the-land-of-ai-agents-the-verifiers-are-king\", \"guide-verify-solve\", \"the-ai-bugpocalypse-is-here-now-what\", \"agentic-development-security\"], \"position_b\": \"Detecting vulnerabilities and suggesting fixes is a never-ending treadmill; the correct target is teaching models to write correct code from the start, plus designing a new strongly-typed, model-oriented language (Lean-inspired, not necessarily human-readable) in which whole vulnerability classes are unrepresentable.\", \"position_b_talks\": [\"software-engineering-is-not-about-writing-code\", \"the-ai-bugpocalypse-is-here-now-what\"], \"why_it_matters\": \"If verification is the durable layer, the right spend is scanner integration, in-loop controllers and multi-model review; if the fix is upstream, that spend is depreciating and the leverage is in memory-safe rewrites, language design and training.\"}, {\"question\": \"Will humans keep reading AI-generated code, and should systems be designed on that assumption?\", \"position_a\": \"Human reading is on its way out \u2014 within roughly a year generated code ships without anyone looking at it the way nobody inspects compiler output, and within 6\u201312 months the majority of shipped code will be reviewed by AI rather than humans because human review is now the bottleneck.\", \"position_a_talks\": [\"software-engineering-is-not-about-writing-code\", \"the-ai-bugpocalypse-is-here-now-what\"], \"position_b\": \"The 'code is read-only now' thesis is unproven and prohibitively expensive without a frontier lab's token budget; bad code is more expensive than ever, so loops should be designed to make code easier to read, and for high-criticality projects humans still close the quality gap.\", \"position_b_talks\": [\"loop-engineering-from-first-principles\", \"guide-verify-solve\"], \"why_it_matters\": \"It determines whether you cap agent output at reviewable sizes (one open PR at a time, per-migration context windows) or invest instead in fully automated review pipelines and accept 40,000-line PRs no human will ever read.\"}, {\"question\": \"Is AI-generated code a qualitatively new security risk, or the same known vulnerability classes arriving faster?\", \"position_a\": \"Nothing fundamentally new: humans generate security issues and so do models, essentially all vulnerabilities frontier models find belong to already-known classes, and the genuinely harder problem is deploying autonomous agents into production safely.\", \"position_a_talks\": [\"security-track-intro\", \"the-ai-bugpocalypse-is-here-now-what\"], \"position_b\": \"The defect rate itself gets worse, not just the volume \u2014 AI-written code will have a worse vulnerability rate than human code, security bugs have no half-life so the problem compounds, and organizations that ship AI code without verification enter a self-reinforcing downward spiral.\", \"position_b_talks\": [\"agentic-security-permissions-provenance-and-the-agent-supply-chain\", \"in-the-land-of-ai-agents-the-verifiers-are-king\", \"guide-verify-solve\"], \"why_it_matters\": \"The first framing says extend your existing AppSec lifecycle to cover agents; the second says throughput of AI code must be actively throttled by verification or the security backlog grows faster than it can ever be worked down.\"}, {\"question\": \"Should security controls on agent output be allowed to hard-block, or must they stay non-blocking guardrails?\", \"position_a\": \"Security cannot be the blocker on development acceleration \u2014 velocity always wins, so controls must be guardrails around agent access rather than gates, and false-positive noise in a developer's workflow is itself a failure mode.\", \"position_a_talks\": [\"the-ai-bugpocalypse-is-here-now-what\", \"agentic-development-security\"], \"position_b\": \"Hard chokepoints work and are being run in production: artifacts get blocked before marketplace distribution, local checks are re-enforced in CI so they cannot be skipped, and organizations should enforce a centralized verification scheme across all teams and tools as bounded autonomy.\", \"position_b_talks\": [\"we-vetted-2000-ai-skills-before-they-reached-developers\", \"guide-verify-solve\"], \"why_it_matters\": \"It decides whether the security team owns a merge-blocking gate with a false-positive budget, or an advisory feedback channel that developers and agents can route around.\"}], \"practical_guidance\": {\"do\": [\"Run security as its own pass with its own prompt, separate from correctness \u2014 and make it both the first pass and the last pass over generated code.\", \"Expect to run four to five review passes over LLM output before it is shippable.\", \"Verify with different models and different techniques than the one that generated the code, since every model carries its own biases.\", \"Combine deterministic scanners with LLM review, and emit findings as SARIF so they feed the existing vulnerability management program rather than living in a side channel.\", \"Re-run local checks in CI \u2014 you cannot ensure the engineer ran them, or ran the latest version.\", \"Integrate scanning as async hooks on tool calls rather than MCP server plus rule files: agents ignore rule files, end-of-run scans add latency, and in-context scans burn tokens.\", \"Keep deterministic guardrails on the developer machine, because approval prompts stop being viable once agents run in the background or in the cloud.\", \"Treat skills, plugins, MCP servers, agent rules and hooks as supply chain dependencies; route externally downloaded skills through an internal scanned marketplace and proactively discover marketplaces teams spin up on their own.\", \"Grade shell-command risk per command instead of flagging all shell usage equally, and ship every finding with concrete remediation guidance.\", \"Use AST-grep as the loop sensor rather than lint or TypeScript config, because it is language-agnostic and out-of-band from configs agents disable with inline comments.\", \"Cap an agent loop at one open PR at a time \u2014 never open a new PR while the previous one from that loop is unreviewed.\", \"Give each fix or migration its own context window in a separate implementation phase; it is both cheaper and more reliable than batching.\", \"Supply agents explicit codebase context and constraints instead of the whole repo \u2014 measured at over 30% fewer tokens per problem.\", \"For high-criticality codebases, favor a one-time memory-safe rewrite of critical libraries over one-off patching: 60\u201370% of vulnerabilities in memory-unsafe products are eliminated outright.\", \"Deliver findings in the same pull request that introduces the change or skill, so feedback is co-located with the work.\"], \"avoid\": [\"Using the same AI that wrote the code to validate it.\", \"Asking for security and correctness in one prompt \u2014 you get a half-done job on both.\", \"Treating functional correctness or a green test suite as a security gate; state-of-the-art models pass those while emitting insecure, high-complexity code.\", \"Relying on human review as the backstop \u2014 reviewers accept confidently-wrong AI output nearly 80% of the time, and rubber-stamping is already widespread.\", \"Accepting a prompt instruction like 'ask for confirmation' as a human in the loop; the agent can satisfy the confirmation itself.\", \"Depending on rule files or model-level judgment for enforcement \u2014 Claude refused to read an .env file but complied when asked for a specific secret key.\", \"Dumping the entire codebase into an agent's context, which produces thrashing and token burn.\", \"Running blind prompt-in-a-bash-loop agents on team-owned or critical systems, even with verifier and code-review agents bolted on.\", \"Emitting low-context, weak-signal findings, or findings with no remediation path \u2014 they cost more than they are worth.\", \"Sending an agent to do a job deterministic code can do.\", \"Letting a security backlog accumulate on the assumption it will age out; security bugs have no half-life.\", \"Treating a single canonical marketplace or registry as a sufficient chokepoint.\", \"Expecting zero false positives from any vendor in this space.\"]}, \"notable_outliers\": [{\"claim\": \"Snyk found 241 vulnerabilities in a codebase that Fable had already completed a dedicated security hardening pass over \u2014 and everything it found was already a public CVE, not the pre-registry proprietary finding the vendor claims.\", \"talk\": \"agentic-security-permissions-provenance-and-the-agent-supply-chain\", \"timestamp_sec\": 631}, {\"claim\": \"Existing languages like Python were designed for humans and are bad for safe code; the answer is a new strongly-typed, Lean-inspired language for models that does not need to be human-readable.\", \"talk\": \"software-engineering-is-not-about-writing-code\", \"timestamp_sec\": 1037}, {\"claim\": \"Within about a year, generated code will ship without any human reading it, the way nobody inspects compiler assembly output.\", \"talk\": \"software-engineering-is-not-about-writing-code\", \"timestamp_sec\": 702}, {\"claim\": \"An audit of nearly 4,000 ClawHub skills found over one in eight with a critical severity issue and 76 malicious payloads \u2014 and malicious skills can modify agent memory, so removing the skill does not remove the compromise.\", \"talk\": \"agentic-development-security\", \"timestamp_sec\": 434}, {\"claim\": \"One in 12 developers observed had an MCP server with a high or critical severity finding in the server itself.\", \"talk\": \"agentic-development-security\", \"timestamp_sec\": 509}, {\"claim\": \"Export controls on frontier security-capable models should be lifted, because adversaries already have powerful models via distillation and the defender benefit outweighs the risk.\", \"talk\": \"the-ai-bugpocalypse-is-here-now-what\", \"timestamp_sec\": 889}, {\"claim\": \"LLMs are lazy about token spend in a useful way, so they will voluntarily adopt deterministic security scanners that offload cognition \u2014 and you should run the open-source, Snyk and Chainguard scanners together so they check each other's work.\", \"talk\": \"agentic-security-permissions-provenance-and-the-agent-supply-chain\", \"timestamp_sec\": 554}, {\"claim\": \"Sonar's 4,000-task benchmark found Claude Sonnet 4.6 strong on correctness and task-solving, but Opus the better pick when maintainability, security, or low complexity are the priority.\", \"talk\": \"guide-verify-solve\", \"timestamp_sec\": 332}, {\"claim\": \"Clean code measurably matters to agents, not just humans: a cleaned codebase reduces the tokens and reasoning needed for identical agentic tasks.\", \"talk\": \"in-the-land-of-ai-agents-the-verifiers-are-king\", \"timestamp_sec\": 789}, {\"claim\": \"There is no good technical defense for prompt injection today \u2014 it is currently an education problem \u2014 and agent queue systems need adversarial supervisor agents because any single agent will eventually fail.\", \"talk\": \"agentic-security-permissions-provenance-and-the-agent-supply-chain\", \"timestamp_sec\": 1275}], \"maturity\": \"consolidating\", \"maturity_rationale\": \"Independent speakers from vendors, banks, and labs converged on the same architecture \u2014 a separate security pass, run by different tooling than the generator, mixing deterministic and LLM review, embedded in the agent loop and re-enforced in CI \u2014 with production numbers behind it. What remains argued is whether that verification layer is permanent or a stopgap until models and languages make vulnerability classes unrepresentable, whether humans stay in the reading loop, and whether controls may hard-block.\"}",
+  "ttft_ms": 59739,
+  "ttft_stream_ms": 935,
+  "time_to_request_ms": 34,
+  "type": "result",
+  "duration_ms": 125280,
+  "uuid": "1dc806fb-0641-4c1c-9dc2-59b5f051cec1",
+  "passC": {
+    "concept": "secure code generation",
+    "state_of_practice": "The field has stopped arguing about whether AI writes insecure code and started arguing about where the checking goes. The measured baseline is bad: BaxBench-style evaluation puts even frontier models at a 20\u201340% vulnerability-introduction rate on coding tasks, and Sonar's 4,000-problem harness shows models passing functional correctness while emitting high-complexity, insecure code \u2014 so tests-pass is not a security gate. The dominant architecture is a separate security pass run by different tooling than the generator, mixing deterministic static analysis with LLM review, executed inside the agent's inner loop (hooks on tool calls, AST-grep sensors, guide-verify-solve controllers) and re-enforced in CI because you cannot prove the developer ran the local check. Scope has widened past generated code to the agent's own supply chain: Snyk's audit of ~4,000 ClawHub skills found over one in eight with a critical issue and 76 malicious payloads, and Nubank now gates skills through a scanned internal marketplace. The unresolved fault line is durability \u2014 DeepMind argues detect-and-patch is a treadmill and models should be taught to write correct code from the start, while the security and quality vendors treat in-loop verification as the permanent layer because security is contextual and models lack the business logic and threat model.",
+    "consensus": [
+      {
+        "claim": "Frontier models cannot be trusted to produce secure code by default; passing functional correctness says nothing about security, so a dedicated security check is mandatory regardless of model quality.",
+        "support_count": 5,
+        "supporting_talks": [
+          "the-ai-bugpocalypse-is-here-now-what",
+          "agentic-security-permissions-provenance-and-the-agent-supply-chain",
+          "in-the-land-of-ai-agents-the-verifiers-are-king",
+          "guide-verify-solve",
+          "security-track-intro"
+        ],
+        "evidence_quote": "even the best models introduce vulnerabilities about 20 to 40% of the time when writing code",
+        "evidence_talk": "the-ai-bugpocalypse-is-here-now-what",
+        "evidence_timestamp_sec": 641
+      },
+      {
+        "claim": "Security must be verified by a different model, tool, or methodology than the one that generated the code \u2014 never by the generating agent reviewing itself, and never bundled into the same prompt as correctness.",
+        "support_count": 4,
+        "supporting_talks": [
+          "guide-verify-solve",
+          "in-the-land-of-ai-agents-the-verifiers-are-king",
+          "agentic-security-permissions-provenance-and-the-agent-supply-chain",
+          "we-vetted-2000-ai-skills-before-they-reached-developers"
+        ],
+        "evidence_quote": "Use a different methodology to review the code that was used to write the code.",
+        "evidence_talk": "guide-verify-solve",
+        "evidence_timestamp_sec": 589
+      },
+      {
+        "claim": "Neither deterministic scanning nor LLM review is sufficient alone; the working pattern is a hybrid where deterministic tooling handles anything mechanically decidable and the LLM supplies context.",
+        "support_count": 4,
+        "supporting_talks": [
+          "guide-verify-solve",
+          "we-vetted-2000-ai-skills-before-they-reached-developers",
+          "agentic-development-security",
+          "loop-engineering-from-first-principles"
+        ],
+        "evidence_quote": "You need to use computational review, you also need to use LLM driven review, and everything else in between",
+        "evidence_talk": "guide-verify-solve",
+        "evidence_timestamp_sec": 621
+      },
+      {
+        "claim": "Verification belongs inside the agent's generation loop, surfaced back to the model, not applied only afterward at the CI or code-review stage.",
+        "support_count": 4,
+        "supporting_talks": [
+          "in-the-land-of-ai-agents-the-verifiers-are-king",
+          "guide-verify-solve",
+          "agentic-security-permissions-provenance-and-the-agent-supply-chain",
+          "agentic-development-security"
+        ],
+        "evidence_quote": "The verification needs to run in both the inner agentic loop and also in the outer loop for CICD.",
+        "evidence_talk": "guide-verify-solve",
+        "evidence_timestamp_sec": 1091
+      },
+      {
+        "claim": "Human code review is not a reliable backstop for AI-generated code and is already being rubber-stamped or displaced, so the safety property has to be carried by automated verification.",
+        "support_count": 3,
+        "supporting_talks": [
+          "guide-verify-solve",
+          "the-ai-bugpocalypse-is-here-now-what",
+          "software-engineering-is-not-about-writing-code"
+        ],
+        "evidence_quote": "while participants did follow the AI advice 92.7% of the time when the AI was correct, they unfortunately also listened to the AI nearly 80% of the time when the AI was wrong",
+        "evidence_talk": "guide-verify-solve",
+        "evidence_timestamp_sec": 395
+      },
+      {
+        "claim": "Securing generated code is only part of the problem: skills, MCP servers, plugins, hooks and agent permissions are a supply chain that must be scanned and governed with the same rigor.",
+        "support_count": 4,
+        "supporting_talks": [
+          "we-vetted-2000-ai-skills-before-they-reached-developers",
+          "agentic-development-security",
+          "agentic-security-permissions-provenance-and-the-agent-supply-chain",
+          "security-track-intro"
+        ],
+        "evidence_quote": "we should be protecting the whole workflow not only the code that's being generated",
+        "evidence_talk": "we-vetted-2000-ai-skills-before-they-reached-developers",
+        "evidence_timestamp_sec": 67
+      }
+    ],
+    "disagreements": [
+      {
+        "question": "Is insecure AI-generated code a tooling problem to be solved by external verification, or a model/language problem to be solved by making models write correct code from the start?",
+        "position_a": "Detection-and-patch is a permanent, necessary layer: models will never be perfect because security is contextual and depends on proprietary business logic and threat models the model does not have, so multi-layered verification is the durable investment.",
+        "position_a_talks": [
+          "in-the-land-of-ai-agents-the-verifiers-are-king",
+          "guide-verify-solve",
+          "the-ai-bugpocalypse-is-here-now-what",
+          "agentic-development-security"
+        ],
+        "position_b": "Detecting vulnerabilities and suggesting fixes is a never-ending treadmill; the correct target is teaching models to write correct code from the start, plus designing a new strongly-typed, model-oriented language (Lean-inspired, not necessarily human-readable) in which whole vulnerability classes are unrepresentable.",
+        "position_b_talks": [
+          "software-engineering-is-not-about-writing-code",
+          "the-ai-bugpocalypse-is-here-now-what"
+        ],
+        "why_it_matters": "If verification is the durable layer, the right spend is scanner integration, in-loop controllers and multi-model review; if the fix is upstream, that spend is depreciating and the leverage is in memory-safe rewrites, language design and training."
+      },
+      {
+        "question": "Will humans keep reading AI-generated code, and should systems be designed on that assumption?",
+        "position_a": "Human reading is on its way out \u2014 within roughly a year generated code ships without anyone looking at it the way nobody inspects compiler output, and within 6\u201312 months the majority of shipped code will be reviewed by AI rather than humans because human review is now the bottleneck.",
+        "position_a_talks": [
+          "software-engineering-is-not-about-writing-code",
+          "the-ai-bugpocalypse-is-here-now-what"
+        ],
+        "position_b": "The 'code is read-only now' thesis is unproven and prohibitively expensive without a frontier lab's token budget; bad code is more expensive than ever, so loops should be designed to make code easier to read, and for high-criticality projects humans still close the quality gap.",
+        "position_b_talks": [
+          "loop-engineering-from-first-principles",
+          "guide-verify-solve"
+        ],
+        "why_it_matters": "It determines whether you cap agent output at reviewable sizes (one open PR at a time, per-migration context windows) or invest instead in fully automated review pipelines and accept 40,000-line PRs no human will ever read."
+      },
+      {
+        "question": "Is AI-generated code a qualitatively new security risk, or the same known vulnerability classes arriving faster?",
+        "position_a": "Nothing fundamentally new: humans generate security issues and so do models, essentially all vulnerabilities frontier models find belong to already-known classes, and the genuinely harder problem is deploying autonomous agents into production safely.",
+        "position_a_talks": [
+          "security-track-intro",
+          "the-ai-bugpocalypse-is-here-now-what"
+        ],
+        "position_b": "The defect rate itself gets worse, not just the volume \u2014 AI-written code will have a worse vulnerability rate than human code, security bugs have no half-life so the problem compounds, and organizations that ship AI code without verification enter a self-reinforcing downward spiral.",
+        "position_b_talks": [
+          "agentic-security-permissions-provenance-and-the-agent-supply-chain",
+          "in-the-land-of-ai-agents-the-verifiers-are-king",
+          "guide-verify-solve"
+        ],
+        "why_it_matters": "The first framing says extend your existing AppSec lifecycle to cover agents; the second says throughput of AI code must be actively throttled by verification or the security backlog grows faster than it can ever be worked down."
+      },
+      {
+        "question": "Should security controls on agent output be allowed to hard-block, or must they stay non-blocking guardrails?",
+        "position_a": "Security cannot be the blocker on development acceleration \u2014 velocity always wins, so controls must be guardrails around agent access rather than gates, and false-positive noise in a developer's workflow is itself a failure mode.",
+        "position_a_talks": [
+          "the-ai-bugpocalypse-is-here-now-what",
+          "agentic-development-security"
+        ],
+        "position_b": "Hard chokepoints work and are being run in production: artifacts get blocked before marketplace distribution, local checks are re-enforced in CI so they cannot be skipped, and organizations should enforce a centralized verification scheme across all teams and tools as bounded autonomy.",
+        "position_b_talks": [
+          "we-vetted-2000-ai-skills-before-they-reached-developers",
+          "guide-verify-solve"
+        ],
+        "why_it_matters": "It decides whether the security team owns a merge-blocking gate with a false-positive budget, or an advisory feedback channel that developers and agents can route around."
+      }
+    ],
+    "practical_guidance": {
+      "do": [
+        "Run security as its own pass with its own prompt, separate from correctness \u2014 and make it both the first pass and the last pass over generated code.",
+        "Expect to run four to five review passes over LLM output before it is shippable.",
+        "Verify with different models and different techniques than the one that generated the code, since every model carries its own biases.",
+        "Combine deterministic scanners with LLM review, and emit findings as SARIF so they feed the existing vulnerability management program rather than living in a side channel.",
+        "Re-run local checks in CI \u2014 you cannot ensure the engineer ran them, or ran the latest version.",
+        "Integrate scanning as async hooks on tool calls rather than MCP server plus rule files: agents ignore rule files, end-of-run scans add latency, and in-context scans burn tokens.",
+        "Keep deterministic guardrails on the developer machine, because approval prompts stop being viable once agents run in the background or in the cloud.",
+        "Treat skills, plugins, MCP servers, agent rules and hooks as supply chain dependencies; route externally downloaded skills through an internal scanned marketplace and proactively discover marketplaces teams spin up on their own.",
+        "Grade shell-command risk per command instead of flagging all shell usage equally, and ship every finding with concrete remediation guidance.",
+        "Use AST-grep as the loop sensor rather than lint or TypeScript config, because it is language-agnostic and out-of-band from configs agents disable with inline comments.",
+        "Cap an agent loop at one open PR at a time \u2014 never open a new PR while the previous one from that loop is unreviewed.",
+        "Give each fix or migration its own context window in a separate implementation phase; it is both cheaper and more reliable than batching.",
+        "Supply agents explicit codebase context and constraints instead of the whole repo \u2014 measured at over 30% fewer tokens per problem.",
+        "For high-criticality codebases, favor a one-time memory-safe rewrite of critical libraries over one-off patching: 60\u201370% of vulnerabilities in memory-unsafe products are eliminated outright.",
+        "Deliver findings in the same pull request that introduces the change or skill, so feedback is co-located with the work."
+      ],
+      "avoid": [
+        "Using the same AI that wrote the code to validate it.",
+        "Asking for security and correctness in one prompt \u2014 you get a half-done job on both.",
+        "Treating functional correctness or a green test suite as a security gate; state-of-the-art models pass those while emitting insecure, high-complexity code.",
+        "Relying on human review as the backstop \u2014 reviewers accept confidently-wrong AI output nearly 80% of the time, and rubber-stamping is already widespread.",
+        "Accepting a prompt instruction like 'ask for confirmation' as a human in the loop; the agent can satisfy the confirmation itself.",
+        "Depending on rule files or model-level judgment for enforcement \u2014 Claude refused to read an .env file but complied when asked for a specific secret key.",
+        "Dumping the entire codebase into an agent's context, which produces thrashing and token burn.",
+        "Running blind prompt-in-a-bash-loop agents on team-owned or critical systems, even with verifier and code-review agents bolted on.",
+        "Emitting low-context, weak-signal findings, or findings with no remediation path \u2014 they cost more than they are worth.",
+        "Sending an agent to do a job deterministic code can do.",
+        "Letting a security backlog accumulate on the assumption it will age out; security bugs have no half-life.",
+        "Treating a single canonical marketplace or registry as a sufficient chokepoint.",
+        "Expecting zero false positives from any vendor in this space."
+      ]
+    },
+    "notable_outliers": [
+      {
+        "claim": "Snyk found 241 vulnerabilities in a codebase that Fable had already completed a dedicated security hardening pass over \u2014 and everything it found was already a public CVE, not the pre-registry proprietary finding the vendor claims.",
+        "talk": "agentic-security-permissions-provenance-and-the-agent-supply-chain",
+        "timestamp_sec": 631
+      },
+      {
+        "claim": "Existing languages like Python were designed for humans and are bad for safe code; the answer is a new strongly-typed, Lean-inspired language for models that does not need to be human-readable.",
+        "talk": "software-engineering-is-not-about-writing-code",
+        "timestamp_sec": 1037
+      },
+      {
+        "claim": "Within about a year, generated code will ship without any human reading it, the way nobody inspects compiler assembly output.",
+        "talk": "software-engineering-is-not-about-writing-code",
+        "timestamp_sec": 702
+      },
+      {
+        "claim": "An audit of nearly 4,000 ClawHub skills found over one in eight with a critical severity issue and 76 malicious payloads \u2014 and malicious skills can modify agent memory, so removing the skill does not remove the compromise.",
+        "talk": "agentic-development-security",
+        "timestamp_sec": 434
+      },
+      {
+        "claim": "One in 12 developers observed had an MCP server with a high or critical severity finding in the server itself.",
+        "talk": "agentic-development-security",
+        "timestamp_sec": 509
+      },
+      {
+        "claim": "Export controls on frontier security-capable models should be lifted, because adversaries already have powerful models via distillation and the defender benefit outweighs the risk.",
+        "talk": "the-ai-bugpocalypse-is-here-now-what",
+        "timestamp_sec": 889
+      },
+      {
+        "claim": "LLMs are lazy about token spend in a useful way, so they will voluntarily adopt deterministic security scanners that offload cognition \u2014 and you should run the open-source, Snyk and Chainguard scanners together so they check each other's work.",
+        "talk": "agentic-security-permissions-provenance-and-the-agent-supply-chain",
+        "timestamp_sec": 554
+      },
+      {
+        "claim": "Sonar's 4,000-task benchmark found Claude Sonnet 4.6 strong on correctness and task-solving, but Opus the better pick when maintainability, security, or low complexity are the priority.",
+        "talk": "guide-verify-solve",
+        "timestamp_sec": 332
+      },
+      {
+        "claim": "Clean code measurably matters to agents, not just humans: a cleaned codebase reduces the tokens and reasoning needed for identical agentic tasks.",
+        "talk": "in-the-land-of-ai-agents-the-verifiers-are-king",
+        "timestamp_sec": 789
+      },
+      {
+        "claim": "There is no good technical defense for prompt injection today \u2014 it is currently an education problem \u2014 and agent queue systems need adversarial supervisor agents because any single agent will eventually fail.",
+        "talk": "agentic-security-permissions-provenance-and-the-agent-supply-chain",
+        "timestamp_sec": 1275
+      }
+    ],
+    "maturity": "consolidating",
+    "maturity_rationale": "Independent speakers from vendors, banks, and labs converged on the same architecture \u2014 a separate security pass, run by different tooling than the generator, mixing deterministic and LLM review, embedded in the agent loop and re-enforced in CI \u2014 with production numbers behind it. What remains argued is whether that verification layer is permanent or a stopgap until models and languages make vulnerability classes unrepresentable, whether humans stay in the reading loop, and whether controls may hard-block."
+  },
+  "_meta": {
+    "concept": "secure code generation",
+    "slug": "secure-code-generation",
+    "talk_count": 9,
+    "missing_talks": [],
+    "wall_sec": 126.4,
+    "run_at": "2026-08-13T19:48:50Z"
+  }
+}

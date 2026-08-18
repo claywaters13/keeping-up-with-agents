@@ -1,0 +1,291 @@
+{
+  "is_error": false,
+  "duration_api_ms": 147114,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "30bbc666-9377-4e29-a33c-9fe9b20bec6e",
+  "total_cost_usd": 0.527891,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 20324,
+    "cache_read_input_tokens": 10720,
+    "output_tokens": 12260,
+    "output_tokens_details": {
+      "thinking_tokens": 6622
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 20324,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 12260,
+        "cache_read_input_tokens": 10720,
+        "cache_creation_input_tokens": 20324,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 20324
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 12691,
+      "outputTokens": 18,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.012780999999999999,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 12260,
+      "cacheReadInputTokens": 10720,
+      "cacheCreationInputTokens": 20324,
+      "webSearchRequests": 0,
+      "costUSD": 0.51511,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\"concept\": \"legacy code migration\", \"state_of_practice\": \"The economics flipped in 2025-2026: migrations that were never worth the human cost \u2014 COBOL/JCL modernization, ETL ports, 150-procedure RPC rewrites, CVE backlogs across thousands of repos \u2014 are now routinely staffed with agents, with reported results like a 50-engineer ETL migration delivered in a third of the timeline and a refactor that took 3 hours and 10 corrections on O3 taking roughly a fifth of that on Sonnet 4.6/Opus 4.8. The architecture that has converged is a boring deterministic wrapper around an agentic core: the agent only edits files on disk, while push, PR creation, CI triggering, and approval interrupts live in deterministic code, because that split is effectively the security model. Verification is the hard part, not generation \u2014 the field agrees you must not verify with the same model or methodology that generated the change, and Anthropic's security work goes further by running discovery and verification as separate agents with the verifier denied the discovery agent's reasoning traces. Work is decomposed rather than batched: each migration unit gets its own context window, agents are told to make the smallest change that fixes the specific defect, and loops are throttled to one unreviewed PR at a time because human review capacity, not compute, is the binding constraint. The unresolved tension is autonomy: some teams run unattended remediation loops in CI today, while others insist models still cannot self-validate a substantial multi-repo refactor and that you should start hands-on-the-wheel.\", \"consensus\": [{\"claim\": \"Agents have made large-scale legacy migration and refactoring economically viable \u2014 work previously deferred indefinitely because nobody wanted to touch the code is now being shipped.\", \"support_count\": 5, \"supporting_talks\": [\"benchmarking-coding-agents-on-new-vs-legacy-codebases\", \"how-forward-deployed-engineering-is-done-at-cognition\", \"loop-engineering-from-first-principles\", \"we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night\", \"using-llms-to-secure-source-code\"], \"evidence_quote\": \"taking on technical debt and refactoring later is getting exponentially easier as the days go by.\", \"evidence_talk\": \"benchmarking-coding-agents-on-new-vs-legacy-codebases\", \"evidence_timestamp_sec\": 765}, {\"claim\": \"Verification of migrated code must be independent of generation \u2014 a different methodology, tool, or agent than the one that wrote the change, run inside the loop rather than only at CI.\", \"support_count\": 4, \"supporting_talks\": [\"guide-verify-solve\", \"using-llms-to-secure-source-code\", \"loop-engineering-from-first-principles\", \"we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night\"], \"evidence_quote\": \"Use a different methodology to review the code that was used to write the code.\", \"evidence_talk\": \"guide-verify-solve\", \"evidence_timestamp_sec\": 589}, {\"claim\": \"The migration harness should be a deterministic shell around an agentic core: the agent edits files, while credentials, PR creation, CI triggering, and approval gates stay in deterministic code.\", \"support_count\": 4, \"supporting_talks\": [\"we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night\", \"loop-engineering-from-first-principles\", \"agents-in-production-how-opengov-built-and-scaled-og-assist\", \"using-llms-to-secure-source-code\"], \"evidence_quote\": \"The dangerous ones, the get up right access, um and trigger UCI is something that we did not give the agent. Instead, we pushed um that functionality out to the deterministic part\", \"evidence_talk\": \"we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night\", \"evidence_timestamp_sec\": 713}, {\"claim\": \"Migrations should be decomposed into small units each getting its own fresh context window, rather than batched into one large agent run or one large context dump.\", \"support_count\": 4, \"supporting_talks\": [\"loop-engineering-from-first-principles\", \"guide-verify-solve\", \"we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night\", \"agents-in-production-how-opengov-built-and-scaled-og-assist\"], \"evidence_quote\": \"we could have our controller pick three or five and then do each of those in a separate implementation phase, which will be both cheaper and more reliable since each migration gets its own context window\", \"evidence_talk\": \"loop-engineering-from-first-principles\", \"evidence_timestamp_sec\": 989}, {\"claim\": \"Human review capacity \u2014 not model capability or compute budget \u2014 is the real throughput ceiling on agent-driven migration, so pipelines must be throttled and findings curated to what humans can actually absorb.\", \"support_count\": 3, \"supporting_talks\": [\"loop-engineering-from-first-principles\", \"using-llms-to-secure-source-code\", \"benchmarking-coding-agents-on-new-vs-legacy-codebases\"], \"evidence_quote\": \"No human reviewed the last output, so there's no reason to stack up even more work for humans to review.\", \"evidence_talk\": \"loop-engineering-from-first-principles\", \"evidence_timestamp_sec\": 957}, {\"claim\": \"Unguarded agent-generated code recreates the exact pathologies of legacy codebases \u2014 high volume, rising complexity and static-analysis warnings, and nobody on the team understanding it.\", \"support_count\": 3, \"supporting_talks\": [\"benchmarking-coding-agents-on-new-vs-legacy-codebases\", \"guide-verify-solve\", \"loop-engineering-from-first-principles\"], \"evidence_quote\": \"when you build a lot of code and you do this kind of development in an AI AI-native world, it starts looking like some of the legacy code we've we've seen in the past.\", \"evidence_talk\": \"benchmarking-coding-agents-on-new-vs-legacy-codebases\", \"evidence_timestamp_sec\": 765}], \"disagreements\": [{\"question\": \"Should migration agents be run as unattended automated loops today, or kept hands-on-the-wheel with a human gating every change?\", \"position_a\": \"Run them autonomously now: a deterministic controller spawns agents against a tracked violation queue, agents are given agency and tooling to remediate their own verification findings, and the whole thing lives in CI \u2014 human review is an unreliable backstop anyway, since people accept confidently-wrong AI output nearly 80% of the time and rubber-stamping is already endemic.\", \"position_a_talks\": [\"loop-engineering-from-first-principles\", \"we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night\", \"guide-verify-solve\"], \"position_b\": \"Start interactive and keep humans in the driver's seat: fully automated patch review is not yet practiced at most companies, a human should confirm patches before merge, mutating tool calls should deterministically interrupt the loop, and kicking off a long unattended run at today's per-task success rates mostly wastes the hour.\", \"position_b_talks\": [\"using-llms-to-secure-source-code\", \"agents-in-production-how-opengov-built-and-scaled-og-assist\", \"benchmarking-coding-agents-on-new-vs-legacy-codebases\"], \"why_it_matters\": \"It determines whether you invest in automated verification tooling and blast-radius containment (micro VMs, deterministic credential layers) or in review workflow and approval UX. Getting it wrong either caps your migration at human review bandwidth or ships unreviewed changes into production from a supply-chain actor.\"}, {\"question\": \"Is code generation itself a solved problem for legacy migration, with the remaining difficulty in the surrounding lifecycle?\", \"position_a\": \"Yes \u2014 with enough context engineering the models reliably produce the code blocks you want, including in COBOL and JCL; roughly 80% of the problem is testing, reviewing, deploying, and maintaining the result across the enterprise, so the leverage is in the harness and the org, not the generation step.\", \"position_a_talks\": [\"how-forward-deployed-engineering-is-done-at-cognition\"], \"position_b\": \"No \u2014 frontier models still cannot self-validate or one-shot a substantial multi-repo refactor (GPT 5.5 extra high produced scaffolding and silently omitted the model implementations in 10 minutes and 2,000 lines), and AI-generated code carries a persistent increase in static analysis warnings and complexity that must be closed for high-criticality systems.\", \"position_b_talks\": [\"benchmarking-coding-agents-on-new-vs-legacy-codebases\", \"guide-verify-solve\", \"loop-engineering-from-first-principles\"], \"why_it_matters\": \"If generation is solved, you staff migrations by scaling agent deployment and delivery process; if it isn't, you must spend engineering effort on golden patterns, deterministic sensors, and quality gates before the loop is safe to run at all.\"}, {\"question\": \"Is a large legacy migration best handled as one consolidated restructuring project, or ground down incrementally by a throttled control loop?\", \"position_a\": \"Pause and do the big one: a six-month monorepo consolidation was worth doing in 2025 rather than waiting a year for better models, with all-human PR review throughout \u2014 the monorepo is what makes end-to-end testing, verification, deployment, and sandbox cloning tractable for agents afterward.\", \"position_a_talks\": [\"benchmarking-coding-agents-on-new-vs-legacy-codebases\", \"how-forward-deployed-engineering-is-done-at-cognition\"], \"position_b\": \"Never batch: measure the violations, sort them deterministically into version control, and let a control loop pick three to five per phase with one open PR at a time \u2014 batching produces 40,000-line PRs that nobody wants to read, and bad code is more expensive in the age of agents than ever before.\", \"position_b_talks\": [\"loop-engineering-from-first-principles\", \"we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night\", \"guide-verify-solve\"], \"why_it_matters\": \"One path front-loads a multi-month freeze on feature work and bets on human review to spread codebase context; the other spreads the cost across quarters but requires building measurement sensors and a controller before any migration value lands.\"}], \"practical_guidance\": {\"do\": [\"Run one full deterministic scan on main, sort every violation deterministically, and commit the resulting worklist to version control so the loop has a stable, resumable queue\", \"Use AST-grep as the loop's sensor rather than lint or TypeScript config rules, because it is language-agnostic and out-of-band from configs that coding agents disable with inline comments\", \"Cap the loop at one open PR at a time \u2014 block a new PR until the previous one has been reviewed by a human\", \"Have the controller pick three to five migration units per phase, each executed in its own separate context window\", \"Hand-write golden pattern examples in the repo before setting the loop loose; coding agents are pattern replicators and will follow in-repo idiom over internet-derived knowledge\", \"Keep push, PR-creation, and CI-trigger credentials out of the agent entirely; let the agent only modify files on the filesystem and put the write path in the deterministic wrapper\", \"Instruct the agent to make the smallest effective change that fixes the specific CVE or violation, rather than bumping to latest\", \"Run discovery and verification as separate agents, and deny the verification agent access to the discovery agent's reasoning traces so it starts from the assumption that the finding is false\", \"Run verification in the inner agentic loop as well as the outer CI/CD loop, so defects are caught before they propagate into subsequent iterations\", \"Require two hard gates on any remediation: the original reproduction must stop working, and the existing test suite must stay green\", \"Give the agent dynamic tools \u2014 API queries, logs, live sandboxed systems it can detonate a PoC against \u2014 rather than source code alone; this pushed true positive rates to nearly 100%\", \"Ask the agent for a short retrospective at the end of every invocation: what went well, what went wrong, what tools were missing, what context would help next time\", \"Evaluate model time-horizon claims at the 80%+ success rate, not the commonly published 50%, since that is where delegation actually pays off\", \"Keep the migration target in a monorepo \u2014 end-to-end testing, verification, deployment, and sandbox cloning are still much harder across multiple repos\", \"Track commit rate and the breadth of developers contributing as the payoff signal, not lines of code\", \"Run the loop on your existing CI (GitHub Actions, GitLab, CircleCI) \u2014 it already has your code and secrets; a dedicated cluster is unnecessary\", \"If the agent genuinely needs Docker, isolate it in a micro VM (Firecracker) with Vsock-mediated networking\"], \"avoid\": [\"Blind prompt-in-a-bash-loop setups on team-owned or critical systems \u2014 even with verifier and code-review agents attached, they produce 40,000-line PRs nobody reads\", \"Giving an agent Docker socket access, and trusting the sandboxes shipped with Codex or Claude once you have; the agent can spawn a privileged container and escape to the host\", \"Dumping the entire codebase into the agent's context up front \u2014 it thrashes, explores, and burns tokens\", \"Bumping dependencies to latest rather than minimally patching; one such PR changed 70,000 lines\", \"Using the same model or methodology to verify code that generated it\", \"Assuming manifest-based tools like Dependabot and Renovate cover your exposure \u2014 CVEs in base-image OS packages and build-time downloaded binaries are structurally invisible to them\", \"Sending product engineers every true finding including medium and low severity; curate to a top 10-20 or you lose their trust permanently\", \"Trusting a 20-page deep research report at face value \u2014 the features it describes may not exist in the product, and acting on it sets you back\", \"Letting the agent revert its own prior changes \u2014 this is a known failure mode you must explicitly prompt against\", \"Deploying agents at a legacy codebase with no specific direction, which is just token maxing with no tangible outcome\", \"Using an agent for a job deterministic code can do, including vulnerability routing that simple code-owner heuristics already solve\"]}, \"notable_outliers\": [{\"claim\": \"The blast radius of an agent is an architecture decision \u2014 the line you draw between deterministic and agentic components *is* your security model.\", \"talk\": \"we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night\", \"timestamp_sec\": 1264}, {\"claim\": \"Prompts should shrink roughly 50% with every step-jump model version; on newer models 'look for where untrusted data hits the trust boundary' outperforms a prescriptive prompt.\", \"talk\": \"using-llms-to-secure-source-code\", \"timestamp_sec\": 591}, {\"claim\": \"Human PR review during a refactor is valuable not primarily as a quality gate but as the mechanism that spreads codebase context among developers.\", \"talk\": \"benchmarking-coding-agents-on-new-vs-legacy-codebases\", \"timestamp_sec\": 965}, {\"claim\": \"Agents can now operate across COBOL, JCL, and other languages people no longer learn because they are not fun or interesting \u2014 making the most complicated legacy codebases in the world addressable.\", \"talk\": \"how-forward-deployed-engineering-is-done-at-cognition\", \"timestamp_sec\": 889}, {\"claim\": \"Model choice should be split by objective within a migration: Sonnet 4.6 for correctness and task-solving, Opus when maintainability, security, or low complexity are the priority.\", \"talk\": \"guide-verify-solve\", \"timestamp_sec\": 332}, {\"claim\": \"Scaling the migration harness is a solved problem because it only costs compute and money; the unsolved constraints are entirely human and organizational, and an order of magnitude harder.\", \"talk\": \"using-llms-to-secure-source-code\", \"timestamp_sec\": 1051}, {\"claim\": \"The 'code is read-only now' thesis is unproven and prohibitively expensive for anyone without a frontier lab's token budget; well-designed loops make code easier to read rather than making reading unnecessary.\", \"talk\": \"loop-engineering-from-first-principles\", \"timestamp_sec\": 250}], \"maturity\": \"consolidating\", \"maturity_rationale\": \"Independently, six teams arrived at the same shape \u2014 deterministic wrapper around an agentic core, independent verification, per-unit context windows, throttled to human review capacity \u2014 which is stronger convergence than a frontier topic would show. What remains genuinely argued is the degree of autonomy safe to grant today, whether generation is already solved, and whether to consolidate big-bang or grind incrementally.\"}",
+  "ttft_ms": 85054,
+  "ttft_stream_ms": 824,
+  "time_to_request_ms": 44,
+  "type": "result",
+  "duration_ms": 147553,
+  "uuid": "b3153da9-634e-4eab-9dd6-43a7323e3c65",
+  "passC": {
+    "concept": "legacy code migration",
+    "state_of_practice": "The economics flipped in 2025-2026: migrations that were never worth the human cost \u2014 COBOL/JCL modernization, ETL ports, 150-procedure RPC rewrites, CVE backlogs across thousands of repos \u2014 are now routinely staffed with agents, with reported results like a 50-engineer ETL migration delivered in a third of the timeline and a refactor that took 3 hours and 10 corrections on O3 taking roughly a fifth of that on Sonnet 4.6/Opus 4.8. The architecture that has converged is a boring deterministic wrapper around an agentic core: the agent only edits files on disk, while push, PR creation, CI triggering, and approval interrupts live in deterministic code, because that split is effectively the security model. Verification is the hard part, not generation \u2014 the field agrees you must not verify with the same model or methodology that generated the change, and Anthropic's security work goes further by running discovery and verification as separate agents with the verifier denied the discovery agent's reasoning traces. Work is decomposed rather than batched: each migration unit gets its own context window, agents are told to make the smallest change that fixes the specific defect, and loops are throttled to one unreviewed PR at a time because human review capacity, not compute, is the binding constraint. The unresolved tension is autonomy: some teams run unattended remediation loops in CI today, while others insist models still cannot self-validate a substantial multi-repo refactor and that you should start hands-on-the-wheel.",
+    "consensus": [
+      {
+        "claim": "Agents have made large-scale legacy migration and refactoring economically viable \u2014 work previously deferred indefinitely because nobody wanted to touch the code is now being shipped.",
+        "support_count": 5,
+        "supporting_talks": [
+          "benchmarking-coding-agents-on-new-vs-legacy-codebases",
+          "how-forward-deployed-engineering-is-done-at-cognition",
+          "loop-engineering-from-first-principles",
+          "we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night",
+          "using-llms-to-secure-source-code"
+        ],
+        "evidence_quote": "taking on technical debt and refactoring later is getting exponentially easier as the days go by.",
+        "evidence_talk": "benchmarking-coding-agents-on-new-vs-legacy-codebases",
+        "evidence_timestamp_sec": 765
+      },
+      {
+        "claim": "Verification of migrated code must be independent of generation \u2014 a different methodology, tool, or agent than the one that wrote the change, run inside the loop rather than only at CI.",
+        "support_count": 4,
+        "supporting_talks": [
+          "guide-verify-solve",
+          "using-llms-to-secure-source-code",
+          "loop-engineering-from-first-principles",
+          "we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night"
+        ],
+        "evidence_quote": "Use a different methodology to review the code that was used to write the code.",
+        "evidence_talk": "guide-verify-solve",
+        "evidence_timestamp_sec": 589
+      },
+      {
+        "claim": "The migration harness should be a deterministic shell around an agentic core: the agent edits files, while credentials, PR creation, CI triggering, and approval gates stay in deterministic code.",
+        "support_count": 4,
+        "supporting_talks": [
+          "we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night",
+          "loop-engineering-from-first-principles",
+          "agents-in-production-how-opengov-built-and-scaled-og-assist",
+          "using-llms-to-secure-source-code"
+        ],
+        "evidence_quote": "The dangerous ones, the get up right access, um and trigger UCI is something that we did not give the agent. Instead, we pushed um that functionality out to the deterministic part",
+        "evidence_talk": "we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night",
+        "evidence_timestamp_sec": 713
+      },
+      {
+        "claim": "Migrations should be decomposed into small units each getting its own fresh context window, rather than batched into one large agent run or one large context dump.",
+        "support_count": 4,
+        "supporting_talks": [
+          "loop-engineering-from-first-principles",
+          "guide-verify-solve",
+          "we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night",
+          "agents-in-production-how-opengov-built-and-scaled-og-assist"
+        ],
+        "evidence_quote": "we could have our controller pick three or five and then do each of those in a separate implementation phase, which will be both cheaper and more reliable since each migration gets its own context window",
+        "evidence_talk": "loop-engineering-from-first-principles",
+        "evidence_timestamp_sec": 989
+      },
+      {
+        "claim": "Human review capacity \u2014 not model capability or compute budget \u2014 is the real throughput ceiling on agent-driven migration, so pipelines must be throttled and findings curated to what humans can actually absorb.",
+        "support_count": 3,
+        "supporting_talks": [
+          "loop-engineering-from-first-principles",
+          "using-llms-to-secure-source-code",
+          "benchmarking-coding-agents-on-new-vs-legacy-codebases"
+        ],
+        "evidence_quote": "No human reviewed the last output, so there's no reason to stack up even more work for humans to review.",
+        "evidence_talk": "loop-engineering-from-first-principles",
+        "evidence_timestamp_sec": 957
+      },
+      {
+        "claim": "Unguarded agent-generated code recreates the exact pathologies of legacy codebases \u2014 high volume, rising complexity and static-analysis warnings, and nobody on the team understanding it.",
+        "support_count": 3,
+        "supporting_talks": [
+          "benchmarking-coding-agents-on-new-vs-legacy-codebases",
+          "guide-verify-solve",
+          "loop-engineering-from-first-principles"
+        ],
+        "evidence_quote": "when you build a lot of code and you do this kind of development in an AI AI-native world, it starts looking like some of the legacy code we've we've seen in the past.",
+        "evidence_talk": "benchmarking-coding-agents-on-new-vs-legacy-codebases",
+        "evidence_timestamp_sec": 765
+      }
+    ],
+    "disagreements": [
+      {
+        "question": "Should migration agents be run as unattended automated loops today, or kept hands-on-the-wheel with a human gating every change?",
+        "position_a": "Run them autonomously now: a deterministic controller spawns agents against a tracked violation queue, agents are given agency and tooling to remediate their own verification findings, and the whole thing lives in CI \u2014 human review is an unreliable backstop anyway, since people accept confidently-wrong AI output nearly 80% of the time and rubber-stamping is already endemic.",
+        "position_a_talks": [
+          "loop-engineering-from-first-principles",
+          "we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night",
+          "guide-verify-solve"
+        ],
+        "position_b": "Start interactive and keep humans in the driver's seat: fully automated patch review is not yet practiced at most companies, a human should confirm patches before merge, mutating tool calls should deterministically interrupt the loop, and kicking off a long unattended run at today's per-task success rates mostly wastes the hour.",
+        "position_b_talks": [
+          "using-llms-to-secure-source-code",
+          "agents-in-production-how-opengov-built-and-scaled-og-assist",
+          "benchmarking-coding-agents-on-new-vs-legacy-codebases"
+        ],
+        "why_it_matters": "It determines whether you invest in automated verification tooling and blast-radius containment (micro VMs, deterministic credential layers) or in review workflow and approval UX. Getting it wrong either caps your migration at human review bandwidth or ships unreviewed changes into production from a supply-chain actor."
+      },
+      {
+        "question": "Is code generation itself a solved problem for legacy migration, with the remaining difficulty in the surrounding lifecycle?",
+        "position_a": "Yes \u2014 with enough context engineering the models reliably produce the code blocks you want, including in COBOL and JCL; roughly 80% of the problem is testing, reviewing, deploying, and maintaining the result across the enterprise, so the leverage is in the harness and the org, not the generation step.",
+        "position_a_talks": [
+          "how-forward-deployed-engineering-is-done-at-cognition"
+        ],
+        "position_b": "No \u2014 frontier models still cannot self-validate or one-shot a substantial multi-repo refactor (GPT 5.5 extra high produced scaffolding and silently omitted the model implementations in 10 minutes and 2,000 lines), and AI-generated code carries a persistent increase in static analysis warnings and complexity that must be closed for high-criticality systems.",
+        "position_b_talks": [
+          "benchmarking-coding-agents-on-new-vs-legacy-codebases",
+          "guide-verify-solve",
+          "loop-engineering-from-first-principles"
+        ],
+        "why_it_matters": "If generation is solved, you staff migrations by scaling agent deployment and delivery process; if it isn't, you must spend engineering effort on golden patterns, deterministic sensors, and quality gates before the loop is safe to run at all."
+      },
+      {
+        "question": "Is a large legacy migration best handled as one consolidated restructuring project, or ground down incrementally by a throttled control loop?",
+        "position_a": "Pause and do the big one: a six-month monorepo consolidation was worth doing in 2025 rather than waiting a year for better models, with all-human PR review throughout \u2014 the monorepo is what makes end-to-end testing, verification, deployment, and sandbox cloning tractable for agents afterward.",
+        "position_a_talks": [
+          "benchmarking-coding-agents-on-new-vs-legacy-codebases",
+          "how-forward-deployed-engineering-is-done-at-cognition"
+        ],
+        "position_b": "Never batch: measure the violations, sort them deterministically into version control, and let a control loop pick three to five per phase with one open PR at a time \u2014 batching produces 40,000-line PRs that nobody wants to read, and bad code is more expensive in the age of agents than ever before.",
+        "position_b_talks": [
+          "loop-engineering-from-first-principles",
+          "we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night",
+          "guide-verify-solve"
+        ],
+        "why_it_matters": "One path front-loads a multi-month freeze on feature work and bets on human review to spread codebase context; the other spreads the cost across quarters but requires building measurement sensors and a controller before any migration value lands."
+      }
+    ],
+    "practical_guidance": {
+      "do": [
+        "Run one full deterministic scan on main, sort every violation deterministically, and commit the resulting worklist to version control so the loop has a stable, resumable queue",
+        "Use AST-grep as the loop's sensor rather than lint or TypeScript config rules, because it is language-agnostic and out-of-band from configs that coding agents disable with inline comments",
+        "Cap the loop at one open PR at a time \u2014 block a new PR until the previous one has been reviewed by a human",
+        "Have the controller pick three to five migration units per phase, each executed in its own separate context window",
+        "Hand-write golden pattern examples in the repo before setting the loop loose; coding agents are pattern replicators and will follow in-repo idiom over internet-derived knowledge",
+        "Keep push, PR-creation, and CI-trigger credentials out of the agent entirely; let the agent only modify files on the filesystem and put the write path in the deterministic wrapper",
+        "Instruct the agent to make the smallest effective change that fixes the specific CVE or violation, rather than bumping to latest",
+        "Run discovery and verification as separate agents, and deny the verification agent access to the discovery agent's reasoning traces so it starts from the assumption that the finding is false",
+        "Run verification in the inner agentic loop as well as the outer CI/CD loop, so defects are caught before they propagate into subsequent iterations",
+        "Require two hard gates on any remediation: the original reproduction must stop working, and the existing test suite must stay green",
+        "Give the agent dynamic tools \u2014 API queries, logs, live sandboxed systems it can detonate a PoC against \u2014 rather than source code alone; this pushed true positive rates to nearly 100%",
+        "Ask the agent for a short retrospective at the end of every invocation: what went well, what went wrong, what tools were missing, what context would help next time",
+        "Evaluate model time-horizon claims at the 80%+ success rate, not the commonly published 50%, since that is where delegation actually pays off",
+        "Keep the migration target in a monorepo \u2014 end-to-end testing, verification, deployment, and sandbox cloning are still much harder across multiple repos",
+        "Track commit rate and the breadth of developers contributing as the payoff signal, not lines of code",
+        "Run the loop on your existing CI (GitHub Actions, GitLab, CircleCI) \u2014 it already has your code and secrets; a dedicated cluster is unnecessary",
+        "If the agent genuinely needs Docker, isolate it in a micro VM (Firecracker) with Vsock-mediated networking"
+      ],
+      "avoid": [
+        "Blind prompt-in-a-bash-loop setups on team-owned or critical systems \u2014 even with verifier and code-review agents attached, they produce 40,000-line PRs nobody reads",
+        "Giving an agent Docker socket access, and trusting the sandboxes shipped with Codex or Claude once you have; the agent can spawn a privileged container and escape to the host",
+        "Dumping the entire codebase into the agent's context up front \u2014 it thrashes, explores, and burns tokens",
+        "Bumping dependencies to latest rather than minimally patching; one such PR changed 70,000 lines",
+        "Using the same model or methodology to verify code that generated it",
+        "Assuming manifest-based tools like Dependabot and Renovate cover your exposure \u2014 CVEs in base-image OS packages and build-time downloaded binaries are structurally invisible to them",
+        "Sending product engineers every true finding including medium and low severity; curate to a top 10-20 or you lose their trust permanently",
+        "Trusting a 20-page deep research report at face value \u2014 the features it describes may not exist in the product, and acting on it sets you back",
+        "Letting the agent revert its own prior changes \u2014 this is a known failure mode you must explicitly prompt against",
+        "Deploying agents at a legacy codebase with no specific direction, which is just token maxing with no tangible outcome",
+        "Using an agent for a job deterministic code can do, including vulnerability routing that simple code-owner heuristics already solve"
+      ]
+    },
+    "notable_outliers": [
+      {
+        "claim": "The blast radius of an agent is an architecture decision \u2014 the line you draw between deterministic and agentic components *is* your security model.",
+        "talk": "we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night",
+        "timestamp_sec": 1264
+      },
+      {
+        "claim": "Prompts should shrink roughly 50% with every step-jump model version; on newer models 'look for where untrusted data hits the trust boundary' outperforms a prescriptive prompt.",
+        "talk": "using-llms-to-secure-source-code",
+        "timestamp_sec": 591
+      },
+      {
+        "claim": "Human PR review during a refactor is valuable not primarily as a quality gate but as the mechanism that spreads codebase context among developers.",
+        "talk": "benchmarking-coding-agents-on-new-vs-legacy-codebases",
+        "timestamp_sec": 965
+      },
+      {
+        "claim": "Agents can now operate across COBOL, JCL, and other languages people no longer learn because they are not fun or interesting \u2014 making the most complicated legacy codebases in the world addressable.",
+        "talk": "how-forward-deployed-engineering-is-done-at-cognition",
+        "timestamp_sec": 889
+      },
+      {
+        "claim": "Model choice should be split by objective within a migration: Sonnet 4.6 for correctness and task-solving, Opus when maintainability, security, or low complexity are the priority.",
+        "talk": "guide-verify-solve",
+        "timestamp_sec": 332
+      },
+      {
+        "claim": "Scaling the migration harness is a solved problem because it only costs compute and money; the unsolved constraints are entirely human and organizational, and an order of magnitude harder.",
+        "talk": "using-llms-to-secure-source-code",
+        "timestamp_sec": 1051
+      },
+      {
+        "claim": "The 'code is read-only now' thesis is unproven and prohibitively expensive for anyone without a frontier lab's token budget; well-designed loops make code easier to read rather than making reading unnecessary.",
+        "talk": "loop-engineering-from-first-principles",
+        "timestamp_sec": 250
+      }
+    ],
+    "maturity": "consolidating",
+    "maturity_rationale": "Independently, six teams arrived at the same shape \u2014 deterministic wrapper around an agentic core, independent verification, per-unit context windows, throttled to human review capacity \u2014 which is stronger convergence than a frontier topic would show. What remains genuinely argued is the degree of autonomy safe to grant today, whether generation is already solved, and whether to consolidate big-bang or grind incrementally."
+  },
+  "_meta": {
+    "concept": "legacy code migration",
+    "slug": "legacy-code-migration",
+    "talk_count": 7,
+    "missing_talks": [],
+    "wall_sec": 148.8,
+    "run_at": "2026-08-13T20:58:30Z"
+  }
+}

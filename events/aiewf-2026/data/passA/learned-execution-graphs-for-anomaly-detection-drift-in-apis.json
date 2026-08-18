@@ -1,0 +1,297 @@
+{
+  "is_error": false,
+  "duration_api_ms": 69424,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "3339a762-1384-4cbd-85cb-2a77b39cc58e",
+  "total_cost_usd": 0.240462,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 8388,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 5847,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 8388,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 5847,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 8388,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 8388
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 5158,
+      "outputTokens": 17,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.005243,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 5847,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 8388,
+      "webSearchRequests": 0,
+      "costUSD": 0.235219,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Ritvik Pandya, who leads a payments team at JP Morgan Chase, argues that request processing should be modeled as a short-lived 'execution graph' (a DAG of service hops) rather than only as persistent property graphs, so that latency problems can be localized to a specific node instead of an entire request path. He lays out a tiered detection pipeline: build a per-client, per-endpoint baseline from OpenTelemetry traces, detect deviation, localize it, then classify whether it is a one-off anomaly or a sustained drift. Drift is broken into structural (a node added or removed), scale/volume, and covariate (traffic mix shifts, e.g. domestic vs. cross-border payments) categories, each demanding a different remedy \u2014 rebaselining, scaling, or splitting into separate baselines. He closes with the operational realities: tail-based sampling, cold-start endpoints, delayed telemetry masquerading as structural change, deployment awareness for rollback decisions, and explainability so an alert is more than an opaque score. The talk is deliberately statistical rather than ML-heavy, and is most useful to engineers running latency-critical, multi-hop services who want fewer noisy alerts and faster mean time to discovery.\",\n  \"key_points\": [\n    \"Representing end-to-end request processing as a DAG makes execution order and inter-node context explicit, and lets you attribute a slowdown to a specific node rather than to the request as a whole.\",\n    \"Detection should be tiered: a cheap first-pass baseline check on every request, with deeper structural and statistical analysis only triggered when the fast check shows deviation, so monitoring does not consume disproportionate resources.\",\n    \"Anomalies (a one-off slow run) and drift (a sustained shift in the pattern) require different responses \u2014 drift usually means the baseline itself must be recomputed, not that an incident should be opened.\",\n    \"Drift is categorized as structural (a node added or removed), scale/volume-driven, or covariate (the mix of traffic changed, e.g. more cross-border requests), and each category maps to a different action: rebaseline, scale out or go async, or split into separate per-segment graphs.\",\n    \"Baselines must be scoped narrowly \u2014 per client, per endpoint, per payment type \u2014 rather than one global baseline for 'all POST requests', because a generic threshold produces noise.\",\n    \"Telemetry must be fed asynchronously (OpenTelemetry into Kafka with stream processing) so that observability never adds latency to real-time payment processing, with a fast hot path for automatable decisions and a slower, more accurate reconciliation path.\",\n    \"Delayed telemetry from one node looks identical to a node being removed, so the system needs tuned windows to avoid raising false structural-change alarms.\",\n    \"Automated remediation should be risk-assessed and rolled out progressively \u2014 5% or 10% of machines, verify, then 100% \u2014 and the system must know about new deployments so rollback is an option.\",\n    \"Alerts need explainability: a bare anomaly score is as useless as a doctor telling you your health score is 22.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"what I'm talking about today is execution graph\",\n      \"timestamp_sec\": 1,\n      \"why\": \"Names the core object of the talk and distinguishes it from persistent property graphs.\"\n    },\n    {\n      \"text\": \"It's short-lived graph.\",\n      \"timestamp_sec\": 83,\n      \"why\": \"The defining property that separates an execution graph from a Neo4j-style stored graph.\"\n    },\n    {\n      \"text\": \"idea here is holistically try to identify how the request processing happens and if there is any deviation on that and how to detect that and how to fix that\",\n      \"timestamp_sec\": 83,\n      \"why\": \"States the end-to-end goal in one line: detect deviation and act on it.\"\n    },\n    {\n      \"text\": \"if you know the baseline of your request execution end to end if uh everything looks Good. You don't need to go to the tier two uh or next tier of check.\",\n      \"timestamp_sec\": 195,\n      \"why\": \"Articulates the tiered, cost-aware detection design.\"\n    },\n    {\n      \"text\": \"One of the uh the drift here could be because of the structural change. So if any new node or new step added which you are not aware of that could be one of the thing or one of the step which is removed that could be the another reason\",\n      \"timestamp_sec\": 245,\n      \"why\": \"Defines structural drift, the first classification the system makes.\"\n    },\n    {\n      \"text\": \"First you uh represent the entire request processing as DAG. You come up with the baseline. You find out the deviation and then you try to find out where exactly the issue is.\",\n      \"timestamp_sec\": 300,\n      \"why\": \"The complete method in four steps.\"\n    },\n    {\n      \"text\": \"open telemetry and that star bench were used and say for 7 days of the time millions of uh traces were um you know injected or uh in the system then you inject the problem or uh anomaly there and based on that you train your system before anything goes on live\",\n      \"timestamp_sec\": 406,\n      \"why\": \"The only concrete benchmark setup described: fault injection over millions of traces.\"\n    },\n    {\n      \"text\": \"a year back it used to take one hour for you from your home to office but nowadays it it is taking 20 more minutes\",\n      \"timestamp_sec\": 461,\n      \"why\": \"The commute analogy that cleanly separates drift from a one-off anomaly.\"\n    },\n    {\n      \"text\": \"when you started the business uh you were seeing around 60% of local request but uh and 40% uh request from you know out of the country\",\n      \"timestamp_sec\": 664,\n      \"why\": \"Concrete numbers grounding the covariate-drift category.\"\n    },\n    {\n      \"text\": \"So nothing changed. Your system is working fine, right? But now you need to come up with the criteria and reassess your baselines again.\",\n      \"timestamp_sec\": 712,\n      \"why\": \"The key counterintuitive claim: a healthy system can still invalidate its own baselines.\"\n    },\n    {\n      \"text\": \"This whole talk is mostly about statistical uh uh you know part of uh the solution.\",\n      \"timestamp_sec\": 712,\n      \"why\": \"Explicitly scopes the approach as statistical rather than model-driven.\"\n    },\n    {\n      \"text\": \"once you know the risk either you can go with uh roll out that system uh um solution for say 5% or 10% of your uh machines monitor it verify everything looks good and then you roll out for your 100% of the nodes\",\n      \"timestamp_sec\": 775,\n      \"why\": \"Gives the specific progressive-rollout percentages for automated remediation.\"\n    },\n    {\n      \"text\": \"in the payments and the real time uh payment processing we want to keep it very faster right so we don't want delay the actual request processing\",\n      \"timestamp_sec\": 834,\n      \"why\": \"The latency constraint that forces asynchronous telemetry.\"\n    },\n    {\n      \"text\": \"There could be two different paths. One is say hot path where you can take a decision very faster and uh um work on the solution or automate that solution.\",\n      \"timestamp_sec\": 895,\n      \"why\": \"Names the hot-path / reconciliation-path split in the processing architecture.\"\n    },\n    {\n      \"text\": \"What if one of the system is delaying the event? Should we consider it as a structural change because now what you have data in your system is for six nodes\",\n      \"timestamp_sec\": 895,\n      \"why\": \"Identifies the sharpest failure mode of the whole approach: late telemetry is indistinguishable from a missing node.\"\n    },\n    {\n      \"text\": \"here in this use case u we should go with tail by based system\",\n      \"timestamp_sec\": 952,\n      \"why\": \"A concrete architectural recommendation (tail-based sampling) others might contest.\"\n    },\n    {\n      \"text\": \"the cold start uh if there is a new endpoint consider the new baseline don't make it very generic\",\n      \"timestamp_sec\": 952,\n      \"why\": \"Prescribes per-endpoint baselines over generic ones.\"\n    },\n    {\n      \"text\": \"on the detect side any MMD or KL uh could be used\",\n      \"timestamp_sec\": 996,\n      \"why\": \"The only named statistical detection methods in the talk.\"\n    },\n    {\n      \"text\": \"mean time to uh discovery reduced a lot to make it very real time\",\n      \"timestamp_sec\": 996,\n      \"why\": \"The claimed operational payoff of the system.\"\n    },\n    {\n      \"text\": \"If you go to the doctor and doctor says your health score is 22, it doesn't make much sense to you.\",\n      \"timestamp_sec\": 1093,\n      \"why\": \"The talk's argument for explainability over opaque anomaly scores.\"\n    }\n  ],\n  \"concepts\": [\n    \"execution graphs\",\n    \"distributed tracing\",\n    \"anomaly detection\",\n    \"concept drift\",\n    \"baseline modeling\",\n    \"structural drift\",\n    \"covariate shift\",\n    \"tail-based sampling\",\n    \"alert noise reduction\",\n    \"progressive rollout\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Request processing should be modeled as a short-lived DAG (an execution graph) rather than only as a persistent property graph, because the DAG makes execution order and per-node context explicit.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 83\n    },\n    {\n      \"claim\": \"A cheap tier-one baseline check should gate deeper analysis; if end-to-end execution matches the baseline, no further tier of checking is needed.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 195\n    },\n    {\n      \"claim\": \"Retries and loops should each be represented as a separate entity in the graph so they can be tracked individually.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 146\n    },\n    {\n      \"claim\": \"Baselines must be per-client, since a local client and a foreign client legitimately have different normal latencies, and using one shared baseline generates alert noise.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 245\n    },\n    {\n      \"claim\": \"A shift in traffic mix (covariate drift) requires either splitting into two separate comparison graphs or raising the average request time baseline, even though nothing in the system has broken.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 664\n    },\n    {\n      \"claim\": \"Telemetry must be fed asynchronously to OpenTelemetry, with Kafka and stream processing downstream, so observability does not slow real-time payment processing.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 834\n    },\n    {\n      \"claim\": \"Detection should run on two paths: a hot path for fast, automatable decisions and a slower reconciliation path that is more accurate.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 895\n    },\n    {\n      \"claim\": \"For this use case tail-based sampling is the right choice, because what matters is when the service request started and ended for each node.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 952\n    },\n    {\n      \"claim\": \"New endpoints should get their own new baseline rather than inheriting a generic one, to avoid cold-start false positives.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 952\n    },\n    {\n      \"claim\": \"Statistical divergence measures such as MMD or KL divergence are sufficient for the detection stage.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 996\n    },\n    {\n      \"claim\": \"Baselines defined at the HTTP-method level (e.g. all POST requests) are too coarse; thresholds should be scoped to specific payment types such as real-time payments or wire payments.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1048\n    },\n    {\n      \"claim\": \"Automated remediation should be rolled out to 5-10% of machines and verified before going to 100% of nodes.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 775\n    },\n    {\n      \"claim\": \"Collapsing detection from multiple time windows to a single window substantially reduced mean time to discovery.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 996\n    },\n    {\n      \"claim\": \"The monitoring system must be aware of new deployments in order to make correct rollback decisions.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1140\n    },\n    {\n      \"claim\": \"Anomaly outputs must be explainable with supporting data rather than reduced to a single opaque score.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1093\n    },\n    {\n      \"claim\": \"This graph-based drift detection is only one statistical module within a larger neural/algorithmic system, not a complete solution on its own.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 712\n    }\n  ],\n  \"speaker_org\": \"JP Morgan\"\n}",
+  "ttft_ms": 22925,
+  "ttft_stream_ms": 1612,
+  "time_to_request_ms": 51,
+  "type": "result",
+  "duration_ms": 69812,
+  "uuid": "d8cf1caa-6be9-4439-942e-b4b41809bae9",
+  "passA": {
+    "summary": "Ritvik Pandya, who leads a payments team at JP Morgan Chase, argues that request processing should be modeled as a short-lived 'execution graph' (a DAG of service hops) rather than only as persistent property graphs, so that latency problems can be localized to a specific node instead of an entire request path. He lays out a tiered detection pipeline: build a per-client, per-endpoint baseline from OpenTelemetry traces, detect deviation, localize it, then classify whether it is a one-off anomaly or a sustained drift. Drift is broken into structural (a node added or removed), scale/volume, and covariate (traffic mix shifts, e.g. domestic vs. cross-border payments) categories, each demanding a different remedy \u2014 rebaselining, scaling, or splitting into separate baselines. He closes with the operational realities: tail-based sampling, cold-start endpoints, delayed telemetry masquerading as structural change, deployment awareness for rollback decisions, and explainability so an alert is more than an opaque score. The talk is deliberately statistical rather than ML-heavy, and is most useful to engineers running latency-critical, multi-hop services who want fewer noisy alerts and faster mean time to discovery.",
+    "key_points": [
+      "Representing end-to-end request processing as a DAG makes execution order and inter-node context explicit, and lets you attribute a slowdown to a specific node rather than to the request as a whole.",
+      "Detection should be tiered: a cheap first-pass baseline check on every request, with deeper structural and statistical analysis only triggered when the fast check shows deviation, so monitoring does not consume disproportionate resources.",
+      "Anomalies (a one-off slow run) and drift (a sustained shift in the pattern) require different responses \u2014 drift usually means the baseline itself must be recomputed, not that an incident should be opened.",
+      "Drift is categorized as structural (a node added or removed), scale/volume-driven, or covariate (the mix of traffic changed, e.g. more cross-border requests), and each category maps to a different action: rebaseline, scale out or go async, or split into separate per-segment graphs.",
+      "Baselines must be scoped narrowly \u2014 per client, per endpoint, per payment type \u2014 rather than one global baseline for 'all POST requests', because a generic threshold produces noise.",
+      "Telemetry must be fed asynchronously (OpenTelemetry into Kafka with stream processing) so that observability never adds latency to real-time payment processing, with a fast hot path for automatable decisions and a slower, more accurate reconciliation path.",
+      "Delayed telemetry from one node looks identical to a node being removed, so the system needs tuned windows to avoid raising false structural-change alarms.",
+      "Automated remediation should be risk-assessed and rolled out progressively \u2014 5% or 10% of machines, verify, then 100% \u2014 and the system must know about new deployments so rollback is an option.",
+      "Alerts need explainability: a bare anomaly score is as useless as a doctor telling you your health score is 22."
+    ],
+    "notable_quotes": [
+      {
+        "text": "what I'm talking about today is execution graph",
+        "timestamp_sec": 1,
+        "why": "Names the core object of the talk and distinguishes it from persistent property graphs."
+      },
+      {
+        "text": "It's short-lived graph.",
+        "timestamp_sec": 83,
+        "why": "The defining property that separates an execution graph from a Neo4j-style stored graph."
+      },
+      {
+        "text": "idea here is holistically try to identify how the request processing happens and if there is any deviation on that and how to detect that and how to fix that",
+        "timestamp_sec": 83,
+        "why": "States the end-to-end goal in one line: detect deviation and act on it."
+      },
+      {
+        "text": "if you know the baseline of your request execution end to end if uh everything looks Good. You don't need to go to the tier two uh or next tier of check.",
+        "timestamp_sec": 195,
+        "why": "Articulates the tiered, cost-aware detection design."
+      },
+      {
+        "text": "One of the uh the drift here could be because of the structural change. So if any new node or new step added which you are not aware of that could be one of the thing or one of the step which is removed that could be the another reason",
+        "timestamp_sec": 245,
+        "why": "Defines structural drift, the first classification the system makes."
+      },
+      {
+        "text": "First you uh represent the entire request processing as DAG. You come up with the baseline. You find out the deviation and then you try to find out where exactly the issue is.",
+        "timestamp_sec": 300,
+        "why": "The complete method in four steps."
+      },
+      {
+        "text": "open telemetry and that star bench were used and say for 7 days of the time millions of uh traces were um you know injected or uh in the system then you inject the problem or uh anomaly there and based on that you train your system before anything goes on live",
+        "timestamp_sec": 406,
+        "why": "The only concrete benchmark setup described: fault injection over millions of traces."
+      },
+      {
+        "text": "a year back it used to take one hour for you from your home to office but nowadays it it is taking 20 more minutes",
+        "timestamp_sec": 461,
+        "why": "The commute analogy that cleanly separates drift from a one-off anomaly."
+      },
+      {
+        "text": "when you started the business uh you were seeing around 60% of local request but uh and 40% uh request from you know out of the country",
+        "timestamp_sec": 664,
+        "why": "Concrete numbers grounding the covariate-drift category."
+      },
+      {
+        "text": "So nothing changed. Your system is working fine, right? But now you need to come up with the criteria and reassess your baselines again.",
+        "timestamp_sec": 712,
+        "why": "The key counterintuitive claim: a healthy system can still invalidate its own baselines."
+      },
+      {
+        "text": "This whole talk is mostly about statistical uh uh you know part of uh the solution.",
+        "timestamp_sec": 712,
+        "why": "Explicitly scopes the approach as statistical rather than model-driven."
+      },
+      {
+        "text": "once you know the risk either you can go with uh roll out that system uh um solution for say 5% or 10% of your uh machines monitor it verify everything looks good and then you roll out for your 100% of the nodes",
+        "timestamp_sec": 775,
+        "why": "Gives the specific progressive-rollout percentages for automated remediation."
+      },
+      {
+        "text": "in the payments and the real time uh payment processing we want to keep it very faster right so we don't want delay the actual request processing",
+        "timestamp_sec": 834,
+        "why": "The latency constraint that forces asynchronous telemetry."
+      },
+      {
+        "text": "There could be two different paths. One is say hot path where you can take a decision very faster and uh um work on the solution or automate that solution.",
+        "timestamp_sec": 895,
+        "why": "Names the hot-path / reconciliation-path split in the processing architecture."
+      },
+      {
+        "text": "What if one of the system is delaying the event? Should we consider it as a structural change because now what you have data in your system is for six nodes",
+        "timestamp_sec": 895,
+        "why": "Identifies the sharpest failure mode of the whole approach: late telemetry is indistinguishable from a missing node."
+      },
+      {
+        "text": "here in this use case u we should go with tail by based system",
+        "timestamp_sec": 952,
+        "why": "A concrete architectural recommendation (tail-based sampling) others might contest."
+      },
+      {
+        "text": "the cold start uh if there is a new endpoint consider the new baseline don't make it very generic",
+        "timestamp_sec": 952,
+        "why": "Prescribes per-endpoint baselines over generic ones."
+      },
+      {
+        "text": "on the detect side any MMD or KL uh could be used",
+        "timestamp_sec": 996,
+        "why": "The only named statistical detection methods in the talk."
+      },
+      {
+        "text": "mean time to uh discovery reduced a lot to make it very real time",
+        "timestamp_sec": 996,
+        "why": "The claimed operational payoff of the system."
+      },
+      {
+        "text": "If you go to the doctor and doctor says your health score is 22, it doesn't make much sense to you.",
+        "timestamp_sec": 1093,
+        "why": "The talk's argument for explainability over opaque anomaly scores."
+      }
+    ],
+    "concepts": [
+      "execution graphs",
+      "distributed tracing",
+      "anomaly detection",
+      "concept drift",
+      "baseline modeling",
+      "structural drift",
+      "covariate shift",
+      "tail-based sampling",
+      "alert noise reduction",
+      "progressive rollout"
+    ],
+    "positions": [
+      {
+        "claim": "Request processing should be modeled as a short-lived DAG (an execution graph) rather than only as a persistent property graph, because the DAG makes execution order and per-node context explicit.",
+        "confidence": "stated",
+        "timestamp_sec": 83
+      },
+      {
+        "claim": "A cheap tier-one baseline check should gate deeper analysis; if end-to-end execution matches the baseline, no further tier of checking is needed.",
+        "confidence": "stated",
+        "timestamp_sec": 195
+      },
+      {
+        "claim": "Retries and loops should each be represented as a separate entity in the graph so they can be tracked individually.",
+        "confidence": "stated",
+        "timestamp_sec": 146
+      },
+      {
+        "claim": "Baselines must be per-client, since a local client and a foreign client legitimately have different normal latencies, and using one shared baseline generates alert noise.",
+        "confidence": "stated",
+        "timestamp_sec": 245
+      },
+      {
+        "claim": "A shift in traffic mix (covariate drift) requires either splitting into two separate comparison graphs or raising the average request time baseline, even though nothing in the system has broken.",
+        "confidence": "stated",
+        "timestamp_sec": 664
+      },
+      {
+        "claim": "Telemetry must be fed asynchronously to OpenTelemetry, with Kafka and stream processing downstream, so observability does not slow real-time payment processing.",
+        "confidence": "stated",
+        "timestamp_sec": 834
+      },
+      {
+        "claim": "Detection should run on two paths: a hot path for fast, automatable decisions and a slower reconciliation path that is more accurate.",
+        "confidence": "stated",
+        "timestamp_sec": 895
+      },
+      {
+        "claim": "For this use case tail-based sampling is the right choice, because what matters is when the service request started and ended for each node.",
+        "confidence": "stated",
+        "timestamp_sec": 952
+      },
+      {
+        "claim": "New endpoints should get their own new baseline rather than inheriting a generic one, to avoid cold-start false positives.",
+        "confidence": "stated",
+        "timestamp_sec": 952
+      },
+      {
+        "claim": "Statistical divergence measures such as MMD or KL divergence are sufficient for the detection stage.",
+        "confidence": "stated",
+        "timestamp_sec": 996
+      },
+      {
+        "claim": "Baselines defined at the HTTP-method level (e.g. all POST requests) are too coarse; thresholds should be scoped to specific payment types such as real-time payments or wire payments.",
+        "confidence": "stated",
+        "timestamp_sec": 1048
+      },
+      {
+        "claim": "Automated remediation should be rolled out to 5-10% of machines and verified before going to 100% of nodes.",
+        "confidence": "stated",
+        "timestamp_sec": 775
+      },
+      {
+        "claim": "Collapsing detection from multiple time windows to a single window substantially reduced mean time to discovery.",
+        "confidence": "stated",
+        "timestamp_sec": 996
+      },
+      {
+        "claim": "The monitoring system must be aware of new deployments in order to make correct rollback decisions.",
+        "confidence": "stated",
+        "timestamp_sec": 1140
+      },
+      {
+        "claim": "Anomaly outputs must be explainable with supporting data rather than reduced to a single opaque score.",
+        "confidence": "stated",
+        "timestamp_sec": 1093
+      },
+      {
+        "claim": "This graph-based drift detection is only one statistical module within a larger neural/algorithmic system, not a complete solution on its own.",
+        "confidence": "stated",
+        "timestamp_sec": 712
+      }
+    ],
+    "speaker_org": "JP Morgan"
+  },
+  "_meta": {
+    "slug": "learned-execution-graphs-for-anomaly-detection-drift-in-apis",
+    "video_id": "u1yaOeEX4e8",
+    "url": "https://www.youtube.com/watch?v=u1yaOeEX4e8",
+    "word_count": 2723,
+    "wall_sec": 70.9,
+    "run_at": "2026-08-12T20:00:07Z",
+    "effort": "medium"
+  }
+}

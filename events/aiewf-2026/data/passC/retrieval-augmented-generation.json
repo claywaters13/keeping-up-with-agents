@@ -1,0 +1,301 @@
+{
+  "is_error": false,
+  "duration_api_ms": 145387,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "13cf6e98-1299-49cc-9050-ca95b44a4032",
+  "total_cost_usd": 0.632797,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 29104,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 12718,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 29104,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 12718,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 29104,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 29104
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 18558,
+      "outputTokens": 17,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.018643,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 12718,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 29104,
+      "webSearchRequests": 0,
+      "costUSD": 0.6141540000000001,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\"concept\": \"retrieval-augmented generation\", \"state_of_practice\": \"The field has stopped treating RAG as \\\"embed, cosine-similarity, stuff the top-k into a prompt\\\" and now treats it as a full architecture: ingest, curate, ground, budget tokens, and evaluate. Nearly every speaker who touched retrieval reported that pure vector similarity underperforms \u2014 Microsoft's measured result is that combined methods (lexical + vector + metadata filtering) beat any single method on real customer scenarios, MongoDB's healthcare example needs metadata pre-filtering for diagnosis/procedure codes, and Sakana's benchmark had a rank-only decisions ledger beat vector RAG outright on long-horizon recall. The second shift is that the corpus, not the retriever, is where the work is: provenance on every fact, contradiction checks, active pruning, and grounding every claim to a specific source location (a citation, a video timestamp) are now table stakes, with missing-citation rate and human-override rate tracked as production metrics. The third is that retrieved context is a token budget to be optimized, not a bucket to be filled \u2014 speakers reported rendering time-series as images for fixed token cost, exposing top-K-truncated-plus-drill-down tools instead of raw log dumps, summarizing subagent findings back to a parent, and explicitly optimizing for information density per token. Where the field is still arguing: whether to retrieve a subset at all versus load the whole corpus into parallel KV caches, whether the retrieval loop should be model-driven or held inside a deterministic harness, and whether semantically organizing the corpus helps or actively hurts recall.\", \"consensus\": [{\"claim\": \"Vector similarity search alone is insufficient for production retrieval; it must be combined with lexical search, metadata pre-filtering, or a different structure entirely.\", \"support_count\": 5, \"supporting_talks\": [\"on-ai-and-knowledge\", \"ai-system-design-from-idea-to-production\", \"when-all-context-matters-extended-cache-augmented-generation\", \"video-has-no-memory-heres-how-we-built-one\", \"memory-harnesses-for-long-running-research-agents\"], \"evidence_quote\": \"I think, you know, for a hot second as an industry, we thought that if we could get really, really good at computing cosine similarity between vectors, we were all set for retrieval. It turns out, you know, things never are are never that easy.\", \"evidence_talk\": \"on-ai-and-knowledge\", \"evidence_timestamp_sec\": 444}, {\"claim\": \"Retrieved context is a token budget to be optimized, not a window to be filled; what ends up in context determines answer quality more than retriever sophistication.\", \"support_count\": 6, \"supporting_talks\": [\"when-all-context-matters-extended-cache-augmented-generation\", \"medic-for-apache-spark-first-aid-for-failing-jobs\", \"memory-harnesses-for-long-running-research-agents\", \"on-ai-and-knowledge\", \"every-company-should-have-a-brain\", \"ai-system-design-from-idea-to-production\"], \"evidence_quote\": \"The problem here is that the context window is limited, and if you fill the context window too much, the quality of the answer gets degraded, too.\", \"evidence_talk\": \"when-all-context-matters-extended-cache-augmented-generation\", \"evidence_timestamp_sec\": 192}, {\"claim\": \"Retrieval quality is bounded by corpus hygiene: without provenance on every fact, contradiction checking, and active pruning, retrieval confidently surfaces stale or wrong information.\", \"support_count\": 5, \"supporting_talks\": [\"every-company-should-have-a-brain\", \"the-factory-that-dreams-39-ai-agents-no-framework\", \"video-has-no-memory-heres-how-we-built-one\", \"ai-system-design-from-idea-to-production\", \"the-miranda-hypothesis-how-hamilton-poisoned-persona-evals\"], \"evidence_quote\": \"the primitive is not memory. It's memory plus hygiene, provenance on every fact, contradiction contradiction checks when new information collides with the old, and a librarian, human plus agent, whose actual job is pruning.\", \"evidence_talk\": \"every-company-should-have-a-brain\", \"evidence_timestamp_sec\": 879}, {\"claim\": \"The retriever is the commodity; the differentiated asset is the curated, organization-specific corpus being retrieved from.\", \"support_count\": 4, \"supporting_talks\": [\"every-company-should-have-a-brain\", \"the-factory-that-dreams-39-ai-agents-no-framework\", \"video-has-no-memory-heres-how-we-built-one\", \"on-ai-and-knowledge\"], \"evidence_quote\": \"Retrieval is easy. Being worth retrieving from is the product.\", \"evidence_talk\": \"every-company-should-have-a-brain\", \"evidence_timestamp_sec\": 757}, {\"claim\": \"Retrieval architecture should be matched to task difficulty \u2014 start with the simplest thing, and add a retrieval or memory layer only when evaluation shows the task does not fit in context.\", \"support_count\": 4, \"supporting_talks\": [\"memory-harnesses-for-long-running-research-agents\", \"ai-system-design-from-idea-to-production\", \"on-ai-and-knowledge\", \"when-all-context-matters-extended-cache-augmented-generation\"], \"evidence_quote\": \"the memory actually didn't add more capability. It was the same performance with memory and without memory, and it only added more cost. So, when your task fits in context, the harness doesn't add much.\", \"evidence_talk\": \"memory-harnesses-for-long-running-research-agents\", \"evidence_timestamp_sec\": 343}, {\"claim\": \"Fine-tuning is the wrong instrument for a grounding or data problem; put the source material in the context window instead and reserve fine-tuning for behavioral failures.\", \"support_count\": 3, \"supporting_talks\": [\"ai-system-design-from-idea-to-production\", \"the-miranda-hypothesis-how-hamilton-poisoned-persona-evals\", \"the-factory-that-dreams-39-ai-agents-no-framework\"], \"evidence_quote\": \"Fine-tuning tries to make the model be the persona. The context window lets the model speak through the persona's record.\", \"evidence_talk\": \"the-miranda-hypothesis-how-hamilton-poisoned-persona-evals\", \"evidence_timestamp_sec\": 1632}], \"disagreements\": [{\"question\": \"When the corpus is small enough to fit, should the system retrieve a relevant subset at all, or load the entire corpus into context (sharded across parallel caches)?\", \"position_a\": \"Skip selective retrieval: split the whole document set across parallel KV-cached context buckets and have a supervisor interrogate all of them, because thresholded similarity retrieval structurally cannot return 'all documents' when every document is relevant.\", \"position_a_talks\": [\"when-all-context-matters-extended-cache-augmented-generation\"], \"position_b\": \"Always retrieve selectively into a curated, structured layer \u2014 pay understanding cost once at ingest, store primitives, and optimize for the most information-dense answer in the fewest tokens, because dumping everything destroys relationships and wastes budget.\", \"position_b_talks\": [\"video-has-no-memory-heres-how-we-built-one\", \"on-ai-and-knowledge\", \"memory-harnesses-for-long-running-research-agents\", \"every-company-should-have-a-brain\"], \"why_it_matters\": \"It decides whether your cost curve is dominated by per-query KV cache lifetime or by one-time ingestion plus index maintenance, and whether corpus churn (documents replaced frequently) is cheap or catastrophic.\"}, {\"question\": \"Should the retrieval loop be driven by the model's own reasoning, or constrained inside a deterministic harness?\", \"position_a\": \"Let the model drive: agentic retrieval that reflects on whether the information need is satisfied beats single-shot on hard cases, and hand-built deterministic graphs proved more brittle than a reasoning-and-acting agent for diagnosis.\", \"position_a_talks\": [\"on-ai-and-knowledge\", \"medic-for-apache-spark-first-aid-for-failing-jobs\", \"when-all-context-matters-extended-cache-augmented-generation\"], \"position_b\": \"Constrain it: a bare model is stateless and unconstrained, so retrieval needs an explicit deterministic harness with task planning, an operating envelope, and output contracts \u2014 and computation that belongs in deterministic space must never be pushed into latent space.\", \"position_b_talks\": [\"video-has-no-memory-heres-how-we-built-one\", \"every-company-should-have-a-brain\"], \"why_it_matters\": \"It determines whether cost and latency are bounded per query or open-ended, and whether failures are debuggable by reading a fixed pipeline or require replaying a nondeterministic trace.\"}, {\"question\": \"Does semantically organizing the corpus (domain buckets, knowledge graphs, entity structure) improve or degrade recall?\", \"position_a\": \"Structure it: build a durable context graph linking moments, entities, appearances, and time spans, or a hygiene-managed brain with hot/cold promotion \u2014 capability comes from memory organization, not a smarter model.\", \"position_a_talks\": [\"video-has-no-memory-heres-how-we-built-one\", \"the-factory-that-dreams-39-ai-agents-no-framework\", \"every-company-should-have-a-brain\"], \"position_b\": \"Don't over-structure: organizing documents into domain buckets hurt recall because the supervisor skipped domains that looked irrelevant at first glance, so distribute in no particular order; and a rank-only decisions ledger outperformed both vector RAG and gated memory.\", \"position_b_talks\": [\"when-all-context-matters-extended-cache-augmented-generation\", \"memory-harnesses-for-long-running-research-agents\"], \"why_it_matters\": \"Semantic partitioning is expensive to build and re-derive on every corpus update; if it also biases the router away from non-obvious sources, teams are paying twice for negative value.\"}, {\"question\": \"Where does the next marginal gain in grounded generation come from \u2014 better models, or better retrieval infrastructure around them?\", \"position_a\": \"Intrinsic model knowledge, not retrieval or tooling, is what produced the current exponential in AI-assisted work.\", \"position_a_talks\": [\"on-ai-and-knowledge\"], \"position_b\": \"The models are effectively fixed inputs \u2014 everyone uses the same weights \u2014 so the gains come from infrastructure: fresh live data pipelines, workflow wiring, memory organization, and context management as model release cadence slows.\", \"position_b_talks\": [\"how-web-data-infrastructure-powers-the-next-generation-of-ai\", \"every-company-should-have-a-brain\", \"the-factory-that-dreams-39-ai-agents-no-framework\", \"memory-harnesses-for-long-running-research-agents\"], \"why_it_matters\": \"It sets whether a team's roadmap is 'wait for the next model and keep the stack thin' or 'invest in ingestion, curation, and recall policy as the durable asset.'\"}], \"practical_guidance\": {\"do\": [\"Combine retrieval methods \u2014 lexical, vector, and metadata pre-filtering \u2014 and evaluate them against each other on real customer scenarios rather than shipping cosine similarity alone.\", \"Expose retrieval effort as a configurable knob: single-shot retrieval for easy queries, agentic reflect-and-re-retrieve only for hard ones, treating it explicitly as a latency-vs-quality trade.\", \"Pay expensive understanding once at ingestion and store primitives (moments, entities, appearances) rather than pre-computed answers, so queries never reprocess the archive.\", \"Ground every generated claim to a specific source location (citation, timestamp) and track missing-citation rate and claim-rejection rate as production guardrail metrics.\", \"Attach provenance to every stored fact, run contradiction checks when new information collides with old, and make human corrections permanently outrank model-derived facts.\", \"Replace raw dumps with summarizing tools: give the agent 'top-K truncated exceptions' plus a drill-down tool instead of the log itself, and render time-series metrics as images so input token count is fixed regardless of job duration.\", \"Have subagents summarize findings back to the parent so the parent's context window stays healthy.\", \"Treat recall policy as a first-class metric and measure it on token spend, not just accuracy \u2014 bad recall costs tokens and sends the agent the wrong way.\", \"Snapshot real downstream tool responses as checked-in fixtures and run offline evals against them, instead of testing manually against production data that gets retention-deleted.\", \"Run each ingestion pipeline at a cadence matched to that source's update frequency, or the system answers confidently from stale data.\", \"Ship with both offline evaluation and production monitoring \u2014 evaluation before, monitoring after, and neither substitutes for the other.\", \"Put a domain expert in the evaluation loop at build time and gate time for fidelity-critical corpora; automated metrics cannot adjudicate whether output matches an archive they cannot see.\"], \"avoid\": [\"Assuming that retrieving the right document means the model will use it \u2014 oracle retrieval did not reach maximum task performance; the model can still ignore or misread correct memory.\", \"Filling the context window as full as it will go; answer quality degrades well before the hard token limit.\", \"Partitioning documents into domain buckets when inter-document relationships are dense \u2014 the supervisor skips domains that look irrelevant at first glance.\", \"Choosing GraphRAG for a corpus that is replaced frequently; recomputing the knowledge graph on every replacement is too slow and expensive to be viable.\", \"Feeding raw time-series or raw logs to the model \u2014 token-inefficient, and it breaks on long-running jobs even when it works in the small.\", \"Fine-tuning to fix what is actually a data or orchestration problem; it layers thin signal over unauditable base weights and can trigger catastrophic forgetting.\", \"Treating retrieval as done once search works \u2014 an uncurated corpus becomes a garbage dump with great search that surfaces stale facts with total confidence.\", \"Holding large combinatorial state (e.g. an 800-person seating arrangement) in the context window when it belongs in deterministic compute.\", \"Jumping to an agentic or multi-agent retrieval architecture before evaluation has shown what is actually failing.\", \"Relying on the last exception in a log as the root cause, or on regex filters to clean retrieval inputs \u2014 neither scales; learn which signals appear in successful runs and filter those as red herrings.\"]}, \"notable_outliers\": [{\"claim\": \"Documents should be distributed across parallel context caches in no particular order, balanced only so the fewest documents per bucket are needed \u2014 deliberately random assignment beat semantic bucketing.\", \"talk\": \"when-all-context-matters-extended-cache-augmented-generation\", \"timestamp_sec\": 230}, {\"claim\": \"A rank-only decisions ledger outperformed both vector RAG and binary memory gating across 68 questions, multiple seeds, two local models, and a second benchmark (Spider V2).\", \"talk\": \"memory-harnesses-for-long-running-research-agents\", \"timestamp_sec\": 451}, {\"claim\": \"Rendering time-series metrics as images beats feeding raw series to the LLM, because it guarantees a fixed input token count for any Spark job regardless of duration.\", \"talk\": \"medic-for-apache-spark-first-aid-for-failing-jobs\", \"timestamp_sec\": 451}, {\"claim\": \"Every knowledge base should be exposed as an MCP server so agents connect with no glue code.\", \"talk\": \"on-ai-and-knowledge\", \"timestamp_sec\": 655}, {\"claim\": \"For historical personas, fine-tuning is strictly worse than context-window anchoring: it suppresses random distortion at the surface while amplifying cultural contamination underneath, where it can no longer be audited.\", \"talk\": \"the-miranda-hypothesis-how-hamilton-poisoned-persona-evals\", \"timestamp_sec\": 1690}, {\"claim\": \"Latency is not a performance metric but a product constraint \u2014 a 4-second retrieval pipeline cannot support interactive AI workflows, and getting to 550ms required a ground-up redesign, not optimization.\", \"talk\": \"how-web-data-infrastructure-powers-the-next-generation-of-ai\", \"timestamp_sec\": 676}, {\"claim\": \"A company-wide grounded agent system was built for ~$30,000 against a $230,000 agency quote, with zero training cost, running at a couple thousand dollars a month.\", \"talk\": \"the-factory-that-dreams-39-ai-agents-no-framework\", \"timestamp_sec\": 508}], \"maturity\": \"consolidating\", \"maturity_rationale\": \"There is broad, independently-reached agreement across 5-6 talks that naive vector RAG is inadequate and that provenance, grounding-to-source, token budgeting, and evaluation are mandatory \u2014 the debate over 'is embedding search enough' is effectively over. What remains actively argued is architecture: whether to select a subset or load everything, who controls the retrieval loop, and whether semantic organization of the corpus helps or hurts, with credible measured results on both sides.\"}",
+  "ttft_ms": 82709,
+  "ttft_stream_ms": 1304,
+  "time_to_request_ms": 35,
+  "type": "result",
+  "duration_ms": 145081,
+  "uuid": "5316e90a-cd7c-471d-8cc8-4decc8a722b2",
+  "passC": {
+    "concept": "retrieval-augmented generation",
+    "state_of_practice": "The field has stopped treating RAG as \"embed, cosine-similarity, stuff the top-k into a prompt\" and now treats it as a full architecture: ingest, curate, ground, budget tokens, and evaluate. Nearly every speaker who touched retrieval reported that pure vector similarity underperforms \u2014 Microsoft's measured result is that combined methods (lexical + vector + metadata filtering) beat any single method on real customer scenarios, MongoDB's healthcare example needs metadata pre-filtering for diagnosis/procedure codes, and Sakana's benchmark had a rank-only decisions ledger beat vector RAG outright on long-horizon recall. The second shift is that the corpus, not the retriever, is where the work is: provenance on every fact, contradiction checks, active pruning, and grounding every claim to a specific source location (a citation, a video timestamp) are now table stakes, with missing-citation rate and human-override rate tracked as production metrics. The third is that retrieved context is a token budget to be optimized, not a bucket to be filled \u2014 speakers reported rendering time-series as images for fixed token cost, exposing top-K-truncated-plus-drill-down tools instead of raw log dumps, summarizing subagent findings back to a parent, and explicitly optimizing for information density per token. Where the field is still arguing: whether to retrieve a subset at all versus load the whole corpus into parallel KV caches, whether the retrieval loop should be model-driven or held inside a deterministic harness, and whether semantically organizing the corpus helps or actively hurts recall.",
+    "consensus": [
+      {
+        "claim": "Vector similarity search alone is insufficient for production retrieval; it must be combined with lexical search, metadata pre-filtering, or a different structure entirely.",
+        "support_count": 5,
+        "supporting_talks": [
+          "on-ai-and-knowledge",
+          "ai-system-design-from-idea-to-production",
+          "when-all-context-matters-extended-cache-augmented-generation",
+          "video-has-no-memory-heres-how-we-built-one",
+          "memory-harnesses-for-long-running-research-agents"
+        ],
+        "evidence_quote": "I think, you know, for a hot second as an industry, we thought that if we could get really, really good at computing cosine similarity between vectors, we were all set for retrieval. It turns out, you know, things never are are never that easy.",
+        "evidence_talk": "on-ai-and-knowledge",
+        "evidence_timestamp_sec": 444
+      },
+      {
+        "claim": "Retrieved context is a token budget to be optimized, not a window to be filled; what ends up in context determines answer quality more than retriever sophistication.",
+        "support_count": 6,
+        "supporting_talks": [
+          "when-all-context-matters-extended-cache-augmented-generation",
+          "medic-for-apache-spark-first-aid-for-failing-jobs",
+          "memory-harnesses-for-long-running-research-agents",
+          "on-ai-and-knowledge",
+          "every-company-should-have-a-brain",
+          "ai-system-design-from-idea-to-production"
+        ],
+        "evidence_quote": "The problem here is that the context window is limited, and if you fill the context window too much, the quality of the answer gets degraded, too.",
+        "evidence_talk": "when-all-context-matters-extended-cache-augmented-generation",
+        "evidence_timestamp_sec": 192
+      },
+      {
+        "claim": "Retrieval quality is bounded by corpus hygiene: without provenance on every fact, contradiction checking, and active pruning, retrieval confidently surfaces stale or wrong information.",
+        "support_count": 5,
+        "supporting_talks": [
+          "every-company-should-have-a-brain",
+          "the-factory-that-dreams-39-ai-agents-no-framework",
+          "video-has-no-memory-heres-how-we-built-one",
+          "ai-system-design-from-idea-to-production",
+          "the-miranda-hypothesis-how-hamilton-poisoned-persona-evals"
+        ],
+        "evidence_quote": "the primitive is not memory. It's memory plus hygiene, provenance on every fact, contradiction contradiction checks when new information collides with the old, and a librarian, human plus agent, whose actual job is pruning.",
+        "evidence_talk": "every-company-should-have-a-brain",
+        "evidence_timestamp_sec": 879
+      },
+      {
+        "claim": "The retriever is the commodity; the differentiated asset is the curated, organization-specific corpus being retrieved from.",
+        "support_count": 4,
+        "supporting_talks": [
+          "every-company-should-have-a-brain",
+          "the-factory-that-dreams-39-ai-agents-no-framework",
+          "video-has-no-memory-heres-how-we-built-one",
+          "on-ai-and-knowledge"
+        ],
+        "evidence_quote": "Retrieval is easy. Being worth retrieving from is the product.",
+        "evidence_talk": "every-company-should-have-a-brain",
+        "evidence_timestamp_sec": 757
+      },
+      {
+        "claim": "Retrieval architecture should be matched to task difficulty \u2014 start with the simplest thing, and add a retrieval or memory layer only when evaluation shows the task does not fit in context.",
+        "support_count": 4,
+        "supporting_talks": [
+          "memory-harnesses-for-long-running-research-agents",
+          "ai-system-design-from-idea-to-production",
+          "on-ai-and-knowledge",
+          "when-all-context-matters-extended-cache-augmented-generation"
+        ],
+        "evidence_quote": "the memory actually didn't add more capability. It was the same performance with memory and without memory, and it only added more cost. So, when your task fits in context, the harness doesn't add much.",
+        "evidence_talk": "memory-harnesses-for-long-running-research-agents",
+        "evidence_timestamp_sec": 343
+      },
+      {
+        "claim": "Fine-tuning is the wrong instrument for a grounding or data problem; put the source material in the context window instead and reserve fine-tuning for behavioral failures.",
+        "support_count": 3,
+        "supporting_talks": [
+          "ai-system-design-from-idea-to-production",
+          "the-miranda-hypothesis-how-hamilton-poisoned-persona-evals",
+          "the-factory-that-dreams-39-ai-agents-no-framework"
+        ],
+        "evidence_quote": "Fine-tuning tries to make the model be the persona. The context window lets the model speak through the persona's record.",
+        "evidence_talk": "the-miranda-hypothesis-how-hamilton-poisoned-persona-evals",
+        "evidence_timestamp_sec": 1632
+      }
+    ],
+    "disagreements": [
+      {
+        "question": "When the corpus is small enough to fit, should the system retrieve a relevant subset at all, or load the entire corpus into context (sharded across parallel caches)?",
+        "position_a": "Skip selective retrieval: split the whole document set across parallel KV-cached context buckets and have a supervisor interrogate all of them, because thresholded similarity retrieval structurally cannot return 'all documents' when every document is relevant.",
+        "position_a_talks": [
+          "when-all-context-matters-extended-cache-augmented-generation"
+        ],
+        "position_b": "Always retrieve selectively into a curated, structured layer \u2014 pay understanding cost once at ingest, store primitives, and optimize for the most information-dense answer in the fewest tokens, because dumping everything destroys relationships and wastes budget.",
+        "position_b_talks": [
+          "video-has-no-memory-heres-how-we-built-one",
+          "on-ai-and-knowledge",
+          "memory-harnesses-for-long-running-research-agents",
+          "every-company-should-have-a-brain"
+        ],
+        "why_it_matters": "It decides whether your cost curve is dominated by per-query KV cache lifetime or by one-time ingestion plus index maintenance, and whether corpus churn (documents replaced frequently) is cheap or catastrophic."
+      },
+      {
+        "question": "Should the retrieval loop be driven by the model's own reasoning, or constrained inside a deterministic harness?",
+        "position_a": "Let the model drive: agentic retrieval that reflects on whether the information need is satisfied beats single-shot on hard cases, and hand-built deterministic graphs proved more brittle than a reasoning-and-acting agent for diagnosis.",
+        "position_a_talks": [
+          "on-ai-and-knowledge",
+          "medic-for-apache-spark-first-aid-for-failing-jobs",
+          "when-all-context-matters-extended-cache-augmented-generation"
+        ],
+        "position_b": "Constrain it: a bare model is stateless and unconstrained, so retrieval needs an explicit deterministic harness with task planning, an operating envelope, and output contracts \u2014 and computation that belongs in deterministic space must never be pushed into latent space.",
+        "position_b_talks": [
+          "video-has-no-memory-heres-how-we-built-one",
+          "every-company-should-have-a-brain"
+        ],
+        "why_it_matters": "It determines whether cost and latency are bounded per query or open-ended, and whether failures are debuggable by reading a fixed pipeline or require replaying a nondeterministic trace."
+      },
+      {
+        "question": "Does semantically organizing the corpus (domain buckets, knowledge graphs, entity structure) improve or degrade recall?",
+        "position_a": "Structure it: build a durable context graph linking moments, entities, appearances, and time spans, or a hygiene-managed brain with hot/cold promotion \u2014 capability comes from memory organization, not a smarter model.",
+        "position_a_talks": [
+          "video-has-no-memory-heres-how-we-built-one",
+          "the-factory-that-dreams-39-ai-agents-no-framework",
+          "every-company-should-have-a-brain"
+        ],
+        "position_b": "Don't over-structure: organizing documents into domain buckets hurt recall because the supervisor skipped domains that looked irrelevant at first glance, so distribute in no particular order; and a rank-only decisions ledger outperformed both vector RAG and gated memory.",
+        "position_b_talks": [
+          "when-all-context-matters-extended-cache-augmented-generation",
+          "memory-harnesses-for-long-running-research-agents"
+        ],
+        "why_it_matters": "Semantic partitioning is expensive to build and re-derive on every corpus update; if it also biases the router away from non-obvious sources, teams are paying twice for negative value."
+      },
+      {
+        "question": "Where does the next marginal gain in grounded generation come from \u2014 better models, or better retrieval infrastructure around them?",
+        "position_a": "Intrinsic model knowledge, not retrieval or tooling, is what produced the current exponential in AI-assisted work.",
+        "position_a_talks": [
+          "on-ai-and-knowledge"
+        ],
+        "position_b": "The models are effectively fixed inputs \u2014 everyone uses the same weights \u2014 so the gains come from infrastructure: fresh live data pipelines, workflow wiring, memory organization, and context management as model release cadence slows.",
+        "position_b_talks": [
+          "how-web-data-infrastructure-powers-the-next-generation-of-ai",
+          "every-company-should-have-a-brain",
+          "the-factory-that-dreams-39-ai-agents-no-framework",
+          "memory-harnesses-for-long-running-research-agents"
+        ],
+        "why_it_matters": "It sets whether a team's roadmap is 'wait for the next model and keep the stack thin' or 'invest in ingestion, curation, and recall policy as the durable asset.'"
+      }
+    ],
+    "practical_guidance": {
+      "do": [
+        "Combine retrieval methods \u2014 lexical, vector, and metadata pre-filtering \u2014 and evaluate them against each other on real customer scenarios rather than shipping cosine similarity alone.",
+        "Expose retrieval effort as a configurable knob: single-shot retrieval for easy queries, agentic reflect-and-re-retrieve only for hard ones, treating it explicitly as a latency-vs-quality trade.",
+        "Pay expensive understanding once at ingestion and store primitives (moments, entities, appearances) rather than pre-computed answers, so queries never reprocess the archive.",
+        "Ground every generated claim to a specific source location (citation, timestamp) and track missing-citation rate and claim-rejection rate as production guardrail metrics.",
+        "Attach provenance to every stored fact, run contradiction checks when new information collides with old, and make human corrections permanently outrank model-derived facts.",
+        "Replace raw dumps with summarizing tools: give the agent 'top-K truncated exceptions' plus a drill-down tool instead of the log itself, and render time-series metrics as images so input token count is fixed regardless of job duration.",
+        "Have subagents summarize findings back to the parent so the parent's context window stays healthy.",
+        "Treat recall policy as a first-class metric and measure it on token spend, not just accuracy \u2014 bad recall costs tokens and sends the agent the wrong way.",
+        "Snapshot real downstream tool responses as checked-in fixtures and run offline evals against them, instead of testing manually against production data that gets retention-deleted.",
+        "Run each ingestion pipeline at a cadence matched to that source's update frequency, or the system answers confidently from stale data.",
+        "Ship with both offline evaluation and production monitoring \u2014 evaluation before, monitoring after, and neither substitutes for the other.",
+        "Put a domain expert in the evaluation loop at build time and gate time for fidelity-critical corpora; automated metrics cannot adjudicate whether output matches an archive they cannot see."
+      ],
+      "avoid": [
+        "Assuming that retrieving the right document means the model will use it \u2014 oracle retrieval did not reach maximum task performance; the model can still ignore or misread correct memory.",
+        "Filling the context window as full as it will go; answer quality degrades well before the hard token limit.",
+        "Partitioning documents into domain buckets when inter-document relationships are dense \u2014 the supervisor skips domains that look irrelevant at first glance.",
+        "Choosing GraphRAG for a corpus that is replaced frequently; recomputing the knowledge graph on every replacement is too slow and expensive to be viable.",
+        "Feeding raw time-series or raw logs to the model \u2014 token-inefficient, and it breaks on long-running jobs even when it works in the small.",
+        "Fine-tuning to fix what is actually a data or orchestration problem; it layers thin signal over unauditable base weights and can trigger catastrophic forgetting.",
+        "Treating retrieval as done once search works \u2014 an uncurated corpus becomes a garbage dump with great search that surfaces stale facts with total confidence.",
+        "Holding large combinatorial state (e.g. an 800-person seating arrangement) in the context window when it belongs in deterministic compute.",
+        "Jumping to an agentic or multi-agent retrieval architecture before evaluation has shown what is actually failing.",
+        "Relying on the last exception in a log as the root cause, or on regex filters to clean retrieval inputs \u2014 neither scales; learn which signals appear in successful runs and filter those as red herrings."
+      ]
+    },
+    "notable_outliers": [
+      {
+        "claim": "Documents should be distributed across parallel context caches in no particular order, balanced only so the fewest documents per bucket are needed \u2014 deliberately random assignment beat semantic bucketing.",
+        "talk": "when-all-context-matters-extended-cache-augmented-generation",
+        "timestamp_sec": 230
+      },
+      {
+        "claim": "A rank-only decisions ledger outperformed both vector RAG and binary memory gating across 68 questions, multiple seeds, two local models, and a second benchmark (Spider V2).",
+        "talk": "memory-harnesses-for-long-running-research-agents",
+        "timestamp_sec": 451
+      },
+      {
+        "claim": "Rendering time-series metrics as images beats feeding raw series to the LLM, because it guarantees a fixed input token count for any Spark job regardless of duration.",
+        "talk": "medic-for-apache-spark-first-aid-for-failing-jobs",
+        "timestamp_sec": 451
+      },
+      {
+        "claim": "Every knowledge base should be exposed as an MCP server so agents connect with no glue code.",
+        "talk": "on-ai-and-knowledge",
+        "timestamp_sec": 655
+      },
+      {
+        "claim": "For historical personas, fine-tuning is strictly worse than context-window anchoring: it suppresses random distortion at the surface while amplifying cultural contamination underneath, where it can no longer be audited.",
+        "talk": "the-miranda-hypothesis-how-hamilton-poisoned-persona-evals",
+        "timestamp_sec": 1690
+      },
+      {
+        "claim": "Latency is not a performance metric but a product constraint \u2014 a 4-second retrieval pipeline cannot support interactive AI workflows, and getting to 550ms required a ground-up redesign, not optimization.",
+        "talk": "how-web-data-infrastructure-powers-the-next-generation-of-ai",
+        "timestamp_sec": 676
+      },
+      {
+        "claim": "A company-wide grounded agent system was built for ~$30,000 against a $230,000 agency quote, with zero training cost, running at a couple thousand dollars a month.",
+        "talk": "the-factory-that-dreams-39-ai-agents-no-framework",
+        "timestamp_sec": 508
+      }
+    ],
+    "maturity": "consolidating",
+    "maturity_rationale": "There is broad, independently-reached agreement across 5-6 talks that naive vector RAG is inadequate and that provenance, grounding-to-source, token budgeting, and evaluation are mandatory \u2014 the debate over 'is embedding search enough' is effectively over. What remains actively argued is architecture: whether to select a subset or load everything, who controls the retrieval loop, and whether semantic organization of the corpus helps or hurts, with credible measured results on both sides."
+  },
+  "_meta": {
+    "concept": "retrieval-augmented generation",
+    "slug": "retrieval-augmented-generation",
+    "talk_count": 11,
+    "missing_talks": [],
+    "wall_sec": 146.1,
+    "run_at": "2026-08-13T19:29:05Z"
+  }
+}

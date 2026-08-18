@@ -1,0 +1,317 @@
+{
+  "is_error": false,
+  "duration_api_ms": 95425,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "988e342f-e6c0-4d92-a3bb-ea21614df017",
+  "total_cost_usd": 0.400683,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 17833,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 8177,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 17833,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 8177,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 17833,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 17833
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 12679,
+      "outputTokens": 17,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.012764,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 8177,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 17833,
+      "webSearchRequests": 0,
+      "costUSD": 0.387919,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Elizabeth Fuentes (AWS Developer Advocate) argues that most agent hallucinations and token waste are fixed in code, not in prompts, and walks through five techniques with live before/after demos on a 29-tool travel agent built with Strands: semantic tool selection, GraphRAG, multi-agent validation via Strands' swarm class, neuro-symbolic guardrails implemented as pre-tool-call hooks, and runtime steering with the agent-control library. Each section shows the same model, tools, and prompt producing a wrong answer without the technique and a correct one with it \u2014 filtering 29 tool schemas down to three cuts per-call context from ~3,000 tokens to under 300, a Cypher query returns a computed aggregate where vector RAG averages three sampled chunks, and a Python rule blocks a booking the prompt-only agent happily confirms. The core position is that prompt rules are probabilistic suggestions the model can ignore, so hard constraints belong in code that intercepts tool calls, while soft rules should steer the agent to self-correct rather than hard-block the user. She closes by mapping each local pattern onto Amazon Bedrock AgentCore (Gateway, policies, runtime, DynamoDB-backed steering rules) for production. Worth watching if you want concrete, framework-level implementations rather than prompt-engineering advice; the demos are unpolished and live, and the tools are deliberately dummy.\",\n  \"key_points\": [\n    \"Every tool schema sent to the model costs roughly 17\u2013200 tokens depending on parameter count, so a 29-tool agent burns about 3,000 tokens of context per call before the user's message is even considered.\",\n    \"Semantic tool selection embeds tool descriptions in a vector store, retrieves the top-3 matches for each query, and injects only those tools \u2014 dropping token usage from thousands to fewer than 300 while also improving accuracy because the model can no longer pick a confusable generic tool.\",\n    \"With conversation memory, filtering alone is insufficient: tools accumulate across turns, so Strands' tool registry must be cleared and re-populated each invocation (swap-tools) to keep context bounded.\",\n    \"Vector RAG structurally cannot answer aggregation, counting, or multi-hop questions because it only sees top-k chunks \u2014 it estimates from a sample and presents the estimate as fact; a knowledge graph with a model-generated Cypher query returns a computed, verifiable result and honestly returns zero for 'hotels in Antarctica'.\",\n    \"A single agent validating its own output in the same loop offers no separation of concerns: it rationalizes tool errors into confident success messages, which a three-agent executor/validator/critic swarm catches and surfaces as an explicit failure.\",\n    \"Rules written in the system prompt or tool description are read as text and are probabilistic suggestions; the same rule implemented as a Strands BeforeToolCallEvent hook in Python cannot be escaped, and the demo shows identical model/tools/prompt producing opposite outcomes.\",\n    \"Hooks are all-or-nothing and force the user to retry, so soft constraints are better handled by runtime steering (the agent-control library), which nudged the agent to split a 50-guest booking into two rooms instead of failing.\",\n    \"Steering rules live on a local server registered via API (DynamoDB in the production architecture), so changing a rule takes effect on the next call, whereas changing a hook means editing code and redeploying the whole agent.\",\n    \"Each local pattern has a managed AWS counterpart \u2014 AgentCore Gateway does tool indexing and routing, AgentCore policies enforce rules before tool execution, and AgentCore Runtime hosts any framework with memory and CloudWatch observability.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"Each one is a code change, not a prompt change.\",\n      \"timestamp_sec\": 0,\n      \"why\": \"The thesis of the whole talk in one sentence.\"\n    },\n    {\n      \"text\": \"Each tool schema is about 17 or 200 tokens, depending of how many parameters it has.\",\n      \"timestamp_sec\": 258,\n      \"why\": \"Concrete per-tool cost number that grounds the token-waste argument.\"\n    },\n    {\n      \"text\": \"has 29 tools, that adds up to somewhere around 3,000 tokens per call, just for the tool description.\",\n      \"timestamp_sec\": 258,\n      \"why\": \"Quantifies the fixed context tax of a mid-size tool catalog.\"\n    },\n    {\n      \"text\": \"With this filter, the model sees only three most relevant tools. Tokens usage drops from thousands to fewer than 300.\",\n      \"timestamp_sec\": 328,\n      \"why\": \"The headline result for semantic tool selection.\"\n    },\n    {\n      \"text\": \"So, for each question, it is spend around 2,000 tokens.\",\n      \"timestamp_sec\": 649,\n      \"why\": \"Measured baseline from the unfiltered agent.\"\n    },\n    {\n      \"text\": \"And when all the 29 tools are visible, the model sometimes pick the wrong one. And with the filtering, those generic tools uh only appears in the query actually match them.\",\n      \"timestamp_sec\": 960,\n      \"why\": \"Names the accuracy mechanism, not just the cost saving.\"\n    },\n    {\n      \"text\": \"So, you register your tools once and it find the right one for each request. It's the same principle but without infrastructure to manage.\",\n      \"timestamp_sec\": 1073,\n      \"why\": \"The managed-service tradeoff she offers for the DIY vector index.\"\n    },\n    {\n      \"text\": \"Vector search always returns something even when nothing is truly relevant. And the agent only sees the top end chunks of your all data at a time. It cannot aggregate, count, or traverse relationship across all the full data set. So, it estimates.\",\n      \"timestamp_sec\": 1130,\n      \"why\": \"The clearest statement of RAG's structural failure mode for quantitative questions.\"\n    },\n    {\n      \"text\": \"So, the graph run that query across all the data. And the model gets back a compute verified results, not a sample.\",\n      \"timestamp_sec\": 1194,\n      \"why\": \"States the computed-vs-sampled distinction that motivates GraphRAG.\"\n    },\n    {\n      \"text\": \"They are currently no hotel listed in Antarctica. Of course, because it create a cyber query, the cyber query and it receive zero. So, it no, it give me a honest answer.\",\n      \"timestamp_sec\": 1624,\n      \"why\": \"Live demo evidence that a structured query yields an honest null where RAG hedges.\"\n    },\n    {\n      \"text\": \"Sometimes an agent fails, and nobody find out. It calls a tool, and the tool returns an error, and the agent does not surface that error. It generate a confidence success response instead.\",\n      \"timestamp_sec\": 1730,\n      \"why\": \"Defines the silent-failure problem multi-agent validation targets.\"\n    },\n    {\n      \"text\": \"The agent acts and validate its own output in the same loop. There's no separation, no second opinion.\",\n      \"timestamp_sec\": 1730,\n      \"why\": \"The architectural reason self-validation fails.\"\n    },\n    {\n      \"text\": \"And now the same request through the swarm, the executor gets the error, the validator catches, the critic rejects this, and the user never see a fabricator response.\",\n      \"timestamp_sec\": 2098,\n      \"why\": \"Describes the concrete handoff chain and its user-visible payoff.\"\n    },\n    {\n      \"text\": \"Because prompts probably are suggestions, not constraints. The model process them as a text. Not as a logic it has to execute. It's probabilistic. Only code execute logic.\",\n      \"timestamp_sec\": 2151,\n      \"why\": \"The strongest and most contestable claim in the talk.\"\n    },\n    {\n      \"text\": \"A rule in the code the model can not escape it. Neuro-symbolic guardians rules put the rules in the code.\",\n      \"timestamp_sec\": 2210,\n      \"why\": \"States the guarantee that code-level enforcement buys you.\"\n    },\n    {\n      \"text\": \"So, what we have what we have here is same model, same tools, same prompt. And the different that outcome because the rules are in Python knowing the prompt.\",\n      \"timestamp_sec\": 2667,\n      \"why\": \"Isolates the variable \u2014 the A/B result that carries the argument.\"\n    },\n    {\n      \"text\": \"So, the hooks are all or nothing. They block everything or approve. But sometimes you want the agent to adjust and keep going.\",\n      \"timestamp_sec\": 2667,\n      \"why\": \"Names the limitation of her own previous technique.\"\n    },\n    {\n      \"text\": \"Hooks blocks unconditionally. The agent is stop and the user has to retry. For a hard constraint, that is exactly what you want. But sometimes the rule is soft.\",\n      \"timestamp_sec\": 2728,\n      \"why\": \"The hard-vs-soft constraint distinction that separates techniques four and five.\"\n    },\n    {\n      \"text\": \"rules are registered on a local server via API. You open the agent without touching the agent code because the agent picks them up immediately.\",\n      \"timestamp_sec\": 2789,\n      \"why\": \"The operational, not behavioral, argument for steering over hooks.\"\n    },\n    {\n      \"text\": \"So, it's the reservation have been split into two rooms. So, it took that it in self.\",\n      \"timestamp_sec\": 3008,\n      \"why\": \"The self-correction result that distinguishes steering from blocking.\"\n    }\n  ],\n  \"concepts\": [\n    \"semantic tool selection\",\n    \"tool schema token overhead\",\n    \"graph rag\",\n    \"knowledge graph construction\",\n    \"multi-agent validation\",\n    \"neuro-symbolic guardrails\",\n    \"tool-call interception hooks\",\n    \"runtime steering\",\n    \"hallucination mitigation\",\n    \"agentic loop control\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"All five hallucination-reduction techniques are implemented as code changes, not prompt changes.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 0\n    },\n    {\n      \"claim\": \"A single tool schema costs roughly 17 to 200 tokens depending on parameter count, and 29 tools add about 3,000 tokens to every call.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 258\n    },\n    {\n      \"claim\": \"Filtering tools by semantic search to the top three drops per-query tool context from thousands of tokens to under 300.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 328\n    },\n    {\n      \"claim\": \"Filtering tools also improves accuracy, because with all 29 tools visible the model sometimes picks the wrong generic tool.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 960\n    },\n    {\n      \"claim\": \"In a multi-turn conversation, semantic filtering alone does not bound context; tools must be actively cleared from the registry and re-added each invocation.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 795\n    },\n    {\n      \"claim\": \"Vector search always returns something even when nothing relevant exists, and cannot aggregate, count, or traverse relationships across a full dataset.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1130\n    },\n    {\n      \"claim\": \"For aggregation and counting questions, the LLM computes over the three retrieved chunks and presents that estimate as fact, which breaks once the corpus exceeds top-k.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1483\n    },\n    {\n      \"claim\": \"A graph query returns a computed, verified result rather than a sample, and also consumes fewer output tokens because the query engine does the arithmetic instead of the model.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1431\n    },\n    {\n      \"claim\": \"An agent that acts and validates in the same loop provides no real check \u2014 it rationalizes tool errors into confident success responses.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1730\n    },\n    {\n      \"claim\": \"A three-agent executor/validator/critic chain catches fabricated confirmations that a single agent reports as success.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 2098\n    },\n    {\n      \"claim\": \"Rules written in prompts are processed as probabilistic text and are suggestions rather than constraints; only code executes logic.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 2151\n    },\n    {\n      \"claim\": \"With the same model, tools, and prompt, moving rules from the prompt into a Python pre-tool-call hook changes the outcome from wrong to correct.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 2667\n    },\n    {\n      \"claim\": \"Hooks are the wrong tool for soft rules because they block unconditionally and force the user to retry.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 2728\n    },\n    {\n      \"claim\": \"Use hooks for hard constraints and runtime steering for soft rules.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 3065\n    },\n    {\n      \"claim\": \"Changing a hook rule requires changing code and redeploying the agent, whereas steering rules registered on a server take effect on the next call with no redeploy.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 2789\n    },\n    {\n      \"claim\": \"Neo4j's knowledge-graph pipeline can build the graph from raw text files using an LLM, removing the need to construct it by hand.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1666\n    },\n    {\n      \"claim\": \"The entire stack can be run locally for free using a local sentence-transformer for embeddings, files as a vector store, and Ollama for the model.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 432\n    },\n    {\n      \"claim\": \"AgentCore Gateway provides the same tool-routing and vector-based selection as the hand-built index, without infrastructure to manage.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1073\n    },\n    {\n      \"claim\": \"Enforcing rules in code before tools run is the same thing AgentCore policies does at the structural level, managed for you in production.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 2667\n    },\n    {\n      \"claim\": \"The demo tools are dummy tools and are not suitable for production use.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 562\n    }\n  ],\n  \"speaker_org\": \"AWS\"\n}",
+  "ttft_ms": 44437,
+  "ttft_stream_ms": 5936,
+  "time_to_request_ms": 45,
+  "type": "result",
+  "duration_ms": 95679,
+  "uuid": "a7b23378-5bf9-417b-b501-773c89173a2d",
+  "passA": {
+    "summary": "Elizabeth Fuentes (AWS Developer Advocate) argues that most agent hallucinations and token waste are fixed in code, not in prompts, and walks through five techniques with live before/after demos on a 29-tool travel agent built with Strands: semantic tool selection, GraphRAG, multi-agent validation via Strands' swarm class, neuro-symbolic guardrails implemented as pre-tool-call hooks, and runtime steering with the agent-control library. Each section shows the same model, tools, and prompt producing a wrong answer without the technique and a correct one with it \u2014 filtering 29 tool schemas down to three cuts per-call context from ~3,000 tokens to under 300, a Cypher query returns a computed aggregate where vector RAG averages three sampled chunks, and a Python rule blocks a booking the prompt-only agent happily confirms. The core position is that prompt rules are probabilistic suggestions the model can ignore, so hard constraints belong in code that intercepts tool calls, while soft rules should steer the agent to self-correct rather than hard-block the user. She closes by mapping each local pattern onto Amazon Bedrock AgentCore (Gateway, policies, runtime, DynamoDB-backed steering rules) for production. Worth watching if you want concrete, framework-level implementations rather than prompt-engineering advice; the demos are unpolished and live, and the tools are deliberately dummy.",
+    "key_points": [
+      "Every tool schema sent to the model costs roughly 17\u2013200 tokens depending on parameter count, so a 29-tool agent burns about 3,000 tokens of context per call before the user's message is even considered.",
+      "Semantic tool selection embeds tool descriptions in a vector store, retrieves the top-3 matches for each query, and injects only those tools \u2014 dropping token usage from thousands to fewer than 300 while also improving accuracy because the model can no longer pick a confusable generic tool.",
+      "With conversation memory, filtering alone is insufficient: tools accumulate across turns, so Strands' tool registry must be cleared and re-populated each invocation (swap-tools) to keep context bounded.",
+      "Vector RAG structurally cannot answer aggregation, counting, or multi-hop questions because it only sees top-k chunks \u2014 it estimates from a sample and presents the estimate as fact; a knowledge graph with a model-generated Cypher query returns a computed, verifiable result and honestly returns zero for 'hotels in Antarctica'.",
+      "A single agent validating its own output in the same loop offers no separation of concerns: it rationalizes tool errors into confident success messages, which a three-agent executor/validator/critic swarm catches and surfaces as an explicit failure.",
+      "Rules written in the system prompt or tool description are read as text and are probabilistic suggestions; the same rule implemented as a Strands BeforeToolCallEvent hook in Python cannot be escaped, and the demo shows identical model/tools/prompt producing opposite outcomes.",
+      "Hooks are all-or-nothing and force the user to retry, so soft constraints are better handled by runtime steering (the agent-control library), which nudged the agent to split a 50-guest booking into two rooms instead of failing.",
+      "Steering rules live on a local server registered via API (DynamoDB in the production architecture), so changing a rule takes effect on the next call, whereas changing a hook means editing code and redeploying the whole agent.",
+      "Each local pattern has a managed AWS counterpart \u2014 AgentCore Gateway does tool indexing and routing, AgentCore policies enforce rules before tool execution, and AgentCore Runtime hosts any framework with memory and CloudWatch observability."
+    ],
+    "notable_quotes": [
+      {
+        "text": "Each one is a code change, not a prompt change.",
+        "timestamp_sec": 0,
+        "why": "The thesis of the whole talk in one sentence."
+      },
+      {
+        "text": "Each tool schema is about 17 or 200 tokens, depending of how many parameters it has.",
+        "timestamp_sec": 258,
+        "why": "Concrete per-tool cost number that grounds the token-waste argument."
+      },
+      {
+        "text": "has 29 tools, that adds up to somewhere around 3,000 tokens per call, just for the tool description.",
+        "timestamp_sec": 258,
+        "why": "Quantifies the fixed context tax of a mid-size tool catalog."
+      },
+      {
+        "text": "With this filter, the model sees only three most relevant tools. Tokens usage drops from thousands to fewer than 300.",
+        "timestamp_sec": 328,
+        "why": "The headline result for semantic tool selection."
+      },
+      {
+        "text": "So, for each question, it is spend around 2,000 tokens.",
+        "timestamp_sec": 649,
+        "why": "Measured baseline from the unfiltered agent."
+      },
+      {
+        "text": "And when all the 29 tools are visible, the model sometimes pick the wrong one. And with the filtering, those generic tools uh only appears in the query actually match them.",
+        "timestamp_sec": 960,
+        "why": "Names the accuracy mechanism, not just the cost saving."
+      },
+      {
+        "text": "So, you register your tools once and it find the right one for each request. It's the same principle but without infrastructure to manage.",
+        "timestamp_sec": 1073,
+        "why": "The managed-service tradeoff she offers for the DIY vector index."
+      },
+      {
+        "text": "Vector search always returns something even when nothing is truly relevant. And the agent only sees the top end chunks of your all data at a time. It cannot aggregate, count, or traverse relationship across all the full data set. So, it estimates.",
+        "timestamp_sec": 1130,
+        "why": "The clearest statement of RAG's structural failure mode for quantitative questions."
+      },
+      {
+        "text": "So, the graph run that query across all the data. And the model gets back a compute verified results, not a sample.",
+        "timestamp_sec": 1194,
+        "why": "States the computed-vs-sampled distinction that motivates GraphRAG."
+      },
+      {
+        "text": "They are currently no hotel listed in Antarctica. Of course, because it create a cyber query, the cyber query and it receive zero. So, it no, it give me a honest answer.",
+        "timestamp_sec": 1624,
+        "why": "Live demo evidence that a structured query yields an honest null where RAG hedges."
+      },
+      {
+        "text": "Sometimes an agent fails, and nobody find out. It calls a tool, and the tool returns an error, and the agent does not surface that error. It generate a confidence success response instead.",
+        "timestamp_sec": 1730,
+        "why": "Defines the silent-failure problem multi-agent validation targets."
+      },
+      {
+        "text": "The agent acts and validate its own output in the same loop. There's no separation, no second opinion.",
+        "timestamp_sec": 1730,
+        "why": "The architectural reason self-validation fails."
+      },
+      {
+        "text": "And now the same request through the swarm, the executor gets the error, the validator catches, the critic rejects this, and the user never see a fabricator response.",
+        "timestamp_sec": 2098,
+        "why": "Describes the concrete handoff chain and its user-visible payoff."
+      },
+      {
+        "text": "Because prompts probably are suggestions, not constraints. The model process them as a text. Not as a logic it has to execute. It's probabilistic. Only code execute logic.",
+        "timestamp_sec": 2151,
+        "why": "The strongest and most contestable claim in the talk."
+      },
+      {
+        "text": "A rule in the code the model can not escape it. Neuro-symbolic guardians rules put the rules in the code.",
+        "timestamp_sec": 2210,
+        "why": "States the guarantee that code-level enforcement buys you."
+      },
+      {
+        "text": "So, what we have what we have here is same model, same tools, same prompt. And the different that outcome because the rules are in Python knowing the prompt.",
+        "timestamp_sec": 2667,
+        "why": "Isolates the variable \u2014 the A/B result that carries the argument."
+      },
+      {
+        "text": "So, the hooks are all or nothing. They block everything or approve. But sometimes you want the agent to adjust and keep going.",
+        "timestamp_sec": 2667,
+        "why": "Names the limitation of her own previous technique."
+      },
+      {
+        "text": "Hooks blocks unconditionally. The agent is stop and the user has to retry. For a hard constraint, that is exactly what you want. But sometimes the rule is soft.",
+        "timestamp_sec": 2728,
+        "why": "The hard-vs-soft constraint distinction that separates techniques four and five."
+      },
+      {
+        "text": "rules are registered on a local server via API. You open the agent without touching the agent code because the agent picks them up immediately.",
+        "timestamp_sec": 2789,
+        "why": "The operational, not behavioral, argument for steering over hooks."
+      },
+      {
+        "text": "So, it's the reservation have been split into two rooms. So, it took that it in self.",
+        "timestamp_sec": 3008,
+        "why": "The self-correction result that distinguishes steering from blocking."
+      }
+    ],
+    "concepts": [
+      "semantic tool selection",
+      "tool schema token overhead",
+      "graph rag",
+      "knowledge graph construction",
+      "multi-agent validation",
+      "neuro-symbolic guardrails",
+      "tool-call interception hooks",
+      "runtime steering",
+      "hallucination mitigation",
+      "agentic loop control"
+    ],
+    "positions": [
+      {
+        "claim": "All five hallucination-reduction techniques are implemented as code changes, not prompt changes.",
+        "confidence": "stated",
+        "timestamp_sec": 0
+      },
+      {
+        "claim": "A single tool schema costs roughly 17 to 200 tokens depending on parameter count, and 29 tools add about 3,000 tokens to every call.",
+        "confidence": "stated",
+        "timestamp_sec": 258
+      },
+      {
+        "claim": "Filtering tools by semantic search to the top three drops per-query tool context from thousands of tokens to under 300.",
+        "confidence": "stated",
+        "timestamp_sec": 328
+      },
+      {
+        "claim": "Filtering tools also improves accuracy, because with all 29 tools visible the model sometimes picks the wrong generic tool.",
+        "confidence": "stated",
+        "timestamp_sec": 960
+      },
+      {
+        "claim": "In a multi-turn conversation, semantic filtering alone does not bound context; tools must be actively cleared from the registry and re-added each invocation.",
+        "confidence": "stated",
+        "timestamp_sec": 795
+      },
+      {
+        "claim": "Vector search always returns something even when nothing relevant exists, and cannot aggregate, count, or traverse relationships across a full dataset.",
+        "confidence": "stated",
+        "timestamp_sec": 1130
+      },
+      {
+        "claim": "For aggregation and counting questions, the LLM computes over the three retrieved chunks and presents that estimate as fact, which breaks once the corpus exceeds top-k.",
+        "confidence": "stated",
+        "timestamp_sec": 1483
+      },
+      {
+        "claim": "A graph query returns a computed, verified result rather than a sample, and also consumes fewer output tokens because the query engine does the arithmetic instead of the model.",
+        "confidence": "stated",
+        "timestamp_sec": 1431
+      },
+      {
+        "claim": "An agent that acts and validates in the same loop provides no real check \u2014 it rationalizes tool errors into confident success responses.",
+        "confidence": "stated",
+        "timestamp_sec": 1730
+      },
+      {
+        "claim": "A three-agent executor/validator/critic chain catches fabricated confirmations that a single agent reports as success.",
+        "confidence": "stated",
+        "timestamp_sec": 2098
+      },
+      {
+        "claim": "Rules written in prompts are processed as probabilistic text and are suggestions rather than constraints; only code executes logic.",
+        "confidence": "stated",
+        "timestamp_sec": 2151
+      },
+      {
+        "claim": "With the same model, tools, and prompt, moving rules from the prompt into a Python pre-tool-call hook changes the outcome from wrong to correct.",
+        "confidence": "stated",
+        "timestamp_sec": 2667
+      },
+      {
+        "claim": "Hooks are the wrong tool for soft rules because they block unconditionally and force the user to retry.",
+        "confidence": "stated",
+        "timestamp_sec": 2728
+      },
+      {
+        "claim": "Use hooks for hard constraints and runtime steering for soft rules.",
+        "confidence": "stated",
+        "timestamp_sec": 3065
+      },
+      {
+        "claim": "Changing a hook rule requires changing code and redeploying the agent, whereas steering rules registered on a server take effect on the next call with no redeploy.",
+        "confidence": "stated",
+        "timestamp_sec": 2789
+      },
+      {
+        "claim": "Neo4j's knowledge-graph pipeline can build the graph from raw text files using an LLM, removing the need to construct it by hand.",
+        "confidence": "stated",
+        "timestamp_sec": 1666
+      },
+      {
+        "claim": "The entire stack can be run locally for free using a local sentence-transformer for embeddings, files as a vector store, and Ollama for the model.",
+        "confidence": "stated",
+        "timestamp_sec": 432
+      },
+      {
+        "claim": "AgentCore Gateway provides the same tool-routing and vector-based selection as the hand-built index, without infrastructure to manage.",
+        "confidence": "stated",
+        "timestamp_sec": 1073
+      },
+      {
+        "claim": "Enforcing rules in code before tools run is the same thing AgentCore policies does at the structural level, managed for you in production.",
+        "confidence": "stated",
+        "timestamp_sec": 2667
+      },
+      {
+        "claim": "The demo tools are dummy tools and are not suitable for production use.",
+        "confidence": "stated",
+        "timestamp_sec": 562
+      }
+    ],
+    "speaker_org": "AWS"
+  },
+  "_meta": {
+    "slug": "stop-ai-agent-hallucinations-5-techniques-production-patterns",
+    "video_id": "vJukHCIv7Ck",
+    "url": "https://www.youtube.com/watch?v=vJukHCIv7Ck",
+    "word_count": 7194,
+    "wall_sec": 96.9,
+    "run_at": "2026-08-12T19:14:06Z",
+    "effort": "default"
+  }
+}

@@ -1,0 +1,328 @@
+{
+  "is_error": false,
+  "duration_api_ms": 75635,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "f1107b3f-8a76-4018-a48e-341c926e48c9",
+  "total_cost_usd": 0.31558200000000003,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 13187,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 6788,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 13187,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 6788,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 13187,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 13187
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 8763,
+      "outputTokens": 17,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.008848,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 6788,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 13187,
+      "webSearchRequests": 0,
+      "costUSD": 0.306734,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Two AWS solutions architects argue that voice agent quality is governed by turn-taking \u2014 an audio engineering problem, not an LLM problem \u2014 and that identical models with identical prompts produce wildly different user experiences depending on how fast the pipeline detects that a user has started or stopped speaking. They frame the challenge around the 200ms human turn-taking baseline, break down where a cascaded STT\u2192LLM\u2192TTS pipeline spends its 1,100\u20131,300ms budget, and lay out three escalating approaches: local Silero VAD silence detection, STT-provider-native endpointing (Cartesia, Deepgram), and local VAD plus an open Smart Turn model. They report concrete numbers throughout \u2014 Smart Turn v3.2 at 58.9% recall / 68.4% precision, Cartesia ~300ms and Deepgram Nova 3 ~250ms P50 endpointing, LLM time-to-first-token benchmarks with P95 tails as the real risk. The second half is a live Pipecat demo running all three configurations against the same travel-assistant agent, showing that the pipeline code is nearly identical and only the turn-detection configuration changes. Worth watching if you are building production voice agents and need a concrete decision framework plus current latency numbers; skip if you want model-level or prompting advice.\",\n  \"key_points\": [\n    \"Turn taking is an audio pipeline problem rather than a model problem \u2014 the same LLM and prompt can feel broken or natural depending purely on how fast interruptions are detected and propagated.\",\n    \"Humans switch turns in about 200ms; at 800ms conversation starts to feel off and at 1.5s users hang up, and the best published measured voice-to-voice time for a cascaded pipeline is still 755ms.\",\n    \"Silero VAD is a 300K-parameter, 2MB model whose single minimum-silence-milliseconds parameter effectively defines the entire level-one user experience, with the right value depending entirely on domain (\u2248200ms for sales, 1000\u20131200ms where users need thinking time).\",\n    \"VAD fundamentally cannot distinguish a completed sentence, an incomplete thought, a thinking pause, and a backchannel acknowledgement \u2014 the silence signal looks identical in all four cases.\",\n    \"Level two hands turn detection to the STT provider (Cartesia ~300ms P50, Deepgram Nova 3 ~250ms P50), which is smarter because it sees linguistic context, but the decision happens on someone else's server with no explainability when it misfires.\",\n    \"Level three keeps local VAD as a safety-net timer and layers Smart Turn v3.2 (58.9% recall, 68.4% precision, 8MB, BSD-2, pip-installable) on top, so confident predictions are fast and unconfident ones fall back to the timer.\",\n    \"In a standard cloud-API setup the total budget is roughly 1,100\u20131,300ms, with LLM time-to-first-byte at 500\u2013650ms as the dominant bottleneck; STT and LLM together consume about two-thirds of the budget and are the only meaningful levers.\",\n    \"P95 latency matters more than P50 in voice because a single slow response destroys conversational flow \u2014 GPT-4.1 was 536ms P50 but spiked to 1.7s at P95, and Claude 3 exceeded 4 seconds.\",\n    \"Not all interruptions should stop the agent: corrections warrant an immediate stop, filler and background noise should not, and owning the classification at level three is what makes that distinction possible.\",\n    \"False interruptions have a measurable production cost \u2014 cutting users off incorrectly raises the rate at which they escalate to a human.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"These are all audio engineering problems. They are not LLM problems because you can have the perfect model, perfect track but the experience still might feel broken if the turn taking is off.\",\n      \"timestamp_sec\": 3,\n      \"why\": \"states the talk's central thesis in one line\"\n    },\n    {\n      \"text\": \"Both the scenarios, the LLM was identical. It was the same model. It was the same prompt, but the difference in the user experience is so different.\",\n      \"timestamp_sec\": 94,\n      \"why\": \"isolates the variable the whole talk is about\"\n    },\n    {\n      \"text\": \"because 200 milliseconds is how fast humans switch turns with each other in a conversation. And the implications are pretty brutal because at 800 milliseconds, things start to feel off. While at 1.5 seconds, your user just hang up on you\",\n      \"timestamp_sec\": 138,\n      \"why\": \"the quantitative constraint that frames every later tradeoff\"\n    },\n    {\n      \"text\": \"But even there, best measured response time was 755 milliseconds. So, that's like almost 4x slower than how humans naturally take turns when talking.\",\n      \"timestamp_sec\": 187,\n      \"why\": \"reports the current state-of-the-art number and the size of the gap\"\n    },\n    {\n      \"text\": \"So, coming to Silero VAD, it's a small 300,000 parameter model. It takes in like a short term Fourier transform.\",\n      \"timestamp_sec\": 313,\n      \"why\": \"concrete spec for the baseline component\"\n    },\n    {\n      \"text\": \"And the one parameter that minimum silence millisecond is basically the entire user experience of level one. If you keep it very low, the agent is going to be snapping like it will cut people off while they're still, you know, thinking.\",\n      \"timestamp_sec\": 361,\n      \"why\": \"names the single tuning knob that dominates level-one behavior\"\n    },\n    {\n      \"text\": \"If someone is pausing for 300 milliseconds or 400 milliseconds, VAD is seeing the same exact thing. It has no idea like whether the person is catching up their breath or whether they've completely finished their thought.\",\n      \"timestamp_sec\": 444,\n      \"why\": \"the precise failure mode that motivates levels two and three\"\n    },\n    {\n      \"text\": \"And their P50 latency for Cartesiant is about 300, and it's about 250 for Deepgram Nova 3.\",\n      \"timestamp_sec\": 541,\n      \"why\": \"vendor-level endpointing latency numbers\"\n    },\n    {\n      \"text\": \"However, the trade-off is with the transparency. Because when it is working, it works great. But when it misfires, or when it cuts someone off at the wrong moment, then you like have no way to figure out\",\n      \"timestamp_sec\": 541,\n      \"why\": \"names the explicit tradeoff of outsourcing turn detection\"\n    },\n    {\n      \"text\": \"And it has about 58.9% recall and 68.4 percent precision. So, what this means is that about six out of 10 time when someone finishes a sentence, Smart Turn will be able to catch it quickly.\",\n      \"timestamp_sec\": 583,\n      \"why\": \"honest accuracy reporting for the recommended approach\"\n    },\n    {\n      \"text\": \"There, they had reported a higher recall at 87.7%, but they haven't released the code, so you really cannot deploy it.\",\n      \"timestamp_sec\": 632,\n      \"why\": \"distinguishes published SOTA from deployable SOTA\"\n    },\n    {\n      \"text\": \"Smart Turn is BSD-2 licensed, and it's a 8-MB small model. You can pip install it today as well.\",\n      \"timestamp_sec\": 678,\n      \"why\": \"the practical adoption cost of level three\"\n    },\n    {\n      \"text\": \"think about a normal conversation when someone says, \\\"Yeah.\\\" Like, if they send an acknowledgement while you're speaking, you don't stop, right?\",\n      \"timestamp_sec\": 721,\n      \"why\": \"grounds the backchannel-vs-interruption distinction\"\n    },\n    {\n      \"text\": \"So, today most of these systems stop every time, but this is a piece that's improving.\",\n      \"timestamp_sec\": 763,\n      \"why\": \"characterizes the current state of interruption classification\"\n    },\n    {\n      \"text\": \"LLM time to first byte, and this is generally the dominant bottleneck because in a typical API setup, you're looking at 500 to 650 ms depending on what model you're calling and from which cloud provider, which region.\",\n      \"timestamp_sec\": 913,\n      \"why\": \"identifies the largest single cost in the latency budget\"\n    },\n    {\n      \"text\": \"Now, the Quindos team had demonstrated about 500 ms total voice-to-voice by co-locating all models in the same GPU cluster.\",\n      \"timestamp_sec\": 961,\n      \"why\": \"the infrastructure-bound floor for total latency\"\n    },\n    {\n      \"text\": \"And the key insight to note here is that the STT, LLM, together eat about 2/3 of the is latency budget.\",\n      \"timestamp_sec\": 961,\n      \"why\": \"tells engineers where optimization effort actually pays\"\n    },\n    {\n      \"text\": \"But what matters more in voice than maybe anywhere else is that the P95 tail. Because GPT-4.1 was great at P50, but it spikes to 1.7 at P95.\",\n      \"timestamp_sec\": 1078,\n      \"why\": \"argues against benchmarking voice agents on median latency\"\n    },\n    {\n      \"text\": \"And it was even worse for Claude 3 that it hit over 4 seconds and because in a conversation you cannot average this out because one slow response and your entire flow is gone.\",\n      \"timestamp_sec\": 1147,\n      \"why\": \"concrete tail-latency data point with the reasoning for why it's fatal\"\n    },\n    {\n      \"text\": \"which is the multi-turn trip because after 15 or 20 turn, sometime model starts ignoring parts of the system prompt. They might get to verbose, they go off spirit.\",\n      \"timestamp_sec\": 1147,\n      \"why\": \"raises instruction-following degradation as an underrated voice failure\"\n    },\n    {\n      \"text\": \"Because when agents cut people off incorrectly, then users are more likely to request for a human in the loop uh support.\",\n      \"timestamp_sec\": 1203,\n      \"why\": \"ties turn-detection errors to a business metric\"\n    },\n    {\n      \"text\": \"And on infrastructure running all of this in production is also hard because five systems that all scale differently and can also fail differently.\",\n      \"timestamp_sec\": 1263,\n      \"why\": \"names the operational cost of the cascaded architecture\"\n    },\n    {\n      \"text\": \"So, definitely this is just a a quick demo, but in practice, you would probably combine both the turn detection model and the silence detection.\",\n      \"timestamp_sec\": 1752,\n      \"why\": \"the practical recommendation the demo builds toward\"\n    }\n  ],\n  \"concepts\": [\n    \"turn taking\",\n    \"voice activity detection\",\n    \"endpointing\",\n    \"barge-in handling\",\n    \"cascaded voice pipeline\",\n    \"latency budgeting\",\n    \"tail latency\",\n    \"backchannel detection\",\n    \"prosody-based turn detection\",\n    \"multi-turn instruction following degradation\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Turn taking is an audio engineering problem, not an LLM problem \u2014 a perfect model with a bad audio pipeline still produces a broken experience.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 3\n    },\n    {\n      \"claim\": \"Humans switch conversational turns in about 200ms; agent response feels off at 800ms and users abandon at 1.5 seconds.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 138\n    },\n    {\n      \"claim\": \"755ms is the best measured voice-to-voice response time for a cascaded pipeline, roughly 4x slower than human turn taking.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 187\n    },\n    {\n      \"claim\": \"There is no universally correct minimum-silence threshold; the right value depends on domain, around 200ms for a sales agent and 1000-1200ms where users need thinking time.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 361\n    },\n    {\n      \"claim\": \"VAD alone cannot distinguish a completed sentence, an incomplete thought, a thinking pause, and a backchannel acknowledgement because the silence signal is identical.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 489\n    },\n    {\n      \"claim\": \"STT-provider turn detection makes better decisions than VAD because it uses full audio plus linguistic context, but costs you observability into why it fired.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 541\n    },\n    {\n      \"claim\": \"Smart Turn v3.2's 58.9% recall is acceptable in production because a VAD timer runs underneath as a safety net, so misses only cost latency, not correctness.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 632\n    },\n    {\n      \"claim\": \"Smart Turn v3.2 at 58.9% recall is the best deployable turn detection available today, since higher-recall research results like Meta's 87.7% have no released code.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1203\n    },\n    {\n      \"claim\": \"A standard cloud-API voice pipeline totals roughly 1,100-1,300ms, with LLM time to first byte at 500-650ms as the dominant component.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 913\n    },\n    {\n      \"claim\": \"Co-locating all models in one GPU cluster gets total voice-to-voice down to about 500ms, making that the achievable floor for teams willing to invest in infrastructure.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 961\n    },\n    {\n      \"claim\": \"STT and LLM together consume about two-thirds of the latency budget and are therefore the only two meaningful levers for improving it.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 961\n    },\n    {\n      \"claim\": \"P95 latency matters more than P50 for voice agents because a single slow response destroys the conversation and cannot be averaged away.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1147\n    },\n    {\n      \"claim\": \"LLMs should be held to a sub-700ms time-to-first-token target for voice applications.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1010\n    },\n    {\n      \"claim\": \"Instruction following degrades after roughly 15-20 turns, requiring context pruning or session resets in long voice conversations.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1147\n    },\n    {\n      \"claim\": \"False interruptions measurably increase escalation rates to human agents.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1147\n    },\n    {\n      \"claim\": \"Agents should not stop for every detected interruption \u2014 corrections warrant stopping while backchannels and background noise do not.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 721\n    },\n    {\n      \"claim\": \"The three levels are configuration choices, not architectural ones \u2014 the Pipecat pipeline code is essentially identical across all three.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 819\n    },\n    {\n      \"claim\": \"Production systems should combine a turn detection model with silence detection rather than relying on either alone.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1752\n    },\n    {\n      \"claim\": \"Owning the turn detection stack locally is worth it when you need compliance control or want to fine-tune on your own data.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1317\n    }\n  ],\n  \"speaker_org\": \"AWS\"\n}",
+  "ttft_ms": 20317,
+  "ttft_stream_ms": 1140,
+  "time_to_request_ms": 39,
+  "type": "result",
+  "duration_ms": 76047,
+  "uuid": "794af532-5fe5-4596-bb5f-e14b5486773f",
+  "passA": {
+    "summary": "Two AWS solutions architects argue that voice agent quality is governed by turn-taking \u2014 an audio engineering problem, not an LLM problem \u2014 and that identical models with identical prompts produce wildly different user experiences depending on how fast the pipeline detects that a user has started or stopped speaking. They frame the challenge around the 200ms human turn-taking baseline, break down where a cascaded STT\u2192LLM\u2192TTS pipeline spends its 1,100\u20131,300ms budget, and lay out three escalating approaches: local Silero VAD silence detection, STT-provider-native endpointing (Cartesia, Deepgram), and local VAD plus an open Smart Turn model. They report concrete numbers throughout \u2014 Smart Turn v3.2 at 58.9% recall / 68.4% precision, Cartesia ~300ms and Deepgram Nova 3 ~250ms P50 endpointing, LLM time-to-first-token benchmarks with P95 tails as the real risk. The second half is a live Pipecat demo running all three configurations against the same travel-assistant agent, showing that the pipeline code is nearly identical and only the turn-detection configuration changes. Worth watching if you are building production voice agents and need a concrete decision framework plus current latency numbers; skip if you want model-level or prompting advice.",
+    "key_points": [
+      "Turn taking is an audio pipeline problem rather than a model problem \u2014 the same LLM and prompt can feel broken or natural depending purely on how fast interruptions are detected and propagated.",
+      "Humans switch turns in about 200ms; at 800ms conversation starts to feel off and at 1.5s users hang up, and the best published measured voice-to-voice time for a cascaded pipeline is still 755ms.",
+      "Silero VAD is a 300K-parameter, 2MB model whose single minimum-silence-milliseconds parameter effectively defines the entire level-one user experience, with the right value depending entirely on domain (\u2248200ms for sales, 1000\u20131200ms where users need thinking time).",
+      "VAD fundamentally cannot distinguish a completed sentence, an incomplete thought, a thinking pause, and a backchannel acknowledgement \u2014 the silence signal looks identical in all four cases.",
+      "Level two hands turn detection to the STT provider (Cartesia ~300ms P50, Deepgram Nova 3 ~250ms P50), which is smarter because it sees linguistic context, but the decision happens on someone else's server with no explainability when it misfires.",
+      "Level three keeps local VAD as a safety-net timer and layers Smart Turn v3.2 (58.9% recall, 68.4% precision, 8MB, BSD-2, pip-installable) on top, so confident predictions are fast and unconfident ones fall back to the timer.",
+      "In a standard cloud-API setup the total budget is roughly 1,100\u20131,300ms, with LLM time-to-first-byte at 500\u2013650ms as the dominant bottleneck; STT and LLM together consume about two-thirds of the budget and are the only meaningful levers.",
+      "P95 latency matters more than P50 in voice because a single slow response destroys conversational flow \u2014 GPT-4.1 was 536ms P50 but spiked to 1.7s at P95, and Claude 3 exceeded 4 seconds.",
+      "Not all interruptions should stop the agent: corrections warrant an immediate stop, filler and background noise should not, and owning the classification at level three is what makes that distinction possible.",
+      "False interruptions have a measurable production cost \u2014 cutting users off incorrectly raises the rate at which they escalate to a human."
+    ],
+    "notable_quotes": [
+      {
+        "text": "These are all audio engineering problems. They are not LLM problems because you can have the perfect model, perfect track but the experience still might feel broken if the turn taking is off.",
+        "timestamp_sec": 3,
+        "why": "states the talk's central thesis in one line"
+      },
+      {
+        "text": "Both the scenarios, the LLM was identical. It was the same model. It was the same prompt, but the difference in the user experience is so different.",
+        "timestamp_sec": 94,
+        "why": "isolates the variable the whole talk is about"
+      },
+      {
+        "text": "because 200 milliseconds is how fast humans switch turns with each other in a conversation. And the implications are pretty brutal because at 800 milliseconds, things start to feel off. While at 1.5 seconds, your user just hang up on you",
+        "timestamp_sec": 138,
+        "why": "the quantitative constraint that frames every later tradeoff"
+      },
+      {
+        "text": "But even there, best measured response time was 755 milliseconds. So, that's like almost 4x slower than how humans naturally take turns when talking.",
+        "timestamp_sec": 187,
+        "why": "reports the current state-of-the-art number and the size of the gap"
+      },
+      {
+        "text": "So, coming to Silero VAD, it's a small 300,000 parameter model. It takes in like a short term Fourier transform.",
+        "timestamp_sec": 313,
+        "why": "concrete spec for the baseline component"
+      },
+      {
+        "text": "And the one parameter that minimum silence millisecond is basically the entire user experience of level one. If you keep it very low, the agent is going to be snapping like it will cut people off while they're still, you know, thinking.",
+        "timestamp_sec": 361,
+        "why": "names the single tuning knob that dominates level-one behavior"
+      },
+      {
+        "text": "If someone is pausing for 300 milliseconds or 400 milliseconds, VAD is seeing the same exact thing. It has no idea like whether the person is catching up their breath or whether they've completely finished their thought.",
+        "timestamp_sec": 444,
+        "why": "the precise failure mode that motivates levels two and three"
+      },
+      {
+        "text": "And their P50 latency for Cartesiant is about 300, and it's about 250 for Deepgram Nova 3.",
+        "timestamp_sec": 541,
+        "why": "vendor-level endpointing latency numbers"
+      },
+      {
+        "text": "However, the trade-off is with the transparency. Because when it is working, it works great. But when it misfires, or when it cuts someone off at the wrong moment, then you like have no way to figure out",
+        "timestamp_sec": 541,
+        "why": "names the explicit tradeoff of outsourcing turn detection"
+      },
+      {
+        "text": "And it has about 58.9% recall and 68.4 percent precision. So, what this means is that about six out of 10 time when someone finishes a sentence, Smart Turn will be able to catch it quickly.",
+        "timestamp_sec": 583,
+        "why": "honest accuracy reporting for the recommended approach"
+      },
+      {
+        "text": "There, they had reported a higher recall at 87.7%, but they haven't released the code, so you really cannot deploy it.",
+        "timestamp_sec": 632,
+        "why": "distinguishes published SOTA from deployable SOTA"
+      },
+      {
+        "text": "Smart Turn is BSD-2 licensed, and it's a 8-MB small model. You can pip install it today as well.",
+        "timestamp_sec": 678,
+        "why": "the practical adoption cost of level three"
+      },
+      {
+        "text": "think about a normal conversation when someone says, \"Yeah.\" Like, if they send an acknowledgement while you're speaking, you don't stop, right?",
+        "timestamp_sec": 721,
+        "why": "grounds the backchannel-vs-interruption distinction"
+      },
+      {
+        "text": "So, today most of these systems stop every time, but this is a piece that's improving.",
+        "timestamp_sec": 763,
+        "why": "characterizes the current state of interruption classification"
+      },
+      {
+        "text": "LLM time to first byte, and this is generally the dominant bottleneck because in a typical API setup, you're looking at 500 to 650 ms depending on what model you're calling and from which cloud provider, which region.",
+        "timestamp_sec": 913,
+        "why": "identifies the largest single cost in the latency budget"
+      },
+      {
+        "text": "Now, the Quindos team had demonstrated about 500 ms total voice-to-voice by co-locating all models in the same GPU cluster.",
+        "timestamp_sec": 961,
+        "why": "the infrastructure-bound floor for total latency"
+      },
+      {
+        "text": "And the key insight to note here is that the STT, LLM, together eat about 2/3 of the is latency budget.",
+        "timestamp_sec": 961,
+        "why": "tells engineers where optimization effort actually pays"
+      },
+      {
+        "text": "But what matters more in voice than maybe anywhere else is that the P95 tail. Because GPT-4.1 was great at P50, but it spikes to 1.7 at P95.",
+        "timestamp_sec": 1078,
+        "why": "argues against benchmarking voice agents on median latency"
+      },
+      {
+        "text": "And it was even worse for Claude 3 that it hit over 4 seconds and because in a conversation you cannot average this out because one slow response and your entire flow is gone.",
+        "timestamp_sec": 1147,
+        "why": "concrete tail-latency data point with the reasoning for why it's fatal"
+      },
+      {
+        "text": "which is the multi-turn trip because after 15 or 20 turn, sometime model starts ignoring parts of the system prompt. They might get to verbose, they go off spirit.",
+        "timestamp_sec": 1147,
+        "why": "raises instruction-following degradation as an underrated voice failure"
+      },
+      {
+        "text": "Because when agents cut people off incorrectly, then users are more likely to request for a human in the loop uh support.",
+        "timestamp_sec": 1203,
+        "why": "ties turn-detection errors to a business metric"
+      },
+      {
+        "text": "And on infrastructure running all of this in production is also hard because five systems that all scale differently and can also fail differently.",
+        "timestamp_sec": 1263,
+        "why": "names the operational cost of the cascaded architecture"
+      },
+      {
+        "text": "So, definitely this is just a a quick demo, but in practice, you would probably combine both the turn detection model and the silence detection.",
+        "timestamp_sec": 1752,
+        "why": "the practical recommendation the demo builds toward"
+      }
+    ],
+    "concepts": [
+      "turn taking",
+      "voice activity detection",
+      "endpointing",
+      "barge-in handling",
+      "cascaded voice pipeline",
+      "latency budgeting",
+      "tail latency",
+      "backchannel detection",
+      "prosody-based turn detection",
+      "multi-turn instruction following degradation"
+    ],
+    "positions": [
+      {
+        "claim": "Turn taking is an audio engineering problem, not an LLM problem \u2014 a perfect model with a bad audio pipeline still produces a broken experience.",
+        "confidence": "stated",
+        "timestamp_sec": 3
+      },
+      {
+        "claim": "Humans switch conversational turns in about 200ms; agent response feels off at 800ms and users abandon at 1.5 seconds.",
+        "confidence": "stated",
+        "timestamp_sec": 138
+      },
+      {
+        "claim": "755ms is the best measured voice-to-voice response time for a cascaded pipeline, roughly 4x slower than human turn taking.",
+        "confidence": "stated",
+        "timestamp_sec": 187
+      },
+      {
+        "claim": "There is no universally correct minimum-silence threshold; the right value depends on domain, around 200ms for a sales agent and 1000-1200ms where users need thinking time.",
+        "confidence": "stated",
+        "timestamp_sec": 361
+      },
+      {
+        "claim": "VAD alone cannot distinguish a completed sentence, an incomplete thought, a thinking pause, and a backchannel acknowledgement because the silence signal is identical.",
+        "confidence": "stated",
+        "timestamp_sec": 489
+      },
+      {
+        "claim": "STT-provider turn detection makes better decisions than VAD because it uses full audio plus linguistic context, but costs you observability into why it fired.",
+        "confidence": "stated",
+        "timestamp_sec": 541
+      },
+      {
+        "claim": "Smart Turn v3.2's 58.9% recall is acceptable in production because a VAD timer runs underneath as a safety net, so misses only cost latency, not correctness.",
+        "confidence": "stated",
+        "timestamp_sec": 632
+      },
+      {
+        "claim": "Smart Turn v3.2 at 58.9% recall is the best deployable turn detection available today, since higher-recall research results like Meta's 87.7% have no released code.",
+        "confidence": "stated",
+        "timestamp_sec": 1203
+      },
+      {
+        "claim": "A standard cloud-API voice pipeline totals roughly 1,100-1,300ms, with LLM time to first byte at 500-650ms as the dominant component.",
+        "confidence": "stated",
+        "timestamp_sec": 913
+      },
+      {
+        "claim": "Co-locating all models in one GPU cluster gets total voice-to-voice down to about 500ms, making that the achievable floor for teams willing to invest in infrastructure.",
+        "confidence": "stated",
+        "timestamp_sec": 961
+      },
+      {
+        "claim": "STT and LLM together consume about two-thirds of the latency budget and are therefore the only two meaningful levers for improving it.",
+        "confidence": "stated",
+        "timestamp_sec": 961
+      },
+      {
+        "claim": "P95 latency matters more than P50 for voice agents because a single slow response destroys the conversation and cannot be averaged away.",
+        "confidence": "stated",
+        "timestamp_sec": 1147
+      },
+      {
+        "claim": "LLMs should be held to a sub-700ms time-to-first-token target for voice applications.",
+        "confidence": "stated",
+        "timestamp_sec": 1010
+      },
+      {
+        "claim": "Instruction following degrades after roughly 15-20 turns, requiring context pruning or session resets in long voice conversations.",
+        "confidence": "stated",
+        "timestamp_sec": 1147
+      },
+      {
+        "claim": "False interruptions measurably increase escalation rates to human agents.",
+        "confidence": "stated",
+        "timestamp_sec": 1147
+      },
+      {
+        "claim": "Agents should not stop for every detected interruption \u2014 corrections warrant stopping while backchannels and background noise do not.",
+        "confidence": "stated",
+        "timestamp_sec": 721
+      },
+      {
+        "claim": "The three levels are configuration choices, not architectural ones \u2014 the Pipecat pipeline code is essentially identical across all three.",
+        "confidence": "stated",
+        "timestamp_sec": 819
+      },
+      {
+        "claim": "Production systems should combine a turn detection model with silence detection rather than relying on either alone.",
+        "confidence": "stated",
+        "timestamp_sec": 1752
+      },
+      {
+        "claim": "Owning the turn detection stack locally is worth it when you need compliance control or want to fine-tune on your own data.",
+        "confidence": "stated",
+        "timestamp_sec": 1317
+      }
+    ],
+    "speaker_org": "AWS"
+  },
+  "_meta": {
+    "slug": "voice-agents-that-handle-interrupts",
+    "video_id": "hMlLw1LeIK8",
+    "url": "https://www.youtube.com/watch?v=hMlLw1LeIK8",
+    "word_count": 4761,
+    "wall_sec": 77.1,
+    "run_at": "2026-08-12T20:29:51Z",
+    "effort": "medium"
+  }
+}

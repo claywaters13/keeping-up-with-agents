@@ -1,0 +1,291 @@
+{
+  "is_error": false,
+  "duration_api_ms": 80324,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "471ac661-bf0f-4343-ba7f-7277c6bfc452",
+  "total_cost_usd": 0.449637,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 25322,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 6900,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 25322,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 6900,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 25322,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 25322
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 18648,
+      "outputTokens": 21,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.018753000000000002,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 6900,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 25322,
+      "webSearchRequests": 0,
+      "costUSD": 0.430884,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Gergely Orosz interviews Simon Eskildsen, co-founder and CEO of Turbopuffer, about the path from self-taught teenage programmer to eight years on Shopify's infrastructure team to building a vector/search database on top of S3. The through-line is 'napkin math': Eskildsen argues that first-principles calculations about DRAM bandwidth, fsync latency, and S3 round-trip costs beat benchmarks for making infrastructure decisions, and that this discipline is what let him promise Cursor a 95% bill reduction before the software was actually good. He explains the original architecture (cluster the vectors, put clusters in S3 objects, cache with an nginx reverse proxy on a single instance), why Cursor became customer number one, and why CPUs are now genuinely scarce because RL environments and agents consume them. He also lays out an unusually candid framework for venture capital \u2014 six reasons to raise, one of which is founder ego \u2014 and describes Turbopuffer's fully remote 'campfire' culture. Watch it for infrastructure reasoning and company-building philosophy; it is nearly AI-free despite Turbopuffer sitting under many AI products.\",\n  \"key_points\": [\n    \"Napkin math \u2014 memorized figures for DRAM bandwidth, SSD read latency, S3 round-trip cost, and per-gigabyte pricing across storage tiers \u2014 is presented as a better basis for infrastructure decisions than benchmarks, which frequently measure the wrong thing.\",\n    \"Turbopuffer's core insight was economic before it was technical: storing vectors in DRAM made a recommendation feature cost $30k/month for a company spending $5k/month on all other infrastructure, so Eskildsen asked whether the same workload could live in S3 with clustering.\",\n    \"The first shipped version was deliberately crude \u2014 cluster files plus a centroid file in S3, no real LSM implementation, an nginx reverse proxy as the cache, cache eviction via shelling out to rm \u2014 running on a single instance, because the goal was to find out whether anyone cared.\",\n    \"Because S3's P99 for a 256\u2013512KB object is around 200ms and tree navigation multiplies round trips, the system must be designed against P99 and even P999 by minimizing round trips rather than optimizing the median.\",\n    \"Cursor became the first customer after reaching out on Twitter; Eskildsen flew to San Francisco, debugged their Postgres autovacuum problems on the spot, and won trust that way, then delivered a first bill 95% below their previous vendor's last one.\",\n    \"CPUs, not just GPUs, are now scarce: RL training environments and agent workloads consume large amounts of general-purpose compute, and Eskildsen expects CPU availability to get worse before it gets better, with capacity ultimately gated by power availability per region.\",\n    \"Turbopuffer survived on almost no capital \u2014 a ~$700k raise to hire two engineers, with an explicit promise to return the money and shut down if there was no PMF by year end \u2014 and Eskildsen enumerates six reasons to raise, calling founder ego a popular and dangerous one because it dilutes employees.\",\n    \"The company is fully remote by design, using twice-yearly offsites plus opt-in 'campfires' (ad hoc gatherings anyone may join) and 'turbo credits' that buy business-class upgrades, so in-person time is encouraged but never mandatory.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"used to say you can't cache rights. So there's a fundamental point where you you just you have to move beyond a single shard.\",\n      \"timestamp_sec\": 606,\n      \"why\": \"The scaling maxim that pushed Shopify to sharding, in one line.\"\n    },\n    {\n      \"text\": \"What does a gigabyte of memory cost? $2. What does a gigabyte of S3 cost? 2 cents.\",\n      \"timestamp_sec\": 988,\n      \"why\": \"The 100x price gap that is the entire economic premise of Turbopuffer.\"\n    },\n    {\n      \"text\": \"So I just found myself in these discussions repeatedly where people were making infrastructure decisions based on poor benchmarks.\",\n      \"timestamp_sec\": 1082,\n      \"why\": \"States his central methodological position against benchmark-driven architecture choices.\"\n    },\n    {\n      \"text\": \"So in aggregate you have like you want to look at the P99 probably even the P999 to design the system properly because you will need to minimize the number of round trips that you had to make.\",\n      \"timestamp_sec\": 1534,\n      \"why\": \"Concrete design rule for building latency-sensitive systems on object storage.\"\n    },\n    {\n      \"text\": \"the simplest way you could do this is you run some clustering algorithm on the vectors.\",\n      \"timestamp_sec\": 1598,\n      \"why\": \"The whole v1 architecture reduced to its irreducible core.\"\n    },\n    {\n      \"text\": \"It was like the MVP of MVP. Anyone who's actually worked in the internal on databases would never have had like would have had too much pride to ship anything like that.\",\n      \"timestamp_sec\": 1801,\n      \"why\": \"Argues that database outsider status was an advantage, not a handicap.\"\n    },\n    {\n      \"text\": \"you could do a million vectors for a dollar. And before that, I think the the cheapest was maybe $100 per million for something that actually worked.\",\n      \"timestamp_sec\": 1832,\n      \"why\": \"The specific 100x pricing claim that drove the initial launch response.\"\n    },\n    {\n      \"text\": \"the unit economics of what we have right now where all the vectors are in DRAM are not working why hasn't anyone built it where we can put it in S3\",\n      \"timestamp_sec\": 1832,\n      \"why\": \"Reconstructs the buyer-side pain that made Cursor an instant fit.\"\n    },\n    {\n      \"text\": \"they came on and their last bill with their previous vendor and the first bill with us, it was 95% lower.\",\n      \"timestamp_sec\": 2019,\n      \"why\": \"Reports the headline number behind the first customer relationship.\"\n    },\n    {\n      \"text\": \"I think as as RL is becoming a very very large amount of the workloads that needs a lot of CPUs. So, the labs are sucking up a lot of CPUs\",\n      \"timestamp_sec\": 2346,\n      \"why\": \"Names a non-obvious cause of CPU scarcity that most people attribute only to GPUs.\"\n    },\n    {\n      \"text\": \"but I would assume that it gets a lot worse before it gets a lot better on the on the CPU side\",\n      \"timestamp_sec\": 2380,\n      \"why\": \"A dated, checkable forecast about compute supply.\"\n    },\n    {\n      \"text\": \"The the clouds are not infinite as they seem when you're small.\",\n      \"timestamp_sec\": 2580,\n      \"why\": \"Compresses the capacity-planning reality that only shows up at scale.\"\n    },\n    {\n      \"text\": \"that's like a core engineering principle of me is simplicity above everything\",\n      \"timestamp_sec\": 2657,\n      \"why\": \"His stated design value, which the nginx-cache v1 story concretely backs up.\"\n    },\n    {\n      \"text\": \"if this doesn't have PMF and is a big opportunity by the end of the year, I don't think we're going to bother and we'll just shut the whole thing down and we won't have it taking a dime.\",\n      \"timestamp_sec\": 2873,\n      \"why\": \"The unusual terms he offered his first investor, and the discipline behind them.\"\n    },\n    {\n      \"text\": \"I told some other VCs that at the time and that was terrifying to them. I think to someone on the West Coast this sounds like you have low ambition or something like that.\",\n      \"timestamp_sec\": 2907,\n      \"why\": \"Marks an explicit clash between his approach and Silicon Valley norms.\"\n    },\n    {\n      \"text\": \"I think this is a very very dangerous reason to raise money. And I wish that it was more talked about because you're diluting all of your employees when you do it.\",\n      \"timestamp_sec\": 2994,\n      \"why\": \"Takes a contrarian side on ego-driven fundraising that many founders would dispute.\"\n    },\n    {\n      \"text\": \"I think there's kind of maybe two cities where you can build a database company fast, and that's San Francisco and and and maybe New York.\",\n      \"timestamp_sec\": 3146,\n      \"why\": \"The geographic premise that forced the fully remote model.\"\n    },\n    {\n      \"text\": \"when a couple of people just sort of randomly congregate in a place, you call it a campfire and you encourage as many people as you want to come and join\",\n      \"timestamp_sec\": 3205,\n      \"why\": \"Defines the specific remote-culture mechanism the company runs on.\"\n    },\n    {\n      \"text\": \"we give you a turbo credit and a turbo credit allows you to upgrade your next flight to business class which again encourages spending time together with the team\",\n      \"timestamp_sec\": 3274,\n      \"why\": \"A concrete incentive design for opt-in in-person time in a remote company.\"\n    },\n    {\n      \"text\": \"this is something that I now look for when we interview engineers is that you just you can't help yourself but trying to peel back the layers\",\n      \"timestamp_sec\": 439,\n      \"why\": \"States an explicit hiring criterion derived from his own self-taught path.\"\n    }\n  ],\n  \"concepts\": [\n    \"napkin math estimation\",\n    \"vector search\",\n    \"object storage architecture\",\n    \"tail latency design\",\n    \"database unit economics\",\n    \"fault injection testing\",\n    \"caching layers\",\n    \"cloud capacity planning\",\n    \"venture capital strategy\",\n    \"remote engineering culture\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"First-principles napkin math is a more reliable basis for infrastructure decisions than benchmarks, because benchmarks often measure the wrong thing (e.g. an unnoticed distributed query inflating P99).\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1022\n    },\n    {\n      \"claim\": \"Systems built on S3 must be designed against P99/P999 rather than P50, because a single logical operation issues many requests and tree traversal compounds ~200ms object latencies.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1505\n    },\n    {\n      \"claim\": \"The P99 for a 256\u2013512KB object read from S3 is around 200 milliseconds.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1469\n    },\n    {\n      \"claim\": \"Storing vectors in object storage with a memory cache for actively-used data is roughly 100x cheaper than DRAM-resident vector databases \u2014 a million vectors for a dollar versus ~$100 per million.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1832\n    },\n    {\n      \"claim\": \"Using S3 for KV caching and similar workloads is still very uncommon, but it will happen because the economics favor it.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1883\n    },\n    {\n      \"claim\": \"Simplicity almost always wins in software, a lesson that becomes visible mainly through long tenures at one company.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 2657\n    },\n    {\n      \"claim\": \"CPUs are now scarce, not just GPUs, because RL training environments and agent workloads consume large amounts of general-purpose compute, and the shortage will worsen before it improves.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 2346\n    },\n    {\n      \"claim\": \"Cloud capacity allocation is ultimately determined by where power is available, and even large companies compete for regional allocations.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 2472\n    },\n    {\n      \"claim\": \"There are exactly six legitimate reasons to raise capital \u2014 R&D, growth, founder ego, employee liquidity, strategic partnership, and M&A \u2014 and founders should be honest about which applies.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 2957\n    },\n    {\n      \"claim\": \"Raising for founder ego is common and dangerous because it dilutes employees and sets a price that caps future employees' upside.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 2994\n    },\n    {\n      \"claim\": \"A database company can be built quickly in-person essentially only in San Francisco or New York, so companies outside those cities must commit fully to a distributed model.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 3146\n    },\n    {\n      \"claim\": \"Remote work succeeds when in-person time is opt-in and incentivized rather than mandated \u2014 twice-yearly offsites plus voluntary campfires are sufficient.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 3179\n    },\n    {\n      \"claim\": \"Shipping a deliberately unsophisticated first version (no proper LSM, nginx as cache, single instance) was correct because durability invariants were preserved and demand was unproven.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 1801\n    },\n    {\n      \"claim\": \"Engineers should be hired for an irrepressible instinct to peel back abstraction layers rather than for credentials.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 439\n    },\n    {\n      \"claim\": \"Application-layer scaling problems ultimately land at the database layer, and connection-level failure handling across drivers and frameworks is systematically untested.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 768\n    }\n  ],\n  \"speaker_org\": \"Turbopuffer\"\n}",
+  "ttft_ms": 30612,
+  "ttft_stream_ms": 1257,
+  "time_to_request_ms": 34,
+  "type": "result",
+  "duration_ms": 81066,
+  "uuid": "95c82051-94d9-4e29-ae50-95f25e8b918d",
+  "passA": {
+    "summary": "Gergely Orosz interviews Simon Eskildsen, co-founder and CEO of Turbopuffer, about the path from self-taught teenage programmer to eight years on Shopify's infrastructure team to building a vector/search database on top of S3. The through-line is 'napkin math': Eskildsen argues that first-principles calculations about DRAM bandwidth, fsync latency, and S3 round-trip costs beat benchmarks for making infrastructure decisions, and that this discipline is what let him promise Cursor a 95% bill reduction before the software was actually good. He explains the original architecture (cluster the vectors, put clusters in S3 objects, cache with an nginx reverse proxy on a single instance), why Cursor became customer number one, and why CPUs are now genuinely scarce because RL environments and agents consume them. He also lays out an unusually candid framework for venture capital \u2014 six reasons to raise, one of which is founder ego \u2014 and describes Turbopuffer's fully remote 'campfire' culture. Watch it for infrastructure reasoning and company-building philosophy; it is nearly AI-free despite Turbopuffer sitting under many AI products.",
+    "key_points": [
+      "Napkin math \u2014 memorized figures for DRAM bandwidth, SSD read latency, S3 round-trip cost, and per-gigabyte pricing across storage tiers \u2014 is presented as a better basis for infrastructure decisions than benchmarks, which frequently measure the wrong thing.",
+      "Turbopuffer's core insight was economic before it was technical: storing vectors in DRAM made a recommendation feature cost $30k/month for a company spending $5k/month on all other infrastructure, so Eskildsen asked whether the same workload could live in S3 with clustering.",
+      "The first shipped version was deliberately crude \u2014 cluster files plus a centroid file in S3, no real LSM implementation, an nginx reverse proxy as the cache, cache eviction via shelling out to rm \u2014 running on a single instance, because the goal was to find out whether anyone cared.",
+      "Because S3's P99 for a 256\u2013512KB object is around 200ms and tree navigation multiplies round trips, the system must be designed against P99 and even P999 by minimizing round trips rather than optimizing the median.",
+      "Cursor became the first customer after reaching out on Twitter; Eskildsen flew to San Francisco, debugged their Postgres autovacuum problems on the spot, and won trust that way, then delivered a first bill 95% below their previous vendor's last one.",
+      "CPUs, not just GPUs, are now scarce: RL training environments and agent workloads consume large amounts of general-purpose compute, and Eskildsen expects CPU availability to get worse before it gets better, with capacity ultimately gated by power availability per region.",
+      "Turbopuffer survived on almost no capital \u2014 a ~$700k raise to hire two engineers, with an explicit promise to return the money and shut down if there was no PMF by year end \u2014 and Eskildsen enumerates six reasons to raise, calling founder ego a popular and dangerous one because it dilutes employees.",
+      "The company is fully remote by design, using twice-yearly offsites plus opt-in 'campfires' (ad hoc gatherings anyone may join) and 'turbo credits' that buy business-class upgrades, so in-person time is encouraged but never mandatory."
+    ],
+    "notable_quotes": [
+      {
+        "text": "used to say you can't cache rights. So there's a fundamental point where you you just you have to move beyond a single shard.",
+        "timestamp_sec": 606,
+        "why": "The scaling maxim that pushed Shopify to sharding, in one line."
+      },
+      {
+        "text": "What does a gigabyte of memory cost? $2. What does a gigabyte of S3 cost? 2 cents.",
+        "timestamp_sec": 988,
+        "why": "The 100x price gap that is the entire economic premise of Turbopuffer."
+      },
+      {
+        "text": "So I just found myself in these discussions repeatedly where people were making infrastructure decisions based on poor benchmarks.",
+        "timestamp_sec": 1082,
+        "why": "States his central methodological position against benchmark-driven architecture choices."
+      },
+      {
+        "text": "So in aggregate you have like you want to look at the P99 probably even the P999 to design the system properly because you will need to minimize the number of round trips that you had to make.",
+        "timestamp_sec": 1534,
+        "why": "Concrete design rule for building latency-sensitive systems on object storage."
+      },
+      {
+        "text": "the simplest way you could do this is you run some clustering algorithm on the vectors.",
+        "timestamp_sec": 1598,
+        "why": "The whole v1 architecture reduced to its irreducible core."
+      },
+      {
+        "text": "It was like the MVP of MVP. Anyone who's actually worked in the internal on databases would never have had like would have had too much pride to ship anything like that.",
+        "timestamp_sec": 1801,
+        "why": "Argues that database outsider status was an advantage, not a handicap."
+      },
+      {
+        "text": "you could do a million vectors for a dollar. And before that, I think the the cheapest was maybe $100 per million for something that actually worked.",
+        "timestamp_sec": 1832,
+        "why": "The specific 100x pricing claim that drove the initial launch response."
+      },
+      {
+        "text": "the unit economics of what we have right now where all the vectors are in DRAM are not working why hasn't anyone built it where we can put it in S3",
+        "timestamp_sec": 1832,
+        "why": "Reconstructs the buyer-side pain that made Cursor an instant fit."
+      },
+      {
+        "text": "they came on and their last bill with their previous vendor and the first bill with us, it was 95% lower.",
+        "timestamp_sec": 2019,
+        "why": "Reports the headline number behind the first customer relationship."
+      },
+      {
+        "text": "I think as as RL is becoming a very very large amount of the workloads that needs a lot of CPUs. So, the labs are sucking up a lot of CPUs",
+        "timestamp_sec": 2346,
+        "why": "Names a non-obvious cause of CPU scarcity that most people attribute only to GPUs."
+      },
+      {
+        "text": "but I would assume that it gets a lot worse before it gets a lot better on the on the CPU side",
+        "timestamp_sec": 2380,
+        "why": "A dated, checkable forecast about compute supply."
+      },
+      {
+        "text": "The the clouds are not infinite as they seem when you're small.",
+        "timestamp_sec": 2580,
+        "why": "Compresses the capacity-planning reality that only shows up at scale."
+      },
+      {
+        "text": "that's like a core engineering principle of me is simplicity above everything",
+        "timestamp_sec": 2657,
+        "why": "His stated design value, which the nginx-cache v1 story concretely backs up."
+      },
+      {
+        "text": "if this doesn't have PMF and is a big opportunity by the end of the year, I don't think we're going to bother and we'll just shut the whole thing down and we won't have it taking a dime.",
+        "timestamp_sec": 2873,
+        "why": "The unusual terms he offered his first investor, and the discipline behind them."
+      },
+      {
+        "text": "I told some other VCs that at the time and that was terrifying to them. I think to someone on the West Coast this sounds like you have low ambition or something like that.",
+        "timestamp_sec": 2907,
+        "why": "Marks an explicit clash between his approach and Silicon Valley norms."
+      },
+      {
+        "text": "I think this is a very very dangerous reason to raise money. And I wish that it was more talked about because you're diluting all of your employees when you do it.",
+        "timestamp_sec": 2994,
+        "why": "Takes a contrarian side on ego-driven fundraising that many founders would dispute."
+      },
+      {
+        "text": "I think there's kind of maybe two cities where you can build a database company fast, and that's San Francisco and and and maybe New York.",
+        "timestamp_sec": 3146,
+        "why": "The geographic premise that forced the fully remote model."
+      },
+      {
+        "text": "when a couple of people just sort of randomly congregate in a place, you call it a campfire and you encourage as many people as you want to come and join",
+        "timestamp_sec": 3205,
+        "why": "Defines the specific remote-culture mechanism the company runs on."
+      },
+      {
+        "text": "we give you a turbo credit and a turbo credit allows you to upgrade your next flight to business class which again encourages spending time together with the team",
+        "timestamp_sec": 3274,
+        "why": "A concrete incentive design for opt-in in-person time in a remote company."
+      },
+      {
+        "text": "this is something that I now look for when we interview engineers is that you just you can't help yourself but trying to peel back the layers",
+        "timestamp_sec": 439,
+        "why": "States an explicit hiring criterion derived from his own self-taught path."
+      }
+    ],
+    "concepts": [
+      "napkin math estimation",
+      "vector search",
+      "object storage architecture",
+      "tail latency design",
+      "database unit economics",
+      "fault injection testing",
+      "caching layers",
+      "cloud capacity planning",
+      "venture capital strategy",
+      "remote engineering culture"
+    ],
+    "positions": [
+      {
+        "claim": "First-principles napkin math is a more reliable basis for infrastructure decisions than benchmarks, because benchmarks often measure the wrong thing (e.g. an unnoticed distributed query inflating P99).",
+        "confidence": "stated",
+        "timestamp_sec": 1022
+      },
+      {
+        "claim": "Systems built on S3 must be designed against P99/P999 rather than P50, because a single logical operation issues many requests and tree traversal compounds ~200ms object latencies.",
+        "confidence": "stated",
+        "timestamp_sec": 1505
+      },
+      {
+        "claim": "The P99 for a 256\u2013512KB object read from S3 is around 200 milliseconds.",
+        "confidence": "stated",
+        "timestamp_sec": 1469
+      },
+      {
+        "claim": "Storing vectors in object storage with a memory cache for actively-used data is roughly 100x cheaper than DRAM-resident vector databases \u2014 a million vectors for a dollar versus ~$100 per million.",
+        "confidence": "stated",
+        "timestamp_sec": 1832
+      },
+      {
+        "claim": "Using S3 for KV caching and similar workloads is still very uncommon, but it will happen because the economics favor it.",
+        "confidence": "stated",
+        "timestamp_sec": 1883
+      },
+      {
+        "claim": "Simplicity almost always wins in software, a lesson that becomes visible mainly through long tenures at one company.",
+        "confidence": "stated",
+        "timestamp_sec": 2657
+      },
+      {
+        "claim": "CPUs are now scarce, not just GPUs, because RL training environments and agent workloads consume large amounts of general-purpose compute, and the shortage will worsen before it improves.",
+        "confidence": "stated",
+        "timestamp_sec": 2346
+      },
+      {
+        "claim": "Cloud capacity allocation is ultimately determined by where power is available, and even large companies compete for regional allocations.",
+        "confidence": "stated",
+        "timestamp_sec": 2472
+      },
+      {
+        "claim": "There are exactly six legitimate reasons to raise capital \u2014 R&D, growth, founder ego, employee liquidity, strategic partnership, and M&A \u2014 and founders should be honest about which applies.",
+        "confidence": "stated",
+        "timestamp_sec": 2957
+      },
+      {
+        "claim": "Raising for founder ego is common and dangerous because it dilutes employees and sets a price that caps future employees' upside.",
+        "confidence": "stated",
+        "timestamp_sec": 2994
+      },
+      {
+        "claim": "A database company can be built quickly in-person essentially only in San Francisco or New York, so companies outside those cities must commit fully to a distributed model.",
+        "confidence": "stated",
+        "timestamp_sec": 3146
+      },
+      {
+        "claim": "Remote work succeeds when in-person time is opt-in and incentivized rather than mandated \u2014 twice-yearly offsites plus voluntary campfires are sufficient.",
+        "confidence": "implied",
+        "timestamp_sec": 3179
+      },
+      {
+        "claim": "Shipping a deliberately unsophisticated first version (no proper LSM, nginx as cache, single instance) was correct because durability invariants were preserved and demand was unproven.",
+        "confidence": "implied",
+        "timestamp_sec": 1801
+      },
+      {
+        "claim": "Engineers should be hired for an irrepressible instinct to peel back abstraction layers rather than for credentials.",
+        "confidence": "stated",
+        "timestamp_sec": 439
+      },
+      {
+        "claim": "Application-layer scaling problems ultimately land at the database layer, and connection-level failure handling across drivers and frameworks is systematically untested.",
+        "confidence": "stated",
+        "timestamp_sec": 768
+      }
+    ],
+    "speaker_org": "Turbopuffer"
+  },
+  "_meta": {
+    "slug": "building-turbopuffer-gergely-orosz-pragmaticengineer-simon-eskildsen-ceo",
+    "video_id": "jQDXzEVHMSE",
+    "url": "https://www.youtube.com/watch?v=jQDXzEVHMSE",
+    "word_count": 11830,
+    "wall_sec": 82.4,
+    "run_at": "2026-08-12T19:38:45Z",
+    "effort": "medium"
+  }
+}

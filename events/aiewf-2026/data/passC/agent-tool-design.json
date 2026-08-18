@@ -1,0 +1,276 @@
+{
+  "is_error": false,
+  "duration_api_ms": 133205,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "49b8f6a2-5a17-486b-8d7e-16fae2508a13",
+  "total_cost_usd": 0.643626,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 35063,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 10588,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 35063,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 10588,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 35063,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 35063
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 23052,
+      "outputTokens": 16,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.023132,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 10588,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 35063,
+      "webSearchRequests": 0,
+      "costUSD": 0.620494,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\"concept\": \"agent tool design\", \"state_of_practice\": \"The field has moved decisively away from large inventories of purpose-built, tightly-specified function tools and toward small tool surfaces whose members are semantically distinct, plus one general code-execution affordance (bash, a REPL, a CLI, a typed SDK) that lets the model compose its own operations. Anthropic states it deliberately keeps tool cardinality low so Claude can distinguish when to call each, and reports that its file-edit tool now exists mostly for UI rendering rather than capability; a minimal coding agent is demonstrated with exactly two tools (read file, edit file). Tool descriptions themselves have followed the same compression: frontier models degrade when given in-prompt examples and hard 'do not do X' constraints, so the guidance is to supply context instead. The unresolved half of the design problem is the substrate \u2014 MCP (stores, apps returning sandboxed-iframe UI, async tasks, registry discovery) versus shell CLIs and code execution, where one talk cites 71 MCP round trips and 8 minutes against 7 CLI turns and under a minute, and Anthropic's own reported figure of up to 75x cheaper token cost. Across security, harness, and product talks, the tool layer \u2014 not the model \u2014 is where authority is enforced: constrain effects rather than expression, route mutations through one validated door, lock sensitive arguments so the model never sees them, and confirm outcomes through a channel other than the tool's own success report.\", \"consensus\": [{\"claim\": \"Keep the tool surface small and make every tool functionally distinct from every other, because tool-selection reliability degrades with cardinality and overlap, not just with context length.\", \"support_count\": 5, \"supporting_talks\": [\"claude-fable-claude-tag-and-anthropics-culture\", \"anthropics-cca-exam-as-a-field-guide-for-agentic-engineering\", \"building-an-acp-compatible-agent-live\", \"what-if-the-harness-mattered-more-than-the-model\", \"you-didnt-ship-a-bug-you-just-wrote-it-for-a-human\"], \"evidence_quote\": \"we try to keep the cardality pretty low and make sure that every tool we add has a distinct function from every other tool so that Claude can very easily distinguish when to call each\", \"evidence_talk\": \"claude-fable-claude-tag-and-anthropics-culture\", \"evidence_timestamp_sec\": 1808}, {\"claim\": \"Give the agent a general code-execution affordance (bash, REPL, CLI, scripts) so it can compose and batch its own operations, rather than enumerating fine-grained bespoke tool calls for each operation.\", \"support_count\": 5, \"supporting_talks\": [\"field-guide-to-fable\", \"respect-the-process\", \"rlm-recursive-language-models-for-large-codebases\", \"the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans\", \"html-is-all-you-need-for-agents-to-make-graphics\"], \"evidence_quote\": \"if you give it arms, like you give it the bash tool and ways to work with the environment, it can build and search its own context. And that's sort of like the insight that led to Claude Code\", \"evidence_talk\": \"field-guide-to-fable\", \"evidence_timestamp_sec\": 314}, {\"claim\": \"Safety belongs in the tool layer as a constraint on effects \u2014 a single validated entry point, locked arguments, scoped permissions \u2014 not in instructions asking the model to behave.\", \"support_count\": 6, \"supporting_talks\": [\"respect-the-process\", \"what-if-the-harness-mattered-more-than-the-model\", \"your-agent-didnt-fail-your-harness-did\", \"you-didnt-ship-a-bug-you-just-wrote-it-for-a-human\", \"ive-never-seen-anything-scarier-than-an-llm-with-tool-calls\", \"claude-fable-claude-tag-and-anthropics-culture\"], \"evidence_quote\": \"we frame it as constraining the effects, not the expression\", \"evidence_talk\": \"respect-the-process\", \"evidence_timestamp_sec\": 444}, {\"claim\": \"A tool's own success report is not evidence the action landed; the harness must confirm the effect through a different channel than the one that performed it.\", \"support_count\": 3, \"supporting_talks\": [\"the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans\", \"your-agent-didnt-fail-your-harness-did\", \"respect-the-process\"], \"evidence_quote\": \"if you've clicked something, don't ask the click if it was successful. Check the network or check the screen.\", \"evidence_talk\": \"the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans\", \"evidence_timestamp_sec\": 370}], \"disagreements\": [{\"question\": \"Should agent capability be exposed as MCP servers/protocol tools, or as CLIs and code the agent executes directly?\", \"position_a\": \"Skip the protocol layer: hand the agent shell CLIs, a REPL, or code it can write and re-run without a model in the loop. Capability parity is roughly equal (~83% task success either way), but CLIs win on reuse, latency, and token cost, and highly-specified function-call tools stop scaling past a handful of entities as schemas eat context and get hallucinated. Canvas-style MCPs (Figma, PowerPoint) are the wrong shape entirely because they make the agent imitate human interaction.\", \"position_a_talks\": [\"the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans\", \"respect-the-process\", \"html-is-all-you-need-for-agents-to-make-graphics\", \"field-guide-to-fable\", \"rlm-recursive-language-models-for-large-codebases\"], \"position_b\": \"MCP is the tool surface worth investing in: apps now return sandboxed-iframe UI, three major clients run self-serve stores that drive real traffic, shipping an MCP server is becoming a purchasing criterion, and the async tasks spec is being fixed rather than abandoned. Standardized protocols (MCP, ACP) are what let a tool be written once and reused across every client, and per-user tool scoping is a protocol-layer fix.\", \"position_b_talks\": [\"mcp-apps-primitives-discovery-and-the-future-of-software\", \"mcp-tasks-async-why-arent-any-agents-supporting-them\", \"you-didnt-ship-a-bug-you-just-wrote-it-for-a-human\", \"building-an-acp-compatible-agent-live\"], \"why_it_matters\": \"It decides whether you spend engineering effort on JSON-RPC servers, schemas, and store submissions, or on scripts and a sandbox \u2014 and it sets your per-task cost and latency floor, which matters concretely for anything on a clock (a captcha round, an interactive edit loop).\"}, {\"question\": \"Can an agent be allowed to execute tool calls under runtime guardrails, or must every action be provably safe before it runs?\", \"position_a\": \"Autonomous execution is acceptable when the blast radius is bounded: a classifier judging the tool call plus conversation context, a typed SDK as the only door with a deterministic validation pass at completion, or arguments locked by partial application so the model cannot change or even see them. Anthropic claims auto mode's residual prompt-injection and exfiltration risk is below that of an average human reviewer and is moving to remove humans from the loop for non-core changes.\", \"position_a_talks\": [\"claude-fable-claude-tag-and-anthropics-culture\", \"respect-the-process\", \"what-if-the-harness-mattered-more-than-the-model\"], \"position_b\": \"Agents are dangerous until proven safe. The agent should not run the agentic loop at all: it should emit a plan reified as a program expression, which is then type-checked, taint-analyzed, and proof-carried before a separate trusted executor runs it. Absent deterministic, fine-grained, time-bounded control over what the agent can do, you have no security posture \u2014 'praying is not a strategy.'\", \"position_b_talks\": [\"ive-never-seen-anything-scarier-than-an-llm-with-tool-calls\", \"you-didnt-ship-a-bug-you-just-wrote-it-for-a-human\"], \"why_it_matters\": \"The two camps build incompatible tool layers: one ships tools that execute immediately behind probabilistic judges and typed wrappers, the other ships tools that return inspectable programs and defers all side effects to a separate executor. It also determines whether an LLM-as-judge is an acceptable gate or a category error, since safety may not be formally specifiable at all.\"}, {\"question\": \"Should an agent's tool surface be fixed and curated at build time, or discovered and expanded dynamically at runtime?\", \"position_a\": \"Fix it and keep it tiny \u2014 one or two tools and a single job per agent, distinct functions only. Failures trace directly to too many unrelated tools and concepts sharing context, and a large inventory is the 'carpenter who shows up with plumbing tools' anti-pattern.\", \"position_a_talks\": [\"anthropics-cca-exam-as-a-field-guide-for-agentic-engineering\", \"claude-fable-claude-tag-and-anthropics-culture\", \"what-if-the-harness-mattered-more-than-the-model\"], \"position_b\": \"The client should search a registry at runtime and pull in the right connector when no existing tool fits the assigned task \u2014 Claude already does this, and being the connector that gets selected is the distribution opportunity.\", \"position_b_talks\": [\"mcp-apps-primitives-discovery-and-the-future-of-software\"], \"why_it_matters\": \"If dynamic discovery wins, tool design becomes a discoverability and description-quality problem competing in a registry; if the curated-minimum view wins, every added tool is a liability you must justify against selection accuracy.\"}], \"practical_guidance\": {\"do\": [\"Give each agent one or two tools and a single job; specialize rather than building a do-everything inventory\", \"Audit every new tool against existing ones for functional overlap \u2014 if the model could plausibly confuse two tools, merge or rename them\", \"Start a coding agent from the irreducible pair (read file, edit file) and add tools only for what the surrounding client cannot already do\", \"Expose capability as a CLI or script sequence the agent can write once and run a thousand times without hitting the model each turn, especially where latency is bounded by an external clock\", \"Give the agent a REPL or sandbox so it can write loops and summarization scripts over large structured data instead of paging it through bespoke tool calls\", \"Route all state-mutating calls through a single typed SDK that lints and checks errors, and run a deterministic orchestration/validation script on agent completion rather than trusting the agent's own final state\", \"Lock sensitive tool arguments via partial function application so the model cannot change them and never learns the argument exists\", \"Verify an action's effect through a different sensory channel than the one that performed it (check the network or the screen, not the click's return value)\", \"Emit structured, human-reviewable artifacts from the deterministic execution step so non-engineer users never have to read agent-written code to approve work\", \"Write tool and system prompts as context rather than negative constraints; drop in-prompt examples for frontier models, which are more imaginative than the examples\", \"Scope the tool surface to the user who authorized the agent, time-bound permissions to the agent's operating window, and default to least privilege with just-in-time elevation\", \"Give the agent its own client ID and delegated on-behalf-of access rather than letting it act as the user\", \"Pick an output medium the model natively generates \u2014 HTML and structured text over pixels and coordinates\", \"Return an alternate text payload alongside any UI widget so clients without widget support don't starve the model of information\", \"Branch on stop_reason in the agent loop instead of consuming the first response, so token exhaustion doesn't silently produce truncated output\", \"Make every external boundary resolve to a terminal state: success, failure, timeout, cancel, or max attempts\", \"Make credentials usable by the agent without being accessible to it\"], \"avoid\": [\"Handing an agent a large tool inventory and expecting reliable selection \u2014 this is the carpenter who shows up with plumbing, carpentry, and electrical tools\", \"Building highly-specified function-call tools per entity type; they work on one graph and break on a few, with the agent hallucinating schema as context fills\", \"Surfacing every tool the user or application supports regardless of who authorized this specific agent run\", \"Treating a tool's success response as proof the work landed \u2014 agents will report edits they never made\", \"Giving the agent a general-purpose VM with arbitrary tooling installed; it will route around your instructions using whatever it finds (writing Python when told to write TypeScript)\", \"Round-tripping the model on every individual interaction in a loop with an external deadline \u2014 the challenge expires before the agent finishes\", \"Hard 'do not do X' constraints in prompts, which collide with later user instructions and confuse frontier models\", \"Letting subtask output dump into the primary thread's context, and filling a million-token window because it exists\", \"Designing stateful protocol endpoints (a tasks/list with no filter) that force a scan of a million tasks to find one\", \"Making agents imitate human interaction patterns \u2014 canvas manipulation, screenshot-and-replace loops, pixel coordinates\", \"Defaulting to plain text output for artifacts that are meant to be used\", \"Leaving interactive permission prompts enabled when the agent runs in a CI pipeline\", \"Building your own AI Slackbot \u2014 the prompt-injection attack surface is too large\"]}, \"notable_outliers\": [{\"claim\": \"The dedicated file-edit tool exists for UI rendering reasons, not model capability, and could probably be deleted today for experienced auto-mode users without harm.\", \"talk\": \"claude-fable-claude-tag-and-anthropics-culture\", \"timestamp_sec\": 1808}, {\"claim\": \"Tools should not return an opaque IO value at all \u2014 the model should return a program representing the computation, so compiler techniques (data flow, type checking, taint analysis) can prove it safe before a separate executor runs it.\", \"talk\": \"ive-never-seen-anything-scarier-than-an-llm-with-tool-calls\", \"timestamp_sec\": 1002}, {\"claim\": \"Tool design is closer to biology than physics \u2014 an empirical, organic discipline rather than one with known rules.\", \"talk\": \"claude-fable-claude-tag-and-anthropics-culture\", \"timestamp_sec\": 1750}, {\"claim\": \"A CLI and an MCP server hit ~83% task success equally, but the same task took MCP 71 round trips and 8 minutes versus 7 turns and under a minute for the CLI, with Anthropic reporting up to 75x cheaper token cost.\", \"talk\": \"the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans\", \"timestamp_sec\": 199}, {\"claim\": \"Splitting tool output between what the widget renders and what the model receives lets you build agent tools in privacy-sensitive domains where the data can never reach the LLM provider.\", \"talk\": \"mcp-apps-primitives-discovery-and-the-future-of-software\", \"timestamp_sec\": 892}, {\"claim\": \"Amazon's add-to-cart button silently ignores untrusted JavaScript clicks with no error or failure signal, so the tool appears to succeed while nothing happened.\", \"talk\": \"the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans\", \"timestamp_sec\": 676}, {\"claim\": \"Intermediate languages for agent plans need not be human-readable, since machines generate, consume, and prove them.\", \"talk\": \"ive-never-seen-anything-scarier-than-an-llm-with-tool-calls\", \"timestamp_sec\": 1197}, {\"claim\": \"Changing only the harness \u2014 model and eval held constant across 106 tasks \u2014 moved scores from 52.4% to 76.2%, and the effect is larger for weaker models.\", \"talk\": \"what-if-the-harness-mattered-more-than-the-model\", \"timestamp_sec\": 143}], \"maturity\": \"consolidating\", \"maturity_rationale\": \"Independent speakers from Anthropic, OpenAI, Etsy, Zed, and several startups converge without coordination on the same core rules \u2014 few tools, distinct functions, code-execution affordances over bespoke schemas, and effect-level constraints enforced outside the model \u2014 which is more agreement than a frontier concept would produce. What remains genuinely argued is the substrate (MCP protocol and stores versus CLIs and sandboxes) and the authorization model (runtime classifiers and typed wrappers versus proof-before-execution), so the edges are contested while the center has settled.\"}",
+  "ttft_ms": 64555,
+  "ttft_stream_ms": 1606,
+  "time_to_request_ms": 39,
+  "type": "result",
+  "duration_ms": 132860,
+  "uuid": "3124ecca-f900-40fd-9518-0dff4f05663e",
+  "passC": {
+    "concept": "agent tool design",
+    "state_of_practice": "The field has moved decisively away from large inventories of purpose-built, tightly-specified function tools and toward small tool surfaces whose members are semantically distinct, plus one general code-execution affordance (bash, a REPL, a CLI, a typed SDK) that lets the model compose its own operations. Anthropic states it deliberately keeps tool cardinality low so Claude can distinguish when to call each, and reports that its file-edit tool now exists mostly for UI rendering rather than capability; a minimal coding agent is demonstrated with exactly two tools (read file, edit file). Tool descriptions themselves have followed the same compression: frontier models degrade when given in-prompt examples and hard 'do not do X' constraints, so the guidance is to supply context instead. The unresolved half of the design problem is the substrate \u2014 MCP (stores, apps returning sandboxed-iframe UI, async tasks, registry discovery) versus shell CLIs and code execution, where one talk cites 71 MCP round trips and 8 minutes against 7 CLI turns and under a minute, and Anthropic's own reported figure of up to 75x cheaper token cost. Across security, harness, and product talks, the tool layer \u2014 not the model \u2014 is where authority is enforced: constrain effects rather than expression, route mutations through one validated door, lock sensitive arguments so the model never sees them, and confirm outcomes through a channel other than the tool's own success report.",
+    "consensus": [
+      {
+        "claim": "Keep the tool surface small and make every tool functionally distinct from every other, because tool-selection reliability degrades with cardinality and overlap, not just with context length.",
+        "support_count": 5,
+        "supporting_talks": [
+          "claude-fable-claude-tag-and-anthropics-culture",
+          "anthropics-cca-exam-as-a-field-guide-for-agentic-engineering",
+          "building-an-acp-compatible-agent-live",
+          "what-if-the-harness-mattered-more-than-the-model",
+          "you-didnt-ship-a-bug-you-just-wrote-it-for-a-human"
+        ],
+        "evidence_quote": "we try to keep the cardality pretty low and make sure that every tool we add has a distinct function from every other tool so that Claude can very easily distinguish when to call each",
+        "evidence_talk": "claude-fable-claude-tag-and-anthropics-culture",
+        "evidence_timestamp_sec": 1808
+      },
+      {
+        "claim": "Give the agent a general code-execution affordance (bash, REPL, CLI, scripts) so it can compose and batch its own operations, rather than enumerating fine-grained bespoke tool calls for each operation.",
+        "support_count": 5,
+        "supporting_talks": [
+          "field-guide-to-fable",
+          "respect-the-process",
+          "rlm-recursive-language-models-for-large-codebases",
+          "the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans",
+          "html-is-all-you-need-for-agents-to-make-graphics"
+        ],
+        "evidence_quote": "if you give it arms, like you give it the bash tool and ways to work with the environment, it can build and search its own context. And that's sort of like the insight that led to Claude Code",
+        "evidence_talk": "field-guide-to-fable",
+        "evidence_timestamp_sec": 314
+      },
+      {
+        "claim": "Safety belongs in the tool layer as a constraint on effects \u2014 a single validated entry point, locked arguments, scoped permissions \u2014 not in instructions asking the model to behave.",
+        "support_count": 6,
+        "supporting_talks": [
+          "respect-the-process",
+          "what-if-the-harness-mattered-more-than-the-model",
+          "your-agent-didnt-fail-your-harness-did",
+          "you-didnt-ship-a-bug-you-just-wrote-it-for-a-human",
+          "ive-never-seen-anything-scarier-than-an-llm-with-tool-calls",
+          "claude-fable-claude-tag-and-anthropics-culture"
+        ],
+        "evidence_quote": "we frame it as constraining the effects, not the expression",
+        "evidence_talk": "respect-the-process",
+        "evidence_timestamp_sec": 444
+      },
+      {
+        "claim": "A tool's own success report is not evidence the action landed; the harness must confirm the effect through a different channel than the one that performed it.",
+        "support_count": 3,
+        "supporting_talks": [
+          "the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans",
+          "your-agent-didnt-fail-your-harness-did",
+          "respect-the-process"
+        ],
+        "evidence_quote": "if you've clicked something, don't ask the click if it was successful. Check the network or check the screen.",
+        "evidence_talk": "the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans",
+        "evidence_timestamp_sec": 370
+      }
+    ],
+    "disagreements": [
+      {
+        "question": "Should agent capability be exposed as MCP servers/protocol tools, or as CLIs and code the agent executes directly?",
+        "position_a": "Skip the protocol layer: hand the agent shell CLIs, a REPL, or code it can write and re-run without a model in the loop. Capability parity is roughly equal (~83% task success either way), but CLIs win on reuse, latency, and token cost, and highly-specified function-call tools stop scaling past a handful of entities as schemas eat context and get hallucinated. Canvas-style MCPs (Figma, PowerPoint) are the wrong shape entirely because they make the agent imitate human interaction.",
+        "position_a_talks": [
+          "the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans",
+          "respect-the-process",
+          "html-is-all-you-need-for-agents-to-make-graphics",
+          "field-guide-to-fable",
+          "rlm-recursive-language-models-for-large-codebases"
+        ],
+        "position_b": "MCP is the tool surface worth investing in: apps now return sandboxed-iframe UI, three major clients run self-serve stores that drive real traffic, shipping an MCP server is becoming a purchasing criterion, and the async tasks spec is being fixed rather than abandoned. Standardized protocols (MCP, ACP) are what let a tool be written once and reused across every client, and per-user tool scoping is a protocol-layer fix.",
+        "position_b_talks": [
+          "mcp-apps-primitives-discovery-and-the-future-of-software",
+          "mcp-tasks-async-why-arent-any-agents-supporting-them",
+          "you-didnt-ship-a-bug-you-just-wrote-it-for-a-human",
+          "building-an-acp-compatible-agent-live"
+        ],
+        "why_it_matters": "It decides whether you spend engineering effort on JSON-RPC servers, schemas, and store submissions, or on scripts and a sandbox \u2014 and it sets your per-task cost and latency floor, which matters concretely for anything on a clock (a captcha round, an interactive edit loop)."
+      },
+      {
+        "question": "Can an agent be allowed to execute tool calls under runtime guardrails, or must every action be provably safe before it runs?",
+        "position_a": "Autonomous execution is acceptable when the blast radius is bounded: a classifier judging the tool call plus conversation context, a typed SDK as the only door with a deterministic validation pass at completion, or arguments locked by partial application so the model cannot change or even see them. Anthropic claims auto mode's residual prompt-injection and exfiltration risk is below that of an average human reviewer and is moving to remove humans from the loop for non-core changes.",
+        "position_a_talks": [
+          "claude-fable-claude-tag-and-anthropics-culture",
+          "respect-the-process",
+          "what-if-the-harness-mattered-more-than-the-model"
+        ],
+        "position_b": "Agents are dangerous until proven safe. The agent should not run the agentic loop at all: it should emit a plan reified as a program expression, which is then type-checked, taint-analyzed, and proof-carried before a separate trusted executor runs it. Absent deterministic, fine-grained, time-bounded control over what the agent can do, you have no security posture \u2014 'praying is not a strategy.'",
+        "position_b_talks": [
+          "ive-never-seen-anything-scarier-than-an-llm-with-tool-calls",
+          "you-didnt-ship-a-bug-you-just-wrote-it-for-a-human"
+        ],
+        "why_it_matters": "The two camps build incompatible tool layers: one ships tools that execute immediately behind probabilistic judges and typed wrappers, the other ships tools that return inspectable programs and defers all side effects to a separate executor. It also determines whether an LLM-as-judge is an acceptable gate or a category error, since safety may not be formally specifiable at all."
+      },
+      {
+        "question": "Should an agent's tool surface be fixed and curated at build time, or discovered and expanded dynamically at runtime?",
+        "position_a": "Fix it and keep it tiny \u2014 one or two tools and a single job per agent, distinct functions only. Failures trace directly to too many unrelated tools and concepts sharing context, and a large inventory is the 'carpenter who shows up with plumbing tools' anti-pattern.",
+        "position_a_talks": [
+          "anthropics-cca-exam-as-a-field-guide-for-agentic-engineering",
+          "claude-fable-claude-tag-and-anthropics-culture",
+          "what-if-the-harness-mattered-more-than-the-model"
+        ],
+        "position_b": "The client should search a registry at runtime and pull in the right connector when no existing tool fits the assigned task \u2014 Claude already does this, and being the connector that gets selected is the distribution opportunity.",
+        "position_b_talks": [
+          "mcp-apps-primitives-discovery-and-the-future-of-software"
+        ],
+        "why_it_matters": "If dynamic discovery wins, tool design becomes a discoverability and description-quality problem competing in a registry; if the curated-minimum view wins, every added tool is a liability you must justify against selection accuracy."
+      }
+    ],
+    "practical_guidance": {
+      "do": [
+        "Give each agent one or two tools and a single job; specialize rather than building a do-everything inventory",
+        "Audit every new tool against existing ones for functional overlap \u2014 if the model could plausibly confuse two tools, merge or rename them",
+        "Start a coding agent from the irreducible pair (read file, edit file) and add tools only for what the surrounding client cannot already do",
+        "Expose capability as a CLI or script sequence the agent can write once and run a thousand times without hitting the model each turn, especially where latency is bounded by an external clock",
+        "Give the agent a REPL or sandbox so it can write loops and summarization scripts over large structured data instead of paging it through bespoke tool calls",
+        "Route all state-mutating calls through a single typed SDK that lints and checks errors, and run a deterministic orchestration/validation script on agent completion rather than trusting the agent's own final state",
+        "Lock sensitive tool arguments via partial function application so the model cannot change them and never learns the argument exists",
+        "Verify an action's effect through a different sensory channel than the one that performed it (check the network or the screen, not the click's return value)",
+        "Emit structured, human-reviewable artifacts from the deterministic execution step so non-engineer users never have to read agent-written code to approve work",
+        "Write tool and system prompts as context rather than negative constraints; drop in-prompt examples for frontier models, which are more imaginative than the examples",
+        "Scope the tool surface to the user who authorized the agent, time-bound permissions to the agent's operating window, and default to least privilege with just-in-time elevation",
+        "Give the agent its own client ID and delegated on-behalf-of access rather than letting it act as the user",
+        "Pick an output medium the model natively generates \u2014 HTML and structured text over pixels and coordinates",
+        "Return an alternate text payload alongside any UI widget so clients without widget support don't starve the model of information",
+        "Branch on stop_reason in the agent loop instead of consuming the first response, so token exhaustion doesn't silently produce truncated output",
+        "Make every external boundary resolve to a terminal state: success, failure, timeout, cancel, or max attempts",
+        "Make credentials usable by the agent without being accessible to it"
+      ],
+      "avoid": [
+        "Handing an agent a large tool inventory and expecting reliable selection \u2014 this is the carpenter who shows up with plumbing, carpentry, and electrical tools",
+        "Building highly-specified function-call tools per entity type; they work on one graph and break on a few, with the agent hallucinating schema as context fills",
+        "Surfacing every tool the user or application supports regardless of who authorized this specific agent run",
+        "Treating a tool's success response as proof the work landed \u2014 agents will report edits they never made",
+        "Giving the agent a general-purpose VM with arbitrary tooling installed; it will route around your instructions using whatever it finds (writing Python when told to write TypeScript)",
+        "Round-tripping the model on every individual interaction in a loop with an external deadline \u2014 the challenge expires before the agent finishes",
+        "Hard 'do not do X' constraints in prompts, which collide with later user instructions and confuse frontier models",
+        "Letting subtask output dump into the primary thread's context, and filling a million-token window because it exists",
+        "Designing stateful protocol endpoints (a tasks/list with no filter) that force a scan of a million tasks to find one",
+        "Making agents imitate human interaction patterns \u2014 canvas manipulation, screenshot-and-replace loops, pixel coordinates",
+        "Defaulting to plain text output for artifacts that are meant to be used",
+        "Leaving interactive permission prompts enabled when the agent runs in a CI pipeline",
+        "Building your own AI Slackbot \u2014 the prompt-injection attack surface is too large"
+      ]
+    },
+    "notable_outliers": [
+      {
+        "claim": "The dedicated file-edit tool exists for UI rendering reasons, not model capability, and could probably be deleted today for experienced auto-mode users without harm.",
+        "talk": "claude-fable-claude-tag-and-anthropics-culture",
+        "timestamp_sec": 1808
+      },
+      {
+        "claim": "Tools should not return an opaque IO value at all \u2014 the model should return a program representing the computation, so compiler techniques (data flow, type checking, taint analysis) can prove it safe before a separate executor runs it.",
+        "talk": "ive-never-seen-anything-scarier-than-an-llm-with-tool-calls",
+        "timestamp_sec": 1002
+      },
+      {
+        "claim": "Tool design is closer to biology than physics \u2014 an empirical, organic discipline rather than one with known rules.",
+        "talk": "claude-fable-claude-tag-and-anthropics-culture",
+        "timestamp_sec": 1750
+      },
+      {
+        "claim": "A CLI and an MCP server hit ~83% task success equally, but the same task took MCP 71 round trips and 8 minutes versus 7 turns and under a minute for the CLI, with Anthropic reporting up to 75x cheaper token cost.",
+        "talk": "the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans",
+        "timestamp_sec": 199
+      },
+      {
+        "claim": "Splitting tool output between what the widget renders and what the model receives lets you build agent tools in privacy-sensitive domains where the data can never reach the LLM provider.",
+        "talk": "mcp-apps-primitives-discovery-and-the-future-of-software",
+        "timestamp_sec": 892
+      },
+      {
+        "claim": "Amazon's add-to-cart button silently ignores untrusted JavaScript clicks with no error or failure signal, so the tool appears to succeed while nothing happened.",
+        "talk": "the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans",
+        "timestamp_sec": 676
+      },
+      {
+        "claim": "Intermediate languages for agent plans need not be human-readable, since machines generate, consume, and prove them.",
+        "talk": "ive-never-seen-anything-scarier-than-an-llm-with-tool-calls",
+        "timestamp_sec": 1197
+      },
+      {
+        "claim": "Changing only the harness \u2014 model and eval held constant across 106 tasks \u2014 moved scores from 52.4% to 76.2%, and the effect is larger for weaker models.",
+        "talk": "what-if-the-harness-mattered-more-than-the-model",
+        "timestamp_sec": 143
+      }
+    ],
+    "maturity": "consolidating",
+    "maturity_rationale": "Independent speakers from Anthropic, OpenAI, Etsy, Zed, and several startups converge without coordination on the same core rules \u2014 few tools, distinct functions, code-execution affordances over bespoke schemas, and effect-level constraints enforced outside the model \u2014 which is more agreement than a frontier concept would produce. What remains genuinely argued is the substrate (MCP protocol and stores versus CLIs and sandboxes) and the authorization model (runtime classifiers and typed wrappers versus proof-before-execution), so the edges are contested while the center has settled."
+  },
+  "_meta": {
+    "concept": "agent tool design",
+    "slug": "agent-tool-design",
+    "talk_count": 14,
+    "missing_talks": [],
+    "wall_sec": 133.9,
+    "run_at": "2026-08-13T17:47:29Z"
+  }
+}

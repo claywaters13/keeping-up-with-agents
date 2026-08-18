@@ -1,0 +1,276 @@
+{
+  "is_error": false,
+  "duration_api_ms": 72664,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "69c11471-9043-4f64-8247-8b8c82e9f76c",
+  "total_cost_usd": 0.26599000000000006,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 9714,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 6300,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 9714,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 6300,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 9714,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 9714
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 6096,
+      "outputTokens": 18,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.006186,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 6300,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 9714,
+      "webSearchRequests": 0,
+      "costUSD": 0.25980400000000003,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Annabell Sch\u00e4fer (growth engineer at Langfuse) argues that the current enthusiasm for self-improving agent loops is borrowed from coding, where a clear target function \u2014 does the code compile \u2014 makes auto-optimization work, and that this doesn't transfer to domains like healthcare, compliance, or support chatbots without deliberate work. To isolate the role of the target function, her team ran a minimal self-optimization loop: a cheap GPT-5-nano classifier labeling arXiv papers, with Claude Opus 4.8 in Claude Code proposing prompt updates against fit/validate/test splits of 200/100/300 items. Accuracy rose from 68% to about 83% and generalized to 80.2% on the held-out test set, but roughly 10 points of the gain came on the very first iteration \u2014 the payoff came from having a high-signal, clearly quantifiable failure signal, not from many loop iterations. She then generalizes: replace vague 0\u20131 scores like correctness or helpfulness with binary, domain-specific checks (is the answer grounded in the retrieved context, is the brand name spelled right, which of five known failure modes occurred), derived by sitting with domain experts and reviewing production data as a human. Worth watching if you're deciding whether to invest in agent self-improvement loops versus first building the evaluation substrate they depend on.\",\n  \"key_points\": [\n    \"Coding agents made self-improvement look easy because they inherited an unusually clean target function \u2014 whether the code compiles \u2014 that most domains simply do not have.\",\n    \"Any target you hand an agent is inherently incomplete, so the optimization can converge confidently on the wrong destination.\",\n    \"In a controlled experiment on arXiv paper classification (GPT-5-nano classifier, Claude Opus 4.8 as optimizer via Claude Code), accuracy went from a 68% baseline to ~83%, plateauing around 80% and reaching 80.2% on a 300-item untouched test set.\",\n    \"Roughly 10 of the ~15 percentage points of improvement arrived on the first iteration, suggesting the value came from the quality of the error signal rather than from prolonged looping.\",\n    \"Even a supposedly clean label set was noisy in practice, because arXiv authors have creative freedom in choosing a primary category, capping achievable accuracy.\",\n    \"Generic scalar evaluators (correctness, helpfulness, hallucination on a 0\u20131 or 1\u20135 scale) are low-signal for auto-improvement because the numeric levels are rarely defined and scores are inconsistent across runs.\",\n    \"The replacement is binary, application-specific quality criteria \u2014 is the claim present in the retrieved context, was the brand name preserved, which known failure mode fired \u2014 plus enough volume of examples to give the optimizer a pattern to cluster on.\",\n    \"Getting there requires encoding domain expertise into concrete examples with experts, reviewing production data as a human rather than delegating it to coding agents, and baking in ML-style validation splits and an escape hatch so the loop stops instead of burning tokens against a wall.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"So we have Boris Journey saying he doesn't write any prompts anymore. He has loops and Peter Steinberger being like you should be designing loops and not prompt your agents.\",\n      \"timestamp_sec\": 0,\n      \"why\": \"Frames the industry moment the talk is pushing back on.\"\n    },\n    {\n      \"text\": \"a target that you give an agent is actually also always incomplete\",\n      \"timestamp_sec\": 70,\n      \"why\": \"The core theoretical claim underpinning the whole argument.\"\n    },\n    {\n      \"text\": \"So we put this target function together with an agent and also with an optimizer.\",\n      \"timestamp_sec\": 187,\n      \"why\": \"States the experimental setup in one line.\"\n    },\n    {\n      \"text\": \"Um the first run ended at uh 68% accuracy and on our third fourth iteration um we went all the way to 83% which then also afterwards um plateaued a bit.\",\n      \"timestamp_sec\": 432,\n      \"why\": \"The headline numbers of the experiment.\"\n    },\n    {\n      \"text\": \"we also saw this uh improvement then generalized to the um test data set on yeah to 80.2%.\",\n      \"timestamp_sec\": 470,\n      \"why\": \"Reports the held-out generalization result.\"\n    },\n    {\n      \"text\": \"the most interesting thing uh we thought is that the first iteration immediately gained 10% and then it was only a little bit movement.\",\n      \"timestamp_sec\": 470,\n      \"why\": \"The central empirical surprise driving the talk's thesis.\"\n    },\n    {\n      \"text\": \"so overall the approach was um improvement loop added rules and examples\",\n      \"timestamp_sec\": 560,\n      \"why\": \"Summarizes what the optimizer actually changed in the prompt.\"\n    },\n    {\n      \"text\": \"it got a very clearcut um clearly quantifiable and reliable failure mode because they were just wrong on a yes no right wrong basis.\",\n      \"timestamp_sec\": 636,\n      \"why\": \"Names the precondition that made auto-optimization work.\"\n    },\n    {\n      \"text\": \"but the biggest jump was uh just the very first one from a very clear-cut signal, we could have probably stopped there and already have very good baseline.\",\n      \"timestamp_sec\": 684,\n      \"why\": \"A pointed tradeoff claim about diminishing returns from looping.\"\n    },\n    {\n      \"text\": \"next time you run the same evaluator you get a different answer from the same kind of evaluation you ran\",\n      \"timestamp_sec\": 684,\n      \"why\": \"States the nondeterminism problem that blocks transfer to other domains.\"\n    },\n    {\n      \"text\": \"for this to really work properly you need to define each of those numbers. What does it mean in which context would you need which number?\",\n      \"timestamp_sec\": 732,\n      \"why\": \"The concrete objection to scalar rubric evaluators.\"\n    },\n    {\n      \"text\": \"So it's just choosing a number between zero and one and um depending on the uh context it might just uh totally change perspective and is therefore rather low signal and also probably inconsistent um across runs.\",\n      \"timestamp_sec\": 771,\n      \"why\": \"Sharpest critique of the market-standard evaluator pattern.\"\n    },\n    {\n      \"text\": \"Uh so for example instead of correctness the answer is based on the knowledge base yes no.\",\n      \"timestamp_sec\": 771,\n      \"why\": \"The prescriptive replacement, stated concretely.\"\n    },\n    {\n      \"text\": \"because if you can't do code compiles, you need to wrap your head a little bit differently around um what is good and what is not.\",\n      \"timestamp_sec\": 862,\n      \"why\": \"One-line statement of the talk's thesis.\"\n    },\n    {\n      \"text\": \"Um but here it's something you can actually start to encode the domain expertise into very concrete examples.\",\n      \"timestamp_sec\": 900,\n      \"why\": \"Explains what 'talk to your experts' should concretely produce.\"\n    },\n    {\n      \"text\": \"review this data and don't review it only with your coding agents but review it as a human.\",\n      \"timestamp_sec\": 949,\n      \"why\": \"A direct process prescription others might dispute.\"\n    },\n    {\n      \"text\": \"for this to properly generalize, you need to uh bake in mechanisms for validation.\",\n      \"timestamp_sec\": 983,\n      \"why\": \"Ties agent loops back to traditional ML discipline.\"\n    },\n    {\n      \"text\": \"giving the system an escape hatch instead of having it work for hours and hours uh hitting a wall and uh burning tokens.\",\n      \"timestamp_sec\": 983,\n      \"why\": \"The titular point, stated as a design requirement.\"\n    }\n  ],\n  \"concepts\": [\n    \"self-improving agent loops\",\n    \"target function design\",\n    \"prompt optimization\",\n    \"llm-as-a-judge\",\n    \"high-signal evaluators\",\n    \"error analysis and failure mode clustering\",\n    \"train/validation/test splits\",\n    \"overfitting and generalization\",\n    \"domain expert elicitation\",\n    \"production trace review\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Auto-improvement loops worked first in coding because compilation gives an unusually clear target function, not because loops generalize well.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 37\n    },\n    {\n      \"claim\": \"Any target function given to an agent is always incomplete, so optimizing against it can head toward the wrong optimum.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 70\n    },\n    {\n      \"claim\": \"Teams that invest in capturing their target function and building good evaluators are the ones that continuously improve their applications and ship with confidence.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 118\n    },\n    {\n      \"claim\": \"A single-label classification task with ground-truth labels is the clearest-cut target function available for testing auto-optimization.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 156\n    },\n    {\n      \"claim\": \"The prompt optimization loop improved accuracy from 68% to about 83% on fit/validate and 80.2% on a 300-item unseen test set.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 470\n    },\n    {\n      \"claim\": \"Most of the gain from a self-improvement loop comes from the first iteration when the failure signal is clear; you could have stopped there.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 684\n    },\n    {\n      \"claim\": \"Almost no real-world application has deterministic yes/no target functions, and LLM-as-a-judge evaluators return different answers across runs.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 684\n    },\n    {\n      \"claim\": \"Generic evaluators like correctness, helpfulness, and hallucination scored on a 0-1 or 1-5 scale are low-signal for auto-improvement because the levels are almost never defined.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 732\n    },\n    {\n      \"claim\": \"Binary, domain-specific checks (groundedness in retrieved context, brand-name correctness, categorization into known failure modes) are the right substitute for scalar quality scores.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 771\n    },\n    {\n      \"claim\": \"Roughly a few hundred labeled examples were enough to produce high-signal feedback, though the needed volume depends on application complexity.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 862\n    },\n    {\n      \"claim\": \"Domain experts should be used to create concrete examples and surface implicit decision criteria, which then become the high-signal evaluators.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 900\n    },\n    {\n      \"claim\": \"Production data must be reviewed by humans, not only by coding agents, because failure modes and usage shift over time.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 949\n    },\n    {\n      \"claim\": \"Optimization loops need traditional-ML validation mechanisms plus an explicit escape hatch to avoid burning tokens against a plateau.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 983\n    },\n    {\n      \"claim\": \"Noise in the ground-truth labels themselves (authors' creative freedom in choosing arXiv categories) caps how high accuracy can go, so plateaus are not purely a model failure.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 432\n    }\n  ],\n  \"speaker_org\": \"Langfuse\"\n}",
+  "ttft_ms": 31086,
+  "ttft_stream_ms": 1208,
+  "time_to_request_ms": 48,
+  "type": "result",
+  "duration_ms": 73288,
+  "uuid": "ee885d48-0966-4965-ac19-a8ec7b0dd57f",
+  "passA": {
+    "summary": "Annabell Sch\u00e4fer (growth engineer at Langfuse) argues that the current enthusiasm for self-improving agent loops is borrowed from coding, where a clear target function \u2014 does the code compile \u2014 makes auto-optimization work, and that this doesn't transfer to domains like healthcare, compliance, or support chatbots without deliberate work. To isolate the role of the target function, her team ran a minimal self-optimization loop: a cheap GPT-5-nano classifier labeling arXiv papers, with Claude Opus 4.8 in Claude Code proposing prompt updates against fit/validate/test splits of 200/100/300 items. Accuracy rose from 68% to about 83% and generalized to 80.2% on the held-out test set, but roughly 10 points of the gain came on the very first iteration \u2014 the payoff came from having a high-signal, clearly quantifiable failure signal, not from many loop iterations. She then generalizes: replace vague 0\u20131 scores like correctness or helpfulness with binary, domain-specific checks (is the answer grounded in the retrieved context, is the brand name spelled right, which of five known failure modes occurred), derived by sitting with domain experts and reviewing production data as a human. Worth watching if you're deciding whether to invest in agent self-improvement loops versus first building the evaluation substrate they depend on.",
+    "key_points": [
+      "Coding agents made self-improvement look easy because they inherited an unusually clean target function \u2014 whether the code compiles \u2014 that most domains simply do not have.",
+      "Any target you hand an agent is inherently incomplete, so the optimization can converge confidently on the wrong destination.",
+      "In a controlled experiment on arXiv paper classification (GPT-5-nano classifier, Claude Opus 4.8 as optimizer via Claude Code), accuracy went from a 68% baseline to ~83%, plateauing around 80% and reaching 80.2% on a 300-item untouched test set.",
+      "Roughly 10 of the ~15 percentage points of improvement arrived on the first iteration, suggesting the value came from the quality of the error signal rather than from prolonged looping.",
+      "Even a supposedly clean label set was noisy in practice, because arXiv authors have creative freedom in choosing a primary category, capping achievable accuracy.",
+      "Generic scalar evaluators (correctness, helpfulness, hallucination on a 0\u20131 or 1\u20135 scale) are low-signal for auto-improvement because the numeric levels are rarely defined and scores are inconsistent across runs.",
+      "The replacement is binary, application-specific quality criteria \u2014 is the claim present in the retrieved context, was the brand name preserved, which known failure mode fired \u2014 plus enough volume of examples to give the optimizer a pattern to cluster on.",
+      "Getting there requires encoding domain expertise into concrete examples with experts, reviewing production data as a human rather than delegating it to coding agents, and baking in ML-style validation splits and an escape hatch so the loop stops instead of burning tokens against a wall."
+    ],
+    "notable_quotes": [
+      {
+        "text": "So we have Boris Journey saying he doesn't write any prompts anymore. He has loops and Peter Steinberger being like you should be designing loops and not prompt your agents.",
+        "timestamp_sec": 0,
+        "why": "Frames the industry moment the talk is pushing back on."
+      },
+      {
+        "text": "a target that you give an agent is actually also always incomplete",
+        "timestamp_sec": 70,
+        "why": "The core theoretical claim underpinning the whole argument."
+      },
+      {
+        "text": "So we put this target function together with an agent and also with an optimizer.",
+        "timestamp_sec": 187,
+        "why": "States the experimental setup in one line."
+      },
+      {
+        "text": "Um the first run ended at uh 68% accuracy and on our third fourth iteration um we went all the way to 83% which then also afterwards um plateaued a bit.",
+        "timestamp_sec": 432,
+        "why": "The headline numbers of the experiment."
+      },
+      {
+        "text": "we also saw this uh improvement then generalized to the um test data set on yeah to 80.2%.",
+        "timestamp_sec": 470,
+        "why": "Reports the held-out generalization result."
+      },
+      {
+        "text": "the most interesting thing uh we thought is that the first iteration immediately gained 10% and then it was only a little bit movement.",
+        "timestamp_sec": 470,
+        "why": "The central empirical surprise driving the talk's thesis."
+      },
+      {
+        "text": "so overall the approach was um improvement loop added rules and examples",
+        "timestamp_sec": 560,
+        "why": "Summarizes what the optimizer actually changed in the prompt."
+      },
+      {
+        "text": "it got a very clearcut um clearly quantifiable and reliable failure mode because they were just wrong on a yes no right wrong basis.",
+        "timestamp_sec": 636,
+        "why": "Names the precondition that made auto-optimization work."
+      },
+      {
+        "text": "but the biggest jump was uh just the very first one from a very clear-cut signal, we could have probably stopped there and already have very good baseline.",
+        "timestamp_sec": 684,
+        "why": "A pointed tradeoff claim about diminishing returns from looping."
+      },
+      {
+        "text": "next time you run the same evaluator you get a different answer from the same kind of evaluation you ran",
+        "timestamp_sec": 684,
+        "why": "States the nondeterminism problem that blocks transfer to other domains."
+      },
+      {
+        "text": "for this to really work properly you need to define each of those numbers. What does it mean in which context would you need which number?",
+        "timestamp_sec": 732,
+        "why": "The concrete objection to scalar rubric evaluators."
+      },
+      {
+        "text": "So it's just choosing a number between zero and one and um depending on the uh context it might just uh totally change perspective and is therefore rather low signal and also probably inconsistent um across runs.",
+        "timestamp_sec": 771,
+        "why": "Sharpest critique of the market-standard evaluator pattern."
+      },
+      {
+        "text": "Uh so for example instead of correctness the answer is based on the knowledge base yes no.",
+        "timestamp_sec": 771,
+        "why": "The prescriptive replacement, stated concretely."
+      },
+      {
+        "text": "because if you can't do code compiles, you need to wrap your head a little bit differently around um what is good and what is not.",
+        "timestamp_sec": 862,
+        "why": "One-line statement of the talk's thesis."
+      },
+      {
+        "text": "Um but here it's something you can actually start to encode the domain expertise into very concrete examples.",
+        "timestamp_sec": 900,
+        "why": "Explains what 'talk to your experts' should concretely produce."
+      },
+      {
+        "text": "review this data and don't review it only with your coding agents but review it as a human.",
+        "timestamp_sec": 949,
+        "why": "A direct process prescription others might dispute."
+      },
+      {
+        "text": "for this to properly generalize, you need to uh bake in mechanisms for validation.",
+        "timestamp_sec": 983,
+        "why": "Ties agent loops back to traditional ML discipline."
+      },
+      {
+        "text": "giving the system an escape hatch instead of having it work for hours and hours uh hitting a wall and uh burning tokens.",
+        "timestamp_sec": 983,
+        "why": "The titular point, stated as a design requirement."
+      }
+    ],
+    "concepts": [
+      "self-improving agent loops",
+      "target function design",
+      "prompt optimization",
+      "llm-as-a-judge",
+      "high-signal evaluators",
+      "error analysis and failure mode clustering",
+      "train/validation/test splits",
+      "overfitting and generalization",
+      "domain expert elicitation",
+      "production trace review"
+    ],
+    "positions": [
+      {
+        "claim": "Auto-improvement loops worked first in coding because compilation gives an unusually clear target function, not because loops generalize well.",
+        "confidence": "stated",
+        "timestamp_sec": 37
+      },
+      {
+        "claim": "Any target function given to an agent is always incomplete, so optimizing against it can head toward the wrong optimum.",
+        "confidence": "stated",
+        "timestamp_sec": 70
+      },
+      {
+        "claim": "Teams that invest in capturing their target function and building good evaluators are the ones that continuously improve their applications and ship with confidence.",
+        "confidence": "stated",
+        "timestamp_sec": 118
+      },
+      {
+        "claim": "A single-label classification task with ground-truth labels is the clearest-cut target function available for testing auto-optimization.",
+        "confidence": "stated",
+        "timestamp_sec": 156
+      },
+      {
+        "claim": "The prompt optimization loop improved accuracy from 68% to about 83% on fit/validate and 80.2% on a 300-item unseen test set.",
+        "confidence": "stated",
+        "timestamp_sec": 470
+      },
+      {
+        "claim": "Most of the gain from a self-improvement loop comes from the first iteration when the failure signal is clear; you could have stopped there.",
+        "confidence": "stated",
+        "timestamp_sec": 684
+      },
+      {
+        "claim": "Almost no real-world application has deterministic yes/no target functions, and LLM-as-a-judge evaluators return different answers across runs.",
+        "confidence": "stated",
+        "timestamp_sec": 684
+      },
+      {
+        "claim": "Generic evaluators like correctness, helpfulness, and hallucination scored on a 0-1 or 1-5 scale are low-signal for auto-improvement because the levels are almost never defined.",
+        "confidence": "stated",
+        "timestamp_sec": 732
+      },
+      {
+        "claim": "Binary, domain-specific checks (groundedness in retrieved context, brand-name correctness, categorization into known failure modes) are the right substitute for scalar quality scores.",
+        "confidence": "stated",
+        "timestamp_sec": 771
+      },
+      {
+        "claim": "Roughly a few hundred labeled examples were enough to produce high-signal feedback, though the needed volume depends on application complexity.",
+        "confidence": "stated",
+        "timestamp_sec": 862
+      },
+      {
+        "claim": "Domain experts should be used to create concrete examples and surface implicit decision criteria, which then become the high-signal evaluators.",
+        "confidence": "stated",
+        "timestamp_sec": 900
+      },
+      {
+        "claim": "Production data must be reviewed by humans, not only by coding agents, because failure modes and usage shift over time.",
+        "confidence": "stated",
+        "timestamp_sec": 949
+      },
+      {
+        "claim": "Optimization loops need traditional-ML validation mechanisms plus an explicit escape hatch to avoid burning tokens against a plateau.",
+        "confidence": "stated",
+        "timestamp_sec": 983
+      },
+      {
+        "claim": "Noise in the ground-truth labels themselves (authors' creative freedom in choosing arXiv categories) caps how high accuracy can go, so plateaus are not purely a model failure.",
+        "confidence": "implied",
+        "timestamp_sec": 432
+      }
+    ],
+    "speaker_org": "Langfuse"
+  },
+  "_meta": {
+    "slug": "stop-burning-tokens-why-self-improvement-needs-domain-expertise-first",
+    "video_id": "eAXxdtNlK04",
+    "url": "https://www.youtube.com/watch?v=eAXxdtNlK04",
+    "word_count": 3409,
+    "wall_sec": 74.5,
+    "run_at": "2026-08-12T20:14:53Z",
+    "effort": "medium"
+  }
+}

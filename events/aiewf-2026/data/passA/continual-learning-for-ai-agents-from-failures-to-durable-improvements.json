@@ -1,0 +1,278 @@
+{
+  "is_error": false,
+  "duration_api_ms": 50338,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "66d4368e-f111-478b-8a21-6d1b4f56ce0d",
+  "total_cost_usd": 0.218898,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 10083,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 4262,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 10083,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 4262,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 10083,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 10083
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 6269,
+      "outputTokens": 17,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.006354,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 4262,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 10083,
+      "webSearchRequests": 0,
+      "costUSD": 0.212544,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Soheil Feizi (RELAI) argues that continual learning for AI agents breaks into two hard problems \u2014 getting feedback and acting on it \u2014 and that the industry's current answers to both are unverified. He frames agent improvement as happening across three layers (model weights, harness/context, memory), and claims the dominant approaches each fail one way: trace-to-harness fixes are 'vibe-based' and untestable, GEPA-style prompt search needs benchmarks that production doesn't have, and memory writes are cheap but unverified. His proposed fix is 'verifiable continual learning' (VCL): lift production logs and feedback into replayable simulation-plus-evaluator learning environments, then route fixes to the smallest durable layer under regression-aware optimization. He grounds it in four principles \u2014 replayability, holisticness, lifelongness, efficiency \u2014 and demos RELAI's two-command loop on a fictional support-agent benchmark deliberately seeded with regression traps. Worth watching if you run agents in production and want a vocabulary for why log-driven 'improvements' silently break things that used to work.\",\n  \"key_points\": [\n    \"Continual learning for agents decomposes into two distinct challenges: how to obtain feedback on agent behavior, and how to act on that feedback by deciding which layer to change and how.\",\n    \"Improvement can target three layers \u2014 model weights (SFT, DPO/GRPO/RLVR, LoRA), the harness (prompts, skills, tools, code, workflow), and memory (facts and distilled skills) \u2014 and a good learning engine picks the smallest durable change at the right layer rather than committing to one layer.\",\n    \"Production logs plus feedback are not a learning environment: they are a single observation of what happened, not a replayable, gradeable distribution, so nothing built from them is testable.\",\n    \"A learning environment must be inferred from a log by reconstructing tool behavior (real vs. mock), synthetic users and personas, and explicit evaluators defining what success means.\",\n    \"Existing harness-update methods split badly: trace-to-harness (a coding agent editing the agent from a log) works on logs but is unverifiable and can create hidden regressions, while GEPA-style prompt search is testable but requires a benchmark and explicit evaluators.\",\n    \"Memory updates are the cheapest and fastest layer and work directly on log-plus-feedback, but are typically unverified for both efficacy and regression risk.\",\n    \"Verifiable continual learning requires three steps per fix: an executable test replaying the failure, a measured delta scored before and after, and a regression test confirming prior tests still pass.\",\n    \"Regression avoidance should be a constraint inside the optimization loop rather than a post-hoc check, and must scale sub-linearly in the number of accumulated past environments.\",\n    \"In RELAI's demo, a support agent scored 78% in a generated 'rude and adversarial caller' environment, and one optimization loop raised the score to 97% \u2014 an improvement the speaker described as about 10% on average.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"Humans learn mainly from experience by interacting with the world and getting feedback. The goal of continual learning is to imitate the same for agents. So they can also learn from experience by acting, getting feedback, and improving without forgetting.\",\n      \"timestamp_sec\": 1,\n      \"why\": \"Compact statement of the talk's framing and the 'without forgetting' constraint that drives everything after.\"\n    },\n    {\n      \"text\": \"But in production, we don't have such benchmark. We have logs.\",\n      \"timestamp_sec\": 146,\n      \"why\": \"The pivot that motivates the entire learning-environment argument.\"\n    },\n    {\n      \"text\": \"Here we have log and feedback, but what we really need is a replayable learning environment, a simulation that we can rerun with defined grading on what success looks like, not one instance of what happened and the feedback on top of it.\",\n      \"timestamp_sec\": 237,\n      \"why\": \"The talk's central definitional claim about why logs are insufficient.\"\n    },\n    {\n      \"text\": \"But a good learning is not going to be focusing on any of these components exclusively. A good learning engine should ask for the smallest durable change at the right layer of the agent.\",\n      \"timestamp_sec\": 382,\n      \"why\": \"States the holisticness position against single-layer optimization approaches.\"\n    },\n    {\n      \"text\": \"But these methods, they usually need benchmarks and explicit evaluators. They cannot be directly applied on, let's say, if you have a log and feedback, unless we turn those into uh replayable learning environments.\",\n      \"timestamp_sec\": 484,\n      \"why\": \"Names the concrete limitation of weight-update methods in production settings.\"\n    },\n    {\n      \"text\": \"So, this works on uh the case where we have log and feedback, but it is wipe-based. We don't know if even for that particular uh sample, if the change is effective, because it is not testable.\",\n      \"timestamp_sec\": 536,\n      \"why\": \"Direct criticism of trace-to-harness self-improvement, a widely used pattern.\"\n    },\n    {\n      \"text\": \"What uh might have been working previously, but with these changes might not work properly, and create some hidden regressions.\",\n      \"timestamp_sec\": 536,\n      \"why\": \"Names the specific failure mode \u2014 hidden regressions \u2014 the whole method targets.\"\n    },\n    {\n      \"text\": \"So, this layer in terms of the update is cheapest and fastest. It works directly on the cases where you only have log and feedback, but usually it is unverified\",\n      \"timestamp_sec\": 590,\n      \"why\": \"The tradeoff summary for the memory layer, where most practitioners start.\"\n    },\n    {\n      \"text\": \"the goal is to improve an agent from its his own experience where every fix is proven to help and proven to break nothing that already worked\",\n      \"timestamp_sec\": 661,\n      \"why\": \"The definition of verifiable continual learning in one line.\"\n    },\n    {\n      \"text\": \"One failure may have several causes and several possible repairs.\",\n      \"timestamp_sec\": 704,\n      \"why\": \"The crux of the holisticness principle, motivating root-cause routing across layers.\"\n    },\n    {\n      \"text\": \"It might come from the workflow that we need to add escalation gate before we run. It might come from the model. Maybe the model is not a good model in order to have a strong reasoning.\",\n      \"timestamp_sec\": 751,\n      \"why\": \"Concrete enumeration of multi-layer causes for a single observed failure.\"\n    },\n    {\n      \"text\": \"A better approach is a regression aware learning where the regression is not be treated as a post-hoc approach, but as a mechanism within the optimization itself.\",\n      \"timestamp_sec\": 799,\n      \"why\": \"The talk's most contestable design claim \u2014 regression as constraint, not test suite.\"\n    },\n    {\n      \"text\": \"So, here we are uh fixing the recent failures subject to having no regression on the past uh learning environments.\",\n      \"timestamp_sec\": 849,\n      \"why\": \"States the constrained-optimization formulation underlying lifelongness.\"\n    },\n    {\n      \"text\": \"So, sometimes the change can be cheap, like for example, writing something in the memory can be medium in terms of the complexity by changing the prompt or hardness, and sometimes it can be very expensive by changing the weights of the model.\",\n      \"timestamp_sec\": 849,\n      \"why\": \"Ranks the cost of the three layers, which is what makes layer routing economically meaningful.\"\n    },\n    {\n      \"text\": \"So, we have deterministic evaluators and we also build this benchmark in a way that it has some regression trap.\",\n      \"timestamp_sec\": 1083,\n      \"why\": \"Reports a specific benchmark design choice that tests the paper's central claim.\"\n    },\n    {\n      \"text\": \"It is 78% and in particular, there are two um, evaluators that uh, basically show very low scores uh, of agent in this environment.\",\n      \"timestamp_sec\": 1196,\n      \"why\": \"The demo's baseline number.\"\n    },\n    {\n      \"text\": \"Uh, it is 10% improvement on average just with one loop and score increases to 97% from 87%.\",\n      \"timestamp_sec\": 1196,\n      \"why\": \"The headline result, and notable that the stated numbers are internally inconsistent with the 78% baseline.\"\n    },\n    {\n      \"text\": \"This is verifiable continual learning in practice, where each update is tested, every gain is measured, and nothing that already works breaks during this optimization.\",\n      \"timestamp_sec\": 1246,\n      \"why\": \"The strongest form of the product claim.\"\n    },\n    {\n      \"text\": \"The first one is agent continual learning is not necessarily model fine-tuning. The updates and many useful updates can happen in the harness and memory layer.\",\n      \"timestamp_sec\": 1291,\n      \"why\": \"Takeaway that pushes back on the default assumption that improvement means training.\"\n    },\n    {\n      \"text\": \"So, the second takeaway is production logs are not learning environments.\",\n      \"timestamp_sec\": 1291,\n      \"why\": \"The single most quotable and transferable claim in the talk.\"\n    },\n    {\n      \"text\": \"And the third takeaway is that the frontier is regression-aware continual improvement, where when fixing the new failure, we verify that we don't forget the old ones.\",\n      \"timestamp_sec\": 1291,\n      \"why\": \"Positions regression-awareness as the open research frontier.\"\n    }\n  ],\n  \"concepts\": [\n    \"continual learning for agents\",\n    \"learning environment synthesis\",\n    \"replayable evaluation\",\n    \"regression-aware optimization\",\n    \"agent harness engineering\",\n    \"agent memory layer\",\n    \"catastrophic forgetting\",\n    \"prompt optimization search\",\n    \"reinforcement learning post-training\",\n    \"root cause analysis for agent failures\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Production logs plus feedback are not sufficient for agent learning; they must be lifted into replayable learning environments with simulators and evaluators before any fix can be verified.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 237\n    },\n    {\n      \"claim\": \"Trace-to-harness approaches, where a coding agent reads a log and edits the agent, are 'vibe-based' and can introduce hidden regressions because the change is not testable.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 536\n    },\n    {\n      \"claim\": \"Prompt-search methods like GEPA are testable but cannot be applied in production because they require a benchmark and explicit evaluators.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 590\n    },\n    {\n      \"claim\": \"Memory-layer updates are the cheapest and fastest way to improve an agent but are typically unverified for both efficacy and regression risk.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 590\n    },\n    {\n      \"claim\": \"A good learning engine should make the smallest durable change at the right layer rather than optimizing any single layer exclusively.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 382\n    },\n    {\n      \"claim\": \"Regression prevention must be built into the optimization objective itself rather than run as a post-hoc check.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 799\n    },\n    {\n      \"claim\": \"Regression-aware optimization must not scale even linearly with the number of accumulated past learning environments, or it becomes computationally infeasible.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 849\n    },\n    {\n      \"claim\": \"Agent continual learning is not necessarily model fine-tuning; many useful updates happen in the harness and memory layers.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1291\n    },\n    {\n      \"claim\": \"Model-weight updates (SFT, RL post-training) are the most expensive improvement layer due to compute intensity, while LoRA makes weight updates cheaper and safer by limiting changeable parameters.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 382\n    },\n    {\n      \"claim\": \"Automated LLM-generated feedback on logs is scalable but human expert feedback, though lower volume, is critical for capturing domain knowledge and alignment with desired agent behavior.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 237\n    },\n    {\n      \"claim\": \"A single learning-environment generation plus one optimization loop can raise a support agent's evaluator score from 78% to 97%.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1196\n    },\n    {\n      \"claim\": \"Regression-aware continual improvement is currently the research frontier for agent learning, implying it is not yet solved by existing systems.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 1291\n    }\n  ],\n  \"speaker_org\": \"RELAI\"\n}",
+  "ttft_ms": 49080,
+  "ttft_stream_ms": 977,
+  "time_to_request_ms": 33,
+  "type": "result",
+  "duration_ms": 50705,
+  "uuid": "6559fa86-5e04-45dc-9687-a6501c387dc1",
+  "passA": {
+    "summary": "Soheil Feizi (RELAI) argues that continual learning for AI agents breaks into two hard problems \u2014 getting feedback and acting on it \u2014 and that the industry's current answers to both are unverified. He frames agent improvement as happening across three layers (model weights, harness/context, memory), and claims the dominant approaches each fail one way: trace-to-harness fixes are 'vibe-based' and untestable, GEPA-style prompt search needs benchmarks that production doesn't have, and memory writes are cheap but unverified. His proposed fix is 'verifiable continual learning' (VCL): lift production logs and feedback into replayable simulation-plus-evaluator learning environments, then route fixes to the smallest durable layer under regression-aware optimization. He grounds it in four principles \u2014 replayability, holisticness, lifelongness, efficiency \u2014 and demos RELAI's two-command loop on a fictional support-agent benchmark deliberately seeded with regression traps. Worth watching if you run agents in production and want a vocabulary for why log-driven 'improvements' silently break things that used to work.",
+    "key_points": [
+      "Continual learning for agents decomposes into two distinct challenges: how to obtain feedback on agent behavior, and how to act on that feedback by deciding which layer to change and how.",
+      "Improvement can target three layers \u2014 model weights (SFT, DPO/GRPO/RLVR, LoRA), the harness (prompts, skills, tools, code, workflow), and memory (facts and distilled skills) \u2014 and a good learning engine picks the smallest durable change at the right layer rather than committing to one layer.",
+      "Production logs plus feedback are not a learning environment: they are a single observation of what happened, not a replayable, gradeable distribution, so nothing built from them is testable.",
+      "A learning environment must be inferred from a log by reconstructing tool behavior (real vs. mock), synthetic users and personas, and explicit evaluators defining what success means.",
+      "Existing harness-update methods split badly: trace-to-harness (a coding agent editing the agent from a log) works on logs but is unverifiable and can create hidden regressions, while GEPA-style prompt search is testable but requires a benchmark and explicit evaluators.",
+      "Memory updates are the cheapest and fastest layer and work directly on log-plus-feedback, but are typically unverified for both efficacy and regression risk.",
+      "Verifiable continual learning requires three steps per fix: an executable test replaying the failure, a measured delta scored before and after, and a regression test confirming prior tests still pass.",
+      "Regression avoidance should be a constraint inside the optimization loop rather than a post-hoc check, and must scale sub-linearly in the number of accumulated past environments.",
+      "In RELAI's demo, a support agent scored 78% in a generated 'rude and adversarial caller' environment, and one optimization loop raised the score to 97% \u2014 an improvement the speaker described as about 10% on average."
+    ],
+    "notable_quotes": [
+      {
+        "text": "Humans learn mainly from experience by interacting with the world and getting feedback. The goal of continual learning is to imitate the same for agents. So they can also learn from experience by acting, getting feedback, and improving without forgetting.",
+        "timestamp_sec": 1,
+        "why": "Compact statement of the talk's framing and the 'without forgetting' constraint that drives everything after."
+      },
+      {
+        "text": "But in production, we don't have such benchmark. We have logs.",
+        "timestamp_sec": 146,
+        "why": "The pivot that motivates the entire learning-environment argument."
+      },
+      {
+        "text": "Here we have log and feedback, but what we really need is a replayable learning environment, a simulation that we can rerun with defined grading on what success looks like, not one instance of what happened and the feedback on top of it.",
+        "timestamp_sec": 237,
+        "why": "The talk's central definitional claim about why logs are insufficient."
+      },
+      {
+        "text": "But a good learning is not going to be focusing on any of these components exclusively. A good learning engine should ask for the smallest durable change at the right layer of the agent.",
+        "timestamp_sec": 382,
+        "why": "States the holisticness position against single-layer optimization approaches."
+      },
+      {
+        "text": "But these methods, they usually need benchmarks and explicit evaluators. They cannot be directly applied on, let's say, if you have a log and feedback, unless we turn those into uh replayable learning environments.",
+        "timestamp_sec": 484,
+        "why": "Names the concrete limitation of weight-update methods in production settings."
+      },
+      {
+        "text": "So, this works on uh the case where we have log and feedback, but it is wipe-based. We don't know if even for that particular uh sample, if the change is effective, because it is not testable.",
+        "timestamp_sec": 536,
+        "why": "Direct criticism of trace-to-harness self-improvement, a widely used pattern."
+      },
+      {
+        "text": "What uh might have been working previously, but with these changes might not work properly, and create some hidden regressions.",
+        "timestamp_sec": 536,
+        "why": "Names the specific failure mode \u2014 hidden regressions \u2014 the whole method targets."
+      },
+      {
+        "text": "So, this layer in terms of the update is cheapest and fastest. It works directly on the cases where you only have log and feedback, but usually it is unverified",
+        "timestamp_sec": 590,
+        "why": "The tradeoff summary for the memory layer, where most practitioners start."
+      },
+      {
+        "text": "the goal is to improve an agent from its his own experience where every fix is proven to help and proven to break nothing that already worked",
+        "timestamp_sec": 661,
+        "why": "The definition of verifiable continual learning in one line."
+      },
+      {
+        "text": "One failure may have several causes and several possible repairs.",
+        "timestamp_sec": 704,
+        "why": "The crux of the holisticness principle, motivating root-cause routing across layers."
+      },
+      {
+        "text": "A better approach is a regression aware learning where the regression is not be treated as a post-hoc approach, but as a mechanism within the optimization itself.",
+        "timestamp_sec": 799,
+        "why": "The talk's most contestable design claim \u2014 regression as constraint, not test suite."
+      },
+      {
+        "text": "So, here we are uh fixing the recent failures subject to having no regression on the past uh learning environments.",
+        "timestamp_sec": 849,
+        "why": "States the constrained-optimization formulation underlying lifelongness."
+      },
+      {
+        "text": "So, sometimes the change can be cheap, like for example, writing something in the memory can be medium in terms of the complexity by changing the prompt or hardness, and sometimes it can be very expensive by changing the weights of the model.",
+        "timestamp_sec": 849,
+        "why": "Ranks the cost of the three layers, which is what makes layer routing economically meaningful."
+      },
+      {
+        "text": "So, we have deterministic evaluators and we also build this benchmark in a way that it has some regression trap.",
+        "timestamp_sec": 1083,
+        "why": "Reports a specific benchmark design choice that tests the paper's central claim."
+      },
+      {
+        "text": "It is 78% and in particular, there are two um, evaluators that uh, basically show very low scores uh, of agent in this environment.",
+        "timestamp_sec": 1196,
+        "why": "The demo's baseline number."
+      },
+      {
+        "text": "Uh, it is 10% improvement on average just with one loop and score increases to 97% from 87%.",
+        "timestamp_sec": 1196,
+        "why": "The headline result, and notable that the stated numbers are internally inconsistent with the 78% baseline."
+      },
+      {
+        "text": "This is verifiable continual learning in practice, where each update is tested, every gain is measured, and nothing that already works breaks during this optimization.",
+        "timestamp_sec": 1246,
+        "why": "The strongest form of the product claim."
+      },
+      {
+        "text": "The first one is agent continual learning is not necessarily model fine-tuning. The updates and many useful updates can happen in the harness and memory layer.",
+        "timestamp_sec": 1291,
+        "why": "Takeaway that pushes back on the default assumption that improvement means training."
+      },
+      {
+        "text": "So, the second takeaway is production logs are not learning environments.",
+        "timestamp_sec": 1291,
+        "why": "The single most quotable and transferable claim in the talk."
+      },
+      {
+        "text": "And the third takeaway is that the frontier is regression-aware continual improvement, where when fixing the new failure, we verify that we don't forget the old ones.",
+        "timestamp_sec": 1291,
+        "why": "Positions regression-awareness as the open research frontier."
+      }
+    ],
+    "concepts": [
+      "continual learning for agents",
+      "learning environment synthesis",
+      "replayable evaluation",
+      "regression-aware optimization",
+      "agent harness engineering",
+      "agent memory layer",
+      "catastrophic forgetting",
+      "prompt optimization search",
+      "reinforcement learning post-training",
+      "root cause analysis for agent failures"
+    ],
+    "positions": [
+      {
+        "claim": "Production logs plus feedback are not sufficient for agent learning; they must be lifted into replayable learning environments with simulators and evaluators before any fix can be verified.",
+        "confidence": "stated",
+        "timestamp_sec": 237
+      },
+      {
+        "claim": "Trace-to-harness approaches, where a coding agent reads a log and edits the agent, are 'vibe-based' and can introduce hidden regressions because the change is not testable.",
+        "confidence": "stated",
+        "timestamp_sec": 536
+      },
+      {
+        "claim": "Prompt-search methods like GEPA are testable but cannot be applied in production because they require a benchmark and explicit evaluators.",
+        "confidence": "stated",
+        "timestamp_sec": 590
+      },
+      {
+        "claim": "Memory-layer updates are the cheapest and fastest way to improve an agent but are typically unverified for both efficacy and regression risk.",
+        "confidence": "stated",
+        "timestamp_sec": 590
+      },
+      {
+        "claim": "A good learning engine should make the smallest durable change at the right layer rather than optimizing any single layer exclusively.",
+        "confidence": "stated",
+        "timestamp_sec": 382
+      },
+      {
+        "claim": "Regression prevention must be built into the optimization objective itself rather than run as a post-hoc check.",
+        "confidence": "stated",
+        "timestamp_sec": 799
+      },
+      {
+        "claim": "Regression-aware optimization must not scale even linearly with the number of accumulated past learning environments, or it becomes computationally infeasible.",
+        "confidence": "stated",
+        "timestamp_sec": 849
+      },
+      {
+        "claim": "Agent continual learning is not necessarily model fine-tuning; many useful updates happen in the harness and memory layers.",
+        "confidence": "stated",
+        "timestamp_sec": 1291
+      },
+      {
+        "claim": "Model-weight updates (SFT, RL post-training) are the most expensive improvement layer due to compute intensity, while LoRA makes weight updates cheaper and safer by limiting changeable parameters.",
+        "confidence": "stated",
+        "timestamp_sec": 382
+      },
+      {
+        "claim": "Automated LLM-generated feedback on logs is scalable but human expert feedback, though lower volume, is critical for capturing domain knowledge and alignment with desired agent behavior.",
+        "confidence": "stated",
+        "timestamp_sec": 237
+      },
+      {
+        "claim": "A single learning-environment generation plus one optimization loop can raise a support agent's evaluator score from 78% to 97%.",
+        "confidence": "stated",
+        "timestamp_sec": 1196
+      },
+      {
+        "claim": "Regression-aware continual improvement is currently the research frontier for agent learning, implying it is not yet solved by existing systems.",
+        "confidence": "implied",
+        "timestamp_sec": 1291
+      }
+    ],
+    "speaker_org": "RELAI"
+  },
+  "_meta": {
+    "slug": "continual-learning-for-ai-agents-from-failures-to-durable-improvements",
+    "video_id": "2IxD9OB3XuQ",
+    "url": "https://www.youtube.com/watch?v=2IxD9OB3XuQ",
+    "word_count": 3230,
+    "wall_sec": 51.8,
+    "run_at": "2026-08-12T19:42:10Z",
+    "effort": "medium",
+    "quotes_dropped": 0
+  }
+}

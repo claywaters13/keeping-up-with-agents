@@ -1,0 +1,318 @@
+{
+  "is_error": false,
+  "duration_api_ms": 72549,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "1365db2e-8606-40a2-9a65-7941aa7f8a8d",
+  "total_cost_usd": 0.26623800000000003,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 9089,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 6579,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 9089,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 6579,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 9089,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 9089
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 5624,
+      "outputTokens": 17,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.005709,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 6579,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 9089,
+      "webSearchRequests": 0,
+      "costUSD": 0.260529,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Hamza Tahir argues that agents are missing the equivalent of a save button: traces capture emitted telemetry but are disconnected from the runtime, so in-flight variables, filesystem state, and the code itself are lost and frozen into a read-only artifact far from where execution happened. His fix is a durable runtime beneath the agent harness that checkpoints state so any execution can be forked and replayed with one thing changed \u2014 a cheaper model, a mocked tool, a different policy \u2014 then diffed against the real baseline. He demos this with Kitaru, an open-source tool from ZenML, walking through single replays, side-by-side diffs, cohort replays, and handing the resulting JSON report to an MCP server for LLM analysis. Crucially, he undercuts his own demo: the single replay looked cheaper at equal quality, but the cohort analysis returned 'don't ship,' and he cites a BrainTrust study on the false economy of naive model swaps plus \u03c4-bench data showing a model passing 60% of the time is self-consistent only a quarter of the time. Watch it if you want a concrete methodology \u2014 checkpoint, replay, diff, decide \u2014 for turning production traces into grounded evals rather than synthetic ones.\",\n  \"key_points\": [\n    \"Traces alone are insufficient because they are decoupled from the runtime: variables in state, the in-flight filesystem, the decisions made in code, and the code itself are all lost by the time a read-only span lands in a separate observability tool.\",\n    \"The missing layer sits between the agent framework/harness and infrastructure: a durable runtime that checkpoints execution state and augments OpenTelemetry spans with the actual code and environment, including the Docker image or sandbox it ran in.\",\n    \"Once checkpointing runs in production, you already have everything needed for counterfactual evaluation \u2014 no synthetic dataset construction required, because replays are grounded in runs that actually happened.\",\n    \"The methodology is a four-step loop: checkpoint, replay, diff, decide \u2014 build a cohort of runs that matter (expensive, slow, or risky), apply one change, diff against the known baseline, then route and ship.\",\n    \"Replay is cheap because prior checkpoints are reused: in the demo the first three checkpoints are skipped entirely and execution resumes only from the modified point.\",\n    \"Naive model swaps frequently fail in practice, and Tahir cites a BrainTrust study showing a 'false economy' where cost and latency improve on paper while the value created \u2014 such as whether the support bot actually resolves the request \u2014 degrades.\",\n    \"A single replay is an anecdote, not evidence: on \u03c4-bench a model that passes 60% of the time is only self-consistent about a quarter of the time, so cohort-scale replay is required before shipping.\",\n    \"Cohort analysis at scale outgrows UI diffing, so Tahir emits JSON and points an MCP server at it, using LLMs to analyze thousands of replays and flag red flags \u2014 which is why the runtime needs to be queryable and able to fetch artifacts.\",\n    \"DoorDash's simulated replay environment (per a June 1 blog post) cut a multi-hour process to five minutes across hundreds of simulations, with 90% fewer hallucinations and results within two points of observed production behavior.\",\n    \"His own demo ends with the agent's verdict being 'don't ship' \u2014 the cheaper model looked fine on one sample and failed across the cohort.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"We've had the save button for documents for decades now. Since the 1980s, people have been used to pressing control S, command S uh or auto saving while you're working to have a persistent state. But agents, they don't have that today.\",\n      \"timestamp_sec\": 0,\n      \"why\": \"the framing device the whole talk hangs on\"\n    },\n    {\n      \"text\": \"The only thing we have which is closest is a trace. A trace gives you the emitted telemetry data of how an agent calls tools in the input and output of that state.\",\n      \"timestamp_sec\": 0,\n      \"why\": \"defines the baseline he's arguing is inadequate\"\n    },\n    {\n      \"text\": \"all of that is lost and it is only stamped as a read-only trace by the end, which is sitting in another tool far away from where the actual code is\",\n      \"timestamp_sec\": 47,\n      \"why\": \"the core critique of trace-only observability\"\n    },\n    {\n      \"text\": \"I think this is what's missing today in the industry is that we don't have a clear connection between the observability spans that are emitted with Odel and the execution.\",\n      \"timestamp_sec\": 47,\n      \"why\": \"states the gap as an industry-level claim, not just a product pitch\"\n    },\n    {\n      \"text\": \"Well, save allows you to replay. You can go back in history and ask the what if question.\",\n      \"timestamp_sec\": 85,\n      \"why\": \"the payoff that justifies the checkpointing cost\"\n    },\n    {\n      \"text\": \"So, checkpoint replay diff decide. And this is really the methodology that that I've seen and I've seen others do, uh which has really scaled.\",\n      \"timestamp_sec\": 217,\n      \"why\": \"the talk's reusable four-step recipe\"\n    },\n    {\n      \"text\": \"It's It's It's basically evaluating using your production traces. So, it's basically evaluating using your production checkpoints.\",\n      \"timestamp_sec\": 217,\n      \"why\": \"reframes replay as an eval strategy rather than a debugging tool\"\n    },\n    {\n      \"text\": \"now they've reduced it to 5 minutes uh with hundreds of simulations, have 90% less hallucinations, and they're still two points within what they've seen in production\",\n      \"timestamp_sec\": 267,\n      \"why\": \"the only third-party production numbers in the talk\"\n    },\n    {\n      \"text\": \"So, the simulations are pretty good because they're grounded in what's already happened.\",\n      \"timestamp_sec\": 267,\n      \"why\": \"the argument for replay over synthetic evals in one line\"\n    },\n    {\n      \"text\": \"and this combination of code and the artifacts that it created and the environment in which it ran in, whether it was a Docker image or a sandbox, those are all snapshotted in state here between the checkpoints\",\n      \"timestamp_sec\": 349,\n      \"why\": \"specifies what 'state' actually means in his design\"\n    },\n    {\n      \"text\": \"because I have the code, it's very easy for me to do tool calls and to change these particular things and do more experiments than I would have had if I was completely disconnected from the code base\",\n      \"timestamp_sec\": 481,\n      \"why\": \"names the concrete advantage of runtime-coupled replay over external trace tools\"\n    },\n    {\n      \"text\": \"is to be using agents and LLMs to analyze these cohorts across a plethora of data because at some point uh, I mean, 10 is probably easy to do, but what if you have thousands?\",\n      \"timestamp_sec\": 704,\n      \"why\": \"explains why cohort analysis has to be delegated to models\"\n    },\n    {\n      \"text\": \"this is where skills and MCP servers get really relevant and having the runtime be queryable and go into your execution and fetch the artifacts is very important\",\n      \"timestamp_sec\": 761,\n      \"why\": \"states a design requirement for replay infrastructure\"\n    },\n    {\n      \"text\": \"what I've personally seen is that having a naive model swap usually or often times doesn't work\",\n      \"timestamp_sec\": 804,\n      \"why\": \"a firsthand negative result against the most common cost optimization\"\n    },\n    {\n      \"text\": \"they saw that there could be a false economy if you do a naive model swap because it might look on paper that you're faster and you're cheaper, but at the end of the day you have to look at the value created\",\n      \"timestamp_sec\": 845,\n      \"why\": \"names the tradeoff and attributes it to external research\"\n    },\n    {\n      \"text\": \"a model that passes 60% of the time is only self-consistent about a quarter of the time\",\n      \"timestamp_sec\": 845,\n      \"why\": \"the hard number behind his methodological warning\"\n    },\n    {\n      \"text\": \"So which basically means that one replay is just an anecdote and having a cohort analysis is way way way better.\",\n      \"timestamp_sec\": 845,\n      \"why\": \"the sharpest methodological claim in the talk\"\n    },\n    {\n      \"text\": \"This can get very expensive of course and this is where you have to be really smart about what you replay and have tooling that really helps you.\",\n      \"timestamp_sec\": 884,\n      \"why\": \"acknowledges the cost of the approach he's advocating\"\n    },\n    {\n      \"text\": \"you can start from real runs, not synthetic, but real runs, real production uh state\",\n      \"timestamp_sec\": 884,\n      \"why\": \"the playbook's first principle, stated as a preference over synthetic data\"\n    },\n    {\n      \"text\": \"Um never ship anything by just replaying one or two things. Um and just do this at scale and uh ship, route, and hold, and try to automate that loop as much as possible.\",\n      \"timestamp_sec\": 928,\n      \"why\": \"prescriptive rule plus the human-in-the-loop caveat\"\n    },\n    {\n      \"text\": \"So, the verdict is don't ship. So, even though it looked like from a single replay that it was cheaper to do and we reached the same result, across a bunch of those support cases, you actually saw that our agent concludes that you shouldn't be using a cheaper model in this particular case for your data.\",\n      \"timestamp_sec\": 928,\n      \"why\": \"the demo lands on a negative result, which is the point\"\n    },\n    {\n      \"text\": \"you can do this if you model your agent with your harness in a runtime that can checkpoint state and is able to replay that state from code with different scenarios\",\n      \"timestamp_sec\": 971,\n      \"why\": \"the closing statement of the required architecture\"\n    }\n  ],\n  \"concepts\": [\n    \"agent state checkpointing\",\n    \"execution replay\",\n    \"counterfactual evaluation\",\n    \"durable runtime\",\n    \"trace-based observability\",\n    \"opentelemetry spans\",\n    \"cohort analysis\",\n    \"tool mocking\",\n    \"model swap cost optimization\",\n    \"mcp servers\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Traces are insufficient for understanding agent behavior because they are disconnected from the runtime and discard in-flight variables, filesystem state, and the executing code.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 47\n    },\n    {\n      \"claim\": \"The industry lacks a clear connection between OpenTelemetry observability spans and the actual execution that produced them.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 47\n    },\n    {\n      \"claim\": \"A new layer of the stack is emerging that sits above agent frameworks/harnesses and provides a durable runtime beneath them.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 126\n    },\n    {\n      \"claim\": \"If a system already checkpoints in production, no additional data collection is needed to answer what-if questions about cost, latency, and quality.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 126\n    },\n    {\n      \"claim\": \"Replay-based evaluation should use real production runs and checkpoints rather than synthetic datasets.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 884\n    },\n    {\n      \"claim\": \"Simulations grounded in previously recorded executions are more trustworthy than ungrounded ones.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 267\n    },\n    {\n      \"claim\": \"DoorDash reduced a multi-hour replay process to 5 minutes with hundreds of simulations, 90% fewer hallucinations, and results within two points of production.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 267\n    },\n    {\n      \"claim\": \"Naive model swaps to cheaper models often fail in practice when evaluated on outcome quality rather than cost alone.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 804\n    },\n    {\n      \"claim\": \"Optimizing on cost as a single dimension produces a false economy, per a BrainTrust study.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 845\n    },\n    {\n      \"claim\": \"On \u03c4-bench, a model that passes 60% of the time is self-consistent only about a quarter of the time.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 845\n    },\n    {\n      \"claim\": \"A single replay is not evidence; decisions require cohort-level analysis.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 845\n    },\n    {\n      \"claim\": \"Nothing should be shipped on the basis of one or two replays.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 928\n    },\n    {\n      \"claim\": \"Analyzing replay cohorts at thousands-scale requires LLMs and agents, not human inspection of UI diffs.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 704\n    },\n    {\n      \"claim\": \"Replay infrastructure must expose a queryable runtime that can fetch artifacts, so that MCP servers and skills can operate on it.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 761\n    },\n    {\n      \"claim\": \"Replay at scale is expensive enough that selecting what to replay is itself a design problem.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 884\n    },\n    {\n      \"claim\": \"The replay-and-decide loop should be automated, but a human should remain in the loop at the final decision point.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 928\n    },\n    {\n      \"claim\": \"Whether a cheaper model is acceptable is data-dependent and cannot be generalized across deployments.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 971\n    },\n    {\n      \"claim\": \"Coupling replay to the code base enables a wider range of experiments (such as mocking tools with real functions) than trace-only tooling allows.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 481\n    }\n  ],\n  \"speaker_org\": \"ZenML\"\n}",
+  "ttft_ms": 23760,
+  "ttft_stream_ms": 1761,
+  "time_to_request_ms": 34,
+  "type": "result",
+  "duration_ms": 73129,
+  "uuid": "1e102e27-d1e8-4070-a10d-7dda7c1756d7",
+  "passA": {
+    "summary": "Hamza Tahir argues that agents are missing the equivalent of a save button: traces capture emitted telemetry but are disconnected from the runtime, so in-flight variables, filesystem state, and the code itself are lost and frozen into a read-only artifact far from where execution happened. His fix is a durable runtime beneath the agent harness that checkpoints state so any execution can be forked and replayed with one thing changed \u2014 a cheaper model, a mocked tool, a different policy \u2014 then diffed against the real baseline. He demos this with Kitaru, an open-source tool from ZenML, walking through single replays, side-by-side diffs, cohort replays, and handing the resulting JSON report to an MCP server for LLM analysis. Crucially, he undercuts his own demo: the single replay looked cheaper at equal quality, but the cohort analysis returned 'don't ship,' and he cites a BrainTrust study on the false economy of naive model swaps plus \u03c4-bench data showing a model passing 60% of the time is self-consistent only a quarter of the time. Watch it if you want a concrete methodology \u2014 checkpoint, replay, diff, decide \u2014 for turning production traces into grounded evals rather than synthetic ones.",
+    "key_points": [
+      "Traces alone are insufficient because they are decoupled from the runtime: variables in state, the in-flight filesystem, the decisions made in code, and the code itself are all lost by the time a read-only span lands in a separate observability tool.",
+      "The missing layer sits between the agent framework/harness and infrastructure: a durable runtime that checkpoints execution state and augments OpenTelemetry spans with the actual code and environment, including the Docker image or sandbox it ran in.",
+      "Once checkpointing runs in production, you already have everything needed for counterfactual evaluation \u2014 no synthetic dataset construction required, because replays are grounded in runs that actually happened.",
+      "The methodology is a four-step loop: checkpoint, replay, diff, decide \u2014 build a cohort of runs that matter (expensive, slow, or risky), apply one change, diff against the known baseline, then route and ship.",
+      "Replay is cheap because prior checkpoints are reused: in the demo the first three checkpoints are skipped entirely and execution resumes only from the modified point.",
+      "Naive model swaps frequently fail in practice, and Tahir cites a BrainTrust study showing a 'false economy' where cost and latency improve on paper while the value created \u2014 such as whether the support bot actually resolves the request \u2014 degrades.",
+      "A single replay is an anecdote, not evidence: on \u03c4-bench a model that passes 60% of the time is only self-consistent about a quarter of the time, so cohort-scale replay is required before shipping.",
+      "Cohort analysis at scale outgrows UI diffing, so Tahir emits JSON and points an MCP server at it, using LLMs to analyze thousands of replays and flag red flags \u2014 which is why the runtime needs to be queryable and able to fetch artifacts.",
+      "DoorDash's simulated replay environment (per a June 1 blog post) cut a multi-hour process to five minutes across hundreds of simulations, with 90% fewer hallucinations and results within two points of observed production behavior.",
+      "His own demo ends with the agent's verdict being 'don't ship' \u2014 the cheaper model looked fine on one sample and failed across the cohort."
+    ],
+    "notable_quotes": [
+      {
+        "text": "We've had the save button for documents for decades now. Since the 1980s, people have been used to pressing control S, command S uh or auto saving while you're working to have a persistent state. But agents, they don't have that today.",
+        "timestamp_sec": 0,
+        "why": "the framing device the whole talk hangs on"
+      },
+      {
+        "text": "The only thing we have which is closest is a trace. A trace gives you the emitted telemetry data of how an agent calls tools in the input and output of that state.",
+        "timestamp_sec": 0,
+        "why": "defines the baseline he's arguing is inadequate"
+      },
+      {
+        "text": "all of that is lost and it is only stamped as a read-only trace by the end, which is sitting in another tool far away from where the actual code is",
+        "timestamp_sec": 47,
+        "why": "the core critique of trace-only observability"
+      },
+      {
+        "text": "I think this is what's missing today in the industry is that we don't have a clear connection between the observability spans that are emitted with Odel and the execution.",
+        "timestamp_sec": 47,
+        "why": "states the gap as an industry-level claim, not just a product pitch"
+      },
+      {
+        "text": "Well, save allows you to replay. You can go back in history and ask the what if question.",
+        "timestamp_sec": 85,
+        "why": "the payoff that justifies the checkpointing cost"
+      },
+      {
+        "text": "So, checkpoint replay diff decide. And this is really the methodology that that I've seen and I've seen others do, uh which has really scaled.",
+        "timestamp_sec": 217,
+        "why": "the talk's reusable four-step recipe"
+      },
+      {
+        "text": "It's It's It's basically evaluating using your production traces. So, it's basically evaluating using your production checkpoints.",
+        "timestamp_sec": 217,
+        "why": "reframes replay as an eval strategy rather than a debugging tool"
+      },
+      {
+        "text": "now they've reduced it to 5 minutes uh with hundreds of simulations, have 90% less hallucinations, and they're still two points within what they've seen in production",
+        "timestamp_sec": 267,
+        "why": "the only third-party production numbers in the talk"
+      },
+      {
+        "text": "So, the simulations are pretty good because they're grounded in what's already happened.",
+        "timestamp_sec": 267,
+        "why": "the argument for replay over synthetic evals in one line"
+      },
+      {
+        "text": "and this combination of code and the artifacts that it created and the environment in which it ran in, whether it was a Docker image or a sandbox, those are all snapshotted in state here between the checkpoints",
+        "timestamp_sec": 349,
+        "why": "specifies what 'state' actually means in his design"
+      },
+      {
+        "text": "because I have the code, it's very easy for me to do tool calls and to change these particular things and do more experiments than I would have had if I was completely disconnected from the code base",
+        "timestamp_sec": 481,
+        "why": "names the concrete advantage of runtime-coupled replay over external trace tools"
+      },
+      {
+        "text": "is to be using agents and LLMs to analyze these cohorts across a plethora of data because at some point uh, I mean, 10 is probably easy to do, but what if you have thousands?",
+        "timestamp_sec": 704,
+        "why": "explains why cohort analysis has to be delegated to models"
+      },
+      {
+        "text": "this is where skills and MCP servers get really relevant and having the runtime be queryable and go into your execution and fetch the artifacts is very important",
+        "timestamp_sec": 761,
+        "why": "states a design requirement for replay infrastructure"
+      },
+      {
+        "text": "what I've personally seen is that having a naive model swap usually or often times doesn't work",
+        "timestamp_sec": 804,
+        "why": "a firsthand negative result against the most common cost optimization"
+      },
+      {
+        "text": "they saw that there could be a false economy if you do a naive model swap because it might look on paper that you're faster and you're cheaper, but at the end of the day you have to look at the value created",
+        "timestamp_sec": 845,
+        "why": "names the tradeoff and attributes it to external research"
+      },
+      {
+        "text": "a model that passes 60% of the time is only self-consistent about a quarter of the time",
+        "timestamp_sec": 845,
+        "why": "the hard number behind his methodological warning"
+      },
+      {
+        "text": "So which basically means that one replay is just an anecdote and having a cohort analysis is way way way better.",
+        "timestamp_sec": 845,
+        "why": "the sharpest methodological claim in the talk"
+      },
+      {
+        "text": "This can get very expensive of course and this is where you have to be really smart about what you replay and have tooling that really helps you.",
+        "timestamp_sec": 884,
+        "why": "acknowledges the cost of the approach he's advocating"
+      },
+      {
+        "text": "you can start from real runs, not synthetic, but real runs, real production uh state",
+        "timestamp_sec": 884,
+        "why": "the playbook's first principle, stated as a preference over synthetic data"
+      },
+      {
+        "text": "Um never ship anything by just replaying one or two things. Um and just do this at scale and uh ship, route, and hold, and try to automate that loop as much as possible.",
+        "timestamp_sec": 928,
+        "why": "prescriptive rule plus the human-in-the-loop caveat"
+      },
+      {
+        "text": "So, the verdict is don't ship. So, even though it looked like from a single replay that it was cheaper to do and we reached the same result, across a bunch of those support cases, you actually saw that our agent concludes that you shouldn't be using a cheaper model in this particular case for your data.",
+        "timestamp_sec": 928,
+        "why": "the demo lands on a negative result, which is the point"
+      },
+      {
+        "text": "you can do this if you model your agent with your harness in a runtime that can checkpoint state and is able to replay that state from code with different scenarios",
+        "timestamp_sec": 971,
+        "why": "the closing statement of the required architecture"
+      }
+    ],
+    "concepts": [
+      "agent state checkpointing",
+      "execution replay",
+      "counterfactual evaluation",
+      "durable runtime",
+      "trace-based observability",
+      "opentelemetry spans",
+      "cohort analysis",
+      "tool mocking",
+      "model swap cost optimization",
+      "mcp servers"
+    ],
+    "positions": [
+      {
+        "claim": "Traces are insufficient for understanding agent behavior because they are disconnected from the runtime and discard in-flight variables, filesystem state, and the executing code.",
+        "confidence": "stated",
+        "timestamp_sec": 47
+      },
+      {
+        "claim": "The industry lacks a clear connection between OpenTelemetry observability spans and the actual execution that produced them.",
+        "confidence": "stated",
+        "timestamp_sec": 47
+      },
+      {
+        "claim": "A new layer of the stack is emerging that sits above agent frameworks/harnesses and provides a durable runtime beneath them.",
+        "confidence": "stated",
+        "timestamp_sec": 126
+      },
+      {
+        "claim": "If a system already checkpoints in production, no additional data collection is needed to answer what-if questions about cost, latency, and quality.",
+        "confidence": "stated",
+        "timestamp_sec": 126
+      },
+      {
+        "claim": "Replay-based evaluation should use real production runs and checkpoints rather than synthetic datasets.",
+        "confidence": "stated",
+        "timestamp_sec": 884
+      },
+      {
+        "claim": "Simulations grounded in previously recorded executions are more trustworthy than ungrounded ones.",
+        "confidence": "stated",
+        "timestamp_sec": 267
+      },
+      {
+        "claim": "DoorDash reduced a multi-hour replay process to 5 minutes with hundreds of simulations, 90% fewer hallucinations, and results within two points of production.",
+        "confidence": "stated",
+        "timestamp_sec": 267
+      },
+      {
+        "claim": "Naive model swaps to cheaper models often fail in practice when evaluated on outcome quality rather than cost alone.",
+        "confidence": "stated",
+        "timestamp_sec": 804
+      },
+      {
+        "claim": "Optimizing on cost as a single dimension produces a false economy, per a BrainTrust study.",
+        "confidence": "stated",
+        "timestamp_sec": 845
+      },
+      {
+        "claim": "On \u03c4-bench, a model that passes 60% of the time is self-consistent only about a quarter of the time.",
+        "confidence": "stated",
+        "timestamp_sec": 845
+      },
+      {
+        "claim": "A single replay is not evidence; decisions require cohort-level analysis.",
+        "confidence": "stated",
+        "timestamp_sec": 845
+      },
+      {
+        "claim": "Nothing should be shipped on the basis of one or two replays.",
+        "confidence": "stated",
+        "timestamp_sec": 928
+      },
+      {
+        "claim": "Analyzing replay cohorts at thousands-scale requires LLMs and agents, not human inspection of UI diffs.",
+        "confidence": "stated",
+        "timestamp_sec": 704
+      },
+      {
+        "claim": "Replay infrastructure must expose a queryable runtime that can fetch artifacts, so that MCP servers and skills can operate on it.",
+        "confidence": "stated",
+        "timestamp_sec": 761
+      },
+      {
+        "claim": "Replay at scale is expensive enough that selecting what to replay is itself a design problem.",
+        "confidence": "stated",
+        "timestamp_sec": 884
+      },
+      {
+        "claim": "The replay-and-decide loop should be automated, but a human should remain in the loop at the final decision point.",
+        "confidence": "stated",
+        "timestamp_sec": 928
+      },
+      {
+        "claim": "Whether a cheaper model is acceptable is data-dependent and cannot be generalized across deployments.",
+        "confidence": "stated",
+        "timestamp_sec": 971
+      },
+      {
+        "claim": "Coupling replay to the code base enables a wider range of experiments (such as mocking tools with real functions) than trace-only tooling allows.",
+        "confidence": "stated",
+        "timestamp_sec": 481
+      }
+    ],
+    "speaker_org": "ZenML"
+  },
+  "_meta": {
+    "slug": "your-agents-need-a-save-button",
+    "video_id": "bZISsg7H7DA",
+    "url": "https://www.youtube.com/watch?v=bZISsg7H7DA",
+    "word_count": 2937,
+    "wall_sec": 74.2,
+    "run_at": "2026-08-12T20:37:09Z",
+    "effort": "medium"
+  }
+}

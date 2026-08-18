@@ -1,0 +1,288 @@
+{
+  "is_error": false,
+  "duration_api_ms": 61891,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "ecd60f11-679e-4a29-95b9-11ab5183a6d7",
+  "total_cost_usd": 0.25116299999999997,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 10619,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 5317,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 10619,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 5317,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 10619,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 10619
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 6804,
+      "outputTokens": 16,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.006884,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 5317,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 10619,
+      "webSearchRequests": 0,
+      "costUSD": 0.244279,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"May Walter (Hud) describes an agentic workflow that continuously hunts for performance and stability wins in production code, closing the gap between 'we know this is slow' and 'we know what to fix.' The core argument is that the investigation phase \u2014 not the fix \u2014 is the unbounded cost that keeps performance work perpetually deprioritized, and that this phase is what agents should automate. The talk walks through the concrete stack (GitHub Agent Workflows on a weekly cron, Claude Code as the harness, runtime intelligence exposed over MCP, ClickHouse-backed query language plus skills, report to Slack) and is unusually candid about what failed: plausible-but-wrong fixes, query variance blowing up evals, agents 'fixing' exceptions by catching them, and humans ignoring a flood of auto-opened PRs. The key design move is function-level production context ('prod-to-code') so the agent reasons in the same units as code, plus ROI scoring that gates what reaches a human. Worth watching if you're building autonomous agent workflows and need a worked example of the trust threshold that separates an IDE copilot from an unattended automation.\",\n  \"key_points\": [\n    \"Teams can estimate how long a performance fix takes but never how long the investigation takes, which is why performance work is chronically deprioritized until it becomes a crisis \u2014 a leaky-bucket cycle of ignore, escalate, emergency-fix, ignore.\",\n    \"The 2026 DORA data shows AI adoption mainly boosts individual effectiveness while software delivery instability rises and team throughput is largely unchanged, which motivates using AI on the fix/verify side rather than only on the build side.\",\n    \"The workflow is deliberately vendor-neutral across compute, harness, and model, because expectations and tooling evolve and the ability to maintain and update the workflow over time matters more than the initial choice.\",\n    \"A suggested fix is not the deliverable: the agent reproduces the issue from production traces, applies the fix, reruns tests, and measures the impact on the specific flow before a human ever sees it.\",\n    \"Service- and endpoint-level metrics (CPU, memory, P90s) don't map onto how coding agents reason; Hud's 'prod-to-code' approach captures function-level context linked back to the triggering endpoint, cron job, or consumer.\",\n    \"Context has two failure modes simultaneously in production observability \u2014 too much low-signal data to reason over and too few traces to avoid speculation \u2014 so forensic detail is captured selectively, only above a P99 or defined threshold.\",\n    \"Raw query access produced high eval variance; wrapping the ClickHouse query language in a set of skills (e.g. how to trace an HTTP 500, how to diff a memory spike against a baseline) made results consistent.\",\n    \"Auto-opening PRs failed on human grounds \u2014 nobody triages 80 PRs \u2014 so the system scores by hot-path frequency, business criticality, and change risk, surfaces the highest-ROI (not highest-impact) item one at a time, and delivers a short human-readable gist that argues for its own priority.\",\n    \"Autonomous agentic engineering demands 80\u201390% trust, a categorically higher bar than IDE-based agent use where an 80% success rate is fine because the engineer is in context to steer.\",\n    \"The most interesting gain isn't doing existing work faster \u2014 it's automating a phase (the proactive weekly performance sweep) that simply never happened in engineers' day-to-day.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"we would know how much time it takes to do a specific optimization, but we never know how long it's going to take to investigate it and to find it\",\n      \"timestamp_sec\": 40,\n      \"why\": \"states the central diagnosis the whole talk is built on\"\n    },\n    {\n      \"text\": \"Google just published their Dora metrics for 2026 and we can see that the biggest impact of AI adoption on engineering is individual effectiveness\",\n      \"timestamp_sec\": 140,\n      \"why\": \"cites external data to frame the problem\"\n    },\n    {\n      \"text\": \"we basically feel more effective, we're more effective individually, but as a team, our throughput is kind of the same and our software breaks more often\",\n      \"timestamp_sec\": 140,\n      \"why\": \"sharp summary of the AI productivity gap, a claim others contest\"\n    },\n    {\n      \"text\": \"We fix it in emergency mode and then we go straight back to ignoring, which is a leaky bucket by definition.\",\n      \"timestamp_sec\": 220,\n      \"why\": \"names the failure loop the automation targets\"\n    },\n    {\n      \"text\": \"that mostly happens because the research phase is a black box. It could take an hour or weeks\",\n      \"timestamp_sec\": 220,\n      \"why\": \"pinpoints which phase is worth automating and why\"\n    },\n    {\n      \"text\": \"if you can optimize something, but it runs every 3 weeks or you can like reduce 20 milliseconds, then it doesn't matter\",\n      \"timestamp_sec\": 433,\n      \"why\": \"concrete statement of the relevance filter\"\n    },\n    {\n      \"text\": \"So it's not hey, I have this idea of something that you can do. It's here's something that works.\",\n      \"timestamp_sec\": 481,\n      \"why\": \"defines the bar for what gets handed to a human\"\n    },\n    {\n      \"text\": \"the first hurdle we had along the way is what we call the plausible unverified. So the agent would suggest a fix. It sounds right.\",\n      \"timestamp_sec\": 481,\n      \"why\": \"names a reusable failure mode of agentic debugging\"\n    },\n    {\n      \"text\": \"when something throws an exception and then the agent says, \\\"Well, maybe we can just catch that exception and then everything will be fine.\\\"\",\n      \"timestamp_sec\": 523,\n      \"why\": \"vivid example of the lazy-fix failure mode\"\n    },\n    {\n      \"text\": \"There are only two problems with context. You either have too much of it or you have too little of it.\",\n      \"timestamp_sec\": 575,\n      \"why\": \"memorable framing of the context engineering tradeoff\"\n    },\n    {\n      \"text\": \"our coding agents reason over code and they look at these metrics and there are some relations between them, but they don't exactly speak the same language\",\n      \"timestamp_sec\": 626,\n      \"why\": \"explains why standard observability data underserves coding agents\"\n    },\n    {\n      \"text\": \"the agent's context lies on a function and file level, not on an service and endpoint level\",\n      \"timestamp_sec\": 673,\n      \"why\": \"the technical thesis behind prod-to-code\"\n    },\n    {\n      \"text\": \"being able to get to the right query and to ask it again and again really created a lot of variance in our eval\",\n      \"timestamp_sec\": 769,\n      \"why\": \"reports a concrete eval finding that motivated skills over raw queries\"\n    },\n    {\n      \"text\": \"no one wants to wake up for, you know, a rain of 80 pull requests, as small as small as they can be\",\n      \"timestamp_sec\": 918,\n      \"why\": \"the human-factors failure that killed the naive auto-PR design\"\n    },\n    {\n      \"text\": \"we're not necessarily looking for the highest impact ones, but for the highest ROI ones\",\n      \"timestamp_sec\": 996,\n      \"why\": \"states the prioritization tradeoff explicitly\"\n    },\n    {\n      \"text\": \"context over cleverness works almost every time\",\n      \"timestamp_sec\": 1105,\n      \"why\": \"the talk's compressed takeaway\"\n    },\n    {\n      \"text\": \"We're automating a phase that just did not happen in the day-to-day lives of engineers.\",\n      \"timestamp_sec\": 1159,\n      \"why\": \"reframes agent value as new work, not faster work\"\n    },\n    {\n      \"text\": \"I do believe that at least for most of the cases, the models are good enough already to be able to to automate that\",\n      \"timestamp_sec\": 1209,\n      \"why\": \"takes a side on whether model capability is the bottleneck\"\n    },\n    {\n      \"text\": \"agentic engineering is not like coding with an agent. If something works 80% of the time and you're using it with your cursor in your IDE, that's fine because you're there, you're in context\",\n      \"timestamp_sec\": 1249,\n      \"why\": \"the sharpest distinction in the talk, and directly comparable across talks\"\n    },\n    {\n      \"text\": \"getting to that agentic engineering automation level requires crossing towards the 80-90% trust\",\n      \"timestamp_sec\": 1299,\n      \"why\": \"puts a number on the autonomy threshold\"\n    }\n  ],\n  \"concepts\": [\n    \"agentic workflow automation\",\n    \"production runtime context\",\n    \"context engineering\",\n    \"eval variance\",\n    \"agent skills\",\n    \"roi scoring and prioritization\",\n    \"human-in-the-loop review gates\",\n    \"fix verification in runtime\",\n    \"dora metrics\",\n    \"performance regression detection\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"The bottleneck in performance work is the unbounded investigation phase, not the fix itself, so investigation is what should be automated.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 40\n    },\n    {\n      \"claim\": \"AI adoption has increased individual effectiveness and software delivery instability while leaving team throughput roughly unchanged, per Google's 2026 DORA report.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 140\n    },\n    {\n      \"claim\": \"Agentic workflow infrastructure should be vendor-neutral across compute, harness, and model rather than committed to one provider.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 266\n    },\n    {\n      \"claim\": \"An agent-proposed fix is insufficient without runtime verification that the fix actually improved the specific production flow.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 433\n    },\n    {\n      \"claim\": \"Production observability suffers from too much low-signal data and too little targeted forensic data at the same time.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 575\n    },\n    {\n      \"claim\": \"Service- and endpoint-level metrics are the wrong granularity for coding agents, which reason at the function and file level.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 673\n    },\n    {\n      \"claim\": \"Wrapping query access in structured skills produces more consistent agent results than letting the agent author queries freely.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 769\n    },\n    {\n      \"claim\": \"Runtime production context finds real performance problems that static code analysis can only guess at.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 869\n    },\n    {\n      \"claim\": \"Auto-opening large volumes of PRs is counterproductive; surfacing one high-ROI, human-readable finding at a time builds the habit instead.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 961\n    },\n    {\n      \"claim\": \"Prioritization should weigh impact against review risk, favoring highest-ROI changes over highest-impact ones.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 996\n    },\n    {\n      \"claim\": \"Current models are already good enough to automate this class of work; the remaining work is steering, context, and guardrails.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1209\n    },\n    {\n      \"claim\": \"Autonomous agent automations require roughly 80-90% trust, whereas an 80% success rate is acceptable for interactive IDE agent use.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1249\n    },\n    {\n      \"claim\": \"The biggest value of coding agents is surfacing work teams would otherwise never do, not just accelerating existing work.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1159\n    },\n    {\n      \"claim\": \"Scoring and guardrails, not model capability, are what make an autonomous workflow reliable enough to trust.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 1105\n    }\n  ],\n  \"speaker_org\": \"Hud\"\n}",
+  "ttft_ms": 17351,
+  "ttft_stream_ms": 1029,
+  "time_to_request_ms": 35,
+  "type": "result",
+  "duration_ms": 62056,
+  "uuid": "117da2c3-0402-4f0e-8bd4-4a236ffc1569",
+  "passA": {
+    "summary": "May Walter (Hud) describes an agentic workflow that continuously hunts for performance and stability wins in production code, closing the gap between 'we know this is slow' and 'we know what to fix.' The core argument is that the investigation phase \u2014 not the fix \u2014 is the unbounded cost that keeps performance work perpetually deprioritized, and that this phase is what agents should automate. The talk walks through the concrete stack (GitHub Agent Workflows on a weekly cron, Claude Code as the harness, runtime intelligence exposed over MCP, ClickHouse-backed query language plus skills, report to Slack) and is unusually candid about what failed: plausible-but-wrong fixes, query variance blowing up evals, agents 'fixing' exceptions by catching them, and humans ignoring a flood of auto-opened PRs. The key design move is function-level production context ('prod-to-code') so the agent reasons in the same units as code, plus ROI scoring that gates what reaches a human. Worth watching if you're building autonomous agent workflows and need a worked example of the trust threshold that separates an IDE copilot from an unattended automation.",
+    "key_points": [
+      "Teams can estimate how long a performance fix takes but never how long the investigation takes, which is why performance work is chronically deprioritized until it becomes a crisis \u2014 a leaky-bucket cycle of ignore, escalate, emergency-fix, ignore.",
+      "The 2026 DORA data shows AI adoption mainly boosts individual effectiveness while software delivery instability rises and team throughput is largely unchanged, which motivates using AI on the fix/verify side rather than only on the build side.",
+      "The workflow is deliberately vendor-neutral across compute, harness, and model, because expectations and tooling evolve and the ability to maintain and update the workflow over time matters more than the initial choice.",
+      "A suggested fix is not the deliverable: the agent reproduces the issue from production traces, applies the fix, reruns tests, and measures the impact on the specific flow before a human ever sees it.",
+      "Service- and endpoint-level metrics (CPU, memory, P90s) don't map onto how coding agents reason; Hud's 'prod-to-code' approach captures function-level context linked back to the triggering endpoint, cron job, or consumer.",
+      "Context has two failure modes simultaneously in production observability \u2014 too much low-signal data to reason over and too few traces to avoid speculation \u2014 so forensic detail is captured selectively, only above a P99 or defined threshold.",
+      "Raw query access produced high eval variance; wrapping the ClickHouse query language in a set of skills (e.g. how to trace an HTTP 500, how to diff a memory spike against a baseline) made results consistent.",
+      "Auto-opening PRs failed on human grounds \u2014 nobody triages 80 PRs \u2014 so the system scores by hot-path frequency, business criticality, and change risk, surfaces the highest-ROI (not highest-impact) item one at a time, and delivers a short human-readable gist that argues for its own priority.",
+      "Autonomous agentic engineering demands 80\u201390% trust, a categorically higher bar than IDE-based agent use where an 80% success rate is fine because the engineer is in context to steer.",
+      "The most interesting gain isn't doing existing work faster \u2014 it's automating a phase (the proactive weekly performance sweep) that simply never happened in engineers' day-to-day."
+    ],
+    "notable_quotes": [
+      {
+        "text": "we would know how much time it takes to do a specific optimization, but we never know how long it's going to take to investigate it and to find it",
+        "timestamp_sec": 40,
+        "why": "states the central diagnosis the whole talk is built on"
+      },
+      {
+        "text": "Google just published their Dora metrics for 2026 and we can see that the biggest impact of AI adoption on engineering is individual effectiveness",
+        "timestamp_sec": 140,
+        "why": "cites external data to frame the problem"
+      },
+      {
+        "text": "we basically feel more effective, we're more effective individually, but as a team, our throughput is kind of the same and our software breaks more often",
+        "timestamp_sec": 140,
+        "why": "sharp summary of the AI productivity gap, a claim others contest"
+      },
+      {
+        "text": "We fix it in emergency mode and then we go straight back to ignoring, which is a leaky bucket by definition.",
+        "timestamp_sec": 220,
+        "why": "names the failure loop the automation targets"
+      },
+      {
+        "text": "that mostly happens because the research phase is a black box. It could take an hour or weeks",
+        "timestamp_sec": 220,
+        "why": "pinpoints which phase is worth automating and why"
+      },
+      {
+        "text": "if you can optimize something, but it runs every 3 weeks or you can like reduce 20 milliseconds, then it doesn't matter",
+        "timestamp_sec": 433,
+        "why": "concrete statement of the relevance filter"
+      },
+      {
+        "text": "So it's not hey, I have this idea of something that you can do. It's here's something that works.",
+        "timestamp_sec": 481,
+        "why": "defines the bar for what gets handed to a human"
+      },
+      {
+        "text": "the first hurdle we had along the way is what we call the plausible unverified. So the agent would suggest a fix. It sounds right.",
+        "timestamp_sec": 481,
+        "why": "names a reusable failure mode of agentic debugging"
+      },
+      {
+        "text": "when something throws an exception and then the agent says, \"Well, maybe we can just catch that exception and then everything will be fine.\"",
+        "timestamp_sec": 523,
+        "why": "vivid example of the lazy-fix failure mode"
+      },
+      {
+        "text": "There are only two problems with context. You either have too much of it or you have too little of it.",
+        "timestamp_sec": 575,
+        "why": "memorable framing of the context engineering tradeoff"
+      },
+      {
+        "text": "our coding agents reason over code and they look at these metrics and there are some relations between them, but they don't exactly speak the same language",
+        "timestamp_sec": 626,
+        "why": "explains why standard observability data underserves coding agents"
+      },
+      {
+        "text": "the agent's context lies on a function and file level, not on an service and endpoint level",
+        "timestamp_sec": 673,
+        "why": "the technical thesis behind prod-to-code"
+      },
+      {
+        "text": "being able to get to the right query and to ask it again and again really created a lot of variance in our eval",
+        "timestamp_sec": 769,
+        "why": "reports a concrete eval finding that motivated skills over raw queries"
+      },
+      {
+        "text": "no one wants to wake up for, you know, a rain of 80 pull requests, as small as small as they can be",
+        "timestamp_sec": 918,
+        "why": "the human-factors failure that killed the naive auto-PR design"
+      },
+      {
+        "text": "we're not necessarily looking for the highest impact ones, but for the highest ROI ones",
+        "timestamp_sec": 996,
+        "why": "states the prioritization tradeoff explicitly"
+      },
+      {
+        "text": "context over cleverness works almost every time",
+        "timestamp_sec": 1105,
+        "why": "the talk's compressed takeaway"
+      },
+      {
+        "text": "We're automating a phase that just did not happen in the day-to-day lives of engineers.",
+        "timestamp_sec": 1159,
+        "why": "reframes agent value as new work, not faster work"
+      },
+      {
+        "text": "I do believe that at least for most of the cases, the models are good enough already to be able to to automate that",
+        "timestamp_sec": 1209,
+        "why": "takes a side on whether model capability is the bottleneck"
+      },
+      {
+        "text": "agentic engineering is not like coding with an agent. If something works 80% of the time and you're using it with your cursor in your IDE, that's fine because you're there, you're in context",
+        "timestamp_sec": 1249,
+        "why": "the sharpest distinction in the talk, and directly comparable across talks"
+      },
+      {
+        "text": "getting to that agentic engineering automation level requires crossing towards the 80-90% trust",
+        "timestamp_sec": 1299,
+        "why": "puts a number on the autonomy threshold"
+      }
+    ],
+    "concepts": [
+      "agentic workflow automation",
+      "production runtime context",
+      "context engineering",
+      "eval variance",
+      "agent skills",
+      "roi scoring and prioritization",
+      "human-in-the-loop review gates",
+      "fix verification in runtime",
+      "dora metrics",
+      "performance regression detection"
+    ],
+    "positions": [
+      {
+        "claim": "The bottleneck in performance work is the unbounded investigation phase, not the fix itself, so investigation is what should be automated.",
+        "confidence": "stated",
+        "timestamp_sec": 40
+      },
+      {
+        "claim": "AI adoption has increased individual effectiveness and software delivery instability while leaving team throughput roughly unchanged, per Google's 2026 DORA report.",
+        "confidence": "stated",
+        "timestamp_sec": 140
+      },
+      {
+        "claim": "Agentic workflow infrastructure should be vendor-neutral across compute, harness, and model rather than committed to one provider.",
+        "confidence": "stated",
+        "timestamp_sec": 266
+      },
+      {
+        "claim": "An agent-proposed fix is insufficient without runtime verification that the fix actually improved the specific production flow.",
+        "confidence": "stated",
+        "timestamp_sec": 433
+      },
+      {
+        "claim": "Production observability suffers from too much low-signal data and too little targeted forensic data at the same time.",
+        "confidence": "stated",
+        "timestamp_sec": 575
+      },
+      {
+        "claim": "Service- and endpoint-level metrics are the wrong granularity for coding agents, which reason at the function and file level.",
+        "confidence": "stated",
+        "timestamp_sec": 673
+      },
+      {
+        "claim": "Wrapping query access in structured skills produces more consistent agent results than letting the agent author queries freely.",
+        "confidence": "stated",
+        "timestamp_sec": 769
+      },
+      {
+        "claim": "Runtime production context finds real performance problems that static code analysis can only guess at.",
+        "confidence": "stated",
+        "timestamp_sec": 869
+      },
+      {
+        "claim": "Auto-opening large volumes of PRs is counterproductive; surfacing one high-ROI, human-readable finding at a time builds the habit instead.",
+        "confidence": "stated",
+        "timestamp_sec": 961
+      },
+      {
+        "claim": "Prioritization should weigh impact against review risk, favoring highest-ROI changes over highest-impact ones.",
+        "confidence": "stated",
+        "timestamp_sec": 996
+      },
+      {
+        "claim": "Current models are already good enough to automate this class of work; the remaining work is steering, context, and guardrails.",
+        "confidence": "stated",
+        "timestamp_sec": 1209
+      },
+      {
+        "claim": "Autonomous agent automations require roughly 80-90% trust, whereas an 80% success rate is acceptable for interactive IDE agent use.",
+        "confidence": "stated",
+        "timestamp_sec": 1249
+      },
+      {
+        "claim": "The biggest value of coding agents is surfacing work teams would otherwise never do, not just accelerating existing work.",
+        "confidence": "stated",
+        "timestamp_sec": 1159
+      },
+      {
+        "claim": "Scoring and guardrails, not model capability, are what make an autonomous workflow reliable enough to trust.",
+        "confidence": "implied",
+        "timestamp_sec": 1105
+      }
+    ],
+    "speaker_org": "Hud"
+  },
+  "_meta": {
+    "slug": "from-blind-spots-to-merged-prs-continuous-agentic-performance-optimization",
+    "video_id": "JJGbw4ggaFs",
+    "url": "https://www.youtube.com/watch?v=JJGbw4ggaFs",
+    "word_count": 3732,
+    "wall_sec": 63.1,
+    "run_at": "2026-08-12T19:50:03Z",
+    "effort": "medium"
+  }
+}

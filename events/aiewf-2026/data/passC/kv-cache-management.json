@@ -1,0 +1,252 @@
+{
+  "is_error": false,
+  "duration_api_ms": 113485,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "cf26429f-d055-4a15-baa8-df201476043a",
+  "total_cost_usd": 0.529995,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 27847,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 9122,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 27847,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 9122,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 27847,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 27847
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 18226,
+      "outputTokens": 17,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.018311,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 9122,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 27847,
+      "webSearchRequests": 0,
+      "costUSD": 0.511684,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\"concept\": \"kv cache management\", \"state_of_practice\": \"Prefix caching has stopped being an optimization and become an architectural constraint: practitioners now design the agent loop backwards from the requirement that the leading portion of the context be byte-identical across requests, because a stable prefix buys roughly 90% cheaper and faster inference and cached tokens run about 10x cheaper than fresh input. The consequence is that every mechanism that rewrites context \u2014 compaction, sliding-window trimming, memory injection, spawning a fresh subagent \u2014 is now priced as a cache miss rather than treated as free hygiene; Cognition explicitly compacts for intelligence, not cost, and runs a single long-lived sidekick instead of fan-out subagents to preserve the running context. At the serving layer the problem has been reframed as storage systems engineering: at 500K\u20131M context under concurrency, Together AI describes KV cache handling as building a distributed file system or a very large database, turbopuffer expects KV caching to move onto object storage on pure economics (a GB of DRAM is $2, a GB of S3 is 2 cents), and the ubiquitous 5-minute cache TTL is understood as a provider pricing decision rather than a physical limit \u2014 which is part of why teams with high reuse are buying raw compute instead of paying per token. Cache-as-retrieval is being tried directly: cache-augmented generation loads whole document collections into parallel KV caches and dispatches a supervisor across buckets, trading GraphRAG's graph-rebuild cost for cache lifetime cost. The counterweight to all of this is that context is not free even when it is cached \u2014 multiple speakers independently report that filling the window degrades answer quality through contradicting information, with a working recommendation of staying under 200K and ideally under 100K tokens.\", \"consensus\": [{\"claim\": \"A stable, byte-identical context prefix is the primary lever for agent cost and latency, and applications should be architected so the front of the window does not change between requests.\", \"support_count\": 5, \"supporting_talks\": [\"voice-in-visuals-out-the-agony-and-the-ecstasy\", \"your-agent-is-wasting-tokens-and-you-dont-know-it\", \"wearing-the-agent-from-group-chats-to-glasses\", \"the-state-of-model-routing\", \"when-all-context-matters-extended-cache-augmented-generation\"], \"evidence_quote\": \"if the beginning of the context you send to the model is the same each time, then you can get up to 90% cheaper, faster inference um depending on the conditions.\", \"evidence_talk\": \"voice-in-visuals-out-the-agony-and-the-ecstasy\", \"evidence_timestamp_sec\": 682}, {\"claim\": \"Rewriting the context \u2014 compaction, sliding-window trimming, or clever memory injection \u2014 is not a free cost optimization; it invalidates the cached prefix or degrades behavior, so it must be spent deliberately to buy something else.\", \"support_count\": 4, \"supporting_talks\": [\"the-state-of-model-routing\", \"wearing-the-agent-from-group-chats-to-glasses\", \"codex-behind-the-harness\", \"your-agent-is-wasting-tokens-and-you-dont-know-it\"], \"evidence_quote\": \"you're actually then now like paying 10 times as much for the for those input tokens if you didn't compact. Um the main reason we compact is actually intelligence.\", \"evidence_talk\": \"the-state-of-model-routing\", \"evidence_timestamp_sec\": 1923}, {\"claim\": \"More resident context degrades answer quality independently of cost or hitting the token limit, so what enters the window must be actively capped rather than allowed to grow to the advertised limit.\", \"support_count\": 4, \"supporting_talks\": [\"codex-behind-the-harness\", \"when-all-context-matters-extended-cache-augmented-generation\", \"the-state-of-model-routing\", \"your-agent-is-wasting-tokens-and-you-dont-know-it\"], \"evidence_quote\": \"the more context you have in your in your context, the higher it is that you have contradicting information and it causes confusion for the model.\", \"evidence_talk\": \"codex-behind-the-harness\", \"evidence_timestamp_sec\": 245}, {\"claim\": \"At production scale the KV cache is a storage-systems problem \u2014 tiering, placement, and cache lifetime are the tunables, not model-level tricks.\", \"support_count\": 4, \"supporting_talks\": [\"agents-at-scale-inside-minimaxs-model-and-the-infrastructure-behind-it\", \"building-turbopuffer-gergely-orosz-pragmaticengineer-simon-eskildsen-ceo\", \"when-all-context-matters-extended-cache-augmented-generation\", \"the-state-of-model-routing\"], \"evidence_quote\": \"Like in in some sense, it's like recreating a distributed file system. So, we we're in some sense building something like that or a very big database.\", \"evidence_talk\": \"agents-at-scale-inside-minimaxs-model-and-the-infrastructure-behind-it\", \"evidence_timestamp_sec\": 992}], \"disagreements\": [{\"question\": \"When context grows past what fits or performs well, should you compact it, or should you design so it never grows in the first place?\", \"position_a\": \"Compact. Run automatic compaction (ideally server-side, in the exact format the model was trained on) or sliding-window trimming plus a summary of the dropped history, accepting the cache miss as the price of continued coherence.\", \"position_a_talks\": [\"codex-behind-the-harness\", \"your-agent-is-wasting-tokens-and-you-dont-know-it\", \"the-state-of-model-routing\"], \"position_b\": \"Don't let it overflow. Curate what enters context up front \u2014 extract atomic facts from conversations and score them for relevance rather than storing everything and compacting on overflow \u2014 and hold the prefix immutable, since compaction is a lossy patch over bad context discipline and forfeits what gradient-based learning would give you.\", \"position_b_talks\": [\"wearing-the-agent-from-group-chats-to-glasses\", \"voice-in-visuals-out-the-agony-and-the-ecstasy\", \"scaling-compute-on-context\"], \"why_it_matters\": \"Compaction-first designs accept a periodic 10x input-token spike and a behavioral discontinuity at every compaction boundary; curation-first designs require building a memory extraction and relevance-scoring layer that must itself be KV-cache-aware. The two lead to entirely different memory subsystems and different steady-state token bills.\"}, {\"question\": \"Is KV cache economics something you solve inside your application, or something you solve by owning the serving stack?\", \"position_a\": \"Inside the application. Turn on prompt caching across whichever provider you use, keep the system prompt and tool definitions stable, defer tool schemas to lazy search, and take the provider's cache semantics as given \u2014 the wins are already exposed through the API.\", \"position_a_talks\": [\"your-agent-is-wasting-tokens-and-you-dont-know-it\", \"codex-behind-the-harness\", \"voice-in-visuals-out-the-agony-and-the-ecstasy\"], \"position_b\": \"Own the stack. The 5-minute cache window and per-token pricing are operational choices that amortize across everyone else's workload shape; buy raw compute directly, self-host, or build your own KV storage tier on object storage and optimize cache lifetime for your specific access pattern.\", \"position_b_talks\": [\"the-state-of-model-routing\", \"agents-at-scale-inside-minimaxs-model-and-the-infrastructure-behind-it\", \"building-turbopuffer-gergely-orosz-pragmaticengineer-simon-eskildsen-ceo\"], \"why_it_matters\": \"If cache reuse is high and workload-shaped, per-token API pricing systematically overcharges you and the fix is an infrastructure project, not a prompt change. Teams that mis-diagnose this either build a distributed KV store they didn't need or keep paying for cache misses they could have designed away.\"}, {\"question\": \"Should whole corpora be resident in KV cache, or should context be aggressively minimized and everything else retrieved?\", \"position_a\": \"Load it all. When every document in a collection is relevant, push the corpus into multiple large-context caches in parallel, distributed in no particular order, and let a supervisor model interrogate the buckets \u2014 faster to build than GraphRAG and more accurate than similarity RAG, with cost controlled by tuning how long each cache lives.\", \"position_a_talks\": [\"when-all-context-matters-extended-cache-augmented-generation\"], \"position_b\": \"Keep the window small. Cap what is resident \u2014 2% of the window for skill descriptions, tools deferred behind search, large tool results stored out of band and summarized, and never run past 200K tokens (ideally under 100K) regardless of the advertised window.\", \"position_b_talks\": [\"codex-behind-the-harness\", \"the-state-of-model-routing\", \"your-agent-is-wasting-tokens-and-you-dont-know-it\"], \"why_it_matters\": \"One approach spends money on standing KV cache to avoid retrieval error; the other spends engineering on retrieval and out-of-band storage to avoid quality degradation. The break-even depends on whether your corpus genuinely has dense cross-document relationships or is separable \u2014 and getting it wrong means either a large idle cache bill or systematically missed context.\"}], \"practical_guidance\": {\"do\": [\"Design the request so the first ~90% of the context window is identical from call to call, and put all variation in the trailing portion\", \"Enable prompt caching on the system prompt, and where the provider supports it, on tool definitions and messages too\", \"Cap the available-skills/tool-description block at a fixed fraction of the context window (Codex uses 2%) and truncate beyond it, marking additional tools as deferred behind a tool-search call\", \"Run compaction server-side in the exact format the model was trained on, so post-compaction performance matches pre-compaction\", \"Use one long-lived sidekick agent with a running context instead of spawning fresh subagents, so the accumulated prefix stays cached at ~10x lower token cost\", \"Keep working context under 200K tokens and ideally under 100K, independent of the advertised window\", \"Store large tool results in local or cloud storage and pass a summary into the loop rather than re-sending the full result every iteration\", \"Set an explicit max-iteration cap on tool loops and profile per-tool call counts and durations with observability tooling before shipping\", \"Treat cache lifetime/TTL as a tunable cost knob, and if reuse is high, negotiate direct compute capacity instead of per-token pricing\", \"In voice/real-time loops, fire inference every 1\u20132 seconds while the user is still speaking against the stable prefix rather than waiting for a second of silence\", \"If backing KV or vector storage with object storage, design against P99/P999 latency rather than P50, since one logical operation issues many requests and ~200ms object reads compound\"], \"avoid\": [\"Injecting or reordering memory in the middle of the prefix \u2014 any model-side cleverness invalidates the cache it was meant to exploit\", \"Re-sending the full conversation history on every call in multi-turn agents\", \"Treating compaction as a cost reduction; it forces a cache miss and raises input token cost, so justify it by the intelligence you recover\", \"Filling the context window just because the tokens fit \u2014 quality degrades from contradicting information well before the hard limit\", \"Bucketing documents by domain when distributing them across parallel caches; with dense cross-document relationships the supervisor skips domains that look irrelevant at first glance\", \"Assuming the 5-minute cache window is a physical constraint rather than a provider pricing and operations decision\", \"Choosing an inference platform on model size alone \u2014 GPT-5 mini showed 5,000ms typical and 7,000ms P95 latency despite being small and cheap, because the platform did not prioritize latency\", \"Assuming a single inference stack serves both chat and agentic workloads; uploading a whole codebase changes the caching, routing, and kernel optimization targets\", \"Quantizing linear attention layers \u2014 short benchmarks look fine while long-context production output turns to gibberish\"]}, \"notable_outliers\": [{\"claim\": \"Weight quantization is approaching Pareto optimality, so the next round of inference gains has to come from KV cache compression and sparsity rather than from smaller weights.\", \"talk\": \"compression-at-the-edge\", \"timestamp_sec\": 2394}, {\"claim\": \"Running KV caching on S3 is still very uncommon, but it will happen because a gigabyte of memory costs $2 and a gigabyte of S3 costs 2 cents.\", \"talk\": \"building-turbopuffer-gergely-orosz-pragmaticengineer-simon-eskildsen-ceo\", \"timestamp_sec\": 1883}, {\"claim\": \"KV cache handling at 500K\u20131M context under concurrency is not conceptually hard \u2014 it is undergraduate distributed-systems material that most ML practitioners skipped and are now rediscovering live in industry.\", \"talk\": \"agents-at-scale-inside-minimaxs-model-and-the-infrastructure-behind-it\", \"timestamp_sec\": 992}, {\"claim\": \"The 5-minute KV cache lifetime offered by providers is an operational and pricing determination, not a science-based or physical one.\", \"talk\": \"the-state-of-model-routing\", \"timestamp_sec\": 2086}, {\"claim\": \"Since GraphRAG already pushes every document through an LLM for entity extraction, loading those documents straight into a cached context is not a meaningfully larger cost \u2014 and parallel cache loading beats GraphRAG on knowledge-build time.\", \"talk\": \"when-all-context-matters-extended-cache-augmented-generation\", \"timestamp_sec\": 277}, {\"claim\": \"Per-user LoRA adapters over a shared memory layer enforce read permissions better than code-level access control, but the memory injection engine underneath must be KV-cache-aware or the cache breaks.\", \"talk\": \"wearing-the-agent-from-group-chats-to-glasses\", \"timestamp_sec\": 923}], \"maturity\": \"consolidating\", \"maturity_rationale\": \"The core technique is no longer argued \u2014 five independent talks treat stable-prefix caching as the default architecture and quantify the win consistently (90% cheaper, ~10x on cached tokens). What remains contested is placement and policy: where the cache physically lives (DRAM vs object storage vs self-hosted), whether compaction or curation handles context growth, and whether whole corpora belong resident in cache at all.\"}",
+  "ttft_ms": 54757,
+  "ttft_stream_ms": 907,
+  "time_to_request_ms": 35,
+  "type": "result",
+  "duration_ms": 113917,
+  "uuid": "9876e92e-705f-4ac0-bccc-10b8645f0cb2",
+  "passC": {
+    "concept": "kv cache management",
+    "state_of_practice": "Prefix caching has stopped being an optimization and become an architectural constraint: practitioners now design the agent loop backwards from the requirement that the leading portion of the context be byte-identical across requests, because a stable prefix buys roughly 90% cheaper and faster inference and cached tokens run about 10x cheaper than fresh input. The consequence is that every mechanism that rewrites context \u2014 compaction, sliding-window trimming, memory injection, spawning a fresh subagent \u2014 is now priced as a cache miss rather than treated as free hygiene; Cognition explicitly compacts for intelligence, not cost, and runs a single long-lived sidekick instead of fan-out subagents to preserve the running context. At the serving layer the problem has been reframed as storage systems engineering: at 500K\u20131M context under concurrency, Together AI describes KV cache handling as building a distributed file system or a very large database, turbopuffer expects KV caching to move onto object storage on pure economics (a GB of DRAM is $2, a GB of S3 is 2 cents), and the ubiquitous 5-minute cache TTL is understood as a provider pricing decision rather than a physical limit \u2014 which is part of why teams with high reuse are buying raw compute instead of paying per token. Cache-as-retrieval is being tried directly: cache-augmented generation loads whole document collections into parallel KV caches and dispatches a supervisor across buckets, trading GraphRAG's graph-rebuild cost for cache lifetime cost. The counterweight to all of this is that context is not free even when it is cached \u2014 multiple speakers independently report that filling the window degrades answer quality through contradicting information, with a working recommendation of staying under 200K and ideally under 100K tokens.",
+    "consensus": [
+      {
+        "claim": "A stable, byte-identical context prefix is the primary lever for agent cost and latency, and applications should be architected so the front of the window does not change between requests.",
+        "support_count": 5,
+        "supporting_talks": [
+          "voice-in-visuals-out-the-agony-and-the-ecstasy",
+          "your-agent-is-wasting-tokens-and-you-dont-know-it",
+          "wearing-the-agent-from-group-chats-to-glasses",
+          "the-state-of-model-routing",
+          "when-all-context-matters-extended-cache-augmented-generation"
+        ],
+        "evidence_quote": "if the beginning of the context you send to the model is the same each time, then you can get up to 90% cheaper, faster inference um depending on the conditions.",
+        "evidence_talk": "voice-in-visuals-out-the-agony-and-the-ecstasy",
+        "evidence_timestamp_sec": 682
+      },
+      {
+        "claim": "Rewriting the context \u2014 compaction, sliding-window trimming, or clever memory injection \u2014 is not a free cost optimization; it invalidates the cached prefix or degrades behavior, so it must be spent deliberately to buy something else.",
+        "support_count": 4,
+        "supporting_talks": [
+          "the-state-of-model-routing",
+          "wearing-the-agent-from-group-chats-to-glasses",
+          "codex-behind-the-harness",
+          "your-agent-is-wasting-tokens-and-you-dont-know-it"
+        ],
+        "evidence_quote": "you're actually then now like paying 10 times as much for the for those input tokens if you didn't compact. Um the main reason we compact is actually intelligence.",
+        "evidence_talk": "the-state-of-model-routing",
+        "evidence_timestamp_sec": 1923
+      },
+      {
+        "claim": "More resident context degrades answer quality independently of cost or hitting the token limit, so what enters the window must be actively capped rather than allowed to grow to the advertised limit.",
+        "support_count": 4,
+        "supporting_talks": [
+          "codex-behind-the-harness",
+          "when-all-context-matters-extended-cache-augmented-generation",
+          "the-state-of-model-routing",
+          "your-agent-is-wasting-tokens-and-you-dont-know-it"
+        ],
+        "evidence_quote": "the more context you have in your in your context, the higher it is that you have contradicting information and it causes confusion for the model.",
+        "evidence_talk": "codex-behind-the-harness",
+        "evidence_timestamp_sec": 245
+      },
+      {
+        "claim": "At production scale the KV cache is a storage-systems problem \u2014 tiering, placement, and cache lifetime are the tunables, not model-level tricks.",
+        "support_count": 4,
+        "supporting_talks": [
+          "agents-at-scale-inside-minimaxs-model-and-the-infrastructure-behind-it",
+          "building-turbopuffer-gergely-orosz-pragmaticengineer-simon-eskildsen-ceo",
+          "when-all-context-matters-extended-cache-augmented-generation",
+          "the-state-of-model-routing"
+        ],
+        "evidence_quote": "Like in in some sense, it's like recreating a distributed file system. So, we we're in some sense building something like that or a very big database.",
+        "evidence_talk": "agents-at-scale-inside-minimaxs-model-and-the-infrastructure-behind-it",
+        "evidence_timestamp_sec": 992
+      }
+    ],
+    "disagreements": [
+      {
+        "question": "When context grows past what fits or performs well, should you compact it, or should you design so it never grows in the first place?",
+        "position_a": "Compact. Run automatic compaction (ideally server-side, in the exact format the model was trained on) or sliding-window trimming plus a summary of the dropped history, accepting the cache miss as the price of continued coherence.",
+        "position_a_talks": [
+          "codex-behind-the-harness",
+          "your-agent-is-wasting-tokens-and-you-dont-know-it",
+          "the-state-of-model-routing"
+        ],
+        "position_b": "Don't let it overflow. Curate what enters context up front \u2014 extract atomic facts from conversations and score them for relevance rather than storing everything and compacting on overflow \u2014 and hold the prefix immutable, since compaction is a lossy patch over bad context discipline and forfeits what gradient-based learning would give you.",
+        "position_b_talks": [
+          "wearing-the-agent-from-group-chats-to-glasses",
+          "voice-in-visuals-out-the-agony-and-the-ecstasy",
+          "scaling-compute-on-context"
+        ],
+        "why_it_matters": "Compaction-first designs accept a periodic 10x input-token spike and a behavioral discontinuity at every compaction boundary; curation-first designs require building a memory extraction and relevance-scoring layer that must itself be KV-cache-aware. The two lead to entirely different memory subsystems and different steady-state token bills."
+      },
+      {
+        "question": "Is KV cache economics something you solve inside your application, or something you solve by owning the serving stack?",
+        "position_a": "Inside the application. Turn on prompt caching across whichever provider you use, keep the system prompt and tool definitions stable, defer tool schemas to lazy search, and take the provider's cache semantics as given \u2014 the wins are already exposed through the API.",
+        "position_a_talks": [
+          "your-agent-is-wasting-tokens-and-you-dont-know-it",
+          "codex-behind-the-harness",
+          "voice-in-visuals-out-the-agony-and-the-ecstasy"
+        ],
+        "position_b": "Own the stack. The 5-minute cache window and per-token pricing are operational choices that amortize across everyone else's workload shape; buy raw compute directly, self-host, or build your own KV storage tier on object storage and optimize cache lifetime for your specific access pattern.",
+        "position_b_talks": [
+          "the-state-of-model-routing",
+          "agents-at-scale-inside-minimaxs-model-and-the-infrastructure-behind-it",
+          "building-turbopuffer-gergely-orosz-pragmaticengineer-simon-eskildsen-ceo"
+        ],
+        "why_it_matters": "If cache reuse is high and workload-shaped, per-token API pricing systematically overcharges you and the fix is an infrastructure project, not a prompt change. Teams that mis-diagnose this either build a distributed KV store they didn't need or keep paying for cache misses they could have designed away."
+      },
+      {
+        "question": "Should whole corpora be resident in KV cache, or should context be aggressively minimized and everything else retrieved?",
+        "position_a": "Load it all. When every document in a collection is relevant, push the corpus into multiple large-context caches in parallel, distributed in no particular order, and let a supervisor model interrogate the buckets \u2014 faster to build than GraphRAG and more accurate than similarity RAG, with cost controlled by tuning how long each cache lives.",
+        "position_a_talks": [
+          "when-all-context-matters-extended-cache-augmented-generation"
+        ],
+        "position_b": "Keep the window small. Cap what is resident \u2014 2% of the window for skill descriptions, tools deferred behind search, large tool results stored out of band and summarized, and never run past 200K tokens (ideally under 100K) regardless of the advertised window.",
+        "position_b_talks": [
+          "codex-behind-the-harness",
+          "the-state-of-model-routing",
+          "your-agent-is-wasting-tokens-and-you-dont-know-it"
+        ],
+        "why_it_matters": "One approach spends money on standing KV cache to avoid retrieval error; the other spends engineering on retrieval and out-of-band storage to avoid quality degradation. The break-even depends on whether your corpus genuinely has dense cross-document relationships or is separable \u2014 and getting it wrong means either a large idle cache bill or systematically missed context."
+      }
+    ],
+    "practical_guidance": {
+      "do": [
+        "Design the request so the first ~90% of the context window is identical from call to call, and put all variation in the trailing portion",
+        "Enable prompt caching on the system prompt, and where the provider supports it, on tool definitions and messages too",
+        "Cap the available-skills/tool-description block at a fixed fraction of the context window (Codex uses 2%) and truncate beyond it, marking additional tools as deferred behind a tool-search call",
+        "Run compaction server-side in the exact format the model was trained on, so post-compaction performance matches pre-compaction",
+        "Use one long-lived sidekick agent with a running context instead of spawning fresh subagents, so the accumulated prefix stays cached at ~10x lower token cost",
+        "Keep working context under 200K tokens and ideally under 100K, independent of the advertised window",
+        "Store large tool results in local or cloud storage and pass a summary into the loop rather than re-sending the full result every iteration",
+        "Set an explicit max-iteration cap on tool loops and profile per-tool call counts and durations with observability tooling before shipping",
+        "Treat cache lifetime/TTL as a tunable cost knob, and if reuse is high, negotiate direct compute capacity instead of per-token pricing",
+        "In voice/real-time loops, fire inference every 1\u20132 seconds while the user is still speaking against the stable prefix rather than waiting for a second of silence",
+        "If backing KV or vector storage with object storage, design against P99/P999 latency rather than P50, since one logical operation issues many requests and ~200ms object reads compound"
+      ],
+      "avoid": [
+        "Injecting or reordering memory in the middle of the prefix \u2014 any model-side cleverness invalidates the cache it was meant to exploit",
+        "Re-sending the full conversation history on every call in multi-turn agents",
+        "Treating compaction as a cost reduction; it forces a cache miss and raises input token cost, so justify it by the intelligence you recover",
+        "Filling the context window just because the tokens fit \u2014 quality degrades from contradicting information well before the hard limit",
+        "Bucketing documents by domain when distributing them across parallel caches; with dense cross-document relationships the supervisor skips domains that look irrelevant at first glance",
+        "Assuming the 5-minute cache window is a physical constraint rather than a provider pricing and operations decision",
+        "Choosing an inference platform on model size alone \u2014 GPT-5 mini showed 5,000ms typical and 7,000ms P95 latency despite being small and cheap, because the platform did not prioritize latency",
+        "Assuming a single inference stack serves both chat and agentic workloads; uploading a whole codebase changes the caching, routing, and kernel optimization targets",
+        "Quantizing linear attention layers \u2014 short benchmarks look fine while long-context production output turns to gibberish"
+      ]
+    },
+    "notable_outliers": [
+      {
+        "claim": "Weight quantization is approaching Pareto optimality, so the next round of inference gains has to come from KV cache compression and sparsity rather than from smaller weights.",
+        "talk": "compression-at-the-edge",
+        "timestamp_sec": 2394
+      },
+      {
+        "claim": "Running KV caching on S3 is still very uncommon, but it will happen because a gigabyte of memory costs $2 and a gigabyte of S3 costs 2 cents.",
+        "talk": "building-turbopuffer-gergely-orosz-pragmaticengineer-simon-eskildsen-ceo",
+        "timestamp_sec": 1883
+      },
+      {
+        "claim": "KV cache handling at 500K\u20131M context under concurrency is not conceptually hard \u2014 it is undergraduate distributed-systems material that most ML practitioners skipped and are now rediscovering live in industry.",
+        "talk": "agents-at-scale-inside-minimaxs-model-and-the-infrastructure-behind-it",
+        "timestamp_sec": 992
+      },
+      {
+        "claim": "The 5-minute KV cache lifetime offered by providers is an operational and pricing determination, not a science-based or physical one.",
+        "talk": "the-state-of-model-routing",
+        "timestamp_sec": 2086
+      },
+      {
+        "claim": "Since GraphRAG already pushes every document through an LLM for entity extraction, loading those documents straight into a cached context is not a meaningfully larger cost \u2014 and parallel cache loading beats GraphRAG on knowledge-build time.",
+        "talk": "when-all-context-matters-extended-cache-augmented-generation",
+        "timestamp_sec": 277
+      },
+      {
+        "claim": "Per-user LoRA adapters over a shared memory layer enforce read permissions better than code-level access control, but the memory injection engine underneath must be KV-cache-aware or the cache breaks.",
+        "talk": "wearing-the-agent-from-group-chats-to-glasses",
+        "timestamp_sec": 923
+      }
+    ],
+    "maturity": "consolidating",
+    "maturity_rationale": "The core technique is no longer argued \u2014 five independent talks treat stable-prefix caching as the default architecture and quantify the win consistently (90% cheaper, ~10x on cached tokens). What remains contested is placement and policy: where the cache physically lives (DRAM vs object storage vs self-hosted), whether compaction or curation handles context growth, and whether whole corpora belong resident in cache at all."
+  },
+  "_meta": {
+    "concept": "kv cache management",
+    "slug": "kv-cache-management",
+    "talk_count": 10,
+    "missing_talks": [],
+    "wall_sec": 115.0,
+    "run_at": "2026-08-13T19:37:13Z"
+  }
+}

@@ -1,0 +1,290 @@
+{
+  "is_error": false,
+  "duration_api_ms": 67615,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "ba6b93d2-7ee6-4833-9d32-aae69fe6d840",
+  "total_cost_usd": 0.217217,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 6393,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 5784,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 6393,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 5784,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 6393,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 6393
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 3438,
+      "outputTokens": 17,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.003523,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 5784,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 6393,
+      "webSearchRequests": 0,
+      "costUSD": 0.213694,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Rajkumar Sakthivel recounts how he and a collaborator traced a sudden spike in their AI coding bill not to model reasoning but to context bloat \u2014 roughly 45,000 tokens sent per query when only about 5,000 mattered. The talk's central argument is that ~90% of AI coding cost is input, so prompt tweaks, model settings, and output compression can't move the needle; the fix has to happen before the request is sent. Their answer is CCE, a free open-source local index that chunks code by function/class, runs semantic and keyword search in parallel, compresses results to signatures, tracks call graphs, and score-gates low-relevance hits \u2014 all on-device. On a FastAPI benchmark of 53 files and 20 questions, tokens per question dropped from 83K to 4.9K (94%) while still finding the right code 90% of the time. Worth watching for the cost-structure framing and for the unusually candid limits section: the 94% is measured against a worst-case full-file baseline, and recall collapsed on a 396-file mixed codebase.\",\n  \"key_points\": [\n    \"The cost spike came from context volume, not model usage \u2014 most tokens sent were files and code the model didn't need for the query.\",\n    \"Roughly 90% of AI coding spend is input tokens and only 10% is output, so cutting output by 75% saves about 8% total while cutting input by 94% saves about 61%.\",\n    \"Prompt instructions like 'only show relevant code' cannot work because the 45,000 tokens are already sent and billed before the model reads the prompt; model settings like max tokens and temperature only affect output.\",\n    \"Their local search layer works in five steps: semantic chunking by function/class/method, parallel semantic plus keyword search, signature-level compression (50-line function down to 5 lines), call-graph linking, and a relevance score threshold that drops weak results.\",\n    \"Hybrid search exists because each mode fails differently \u2014 semantic search misses exact names, keyword search misses synonyms like 'login flow' vs 'sign in' \u2014 and each alone misses about 1 in 4 results versus 1 in 10 combined.\",\n    \"For relevance gating they rejected LLM-as-judge (2-3 seconds of added latency) and fixed thresholds (penalizes short queries) in favor of a weighted formula \u2014 50% semantic, 30% keyword, 20% recency \u2014 that runs in 0.4 milliseconds with no extra model calls.\",\n    \"Benchmarked on FastAPI (53 files, 20 developer questions), context dropped from 83K to 4.9K tokens per question, or 523 tokens with extra compression, while still locating the right code 90% of the time.\",\n    \"The speaker explicitly discounts his own headline number: 94% is measured against a naive read-every-file baseline, tools like Claude Code are already smarter than that, and recall dropped to near zero on a 396-file codebase with files that each do many things.\",\n    \"A shared index plus persistent memory lets Claude Code, Cursor, and Copilot reuse the same codebase understanding instead of each tool starting cold every session.\",\n    \"On a real project of 247 queries, the tool reported 12.4 million tokens saved with 84% of the savings from the search layer and the remainder from compression.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"Most of the money was not the AI thinking. Most of it was sending too much context.\",\n      \"timestamp_sec\": 1,\n      \"why\": \"The thesis of the entire talk in two sentences.\"\n    },\n    {\n      \"text\": \"We measured typical query on our project. It was sending 45,000 tokens of context, but the part of actually mattered is about 5,000 only.\",\n      \"timestamp_sec\": 56,\n      \"why\": \"The core measurement the whole argument rests on.\"\n    },\n    {\n      \"text\": \"It's like ordering a pizza and paying for extra nine pizzas you don't eat every time.\",\n      \"timestamp_sec\": 56,\n      \"why\": \"Memorable framing of a 9:1 waste ratio.\"\n    },\n    {\n      \"text\": \"The model already got 45,000 tokens before it read the prompt. Cost already happened.\",\n      \"timestamp_sec\": 117,\n      \"why\": \"Explains precisely why prompt-level fixes are structurally incapable of saving money.\"\n    },\n    {\n      \"text\": \"This is the most important slide. 90% of your AI cost is input.\",\n      \"timestamp_sec\": 117,\n      \"why\": \"The single number that reorients where optimization effort should go.\"\n    },\n    {\n      \"text\": \"if you cut input by 94%, you can save about 61% total. Same math, but different result. Fix the input. That's where your money goes.\",\n      \"timestamp_sec\": 172,\n      \"why\": \"Quantifies the asymmetry between input and output optimization.\"\n    },\n    {\n      \"text\": \"By themselves, both searches miss about one in four results. Together, they miss about one in 10.\",\n      \"timestamp_sec\": 275,\n      \"why\": \"Concrete recall numbers justifying hybrid retrieval over a single search mode.\"\n    },\n    {\n      \"text\": \"Sometimes search results returns 10 results, and none of them are right. If they use the bad results, it gives confident wrong answer.\",\n      \"timestamp_sec\": 333,\n      \"why\": \"Names the failure mode that motivated the score-gating design.\"\n    },\n    {\n      \"text\": \"We tried asking AI to judge its own results, too slow. Add 2-3 seconds every time.\",\n      \"timestamp_sec\": 333,\n      \"why\": \"A measured rejection of LLM-as-judge for inline reranking.\"\n    },\n    {\n      \"text\": \"Some simple formula, 50% meaning score, 30% keyword score, 20% how the recent code is.\",\n      \"timestamp_sec\": 333,\n      \"why\": \"The actual scoring weights, reusable by anyone building similar retrieval.\"\n    },\n    {\n      \"text\": \"It runs 0.4 milliseconds, no extra AI calls needed. The lesson we learned, simple formula beats the complex model most of the time.\",\n      \"timestamp_sec\": 333,\n      \"why\": \"States the talk's secondary thesis about heuristics versus models.\"\n    },\n    {\n      \"text\": \"Without using our tool, 83 uh K tokens per questions. With our tools, uh 4.9 K tokens per questions. That is 94% less.\",\n      \"timestamp_sec\": 391,\n      \"why\": \"The headline benchmark result.\"\n    },\n    {\n      \"text\": \"I want to be honest about the limits. The 94% again the worst case, reading full files every time. In a real life, the tools like a cloud code already smarter than that.\",\n      \"timestamp_sec\": 391,\n      \"why\": \"Rare on-stage caveat that the headline number uses a favorable baseline.\"\n    },\n    {\n      \"text\": \"We use full file base because it is the only one we can measure the same way every time.\",\n      \"timestamp_sec\": 455,\n      \"why\": \"Defends the baseline choice as a reproducibility tradeoff rather than marketing.\"\n    },\n    {\n      \"text\": \"We tested on large projects with 396 files. The recall dropped almost zero. If your files each do one thing, it works well. If your files do many things, it struggles.\",\n      \"timestamp_sec\": 455,\n      \"why\": \"Discloses the scaling failure mode and the codebase property it depends on.\"\n    },\n    {\n      \"text\": \"We use a small fast model for search. It's quick. Re-indexing takes under a second. But the bigger model would find more. We chose speed over perfection.\",\n      \"timestamp_sec\": 455,\n      \"why\": \"Explicit statement of the embedding-model tradeoff they took.\"\n    },\n    {\n      \"text\": \"Each tool starts fresh every time. They do not share anything. You explain the same code base to three different days.\",\n      \"timestamp_sec\": 511,\n      \"why\": \"Frames cross-tool context duplication as a distinct source of waste.\"\n    },\n    {\n      \"text\": \"247 queries. 12.4 million tokens saved. Nearly 186 not spent. Most of the savings, 84% came from search layer. The rest of them, compression.\",\n      \"timestamp_sec\": 571,\n      \"why\": \"Attributes real-world savings between the two mechanisms.\"\n    },\n    {\n      \"text\": \"The answer was not a better model. The answer was sending less.\",\n      \"timestamp_sec\": 571,\n      \"why\": \"The talk's closing argument, stated at its sharpest.\"\n    },\n    {\n      \"text\": \"We argue about which model is best, Opus or Sonnet. But the models may be 30% of the cost, but other 70% is what you feed it.\",\n      \"timestamp_sec\": 571,\n      \"why\": \"A direct challenge to the field's focus on model selection over context engineering.\"\n    }\n  ],\n  \"concepts\": [\n    \"context engineering\",\n    \"hybrid retrieval\",\n    \"semantic code chunking\",\n    \"input token cost\",\n    \"code indexing\",\n    \"relevance scoring and thresholding\",\n    \"llm-as-judge latency\",\n    \"context compression\",\n    \"call graph traversal\",\n    \"local-first inference\",\n    \"cross-tool memory sharing\",\n    \"retrieval recall evaluation\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"About 90% of AI coding tool cost is input tokens and only 10% is output.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 117\n    },\n    {\n      \"claim\": \"Optimizing output \u2014 shorter answers, max token and temperature settings \u2014 cannot meaningfully reduce AI coding spend because the cost is on the input side.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 117\n    },\n    {\n      \"claim\": \"Prompt instructions to send less context are structurally useless, because the context is already transmitted and billed before the model reads the prompt.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 117\n    },\n    {\n      \"claim\": \"Semantic and keyword search each miss roughly 25% of relevant results alone, but only about 10% when combined.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 275\n    },\n    {\n      \"claim\": \"A weighted heuristic score (50% semantic, 30% keyword, 20% recency) with an adaptive threshold outperforms LLM-based reranking for this task, running in 0.4ms instead of adding 2-3 seconds.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 333\n    },\n    {\n      \"claim\": \"Simple formulas beat complex models most of the time.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 333\n    },\n    {\n      \"claim\": \"Their index cuts context from 83K to 4.9K tokens per question on FastAPI while still finding the right code 90% of the time.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 391\n    },\n    {\n      \"claim\": \"The 94% reduction figure is against a worst-case full-file-read baseline; real savings against modern agentic tools like Claude Code are lower.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 391\n    },\n    {\n      \"claim\": \"The approach degrades badly on large codebases where individual files have many responsibilities \u2014 recall dropped to nearly zero at 396 files.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 455\n    },\n    {\n      \"claim\": \"A small, fast embedding model is the right choice over a larger more accurate one, trading retrieval quality for sub-second re-indexing.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 455\n    },\n    {\n      \"claim\": \"Running the entire index and search locally, with nothing sent to the cloud, is a design advantage.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 275\n    },\n    {\n      \"claim\": \"Because AI coding tools each start from zero context, a single shared index and persistent memory across Claude Code, Cursor, and Copilot eliminates redundant re-explanation of the codebase.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 511\n    },\n    {\n      \"claim\": \"Model choice matters far less than context management, since the model is roughly 30% of cost and what you feed it is the other 70%.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 571\n    },\n    {\n      \"claim\": \"Self-reported token savings should be measured by instrumenting real queries against a counterfactual baseline, not estimated.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 571\n    }\n  ],\n  \"speaker_org\": \"Tesco\"\n}",
+  "ttft_ms": 22426,
+  "ttft_stream_ms": 1086,
+  "time_to_request_ms": 32,
+  "type": "result",
+  "duration_ms": 69038,
+  "uuid": "caa42270-f400-4f89-abf7-da02c6594f51",
+  "passA": {
+    "summary": "Rajkumar Sakthivel recounts how he and a collaborator traced a sudden spike in their AI coding bill not to model reasoning but to context bloat \u2014 roughly 45,000 tokens sent per query when only about 5,000 mattered. The talk's central argument is that ~90% of AI coding cost is input, so prompt tweaks, model settings, and output compression can't move the needle; the fix has to happen before the request is sent. Their answer is CCE, a free open-source local index that chunks code by function/class, runs semantic and keyword search in parallel, compresses results to signatures, tracks call graphs, and score-gates low-relevance hits \u2014 all on-device. On a FastAPI benchmark of 53 files and 20 questions, tokens per question dropped from 83K to 4.9K (94%) while still finding the right code 90% of the time. Worth watching for the cost-structure framing and for the unusually candid limits section: the 94% is measured against a worst-case full-file baseline, and recall collapsed on a 396-file mixed codebase.",
+    "key_points": [
+      "The cost spike came from context volume, not model usage \u2014 most tokens sent were files and code the model didn't need for the query.",
+      "Roughly 90% of AI coding spend is input tokens and only 10% is output, so cutting output by 75% saves about 8% total while cutting input by 94% saves about 61%.",
+      "Prompt instructions like 'only show relevant code' cannot work because the 45,000 tokens are already sent and billed before the model reads the prompt; model settings like max tokens and temperature only affect output.",
+      "Their local search layer works in five steps: semantic chunking by function/class/method, parallel semantic plus keyword search, signature-level compression (50-line function down to 5 lines), call-graph linking, and a relevance score threshold that drops weak results.",
+      "Hybrid search exists because each mode fails differently \u2014 semantic search misses exact names, keyword search misses synonyms like 'login flow' vs 'sign in' \u2014 and each alone misses about 1 in 4 results versus 1 in 10 combined.",
+      "For relevance gating they rejected LLM-as-judge (2-3 seconds of added latency) and fixed thresholds (penalizes short queries) in favor of a weighted formula \u2014 50% semantic, 30% keyword, 20% recency \u2014 that runs in 0.4 milliseconds with no extra model calls.",
+      "Benchmarked on FastAPI (53 files, 20 developer questions), context dropped from 83K to 4.9K tokens per question, or 523 tokens with extra compression, while still locating the right code 90% of the time.",
+      "The speaker explicitly discounts his own headline number: 94% is measured against a naive read-every-file baseline, tools like Claude Code are already smarter than that, and recall dropped to near zero on a 396-file codebase with files that each do many things.",
+      "A shared index plus persistent memory lets Claude Code, Cursor, and Copilot reuse the same codebase understanding instead of each tool starting cold every session.",
+      "On a real project of 247 queries, the tool reported 12.4 million tokens saved with 84% of the savings from the search layer and the remainder from compression."
+    ],
+    "notable_quotes": [
+      {
+        "text": "Most of the money was not the AI thinking. Most of it was sending too much context.",
+        "timestamp_sec": 1,
+        "why": "The thesis of the entire talk in two sentences."
+      },
+      {
+        "text": "We measured typical query on our project. It was sending 45,000 tokens of context, but the part of actually mattered is about 5,000 only.",
+        "timestamp_sec": 56,
+        "why": "The core measurement the whole argument rests on."
+      },
+      {
+        "text": "It's like ordering a pizza and paying for extra nine pizzas you don't eat every time.",
+        "timestamp_sec": 56,
+        "why": "Memorable framing of a 9:1 waste ratio."
+      },
+      {
+        "text": "The model already got 45,000 tokens before it read the prompt. Cost already happened.",
+        "timestamp_sec": 117,
+        "why": "Explains precisely why prompt-level fixes are structurally incapable of saving money."
+      },
+      {
+        "text": "This is the most important slide. 90% of your AI cost is input.",
+        "timestamp_sec": 117,
+        "why": "The single number that reorients where optimization effort should go."
+      },
+      {
+        "text": "if you cut input by 94%, you can save about 61% total. Same math, but different result. Fix the input. That's where your money goes.",
+        "timestamp_sec": 172,
+        "why": "Quantifies the asymmetry between input and output optimization."
+      },
+      {
+        "text": "By themselves, both searches miss about one in four results. Together, they miss about one in 10.",
+        "timestamp_sec": 275,
+        "why": "Concrete recall numbers justifying hybrid retrieval over a single search mode."
+      },
+      {
+        "text": "Sometimes search results returns 10 results, and none of them are right. If they use the bad results, it gives confident wrong answer.",
+        "timestamp_sec": 333,
+        "why": "Names the failure mode that motivated the score-gating design."
+      },
+      {
+        "text": "We tried asking AI to judge its own results, too slow. Add 2-3 seconds every time.",
+        "timestamp_sec": 333,
+        "why": "A measured rejection of LLM-as-judge for inline reranking."
+      },
+      {
+        "text": "Some simple formula, 50% meaning score, 30% keyword score, 20% how the recent code is.",
+        "timestamp_sec": 333,
+        "why": "The actual scoring weights, reusable by anyone building similar retrieval."
+      },
+      {
+        "text": "It runs 0.4 milliseconds, no extra AI calls needed. The lesson we learned, simple formula beats the complex model most of the time.",
+        "timestamp_sec": 333,
+        "why": "States the talk's secondary thesis about heuristics versus models."
+      },
+      {
+        "text": "Without using our tool, 83 uh K tokens per questions. With our tools, uh 4.9 K tokens per questions. That is 94% less.",
+        "timestamp_sec": 391,
+        "why": "The headline benchmark result."
+      },
+      {
+        "text": "I want to be honest about the limits. The 94% again the worst case, reading full files every time. In a real life, the tools like a cloud code already smarter than that.",
+        "timestamp_sec": 391,
+        "why": "Rare on-stage caveat that the headline number uses a favorable baseline."
+      },
+      {
+        "text": "We use full file base because it is the only one we can measure the same way every time.",
+        "timestamp_sec": 455,
+        "why": "Defends the baseline choice as a reproducibility tradeoff rather than marketing."
+      },
+      {
+        "text": "We tested on large projects with 396 files. The recall dropped almost zero. If your files each do one thing, it works well. If your files do many things, it struggles.",
+        "timestamp_sec": 455,
+        "why": "Discloses the scaling failure mode and the codebase property it depends on."
+      },
+      {
+        "text": "We use a small fast model for search. It's quick. Re-indexing takes under a second. But the bigger model would find more. We chose speed over perfection.",
+        "timestamp_sec": 455,
+        "why": "Explicit statement of the embedding-model tradeoff they took."
+      },
+      {
+        "text": "Each tool starts fresh every time. They do not share anything. You explain the same code base to three different days.",
+        "timestamp_sec": 511,
+        "why": "Frames cross-tool context duplication as a distinct source of waste."
+      },
+      {
+        "text": "247 queries. 12.4 million tokens saved. Nearly 186 not spent. Most of the savings, 84% came from search layer. The rest of them, compression.",
+        "timestamp_sec": 571,
+        "why": "Attributes real-world savings between the two mechanisms."
+      },
+      {
+        "text": "The answer was not a better model. The answer was sending less.",
+        "timestamp_sec": 571,
+        "why": "The talk's closing argument, stated at its sharpest."
+      },
+      {
+        "text": "We argue about which model is best, Opus or Sonnet. But the models may be 30% of the cost, but other 70% is what you feed it.",
+        "timestamp_sec": 571,
+        "why": "A direct challenge to the field's focus on model selection over context engineering."
+      }
+    ],
+    "concepts": [
+      "context engineering",
+      "hybrid retrieval",
+      "semantic code chunking",
+      "input token cost",
+      "code indexing",
+      "relevance scoring and thresholding",
+      "llm-as-judge latency",
+      "context compression",
+      "call graph traversal",
+      "local-first inference",
+      "cross-tool memory sharing",
+      "retrieval recall evaluation"
+    ],
+    "positions": [
+      {
+        "claim": "About 90% of AI coding tool cost is input tokens and only 10% is output.",
+        "confidence": "stated",
+        "timestamp_sec": 117
+      },
+      {
+        "claim": "Optimizing output \u2014 shorter answers, max token and temperature settings \u2014 cannot meaningfully reduce AI coding spend because the cost is on the input side.",
+        "confidence": "stated",
+        "timestamp_sec": 117
+      },
+      {
+        "claim": "Prompt instructions to send less context are structurally useless, because the context is already transmitted and billed before the model reads the prompt.",
+        "confidence": "stated",
+        "timestamp_sec": 117
+      },
+      {
+        "claim": "Semantic and keyword search each miss roughly 25% of relevant results alone, but only about 10% when combined.",
+        "confidence": "stated",
+        "timestamp_sec": 275
+      },
+      {
+        "claim": "A weighted heuristic score (50% semantic, 30% keyword, 20% recency) with an adaptive threshold outperforms LLM-based reranking for this task, running in 0.4ms instead of adding 2-3 seconds.",
+        "confidence": "stated",
+        "timestamp_sec": 333
+      },
+      {
+        "claim": "Simple formulas beat complex models most of the time.",
+        "confidence": "stated",
+        "timestamp_sec": 333
+      },
+      {
+        "claim": "Their index cuts context from 83K to 4.9K tokens per question on FastAPI while still finding the right code 90% of the time.",
+        "confidence": "stated",
+        "timestamp_sec": 391
+      },
+      {
+        "claim": "The 94% reduction figure is against a worst-case full-file-read baseline; real savings against modern agentic tools like Claude Code are lower.",
+        "confidence": "stated",
+        "timestamp_sec": 391
+      },
+      {
+        "claim": "The approach degrades badly on large codebases where individual files have many responsibilities \u2014 recall dropped to nearly zero at 396 files.",
+        "confidence": "stated",
+        "timestamp_sec": 455
+      },
+      {
+        "claim": "A small, fast embedding model is the right choice over a larger more accurate one, trading retrieval quality for sub-second re-indexing.",
+        "confidence": "stated",
+        "timestamp_sec": 455
+      },
+      {
+        "claim": "Running the entire index and search locally, with nothing sent to the cloud, is a design advantage.",
+        "confidence": "stated",
+        "timestamp_sec": 275
+      },
+      {
+        "claim": "Because AI coding tools each start from zero context, a single shared index and persistent memory across Claude Code, Cursor, and Copilot eliminates redundant re-explanation of the codebase.",
+        "confidence": "stated",
+        "timestamp_sec": 511
+      },
+      {
+        "claim": "Model choice matters far less than context management, since the model is roughly 30% of cost and what you feed it is the other 70%.",
+        "confidence": "stated",
+        "timestamp_sec": 571
+      },
+      {
+        "claim": "Self-reported token savings should be measured by instrumenting real queries against a counterfactual baseline, not estimated.",
+        "confidence": "implied",
+        "timestamp_sec": 571
+      }
+    ],
+    "speaker_org": "Tesco"
+  },
+  "_meta": {
+    "slug": "we-cut-94-of-ai-coding-tokens-with-a-local-code-index",
+    "video_id": "dRmWYHuIJxM",
+    "url": "https://www.youtube.com/watch?v=dRmWYHuIJxM",
+    "word_count": 1320,
+    "wall_sec": 70.8,
+    "run_at": "2026-08-12T19:14:59Z",
+    "effort": "default"
+  }
+}

@@ -1,0 +1,283 @@
+{
+  "is_error": false,
+  "duration_api_ms": 49383,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "276e95ac-75bf-40cd-a02e-73b715a1d7b8",
+  "total_cost_usd": 0.22521699999999997,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 10891,
+    "cache_read_input_tokens": 10308,
+    "output_tokens": 4162,
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 10891,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 4162,
+        "cache_read_input_tokens": 10308,
+        "cache_creation_input_tokens": 10891,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 10891
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 7008,
+      "outputTokens": 17,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.007093,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 4162,
+      "cacheReadInputTokens": 10308,
+      "cacheCreationInputTokens": 10891,
+      "webSearchRequests": 0,
+      "costUSD": 0.21812399999999998,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Yohei Nakajima presents ActiveGraph (BabyAGI 4), an experimental open-source 'event-sourced graph runtime for building auditable agents.' Instead of building around the LLM and bolting on logging, ActiveGraph makes an immutable typed event log the ground truth; the log projects a graph state, and 'behaviors' react to graph changes and emit new events rather than calling each other directly. Policies gate which graph changes an agent can make unilaterally versus which need a proposed patch, a test, or a human in the loop, and the log design gives replay, rollback, and forking natively. He reports experiments using the log itself as memory on LongMemEval, self-modification loops that only accept patches that measurably improve accuracy, an 'ActiveGraph Lab' that researches itself, and a Pok\u00e9mon TCG Kaggle deck agent tuned over ~80 passes. Worth watching if you care about auditable long-running agents, self-improvement loops, or blackboard-style architectures applied to LLM agents \u2014 and if you can tolerate an admittedly experimental, unintuitive programming model.\",\n  \"key_points\": [\n    \"ActiveGraph inverts the usual stack: rather than an LLM with tools, memory, and logging attached, the immutable typed event log is the source of truth and the graph state is a projection of that log.\",\n    \"Both what the agent does and how the agent itself changes are flattened into one event log, on the argument that agent definitions change constantly and are usually tracked separately from agent activity.\",\n    \"Behaviors \u2014 which may be deterministic or LLM-backed, and can live on nodes or edges \u2014 subscribe to graph changes and emit events; LLMs never talk to each other directly, only through shared state.\",\n    \"Policies define which graph modifications are allowed outright versus which require a proposed patch, contradiction checks, or human approval, e.g. adding a research source is cheap but editing a prompt is gated.\",\n    \"Context management is expressed as a graph query ('views') that exposes a subset of the graph to a given behavior.\",\n    \"The design is explicitly a runtime, not a harness: ReAct and other common harnesses can be rebuilt on top of it, and capabilities are bundled as composable 'packs' (memory, tools, identity, chat) with object types, behaviors, and policies.\",\n    \"Using the structured log directly as memory \u2014 embedding the query, retrieving nearby messages, no fact or entity extraction \u2014 scored well on LongMemEval, suggesting log and memory data largely overlap.\",\n    \"Self-modification experiments used fork, static gate, sandbox gate, and measured accuracy before accepting a patch; loops ran 8\u201313 iterations and accepted only 4\u20135 patches, yielding modest but statistically significant LongMemEval gains.\",\n    \"Nakajima hypothesizes AI writes ActiveGraph-style code well because decades of blackboard/Kafka shared-state literature is in training data, whereas LLM-agent patterns are only ~3 years old.\",\n    \"He argues the harness will not disappear as models improve: long-running agents need an 'experiential world model' from their own log alongside a predictive world model.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"agents are awesome, but long-running agents break. And if they're so awesome, why am I still building them? Why they should build themselves.\",\n      \"timestamp_sec\": 1,\n      \"why\": \"States the motivating problem and the self-improvement thesis in one breath.\"\n    },\n    {\n      \"text\": \"Let's build the simplest thing that can build itself has basically been kind of my research theme for the last 3 years since I did baby AGI back in March of 2023.\",\n      \"timestamp_sec\": 1,\n      \"why\": \"Frames the whole three-year research program behind the talk.\"\n    },\n    {\n      \"text\": \"over the course of 3 years I've done nine iterations of baby AGI with less fanfare\",\n      \"timestamp_sec\": 52,\n      \"why\": \"Concrete number on the iteration history behind BabyAGI 4.\"\n    },\n    {\n      \"text\": \"ActiveGraph is an event-sourced graph runtime for building auditable agents.\",\n      \"timestamp_sec\": 82,\n      \"why\": \"The one-line definition of the system.\"\n    },\n    {\n      \"text\": \"today most people build agents around the LLM. You start with the LLM, you add a response API, you give it tools, you add memory, and then you make sure you log everything correctly\",\n      \"timestamp_sec\": 120,\n      \"why\": \"Names the incumbent architecture the talk is arguing against.\"\n    },\n    {\n      \"text\": \"ActiveGraph asks, what if you build around the log?\",\n      \"timestamp_sec\": 120,\n      \"why\": \"The core inversion the entire talk rests on.\"\n    },\n    {\n      \"text\": \"Nobody here is using the same agent they were using a year ago, and the agent you're going to use a year from now is going to be different.\",\n      \"timestamp_sec\": 120,\n      \"why\": \"Justifies logging agent changes, not just agent actions.\"\n    },\n    {\n      \"text\": \"let's flatten that down into a single immutable event log, and this is the ground truth of the agent\",\n      \"timestamp_sec\": 155,\n      \"why\": \"The central design commitment.\"\n    },\n    {\n      \"text\": \"LLMs don't talk to each other in ActiveGraph. They all communicate through this shared state, and that's what makes it a little bit different.\",\n      \"timestamp_sec\": 184,\n      \"why\": \"The sharpest architectural differentiator versus multi-agent messaging.\"\n    },\n    {\n      \"text\": \"in the end you get this beautiful typed event log, which gives you replays. It gives you rollbacks and it gives you forks.\",\n      \"timestamp_sec\": 223,\n      \"why\": \"States the concrete payoff of event sourcing for agents.\"\n    },\n    {\n      \"text\": \"this is not a harness. It's it's a runtime and you can actually rebuild most of the common harnesses on top of it.\",\n      \"timestamp_sec\": 259,\n      \"why\": \"Positions ActiveGraph against the agent-framework category.\"\n    },\n    {\n      \"text\": \"It is much more complex about actually pretty unintuitive. I would never write code myself with ActoGraph, but again, AI seems really good at it.\",\n      \"timestamp_sec\": 393,\n      \"why\": \"Rare admission of a real ergonomic tradeoff, and a bet on AI-authored code.\"\n    },\n    {\n      \"text\": \"it's inspired by uh blackboard architecture from the '70s or '80s or more recently Kafka, whole bunch of micro workers communicating through a shared state\",\n      \"timestamp_sec\": 430,\n      \"why\": \"Names the intellectual lineage of the design.\"\n    },\n    {\n      \"text\": \"now, AI writes the code, and the workers can be very powerful because they have reasoning capability\",\n      \"timestamp_sec\": 430,\n      \"why\": \"Explains why an architecture that failed in the '80s might work now.\"\n    },\n    {\n      \"text\": \"There was no semantic uh ingestion, no fact extraction, no entity extraction, but I just embedded the query, looked for relevant messages, grabbed a couple messages before and after, made sure it fit into the context, and it actually did pretty well on long mem eval\",\n      \"timestamp_sec\": 497,\n      \"why\": \"Reports a surprisingly strong baseline result against elaborate memory pipelines.\"\n    },\n    {\n      \"text\": \"for these loops, it would loop like eight or 13 times, but only accept four or five of those patches. And it actually did have, you know, modest, but like statistically significant improvement on long mem eval scores.\",\n      \"timestamp_sec\": 707,\n      \"why\": \"The only quantified self-improvement result in the talk, honestly hedged.\"\n    },\n    {\n      \"text\": \"what was most interesting is how much how well the agent understood experiments we've tried before that didn't work.\",\n      \"timestamp_sec\": 795,\n      \"why\": \"Identifies negative-result retention as the underrated benefit of log-centric agents.\"\n    },\n    {\n      \"text\": \"I've done a lot of YOLO agents where you just like keep trying things and then it works, you're like, \\\"Yeah.\\\" But then I don't know the stuff that we tried that didn't work.\",\n      \"timestamp_sec\": 859,\n      \"why\": \"Names the failure mode that policy-gated experimentation fixes.\"\n    },\n    {\n      \"text\": \"my hypothesis is that that's in the training data. And there's just much less training data around how to build LLM based agents.\",\n      \"timestamp_sec\": 894,\n      \"why\": \"A testable explanation for why models code better in an old architectural idiom.\"\n    },\n    {\n      \"text\": \"some some discussions kind of suggests that as models get better, like the harness disappears. But I'm starting to think that's not true. I think we need both\",\n      \"timestamp_sec\": 928,\n      \"why\": \"Direct disagreement with a widely held position about harnesses.\"\n    },\n    {\n      \"text\": \"we're not our reasoning capability, right? We are we're closer to our our our beliefs, our knowledge, and behaviors that are derived from our actual life experience.\",\n      \"timestamp_sec\": 959,\n      \"why\": \"The philosophical case for identity-as-log.\"\n    }\n  ],\n  \"concepts\": [\n    \"event sourcing\",\n    \"agent state as graph projection\",\n    \"blackboard architecture\",\n    \"shared-state multi-agent communication\",\n    \"agent self-modification\",\n    \"policy-gated mutation\",\n    \"context management as graph query\",\n    \"log-as-memory retrieval\",\n    \"agent auditability\",\n    \"modular agent capability packs\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Agents should be built around an immutable event log as ground truth rather than around the LLM, with graph state derived as a projection of that log.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 120\n    },\n    {\n      \"claim\": \"Changes to the agent itself and the agent's actions should live in one log rather than being tracked in two different places.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 155\n    },\n    {\n      \"claim\": \"LLM components should never message each other directly; all coordination should go through shared state.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 184\n    },\n    {\n      \"claim\": \"ActiveGraph is a runtime, not a harness, and common agent harnesses such as ReAct can be rebuilt on top of it.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 259\n    },\n    {\n      \"claim\": \"A structured log used directly as memory \u2014 with no fact or entity extraction \u2014 performs well on LongMemEval.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 497\n    },\n    {\n      \"claim\": \"Gated self-modification loops produced modest but statistically significant accuracy improvements on LongMemEval, accepting only about 4-5 of 8-13 proposed patches.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 707\n    },\n    {\n      \"claim\": \"Roughly 20-30 of about 80 Pok\u00e9mon TCG deck-agent passes were accepted, with the score slowly improving to around 27%.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 825\n    },\n    {\n      \"claim\": \"AI models write shared-state/blackboard-style agent code better than LLM-agent-style code because decades of that architectural discussion exist in the training data while LLM agent patterns are only about three years old.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 894\n    },\n    {\n      \"claim\": \"The harness will not disappear as models improve; long-running agents need both a predictive world model and an experiential world model built from their own log.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 928\n    },\n    {\n      \"claim\": \"An agent's identity should be understood as derived from its own event log, analogous to how human identity derives from lived experience rather than raw reasoning capability.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 996\n    },\n    {\n      \"claim\": \"Writing ActiveGraph code by hand is impractically unintuitive for humans, making it viable only because AI writes the code.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 393\n    },\n    {\n      \"claim\": \"Event-sourced agents eliminate the need to restart long runs from the beginning after a failure such as an expired API key.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 534\n    }\n  ],\n  \"speaker_org\": \"Untapped Capital\"\n}",
+  "ttft_ms": 48174,
+  "ttft_stream_ms": 987,
+  "time_to_request_ms": 37,
+  "type": "result",
+  "duration_ms": 49865,
+  "uuid": "cc6e95c1-6450-4f96-8196-b8e73f1fe7ab",
+  "passA": {
+    "summary": "Yohei Nakajima presents ActiveGraph (BabyAGI 4), an experimental open-source 'event-sourced graph runtime for building auditable agents.' Instead of building around the LLM and bolting on logging, ActiveGraph makes an immutable typed event log the ground truth; the log projects a graph state, and 'behaviors' react to graph changes and emit new events rather than calling each other directly. Policies gate which graph changes an agent can make unilaterally versus which need a proposed patch, a test, or a human in the loop, and the log design gives replay, rollback, and forking natively. He reports experiments using the log itself as memory on LongMemEval, self-modification loops that only accept patches that measurably improve accuracy, an 'ActiveGraph Lab' that researches itself, and a Pok\u00e9mon TCG Kaggle deck agent tuned over ~80 passes. Worth watching if you care about auditable long-running agents, self-improvement loops, or blackboard-style architectures applied to LLM agents \u2014 and if you can tolerate an admittedly experimental, unintuitive programming model.",
+    "key_points": [
+      "ActiveGraph inverts the usual stack: rather than an LLM with tools, memory, and logging attached, the immutable typed event log is the source of truth and the graph state is a projection of that log.",
+      "Both what the agent does and how the agent itself changes are flattened into one event log, on the argument that agent definitions change constantly and are usually tracked separately from agent activity.",
+      "Behaviors \u2014 which may be deterministic or LLM-backed, and can live on nodes or edges \u2014 subscribe to graph changes and emit events; LLMs never talk to each other directly, only through shared state.",
+      "Policies define which graph modifications are allowed outright versus which require a proposed patch, contradiction checks, or human approval, e.g. adding a research source is cheap but editing a prompt is gated.",
+      "Context management is expressed as a graph query ('views') that exposes a subset of the graph to a given behavior.",
+      "The design is explicitly a runtime, not a harness: ReAct and other common harnesses can be rebuilt on top of it, and capabilities are bundled as composable 'packs' (memory, tools, identity, chat) with object types, behaviors, and policies.",
+      "Using the structured log directly as memory \u2014 embedding the query, retrieving nearby messages, no fact or entity extraction \u2014 scored well on LongMemEval, suggesting log and memory data largely overlap.",
+      "Self-modification experiments used fork, static gate, sandbox gate, and measured accuracy before accepting a patch; loops ran 8\u201313 iterations and accepted only 4\u20135 patches, yielding modest but statistically significant LongMemEval gains.",
+      "Nakajima hypothesizes AI writes ActiveGraph-style code well because decades of blackboard/Kafka shared-state literature is in training data, whereas LLM-agent patterns are only ~3 years old.",
+      "He argues the harness will not disappear as models improve: long-running agents need an 'experiential world model' from their own log alongside a predictive world model."
+    ],
+    "notable_quotes": [
+      {
+        "text": "agents are awesome, but long-running agents break. And if they're so awesome, why am I still building them? Why they should build themselves.",
+        "timestamp_sec": 1,
+        "why": "States the motivating problem and the self-improvement thesis in one breath."
+      },
+      {
+        "text": "Let's build the simplest thing that can build itself has basically been kind of my research theme for the last 3 years since I did baby AGI back in March of 2023.",
+        "timestamp_sec": 1,
+        "why": "Frames the whole three-year research program behind the talk."
+      },
+      {
+        "text": "over the course of 3 years I've done nine iterations of baby AGI with less fanfare",
+        "timestamp_sec": 52,
+        "why": "Concrete number on the iteration history behind BabyAGI 4."
+      },
+      {
+        "text": "ActiveGraph is an event-sourced graph runtime for building auditable agents.",
+        "timestamp_sec": 82,
+        "why": "The one-line definition of the system."
+      },
+      {
+        "text": "today most people build agents around the LLM. You start with the LLM, you add a response API, you give it tools, you add memory, and then you make sure you log everything correctly",
+        "timestamp_sec": 120,
+        "why": "Names the incumbent architecture the talk is arguing against."
+      },
+      {
+        "text": "ActiveGraph asks, what if you build around the log?",
+        "timestamp_sec": 120,
+        "why": "The core inversion the entire talk rests on."
+      },
+      {
+        "text": "Nobody here is using the same agent they were using a year ago, and the agent you're going to use a year from now is going to be different.",
+        "timestamp_sec": 120,
+        "why": "Justifies logging agent changes, not just agent actions."
+      },
+      {
+        "text": "let's flatten that down into a single immutable event log, and this is the ground truth of the agent",
+        "timestamp_sec": 155,
+        "why": "The central design commitment."
+      },
+      {
+        "text": "LLMs don't talk to each other in ActiveGraph. They all communicate through this shared state, and that's what makes it a little bit different.",
+        "timestamp_sec": 184,
+        "why": "The sharpest architectural differentiator versus multi-agent messaging."
+      },
+      {
+        "text": "in the end you get this beautiful typed event log, which gives you replays. It gives you rollbacks and it gives you forks.",
+        "timestamp_sec": 223,
+        "why": "States the concrete payoff of event sourcing for agents."
+      },
+      {
+        "text": "this is not a harness. It's it's a runtime and you can actually rebuild most of the common harnesses on top of it.",
+        "timestamp_sec": 259,
+        "why": "Positions ActiveGraph against the agent-framework category."
+      },
+      {
+        "text": "It is much more complex about actually pretty unintuitive. I would never write code myself with ActoGraph, but again, AI seems really good at it.",
+        "timestamp_sec": 393,
+        "why": "Rare admission of a real ergonomic tradeoff, and a bet on AI-authored code."
+      },
+      {
+        "text": "it's inspired by uh blackboard architecture from the '70s or '80s or more recently Kafka, whole bunch of micro workers communicating through a shared state",
+        "timestamp_sec": 430,
+        "why": "Names the intellectual lineage of the design."
+      },
+      {
+        "text": "now, AI writes the code, and the workers can be very powerful because they have reasoning capability",
+        "timestamp_sec": 430,
+        "why": "Explains why an architecture that failed in the '80s might work now."
+      },
+      {
+        "text": "There was no semantic uh ingestion, no fact extraction, no entity extraction, but I just embedded the query, looked for relevant messages, grabbed a couple messages before and after, made sure it fit into the context, and it actually did pretty well on long mem eval",
+        "timestamp_sec": 497,
+        "why": "Reports a surprisingly strong baseline result against elaborate memory pipelines."
+      },
+      {
+        "text": "for these loops, it would loop like eight or 13 times, but only accept four or five of those patches. And it actually did have, you know, modest, but like statistically significant improvement on long mem eval scores.",
+        "timestamp_sec": 707,
+        "why": "The only quantified self-improvement result in the talk, honestly hedged."
+      },
+      {
+        "text": "what was most interesting is how much how well the agent understood experiments we've tried before that didn't work.",
+        "timestamp_sec": 795,
+        "why": "Identifies negative-result retention as the underrated benefit of log-centric agents."
+      },
+      {
+        "text": "I've done a lot of YOLO agents where you just like keep trying things and then it works, you're like, \"Yeah.\" But then I don't know the stuff that we tried that didn't work.",
+        "timestamp_sec": 859,
+        "why": "Names the failure mode that policy-gated experimentation fixes."
+      },
+      {
+        "text": "my hypothesis is that that's in the training data. And there's just much less training data around how to build LLM based agents.",
+        "timestamp_sec": 894,
+        "why": "A testable explanation for why models code better in an old architectural idiom."
+      },
+      {
+        "text": "some some discussions kind of suggests that as models get better, like the harness disappears. But I'm starting to think that's not true. I think we need both",
+        "timestamp_sec": 928,
+        "why": "Direct disagreement with a widely held position about harnesses."
+      },
+      {
+        "text": "we're not our reasoning capability, right? We are we're closer to our our our beliefs, our knowledge, and behaviors that are derived from our actual life experience.",
+        "timestamp_sec": 959,
+        "why": "The philosophical case for identity-as-log."
+      }
+    ],
+    "concepts": [
+      "event sourcing",
+      "agent state as graph projection",
+      "blackboard architecture",
+      "shared-state multi-agent communication",
+      "agent self-modification",
+      "policy-gated mutation",
+      "context management as graph query",
+      "log-as-memory retrieval",
+      "agent auditability",
+      "modular agent capability packs"
+    ],
+    "positions": [
+      {
+        "claim": "Agents should be built around an immutable event log as ground truth rather than around the LLM, with graph state derived as a projection of that log.",
+        "confidence": "stated",
+        "timestamp_sec": 120
+      },
+      {
+        "claim": "Changes to the agent itself and the agent's actions should live in one log rather than being tracked in two different places.",
+        "confidence": "stated",
+        "timestamp_sec": 155
+      },
+      {
+        "claim": "LLM components should never message each other directly; all coordination should go through shared state.",
+        "confidence": "stated",
+        "timestamp_sec": 184
+      },
+      {
+        "claim": "ActiveGraph is a runtime, not a harness, and common agent harnesses such as ReAct can be rebuilt on top of it.",
+        "confidence": "stated",
+        "timestamp_sec": 259
+      },
+      {
+        "claim": "A structured log used directly as memory \u2014 with no fact or entity extraction \u2014 performs well on LongMemEval.",
+        "confidence": "stated",
+        "timestamp_sec": 497
+      },
+      {
+        "claim": "Gated self-modification loops produced modest but statistically significant accuracy improvements on LongMemEval, accepting only about 4-5 of 8-13 proposed patches.",
+        "confidence": "stated",
+        "timestamp_sec": 707
+      },
+      {
+        "claim": "Roughly 20-30 of about 80 Pok\u00e9mon TCG deck-agent passes were accepted, with the score slowly improving to around 27%.",
+        "confidence": "stated",
+        "timestamp_sec": 825
+      },
+      {
+        "claim": "AI models write shared-state/blackboard-style agent code better than LLM-agent-style code because decades of that architectural discussion exist in the training data while LLM agent patterns are only about three years old.",
+        "confidence": "stated",
+        "timestamp_sec": 894
+      },
+      {
+        "claim": "The harness will not disappear as models improve; long-running agents need both a predictive world model and an experiential world model built from their own log.",
+        "confidence": "stated",
+        "timestamp_sec": 928
+      },
+      {
+        "claim": "An agent's identity should be understood as derived from its own event log, analogous to how human identity derives from lived experience rather than raw reasoning capability.",
+        "confidence": "stated",
+        "timestamp_sec": 996
+      },
+      {
+        "claim": "Writing ActiveGraph code by hand is impractically unintuitive for humans, making it viable only because AI writes the code.",
+        "confidence": "stated",
+        "timestamp_sec": 393
+      },
+      {
+        "claim": "Event-sourced agents eliminate the need to restart long runs from the beginning after a failure such as an expired API key.",
+        "confidence": "stated",
+        "timestamp_sec": 534
+      }
+    ],
+    "speaker_org": "Untapped Capital"
+  },
+  "_meta": {
+    "slug": "active-graph-agent-runtime-babyagi-4",
+    "video_id": "khVX_BUnEwU",
+    "url": "https://www.youtube.com/watch?v=khVX_BUnEwU",
+    "word_count": 3684,
+    "wall_sec": 50.9,
+    "run_at": "2026-08-12T19:26:24Z",
+    "effort": "medium"
+  }
+}
