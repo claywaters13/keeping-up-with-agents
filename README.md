@@ -75,16 +75,10 @@ commands are namespaced.
 
 ## Podcast
 
-**Keeping up with Agents** is an AI-narrated companion podcast built from this wiki. Each
-episode takes one fault line from the 231 talks and works it — what practitioners actually
-disagree on, and why. Hosts are AI-generated (NotebookLM); every episode's description links
-back to the sources here.
+This corpus powers season 1 of **Keeping up with Agents** ("AI moves fast. Keep up.") —
+an AI-narrated podcast navigating the field's live arguments. Feed and episodes:
+[keeping-up-with-agents](https://github.com/claywaters13/keeping-up-with-agents).
 
-- Feed: [`podcast/feed.xml`](podcast/feed.xml) —
-  `https://claywaters13.github.io/aiewf-2026-wiki/podcast/feed.xml`
-- Listen on Spotify: *(link pending directory approval)*
-- Listen on Apple Podcasts: *(link pending directory approval)*
-- New episodes: `python3 scripts/add_episode.py <audio> --slug episode-00N --title "..." --description "..."`, then commit and push.
 
 ## Layout
 
