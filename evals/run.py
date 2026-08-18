@@ -23,7 +23,7 @@ Prerequisites: the plugin must be installed (see README), since cases invoke it 
 asking questions that route through its skill:
 
     claude plugin marketplace add .
-    claude plugin install aiewf-wiki@aiewf-2026-wiki
+    claude plugin install aiewf-wiki@keeping-up-with-agents
 
 Usage:
     python3 evals/run.py                                  # all cases

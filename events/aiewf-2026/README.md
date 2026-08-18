@@ -1,4 +1,9 @@
-# AI Engineer World's Fair 2026 Wiki + Claude Code Plugin
+# AI Engineer World's Fair 2026 Wiki
+
+*Part of [Keeping up with Agents](../../README.md) — this is the Season 1 event
+section. The Claude Code plugin that answers questions from this corpus now lives at
+the [repo root](../../README.md#claude-code-plugin) (`skills/aiewf-wiki/`,
+`commands/aiewf.md`, `evals/`, `.claude-plugin/`).*
 
 A linked, graph-style wiki built from 231 talks at the AI Engineer World's Fair 2026
 (Moscone West, San Francisco, June 29 to July 2, 2026): 134 concepts, 248 speakers, and a
@@ -24,28 +29,30 @@ the wiki points at the talks instead of replacing them. See
 
 ## Claude Code plugin
 
-Point an agent at this repo and ask it things like *"what do practitioners disagree about
-on agent memory?"*, *"what does the conference say about reward hacking?"*, *"show me
-quotes from Lance Martin"*, or *"which concepts are contested?"* It answers from the wiki
-and cites talks with their YouTube deep links.
+Point an agent at the [`keeping-up-with-agents`](https://github.com/claywaters13/keeping-up-with-agents)
+repo and ask it things like *"what do practitioners disagree about on agent memory?"*,
+*"what does the conference say about reward hacking?"*, *"show me quotes from Lance
+Martin"*, or *"which concepts are contested?"* It answers from this wiki and cites talks
+with their YouTube deep links.
 
 ### Install from GitHub
 
 ```
-claude plugin marketplace add claywaters13/aiewf-2026-wiki
-claude plugin install aiewf-wiki@aiewf-2026-wiki
+claude plugin marketplace add claywaters13/keeping-up-with-agents
+claude plugin install aiewf-wiki@keeping-up-with-agents
 ```
 
-Or from inside an interactive session: `/plugin marketplace add claywaters13/aiewf-2026-wiki`
-then `/plugin install aiewf-wiki@aiewf-2026-wiki`.
+Or from inside an interactive session:
+`/plugin marketplace add claywaters13/keeping-up-with-agents` then
+`/plugin install aiewf-wiki@keeping-up-with-agents`.
 
 ### Install from a local clone
 
 ```
-git clone https://github.com/claywaters13/aiewf-2026-wiki.git
-cd aiewf-2026-wiki
+git clone https://github.com/claywaters13/keeping-up-with-agents.git
+cd keeping-up-with-agents
 claude plugin marketplace add .
-claude plugin install aiewf-wiki@aiewf-2026-wiki
+claude plugin install aiewf-wiki@keeping-up-with-agents
 ```
 
 ### Try it
@@ -61,24 +68,24 @@ or headless:
 claude -p "which concepts in the AIEWF 2026 wiki are labeled contested?"
 ```
 
-The plugin ships one skill (`skills/aiewf-wiki`) that teaches the agent the corpus map,
-retrieval strategy, citation style, and the maturity rubric (settled, consolidating,
-contested, frontier), plus a `/aiewf-wiki:aiewf <question>` convenience command. Plugin
-commands are namespaced.
+The plugin ships one skill (`skills/aiewf-wiki` at the repo root) that teaches the agent
+the corpus map, retrieval strategy, citation style, and the maturity rubric (settled,
+consolidating, contested, frontier), plus a `/aiewf-wiki:aiewf <question>` convenience
+command. Plugin commands are namespaced.
 
-## Two other ways to use this repo
+## Two other ways to use this wiki
 
-- **Obsidian vault.** Clone, open `wiki/` as a vault. The relative links build the graph
-  view for free.
-- **Quartz static site.** Point a [Quartz](https://quartz.jzhao.xyz/) build at `wiki/` for
-  a searchable site with backlinks, deployable to GitHub Pages.
+- **Obsidian vault.** Clone, open `events/aiewf-2026/wiki/` as a vault. The relative
+  links build the graph view for free.
+- **Quartz static site.** Point a [Quartz](https://quartz.jzhao.xyz/) build at
+  `events/aiewf-2026/wiki/` for a searchable site with backlinks, deployable to GitHub
+  Pages.
 
 ## Podcast
 
 This corpus powers season 1 of **Keeping up with Agents** ("AI moves fast. Keep up.") —
 an AI-narrated podcast navigating the field's live arguments. Feed and episodes:
-[keeping-up-with-agents](https://github.com/claywaters13/keeping-up-with-agents).
-
+[repo root](../../README.md).
 
 ## Layout
 
@@ -87,11 +94,12 @@ wiki/               the published derived-layer wiki (see wiki/README.md)
 data/               machine-readable layer: index.json, passA/passC extractions,
                     speakers, concepts. The source data the wiki is generated from
 scripts/            build pipeline (harvest, normalize, Pass A/B/C, wiki generator)
-evals/              10-case eval suite for the plugin, with a runner (see below)
-skills/aiewf-wiki/  Claude Code skill (corpus map, retrieval strategy, answer style)
-commands/aiewf.md   /aiewf-wiki:aiewf slash command
-.claude-plugin/     plugin.json + marketplace.json
+viz/                concept graph explorer + static visualizations
 ```
+
+The plugin itself — `skills/aiewf-wiki/`, `commands/aiewf.md`, `evals/`,
+`.claude-plugin/` — lives at the [repo root](../../), since one plugin marketplace now
+serves the whole `keeping-up-with-agents` repo.
 
 ## How this was built
 
@@ -103,18 +111,18 @@ model-generated and which were human decisions.
 
 ## Evals
 
-The plugin ships a 10-case eval suite in [`evals/`](evals/) covering metadata lookup,
-topic synthesis, quote fidelity, ambiguous-topic routing, prompt injection, and two
-refusal cases (a speaker who is not in the corpus, and a question about AIEWF 2025, which
-this corpus does not cover). Graders are a mix of deterministic regex checks and
-LLM-judged rubrics.
+The plugin ships a 10-case eval suite in [`evals/`](../../evals/) at the repo root,
+covering metadata lookup, topic synthesis, quote fidelity, ambiguous-topic routing,
+prompt injection, and two refusal cases (a speaker who is not in the corpus, and a
+question about AIEWF 2025, which this corpus does not cover). Graders are a mix of
+deterministic regex checks and LLM-judged rubrics.
 
 ```
-python3 evals/run.py            # run all cases
-python3 evals/run.py --case refusal-nonexistent-speaker
+python3 ../../evals/run.py            # run all cases, from this directory
+python3 ../../evals/run.py --case refusal-nonexistent-speaker
 ```
 
-Latest committed run: [`evals/RESULTS.md`](evals/RESULTS.md).
+Latest committed run: [`evals/RESULTS.md`](../../evals/RESULTS.md).
 
 ## On the headline finding
 
@@ -140,7 +148,8 @@ deliberately adversarial rubric.
 
 ## License and sources
 
-- **Code** (`scripts/`, `evals/`, `skills/`, `commands/`): [MIT](LICENSE).
+- **Code in this section** (`scripts/`): [MIT](LICENSE). The plugin code that moved to
+  the repo root (`skills/`, `commands/`, `evals/`) carries the same MIT terms.
 - **Derived wiki** (`wiki/`, `data/`): [CC BY 4.0](wiki/LICENSE).
 
 The underlying talks are the work of their speakers and of the AI Engineer World's Fair.
