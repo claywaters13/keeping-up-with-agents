@@ -1,4 +1,10 @@
 #!/usr/bin/env python3
+# NOTE: audio is hosted as GitHub Release assets (tag: episodes), NOT in the git tree.
+# After running this script, upload the mp3 before pushing the feed:
+#   curl -X POST "https://uploads.github.com/repos/claywaters13/keeping-up-with-agents/releases/<RELEASE_ID>/assets?name=<slug>.mp3" \
+#        -H "Authorization: token $GITHUB_TOKEN" -H "Content-Type: audio/mpeg" --data-binary @<file>.mp3
+# (release id: GET /repos/.../releases/tags/episodes). Do not commit mp3 files.
+
 """Add (or update) one episode in feed.xml — idempotent.
 
 Usage:
