@@ -73,6 +73,19 @@ commands are namespaced.
 - **Quartz static site.** Point a [Quartz](https://quartz.jzhao.xyz/) build at `wiki/` for
   a searchable site with backlinks, deployable to GitHub Pages.
 
+## Podcast
+
+**Keeping up with Agents** is an AI-narrated companion podcast built from this wiki. Each
+episode takes one fault line from the 231 talks and works it — what practitioners actually
+disagree on, and why. Hosts are AI-generated (NotebookLM); every episode's description links
+back to the sources here.
+
+- Feed: [`podcast/feed.xml`](podcast/feed.xml) —
+  `https://claywaters13.github.io/aiewf-2026-wiki/podcast/feed.xml`
+- Listen on Spotify: *(link pending directory approval)*
+- Listen on Apple Podcasts: *(link pending directory approval)*
+- New episodes: `python3 scripts/add_episode.py <audio> --slug episode-00N --title "..." --description "..."`, then commit and push.
+
 ## Layout
 
 ```
