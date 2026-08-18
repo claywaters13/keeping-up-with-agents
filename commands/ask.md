@@ -20,3 +20,5 @@ relative .md paths in the answer, and say plainly — naming which events *are* 
 if the corpus doesn't cover it):
 
 **$ARGUMENTS**
+
+FINAL CHECK: before answering, remove any `](...*.md)` markdown links from your draft; cite plain titles or YouTube URLs only.

@@ -97,6 +97,10 @@ State the maturity label when a question is about how settled a topic is.
 
 ## Answer style
 
+FINAL CHECK before sending any answer: scan your draft for the pattern `](...` ending
+in `.md)`. If found, replace each with the talk/concept plain title (no link) or its
+YouTube URL. An answer containing any `.md` link is defective, full stop.
+
 - Cite talks by **title**, linked with the source-video deep link every quote carries
   (e.g. `youtube.com/watch?v=<id>&t=<sec>s`) — surface the link, don't just name-drop
   the talk. **Only attach a `video_id`/`t=` you actually saw for that specific talk.**
