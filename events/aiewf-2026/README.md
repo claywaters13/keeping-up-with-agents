@@ -1,9 +1,10 @@
 # AI Engineer World's Fair 2026 Wiki
 
 *Part of [Keeping up with Agents](../../README.md) — this is the Season 1 event
-section. The Claude Code plugin that answers questions from this corpus now lives at
-the [repo root](../../README.md#claude-code-plugin) (`skills/aiewf-wiki/`,
-`commands/aiewf.md`, `evals/`, `.claude-plugin/`).*
+section. The Claude Code plugin that answers questions from this (and any future) event
+corpus is event-agnostic and lives at the
+[repo root](../../README.md#claude-code-plugin) (`skills/event-wiki/`,
+`commands/ask.md`, `evals/`, `.claude-plugin/`).*
 
 A linked, graph-style wiki built from 231 talks at the AI Engineer World's Fair 2026
 (Moscone West, San Francisco, June 29 to July 2, 2026): 134 concepts, 248 speakers, and a
@@ -33,18 +34,19 @@ Point an agent at the [`keeping-up-with-agents`](https://github.com/claywaters13
 repo and ask it things like *"what do practitioners disagree about on agent memory?"*,
 *"what does the conference say about reward hacking?"*, *"show me quotes from Lance
 Martin"*, or *"which concepts are contested?"* It answers from this wiki and cites talks
-with their YouTube deep links.
+with their YouTube deep links. The plugin is event-agnostic — it's not specific to this
+event, it just happens to be the first one indexed.
 
 ### Install from GitHub
 
 ```
 claude plugin marketplace add claywaters13/keeping-up-with-agents
-claude plugin install aiewf-wiki@keeping-up-with-agents
+claude plugin install keeping-up-with-agents@keeping-up-with-agents
 ```
 
 Or from inside an interactive session:
 `/plugin marketplace add claywaters13/keeping-up-with-agents` then
-`/plugin install aiewf-wiki@keeping-up-with-agents`.
+`/plugin install keeping-up-with-agents@keeping-up-with-agents`.
 
 ### Install from a local clone
 
@@ -52,14 +54,14 @@ Or from inside an interactive session:
 git clone https://github.com/claywaters13/keeping-up-with-agents.git
 cd keeping-up-with-agents
 claude plugin marketplace add .
-claude plugin install aiewf-wiki@keeping-up-with-agents
+claude plugin install keeping-up-with-agents@keeping-up-with-agents
 ```
 
 ### Try it
 
 ```
 claude
-> /aiewf-wiki:aiewf what do practitioners disagree about on agent memory?
+> /keeping-up-with-agents:ask what do practitioners disagree about on agent memory?
 ```
 
 or headless:
@@ -68,10 +70,11 @@ or headless:
 claude -p "which concepts in the AIEWF 2026 wiki are labeled contested?"
 ```
 
-The plugin ships one skill (`skills/aiewf-wiki` at the repo root) that teaches the agent
+The plugin ships one skill (`skills/event-wiki` at the repo root) that teaches the agent
 the corpus map, retrieval strategy, citation style, and the maturity rubric (settled,
-consolidating, contested, frontier), plus a `/aiewf-wiki:aiewf <question>` convenience
-command. Plugin commands are namespaced.
+consolidating, contested, frontier), plus a `/keeping-up-with-agents:ask <question>`
+convenience command. It discovers this event (and any others) by listing `events/*` at
+runtime rather than hardcoding AIEWF 2026.
 
 ## Two other ways to use this wiki
 
@@ -97,9 +100,10 @@ scripts/            build pipeline (harvest, normalize, Pass A/B/C, wiki generat
 viz/                concept graph explorer + static visualizations
 ```
 
-The plugin itself — `skills/aiewf-wiki/`, `commands/aiewf.md`, `evals/`,
-`.claude-plugin/` — lives at the [repo root](../../), since one plugin marketplace now
-serves the whole `keeping-up-with-agents` repo.
+The plugin itself — `skills/event-wiki/`, `commands/ask.md`, `evals/`,
+`.claude-plugin/` — lives at the [repo root](../../), since one event-agnostic plugin
+now serves the whole `keeping-up-with-agents` repo (and any events added after this
+one).
 
 ## How this was built
 

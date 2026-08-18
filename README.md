@@ -45,39 +45,44 @@ More events get their own `events/<slug>/` section as future seasons are built.
 
 ## Claude Code plugin
 
-One marketplace serves the whole repo. Season 1 ships the `aiewf-wiki` plugin, which
+One marketplace, one **event-agnostic** plugin: `keeping-up-with-agents`. Install once
+and every event indexed under `events/` becomes queryable automatically, including ones
+added after you install — no per-event plugin, no reinstall when a new season ships. It
 answers questions like *"what do practitioners disagree about on agent memory?"* or
-*"which concepts are contested?"* from the AIEWF 2026 corpus, citing talks with their
-YouTube deep links.
+*"which concepts are contested at AIEWF 2026?"*, citing talks with their source-video
+deep links and naming which event each claim comes from. Currently indexed: AI Engineer
+World's Fair 2026 (231 talks).
 
 ### Install from GitHub
 
 ```
 claude plugin marketplace add claywaters13/keeping-up-with-agents
-claude plugin install aiewf-wiki@keeping-up-with-agents
+claude plugin install keeping-up-with-agents@keeping-up-with-agents
 ```
 
 Or from inside an interactive session:
 `/plugin marketplace add claywaters13/keeping-up-with-agents` then
-`/plugin install aiewf-wiki@keeping-up-with-agents`.
+`/plugin install keeping-up-with-agents@keeping-up-with-agents`.
 
 ### Try it
 
 ```
 claude
-> /aiewf-wiki:aiewf what do practitioners disagree about on agent memory?
+> /keeping-up-with-agents:ask what do practitioners disagree about on agent memory?
 ```
 
 or headless:
 
 ```
 claude -p "which concepts in the AIEWF 2026 wiki are labeled contested?"
+claude -p "what do the indexed events say about reward hacking?"
 ```
 
-Plugin internals — `skills/aiewf-wiki/` (corpus map, retrieval strategy, answer style),
-`commands/aiewf.md` (the `/aiewf-wiki:aiewf` command), `evals/` (10-case eval suite),
-`.claude-plugin/` (plugin + marketplace manifests) — live at this repo's root and read
-the corpus from `events/aiewf-2026/wiki/` and `events/aiewf-2026/data/`.
+Plugin internals — `skills/event-wiki/` (event-agnostic corpus map, retrieval strategy,
+answer style), `commands/ask.md` (the `/keeping-up-with-agents:ask` command), `evals/`
+(10-case eval suite, run against the AIEWF 2026 corpus), `.claude-plugin/` (plugin +
+marketplace manifests) — live at this repo's root and discover corpora by listing
+`events/*/wiki/` and `events/*/data/` at runtime.
 
 ## Layout
 
@@ -85,7 +90,9 @@ the corpus from `events/aiewf-2026/wiki/` and `events/aiewf-2026/data/`.
 feed.xml, cover.png, episodes/   the podcast (do not restructure — feed URLs are live)
 scripts/add_episode.py           publishes a new episode into feed.xml, idempotent
 .claude-plugin/                  plugin.json + marketplace.json (repo-wide marketplace)
-skills/ commands/ evals/         the Claude Code plugin
+skills/event-wiki/               event-agnostic Claude Code skill
+commands/ask.md                  /keeping-up-with-agents:ask slash command
+evals/                           10-case eval suite (exercises the AIEWF 2026 corpus)
 events/aiewf-2026/               Season 1: the full AIEWF 2026 wiki project
   wiki/                            published derived-layer wiki
   data/                            machine-readable layer the wiki is generated from

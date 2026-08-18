@@ -15,7 +15,7 @@ Prerequisite: install the plugin first, since the cases exercise it end to end.
 
 ```
 claude plugin marketplace add .
-claude plugin install aiewf-wiki@aiewf-2026-wiki
+claude plugin install keeping-up-with-agents@keeping-up-with-agents
 ```
 
 If you have access to `claude plugin eval`, it reads this same directory layout and is the
@@ -93,14 +93,15 @@ The tempting fix is to tune the rubric until the judge agrees. The better fix, f
 this important, is to take the model out of the decision entirely:
 
 ```
-scripts/eval_plugin.sh
+events/aiewf-2026/scripts/eval_plugin.sh
 ```
 
 That script runs the same prompt, extracts every blockquoted string from the response, and
-greps `wiki/` for its normalized word sequence (lowercased, punctuation stripped), which is
-the same normalization `scripts/verify_quotes.py` uses to verify the corpus against the raw
-YouTube captions in the first place. Exit 0 means every quote was found verbatim. A single
-unverifiable quote fails the run.
+greps that event's `wiki/` for its normalized word sequence (lowercased, punctuation
+stripped), which is the same normalization `events/aiewf-2026/scripts/verify_quotes.py`
+uses to verify the
+corpus against the raw YouTube captions in the first place. Exit 0 means every quote was
+found verbatim. A single unverifiable quote fails the run.
 
 It is the same principle the corpus itself is built on. Anything checkable deterministically
 should not be delegated to a judge model. `run.py` therefore defaults its judge to a
@@ -115,7 +116,8 @@ only shows up if you investigate failures you expected to be real.
 
 1. **The judge did not do what the rubric told it to.** Haiku failed a hand-verified 6/6
    verbatim response because it did not actually grep the corpus as instructed. Fixed by
-   removing the model from that decision entirely (`scripts/eval_plugin.sh`).
+   removing the model from that decision entirely
+   (`events/aiewf-2026/scripts/eval_plugin.sh`).
 2. **The rubric asked the judge to verify something it cannot observe.** The corpus-size
    grader required counts to be "clearly sourced from the corpus, not a round-number guess."
    A judge with no tools sees only the final text, and cannot tell a looked-up 231 from a

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Portable runner for this repo's eval suite.
 
-Runs each case in evals/<case>/ against the installed aiewf-wiki plugin and scores it
-with that case's graders/*.md.
+Runs each case in evals/<case>/ against the installed keeping-up-with-agents plugin and
+scores it with that case's graders/*.md.
 
 Why this exists: Claude Code ships `claude plugin eval`, which reads exactly this
 directory layout and is the more featureful runner (ablation arms, HTML reports, cost
@@ -23,7 +23,7 @@ Prerequisites: the plugin must be installed (see README), since cases invoke it 
 asking questions that route through its skill:
 
     claude plugin marketplace add .
-    claude plugin install aiewf-wiki@keeping-up-with-agents
+    claude plugin install keeping-up-with-agents@keeping-up-with-agents
 
 Usage:
     python3 evals/run.py                                  # all cases
@@ -339,7 +339,8 @@ def write_results_md(results, path, judge_model, model):
         "",
         "- A case passes only if *every* grader passes. No partial credit.",
         "- Quote fidelity additionally has a deterministic check that uses no model "
-        "judgment at all: `scripts/eval_plugin.sh`. See `evals/README.md` for why.",
+        "judgment at all: `events/aiewf-2026/scripts/eval_plugin.sh`. See "
+        "`evals/README.md` for why.",
         "",
     ]
     with open(path, "w", encoding="utf-8") as f:
