@@ -1,0 +1,328 @@
+{
+  "is_error": false,
+  "duration_api_ms": 117018,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "e970a3e7-f535-439b-8a18-dc2c963da6de",
+  "total_cost_usd": 0.4662395,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 20652,
+    "cache_read_input_tokens": 8113,
+    "output_tokens": 9724,
+    "output_tokens_details": {
+      "thinking_tokens": 4203
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 20652,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 9724,
+        "cache_read_input_tokens": 8113,
+        "cache_creation_input_tokens": 20652,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 20652
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 12468,
+      "outputTokens": 17,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.012553,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 9724,
+      "cacheReadInputTokens": 8113,
+      "cacheCreationInputTokens": 20652,
+      "webSearchRequests": 0,
+      "costUSD": 0.4536865,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Boris Cherny, creator of Claude Code, is interviewed at YC Startup School 2026 the day after Opus 5 shipped, and argues that building on frontier models is an empirical science rather than a systems-design discipline. His central claim: every new model generation invalidates most of your harness, so the right move is to delete \u2014 Anthropic cut over 80% of Claude Code's system prompt for Opus 5, runs full ablations (delete everything, add lines back one at a time) on each release, and finds evals typically survive only one to three model generations before saturating. He frames the startup opportunity as 'product overhang' and 'hobbling': today's models can already do far more than shipped products elicit, and Claude Code itself was born from un-hobbling Sonnet 3.5 by giving it a terminal instead of an IDE autocomplete box. He backs this with concrete long-horizon examples \u2014 an 11-day dynamic-workflow rewrite of the Bun runtime from Zig to Rust now running in production, and a Swift port of the Claude desktop app that had been running for over two weeks at the time of the talk. Worth watching if you build agentic products or want a concrete picture of what 'give it a hard task plus a way to verify' looks like at thousands-of-agents scale.\",\n  \"key_points\": [\n    \"Anthropic deleted more than 80% of Claude Code's system prompt when Opus 5 shipped, because most of it existed to correct behaviors the new model now gets right on its own.\",\n    \"The standard practice on each model release is an ablation: delete the entire system prompt, then add lines back one at a time to measure the impact of each, and do the same for tools and harness code.\",\n    \"An undocumented CLAUDE_CODE_SIMPLE=1 environment variable strips all system prompts including tool prompts, and Cherny reports the model is slightly more intelligent without them \u2014 the prompts exist to make the product behave, not to make the model smarter.\",\n    \"Evals are not durable assets either; they last roughly one to three model generations before being saturated and thrown away, so the only real constant is empirically using the product and watching where it fails.\",\n    \"'Product overhang' is the gap between what today's model can already do and what any shipped product lets it do; 'hobbling' is the product actively getting in the way \u2014 Claude Code was created by un-hobbling Sonnet 3.5 with a minimal terminal harness when competitors were shipping autocomplete.\",\n    \"The dominant failure mode among experienced engineers is over-specifying step-by-step instructions; modern models want a high-level task, guardrails, and exit criteria instead.\",\n    \"Verification is the single thing Cherny says people most often get wrong \u2014 give the model a way to check its own output (test suites, screenshots, pixel comparison) and it can run for days or weeks without getting stuck.\",\n    \"Dynamic workflows orchestrate agents in sequence and parallel inside a Bun sandbox as a new form of test-time compute, enabling runs like the 11-day Zig-to-Rust rewrite of Bun that now ships in production Claude Code.\",\n    \"Anthropic runs 20-30 daily routines that maintain its own codebases \u2014 dead-code cleanup, shipping fully-rolled-out experiments, adding and deleting tests, and an 'abstraction police' that unifies near-duplicate abstractions \u2014 amounting to hundreds or thousands of agents a day.\",\n    \"Cherny qualifies 'coding is solved' to mean solved for the kind of coding he does; deep systems code, distributed systems, and pixel-level UI verification still defeat the model.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"it runs for a very long period of time and especially when you combine Opus 5 with auto mode, it's just like incredible. Like it can go for days, weeks, months at a time.\",\n      \"timestamp_sec\": 63,\n      \"why\": \"Sets the talk's central capability claim \u2014 long-horizon autonomous runs \u2014 which every later example illustrates.\"\n    },\n    {\n      \"text\": \"And then you combine that with the auto mode classifier and with these three layers we just cannot demonstrate prompt injection anymore.\",\n      \"timestamp_sec\": 186,\n      \"why\": \"A strong, checkable security claim that directly contradicts the prevailing 'lethal trifecta' consensus.\"\n    },\n    {\n      \"text\": \"So, yeah, we deleted 80% of the system prompt. You can actually try deleting the rest of it, too.\",\n      \"timestamp_sec\": 265,\n      \"why\": \"The headline number and the talk's core prescription in one line.\"\n    },\n    {\n      \"text\": \"And what's interesting is that the model is actually a little bit more intelligent without these prompts. That's something that we've been finding.\",\n      \"timestamp_sec\": 302,\n      \"why\": \"Counterintuitive empirical finding: system prompts are a product-behavior tool, not an intelligence multiplier.\"\n    },\n    {\n      \"text\": \"So every time there's a new model, we try we call it in a research you call this a ablation. And so what this means is you delete the entire system prompt and then you bring it back line by line to figure out what is the impact of each individual line.\",\n      \"timestamp_sec\": 342,\n      \"why\": \"The concrete, reproducible method behind the 80% number.\"\n    },\n    {\n      \"text\": \"for people that aren't building agentic products, but you're using Claude code, every 6 months delete your Claude MD. Delete your skills. Delete your hooks. See what the model does and it might surprise you.\",\n      \"timestamp_sec\": 409,\n      \"why\": \"Directly actionable advice for the much larger audience of Claude Code users rather than harness builders.\"\n    },\n    {\n      \"text\": \"It's um the way to think about it is almost like a like a living creature, like it's something more organic. It's a thing where every model generation, it behaves differently. It has a slightly different personality.\",\n      \"timestamp_sec\": 513,\n      \"why\": \"The mental-model shift the whole talk rests on: models as organisms to study, not systems to architect.\"\n    },\n    {\n      \"text\": \"Like an eval might live for maybe one, two, three model generations, but nowadays the you know, we're on the exponential. The model is improving so quickly, very often we just saturate the eval, and then we have to throw it away, and we have to come up with a new eval.\",\n      \"timestamp_sec\": 580,\n      \"why\": \"Pushes back on the common assumption that evals are the durable asset in an AI product.\"\n    },\n    {\n      \"text\": \"the model is able to do all sorts of things with today's models, not a future model, but today's model, that we have not yet realized.\",\n      \"timestamp_sec\": 656,\n      \"why\": \"Defines product overhang and locates the opportunity in the present model, not the next one.\"\n    },\n    {\n      \"text\": \"often what happens is the product gets in the way. And this getting in the way, we call this hobbling. And then not not eliciting the correct behavior from the model, we call this product overhang.\",\n      \"timestamp_sec\": 700,\n      \"why\": \"Gives the talk's two key terms their working definitions.\"\n    },\n    {\n      \"text\": \"I I think that nowadays, with modern models, there's so much product overhang that I have I'm not seeing startups capture.\",\n      \"timestamp_sec\": 804,\n      \"why\": \"The direct challenge to the founder audience, from someone with unusual visibility into model capability.\"\n    },\n    {\n      \"text\": \"You want to go a little bit higher level. You want to describe the task, you want to describe the guardrails, you want to describe like the exit criteria, and then just go with the model cook.\",\n      \"timestamp_sec\": 907,\n      \"why\": \"Compresses his entire prompting philosophy into a three-part recipe.\"\n    },\n    {\n      \"text\": \"And it ran for 11 days, and it rewrote the entire code base.\",\n      \"timestamp_sec\": 1034,\n      \"why\": \"The single most concrete data point in the talk \u2014 an autonomous run measured in days, now in production.\"\n    },\n    {\n      \"text\": \"you should just keep throwing the latest model at it to see if it'll just do it. Cuz even if a previous model didn't, the new one might.\",\n      \"timestamp_sec\": 1100,\n      \"why\": \"A cheap, repeatable strategy for discovering capability jumps without prompt archaeology.\"\n    },\n    {\n      \"text\": \"And we didn't train the model to draw. Like it it's just like the solicitation gap. Like if you ask it to do it the right way, it can just do it.\",\n      \"timestamp_sec\": 1133,\n      \"why\": \"Names the elicitation gap with an example nobody trained for \u2014 evidence that overhang is real and accidental to find.\"\n    },\n    {\n      \"text\": \"the skill nowadays is less about prompt engineering and more about figuring out how do you give Claude a hard task that seems a little bit too hard. And then how do you make it possible for Claude to verify its work along the way?\",\n      \"timestamp_sec\": 1204,\n      \"why\": \"States what replaces prompt engineering as the core skill.\"\n    },\n    {\n      \"text\": \"I want you to rewrite the Electron app in Swift. I want you to run the Electron app in the Mac virtual machine, screenshot it, and then look pixel by pixel, compare it to the Swift version, don't stop until you're done.\",\n      \"timestamp_sec\": 1272,\n      \"why\": \"The verbatim prompt behind a two-week-plus autonomous run \u2014 verification loop and stop condition in three sentences.\"\n    },\n    {\n      \"text\": \"You don't need the fancy stuff. You don't need slash goal, you don't need slash loop. These help, but really all you need is give the model the task, give it a way to verify the output of its work so it doesn't get stuck, and it will just go.\",\n      \"timestamp_sec\": 1351,\n      \"why\": \"Explicitly deflates the scaffolding-and-tricks culture around agent products.\"\n    },\n    {\n      \"text\": \"So when I look at engineers that have been, you know, coding for a long for a long time, you know, like for for years or for decades, this is a really really common failure mode is trying to over specify and it's trying to be overly specific\",\n      \"timestamp_sec\": 1424,\n      \"why\": \"Identifies experience itself as the liability \u2014 a claim experienced engineers may resist.\"\n    },\n    {\n      \"text\": \"And so now we have every day maybe 20 or 30 of these routines. It's running across all of our code bases and it's not totally there yet, but we're on the path to fully automating the maintenance of our apps by doing this.\",\n      \"timestamp_sec\": 1772,\n      \"why\": \"Quantifies how far Anthropic has actually pushed self-maintaining codebases internally.\"\n    },\n    {\n      \"text\": \"So coding is solved for the kind of coding that I do. It's not solved for everyone. You know, there's still code bases that are like super deep systems code bases where quad still struggles.\",\n      \"timestamp_sec\": 1804,\n      \"why\": \"Walks back his own widely-quoted 'coding is solved' line with a specific boundary.\"\n    },\n    {\n      \"text\": \"So forget all of the things that you learned about past models. Forget everything that you've learned about computer science theory in class. Look at the model, try to do a task, see where it struggles, and then based on that adjust.\",\n      \"timestamp_sec\": 1890,\n      \"why\": \"His answer to what separates the best model users \u2014 discarding priors as an active skill.\"\n    }\n  ],\n  \"concepts\": [\n    \"system prompt ablation\",\n    \"product overhang\",\n    \"model un-hobbling\",\n    \"capability elicitation\",\n    \"eval saturation\",\n    \"harness design\",\n    \"long-horizon agent runs\",\n    \"agent verification loops\",\n    \"test-time compute orchestration\",\n    \"prompt injection defense\",\n    \"self-maintaining codebases\",\n    \"empirical model iteration\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Opus 5 combined with an alignment-trained model, a mechanistic-interpretability-based prompt injection classifier, and an auto mode classifier makes prompt injection undemonstrable in Anthropic's testing.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 186\n    },\n    {\n      \"claim\": \"Most of a system prompt exists to correct model deficiencies that disappear with the next generation, so 80%+ of Claude Code's prompt could simply be deleted for Opus 5.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 265\n    },\n    {\n      \"claim\": \"The model is slightly more intelligent with no system prompt at all; the prompts serve the product experience, not raw capability.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 302\n    },\n    {\n      \"claim\": \"Every team building on models should run a full delete-and-restore ablation of prompts and tools on each new model release.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 409\n    },\n    {\n      \"claim\": \"You should only add an instruction back to the system prompt after observing the model repeatedly fail at the same thing \u2014 never preemptively, because the model reads it on every single call.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 484\n    },\n    {\n      \"claim\": \"Evals are not long-lived assets; they typically survive only one to three model generations before saturating and being discarded.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 580\n    },\n    {\n      \"claim\": \"There is large, commercially valuable product overhang in today's models that startups are currently failing to capture.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 804\n    },\n    {\n      \"claim\": \"For modern models, highly prescriptive step-by-step instructions produce worse results than a high-level task plus guardrails plus exit criteria.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 907\n    },\n    {\n      \"claim\": \"A dynamic workflow rewrote the Bun JavaScript runtime from Zig to Rust in 11 days from one prompt with steering, work that would have taken engineers well over a year, and that rewrite now runs in production Claude Code.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1034\n    },\n    {\n      \"claim\": \"Previous model generations could not complete the Bun rewrite even with steering; the capability appeared starting with Fable.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1068\n    },\n    {\n      \"claim\": \"Giving the model a way to verify its own work is the single most important thing practitioners get wrong.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1204\n    },\n    {\n      \"claim\": \"Elaborate scaffolding (slash goal, slash loop) is optional; a hard task plus a verification mechanism is sufficient for multi-week autonomous runs.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1351\n    },\n    {\n      \"claim\": \"There is no 'one weird trick' for using models well, and advice from LinkedIn influencers and Twitter is not worth following.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1389\n    },\n    {\n      \"claim\": \"Long-tenured engineers are the group most prone to the over-specification failure mode, and unlearning it is a distinct journey.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1465\n    },\n    {\n      \"claim\": \"Dynamic workflows constitute a new axis of test-time compute scaling, alongside neural net size, training data, and training flops.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1635\n    },\n    {\n      \"claim\": \"Automated daily maintenance routines are already doing the work of dozens or hundreds of engineers across Anthropic's codebases, freeing engineers to ship product and talk to users.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1804\n    },\n    {\n      \"claim\": \"Coding is solved only for the kind of coding Cherny does; deep systems code, distributed systems, and pixel-level UI verification remain unsolved.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1849\n    },\n    {\n      \"claim\": \"Software engineering with models has shifted from a theoretical science to an empirical one, and the winning skill is willingness to abandon priors and retry ideas that failed before.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1934\n    },\n    {\n      \"claim\": \"CS students should still learn to apply computer science by hand through practical problems \u2014 design sense, business sense, data science, and talking to users \u2014 rather than theory alone.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 2046\n    }\n  ],\n  \"speaker_org\": \"Anthropic\"\n}",
+  "ttft_ms": 48491,
+  "ttft_stream_ms": 929,
+  "time_to_request_ms": 46,
+  "type": "result",
+  "duration_ms": 107807,
+  "uuid": "51fb20b3-3cf4-4fa0-9c28-1ee22352fd67",
+  "passA": {
+    "summary": "Boris Cherny, creator of Claude Code, is interviewed at YC Startup School 2026 the day after Opus 5 shipped, and argues that building on frontier models is an empirical science rather than a systems-design discipline. His central claim: every new model generation invalidates most of your harness, so the right move is to delete \u2014 Anthropic cut over 80% of Claude Code's system prompt for Opus 5, runs full ablations (delete everything, add lines back one at a time) on each release, and finds evals typically survive only one to three model generations before saturating. He frames the startup opportunity as 'product overhang' and 'hobbling': today's models can already do far more than shipped products elicit, and Claude Code itself was born from un-hobbling Sonnet 3.5 by giving it a terminal instead of an IDE autocomplete box. He backs this with concrete long-horizon examples \u2014 an 11-day dynamic-workflow rewrite of the Bun runtime from Zig to Rust now running in production, and a Swift port of the Claude desktop app that had been running for over two weeks at the time of the talk. Worth watching if you build agentic products or want a concrete picture of what 'give it a hard task plus a way to verify' looks like at thousands-of-agents scale.",
+    "key_points": [
+      "Anthropic deleted more than 80% of Claude Code's system prompt when Opus 5 shipped, because most of it existed to correct behaviors the new model now gets right on its own.",
+      "The standard practice on each model release is an ablation: delete the entire system prompt, then add lines back one at a time to measure the impact of each, and do the same for tools and harness code.",
+      "An undocumented CLAUDE_CODE_SIMPLE=1 environment variable strips all system prompts including tool prompts, and Cherny reports the model is slightly more intelligent without them \u2014 the prompts exist to make the product behave, not to make the model smarter.",
+      "Evals are not durable assets either; they last roughly one to three model generations before being saturated and thrown away, so the only real constant is empirically using the product and watching where it fails.",
+      "'Product overhang' is the gap between what today's model can already do and what any shipped product lets it do; 'hobbling' is the product actively getting in the way \u2014 Claude Code was created by un-hobbling Sonnet 3.5 with a minimal terminal harness when competitors were shipping autocomplete.",
+      "The dominant failure mode among experienced engineers is over-specifying step-by-step instructions; modern models want a high-level task, guardrails, and exit criteria instead.",
+      "Verification is the single thing Cherny says people most often get wrong \u2014 give the model a way to check its own output (test suites, screenshots, pixel comparison) and it can run for days or weeks without getting stuck.",
+      "Dynamic workflows orchestrate agents in sequence and parallel inside a Bun sandbox as a new form of test-time compute, enabling runs like the 11-day Zig-to-Rust rewrite of Bun that now ships in production Claude Code.",
+      "Anthropic runs 20-30 daily routines that maintain its own codebases \u2014 dead-code cleanup, shipping fully-rolled-out experiments, adding and deleting tests, and an 'abstraction police' that unifies near-duplicate abstractions \u2014 amounting to hundreds or thousands of agents a day.",
+      "Cherny qualifies 'coding is solved' to mean solved for the kind of coding he does; deep systems code, distributed systems, and pixel-level UI verification still defeat the model."
+    ],
+    "notable_quotes": [
+      {
+        "text": "it runs for a very long period of time and especially when you combine Opus 5 with auto mode, it's just like incredible. Like it can go for days, weeks, months at a time.",
+        "timestamp_sec": 63,
+        "why": "Sets the talk's central capability claim \u2014 long-horizon autonomous runs \u2014 which every later example illustrates."
+      },
+      {
+        "text": "And then you combine that with the auto mode classifier and with these three layers we just cannot demonstrate prompt injection anymore.",
+        "timestamp_sec": 186,
+        "why": "A strong, checkable security claim that directly contradicts the prevailing 'lethal trifecta' consensus."
+      },
+      {
+        "text": "So, yeah, we deleted 80% of the system prompt. You can actually try deleting the rest of it, too.",
+        "timestamp_sec": 265,
+        "why": "The headline number and the talk's core prescription in one line."
+      },
+      {
+        "text": "And what's interesting is that the model is actually a little bit more intelligent without these prompts. That's something that we've been finding.",
+        "timestamp_sec": 302,
+        "why": "Counterintuitive empirical finding: system prompts are a product-behavior tool, not an intelligence multiplier."
+      },
+      {
+        "text": "So every time there's a new model, we try we call it in a research you call this a ablation. And so what this means is you delete the entire system prompt and then you bring it back line by line to figure out what is the impact of each individual line.",
+        "timestamp_sec": 342,
+        "why": "The concrete, reproducible method behind the 80% number."
+      },
+      {
+        "text": "for people that aren't building agentic products, but you're using Claude code, every 6 months delete your Claude MD. Delete your skills. Delete your hooks. See what the model does and it might surprise you.",
+        "timestamp_sec": 409,
+        "why": "Directly actionable advice for the much larger audience of Claude Code users rather than harness builders."
+      },
+      {
+        "text": "It's um the way to think about it is almost like a like a living creature, like it's something more organic. It's a thing where every model generation, it behaves differently. It has a slightly different personality.",
+        "timestamp_sec": 513,
+        "why": "The mental-model shift the whole talk rests on: models as organisms to study, not systems to architect."
+      },
+      {
+        "text": "Like an eval might live for maybe one, two, three model generations, but nowadays the you know, we're on the exponential. The model is improving so quickly, very often we just saturate the eval, and then we have to throw it away, and we have to come up with a new eval.",
+        "timestamp_sec": 580,
+        "why": "Pushes back on the common assumption that evals are the durable asset in an AI product."
+      },
+      {
+        "text": "the model is able to do all sorts of things with today's models, not a future model, but today's model, that we have not yet realized.",
+        "timestamp_sec": 656,
+        "why": "Defines product overhang and locates the opportunity in the present model, not the next one."
+      },
+      {
+        "text": "often what happens is the product gets in the way. And this getting in the way, we call this hobbling. And then not not eliciting the correct behavior from the model, we call this product overhang.",
+        "timestamp_sec": 700,
+        "why": "Gives the talk's two key terms their working definitions."
+      },
+      {
+        "text": "I I think that nowadays, with modern models, there's so much product overhang that I have I'm not seeing startups capture.",
+        "timestamp_sec": 804,
+        "why": "The direct challenge to the founder audience, from someone with unusual visibility into model capability."
+      },
+      {
+        "text": "You want to go a little bit higher level. You want to describe the task, you want to describe the guardrails, you want to describe like the exit criteria, and then just go with the model cook.",
+        "timestamp_sec": 907,
+        "why": "Compresses his entire prompting philosophy into a three-part recipe."
+      },
+      {
+        "text": "And it ran for 11 days, and it rewrote the entire code base.",
+        "timestamp_sec": 1034,
+        "why": "The single most concrete data point in the talk \u2014 an autonomous run measured in days, now in production."
+      },
+      {
+        "text": "you should just keep throwing the latest model at it to see if it'll just do it. Cuz even if a previous model didn't, the new one might.",
+        "timestamp_sec": 1100,
+        "why": "A cheap, repeatable strategy for discovering capability jumps without prompt archaeology."
+      },
+      {
+        "text": "And we didn't train the model to draw. Like it it's just like the solicitation gap. Like if you ask it to do it the right way, it can just do it.",
+        "timestamp_sec": 1133,
+        "why": "Names the elicitation gap with an example nobody trained for \u2014 evidence that overhang is real and accidental to find."
+      },
+      {
+        "text": "the skill nowadays is less about prompt engineering and more about figuring out how do you give Claude a hard task that seems a little bit too hard. And then how do you make it possible for Claude to verify its work along the way?",
+        "timestamp_sec": 1204,
+        "why": "States what replaces prompt engineering as the core skill."
+      },
+      {
+        "text": "I want you to rewrite the Electron app in Swift. I want you to run the Electron app in the Mac virtual machine, screenshot it, and then look pixel by pixel, compare it to the Swift version, don't stop until you're done.",
+        "timestamp_sec": 1272,
+        "why": "The verbatim prompt behind a two-week-plus autonomous run \u2014 verification loop and stop condition in three sentences."
+      },
+      {
+        "text": "You don't need the fancy stuff. You don't need slash goal, you don't need slash loop. These help, but really all you need is give the model the task, give it a way to verify the output of its work so it doesn't get stuck, and it will just go.",
+        "timestamp_sec": 1351,
+        "why": "Explicitly deflates the scaffolding-and-tricks culture around agent products."
+      },
+      {
+        "text": "So when I look at engineers that have been, you know, coding for a long for a long time, you know, like for for years or for decades, this is a really really common failure mode is trying to over specify and it's trying to be overly specific",
+        "timestamp_sec": 1424,
+        "why": "Identifies experience itself as the liability \u2014 a claim experienced engineers may resist."
+      },
+      {
+        "text": "And so now we have every day maybe 20 or 30 of these routines. It's running across all of our code bases and it's not totally there yet, but we're on the path to fully automating the maintenance of our apps by doing this.",
+        "timestamp_sec": 1772,
+        "why": "Quantifies how far Anthropic has actually pushed self-maintaining codebases internally."
+      },
+      {
+        "text": "So coding is solved for the kind of coding that I do. It's not solved for everyone. You know, there's still code bases that are like super deep systems code bases where quad still struggles.",
+        "timestamp_sec": 1804,
+        "why": "Walks back his own widely-quoted 'coding is solved' line with a specific boundary."
+      },
+      {
+        "text": "So forget all of the things that you learned about past models. Forget everything that you've learned about computer science theory in class. Look at the model, try to do a task, see where it struggles, and then based on that adjust.",
+        "timestamp_sec": 1890,
+        "why": "His answer to what separates the best model users \u2014 discarding priors as an active skill."
+      }
+    ],
+    "concepts": [
+      "system prompt ablation",
+      "product overhang",
+      "model un-hobbling",
+      "capability elicitation",
+      "eval saturation",
+      "harness design",
+      "long-horizon agent runs",
+      "agent verification loops",
+      "test-time compute orchestration",
+      "prompt injection defense",
+      "self-maintaining codebases",
+      "empirical model iteration"
+    ],
+    "positions": [
+      {
+        "claim": "Opus 5 combined with an alignment-trained model, a mechanistic-interpretability-based prompt injection classifier, and an auto mode classifier makes prompt injection undemonstrable in Anthropic's testing.",
+        "confidence": "stated",
+        "timestamp_sec": 186
+      },
+      {
+        "claim": "Most of a system prompt exists to correct model deficiencies that disappear with the next generation, so 80%+ of Claude Code's prompt could simply be deleted for Opus 5.",
+        "confidence": "stated",
+        "timestamp_sec": 265
+      },
+      {
+        "claim": "The model is slightly more intelligent with no system prompt at all; the prompts serve the product experience, not raw capability.",
+        "confidence": "stated",
+        "timestamp_sec": 302
+      },
+      {
+        "claim": "Every team building on models should run a full delete-and-restore ablation of prompts and tools on each new model release.",
+        "confidence": "stated",
+        "timestamp_sec": 409
+      },
+      {
+        "claim": "You should only add an instruction back to the system prompt after observing the model repeatedly fail at the same thing \u2014 never preemptively, because the model reads it on every single call.",
+        "confidence": "stated",
+        "timestamp_sec": 484
+      },
+      {
+        "claim": "Evals are not long-lived assets; they typically survive only one to three model generations before saturating and being discarded.",
+        "confidence": "stated",
+        "timestamp_sec": 580
+      },
+      {
+        "claim": "There is large, commercially valuable product overhang in today's models that startups are currently failing to capture.",
+        "confidence": "stated",
+        "timestamp_sec": 804
+      },
+      {
+        "claim": "For modern models, highly prescriptive step-by-step instructions produce worse results than a high-level task plus guardrails plus exit criteria.",
+        "confidence": "stated",
+        "timestamp_sec": 907
+      },
+      {
+        "claim": "A dynamic workflow rewrote the Bun JavaScript runtime from Zig to Rust in 11 days from one prompt with steering, work that would have taken engineers well over a year, and that rewrite now runs in production Claude Code.",
+        "confidence": "stated",
+        "timestamp_sec": 1034
+      },
+      {
+        "claim": "Previous model generations could not complete the Bun rewrite even with steering; the capability appeared starting with Fable.",
+        "confidence": "stated",
+        "timestamp_sec": 1068
+      },
+      {
+        "claim": "Giving the model a way to verify its own work is the single most important thing practitioners get wrong.",
+        "confidence": "stated",
+        "timestamp_sec": 1204
+      },
+      {
+        "claim": "Elaborate scaffolding (slash goal, slash loop) is optional; a hard task plus a verification mechanism is sufficient for multi-week autonomous runs.",
+        "confidence": "stated",
+        "timestamp_sec": 1351
+      },
+      {
+        "claim": "There is no 'one weird trick' for using models well, and advice from LinkedIn influencers and Twitter is not worth following.",
+        "confidence": "stated",
+        "timestamp_sec": 1389
+      },
+      {
+        "claim": "Long-tenured engineers are the group most prone to the over-specification failure mode, and unlearning it is a distinct journey.",
+        "confidence": "stated",
+        "timestamp_sec": 1465
+      },
+      {
+        "claim": "Dynamic workflows constitute a new axis of test-time compute scaling, alongside neural net size, training data, and training flops.",
+        "confidence": "stated",
+        "timestamp_sec": 1635
+      },
+      {
+        "claim": "Automated daily maintenance routines are already doing the work of dozens or hundreds of engineers across Anthropic's codebases, freeing engineers to ship product and talk to users.",
+        "confidence": "stated",
+        "timestamp_sec": 1804
+      },
+      {
+        "claim": "Coding is solved only for the kind of coding Cherny does; deep systems code, distributed systems, and pixel-level UI verification remain unsolved.",
+        "confidence": "stated",
+        "timestamp_sec": 1849
+      },
+      {
+        "claim": "Software engineering with models has shifted from a theoretical science to an empirical one, and the winning skill is willingness to abandon priors and retry ideas that failed before.",
+        "confidence": "stated",
+        "timestamp_sec": 1934
+      },
+      {
+        "claim": "CS students should still learn to apply computer science by hand through practical problems \u2014 design sense, business sense, data science, and talking to users \u2014 rather than theory alone.",
+        "confidence": "stated",
+        "timestamp_sec": 2046
+      }
+    ],
+    "speaker_org": "Anthropic"
+  },
+  "_meta": {
+    "slug": "we-cut-80-of-claude-codes-prompt",
+    "video_id": "qyPCVqFUyDo",
+    "url": "https://www.youtube.com/watch?v=qyPCVqFUyDo",
+    "word_count": 6868,
+    "wall_sec": 109.0,
+    "run_at": "2026-08-19T18:10:13Z",
+    "effort": "default"
+  }
+}

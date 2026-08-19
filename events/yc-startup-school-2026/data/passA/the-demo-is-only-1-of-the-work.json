@@ -1,0 +1,311 @@
+{
+  "is_error": false,
+  "duration_api_ms": 88468,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "c5c44f0b-b8aa-4d84-9d63-0fadcbf06f75",
+  "total_cost_usd": 0.424809,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 20067,
+    "cache_read_input_tokens": 11256,
+    "output_tokens": 8168,
+    "output_tokens_details": {
+      "thinking_tokens": 2999
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 20067,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 8168,
+        "cache_read_input_tokens": 11256,
+        "cache_creation_input_tokens": 20067,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 20067
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 14216,
+      "outputTokens": 17,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.014301,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 8168,
+      "cacheReadInputTokens": 11256,
+      "cacheCreationInputTokens": 20067,
+      "webSearchRequests": 0,
+      "costUSD": 0.410508,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "```json\n{\n  \"summary\": \"Waymo co-CEO Dmitri Dolgov distills roughly two decades of autonomous driving into seven technical lessons about building AI that operates in the physical world rather than on a screen. His central argument is that a working demo is at most 1% of the work: Waymo hit 'capability complete' driving in 2010 after 18 months, but needed about 15 more years to ship a real product, because reliability lives on an exponential ladder of nines where each additional nine costs 10x and demands a fundamentally different approach. He argues physical AI differs from digital AI along four gaps \u2014 error cost, latency, data, and validation \u2014 and that these force choices most founders get wrong: redundant multimodal sensing over camera-only, structure-augmented end-to-end models over black-box end-to-end, and closed-loop generative simulation as a first-class AI system rather than tooling. The talk closes on the claim that evals and metrics, not models, are the durable moat, backed by Waymo's published safety data (17x fewer serious-injury crashes than human drivers over 220M+ autonomous miles). Worth watching if you are building anything where mistakes cost more than a retry, or if you want a concrete account of how a hype-cycle-surviving company repeatedly absorbs new AI waves into production.\",\n  \"key_points\": [\n    \"A working demo is at most 1% of the work; Waymo achieved its initial autonomous driving milestones in about 18 months in 2009-2010, then spent roughly 15 years reaching a scalable driverless product, and now serves half a million trips per week across 15 US cities.\",\n    \"Reliability sits on an exponential ladder of nines where each additional nine costs about 10x more effort and requires a fundamentally different technical approach \u2014 redundancy and backup architectures, not more of the same bug fixing \u2014 so founders should determine how many nines their product needs before choosing an architecture.\",\n    \"Physical AI differs from digital AI along four gaps: the cost of errors (lives, not tokens), latency (a car moves 100 feet per second at freeway speed, and inference must run on a computer in the trunk), data (there is no internet-scale corpus of the physical world), and validation (you need high confidence on day one rather than shipping 'good enough' and letting users find edge cases).\",\n    \"Every AI breakthrough makes demos ~100x easier while barely moving the long tail, which is why each hype cycle produces spectacular demos and very few products; the recurring mistake is spending on the demo when you should be saving for the nines.\",\n    \"Waymo uses cameras, lidar, and radar with complementary physics \u2014 not as backups but fused through per-modality encoders \u2014 because camera-only sensing yields a safety curve that flattens well below superhuman performance, and redundancy is needed anyway so a single leaf on a sensor cannot halt the robot.\",\n    \"The Waymo Foundation Model is a multimodal world-action-language model with an encoder-decoder, system-1/system-2 architecture: a fast path fusing raw sensor data for millisecond reactions, and a slow path using VLM world knowledge for semantic reasoning (e.g. recognizing a burning car and rerouting even when the path ahead is geometrically clear).\",\n    \"Waymo's 'structure-augmented end-to-end' approach augments learned embeddings with materialized structured representations, buying inference-time safety validation, cheaper large-scale training and evaluation in a compact representation space, and verifiable reward signals for RL \u2014 the principle being that structure which channels scale wins while structure that fights scale loses.\",\n    \"Closed-loop simulation is mandatory, and a real simulator is itself a large AI model as hard to build as the agent; Waymo pairs a behavioral world model operating on structured representations with a sensor world model (leveraging Google DeepMind's Genie 3) to generate never-observed scenarios like a plane landing on the freeway or an elephant in an intersection.\",\n    \"The system is three AIs plus a flywheel \u2014 agent, simulator, and critic sharing one foundation model \u2014 where deployment generates data that grounds the simulator, which generates harder edge cases for the critic and agent, and metrics are what steer the flywheel in the right direction.\",\n    \"Evals and metrics are the strategic moat rather than the model: build them before the product, extend validation beyond model level to every physical, behavioral, onboard, offboard, and operational component (Waymo's 'safety and readiness framework'), and publish the results, because hundreds of millions of audited real-world miles are far harder to replicate than an architecture.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"the best AI moments will look like nothing happened. It's just the task got done safely and smoothly.\",\n      \"timestamp_sec\": 97,\n      \"why\": \"Frames the entire thesis about physical AI success being invisible.\"\n    },\n    {\n      \"text\": \"Now, in Silicon Valley, there's a common mantra to move fast and break things. However, when you're dealing with atoms instead of bits, breaking things is not really okay. So, the thing you have to do is to move fast and ship safely.\",\n      \"timestamp_sec\": 148,\n      \"why\": \"Direct rejection of the dominant startup mantra for physical products.\"\n    },\n    {\n      \"text\": \"In the physical world, the cost of a mistake can be measured in human lives, not tokens. There's simply not an undo and a retry button.\",\n      \"timestamp_sec\": 248,\n      \"why\": \"The sharpest statement of the error-cost gap between digital and physical AI.\"\n    },\n    {\n      \"text\": \"There's no digitized version of the internet for the physical world.\",\n      \"timestamp_sec\": 295,\n      \"why\": \"Names the data gap that makes physical AI unable to copy the LLM playbook.\"\n    },\n    {\n      \"text\": \"And a working demo is 1% at best of the work that you have to do. The many nines of performance, the many nines of reliability that follow, that's where the real work happens.\",\n      \"timestamp_sec\": 499,\n      \"why\": \"The title claim, stated plainly.\"\n    },\n    {\n      \"text\": \"So, the demo took 18 months, the product took about 15 years.\",\n      \"timestamp_sec\": 625,\n      \"why\": \"Concrete numbers behind the demo-to-product gap from the canonical example.\"\n    },\n    {\n      \"text\": \"that reliability and performance lives on this exponential ladder of nines. So, getting to that first 90% or 99%, that's the easy part. But then every next nine that you want to add, that takes about 10 times more effort.\",\n      \"timestamp_sec\": 685,\n      \"why\": \"States the 10x-per-nine cost model that drives the rest of the talk.\"\n    },\n    {\n      \"text\": \"And at scale, the long tail is the problem space, is your entire problem statement. When you drive millions of miles per week, a rare event that might happen once in a million miles, that just becomes your daily reality.\",\n      \"timestamp_sec\": 740,\n      \"why\": \"Explains why scale converts rare events into the core engineering problem.\"\n    },\n    {\n      \"text\": \"And that's why every hype cycle produces a wave of absolutely spectacular demos and very few real products. And the recurring mistake of every cycle is spending on the demo when you should be saving for the nines.\",\n      \"timestamp_sec\": 828,\n      \"why\": \"A pointed diagnosis of the current AI demo boom, from someone who lived three prior cycles.\"\n    },\n    {\n      \"text\": \"So, count your nines before you count your demo views.\",\n      \"timestamp_sec\": 864,\n      \"why\": \"Compact, memorable version of the talk's founder advice.\"\n    },\n    {\n      \"text\": \"However, if you are targeting full autonomy, and you're targeting superhuman, strongly superhuman performance, you find that weak sensing just leads to a safety curve that flattens out way too early.\",\n      \"timestamp_sec\": 961,\n      \"why\": \"Takes an explicit side in the camera-only versus multimodal sensing debate.\"\n    },\n    {\n      \"text\": \"if you don't have redundancy in sensing, you can have, you know, a single leaf land on your sensors and bring your robot to a full stop.\",\n      \"timestamp_sec\": 1128,\n      \"why\": \"Vivid, checkable justification for hardware redundancy over cost minimization.\"\n    },\n    {\n      \"text\": \"So, betting your company, betting your approach on today's hardware prices is just betting your company on a number that has a fairly short shelf life and is going to expire.\",\n      \"timestamp_sec\": 1223,\n      \"why\": \"Names a specific strategic trap for hardware and deep-tech founders.\"\n    },\n    {\n      \"text\": \"The much harder muscle to build is to carry that bleeding edge research into production and deploy it in a safety critical environment without regressions.\",\n      \"timestamp_sec\": 1371,\n      \"why\": \"Separates applied research capability from the organizational muscle that actually ships.\"\n    },\n    {\n      \"text\": \"Essentially, structure that fights scale will always lose. And structure that channels scale always wins.\",\n      \"timestamp_sec\": 1845,\n      \"why\": \"A crisp refinement of the bitter lesson that other speakers might contest.\"\n    },\n    {\n      \"text\": \"So, the lesson here is to bet on a system that's maximally learned and minimally constrained and leverage structure intentionally to boost performance and scaling laws both in training and in evaluation.\",\n      \"timestamp_sec\": 2137,\n      \"why\": \"States Waymo's architectural position on end-to-end versus structured models.\"\n    },\n    {\n      \"text\": \"the problem of building a good realistic simulator is just as hard as building the agent itself.\",\n      \"timestamp_sec\": 2278,\n      \"why\": \"Counters the common view of simulation as supporting tooling.\"\n    },\n    {\n      \"text\": \"that your model is really table stakes, but eval and metrics, that's your most important. That's your strategic moat.\",\n      \"timestamp_sec\": 2562,\n      \"why\": \"The talk's most transferable claim about where durable advantage lives.\"\n    },\n    {\n      \"text\": \"If you can't quantitatively define what good enough means, you're not really building a product, you're just iterating on your demo.\",\n      \"timestamp_sec\": 2562,\n      \"why\": \"Turns the eval argument into a test founders can apply immediately.\"\n    },\n    {\n      \"text\": \"Your your models can be leaked, algorithms can be replicated, but hundreds of millions of miles of fully autonomous operations in the real world, backed by evidence-grade evaluation and publicly audited proof, that is much, much more difficult to replicate.\",\n      \"timestamp_sec\": 2719,\n      \"why\": \"Defines the moat in terms of accumulated evidence rather than technology.\"\n    },\n    {\n      \"text\": \"And at the current scale, what that means is that Waymo is preventing a serious injury every 8 days.\",\n      \"timestamp_sec\": 2820,\n      \"why\": \"Converts the safety statistics into a concrete, checkable outcome claim.\"\n    },\n    {\n      \"text\": \"And the last decade of AI happened in the digital world, and the next decade will also happen in the physical world.\",\n      \"timestamp_sec\": 2863,\n      \"why\": \"The forward-looking bet the whole playbook is offered in service of.\"\n    }\n  ],\n  \"concepts\": [\n    \"physical ai\",\n    \"demo-to-product gap\",\n    \"reliability nines\",\n    \"sensor fusion\",\n    \"hardware redundancy\",\n    \"end-to-end models\",\n    \"closed-loop simulation\",\n    \"generative world models\",\n    \"eval and metrics as moat\",\n    \"the bitter lesson\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"A working demo represents at most 1% of the work required to ship a real product in the physical world.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 499\n    },\n    {\n      \"claim\": \"Each additional nine of reliability costs roughly 10x more effort and requires a fundamentally different technical approach, not more of the same work.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 685\n    },\n    {\n      \"claim\": \"Every AI breakthrough makes prototypes about 100 times easier while barely improving the long tail, which is why hype cycles yield demos rather than products.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 828\n    },\n    {\n      \"claim\": \"Camera-only sensing is adequate for driver-assist or roughly human-level performance but its safety curve flattens out before reaching strongly superhuman full autonomy.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 961\n    },\n    {\n      \"claim\": \"Because redundancy is required regardless, teams should use multiple sensing modalities with complementary physics rather than duplicating a single modality.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1171\n    },\n    {\n      \"claim\": \"Anchoring a company's strategy to today's hardware component prices is a mistake because components will commoditize and drop in price.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1223\n    },\n    {\n      \"claim\": \"New technology adoption should be judged on whether it simplifies and unifies the stack, not only on capability and performance gains.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1450\n    },\n    {\n      \"claim\": \"Betting on a high-capacity foundation model and distilling into smaller onboard models yields better scaling laws than training small models directly.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1845\n    },\n    {\n      \"claim\": \"Vanilla black-box end-to-end models are sufficient for some products but not for superhuman performance in a safety-critical fully autonomous agent.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1927\n    },\n    {\n      \"claim\": \"Structured intermediate representations enable inference-time safety validation, cheaper training and evaluation, and verifiable reward signals that a pure black-box model cannot provide.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 2085\n    },\n    {\n      \"claim\": \"Closed-loop simulation, not open-loop evaluation, is required to evaluate counterfactual actions for safety-critical physical agents.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 2233\n    },\n    {\n      \"claim\": \"Building an end-to-end driving model has been relatively easy for a while; evaluating it in closed loop was the hard part.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 2320\n    },\n    {\n      \"claim\": \"Evals and metrics, not model architecture or data, constitute a company's strategic moat, and should be built before the product.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 2562\n    },\n    {\n      \"claim\": \"In Waymo's operating areas, the Waymo driver is about 17 times better than human drivers on crashes causing serious injury, based on over 220 million fully autonomous miles.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 2766\n    },\n    {\n      \"claim\": \"Physical AI today is roughly where digital AI was a few years ago, and the necessary ingredients \u2014 world models, architectures, affordable compute and sensing, scaling laws \u2014 are now in place.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 2863\n    },\n    {\n      \"claim\": \"Publishing safety data openly, rather than proving results internally, is necessary to earn public and regulatory trust.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 2719\n    }\n  ],\n  \"speaker_org\": \"Waymo\"\n}\n```",
+  "ttft_ms": 33858,
+  "ttft_stream_ms": 1032,
+  "time_to_request_ms": 41,
+  "type": "result",
+  "duration_ms": 89348,
+  "uuid": "5cdba162-3041-4ace-8992-3f115a4c5acc",
+  "passA": {
+    "summary": "Waymo co-CEO Dmitri Dolgov distills roughly two decades of autonomous driving into seven technical lessons about building AI that operates in the physical world rather than on a screen. His central argument is that a working demo is at most 1% of the work: Waymo hit 'capability complete' driving in 2010 after 18 months, but needed about 15 more years to ship a real product, because reliability lives on an exponential ladder of nines where each additional nine costs 10x and demands a fundamentally different approach. He argues physical AI differs from digital AI along four gaps \u2014 error cost, latency, data, and validation \u2014 and that these force choices most founders get wrong: redundant multimodal sensing over camera-only, structure-augmented end-to-end models over black-box end-to-end, and closed-loop generative simulation as a first-class AI system rather than tooling. The talk closes on the claim that evals and metrics, not models, are the durable moat, backed by Waymo's published safety data (17x fewer serious-injury crashes than human drivers over 220M+ autonomous miles). Worth watching if you are building anything where mistakes cost more than a retry, or if you want a concrete account of how a hype-cycle-surviving company repeatedly absorbs new AI waves into production.",
+    "key_points": [
+      "A working demo is at most 1% of the work; Waymo achieved its initial autonomous driving milestones in about 18 months in 2009-2010, then spent roughly 15 years reaching a scalable driverless product, and now serves half a million trips per week across 15 US cities.",
+      "Reliability sits on an exponential ladder of nines where each additional nine costs about 10x more effort and requires a fundamentally different technical approach \u2014 redundancy and backup architectures, not more of the same bug fixing \u2014 so founders should determine how many nines their product needs before choosing an architecture.",
+      "Physical AI differs from digital AI along four gaps: the cost of errors (lives, not tokens), latency (a car moves 100 feet per second at freeway speed, and inference must run on a computer in the trunk), data (there is no internet-scale corpus of the physical world), and validation (you need high confidence on day one rather than shipping 'good enough' and letting users find edge cases).",
+      "Every AI breakthrough makes demos ~100x easier while barely moving the long tail, which is why each hype cycle produces spectacular demos and very few products; the recurring mistake is spending on the demo when you should be saving for the nines.",
+      "Waymo uses cameras, lidar, and radar with complementary physics \u2014 not as backups but fused through per-modality encoders \u2014 because camera-only sensing yields a safety curve that flattens well below superhuman performance, and redundancy is needed anyway so a single leaf on a sensor cannot halt the robot.",
+      "The Waymo Foundation Model is a multimodal world-action-language model with an encoder-decoder, system-1/system-2 architecture: a fast path fusing raw sensor data for millisecond reactions, and a slow path using VLM world knowledge for semantic reasoning (e.g. recognizing a burning car and rerouting even when the path ahead is geometrically clear).",
+      "Waymo's 'structure-augmented end-to-end' approach augments learned embeddings with materialized structured representations, buying inference-time safety validation, cheaper large-scale training and evaluation in a compact representation space, and verifiable reward signals for RL \u2014 the principle being that structure which channels scale wins while structure that fights scale loses.",
+      "Closed-loop simulation is mandatory, and a real simulator is itself a large AI model as hard to build as the agent; Waymo pairs a behavioral world model operating on structured representations with a sensor world model (leveraging Google DeepMind's Genie 3) to generate never-observed scenarios like a plane landing on the freeway or an elephant in an intersection.",
+      "The system is three AIs plus a flywheel \u2014 agent, simulator, and critic sharing one foundation model \u2014 where deployment generates data that grounds the simulator, which generates harder edge cases for the critic and agent, and metrics are what steer the flywheel in the right direction.",
+      "Evals and metrics are the strategic moat rather than the model: build them before the product, extend validation beyond model level to every physical, behavioral, onboard, offboard, and operational component (Waymo's 'safety and readiness framework'), and publish the results, because hundreds of millions of audited real-world miles are far harder to replicate than an architecture."
+    ],
+    "notable_quotes": [
+      {
+        "text": "the best AI moments will look like nothing happened. It's just the task got done safely and smoothly.",
+        "timestamp_sec": 97,
+        "why": "Frames the entire thesis about physical AI success being invisible."
+      },
+      {
+        "text": "Now, in Silicon Valley, there's a common mantra to move fast and break things. However, when you're dealing with atoms instead of bits, breaking things is not really okay. So, the thing you have to do is to move fast and ship safely.",
+        "timestamp_sec": 148,
+        "why": "Direct rejection of the dominant startup mantra for physical products."
+      },
+      {
+        "text": "In the physical world, the cost of a mistake can be measured in human lives, not tokens. There's simply not an undo and a retry button.",
+        "timestamp_sec": 248,
+        "why": "The sharpest statement of the error-cost gap between digital and physical AI."
+      },
+      {
+        "text": "There's no digitized version of the internet for the physical world.",
+        "timestamp_sec": 295,
+        "why": "Names the data gap that makes physical AI unable to copy the LLM playbook."
+      },
+      {
+        "text": "And a working demo is 1% at best of the work that you have to do. The many nines of performance, the many nines of reliability that follow, that's where the real work happens.",
+        "timestamp_sec": 499,
+        "why": "The title claim, stated plainly."
+      },
+      {
+        "text": "So, the demo took 18 months, the product took about 15 years.",
+        "timestamp_sec": 625,
+        "why": "Concrete numbers behind the demo-to-product gap from the canonical example."
+      },
+      {
+        "text": "that reliability and performance lives on this exponential ladder of nines. So, getting to that first 90% or 99%, that's the easy part. But then every next nine that you want to add, that takes about 10 times more effort.",
+        "timestamp_sec": 685,
+        "why": "States the 10x-per-nine cost model that drives the rest of the talk."
+      },
+      {
+        "text": "And at scale, the long tail is the problem space, is your entire problem statement. When you drive millions of miles per week, a rare event that might happen once in a million miles, that just becomes your daily reality.",
+        "timestamp_sec": 740,
+        "why": "Explains why scale converts rare events into the core engineering problem."
+      },
+      {
+        "text": "And that's why every hype cycle produces a wave of absolutely spectacular demos and very few real products. And the recurring mistake of every cycle is spending on the demo when you should be saving for the nines.",
+        "timestamp_sec": 828,
+        "why": "A pointed diagnosis of the current AI demo boom, from someone who lived three prior cycles."
+      },
+      {
+        "text": "So, count your nines before you count your demo views.",
+        "timestamp_sec": 864,
+        "why": "Compact, memorable version of the talk's founder advice."
+      },
+      {
+        "text": "However, if you are targeting full autonomy, and you're targeting superhuman, strongly superhuman performance, you find that weak sensing just leads to a safety curve that flattens out way too early.",
+        "timestamp_sec": 961,
+        "why": "Takes an explicit side in the camera-only versus multimodal sensing debate."
+      },
+      {
+        "text": "if you don't have redundancy in sensing, you can have, you know, a single leaf land on your sensors and bring your robot to a full stop.",
+        "timestamp_sec": 1128,
+        "why": "Vivid, checkable justification for hardware redundancy over cost minimization."
+      },
+      {
+        "text": "So, betting your company, betting your approach on today's hardware prices is just betting your company on a number that has a fairly short shelf life and is going to expire.",
+        "timestamp_sec": 1223,
+        "why": "Names a specific strategic trap for hardware and deep-tech founders."
+      },
+      {
+        "text": "The much harder muscle to build is to carry that bleeding edge research into production and deploy it in a safety critical environment without regressions.",
+        "timestamp_sec": 1371,
+        "why": "Separates applied research capability from the organizational muscle that actually ships."
+      },
+      {
+        "text": "Essentially, structure that fights scale will always lose. And structure that channels scale always wins.",
+        "timestamp_sec": 1845,
+        "why": "A crisp refinement of the bitter lesson that other speakers might contest."
+      },
+      {
+        "text": "So, the lesson here is to bet on a system that's maximally learned and minimally constrained and leverage structure intentionally to boost performance and scaling laws both in training and in evaluation.",
+        "timestamp_sec": 2137,
+        "why": "States Waymo's architectural position on end-to-end versus structured models."
+      },
+      {
+        "text": "the problem of building a good realistic simulator is just as hard as building the agent itself.",
+        "timestamp_sec": 2278,
+        "why": "Counters the common view of simulation as supporting tooling."
+      },
+      {
+        "text": "that your model is really table stakes, but eval and metrics, that's your most important. That's your strategic moat.",
+        "timestamp_sec": 2562,
+        "why": "The talk's most transferable claim about where durable advantage lives."
+      },
+      {
+        "text": "If you can't quantitatively define what good enough means, you're not really building a product, you're just iterating on your demo.",
+        "timestamp_sec": 2562,
+        "why": "Turns the eval argument into a test founders can apply immediately."
+      },
+      {
+        "text": "Your your models can be leaked, algorithms can be replicated, but hundreds of millions of miles of fully autonomous operations in the real world, backed by evidence-grade evaluation and publicly audited proof, that is much, much more difficult to replicate.",
+        "timestamp_sec": 2719,
+        "why": "Defines the moat in terms of accumulated evidence rather than technology."
+      },
+      {
+        "text": "And at the current scale, what that means is that Waymo is preventing a serious injury every 8 days.",
+        "timestamp_sec": 2820,
+        "why": "Converts the safety statistics into a concrete, checkable outcome claim."
+      },
+      {
+        "text": "And the last decade of AI happened in the digital world, and the next decade will also happen in the physical world.",
+        "timestamp_sec": 2863,
+        "why": "The forward-looking bet the whole playbook is offered in service of."
+      }
+    ],
+    "concepts": [
+      "physical ai",
+      "demo-to-product gap",
+      "reliability nines",
+      "sensor fusion",
+      "hardware redundancy",
+      "end-to-end models",
+      "closed-loop simulation",
+      "generative world models",
+      "eval and metrics as moat",
+      "the bitter lesson"
+    ],
+    "positions": [
+      {
+        "claim": "A working demo represents at most 1% of the work required to ship a real product in the physical world.",
+        "confidence": "stated",
+        "timestamp_sec": 499
+      },
+      {
+        "claim": "Each additional nine of reliability costs roughly 10x more effort and requires a fundamentally different technical approach, not more of the same work.",
+        "confidence": "stated",
+        "timestamp_sec": 685
+      },
+      {
+        "claim": "Every AI breakthrough makes prototypes about 100 times easier while barely improving the long tail, which is why hype cycles yield demos rather than products.",
+        "confidence": "stated",
+        "timestamp_sec": 828
+      },
+      {
+        "claim": "Camera-only sensing is adequate for driver-assist or roughly human-level performance but its safety curve flattens out before reaching strongly superhuman full autonomy.",
+        "confidence": "stated",
+        "timestamp_sec": 961
+      },
+      {
+        "claim": "Because redundancy is required regardless, teams should use multiple sensing modalities with complementary physics rather than duplicating a single modality.",
+        "confidence": "stated",
+        "timestamp_sec": 1171
+      },
+      {
+        "claim": "Anchoring a company's strategy to today's hardware component prices is a mistake because components will commoditize and drop in price.",
+        "confidence": "stated",
+        "timestamp_sec": 1223
+      },
+      {
+        "claim": "New technology adoption should be judged on whether it simplifies and unifies the stack, not only on capability and performance gains.",
+        "confidence": "stated",
+        "timestamp_sec": 1450
+      },
+      {
+        "claim": "Betting on a high-capacity foundation model and distilling into smaller onboard models yields better scaling laws than training small models directly.",
+        "confidence": "stated",
+        "timestamp_sec": 1845
+      },
+      {
+        "claim": "Vanilla black-box end-to-end models are sufficient for some products but not for superhuman performance in a safety-critical fully autonomous agent.",
+        "confidence": "stated",
+        "timestamp_sec": 1927
+      },
+      {
+        "claim": "Structured intermediate representations enable inference-time safety validation, cheaper training and evaluation, and verifiable reward signals that a pure black-box model cannot provide.",
+        "confidence": "stated",
+        "timestamp_sec": 2085
+      },
+      {
+        "claim": "Closed-loop simulation, not open-loop evaluation, is required to evaluate counterfactual actions for safety-critical physical agents.",
+        "confidence": "stated",
+        "timestamp_sec": 2233
+      },
+      {
+        "claim": "Building an end-to-end driving model has been relatively easy for a while; evaluating it in closed loop was the hard part.",
+        "confidence": "stated",
+        "timestamp_sec": 2320
+      },
+      {
+        "claim": "Evals and metrics, not model architecture or data, constitute a company's strategic moat, and should be built before the product.",
+        "confidence": "stated",
+        "timestamp_sec": 2562
+      },
+      {
+        "claim": "In Waymo's operating areas, the Waymo driver is about 17 times better than human drivers on crashes causing serious injury, based on over 220 million fully autonomous miles.",
+        "confidence": "stated",
+        "timestamp_sec": 2766
+      },
+      {
+        "claim": "Physical AI today is roughly where digital AI was a few years ago, and the necessary ingredients \u2014 world models, architectures, affordable compute and sensing, scaling laws \u2014 are now in place.",
+        "confidence": "stated",
+        "timestamp_sec": 2863
+      },
+      {
+        "claim": "Publishing safety data openly, rather than proving results internally, is necessary to earn public and regulatory trust.",
+        "confidence": "implied",
+        "timestamp_sec": 2719
+      }
+    ],
+    "speaker_org": "Waymo"
+  },
+  "_meta": {
+    "slug": "the-demo-is-only-1-of-the-work",
+    "video_id": "Gp4zrV3-6N8",
+    "url": "https://www.youtube.com/watch?v=Gp4zrV3-6N8",
+    "word_count": 7752,
+    "wall_sec": 90.5,
+    "run_at": "2026-08-19T18:06:22Z",
+    "effort": "default"
+  }
+}

@@ -1,0 +1,178 @@
+{
+  "is_error": false,
+  "duration_api_ms": 64469,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "b7e3373c-3155-4491-95cf-2063e4af2fb0",
+  "total_cost_usd": 0.2752885,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 13350,
+    "cache_read_input_tokens": 11257,
+    "output_tokens": 5121,
+    "output_tokens_details": {
+      "thinking_tokens": 2536
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 13350,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 5121,
+        "cache_read_input_tokens": 11257,
+        "cache_creation_input_tokens": 13350,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 13350
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 8040,
+      "outputTokens": 17,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.008125,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 5121,
+      "cacheReadInputTokens": 11257,
+      "cacheCreationInputTokens": 13350,
+      "webSearchRequests": 0,
+      "costUSD": 0.2671635,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\"concept\": \"simulation and sim-to-real transfer\", \"state_of_practice\": \"Across these talks, simulation is treated as the primary cost-reduction mechanism for physical-world engineering: Boom rewrites aerodynamic and systems engineering out of spreadsheets and into version-controlled code with automated testing and CI so that iteration in bits is cheap before anything is cut in metal, and Waymo argues that closed-loop simulation \u2014 where the agent's counterfactual actions change the world state \u2014 is the only way to evaluate a safety-critical driver, because open-loop replay of logged data cannot score decisions the system did not take. The strongest and least comfortable claim is Waymo's: building a realistic simulator is as hard as building the agent, and end-to-end driving models have been easy for years while closed-loop evaluation was the actual bottleneck. NVIDIA frames the robotics unlock in the same terms \u2014 real-to-sim environment capture, grounded physics simulation, and sim-to-real RL are the eval infrastructure robotics needs, analogous to what agents need. The open fight is how far simulation and prior knowledge substitute for real-world exposure: Huang claims a couple million miles plus reasoning priors yields an excellent self-driving car, while Waymo reports 220M+ fully autonomous miles and an exponential ladder where each additional nine costs ~10x. Practically, the field's advice is to treat evals, metrics, and the simulator as the durable asset \u2014 the model is table stakes \u2014 and to keep structured intermediate representations rather than a pure black box so that inference-time validation and verifiable reward signals remain possible.\", \"consensus\": [{\"claim\": \"Simulated/virtual iteration is the mechanism that makes physical-world development tractable: move as much of the design-test loop as possible into software before touching atoms.\", \"support_count\": 3, \"supporting_talks\": [\"how-50-people-built-a-supersonic-jet\", \"the-demo-is-only-1-of-the-work\", \"the-mindset-that-built-nvidia\"], \"evidence_quote\": \"The key thing is to make hardware development look more like software development to reduce the cost of iteration both in the world of bits and in the world of atoms.\", \"evidence_talk\": \"how-50-people-built-a-supersonic-jet\", \"evidence_timestamp_sec\": 753}, {\"claim\": \"The simulation/evaluation harness is itself a first-class engineering artifact \u2014 as hard as the system under test, and the thing that is actually hard to replicate \u2014 so it must be built and owned in-house rather than assumed.\", \"support_count\": 3, \"supporting_talks\": [\"the-demo-is-only-1-of-the-work\", \"the-mindset-that-built-nvidia\", \"how-50-people-built-a-supersonic-jet\"], \"evidence_quote\": \"the problem of building a good realistic simulator is just as hard as building the agent itself.\", \"evidence_talk\": \"the-demo-is-only-1-of-the-work\", \"evidence_timestamp_sec\": 2278}], \"disagreements\": [{\"question\": \"How much real-world data and real-world operating exposure does an autonomous physical system need once you have strong priors, world models, and simulation?\", \"position_a\": \"Reasoning from prior knowledge drastically reduces the data requirement \u2014 roughly a couple million driving miles is enough for an incredibly good self-driving car, and robotics progress is gated on real-to-sim environments and sim-to-real RL rather than fleet mileage.\", \"position_a_talks\": [\"the-mindset-that-built-nvidia\"], \"position_b\": \"Real-world scale is the problem statement, not a formality: reliability lives on an exponential ladder where each nine costs ~10x and needs a different technical approach, and the credible safety claim rests on 220+ million fully autonomous miles with publicly audited evidence \u2014 every AI breakthrough makes prototypes ~100x easier while barely moving the long tail.\", \"position_b_talks\": [\"the-demo-is-only-1-of-the-work\"], \"why_it_matters\": \"It determines whether a physical-AI company's capital goes into simulation and model priors or into an expensive real-world fleet and evidence-grade measurement, and whether a strong simulated result is treated as near-shippable or as roughly 1% of the remaining work.\"}], \"practical_guidance\": {\"do\": [\"Rewrite hardware engineering that currently lives in spreadsheets as real, version-controlled code with automated testing and continuous integration\", \"Evaluate safety-critical physical agents in closed loop, where the agent's counterfactual actions alter the simulated world state, rather than open-loop replay of logged data\", \"Budget for the simulator as a product in its own right \u2014 assume it costs about as much as the agent it evaluates\", \"Define quantitatively what 'good enough' means and build the evals and metrics before the product; treat them as the moat rather than the model\", \"Keep structured intermediate representations in the stack so you get inference-time safety validation, cheaper training and evaluation, and verifiable reward signals\", \"For robotics, invest in real-to-sim environment capture, grounded physics simulation, and sim-to-real reinforcement learning as the eval substrate\", \"Bring test infrastructure in-house \u2014 own machine shop and test stands \u2014 because external aerospace suppliers make fast iteration impossible\", \"Iterate at the product level with a prototype simple enough to give multiple shots on goal, rather than one maximally ambitious integrated demo\", \"Publish safety data openly instead of proving results only internally\"], \"avoid\": [\"Spending on the demo when you should be saving for the nines \u2014 a working demo is at most 1% of the work\", \"Assuming performance scales smoothly past the first 99%; each additional nine costs ~10x and requires a fundamentally different approach, not more of the same\", \"Shipping a vanilla black-box end-to-end model for a safety-critical autonomous agent, where nothing can be validated at inference time\", \"Trying to reach product-market fit on a physical product by building it and seeing if anyone likes it\", \"Anchoring architecture or company strategy to today's sensor and hardware component prices, which have a short shelf life\", \"Building redundancy by duplicating one sensing modality instead of combining modalities with complementary physics\", \"Treating engineering code as a second-class citizen with no automated integration, testing, or CI\"]}, \"notable_outliers\": [{\"claim\": \"Building an end-to-end driving model has been relatively easy for years; the genuinely hard part was evaluating it in closed loop.\", \"talk\": \"the-demo-is-only-1-of-the-work\", \"timestamp_sec\": 2320}, {\"claim\": \"Every AI breakthrough makes prototypes roughly 100x easier while barely improving the long tail, which is why each hype cycle yields spectacular demos and almost no products.\", \"talk\": \"the-demo-is-only-1-of-the-work\", \"timestamp_sec\": 828}, {\"claim\": \"The ChatGPT moment for robotics already happened a couple of years ago \u2014 in the imagination-opening sense, not the productivity sense \u2014 and what remains is eval infrastructure.\", \"talk\": \"the-mindset-that-built-nvidia\", \"timestamp_sec\": 2137}, {\"claim\": \"A physics result \u2014 that at sufficient altitude and speed the sonic boom refracts and never reaches the ground \u2014 was used to design the regulatory and product strategy, not just the aircraft.\", \"talk\": \"how-50-people-built-a-supersonic-jet\", \"timestamp_sec\": 564}], \"maturity\": \"consolidating\", \"maturity_rationale\": \"All three speakers converge on simulation-first iteration and on the simulator/eval harness being the expensive, defensible artifact, but they disagree sharply on how far simulation and priors substitute for real-world mileage \u2014 a couple million miles versus 220 million and an exponential ladder of nines.\"}",
+  "ttft_ms": 33400,
+  "ttft_stream_ms": 893,
+  "time_to_request_ms": 40,
+  "type": "result",
+  "duration_ms": 65570,
+  "uuid": "349d39f3-72e6-4ae4-a394-cb2b3ef5d1c3",
+  "passC": {
+    "concept": "simulation and sim-to-real transfer",
+    "state_of_practice": "Across these talks, simulation is treated as the primary cost-reduction mechanism for physical-world engineering: Boom rewrites aerodynamic and systems engineering out of spreadsheets and into version-controlled code with automated testing and CI so that iteration in bits is cheap before anything is cut in metal, and Waymo argues that closed-loop simulation \u2014 where the agent's counterfactual actions change the world state \u2014 is the only way to evaluate a safety-critical driver, because open-loop replay of logged data cannot score decisions the system did not take. The strongest and least comfortable claim is Waymo's: building a realistic simulator is as hard as building the agent, and end-to-end driving models have been easy for years while closed-loop evaluation was the actual bottleneck. NVIDIA frames the robotics unlock in the same terms \u2014 real-to-sim environment capture, grounded physics simulation, and sim-to-real RL are the eval infrastructure robotics needs, analogous to what agents need. The open fight is how far simulation and prior knowledge substitute for real-world exposure: Huang claims a couple million miles plus reasoning priors yields an excellent self-driving car, while Waymo reports 220M+ fully autonomous miles and an exponential ladder where each additional nine costs ~10x. Practically, the field's advice is to treat evals, metrics, and the simulator as the durable asset \u2014 the model is table stakes \u2014 and to keep structured intermediate representations rather than a pure black box so that inference-time validation and verifiable reward signals remain possible.",
+    "consensus": [
+      {
+        "claim": "Simulated/virtual iteration is the mechanism that makes physical-world development tractable: move as much of the design-test loop as possible into software before touching atoms.",
+        "support_count": 3,
+        "supporting_talks": [
+          "how-50-people-built-a-supersonic-jet",
+          "the-demo-is-only-1-of-the-work",
+          "the-mindset-that-built-nvidia"
+        ],
+        "evidence_quote": "The key thing is to make hardware development look more like software development to reduce the cost of iteration both in the world of bits and in the world of atoms.",
+        "evidence_talk": "how-50-people-built-a-supersonic-jet",
+        "evidence_timestamp_sec": 753
+      },
+      {
+        "claim": "The simulation/evaluation harness is itself a first-class engineering artifact \u2014 as hard as the system under test, and the thing that is actually hard to replicate \u2014 so it must be built and owned in-house rather than assumed.",
+        "support_count": 3,
+        "supporting_talks": [
+          "the-demo-is-only-1-of-the-work",
+          "the-mindset-that-built-nvidia",
+          "how-50-people-built-a-supersonic-jet"
+        ],
+        "evidence_quote": "the problem of building a good realistic simulator is just as hard as building the agent itself.",
+        "evidence_talk": "the-demo-is-only-1-of-the-work",
+        "evidence_timestamp_sec": 2278
+      }
+    ],
+    "disagreements": [
+      {
+        "question": "How much real-world data and real-world operating exposure does an autonomous physical system need once you have strong priors, world models, and simulation?",
+        "position_a": "Reasoning from prior knowledge drastically reduces the data requirement \u2014 roughly a couple million driving miles is enough for an incredibly good self-driving car, and robotics progress is gated on real-to-sim environments and sim-to-real RL rather than fleet mileage.",
+        "position_a_talks": [
+          "the-mindset-that-built-nvidia"
+        ],
+        "position_b": "Real-world scale is the problem statement, not a formality: reliability lives on an exponential ladder where each nine costs ~10x and needs a different technical approach, and the credible safety claim rests on 220+ million fully autonomous miles with publicly audited evidence \u2014 every AI breakthrough makes prototypes ~100x easier while barely moving the long tail.",
+        "position_b_talks": [
+          "the-demo-is-only-1-of-the-work"
+        ],
+        "why_it_matters": "It determines whether a physical-AI company's capital goes into simulation and model priors or into an expensive real-world fleet and evidence-grade measurement, and whether a strong simulated result is treated as near-shippable or as roughly 1% of the remaining work."
+      }
+    ],
+    "practical_guidance": {
+      "do": [
+        "Rewrite hardware engineering that currently lives in spreadsheets as real, version-controlled code with automated testing and continuous integration",
+        "Evaluate safety-critical physical agents in closed loop, where the agent's counterfactual actions alter the simulated world state, rather than open-loop replay of logged data",
+        "Budget for the simulator as a product in its own right \u2014 assume it costs about as much as the agent it evaluates",
+        "Define quantitatively what 'good enough' means and build the evals and metrics before the product; treat them as the moat rather than the model",
+        "Keep structured intermediate representations in the stack so you get inference-time safety validation, cheaper training and evaluation, and verifiable reward signals",
+        "For robotics, invest in real-to-sim environment capture, grounded physics simulation, and sim-to-real reinforcement learning as the eval substrate",
+        "Bring test infrastructure in-house \u2014 own machine shop and test stands \u2014 because external aerospace suppliers make fast iteration impossible",
+        "Iterate at the product level with a prototype simple enough to give multiple shots on goal, rather than one maximally ambitious integrated demo",
+        "Publish safety data openly instead of proving results only internally"
+      ],
+      "avoid": [
+        "Spending on the demo when you should be saving for the nines \u2014 a working demo is at most 1% of the work",
+        "Assuming performance scales smoothly past the first 99%; each additional nine costs ~10x and requires a fundamentally different approach, not more of the same",
+        "Shipping a vanilla black-box end-to-end model for a safety-critical autonomous agent, where nothing can be validated at inference time",
+        "Trying to reach product-market fit on a physical product by building it and seeing if anyone likes it",
+        "Anchoring architecture or company strategy to today's sensor and hardware component prices, which have a short shelf life",
+        "Building redundancy by duplicating one sensing modality instead of combining modalities with complementary physics",
+        "Treating engineering code as a second-class citizen with no automated integration, testing, or CI"
+      ]
+    },
+    "notable_outliers": [
+      {
+        "claim": "Building an end-to-end driving model has been relatively easy for years; the genuinely hard part was evaluating it in closed loop.",
+        "talk": "the-demo-is-only-1-of-the-work",
+        "timestamp_sec": 2320
+      },
+      {
+        "claim": "Every AI breakthrough makes prototypes roughly 100x easier while barely improving the long tail, which is why each hype cycle yields spectacular demos and almost no products.",
+        "talk": "the-demo-is-only-1-of-the-work",
+        "timestamp_sec": 828
+      },
+      {
+        "claim": "The ChatGPT moment for robotics already happened a couple of years ago \u2014 in the imagination-opening sense, not the productivity sense \u2014 and what remains is eval infrastructure.",
+        "talk": "the-mindset-that-built-nvidia",
+        "timestamp_sec": 2137
+      },
+      {
+        "claim": "A physics result \u2014 that at sufficient altitude and speed the sonic boom refracts and never reaches the ground \u2014 was used to design the regulatory and product strategy, not just the aircraft.",
+        "talk": "how-50-people-built-a-supersonic-jet",
+        "timestamp_sec": 564
+      }
+    ],
+    "maturity": "consolidating",
+    "maturity_rationale": "All three speakers converge on simulation-first iteration and on the simulator/eval harness being the expensive, defensible artifact, but they disagree sharply on how far simulation and priors substitute for real-world mileage \u2014 a couple million miles versus 220 million and an exponential ladder of nines."
+  },
+  "_meta": {
+    "concept": "simulation and sim-to-real transfer",
+    "slug": "simulation-and-sim-to-real-transfer",
+    "talk_count": 3,
+    "missing_talks": [],
+    "wall_sec": 66.8,
+    "run_at": "2026-08-19T18:30:09Z"
+  }
+}

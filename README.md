@@ -37,16 +37,27 @@ consolidating, 50 contested, 4 frontier). Browse the
 [wiki](events/aiewf-2026/wiki/README.md), open it as an Obsidian vault, or poke at the
 [interactive concept explorer](https://claywaters13.github.io/keeping-up-with-agents/events/aiewf-2026/viz/explorer/).
 
+### [Y Combinator Startup School 2026](events/yc-startup-school-2026/)
+
+Chase Center, San Francisco, July 25–26, 2026. 14 talks and firesides — Jensen Huang,
+Sam Altman, Jeff Dean, Patrick Collison, Susan Kare among them — distilled into 36
+concepts and 328 verified quotes. Eleven of those concepts are shared by name and
+definition with the AIEWF vocabulary, so a concept page means the same thing across both
+events; the other 25 are company-building material AIEWF's engineering vocabulary never
+reached. **A snapshot:** YC was still publishing talks the day before this was built, so
+it covers the 14 published by then, not the full program. Browse the
+[wiki](events/yc-startup-school-2026/wiki/README.md).
+
 More events are planned; each lands as `events/<slug>/` and ships automatically to
 plugin users.
 
 ## How it's built
 
 Talks are transcribed from the event's own published videos, distilled by an LLM
-pipeline, and then verified: 4,925 quotes checked character for character against the
-raw captions before publication, cross-talk syntheses that only quote from that
-verified set, and a 10-case eval suite (`evals/`) that gates plugin releases,
-including graders for quote fidelity and refusal outside the corpus. The published
+pipeline, and then verified: 5,253 quotes across both events checked character for
+character against the raw captions before publication, cross-talk syntheses that only
+quote from that verified set, and a 12-case eval suite (`evals/`) that gates plugin
+releases, including graders for quote fidelity and refusal outside the corpus. The published
 layer is derived only: summaries, verified excerpts, and links back to the source
 videos, never full transcripts. Full methodology per event lives in that event's
 README.
@@ -70,8 +81,10 @@ asset and push.
 .claude-plugin/          plugin + marketplace manifests
 skills/event-wiki/       event-agnostic Claude Code skill (corpus map, answer rules)
 commands/ask.md          /keeping-up-with-agents:ask
-evals/                   10-case eval suite, run against the AIEWF 2026 corpus
+evals/                   12-case eval suite, run against the indexed event corpora
 events/aiewf-2026/       the AIEWF 2026 wiki: wiki/, data/, scripts/, viz/
+events/yc-startup-school-2026/
+                         the YC Startup School 2026 wiki: wiki/, data/, scripts/
 feed.xml, cover.png      the podcast feed (audio lives in Release assets)
 scripts/add_episode.py   idempotent episode publisher
 ```

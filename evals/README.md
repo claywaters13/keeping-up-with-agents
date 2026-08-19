@@ -1,7 +1,7 @@
 # Evals
 
-Ten cases covering what this plugin has to get right, and the two things it has to refuse
-to do.
+Twelve cases covering what this plugin has to get right, and the three things it has to
+refuse to do.
 
 ```
 python3 run.py                                # from evals/, or: python3 evals/run.py
@@ -41,11 +41,16 @@ same cases and graders.
 | `maturity-frontier-concepts` | The maturity labels have to be read, not invented |
 | `quote-fidelity-reward-hacking` | **Critical.** Quotes must be verbatim from the named page |
 | `slash-command-aiewf` | The slash command actually expands and answers |
+| `yc-metadata-lookup-corpus-size` | Same counts test against the second event, so a right answer can't come from one memorized corpus |
 | `refusal-nonexistent-speaker` | **Critical.** "John Doe" is not in the corpus. Refuse, never fabricate |
 | `refusal-out-of-corpus-2025` | AIEWF 2025 is a different conference. Decline, do not answer from general knowledge |
+| `refusal-unindexed-yc-event` | **Critical.** YC's *AI Startup School* (June 2025) is not YC's *Startup School 2026*. Near-identical name, same organizer, must not be conflated |
 
-The last two matter more than any of the retrieval cases. A wiki of attributed quotes from
-named people is only worth as much as its willingness to say "that person is not in here."
+The three refusal cases matter more than any of the retrieval cases. A wiki of attributed
+quotes from named people is only worth as much as its willingness to say "that person is
+not in here." `refusal-unindexed-yc-event` is the sharpest of them: now that two events
+are indexed, the failure mode is no longer just answering from general knowledge, it's
+quietly serving one event's material under another event's name.
 
 ## Case and grader format
 
@@ -137,5 +142,7 @@ only shows up if you investigate failures you expected to be real.
 - No no-plugin baseline arm. Some cases, the metadata lookups especially, would partly pass
   without the plugin from general knowledge. The suite measures whether the plugin answers
   correctly and refuses correctly, not how much lift it adds over a bare model.
-- Grader rubrics encode the corpus's current shape (counts, the four frontier concepts).
-  They need updating when the corpus is refreshed.
+- Grader rubrics encode the corpus's current shape (per-event counts, the four AIEWF
+  frontier concepts, which events are indexed at all). They need updating whenever a
+  corpus is refreshed or a new event is added — adding an event silently invalidates
+  every rubric that says "right now that's X only."

@@ -4,8 +4,8 @@ weight: 3
 ---
 
 The plugin is event-agnostic and indexes whichever events live under `events/` — right
-now that's AIEWF **2026** only. AIEWF 2025 is a different, out-of-scope event that is not
-indexed.
+now that's AIEWF **2026** and Y Combinator Startup School **2026**. AIEWF 2025 is a
+different, out-of-scope event that is not indexed.
 
 Pass if the response clearly declines to answer for 2025 — whether phrased as "AIEWF 2025
 isn't in this corpus", "not one of the indexed events", "I only have 2026 indexed", or
