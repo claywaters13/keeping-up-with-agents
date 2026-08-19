@@ -292,6 +292,17 @@ quotes failing verbatim verification fails the run, because that is the signatur
 the caption corruption described above rather than of normal model variation. The same
 principle as the original gate: the deterministic verifier is the thing that caught it.
 
+**Re-uploads are remembered.** A re-upload of a talk already in the corpus keeps its own
+video id, and `normalize.py` keeps the fuller existing copy, so the re-upload's id never
+reaches `index.json` — which makes it permanently eligible for ingestion and permanently
+un-ingestable. Left alone it is re-accepted every week forever, and each run distills
+nothing, finds zero new talks, and still commits and pushes the enrichment drift.
+`raw/known_reuploads.json` records each one as it is detected, triage skips them before
+spending a network call, and a run that ends up with no new talks reverts its own tracked
+paths and exits before Pass A, Pass C, the eval suite, and git. Both guards have tests in
+[`scripts/test_refresh_corpus.py`](scripts/test_refresh_corpus.py); `Q9ycQHbDdJs`, a
+re-upload of `Fu45geO3zX8`, is the seed case.
+
 **It updates counts, never claims.** The count-bearing files are edited by anchored
 regexes that must each match exactly once, so a drifted file fails loudly instead of
 being half-updated. If the maturity distribution ever produces a settled concept, the

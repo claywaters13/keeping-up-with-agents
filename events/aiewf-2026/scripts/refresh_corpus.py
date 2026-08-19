@@ -65,6 +65,29 @@ ALL_PLAYLISTS = os.path.join(RAW, "all_playlists.json")
 PLAYLIST_MEMBERS = os.path.join(RAW, "playlist_members.json")
 VIDEO_IDS = os.path.join(RAW, "video_ids.txt")
 
+# Video ids that normalize.py's slug dedup absorbed into a talk already in the
+# corpus. This is the one candidate class that is BOTH permanently eligible and
+# permanently un-ingestable: a re-upload keeps its own video id, so it never
+# reaches index.json, so discovery re-accepts it every single week forever.
+# Without this memory the job would harvest, distill, re-synthesize, burn a full
+# eval run, and PUSH a "0 newly published talks" commit of playlist drift every
+# Wednesday, indefinitely. Gitignored along with the rest of raw/.
+KNOWN_REUPLOADS = os.path.join(RAW, "known_reuploads.json")
+
+# The paths the refresh writes, and therefore the only paths it may stage or
+# revert. Defined once so commit_and_push() and restore_tracked_paths() cannot
+# disagree about scope -- one of them staging something the other would not put
+# back is exactly how a stray file reaches a public push.
+#
+# feed.xml and add_episode.py belong to the podcast pipeline and are excluded
+# rather than assumed clean, because they are routinely dirty in this tree. The
+# list is deliberately narrow rather than `.`: this repo carries unrelated
+# hand-edited work between runs, and a 2:15 AM blanket add would publish it.
+COMMIT_PATHSPEC = [
+    "events/aiewf-2026", "README.md", ".claude-plugin", "skills", "evals",
+    ":(exclude)feed.xml", ":(exclude,glob)**/add_episode.py",
+]
+
 YTDLP_ENV = "/tmp/ytdlp-env"
 YTDLP = os.path.join(YTDLP_ENV, "bin", "yt-dlp")
 CHANNEL_PLAYLISTS = "https://www.youtube.com/@aiDotEngineer/playlists"
@@ -105,6 +128,8 @@ REPORT = {
     "new_talks": 0,
     "new_talk_details": [],
     "deduped_video_ids": [],
+    "reuploads_skipped": [],
+    "reuploads_detected": [],
     "no_caption_video_ids": [],
     "talks_before": None,
     "talks_after": None,
@@ -280,6 +305,114 @@ def load_passa(slug):
         return json.load(handle)
 
 
+def load_known_reuploads():
+    if os.path.exists(KNOWN_REUPLOADS):
+        try:
+            with open(KNOWN_REUPLOADS) as handle:
+                data = json.load(handle)
+            if isinstance(data, dict):
+                return data
+        except ValueError:
+            log(f"WARN {os.path.relpath(KNOWN_REUPLOADS, ROOT)} is unreadable; "
+                "treating it as empty, which costs one wasted ingest attempt, not correctness")
+    return {}
+
+
+def save_known_reuploads(data):
+    tmp = KNOWN_REUPLOADS + ".tmp"
+    with open(tmp, "w") as handle:
+        json.dump(data, handle, indent=2, ensure_ascii=False, sort_keys=True)
+    os.replace(tmp, KNOWN_REUPLOADS)
+
+
+def resolve_absorbing_talk(video_id):
+    """Best-effort: which existing talk swallowed this re-upload.
+
+    Matched on the YouTube title in the re-upload's own info.json, because the
+    slug it collided with was derived from exactly that string and normalize.py
+    discarded the mapping on its way out. Provenance for a human reading the
+    file later, so an unresolved match records the raw title and moves on rather
+    than failing: the video id alone is enough to do the skipping.
+    """
+    info_path = os.path.join(CAPS, f"{video_id}.info.json")
+    raw_title = ""
+    if os.path.exists(info_path):
+        try:
+            with open(info_path) as handle:
+                raw_title = json.load(handle).get("title") or ""
+        except ValueError:
+            raw_title = ""
+
+    def norm(value):
+        return " ".join((value or "").lower().split())
+
+    if raw_title:
+        for rec in load_index():
+            if norm(rec.get("raw_title")) == norm(raw_title):
+                return rec["slug"], rec["video_id"], raw_title
+        # The channel sometimes re-titles a re-upload's speaker suffix, so fall
+        # back to the parsed title that actually drives the slug.
+        for rec in load_index():
+            if norm(rec.get("title")) and norm(raw_title).startswith(norm(rec["title"])):
+                return rec["slug"], rec["video_id"], raw_title
+    return None, None, raw_title
+
+
+def restore_tracked_paths(why):
+    """Put the refresh's own tracked paths back to HEAD, and nothing else.
+
+    Used when a run turns out to have produced no new talks after all: the
+    enrichment steps still rewrote index.json and the playlist joins, and
+    committing that drift under a "0 new talks" message would be noise pushed to
+    a public repo every week. Uses COMMIT_PATHSPEC, so it can only revert what
+    this job is allowed to stage -- feed.xml, add_episode.py and any unrelated
+    untracked work in the tree are out of reach by construction.
+
+    Deliberately `checkout`, not `clean`: reverting tracked edits is safe and
+    reversible, deleting untracked files someone else put there is not. Anything
+    left over is reported rather than removed.
+    """
+    log(f"restoring tracked paths to HEAD ({why})")
+
+    # Ask git which files are actually dirty and revert those by name, rather than
+    # handing the whole pathspec to `checkout`. Two reasons: a pathspec element with
+    # no tracked files under it (an empty skills/ or evals/) makes `checkout` exit
+    # nonzero, which would turn a successful no-op week into a failed run; and
+    # naming the files makes the log say exactly what was undone.
+    rc, listing = run_cmd(["git", "-c", "core.quotepath=false", "-C", REPO,
+                           "status", "--porcelain", "--"] + COMMIT_PATHSPEC,
+                          cwd=REPO, capture=True, check=False, step="restore")
+    modified = []
+    for line in listing.splitlines():
+        if not line.strip() or line.startswith("??"):
+            continue  # untracked: not ours to revert, and not ours to delete
+        path = line[3:]
+        if " -> " in path:            # a rename records both sides; revert the new one
+            path = path.split(" -> ", 1)[1]
+        modified.append(path.strip().strip('"'))
+
+    if modified:
+        # `checkout HEAD --` rather than `checkout --`, so a path that somehow got
+        # staged is reverted in the index too instead of being left staged.
+        run_cmd(["git", "-C", REPO, "checkout", "HEAD", "--"] + modified,
+                cwd=REPO, capture=True, step="restore")
+        for path in modified:
+            log(f"  reverted {path}")
+    else:
+        log("  nothing to revert.")
+
+    rc, dirty = run_cmd(["git", "-c", "core.quotepath=false", "-C", REPO,
+                         "status", "--porcelain", "--"] + COMMIT_PATHSPEC,
+                        cwd=REPO, capture=True, check=False, step="restore")
+    if dirty.strip():
+        log("NOTE: these paths are still not clean after the restore. Nothing was "
+            "deleted; a human should look:")
+        for line in dirty.strip().splitlines():
+            log(f"  {line}")
+    else:
+        log("tracked paths are clean again.")
+
+
 # ---------------------------------------------------------------------------
 # 1. discovery
 # ---------------------------------------------------------------------------
@@ -413,6 +546,21 @@ def triage(vid2pl, main_candidates, track_only):
     section("2. TRIAGE -- provenance and shape gates on every candidate")
     accepted, private, rejected, livestream, unresolved = [], [], [], [], []
 
+    # Re-uploads first, before any metadata is fetched. These are structurally
+    # un-ingestable (see KNOWN_REUPLOADS) and would otherwise be re-accepted every
+    # week for the life of the job.
+    known_reuploads = load_known_reuploads()
+    skipped = [v for v in main_candidates if v in known_reuploads]
+    main_candidates = [v for v in main_candidates if v not in known_reuploads]
+    track_only = [v for v in track_only if v not in known_reuploads]
+    REPORT["reuploads_skipped"] = skipped
+    for vid in skipped:
+        entry = known_reuploads[vid]
+        log(f"  {vid} KNOWN RE-UPLOAD, skipped -- absorbed into "
+            f"{entry.get('absorbed_into_slug') or 'an existing talk'}"
+            f" ({entry.get('existing_video_id') or 'video id unresolved'}), "
+            f"detected {entry.get('detected', 'unknown')}")
+
     log(f"fetching metadata for {len(main_candidates)} official-playlist candidate(s)")
     meta = fetch_meta(main_candidates)
     for vid in main_candidates:
@@ -485,6 +633,7 @@ def triage(vid2pl, main_candidates, track_only):
 
     log()
     log(f"accepted for ingestion: {len(accepted)}")
+    log(f"known re-uploads skipped: {len(skipped)}")
     log(f"still private on an official 2026 playlist: {len(private)}")
     log(f"track-only videos that did not resolve:     {len(unresolved)}")
     log(f"rejected (pre-2026):    {len(rejected)}")
@@ -575,6 +724,25 @@ def regenerate_playlist_members():
         f"({len(members)} playlists covering {len(ours)} talks)")
 
 
+def noop_all_reuploads(before):
+    """Exit 0 having undone the enrichment drift. Never returns.
+
+    Reached when every accepted candidate turned out to be a re-upload of a talk
+    already in the corpus. normalize.py, join_schedule.py and playlist_tracks.py
+    have already rewritten index.json and the enrichment joins by this point, but
+    there is no new talk to justify any of it -- so the alternative to reverting
+    is spending a Pass A pass, a Pass C pass and a full eval run to arrive at a
+    "0 newly published talks" commit, and then pushing that to a public repo.
+    Weekly. The re-upload has been recorded by now, so next week stops at triage.
+    """
+    section("NO-OP -- every candidate was a re-upload of an existing talk")
+    restore_tracked_paths("no new talks after slug dedup")
+    log(f"corpus unchanged at {before['talks']} talks.")
+    log(f"re-uploads recorded for future runs: {REPORT['reuploads_detected']}")
+    REPORT["talks_after"] = before["talks"]
+    finish("ok", message="all accepted candidates were re-uploads; data/ restored")
+
+
 def normalize_and_enrich(snapshot, harvested):
     section("4. NORMALIZE + ENRICH")
     run_cmd([sys.executable, os.path.join(SCRIPTS, "normalize.py")], step="normalize")
@@ -600,9 +768,24 @@ def normalize_and_enrich(snapshot, harvested):
 
     new_ids = [v for v in after if v not in snapshot]
     # A harvested candidate that never reached the index was absorbed into an existing
-    # slug by normalize.py's re-upload dedup. Expected, and worth naming in the report.
+    # slug by normalize.py's re-upload dedup. Recorded permanently, not just reported:
+    # its video id stays out of index.json forever, so without this the next run --
+    # and every run after it -- re-accepts the same video.
     deduped = [r["video_id"] for r in harvested if r["video_id"] not in after]
     REPORT["deduped_video_ids"] = deduped
+    if deduped:
+        known = load_known_reuploads()
+        detected = time.strftime("%Y-%m-%d")
+        for vid in deduped:
+            slug, existing_vid, raw_title = resolve_absorbing_talk(vid)
+            known[vid] = {"absorbed_into_slug": slug, "existing_video_id": existing_vid,
+                          "raw_title": raw_title, "detected": detected}
+            log(f"recorded re-upload {vid} -> {slug or 'UNRESOLVED'} "
+                f"({existing_vid or 'video id unresolved'})")
+        save_known_reuploads(known)
+        REPORT["reuploads_detected"] = deduped
+        log(f"{os.path.relpath(KNOWN_REUPLOADS, ROOT)} now holds {len(known)} entry/entries; "
+            "these ids will be skipped at triage from now on")
 
     log()
     log(f"pre-existing talks unchanged: {len(snapshot)}")
@@ -1080,21 +1263,8 @@ def eval_gate():
 def commit_and_push(new_records, before, after, no_push):
     section("12. COMMIT" + ("" if no_push else " + PUSH"))
 
-    # Staged by explicit path rather than a blanket `add -A`, for two reasons.
-    #
-    # feed.xml and add_episode.py belong to the podcast pipeline and are out of this
-    # job's remit; they are excluded rather than assumed clean, because they are
-    # routinely dirty in this working tree.
-    #
-    # And this repo is worked on by hand between runs -- on 2026-08-19 it already held
-    # two unrelated untracked event directories. A 2:15 AM `add -A` would have swept
-    # someone's half-finished work into a public push. These four paths are exactly
-    # what the refresh writes, so the narrower spec is also the complete one.
-    pathspec = [
-        "events/aiewf-2026", "README.md", ".claude-plugin", "skills", "evals",
-        ":(exclude)feed.xml", ":(exclude,glob)**/add_episode.py",
-    ]
-    run_cmd(["git", "-C", REPO, "add", "-A", "--"] + pathspec,
+    # Staged by explicit path (COMMIT_PATHSPEC), never a blanket `add -A .`.
+    run_cmd(["git", "-C", REPO, "add", "-A", "--"] + COMMIT_PATHSPEC,
             cwd=REPO, capture=True, step="commit")
 
     rc, staged = run_cmd(["git", "-C", REPO, "diff", "--cached", "--name-only"],
@@ -1158,6 +1328,8 @@ def final_report(new_records, before, after):
     log(f"Maturity: {dict(after['maturity'])} (settled must stay 0)")
     log(f"Concepts re-synthesized in Pass C: {REPORT['concepts_regenerated']}")
     log(f"Still private on the official playlists: {REPORT['still_private']}")
+    if REPORT["reuploads_skipped"]:
+        log(f"Known re-uploads skipped at triage: {REPORT['reuploads_skipped']}")
     if REPORT["deduped_video_ids"]:
         log(f"Re-uploads deduplicated by slug: {REPORT['deduped_video_ids']}")
     if REPORT["no_caption_video_ids"]:
@@ -1226,6 +1398,10 @@ def main():
         finish("ok", message="candidates await captions; data/ untouched")
 
     new_records = normalize_and_enrich(snapshot, harvested)
+
+    if not new_records:
+        noop_all_reuploads(before)
+
     REPORT["new_talks"] = len(new_records)
     REPORT["new_talk_details"] = [
         {"title": r["title"], "speakers": r.get("speakers") or [], "org": r.get("org") or "",
