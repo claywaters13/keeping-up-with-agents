@@ -261,3 +261,39 @@ talks a track and added 36 richer topic links.
 
 The headline finding survived the refresh: still zero settled concepts, with the
 distribution shifting from 87/43/4 to 80 consolidating, 50 contested, 4 frontier.
+
+## Automating the refresh
+
+That procedure is now a script, [`scripts/refresh_corpus.py`](scripts/refresh_corpus.py),
+run weekly by a scheduled job. It does the same twelve steps in the same order, with
+each one a hard gate: playlist discovery, provenance triage, caption harvest, normalize
+plus schedule and playlist enrichment, Pass A, quote verification, concept assignment,
+Pass C re-synthesis for concepts whose talk set moved, wiki and graph rebuild, count
+sync, the eval suite, then commit and push. It exits nonzero on any gate failure and
+pushes nothing. `--dry-run` reports discovery and triage without touching `data/`;
+`--no-push` commits locally.
+
+Four rules in it are worth stating, because each is a decision rather than an
+implementation detail.
+
+**Only official-2026-playlist membership auto-ingests.** The topical track playlists
+are cross-year, and 2025 contamination is the failure this corpus most wants to avoid,
+so a video that appears only in a topical playlist is triaged and reported for a human
+rather than ingested. The "official" set is the two structural playlists plus any
+playlist whose name contains "AI Engineer World's Fair 2026" — that pattern is what
+caught the Generative Media track, which did not exist when the corpus was built.
+
+**A week with nothing new touches nothing.** Triage runs before `normalize.py`, so a
+no-op run leaves the working tree provably unchanged rather than rewriting `data/` with
+identical content.
+
+**The quote gate is a rate check, not a spot check.** More than 5% of a new talk's
+quotes failing verbatim verification fails the run, because that is the signature of
+the caption corruption described above rather than of normal model variation. The same
+principle as the original gate: the deterministic verifier is the thing that caught it.
+
+**It updates counts, never claims.** The count-bearing files are edited by anchored
+regexes that must each match exactly once, so a drifted file fails loudly instead of
+being half-updated. If the maturity distribution ever produces a settled concept, the
+run fails and says the "zero settled" headline needs a human rewrite. A cron job should
+not be in the business of restating a finding.
