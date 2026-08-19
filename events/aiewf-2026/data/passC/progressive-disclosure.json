@@ -1,34 +1,37 @@
 {
   "is_error": false,
-  "duration_api_ms": 111862,
+  "duration_api_ms": 103384,
   "num_turns": 1,
   "stop_reason": "end_turn",
-  "session_id": "41ee0b49-3e62-44e1-b4b5-f630f923fb51",
-  "total_cost_usd": 0.5392009999999999,
+  "session_id": "102c8902-89e2-4398-87c7-e3bfe8a19afb",
+  "total_cost_usd": 0.6004275,
   "usage": {
     "input_tokens": 2,
-    "cache_creation_input_tokens": 28088,
-    "cache_read_input_tokens": 10308,
-    "output_tokens": 9391,
+    "cache_creation_input_tokens": 36918,
+    "cache_read_input_tokens": 8113,
+    "output_tokens": 8208,
+    "output_tokens_details": {
+      "thinking_tokens": 3244
+    },
     "server_tool_use": {
       "web_search_requests": 0,
       "web_fetch_requests": 0
     },
     "service_tier": "standard",
     "cache_creation": {
-      "ephemeral_1h_input_tokens": 28088,
+      "ephemeral_1h_input_tokens": 36918,
       "ephemeral_5m_input_tokens": 0
     },
     "inference_geo": "not_available",
     "iterations": [
       {
         "input_tokens": 2,
-        "output_tokens": 9391,
-        "cache_read_input_tokens": 10308,
-        "cache_creation_input_tokens": 28088,
+        "output_tokens": 8208,
+        "cache_read_input_tokens": 8113,
+        "cache_creation_input_tokens": 36918,
         "cache_creation": {
           "ephemeral_5m_input_tokens": 0,
-          "ephemeral_1h_input_tokens": 28088
+          "ephemeral_1h_input_tokens": 36918
         },
         "type": "message"
       }
@@ -37,12 +40,12 @@
   },
   "modelUsage": {
     "claude-haiku-4-5-20251001": {
-      "inputTokens": 18312,
-      "outputTokens": 14,
+      "inputTokens": 21931,
+      "outputTokens": 10,
       "cacheReadInputTokens": 0,
       "cacheCreationInputTokens": 0,
       "webSearchRequests": 0,
-      "costUSD": 0.018382,
+      "costUSD": 0.021981,
       "contextWindow": 200000,
       "maxOutputTokens": 32000,
       "canonicalModel": "claude-haiku-4-5",
@@ -50,11 +53,11 @@
     },
     "claude-opus-5": {
       "inputTokens": 2,
-      "outputTokens": 9391,
-      "cacheReadInputTokens": 10308,
-      "cacheCreationInputTokens": 28088,
+      "outputTokens": 8208,
+      "cacheReadInputTokens": 8113,
+      "cacheCreationInputTokens": 36918,
       "webSearchRequests": 0,
-      "costUSD": 0.5208189999999999,
+      "costUSD": 0.5784465,
       "contextWindow": 1000000,
       "maxOutputTokens": 64000,
       "canonicalModel": "claude-opus-5",
@@ -67,83 +70,73 @@
   "fast_mode_disabled_reason": "sdk_opt_in_required",
   "subtype": "success",
   "api_error_status": null,
-  "result": "{\"concept\": \"progressive disclosure\", \"state_of_practice\": \"Progressive disclosure is now the default architecture for agent context, and the field has converged on a concrete mechanism: only a skill's name and description sit in the system prompt permanently, the body loads on invocation, and anything used by a single branch lives in a separate file behind a context pointer. Practitioners have started attaching numbers to it rather than treating it as a principle \u2014 Codex caps the available-skills list at 2% of the max context window and progressively truncates past that, Amazon's AGI Lab treats a 20-25K-token first prompt as healthy and 40-50K as a failed setup, and DataRobot argues baseline system prompt plus tool definitions should stay under 40% of the window before the user's first turn. The justification has also shifted from cost to quality: speakers cite context rot and contradictory-information confusion, not token bills, as the reason to keep the default small. The same logic has spread from skills to tools \u2014 deferred tool loading behind tool search, large tool results stored outside context and summarized \u2014 and is the main argument for skills over MCP, where 15 connected servers can burn 100K tokens per session in definitions alone. The unresolved edges are who pulls the trigger (model-invoked descriptions vs. explicit user invocation) and what happens past a few dozen skills, where a flat description list stops being a viable index at all.\", \"consensus\": [{\"claim\": \"Only the skill's name and description belong in the always-loaded context; the body loads on demand, and that description is a permanent per-call tax you pay on every model invocation whether or not the skill fires.\", \"support_count\": 5, \"supporting_talks\": [\"skills-are-new-features-building-skill-centric-harness\", \"building-great-agent-skills-the-missing-manual\", \"dont-ship-skills-without-evals\", \"codex-behind-the-harness\", \"skills-are-the-new-sdks\"], \"evidence_quote\": \"we are only using the name and description path in in this system prompt and not the skill body and that's what what they call about is progressive disclosure\", \"evidence_talk\": \"skills-are-new-features-building-skill-centric-harness\", \"evidence_timestamp_sec\": 447}, {\"claim\": \"The main skill file should be aggressively small and act as a thin index \u2014 the skill is a folder, not a document \u2014 with detail deferred to sibling files.\", \"support_count\": 4, \"supporting_talks\": [\"agents-codebases-and-teams\", \"building-great-agent-skills-the-missing-manual\", \"dont-ship-skills-without-evals\", \"skills-are-the-new-sdks\"], \"evidence_quote\": \"we've kind of set a hard limit for like 100 lines in your skill.md cuz your skill is really a folder.\", \"evidence_talk\": \"agents-codebases-and-teams\", \"evidence_timestamp_sec\": 869}, {\"claim\": \"Oversized context degrades output quality, not merely cost \u2014 the reason to disclose progressively is model confusion and context rot, not the token bill.\", \"support_count\": 3, \"supporting_talks\": [\"codex-behind-the-harness\", \"skills-are-the-new-sdks\", \"agents-codebases-and-teams\"], \"evidence_quote\": \"the more context you have in your in your context, the higher it is that you have contradicting information and it causes confusion for the model.\", \"evidence_talk\": \"codex-behind-the-harness\", \"evidence_timestamp_sec\": 245}, {\"claim\": \"Baseline context before the user's first turn should be held to an explicit numeric budget, and exceeding it is treated as a defect in the setup rather than a cost tradeoff.\", \"support_count\": 3, \"supporting_talks\": [\"agents-codebases-and-teams\", \"codex-behind-the-harness\", \"skills-are-the-new-sdks\"], \"evidence_quote\": \"I think like 20, 25K tokens get taken anyway, but like how much more is getting added? If you're coming to like 40K, 50K, like something's wrong. That's not really progressive disclosure.\", \"evidence_talk\": \"agents-codebases-and-teams\", \"evidence_timestamp_sec\": 957}, {\"claim\": \"The same deferral applies to tools and tool output: definitions should be lazily discoverable rather than front-loaded, and large tool results should live outside the context with only a summary passed back.\", \"support_count\": 4, \"supporting_talks\": [\"codex-behind-the-harness\", \"skills-are-the-new-sdks\", \"your-agent-is-wasting-tokens-and-you-dont-know-it\", \"skills-are-new-features-building-skill-centric-harness\"], \"evidence_quote\": \"we're marking some of these tools as deferred, and that means that they're not added directly to the context window, but instead are available through tool search later on.\", \"evidence_talk\": \"codex-behind-the-harness\", \"evidence_timestamp_sec\": 365}, {\"claim\": \"Agent-authored skills defeat progressive disclosure \u2014 they pad instructions with no-ops and consume more tokens and reasoning time than human-written equivalents, so generated skills must be audited and trimmed.\", \"support_count\": 3, \"supporting_talks\": [\"dont-ship-skills-without-evals\", \"skills-are-the-new-sdks\", \"building-great-agent-skills-the-missing-manual\"], \"evidence_quote\": \"human-written skills are the best we can provide. Uh AI-generated skills can uh impact performance negatively. And that skills or skills.md files should be below 500 lines of words.\", \"evidence_talk\": \"dont-ship-skills-without-evals\", \"evidence_timestamp_sec\": 286}], \"disagreements\": [{\"question\": \"Should the decision to load a skill's body be made by the model (from a description in context) or by the user (explicit invocation)?\", \"position_a\": \"Prefer user-invoked skills: explicit invocation removes routing unpredictability entirely and eliminates the need to eval whether a skill fires at the right time, at the price of user cognitive load. User invocation is the right default for routine dev workflows like opening PRs or staging docs.\", \"position_a_talks\": [\"building-great-agent-skills-the-missing-manual\", \"dont-ship-skills-without-evals\"], \"position_b\": \"Prefer model-invoked skills: end users of a product have no idea skills exist and should not be asked to remember them, so routing must be model-driven off descriptions, with the description block budgeted (e.g. capped at 2% of the context window and truncated beyond that) to keep the cost bounded.\", \"position_b_talks\": [\"skills-are-new-features-building-skill-centric-harness\", \"codex-behind-the-harness\"], \"why_it_matters\": \"Model invocation makes description quality a first-class engineering artifact requiring trigger evals and negative cases, since roughly half of skill failures are non-triggering; user invocation moves that cost onto documentation and user habit instead. It also determines whether progressive disclosure is even viable for consumer-facing agents, where explicit invocation is not an option.\"}, {\"question\": \"Does a flat description list in the system prompt remain a workable index as the skill library grows, or must it be replaced by retrieval?\", \"position_a\": \"Keep the flat list and manage it by budget: cap the available-skills block as a fraction of the context window, progressively truncate descriptions past the cap, and keep the entry point a thin index that points to the right files.\", \"position_a_talks\": [\"codex-behind-the-harness\", \"agents-codebases-and-teams\"], \"position_b\": \"The flat list stops working past roughly ten skills; beyond that you need embedding similarity search or a smaller shortlisting model to pick candidates, and at hundreds of skills flat retrieval fails outright and requires a skill hierarchy plus metadata filters and governance.\", \"position_b_talks\": [\"skills-are-new-features-building-skill-centric-harness\"], \"why_it_matters\": \"If the flat list scales, progressive disclosure is a prompt-authoring discipline; if it does not, every enterprise harness needs a retrieval layer, skill owners, semantic versioning, and admission gates before the library is usable at all.\"}, {\"question\": \"When the always-loaded baseline is large, is the right fix to shrink it or to make it cheap?\", \"position_a\": \"Make it cheap: cache the system prompt (and where possible the tool prompt and messages) so only a much reduced payload is sent after the first call, trim history with a sliding window, and summarize what falls out.\", \"position_a_talks\": [\"your-agent-is-wasting-tokens-and-you-dont-know-it\"], \"position_b\": \"Shrink it: a large baseline is a defect regardless of price, because performance degrades past roughly 25-40% context utilization and extra content raises the odds of contradictory information \u2014 so defer tools, cap the skills block, and hold the first prompt to 20-25K tokens.\", \"position_b_talks\": [\"skills-are-the-new-sdks\", \"agents-codebases-and-teams\", \"codex-behind-the-harness\"], \"why_it_matters\": \"Caching optimizes the bill while leaving the window full, which is exactly the failure the context-rot camp says silently degrades output; teams that treat cache hit rate as the success metric will ship agents that are cheap and quietly dumber.\"}], \"practical_guidance\": {\"do\": [\"Cap the available-skills description block as a share of the context window \u2014 Codex uses 2% of the max window and progressively truncates descriptions beyond it.\", \"Hold the first prompt's baseline context to roughly 20-25K tokens; treat 40-50K as evidence progressive disclosure has failed.\", \"Keep system prompt plus tool definitions under 40% of the context window before the user's first turn.\", \"Cap skill.md at ~100 lines (or at minimum under 500 lines) and treat the skill as a folder whose .md is a thin index pointing to other files.\", \"Move any reference material used by only one branch of a skill out of skill.md into an external file behind a context pointer.\", \"Mark rarely used tools as deferred and expose them through tool search rather than loading their definitions up front.\", \"Store large tool results outside the context and pass a summary, instead of re-sending the full result on every loop iteration.\", \"Write skill descriptions in the phrasing users actually use, keep them mutually distinct, and include five negative 'do not use this when' cases alongside five happy-path cases to stop over-triggering.\", \"Once past ~10 skills, shortlist with embedding similarity search or a smaller model instead of listing every description in the system prompt.\", \"Delete no-ops \u2014 instructions the agent would follow anyway \u2014 even when removing them does not move eval scores, because the tokens are saved regardless.\", \"Run evals both with and without the skill loaded, so you can tell when a capability skill has been obsoleted by the model and can be retired.\", \"Split a multi-step process into separate skills so the agent sees only the current step, which increases the legwork it does on that step by hiding the future goal.\", \"Put documentation in code comments so an agent that reaches the code finds the pointer to the rest of the information.\"], \"avoid\": [\"Don't assume the model will follow a context pointer \u2014 it may simply choose not to invoke a perfectly matching skill, and roughly 50% of observed skill failures are non-triggering rather than bad content.\", \"Don't connect an agent to many MCP servers casually: 15 servers can consume over 100,000 tokens per session in tool definitions alone.\", \"Don't write a skill for a workflow that is always the same fixed sequence of steps \u2014 write a script and stop spending model tokens on it.\", \"Don't let an agent author your skills unaudited; agent-written skills are where no-ops cluster most heavily.\", \"Don't let a shared skill file accumulate sediment \u2014 contributors adding their own text without deleting anyone else's \u2014 or duplication across steps and reference material.\", \"Don't rely on a naive sliding window over conversation history without summarizing the dropped prefix into context, or you lose the beginning of the conversation entirely.\", \"Don't treat a large static baseline as acceptable just because it is cached; the window is still full when the model reasons.\", \"Don't pull in community-authored skills without auditing them against a rubric first \u2014 they may not be any good.\", \"Don't assume a skill that discloses correctly on one harness or model does so on another; instruction placement inside the file is model-dependent, and a newer model ignored critical instructions placed at the end of an unchanged skill.\"]}, \"notable_outliers\": [{\"claim\": \"Hiding future steps is itself a technique, not just a cost: splitting a process into separate skills so the agent sees one step at a time measurably increases the legwork it does on the current step.\", \"talk\": \"building-great-agent-skills-the-missing-manual\", \"timestamp_sec\": 946}, {\"claim\": \"Massive skills are never the real problem \u2014 they are always a symptom of duplication, sediment, or no-ops, so shrinking by editing for size rather than diagnosing the cause misses the defect.\", \"talk\": \"building-great-agent-skills-the-missing-manual\", \"timestamp_sec\": 983}, {\"claim\": \"Skills impose roughly 10x less context overhead than the equivalent MCP setup purely because of progressive disclosure, and a skills folder can replace MCP for most use cases given a strong base reasoning model.\", \"talk\": \"skills-are-the-new-sdks\", \"timestamp_sec\": 822}, {\"claim\": \"Silently blowing through context is the failure mode to watch for \u2014 a setup can burn 500K to a million tokens and hit auto-compact on a task that was never complicated.\", \"talk\": \"agents-codebases-and-teams\", \"timestamp_sec\": 270}, {\"claim\": \"Compaction should be done server-side in the exact form the model was trained on, so that performance stays the same after context is compressed.\", \"talk\": \"codex-behind-the-harness\", \"timestamp_sec\": 1129}, {\"claim\": \"Progressive disclosure has an organizational analogue: a librarian layer that supplies company-specific semantics just in time, rather than preloading all business definitions, prevents agents from silently applying wrong definitions to business data.\", \"talk\": \"design-patterns-for-ai-trust-juries-libraries-and-agent-tiers\", \"timestamp_sec\": 760}], \"maturity\": \"consolidating\", \"maturity_rationale\": \"The core mechanism is uncontested across ten independent talks \u2014 name and description up front, body on demand, branch-specific reference behind a pointer \u2014 and speakers have moved from stating the principle to publishing hard numbers (2% of window, 100 lines, 20-25K baseline, 40% ceiling). What remains actively argued is who triggers the disclosure and how the index survives past a few dozen skills, which is the shape of a converging practice with contested edges rather than an open frontier.\"}",
-  "ttft_ms": 54756,
-  "ttft_stream_ms": 981,
-  "time_to_request_ms": 36,
+  "result": "{\"concept\":\"progressive disclosure\",\"state_of_practice\":\"Progressive disclosure has become the default architecture for agent context: a thin always-resident index (skill names and descriptions, tool stubs, a top-level index file) that points to bodies, reference files, and scripts the agent loads only if it decides it needs them. The field has moved past the principle to arguing over the numbers \u2014 Codex caps the available-skills list at 2% of the context window and progressively truncates beyond it, Amazon AGI Lab treats a 40\u201350K-token first prompt as proof that progressive disclosure has failed (20\u201325K is the expected baseline), DataRobot puts system prompt plus tool definitions under 40% of the window, and skill.md line caps of 100 (Amazon) to 500 (DeepMind) are being enforced in review. The economic argument is now framed as a permanent tax: a model-invoked skill's description is paid on every single model call, so 15 MCP servers can burn 100K+ tokens per session in tool definitions alone while an equivalent skills folder costs roughly an order of magnitude less. The unresolved cost is routing: descriptions are the only routing signal the model ever sees, roughly half of skill failures are non-triggering rather than bad content, and the model may simply decline to follow a context pointer \u2014 which is why the same conference produced both 'make everything model-invoked' and 'make everything user-invoked so you never have to eval invocation.' A minority but well-instrumented position (Towards AI) pushes back on the premise entirely, reporting that keeping full history untouched beat every compaction preset on recall, cost, and latency simultaneously, and that distinctive facts survived to 800K tokens.\",\"consensus\":[{\"claim\":\"The always-loaded surface should be a thin index \u2014 skill name plus description, or a pointer file \u2014 with bodies, reference material, and scripts loaded only on demand.\",\"support_count\":6,\"supporting_talks\":[\"skills-are-new-features-building-skill-centric-harness\",\"skills-are-the-new-sdks\",\"building-great-agent-skills-the-missing-manual\",\"codex-behind-the-harness\",\"agents-codebases-and-teams\",\"context-engineering-in-2026\"],\"evidence_quote\":\"we are only using the name and description path in in this system prompt and not the skill body and that's what what they call about is progressive disclosure\",\"evidence_talk\":\"skills-are-new-features-building-skill-centric-harness\",\"evidence_timestamp_sec\":447},{\"claim\":\"The resident description block is a per-call tax paid on every model invocation, so it must be explicitly budgeted rather than allowed to grow.\",\"support_count\":5,\"supporting_talks\":[\"dont-ship-skills-without-evals\",\"building-great-agent-skills-the-missing-manual\",\"codex-behind-the-harness\",\"skills-are-the-new-sdks\",\"agents-codebases-and-teams\"],\"evidence_quote\":\"the description is the cost you always pay on every model invocation. So, on every model call, the description is part of the model context. So, you always pay that 100 200 tokens cost\",\"evidence_talk\":\"dont-ship-skills-without-evals\",\"evidence_timestamp_sec\":461},{\"claim\":\"Enforce a hard size limit on the entry-point skill file and push everything else behind pointers \u2014 a skill is a folder, not a document.\",\"support_count\":4,\"supporting_talks\":[\"agents-codebases-and-teams\",\"dont-ship-skills-without-evals\",\"building-great-agent-skills-the-missing-manual\",\"context-engineering-in-2026\"],\"evidence_quote\":\"we've kind of set a hard limit for like 100 lines in your skill.md cuz your skill is really a folder.\",\"evidence_talk\":\"agents-codebases-and-teams\",\"evidence_timestamp_sec\":869},{\"claim\":\"Instructions the agent would follow anyway (no-ops) and duplicated material are the main source of context bloat and should be deleted outright.\",\"support_count\":3,\"supporting_talks\":[\"building-great-agent-skills-the-missing-manual\",\"dont-ship-skills-without-evals\",\"skills-are-the-new-sdks\"],\"evidence_quote\":\"Let's imagine we have an implement skill and we have an entire paragraph of the skill that tells the agent to write a long detailed commit message. What would happen if you just deleted that paragraph? Well, the agent would probably still write a decent like long commit message.\",\"evidence_talk\":\"building-great-agent-skills-the-missing-manual\",\"evidence_timestamp_sec\":1092},{\"claim\":\"LLM-generated skills are worse than human-written ones specifically because they bloat the disclosed surface \u2014 more tokens, more no-ops, more reasoning time.\",\"support_count\":3,\"supporting_talks\":[\"dont-ship-skills-without-evals\",\"skills-are-the-new-sdks\",\"building-great-agent-skills-the-missing-manual\"],\"evidence_quote\":\"human-written skills are the best we can provide. Uh AI-generated skills can uh impact performance negatively. And that skills or skills.md files should be below 500 lines of words.\",\"evidence_talk\":\"dont-ship-skills-without-evals\",\"evidence_timestamp_sec\":286}],\"disagreements\":[{\"question\":\"Should skill invocation be model-driven (descriptions in context, model decides) or user-driven (explicit invocation, no resident description)?\",\"position_a\":\"Prefer user-invoked skills: they eliminate the resident description cost and the entire class of invocation-unpredictability problems, at the price of user cognitive load. Model-invoked skills force you to run evals just to confirm they fire at the right time.\",\"position_a_talks\":[\"building-great-agent-skills-the-missing-manual\",\"dont-ship-skills-without-evals\"],\"position_b\":\"Prefer model-driven invocation: end users of a product have no idea what a skill is and will never type 'use the refund skill,' so the routing burden belongs on the description, not the user.\",\"position_b_talks\":[\"skills-are-new-features-building-skill-centric-harness\",\"dont-ship-skills-without-evals\"],\"why_it_matters\":\"It determines whether your engineering budget goes into description-tuning and trigger evals (model-invoked) or into user documentation and discoverability (user-invoked) \u2014 and whether progressive disclosure costs you resident tokens at all. Note that DeepMind endorses user-invoked skills for internal dev workflows while insisting model-invoked routing is unavoidable in customer-facing products, so the split is partly about audience.\"},{\"question\":\"Does a large resident context actually degrade model quality, or is that assumption wrong?\",\"position_a\":\"Yes \u2014 oversized context confuses the model with contradicting information, and quality falls off well before the window is full (degradation past ~25% utilization, a 'dumb zone' past 40%), so keep the baseline small and aggressively deferred.\",\"position_a_talks\":[\"codex-behind-the-harness\",\"skills-are-the-new-sdks\",\"agents-codebases-and-teams\"],\"position_b\":\"Not necessarily \u2014 distinctive facts were recalled reliably to 800K tokens with no compaction, and keeping the full untouched history beat every compaction preset on recall, cost, and latency at once because 97% of tokens were cached.\",\"position_b_talks\":[\"context-engineering-in-2026\"],\"why_it_matters\":\"If context rot is real at 25\u201340% utilization, deferred loading is a quality mechanism and every resident token is worth fighting over; if it is not, progressive disclosure is only a cost optimization and aggressive pruning can actively lose money by forcing re-retrieval and invalidating the prompt cache.\"},{\"question\":\"Is a large skill a problem to be fixed by splitting, or a symptom of a different defect?\",\"position_a\":\"Enforce a line ceiling and split \u2014 100 lines for skill.md, under 500 for skills.md, many small cross-referencing skills over monoliths.\",\"position_a_talks\":[\"agents-codebases-and-teams\",\"dont-ship-skills-without-evals\",\"context-engineering-in-2026\"],\"position_b\":\"Size is never the real problem: massive skills are always a symptom of duplication, sediment, or no-ops, so fix the source-of-truth violation rather than targeting a line count.\",\"position_b_talks\":[\"building-great-agent-skills-the-missing-manual\"],\"why_it_matters\":\"Line caps are cheap to enforce in review but can push teams to shard a coherent procedure into pointer chains the model may decline to follow; the diagnostic view says a 400-line skill that is genuinely one source of truth should be left alone.\"},{\"question\":\"At what scale does a flat description list stop working, and what replaces it?\",\"position_a\":\"Keep a flat list under a fixed budget and truncate mechanically \u2014 cap available skills at 2% of the context window, and mark tools as deferred so they surface through tool search.\",\"position_a_talks\":[\"codex-behind-the-harness\"],\"position_b\":\"Flat listing breaks around ten skills; past that you need embedding similarity search or a smaller shortlisting model to pick what enters the system prompt, and at hundreds of skills you need a hierarchy plus metadata filters and governance.\",\"position_b_talks\":[\"skills-are-new-features-building-skill-centric-harness\",\"skills-are-the-new-sdks\"],\"why_it_matters\":\"A truncation budget is a few lines of harness code; a retrieval-and-governance layer is a subsystem with its own evals, owners, and failure modes \u2014 and picking the wrong one either silently drops skills or over-engineers a ten-skill library.\"}],\"practical_guidance\":{\"do\":[\"Budget the first prompt: 20\u201325K tokens of baseline context is expected; 40\u201350K means progressive disclosure has failed.\",\"Cap the available-skills list as a fraction of the context window (Codex uses 2%) and truncate descriptions progressively past it.\",\"Keep system prompt plus tool definitions under 40% of the window before the user's first turn.\",\"Enforce a line ceiling on the entry file \u2014 100 lines (skill is a folder) to 500 lines \u2014 and move branch-specific reference material into external files behind a context pointer.\",\"Mark tools as deferred so they are reachable via tool search instead of loaded into the window up front.\",\"Write descriptions in the phrasing of a user request, not as a description of the skill, and make them mutually distinct \u2014 descriptions are the only routing signal.\",\"Include negative cases in the description (roughly five happy-path and five 'do not use this' eval cases) to stop over-triggering.\",\"Delete any instruction the agent would follow anyway; no-ops are especially common when an agent wrote the skill.\",\"Test the disclosed skill across multiple harnesses and rerun evals on every model upgrade \u2014 instruction placement inside the file is model-dependent.\",\"Grade context by relevance the way rendering grades level of detail: near/focused objects in full, distant ones as stubs.\",\"Store large tool results outside the window and pass a summary, rather than re-sending them on every loop iteration.\",\"Start thinking about a shortlisting mechanism (embedding search or a small model) once you pass roughly ten skills.\"],\"avoid\":[\"Don't turn a fixed sequence of steps into a skill \u2014 write a script; you pay description tokens on every call for something deterministic.\",\"Don't let an LLM author your skills unreviewed: generated skills consume more tokens and reasoning time and can degrade performance outright.\",\"Don't wire 15 MCP servers into an agent \u2014 that alone is 100K+ tokens per session in tool definitions.\",\"Don't assume a context pointer will be followed; the model may skip a perfectly relevant file, so measure task outcomes rather than whether the skill loaded.\",\"Don't compact by default \u2014 name the constraint forcing it first; summarization invalidates the prompt cache and needs >50x compression to pay off.\",\"Don't aggressively clear old tool outputs; the agent re-retrieves what it already had and total cost goes up.\",\"Don't judge progressive disclosure with single-turn benchmarks \u2014 they never accumulate enough tokens to exercise it.\",\"Don't let a shared skill file accumulate sediment: contributors add and never delete, and the disclosed surface silently grows.\",\"Don't test skills in an existing workspace \u2014 coding agents will cheat by reading prior chats and executions.\"]},\"notable_outliers\":[{\"claim\":\"Keeping the entire conversation history untouched beat every compaction preset simultaneously on recall, cost, and latency, because 97% of tokens were cached \u2014 the setup sending the most tokens was the cheapest to run.\",\"talk\":\"context-engineering-in-2026\",\"timestamp_sec\":2731},{\"claim\":\"Distinctive facts were recalled reliably up to 800K tokens with no compaction, but dense semantic search collapsed to 0% recall at 400K where BM25 held 100%.\",\"talk\":\"context-engineering-in-2026\",\"timestamp_sec\":3538},{\"claim\":\"Deliberately splitting a process into separate skills so the agent sees only one step at a time \u2014 hiding future steps \u2014 increases the legwork it does on the current step.\",\"talk\":\"building-great-agent-skills-the-missing-manual\",\"timestamp_sec\":946},{\"claim\":\"Skills impose roughly 10x less context overhead than the equivalent MCP setup purely because of progressive disclosure: <100 tokens at listing, <5K on activation, scripts below that.\",\"talk\":\"skills-are-the-new-sdks\",\"timestamp_sec\":822},{\"claim\":\"Context should be assembled like level-of-detail rendering \u2014 anything far from the camera or the editing focus becomes a cube, and the model can't tell.\",\"talk\":\"the-next-game-engine-wont-have-a-manual\",\"timestamp_sec\":932},{\"claim\":\"Roughly 50% of skill failures are the skill never being triggered, not bad skill content \u2014 the disclosure boundary, not the disclosed material, is the dominant failure mode.\",\"talk\":\"dont-ship-skills-without-evals\",\"timestamp_sec\":1024},{\"claim\":\"A newer model focused on the beginning of the skill file and ignored critical instructions placed at the end, with no line of the skill changed \u2014 placement inside the disclosed file is a versioned contract against a specific model.\",\"talk\":\"skills-are-new-features-building-skill-centric-harness\",\"timestamp_sec\":673},{\"claim\":\"Documentation should live in code comments so that any agent that greps into the code is handed the pointer to the full context automatically.\",\"talk\":\"agents-codebases-and-teams\",\"timestamp_sec\":443}],\"maturity\":\"consolidating\",\"maturity_rationale\":\"The mechanism is settled across six independent talks \u2014 a thin resident index with bodies fetched on demand \u2014 and shops are now publishing concrete budgets (2% of window, 20\u201325K first prompt, 100- and 500-line caps) rather than arguing the principle. What remains genuinely contested is the premise underneath it (whether long context degrades quality at all, given cached 800K-token runs that beat compaction on every axis), who pulls the trigger (model-invoked vs. user-invoked), and what replaces the flat list past ten skills.\"}",
+  "ttft_ms": 42839,
+  "ttft_stream_ms": 1013,
+  "time_to_request_ms": 40,
   "type": "result",
-  "duration_ms": 111994,
-  "uuid": "1be848c9-7042-40dd-b02a-6c2b12afeeed",
+  "duration_ms": 104086,
+  "uuid": "82f9bf8b-bc19-43a6-92c5-2d2d83efe175",
   "passC": {
     "concept": "progressive disclosure",
-    "state_of_practice": "Progressive disclosure is now the default architecture for agent context, and the field has converged on a concrete mechanism: only a skill's name and description sit in the system prompt permanently, the body loads on invocation, and anything used by a single branch lives in a separate file behind a context pointer. Practitioners have started attaching numbers to it rather than treating it as a principle \u2014 Codex caps the available-skills list at 2% of the max context window and progressively truncates past that, Amazon's AGI Lab treats a 20-25K-token first prompt as healthy and 40-50K as a failed setup, and DataRobot argues baseline system prompt plus tool definitions should stay under 40% of the window before the user's first turn. The justification has also shifted from cost to quality: speakers cite context rot and contradictory-information confusion, not token bills, as the reason to keep the default small. The same logic has spread from skills to tools \u2014 deferred tool loading behind tool search, large tool results stored outside context and summarized \u2014 and is the main argument for skills over MCP, where 15 connected servers can burn 100K tokens per session in definitions alone. The unresolved edges are who pulls the trigger (model-invoked descriptions vs. explicit user invocation) and what happens past a few dozen skills, where a flat description list stops being a viable index at all.",
+    "state_of_practice": "Progressive disclosure has become the default architecture for agent context: a thin always-resident index (skill names and descriptions, tool stubs, a top-level index file) that points to bodies, reference files, and scripts the agent loads only if it decides it needs them. The field has moved past the principle to arguing over the numbers \u2014 Codex caps the available-skills list at 2% of the context window and progressively truncates beyond it, Amazon AGI Lab treats a 40\u201350K-token first prompt as proof that progressive disclosure has failed (20\u201325K is the expected baseline), DataRobot puts system prompt plus tool definitions under 40% of the window, and skill.md line caps of 100 (Amazon) to 500 (DeepMind) are being enforced in review. The economic argument is now framed as a permanent tax: a model-invoked skill's description is paid on every single model call, so 15 MCP servers can burn 100K+ tokens per session in tool definitions alone while an equivalent skills folder costs roughly an order of magnitude less. The unresolved cost is routing: descriptions are the only routing signal the model ever sees, roughly half of skill failures are non-triggering rather than bad content, and the model may simply decline to follow a context pointer \u2014 which is why the same conference produced both 'make everything model-invoked' and 'make everything user-invoked so you never have to eval invocation.' A minority but well-instrumented position (Towards AI) pushes back on the premise entirely, reporting that keeping full history untouched beat every compaction preset on recall, cost, and latency simultaneously, and that distinctive facts survived to 800K tokens.",
     "consensus": [
       {
-        "claim": "Only the skill's name and description belong in the always-loaded context; the body loads on demand, and that description is a permanent per-call tax you pay on every model invocation whether or not the skill fires.",
-        "support_count": 5,
+        "claim": "The always-loaded surface should be a thin index \u2014 skill name plus description, or a pointer file \u2014 with bodies, reference material, and scripts loaded only on demand.",
+        "support_count": 6,
         "supporting_talks": [
           "skills-are-new-features-building-skill-centric-harness",
+          "skills-are-the-new-sdks",
           "building-great-agent-skills-the-missing-manual",
-          "dont-ship-skills-without-evals",
           "codex-behind-the-harness",
-          "skills-are-the-new-sdks"
+          "agents-codebases-and-teams",
+          "context-engineering-in-2026"
         ],
         "evidence_quote": "we are only using the name and description path in in this system prompt and not the skill body and that's what what they call about is progressive disclosure",
         "evidence_talk": "skills-are-new-features-building-skill-centric-harness",
         "evidence_timestamp_sec": 447
       },
       {
-        "claim": "The main skill file should be aggressively small and act as a thin index \u2014 the skill is a folder, not a document \u2014 with detail deferred to sibling files.",
+        "claim": "The resident description block is a per-call tax paid on every model invocation, so it must be explicitly budgeted rather than allowed to grow.",
+        "support_count": 5,
+        "supporting_talks": [
+          "dont-ship-skills-without-evals",
+          "building-great-agent-skills-the-missing-manual",
+          "codex-behind-the-harness",
+          "skills-are-the-new-sdks",
+          "agents-codebases-and-teams"
+        ],
+        "evidence_quote": "the description is the cost you always pay on every model invocation. So, on every model call, the description is part of the model context. So, you always pay that 100 200 tokens cost",
+        "evidence_talk": "dont-ship-skills-without-evals",
+        "evidence_timestamp_sec": 461
+      },
+      {
+        "claim": "Enforce a hard size limit on the entry-point skill file and push everything else behind pointers \u2014 a skill is a folder, not a document.",
         "support_count": 4,
         "supporting_talks": [
           "agents-codebases-and-teams",
-          "building-great-agent-skills-the-missing-manual",
           "dont-ship-skills-without-evals",
-          "skills-are-the-new-sdks"
+          "building-great-agent-skills-the-missing-manual",
+          "context-engineering-in-2026"
         ],
         "evidence_quote": "we've kind of set a hard limit for like 100 lines in your skill.md cuz your skill is really a folder.",
         "evidence_talk": "agents-codebases-and-teams",
         "evidence_timestamp_sec": 869
       },
       {
-        "claim": "Oversized context degrades output quality, not merely cost \u2014 the reason to disclose progressively is model confusion and context rot, not the token bill.",
+        "claim": "Instructions the agent would follow anyway (no-ops) and duplicated material are the main source of context bloat and should be deleted outright.",
         "support_count": 3,
         "supporting_talks": [
-          "codex-behind-the-harness",
-          "skills-are-the-new-sdks",
-          "agents-codebases-and-teams"
-        ],
-        "evidence_quote": "the more context you have in your in your context, the higher it is that you have contradicting information and it causes confusion for the model.",
-        "evidence_talk": "codex-behind-the-harness",
-        "evidence_timestamp_sec": 245
-      },
-      {
-        "claim": "Baseline context before the user's first turn should be held to an explicit numeric budget, and exceeding it is treated as a defect in the setup rather than a cost tradeoff.",
-        "support_count": 3,
-        "supporting_talks": [
-          "agents-codebases-and-teams",
-          "codex-behind-the-harness",
+          "building-great-agent-skills-the-missing-manual",
+          "dont-ship-skills-without-evals",
           "skills-are-the-new-sdks"
         ],
-        "evidence_quote": "I think like 20, 25K tokens get taken anyway, but like how much more is getting added? If you're coming to like 40K, 50K, like something's wrong. That's not really progressive disclosure.",
-        "evidence_talk": "agents-codebases-and-teams",
-        "evidence_timestamp_sec": 957
+        "evidence_quote": "Let's imagine we have an implement skill and we have an entire paragraph of the skill that tells the agent to write a long detailed commit message. What would happen if you just deleted that paragraph? Well, the agent would probably still write a decent like long commit message.",
+        "evidence_talk": "building-great-agent-skills-the-missing-manual",
+        "evidence_timestamp_sec": 1092
       },
       {
-        "claim": "The same deferral applies to tools and tool output: definitions should be lazily discoverable rather than front-loaded, and large tool results should live outside the context with only a summary passed back.",
-        "support_count": 4,
-        "supporting_talks": [
-          "codex-behind-the-harness",
-          "skills-are-the-new-sdks",
-          "your-agent-is-wasting-tokens-and-you-dont-know-it",
-          "skills-are-new-features-building-skill-centric-harness"
-        ],
-        "evidence_quote": "we're marking some of these tools as deferred, and that means that they're not added directly to the context window, but instead are available through tool search later on.",
-        "evidence_talk": "codex-behind-the-harness",
-        "evidence_timestamp_sec": 365
-      },
-      {
-        "claim": "Agent-authored skills defeat progressive disclosure \u2014 they pad instructions with no-ops and consume more tokens and reasoning time than human-written equivalents, so generated skills must be audited and trimmed.",
+        "claim": "LLM-generated skills are worse than human-written ones specifically because they bloat the disclosed surface \u2014 more tokens, more no-ops, more reasoning time.",
         "support_count": 3,
         "supporting_talks": [
           "dont-ship-skills-without-evals",
@@ -157,116 +150,139 @@
     ],
     "disagreements": [
       {
-        "question": "Should the decision to load a skill's body be made by the model (from a description in context) or by the user (explicit invocation)?",
-        "position_a": "Prefer user-invoked skills: explicit invocation removes routing unpredictability entirely and eliminates the need to eval whether a skill fires at the right time, at the price of user cognitive load. User invocation is the right default for routine dev workflows like opening PRs or staging docs.",
+        "question": "Should skill invocation be model-driven (descriptions in context, model decides) or user-driven (explicit invocation, no resident description)?",
+        "position_a": "Prefer user-invoked skills: they eliminate the resident description cost and the entire class of invocation-unpredictability problems, at the price of user cognitive load. Model-invoked skills force you to run evals just to confirm they fire at the right time.",
         "position_a_talks": [
           "building-great-agent-skills-the-missing-manual",
           "dont-ship-skills-without-evals"
         ],
-        "position_b": "Prefer model-invoked skills: end users of a product have no idea skills exist and should not be asked to remember them, so routing must be model-driven off descriptions, with the description block budgeted (e.g. capped at 2% of the context window and truncated beyond that) to keep the cost bounded.",
+        "position_b": "Prefer model-driven invocation: end users of a product have no idea what a skill is and will never type 'use the refund skill,' so the routing burden belongs on the description, not the user.",
         "position_b_talks": [
           "skills-are-new-features-building-skill-centric-harness",
-          "codex-behind-the-harness"
+          "dont-ship-skills-without-evals"
         ],
-        "why_it_matters": "Model invocation makes description quality a first-class engineering artifact requiring trigger evals and negative cases, since roughly half of skill failures are non-triggering; user invocation moves that cost onto documentation and user habit instead. It also determines whether progressive disclosure is even viable for consumer-facing agents, where explicit invocation is not an option."
+        "why_it_matters": "It determines whether your engineering budget goes into description-tuning and trigger evals (model-invoked) or into user documentation and discoverability (user-invoked) \u2014 and whether progressive disclosure costs you resident tokens at all. Note that DeepMind endorses user-invoked skills for internal dev workflows while insisting model-invoked routing is unavoidable in customer-facing products, so the split is partly about audience."
       },
       {
-        "question": "Does a flat description list in the system prompt remain a workable index as the skill library grows, or must it be replaced by retrieval?",
-        "position_a": "Keep the flat list and manage it by budget: cap the available-skills block as a fraction of the context window, progressively truncate descriptions past the cap, and keep the entry point a thin index that points to the right files.",
+        "question": "Does a large resident context actually degrade model quality, or is that assumption wrong?",
+        "position_a": "Yes \u2014 oversized context confuses the model with contradicting information, and quality falls off well before the window is full (degradation past ~25% utilization, a 'dumb zone' past 40%), so keep the baseline small and aggressively deferred.",
         "position_a_talks": [
           "codex-behind-the-harness",
+          "skills-are-the-new-sdks",
           "agents-codebases-and-teams"
         ],
-        "position_b": "The flat list stops working past roughly ten skills; beyond that you need embedding similarity search or a smaller shortlisting model to pick candidates, and at hundreds of skills flat retrieval fails outright and requires a skill hierarchy plus metadata filters and governance.",
+        "position_b": "Not necessarily \u2014 distinctive facts were recalled reliably to 800K tokens with no compaction, and keeping the full untouched history beat every compaction preset on recall, cost, and latency at once because 97% of tokens were cached.",
         "position_b_talks": [
-          "skills-are-new-features-building-skill-centric-harness"
+          "context-engineering-in-2026"
         ],
-        "why_it_matters": "If the flat list scales, progressive disclosure is a prompt-authoring discipline; if it does not, every enterprise harness needs a retrieval layer, skill owners, semantic versioning, and admission gates before the library is usable at all."
+        "why_it_matters": "If context rot is real at 25\u201340% utilization, deferred loading is a quality mechanism and every resident token is worth fighting over; if it is not, progressive disclosure is only a cost optimization and aggressive pruning can actively lose money by forcing re-retrieval and invalidating the prompt cache."
       },
       {
-        "question": "When the always-loaded baseline is large, is the right fix to shrink it or to make it cheap?",
-        "position_a": "Make it cheap: cache the system prompt (and where possible the tool prompt and messages) so only a much reduced payload is sent after the first call, trim history with a sliding window, and summarize what falls out.",
+        "question": "Is a large skill a problem to be fixed by splitting, or a symptom of a different defect?",
+        "position_a": "Enforce a line ceiling and split \u2014 100 lines for skill.md, under 500 for skills.md, many small cross-referencing skills over monoliths.",
         "position_a_talks": [
-          "your-agent-is-wasting-tokens-and-you-dont-know-it"
-        ],
-        "position_b": "Shrink it: a large baseline is a defect regardless of price, because performance degrades past roughly 25-40% context utilization and extra content raises the odds of contradictory information \u2014 so defer tools, cap the skills block, and hold the first prompt to 20-25K tokens.",
-        "position_b_talks": [
-          "skills-are-the-new-sdks",
           "agents-codebases-and-teams",
+          "dont-ship-skills-without-evals",
+          "context-engineering-in-2026"
+        ],
+        "position_b": "Size is never the real problem: massive skills are always a symptom of duplication, sediment, or no-ops, so fix the source-of-truth violation rather than targeting a line count.",
+        "position_b_talks": [
+          "building-great-agent-skills-the-missing-manual"
+        ],
+        "why_it_matters": "Line caps are cheap to enforce in review but can push teams to shard a coherent procedure into pointer chains the model may decline to follow; the diagnostic view says a 400-line skill that is genuinely one source of truth should be left alone."
+      },
+      {
+        "question": "At what scale does a flat description list stop working, and what replaces it?",
+        "position_a": "Keep a flat list under a fixed budget and truncate mechanically \u2014 cap available skills at 2% of the context window, and mark tools as deferred so they surface through tool search.",
+        "position_a_talks": [
           "codex-behind-the-harness"
         ],
-        "why_it_matters": "Caching optimizes the bill while leaving the window full, which is exactly the failure the context-rot camp says silently degrades output; teams that treat cache hit rate as the success metric will ship agents that are cheap and quietly dumber."
+        "position_b": "Flat listing breaks around ten skills; past that you need embedding similarity search or a smaller shortlisting model to pick what enters the system prompt, and at hundreds of skills you need a hierarchy plus metadata filters and governance.",
+        "position_b_talks": [
+          "skills-are-new-features-building-skill-centric-harness",
+          "skills-are-the-new-sdks"
+        ],
+        "why_it_matters": "A truncation budget is a few lines of harness code; a retrieval-and-governance layer is a subsystem with its own evals, owners, and failure modes \u2014 and picking the wrong one either silently drops skills or over-engineers a ten-skill library."
       }
     ],
     "practical_guidance": {
       "do": [
-        "Cap the available-skills description block as a share of the context window \u2014 Codex uses 2% of the max window and progressively truncates descriptions beyond it.",
-        "Hold the first prompt's baseline context to roughly 20-25K tokens; treat 40-50K as evidence progressive disclosure has failed.",
-        "Keep system prompt plus tool definitions under 40% of the context window before the user's first turn.",
-        "Cap skill.md at ~100 lines (or at minimum under 500 lines) and treat the skill as a folder whose .md is a thin index pointing to other files.",
-        "Move any reference material used by only one branch of a skill out of skill.md into an external file behind a context pointer.",
-        "Mark rarely used tools as deferred and expose them through tool search rather than loading their definitions up front.",
-        "Store large tool results outside the context and pass a summary, instead of re-sending the full result on every loop iteration.",
-        "Write skill descriptions in the phrasing users actually use, keep them mutually distinct, and include five negative 'do not use this when' cases alongside five happy-path cases to stop over-triggering.",
-        "Once past ~10 skills, shortlist with embedding similarity search or a smaller model instead of listing every description in the system prompt.",
-        "Delete no-ops \u2014 instructions the agent would follow anyway \u2014 even when removing them does not move eval scores, because the tokens are saved regardless.",
-        "Run evals both with and without the skill loaded, so you can tell when a capability skill has been obsoleted by the model and can be retired.",
-        "Split a multi-step process into separate skills so the agent sees only the current step, which increases the legwork it does on that step by hiding the future goal.",
-        "Put documentation in code comments so an agent that reaches the code finds the pointer to the rest of the information."
+        "Budget the first prompt: 20\u201325K tokens of baseline context is expected; 40\u201350K means progressive disclosure has failed.",
+        "Cap the available-skills list as a fraction of the context window (Codex uses 2%) and truncate descriptions progressively past it.",
+        "Keep system prompt plus tool definitions under 40% of the window before the user's first turn.",
+        "Enforce a line ceiling on the entry file \u2014 100 lines (skill is a folder) to 500 lines \u2014 and move branch-specific reference material into external files behind a context pointer.",
+        "Mark tools as deferred so they are reachable via tool search instead of loaded into the window up front.",
+        "Write descriptions in the phrasing of a user request, not as a description of the skill, and make them mutually distinct \u2014 descriptions are the only routing signal.",
+        "Include negative cases in the description (roughly five happy-path and five 'do not use this' eval cases) to stop over-triggering.",
+        "Delete any instruction the agent would follow anyway; no-ops are especially common when an agent wrote the skill.",
+        "Test the disclosed skill across multiple harnesses and rerun evals on every model upgrade \u2014 instruction placement inside the file is model-dependent.",
+        "Grade context by relevance the way rendering grades level of detail: near/focused objects in full, distant ones as stubs.",
+        "Store large tool results outside the window and pass a summary, rather than re-sending them on every loop iteration.",
+        "Start thinking about a shortlisting mechanism (embedding search or a small model) once you pass roughly ten skills."
       ],
       "avoid": [
-        "Don't assume the model will follow a context pointer \u2014 it may simply choose not to invoke a perfectly matching skill, and roughly 50% of observed skill failures are non-triggering rather than bad content.",
-        "Don't connect an agent to many MCP servers casually: 15 servers can consume over 100,000 tokens per session in tool definitions alone.",
-        "Don't write a skill for a workflow that is always the same fixed sequence of steps \u2014 write a script and stop spending model tokens on it.",
-        "Don't let an agent author your skills unaudited; agent-written skills are where no-ops cluster most heavily.",
-        "Don't let a shared skill file accumulate sediment \u2014 contributors adding their own text without deleting anyone else's \u2014 or duplication across steps and reference material.",
-        "Don't rely on a naive sliding window over conversation history without summarizing the dropped prefix into context, or you lose the beginning of the conversation entirely.",
-        "Don't treat a large static baseline as acceptable just because it is cached; the window is still full when the model reasons.",
-        "Don't pull in community-authored skills without auditing them against a rubric first \u2014 they may not be any good.",
-        "Don't assume a skill that discloses correctly on one harness or model does so on another; instruction placement inside the file is model-dependent, and a newer model ignored critical instructions placed at the end of an unchanged skill."
+        "Don't turn a fixed sequence of steps into a skill \u2014 write a script; you pay description tokens on every call for something deterministic.",
+        "Don't let an LLM author your skills unreviewed: generated skills consume more tokens and reasoning time and can degrade performance outright.",
+        "Don't wire 15 MCP servers into an agent \u2014 that alone is 100K+ tokens per session in tool definitions.",
+        "Don't assume a context pointer will be followed; the model may skip a perfectly relevant file, so measure task outcomes rather than whether the skill loaded.",
+        "Don't compact by default \u2014 name the constraint forcing it first; summarization invalidates the prompt cache and needs >50x compression to pay off.",
+        "Don't aggressively clear old tool outputs; the agent re-retrieves what it already had and total cost goes up.",
+        "Don't judge progressive disclosure with single-turn benchmarks \u2014 they never accumulate enough tokens to exercise it.",
+        "Don't let a shared skill file accumulate sediment: contributors add and never delete, and the disclosed surface silently grows.",
+        "Don't test skills in an existing workspace \u2014 coding agents will cheat by reading prior chats and executions."
       ]
     },
     "notable_outliers": [
       {
-        "claim": "Hiding future steps is itself a technique, not just a cost: splitting a process into separate skills so the agent sees one step at a time measurably increases the legwork it does on the current step.",
+        "claim": "Keeping the entire conversation history untouched beat every compaction preset simultaneously on recall, cost, and latency, because 97% of tokens were cached \u2014 the setup sending the most tokens was the cheapest to run.",
+        "talk": "context-engineering-in-2026",
+        "timestamp_sec": 2731
+      },
+      {
+        "claim": "Distinctive facts were recalled reliably up to 800K tokens with no compaction, but dense semantic search collapsed to 0% recall at 400K where BM25 held 100%.",
+        "talk": "context-engineering-in-2026",
+        "timestamp_sec": 3538
+      },
+      {
+        "claim": "Deliberately splitting a process into separate skills so the agent sees only one step at a time \u2014 hiding future steps \u2014 increases the legwork it does on the current step.",
         "talk": "building-great-agent-skills-the-missing-manual",
         "timestamp_sec": 946
       },
       {
-        "claim": "Massive skills are never the real problem \u2014 they are always a symptom of duplication, sediment, or no-ops, so shrinking by editing for size rather than diagnosing the cause misses the defect.",
-        "talk": "building-great-agent-skills-the-missing-manual",
-        "timestamp_sec": 983
-      },
-      {
-        "claim": "Skills impose roughly 10x less context overhead than the equivalent MCP setup purely because of progressive disclosure, and a skills folder can replace MCP for most use cases given a strong base reasoning model.",
+        "claim": "Skills impose roughly 10x less context overhead than the equivalent MCP setup purely because of progressive disclosure: <100 tokens at listing, <5K on activation, scripts below that.",
         "talk": "skills-are-the-new-sdks",
         "timestamp_sec": 822
       },
       {
-        "claim": "Silently blowing through context is the failure mode to watch for \u2014 a setup can burn 500K to a million tokens and hit auto-compact on a task that was never complicated.",
+        "claim": "Context should be assembled like level-of-detail rendering \u2014 anything far from the camera or the editing focus becomes a cube, and the model can't tell.",
+        "talk": "the-next-game-engine-wont-have-a-manual",
+        "timestamp_sec": 932
+      },
+      {
+        "claim": "Roughly 50% of skill failures are the skill never being triggered, not bad skill content \u2014 the disclosure boundary, not the disclosed material, is the dominant failure mode.",
+        "talk": "dont-ship-skills-without-evals",
+        "timestamp_sec": 1024
+      },
+      {
+        "claim": "A newer model focused on the beginning of the skill file and ignored critical instructions placed at the end, with no line of the skill changed \u2014 placement inside the disclosed file is a versioned contract against a specific model.",
+        "talk": "skills-are-new-features-building-skill-centric-harness",
+        "timestamp_sec": 673
+      },
+      {
+        "claim": "Documentation should live in code comments so that any agent that greps into the code is handed the pointer to the full context automatically.",
         "talk": "agents-codebases-and-teams",
-        "timestamp_sec": 270
-      },
-      {
-        "claim": "Compaction should be done server-side in the exact form the model was trained on, so that performance stays the same after context is compressed.",
-        "talk": "codex-behind-the-harness",
-        "timestamp_sec": 1129
-      },
-      {
-        "claim": "Progressive disclosure has an organizational analogue: a librarian layer that supplies company-specific semantics just in time, rather than preloading all business definitions, prevents agents from silently applying wrong definitions to business data.",
-        "talk": "design-patterns-for-ai-trust-juries-libraries-and-agent-tiers",
-        "timestamp_sec": 760
+        "timestamp_sec": 443
       }
     ],
     "maturity": "consolidating",
-    "maturity_rationale": "The core mechanism is uncontested across ten independent talks \u2014 name and description up front, body on demand, branch-specific reference behind a pointer \u2014 and speakers have moved from stating the principle to publishing hard numbers (2% of window, 100 lines, 20-25K baseline, 40% ceiling). What remains actively argued is who triggers the disclosure and how the index survives past a few dozen skills, which is the shape of a converging practice with contested edges rather than an open frontier."
+    "maturity_rationale": "The mechanism is settled across six independent talks \u2014 a thin resident index with bodies fetched on demand \u2014 and shops are now publishing concrete budgets (2% of window, 20\u201325K first prompt, 100- and 500-line caps) rather than arguing the principle. What remains genuinely contested is the premise underneath it (whether long context degrades quality at all, given cached 800K-token runs that beat compaction on every axis), who pulls the trigger (model-invoked vs. user-invoked), and what replaces the flat list past ten skills."
   },
   "_meta": {
     "concept": "progressive disclosure",
     "slug": "progressive-disclosure",
-    "talk_count": 10,
+    "talk_count": 12,
     "missing_talks": [],
-    "wall_sec": 113.1,
-    "run_at": "2026-08-13T19:37:48Z"
+    "wall_sec": 105.3,
+    "run_at": "2026-08-19T14:18:53Z"
   }
 }

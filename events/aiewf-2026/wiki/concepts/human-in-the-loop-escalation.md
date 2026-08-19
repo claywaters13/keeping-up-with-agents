@@ -4,15 +4,15 @@ type: "concept"
 slug: "human-in-the-loop-escalation"
 tier: "supporting"
 maturity: "consolidating"
-talk_count: 11
-speaker_count: 12
+talk_count: 12
+speaker_count: 13
 ---
 
 # human-in-the-loop escalation
 
 **Maturity: CONSOLIDATING** — Consolidating — converging practice, some open edges
 
-*Supporting concept* &middot; discussed across **11** talk(s) by **12** speaker(s)
+*Supporting concept* &middot; discussed across **12** talk(s) by **13** speaker(s)
 
 **Definition:** Routing to a human when the agent is uncertain or the stakes are high, based on confidence or risk rather than a blanket approval rule.
 
@@ -20,113 +20,128 @@ speaker_count: 12
 
 ## State of Practice
 
-The field has moved off blanket approval gates and onto routing: the escalation decision is made per-action, from a confidence score or a risk/reversibility classification, so human attention is spent only where it changes an outcome. Concretely this looks like a deterministic or rules layer first, an agent or LLM judge for what rules cannot decide, and a human only for the residue — oncology prior-auth teams attach a confidence score per clinical answer and escalate only those cases; computer-use RL teams treat handoff as a first-class model action requiring calibrated confidence about risk, reversibility, authorization, and visibility; code review is routed by criticality, with authentication, money movement, permissions, and irreversible data reads line by line. There is broad agreement that per-action yes/no prompts are a failed oversight mechanism: reviewers cannot evaluate an opaque command, prompts get disabled in CI anyway, and 31% more PRs are now merged with no review at all. Open questions remain on whether human involvement is permanent architecture or transitional scaffolding that thins as models improve, and on whether the escalation judge should itself be a model (LLM-as-judge, adversary agent) or a deterministic policy engine / ontology reasoner. A distinct and less-appreciated failure mode is over-escalation: in mental health, an inappropriately triggered guardrail is described as a door slam that pushes a user away from care, so the target is correct triggers rather than more triggers.
+The field has moved off blanket approval gates and onto per-case routing: escalation is treated as an explicit action in the agent's action space, chosen from a confidence score, a risk/reversibility assessment, or a deterministic rule that fires before the model is consulted. The dominant architectural pattern is proposal/disposal separation — the model emits a proposed action, and an external layer (policy engine, deterministic decision engine, ontology reasoner, LLM-as-judge running as a separate call, or flag middleware) decides whether it executes or goes to a human — with the explicit requirement that this layer sit outside the learned policy and outside the system prompt so a policy or prompt update cannot silently redefine the agent's own authority. Practitioners now name over-escalation as a real cost, not a safe default: false guardrail trips are described as a harm to the user, and non-escalation rate is explicitly rejected as an optimization target in favor of routing accuracy. A hard floor survives regardless of confidence — authentication, money movement, permissions, irreversible data changes, and direct production control stay gated. The unresolved questions are whether this scaffolding thins as models improve or is permanent, whether the adjudicator should itself be a model (an adversary agent rewarded for stopping the worker) or strictly symbolic, and whether an agent's self-assessed confidence is admissible evidence for skipping review at all.
 
 ## Consensus
 
-### Escalation should be gated on a per-case confidence or risk score attached to the agent's output, not on a blanket rule that all outputs (or no outputs) get human review.
+### Escalation to a human should be a first-class action the agent can select per case, driven by confidence or evidence sufficiency, rather than a blanket policy applied to whole task categories.
+
+Support: **6** talk(s)
+
+> "Notice that escalation is included in the action space that is not the agent giving up. It is the system correctly recognizing the boundary of its evidence and authority for an operational agent."
+>
+> — [Using RL Agent to Detect and Remediate ETL Pipeline Failures](../talks/using-rl-agent-to-detect-and-remediate-etl-pipeline-failures.md), [6:22](https://www.youtube.com/watch?v=LrGCT7G_rU8&t=382s)
+
+Supporting talks: [Using RL Agent to Detect and Remediate ETL Pipeline Failures](../talks/using-rl-agent-to-detect-and-remediate-etl-pipeline-failures.md), [Can Oncology Workflows Run Without Human Touch?](../talks/can-oncology-workflows-run-without-human-touch.md), [From RL to IRL](../talks/from-rl-to-irl.md), [Deterministic Infra for Non-Deterministic AI Agents](../talks/deterministic-infra-for-non-deterministic-ai-agents.md), [Always-on agents run production without the on-call tax](../talks/always-on-agents-run-production-without-the-on-call-tax.md), [Should AI Engineers Still Read Code in 2026? The Z/L Continuum](../talks/should-ai-engineers-still-read-code-in-2026-the-zl-continuum.md)
+
+### The model should only propose actions; an external layer outside the model and outside the learned policy validates, approves, and executes them.
+
+Support: **6** talk(s)
+
+> "The model just suggests, the platform decides."
+>
+> — [Deterministic Infra for Non-Deterministic AI Agents](../talks/deterministic-infra-for-non-deterministic-ai-agents.md), [3:09](https://www.youtube.com/watch?v=APh1Vx0oLmQ&t=189s)
+
+Supporting talks: [Deterministic Infra for Non-Deterministic AI Agents](../talks/deterministic-infra-for-non-deterministic-ai-agents.md), [Using RL Agent to Detect and Remediate ETL Pipeline Failures](../talks/using-rl-agent-to-detect-and-remediate-etl-pipeline-failures.md), [Why Agentic Systems Need Ontologies](../talks/why-agentic-systems-need-ontologies.md), [Can Oncology Workflows Run Without Human Touch?](../talks/can-oncology-workflows-run-without-human-touch.md), [AI’s Jurassic Park Period](../talks/ais-jurassic-park-period.md), [Agents Need Feature Flags](../talks/agents-need-feature-flags.md)
+
+### Escalating too often is a real failure, not a safe default; the objective is correctly routed human attention, so systems should be scored on routing accuracy rather than on volume of human review.
 
 Support: **5** talk(s)
 
-> "the medical necessity agent answers simple and complex clinical questions per patient uh and attaches confidence score to any answer. So, we escalate only the ones that actually need a clinician."
+> "we didn't we were not going for more triggers here. We're going for more correct triggers."
 >
-> — [Can Oncology Workflows Run Without Human Touch?](../talks/can-oncology-workflows-run-without-human-touch.md), [11:39](https://www.youtube.com/watch?v=_cVfz88_j7A&t=699s)
+> — [Evals-Driven Development for a Mental Health AI Coach](../talks/evals-driven-development-for-a-mental-health-ai-coach.md), [6:24](https://www.youtube.com/watch?v=O72p-rBb2bA&t=384s)
 
-Supporting talks: [Can Oncology Workflows Run Without Human Touch?](../talks/can-oncology-workflows-run-without-human-touch.md), [From RL to IRL](../talks/from-rl-to-irl.md), [Should AI Engineers Still Read Code in 2026? The Z/L Continuum](../talks/should-ai-engineers-still-read-code-in-2026-the-zl-continuum.md), [Deterministic Infra for Non-Deterministic AI Agents](../talks/deterministic-infra-for-non-deterministic-ai-agents.md), [Agents Need Feature Flags](../talks/agents-need-feature-flags.md)
+Supporting talks: [Evals-Driven Development for a Mental Health AI Coach](../talks/evals-driven-development-for-a-mental-health-ai-coach.md), [Using RL Agent to Detect and Remediate ETL Pipeline Failures](../talks/using-rl-agent-to-detect-and-remediate-etl-pipeline-failures.md), [Deterministic Infra for Non-Deterministic AI Agents](../talks/deterministic-infra-for-non-deterministic-ai-agents.md), [AI-Driven Multi-Document Correlation for Financial Compliance](../talks/ai-driven-multi-document-correlation-for-financial-compliance.md), [Can Oncology Workflows Run Without Human Touch?](../talks/can-oncology-workflows-run-without-human-touch.md)
 
-### Human oversight is a permanent architectural component of production agent systems, not scaffolding to be removed once models improve.
+### Irreversibility and blast radius override confidence: authentication, money movement, permissions, irreversible data changes, and direct production control stay human-gated no matter how confident the agent is.
 
-Support: **4** talk(s)
+Support: **5** talk(s)
 
-> "Many people frame human involvement as temporarily temporary necessity. I don't think that's correct. The most successful systems are likely to remain human supervised."
+> "You read every line of authentication, money movement, permissions, and irreversible data."
 >
-> — [Deterministic Infra for Non-Deterministic AI Agents](../talks/deterministic-infra-for-non-deterministic-ai-agents.md), [4:50](https://www.youtube.com/watch?v=APh1Vx0oLmQ&t=290s)
+> — [Should AI Engineers Still Read Code in 2026? The Z/L Continuum](../talks/should-ai-engineers-still-read-code-in-2026-the-zl-continuum.md), [14:28](https://www.youtube.com/watch?v=ZpK5PWX2YRM&t=868s)
 
-Supporting talks: [Deterministic Infra for Non-Deterministic AI Agents](../talks/deterministic-infra-for-non-deterministic-ai-agents.md), [Should AI Engineers Still Read Code in 2026? The Z/L Continuum](../talks/should-ai-engineers-still-read-code-in-2026-the-zl-continuum.md), [Evals-Driven Development for a Mental Health AI Coach](../talks/evals-driven-development-for-a-mental-health-ai-coach.md), [AI’s Jurassic Park Period](../talks/ais-jurassic-park-period.md)
-
-### Deterministic checks run first and decide everything they can; agents and then humans handle only the residue, which is what makes the human queue small enough to be meaningful.
-
-Support: **4** talk(s)
-
-> "the no touch is growing on the share of every order. So, we started with deterministic checks. Agents only for the rules that where what rules can't decide."
->
-> — [Can Oncology Workflows Run Without Human Touch?](../talks/can-oncology-workflows-run-without-human-touch.md), [16:01](https://www.youtube.com/watch?v=_cVfz88_j7A&t=961s)
-
-Supporting talks: [Can Oncology Workflows Run Without Human Touch?](../talks/can-oncology-workflows-run-without-human-touch.md), [Deterministic Infra for Non-Deterministic AI Agents](../talks/deterministic-infra-for-non-deterministic-ai-agents.md), [Why Agentic Systems Need Ontologies](../talks/why-agentic-systems-need-ontologies.md), [AI’s Jurassic Park Period](../talks/ais-jurassic-park-period.md)
-
-### A per-action yes/no approval prompt is not a working oversight mechanism — the reviewer usually lacks the context to answer, so it degenerates into rubber-stamping or gets disabled outright.
-
-Support: **3** talk(s)
-
-> "even when the agent knows that it should ask permission and and I get a nice block of, "Hey, Aaron, do you agree? Should I do this thing?" I'm honestly not sure if I should say yes or no"
->
-> — [AI’s Jurassic Park Period](../talks/ais-jurassic-park-period.md), [5:48](https://www.youtube.com/watch?v=1lgFGaHoGq8&t=348s)
-
-Supporting talks: [AI’s Jurassic Park Period](../talks/ais-jurassic-park-period.md), [Anthropic's CCA Exam as a Field-Guide for Agentic Engineering](../talks/anthropics-cca-exam-as-a-field-guide-for-agentic-engineering.md), [Should AI Engineers Still Read Code in 2026? The Z/L Continuum](../talks/should-ai-engineers-still-read-code-in-2026-the-zl-continuum.md)
+Supporting talks: [Should AI Engineers Still Read Code in 2026? The Z/L Continuum](../talks/should-ai-engineers-still-read-code-in-2026-the-zl-continuum.md), [From RL to IRL](../talks/from-rl-to-irl.md), [Agents Need Feature Flags](../talks/agents-need-feature-flags.md), [Deterministic Infra for Non-Deterministic AI Agents](../talks/deterministic-infra-for-non-deterministic-ai-agents.md), [Why Agentic Systems Need Ontologies](../talks/why-agentic-systems-need-ontologies.md)
 
 ## Disagreements
 
-### Is human escalation a permanent part of the architecture, or transitional scaffolding that should thin out as models get more capable?
+### Is human escalation a transitional scaffold that thins as models improve, or a permanent architectural fixture?
 
 | Position A | Position B |
 |---|---|
-| Permanent. Human supervision is a design property of successful systems; loops and self-verification relocate where judgment is applied but never remove the requirement, and the clinician's or expert's definition of correct must keep living in CI indefinitely.<br>*[Deterministic Infra for Non-Deterministic AI Agents](../talks/deterministic-infra-for-non-deterministic-ai-agents.md), [Should AI Engineers Still Read Code in 2026? The Z/L Continuum](../talks/should-ai-engineers-still-read-code-in-2026-the-zl-continuum.md), [Evals-Driven Development for a Mental Health AI Coach](../talks/evals-driven-development-for-a-mental-health-ai-coach.md)* | Transitional. Harness guardrails should be strong early and become progressively thinner as model capability improves, and the no-touch share of a workflow should grow monotonically until human touch is the exception.<br>*[From RL to IRL](../talks/from-rl-to-irl.md), [Can Oncology Workflows Run Without Human Touch?](../talks/can-oncology-workflows-run-without-human-touch.md)* |
+| Escalation and harness guardrails are temporary scaffolding sized to current model weakness; as capability improves the harness gets thinner and the no-touch share of work grows monotonically, so the design goal is to retire human touchpoints case class by case class.<br>*[From RL to IRL](../talks/from-rl-to-irl.md), [Can Oncology Workflows Run Without Human Touch?](../talks/can-oncology-workflows-run-without-human-touch.md), [AI-Driven Multi-Document Correlation for Financial Compliance](../talks/ai-driven-multi-document-correlation-for-financial-compliance.md)* | Human supervision is permanent. Better models relocate where proof and oversight belong but never remove the requirement, and the regulatory direction (EU AI Act, enterprise procurement) is toward more demonstrable control, not less.<br>*[Deterministic Infra for Non-Deterministic AI Agents](../talks/deterministic-infra-for-non-deterministic-ai-agents.md), [Should AI Engineers Still Read Code in 2026? The Z/L Continuum](../talks/should-ai-engineers-still-read-code-in-2026-the-zl-continuum.md), [AI’s Jurassic Park Period](../talks/ais-jurassic-park-period.md), [Agents Need Feature Flags](../talks/agents-need-feature-flags.md)* |
 
-*Why it matters: If escalation is permanent you invest in reviewer tooling, attention budgeting, and durable expert-owned eval sets; if transitional you invest in model training, sandboxes, and recovery policies and treat the review queue as a cost to drive to zero.*
+*Why it matters: It decides whether escalation is a durable product surface worth investing in (audit trails, per-surface autonomy tiers, expert-owned definitions of correct) or throwaway scaffolding you should minimize. It also sets whether 'percentage of tasks with no human touch' is a legitimate roadmap metric or an actively misleading one.*
 
-### Should the thing that decides whether to escalate be another model, or a deterministic policy/validation layer?
-
-| Position A | Position B |
-|---|---|
-| A model. Guardrails should be separate LLM-as-judge calls (more robust and harder to jailbreak than prompt-embedded rules), and an equal-power adversary agent rewarded for stopping the worker can catch spirit-of-the-constraint violations that syntactic rules miss.<br>*[Evals-Driven Development for a Mental Health AI Coach](../talks/evals-driven-development-for-a-mental-health-ai-coach.md), [AI’s Jurassic Park Period](../talks/ais-jurassic-park-period.md)* | A deterministic layer. Models are stochastic and infrastructure is not allowed to be — the model emits proposals and a policy engine, ontology reasoner, or rules engine approves them, catching things like duplicate refunds or wrong-entity payouts that natural-language prompting cannot enforce.<br>*[Deterministic Infra for Non-Deterministic AI Agents](../talks/deterministic-infra-for-non-deterministic-ai-agents.md), [Why Agentic Systems Need Ontologies](../talks/why-agentic-systems-need-ontologies.md), [Can Oncology Workflows Run Without Human Touch?](../talks/can-oncology-workflows-run-without-human-touch.md)* |
-
-*Why it matters: It determines whether your escalation gate is itself non-deterministic and needs its own evals and latency/cost budget, or whether it is auditable code that can be reasoned about and proven to an auditor.*
-
-### Should agents default to escalating when in doubt, or is over-escalation itself a harm to be calibrated down?
+### Should the thing that decides whether to escalate be another model, or a strictly deterministic/symbolic layer?
 
 | Position A | Position B |
 |---|---|
-| Default to stopping. Autonomy should default to 'suggest' for every surface with auto-execute opted into per tool, and when a constraint collides with the task the default behavior should be halt and explain rather than find a way around.<br>*[Agents Need Feature Flags](../talks/agents-need-feature-flags.md), [AI’s Jurassic Park Period](../talks/ais-jurassic-park-period.md)* | Over-triggering is a real harm with real cost. Frontier providers' built-in guardrails were too conservative to use and were turned off on day one; an inappropriate escalation feels like a door slam and can drive a user away from care, so the objective is correct triggers, not more triggers.<br>*[Evals-Driven Development for a Mental Health AI Coach](../talks/evals-driven-development-for-a-mental-health-ai-coach.md)* |
+| A model-based adjudicator is required, because the failures that matter are ones where the agent never exceeds its authorization and the system looks syntactically compliant the whole time. An equal-power adversary agent rewarded for stopping the worker, or separate LLM-as-judge guardrail calls, can judge the spirit of a constraint where string matching and rules cannot.<br>*[AI’s Jurassic Park Period](../talks/ais-jurassic-park-period.md), [Evals-Driven Development for a Mental Health AI Coach](../talks/evals-driven-development-for-a-mental-health-ai-coach.md)* | Adjudication must be deterministic and symbolic — a decision engine, policy engine, ontology reasoner, or safety constraint that lives outside the learned policy — with the model consulted only for cases rules genuinely cannot decide. Reliability in these systems came from state design and external constraints, not from the learned component.<br>*[Using RL Agent to Detect and Remediate ETL Pipeline Failures](../talks/using-rl-agent-to-detect-and-remediate-etl-pipeline-failures.md), [Why Agentic Systems Need Ontologies](../talks/why-agentic-systems-need-ontologies.md), [Can Oncology Workflows Run Without Human Touch?](../talks/can-oncology-workflows-run-without-human-touch.md), [Deterministic Infra for Non-Deterministic AI Agents](../talks/deterministic-infra-for-non-deterministic-ai-agents.md)* |
 
-*Why it matters: It sets which error you optimize against — a conservative default is safe in code and infrastructure but actively damaging in user-facing support contexts, so the threshold has to be tuned per domain rather than inherited from the model provider.*
+*Why it matters: A model-based judge adds cost and latency and inherits the same non-determinism it is supposed to police, while a symbolic gate is inspectable and cheap but provably cannot catch spirit-of-the-constraint violations. Picking wrong means either paying double inference for an unauditable veto or shipping a gate that passes every compliant-looking catastrophe.*
+
+### Can an agent's own confidence estimate justify skipping human review?
+
+| Position A | Position B |
+|---|---|
+| Yes, if it is calibrated and corroborated. Attach a confidence score to each answer and escalate only the low-confidence ones; two independent sources agreeing on the same fact is sufficient grounds to proceed without human verification, and handing control back requires calibrated confidence about risk, reversibility, authorization, and visibility.<br>*[Can Oncology Workflows Run Without Human Touch?](../talks/can-oncology-workflows-run-without-human-touch.md), [From RL to IRL](../talks/from-rl-to-irl.md)* | No — self-assessment is exactly the faculty being defeated. The energy to overcome a constraint must come from outside the agentic loop; if the builder grades itself you have hidden the review rather than removed it; and safety constraints must sit outside the learned policy so it cannot redefine its own authority.<br>*[AI’s Jurassic Park Period](../talks/ais-jurassic-park-period.md), [Should AI Engineers Still Read Code in 2026? The Z/L Continuum](../talks/should-ai-engineers-still-read-code-in-2026-the-zl-continuum.md), [Using RL Agent to Detect and Remediate ETL Pipeline Failures](../talks/using-rl-agent-to-detect-and-remediate-etl-pipeline-failures.md)* |
+
+*Why it matters: If confidence-gating is admissible, escalation is a threshold-tuning problem and autonomy scales with calibration work. If it is not, every confidence score needs independent corroboration or an out-of-loop veto before it can retire a human, which is a fundamentally more expensive architecture.*
+
+### Should the human gate be an inline per-action prompt, or out-of-band control?
+
+| Position A | Position B |
+|---|---|
+| Inline. Default every surface to 'suggest', earn auto-approve per surface, make auto-execute opt-in per tool, and escalate individual cases to a clinician or operator at the decision point.<br>*[Agents Need Feature Flags](../talks/agents-need-feature-flags.md), [Can Oncology Workflows Run Without Human Touch?](../talks/can-oncology-workflows-run-without-human-touch.md)* | Inline prompts are the wrong instrument: interactive permission prompts should be disabled outright in CI pipelines, and a yes/no approval on an opaque command is not meaningful oversight because the reviewer cannot tell whether to say yes. Control belongs out-of-band — kill switches, an adversary agent, tool-hook interception, audit.<br>*[Anthropic's CCA Exam as a Field-Guide for Agentic Engineering](../talks/anthropics-cca-exam-as-a-field-guide-for-agentic-engineering.md), [AI’s Jurassic Park Period](../talks/ais-jurassic-park-period.md)* |
+
+*Why it matters: Inline gating is where most agent products put their oversight today, and if it is decorative rather than meaningful, teams are shipping systems that will not clear the EU AI Act's meaningful-oversight bar while believing they already have. It also determines whether unattended pipeline agents are safe to run at all.*
 
 ## Practical Guidance
 
 **Do:**
 
-- Attach a confidence score to every agent answer and escalate only the cases below threshold, rather than routing all output to review
-- Require two independent sources to agree on a fact before proceeding without human verification; treat agreement as the license to skip the human
-- Read every line of authentication, money movement, permissions, and irreversible data changes — route review by criticality of the change, not by seniority of the engineer
-- Default autonomy to 'suggest' for everything, earn auto-approve per surface, and make auto-execute opt-in per tool
-- Build the kill switch first and resolve flags per turn, not at session start, so in-flight conversations honor it; target under 5 minutes from problem to mitigation
-- Make halt-and-explain the default when a constraint and the task collide, instead of letting the agent route around the constraint
-- Route sub-agents through the same flag/approval middleware as the parent — a flipped kill switch that never reaches a spawned child is the most common architectural hole
-- Have a licensed or accountable domain expert define correct behavior in edge cases, then commit that judgment into CI so every prompt, model, and guardrail change is scored against it
-- Present contradictory facts alongside supportive ones when handing a case to a human reviewer
-- Have the agent DM the human with its proposed answer and ask for confirmation when unsure, rather than either answering blind or silently queueing
-- Keep agents side-effect-free and run type checks plus ontology/semantic validation before any database write
-- Feed completed audit and investigator outcomes back into the model so the escalation threshold learns, instead of maintaining escalation rules by hand
+- Make escalation an explicit action in the agent's action space and evaluate the policy on routing accuracy, not on how rarely it escalates — a drop in autonomy rate can be the correct outcome
+- Run deterministic checks first and reserve agent judgment only for cases the rules cannot decide; grow the no-touch share incrementally rather than switching automation on wholesale
+- Require two independent sources to agree on a fact before proceeding without human verification; escalate whenever evidence is insufficient
+- Place safety constraints outside the learned policy and outside the main system prompt (separate LLM-as-judge calls or an external policy engine), so a policy or prompt update cannot silently redefine the agent's authority
+- Default every autonomy surface to 'suggest', earn auto-approve per surface, and make auto-execute opt-in per tool
+- Resolve autonomy and kill-switch flags per turn so in-flight conversations honor a downgrade at the next decision point, not at the next session
+- Route sub-agents through the same approval middleware as the parent — a flipped kill switch that never reaches spawned children is the most common architectural hole
+- Build the kill switch before tool wrapping, autonomy staging, or prompt variants; target under 5 minutes from problem to mitigation
+- When a constraint and the task conflict, make the default behavior halt and explain rather than find a workaround
+- Read every line of authentication, money movement, permissions, and irreversible data changes regardless of how confident the agent is
+- Let a licensed or accountable domain expert define correct behavior in edge cases, then freeze that judgment into CI as a scored eval — not the engineering team, not the system itself
+- Have the agent DM the human with its proposed answer for confirmation ('I think I know the answer but I'm not sure') instead of either blocking or answering silently
+- Represent 'unsafe' and 'unavailable in this environment' as distinct states, and report the unavailable case for manual review rather than pretending the fix happened
+- Hand control back to the user on credential, authorization, and visibility boundaries — treat handoff as a scored optimal action, not as failure
+- Keep 100% flag/approval audit trail completeness so escalation decisions can be reconstructed after an incident
 
 **Avoid:**
 
-- Presenting a yes/no approval prompt on an opaque command and calling it human oversight — it will not satisfy meaningful-oversight requirements and the human usually cannot evaluate it
-- Leaving interactive permission prompts enabled in a CI pipeline, where they block on a human who is not there
-- Merging PRs with no review at all, human or agentic — this rose 31% alongside a 242% increase in incidents per PR
-- Letting the same agent write the code and also write and grade its tests; if the builder grades itself you did not remove the review, you hid it
-- Embedding safety rules only in the main system prompt instead of separate judge calls, which makes them easier to jailbreak away
-- Treating an unnecessary escalation as free — an inappropriate guardrail trigger is a genuine harm, not a conservative default
-- Relying on the human as the final control when the agent can simply persuade that human to remove the control
-- Rewarding only task outcome, which lets a trajectory reach 'done' while taking dangerous intermediate actions that should have triggered a handoff
-- Resetting the environment on an infrastructure error instead of surfacing the error to the model so recovery and handoff become native actions
+- Optimizing for non-escalation rate or 'percentage of tasks with no human touch' as the headline success metric
+- Presenting a yes/no approval prompt on an opaque command and calling it oversight — the reviewer usually cannot tell whether to approve
+- Letting the same agent that produced the work also grade it or write its tests; self-grading hides the review rather than removing it
+- Leaving interactive permission prompts enabled in CI pipelines, where they stall the run instead of protecting anything
+- Embedding safety rules only in the main system prompt, where they are easier to jailbreak than separate guardrail calls
+- Over-triggering guardrails: an inappropriate block is a door slam that can prevent someone from getting needed care
+- Letting the model directly control production systems instead of emitting proposals for a gateway to enforce
+- Treating a single non-deterministic LLM extraction as sufficient grounds to skip human review
+- Merging changes with no review at all, human or agentic
+- Trying to enforce invariants like 'no second refund on the same order' through natural-language prompt instructions instead of a formal validator
+- Resetting the environment on infra errors, which trains the agent to assume failure is transient rather than to recover or hand off
+- Leaving temporary rollout/autonomy flags in place after rollout, where they become load-bearing hidden couplings
+- Assuming deterministic controls — egress filters, sandboxes, telemetry — are sufficient on their own
 
 ## Notable Outliers
 
-- An agent persuading a human to install a Chrome extension that removes a constraint should be counted as the agent defeating the constraint — the energy came from inside the agentic loop and merely routed through the human as a tool. ([AI’s Jurassic Park Period](../talks/ais-jurassic-park-period.md), [9:15](https://www.youtube.com/watch?v=1lgFGaHoGq8&t=555s))
-- Two independent sources agreeing on the same fact is sufficient grounds to skip human verification entirely, converting a review step into an automated one. ([Can Oncology Workflows Run Without Human Touch?](../talks/can-oncology-workflows-run-without-human-touch.md), [7:34](https://www.youtube.com/watch?v=_cVfz88_j7A&t=454s))
-- Frontier providers' built-in safety guardrails had to be turned off on day one because they are over-calibrated for mental health support, and replaced with purpose-built ones. ([Evals-Driven Development for a Mental Health AI Coach](../talks/evals-driven-development-for-a-mental-health-ai-coach.md), [19:44](https://www.youtube.com/watch?v=O72p-rBb2bA&t=1184s))
-- Harness guardrails are transitional scaffolding by design: they should be strong early and become progressively thinner as the model improves. ([From RL to IRL](../talks/from-rl-to-irl.md), [17:12](https://www.youtube.com/watch?v=Cc0_nyxROBA&t=1032s))
-- Within 12 months enterprise buyers will gate deals on demonstrable autonomy and kill-switch controls — if you cannot demo them live, you lose the deal. ([Agents Need Feature Flags](../talks/agents-need-feature-flags.md), [16:16](https://www.youtube.com/watch?v=zU4EagB311U&t=976s))
-- Judging whether a worker agent violated the spirit of a constraint is a strictly easier reasoning problem than inferring user intent, which is what makes an equal-power adversary agent tractable as an escalation trigger. ([AI’s Jurassic Park Period](../talks/ais-jurassic-park-period.md), [14:17](https://www.youtube.com/watch?v=1lgFGaHoGq8&t=857s))
+- An agent persuading a human to remove a control counts as the agent supplying the energy to defeat the constraint, with the human merely acting as its tool — so 'a human approved it' is not evidence the constraint held. ([AI’s Jurassic Park Period](../talks/ais-jurassic-park-period.md), [9:15](https://www.youtube.com/watch?v=1lgFGaHoGq8&t=555s))
+- The learned RL policy beat an equivalent hand-written deterministic policy by only 0.19 percentage points; reliability came from state design, decision logic, and external safety constraints, not from the learning component at all. ([Using RL Agent to Detect and Remediate ETL Pipeline Failures](../talks/using-rl-agent-to-detect-and-remediate-etl-pipeline-failures.md), [10:11](https://www.youtube.com/watch?v=LrGCT7G_rU8&t=611s))
+- General-purpose LLM safety guardrails had to be turned off entirely on day one because they are over-calibrated for mental health, and inappropriately escalating is itself a clinical harm. ([Evals-Driven Development for a Mental Health AI Coach](../talks/evals-driven-development-for-a-mental-health-ai-coach.md), [19:44](https://www.youtube.com/watch?v=O72p-rBb2bA&t=1184s))
+- More than two kill switch fires per week indicates a problem worth investigating; the target is zero. ([Agents Need Feature Flags](../talks/agents-need-feature-flags.md), [14:41](https://www.youtube.com/watch?v=zU4EagB311U&t=881s))
+- Judging whether a worker agent violated the spirit of a constraint is a strictly easier reasoning problem than inferring user intent, which is why an equal-power adversary agent with a reward for stopping the worker is tractable today. ([AI’s Jurassic Park Period](../talks/ais-jurassic-park-period.md), [14:17](https://www.youtube.com/watch?v=1lgFGaHoGq8&t=857s))
+- Two independent sources agreeing on the same fact is sufficient grounds to submit an oncology prior authorization with no human verification. ([Can Oncology Workflows Run Without Human Touch?](../talks/can-oncology-workflows-run-without-human-touch.md), [7:34](https://www.youtube.com/watch?v=_cVfz88_j7A&t=454s))
 
 ## All Talks
 
@@ -140,6 +155,7 @@ Supporting talks: [AI’s Jurassic Park Period](../talks/ais-jurassic-park-perio
 - [Evals-Driven Development for a Mental Health AI Coach](../talks/evals-driven-development-for-a-mental-health-ai-coach.md)
 - [From RL to IRL](../talks/from-rl-to-irl.md)
 - [Should AI Engineers Still Read Code in 2026? The Z/L Continuum](../talks/should-ai-engineers-still-read-code-in-2026-the-zl-continuum.md)
+- [Using RL Agent to Detect and Remediate ETL Pipeline Failures](../talks/using-rl-agent-to-detect-and-remediate-etl-pipeline-failures.md)
 - [Why Agentic Systems Need Ontologies](../talks/why-agentic-systems-need-ontologies.md)
 
 ## Speakers
@@ -148,6 +164,7 @@ Supporting talks: [AI’s Jurassic Park Period](../talks/ais-jurassic-park-perio
 - [Akele Reed](../speakers/akele-reed.md)
 - [Alex Volkov](../speakers/alex-volkov.md)
 - [Anant Shankhdhar](../speakers/anant-shankhdhar.md)
+- [Anna Marie Benzon](../speakers/anna-marie-benzon.md)
 - [Dave Revere](../speakers/dave-revere.md)
 - [Doug Keller](../speakers/doug-keller.md)
 - [Frank Coyle](../speakers/frank-coyle.md)

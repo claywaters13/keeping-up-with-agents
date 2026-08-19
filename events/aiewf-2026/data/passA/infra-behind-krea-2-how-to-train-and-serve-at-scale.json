@@ -1,0 +1,300 @@
+{
+  "is_error": false,
+  "duration_api_ms": 93858,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "1dcfd372-16ce-4fde-9bf5-c58cd8c72484",
+  "total_cost_usd": 0.36193649999999994,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 14251,
+    "cache_read_input_tokens": 8113,
+    "output_tokens": 8322,
+    "output_tokens_details": {
+      "thinking_tokens": 3155
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 14251,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 8322,
+        "cache_read_input_tokens": 8113,
+        "cache_creation_input_tokens": 14251,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 14251
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 7220,
+      "outputTokens": 18,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.00731,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 8322,
+      "cacheReadInputTokens": 8113,
+      "cacheCreationInputTokens": 14251,
+      "webSearchRequests": 0,
+      "costUSD": 0.35462649999999996,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Gabriel Jorge Menezes, infra engineer at Krea, walks through the training and serving infrastructure behind Krea 2 (K2), a text-to-image diffusion transformer pre-trained from scratch on thousands of Infiniband-connected GPUs. The training half is a candid reliability postmortem: runs crashed far more often than Meta's published failure estimates suggested, silent cross-node failures dominated, and the fix was less heroic debugging than aggressive metrics (tensor core utilization, GPU temperature, InfiniBand and NVLink error counters \u2014 several of which NVIDIA does not export by default) plus a fast paid filesystem that made 20\u201330 minute checkpointing free. The serving half describes a scheduler that lets one shared cluster run both research and production: Kueue-style gang scheduling gives trainings absolute priority, and a custom virtual-kubelet provider transparently evicts production inference to external GPU rentals when trainings claim the cluster, migrating it back via taints and a descheduler when GPUs free up. Worth watching if you run a mixed research/production GPU cluster and want concrete, unglamorous operational detail \u2014 including why GPU utilization is a lie and why image-model inference will happily run on nearly-dead GPUs.\",\n  \"key_points\": [\n    \"Krea 2 was pre-trained entirely from scratch with no base checkpoint, on thousands of Infiniband-connected GPUs, and released open source with both a raw pre-trained checkpoint for post-training and a fast 'turbo' post-trained checkpoint that generates images in under a second.\",\n    \"Failure rate scaled worse than expected with cluster size: runs that lasted days at small scale dropped to under 8 hours at 128\u2013512+ GPUs, well short of the failure estimates in Meta's published paper, and many failures were silent (NCCL timeouts with healthy-looking metrics).\",\n    \"The team abandoned paranoid node-swapping on every crash after learning that the same machines, code, and data could crash hourly and then suddenly run 12\u201324 hours cleanly; the practical fix was checkpointing constantly rather than diagnosing every failure.\",\n    \"GPU utilization is a misleading metric \u2014 it reports time spent doing work, not efficiency \u2014 so the team used tensor core utilization as the real proxy, and watched it rise as training resolution scaled from 128 to 1024 pixels.\",\n    \"InfiniBand metrics are not exported by DCGM by default and had to be custom-collected, but they mattered most because the majority of failures were cross-node communication problems; NVLink error counters (also unexported) caught single-node faults where the GPUs otherwise looked fine.\",\n    \"Ceph was abandoned after data-trust failures; a paid filesystem doing ~1.8 TB/s reads and ~1 TB/s writes let them dump a terabyte checkpoint in under 30 seconds every 20\u201330 minutes without stalling training.\",\n    \"Researchers never think about GPU allocation: jobs go into a Kueue-managed queue with gang scheduling and two priority tiers, where training pods always outrank production inference and forcibly evict it from the shared cluster.\",\n    \"A custom virtual-kubelet provider makes eviction safe by transparently rescheduling production inference onto external GPU providers, then using taints plus a descheduler (not a NoExecute taint, which would kick everything out at once) to migrate it gradually back when cluster GPUs free up.\",\n    \"Diffusion transformers don't need multi-node inference like large LLMs, so production inference can run on nearly any GPU \u2014 including hot, failing, or 'falling out of the bus' hardware \u2014 which is what makes offloading production to cheap external capacity viable.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"the whole idea about training this model was because we were kind of bored of AI images. They're quite, you know, soulless. They have no spice.\",\n      \"timestamp_sec\": 1,\n      \"why\": \"States the aesthetic motivation for building a from-scratch model rather than fine-tuning an existing one.\"\n    },\n    {\n      \"text\": \"the whole idea was to like kind of bridge the gap between like LLM research and diffusion transformers. Uh, so my AI researchers they ported a lot of research from LLMs into into DiTs.\",\n      \"timestamp_sec\": 122,\n      \"why\": \"Names the core research bet behind the model architecture.\"\n    },\n    {\n      \"text\": \"the whole like like the whole like architecture of the model was meant to be extremely extremely simple. And so like it is very very dumb, but like very effective.\",\n      \"timestamp_sec\": 157,\n      \"why\": \"Takes a side on architectural complexity in a field prone to elaborate designs.\"\n    },\n    {\n      \"text\": \"we learned that like sometimes you just let it crash. It crashes, like it runs for like an hour, crash, runs for an hour, crash, and then runs again on the same set of machines, same code, same data for like 12 hours, 16 hours, 24 hours.\",\n      \"timestamp_sec\": 198,\n      \"why\": \"The counterintuitive operational lesson: stop debugging every failure, because identical setups behave differently run to run.\"\n    },\n    {\n      \"text\": \"you can imagine doing large-scale pre-training on runs that last less than 8 hours, it is a problem, right? You want kept those GPUs fed and if things are crashing, you are not doing progress and losing time and models are going to be late.\",\n      \"timestamp_sec\": 229,\n      \"why\": \"Quantifies their real mean-time-to-failure and ties it directly to schedule risk.\"\n    },\n    {\n      \"text\": \"Metrics are everything. That's how I can support my researchers. That's how I have visibility in the system. And like if you're doing large-scale pre-training, I highly highly recommend for you to invest heavily on metrics.\",\n      \"timestamp_sec\": 265,\n      \"why\": \"The talk's central prescription, stated plainly.\"\n    },\n    {\n      \"text\": \"So for us it was like if there is any GPUs above like 78\u00b0, you you remove them. Don't don't think about it. Don't try to fix. Don't don't try to be smart. You just remove the GPU.\",\n      \"timestamp_sec\": 299,\n      \"why\": \"A concrete, actionable numeric threshold and an explicit anti-cleverness policy.\"\n    },\n    {\n      \"text\": \"there is GPU utilization which is a lie. Uh, don't trust this. Uh, this is dumb.\",\n      \"timestamp_sec\": 299,\n      \"why\": \"Blunt rejection of the metric most teams default to.\"\n    },\n    {\n      \"text\": \"What we would use uh, as a proxy was tensor core utilization. This is actually how how much of a tensor core you're using and like how effective they are being.\",\n      \"timestamp_sec\": 332,\n      \"why\": \"Names the replacement metric and why it's more honest.\"\n    },\n    {\n      \"text\": \"if you're doing large-scale pre-training with a bunch of GPUs talking to each other between machines and you have no InfiniBand metrics, you're doing something wrong.\",\n      \"timestamp_sec\": 361,\n      \"why\": \"Strong normative claim about observability gaps most clusters ship with.\"\n    },\n    {\n      \"text\": \"These was probably the most important stuff for us because most of our failures were like related to like cross-node communication.\",\n      \"timestamp_sec\": 399,\n      \"why\": \"Localizes the dominant failure mode at scale.\"\n    },\n    {\n      \"text\": \"At the beginning we use SEF. SEF didn't work well. Was very annoying. It broke. We lost trust in data. So, I recommend if if you have the money go go with something paid and cuz you can trust your data.\",\n      \"timestamp_sec\": 462,\n      \"why\": \"A rare on-record build-vs-buy recommendation against open-source storage for training clusters.\"\n    },\n    {\n      \"text\": \"We can do like 1.8 terabytes of second of reads, almost a terabyte of writes. And the file system would not choke on the training. So, we could checkpoint every like 30 minutes, 20 minutes, produce like a terabyte of data in like less than 30 seconds.\",\n      \"timestamp_sec\": 497,\n      \"why\": \"Hard numbers connecting storage throughput to checkpoint cadence.\"\n    },\n    {\n      \"text\": \"I just want them to launch stuff and this goes into a queue and if we have GPUs we have GPUs. If we don't have GPUs we don't have GPUs.\",\n      \"timestamp_sec\": 534,\n      \"why\": \"Compresses the whole platform philosophy into one line about researcher experience.\"\n    },\n    {\n      \"text\": \"If there's inference running on those machines, the inference gets kicked out. And you'd say, \\\"Oh, this is bad. Production is going to go down.\\\" No, you can build on top of that to to make production not go down\",\n      \"timestamp_sec\": 570,\n      \"why\": \"Anticipates the obvious objection to training-over-production priority and answers it.\"\n    },\n    {\n      \"text\": \"production is lower priority. The site still needs to work. People still need to be use the website. But like the GPUs, they're like the value that we get off the GPUs doing trainings is more like higher than than we get out of production.\",\n      \"timestamp_sec\": 633,\n      \"why\": \"An explicit and contestable prioritization of research over production capacity.\"\n    },\n    {\n      \"text\": \"There's this very nice project called virtual kubelet, also open source. Uh you can build on top of it. It is a very nice code base. Uh and this works by creating a fake machine in Kubernetes.\",\n      \"timestamp_sec\": 705,\n      \"why\": \"Names the specific mechanism enabling cross-cluster burst scheduling.\"\n    },\n    {\n      \"text\": \"If something breaks on your side, something breaks on the the other side, just mark it as failed, let Kubernetes handle it, create a new one, and things keep working.\",\n      \"timestamp_sec\": 806,\n      \"why\": \"Argues for delegating failure recovery to the orchestrator instead of writing custom reconciliation.\"\n    },\n    {\n      \"text\": \"No execute in Kubernetes would kick everything out at the same time. So, as as like at moment you put the tanks, everything will be kicked out and that's bad.\",\n      \"timestamp_sec\": 895,\n      \"why\": \"Explains a specific Kubernetes design tradeoff that forced a gradual-migration approach.\"\n    },\n    {\n      \"text\": \"once you calibrate it was was like very very well and like changed the way we do research cuz no one else needs to care about GPUs.\",\n      \"timestamp_sec\": 926,\n      \"why\": \"States the payoff of the self-healing scheduler in terms of research velocity.\"\n    },\n    {\n      \"text\": \"if you're doing like diffusion transformers, they're not huge like LLMs that need like multi-node like inference. Uh something that we learned like whatever GPU works. Uh the GPU can be hot, falling out of the bus. It can be exploding. Uh inference still going to run.\",\n      \"timestamp_sec\": 957,\n      \"why\": \"A sharp asymmetry between training and inference hardware requirements that underpins the whole cost strategy.\"\n    }\n  ],\n  \"concepts\": [\n    \"large-scale pre-training reliability\",\n    \"diffusion transformers\",\n    \"training checkpointing cadence\",\n    \"gpu observability metrics\",\n    \"tensor core utilization\",\n    \"infiniband and nvlink monitoring\",\n    \"gang scheduling\",\n    \"gpu cluster multi-tenancy\",\n    \"burst offloading to external gpu providers\",\n    \"kubernetes taints and descheduling\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"GPU utilization is a misleading metric for training efficiency; tensor core utilization is the correct proxy.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 299\n    },\n    {\n      \"claim\": \"Any GPU running above roughly 78\u00b0C should be removed from the pool immediately rather than debugged or tuned.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 299\n    },\n    {\n      \"claim\": \"Anyone doing multi-node large-scale pre-training without InfiniBand metrics is doing it wrong, since most failures at scale are cross-node communication failures.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 361\n    },\n    {\n      \"claim\": \"Their training runs failed far more frequently than Meta's published failure-rate estimates predicted, often lasting under 8 hours.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 229\n    },\n    {\n      \"claim\": \"Repeatedly swapping nodes in response to crashes is wasted effort; the same machines and code will often run for 12\u201324 hours after a series of hourly crashes.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 198\n    },\n    {\n      \"claim\": \"Teams with budget should buy a commercial parallel filesystem rather than run Ceph, because Ceph broke and cost them trust in their data.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 462\n    },\n    {\n      \"claim\": \"Frequent checkpointing is the primary mitigation for unreliable clusters, and a fast enough filesystem makes 20\u201330 minute checkpoints effectively free.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 497\n    },\n    {\n      \"claim\": \"Training workloads should have strictly higher scheduling priority than production inference, because the value extracted from GPUs doing training exceeds that from serving production.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 633\n    },\n    {\n      \"claim\": \"Evicting production inference from the training cluster does not have to cause an outage, because inference can be transparently relocated to other clusters or rented GPU capacity.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 570\n    },\n    {\n      \"claim\": \"Custom failure-recovery logic in a cross-cluster scheduler is unnecessary; marking the pod failed and letting Kubernetes and the HPA recreate it is sufficient.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 806\n    },\n    {\n      \"claim\": \"NoExecute taints are the wrong tool for reclaiming nodes because they evict all pods simultaneously and would take production down; a descheduler with ordinary taints migrates pods gradually instead.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 895\n    },\n    {\n      \"claim\": \"Kueue's manually specified queue resource quotas drift out of sync on a fluid cluster where nodes come and go, and this can break gang scheduling.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 599\n    },\n    {\n      \"claim\": \"Diffusion transformer inference is robust to bad hardware and does not require multi-node setups, unlike large LLM inference, so degraded GPUs remain usable for serving.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 957\n    },\n    {\n      \"claim\": \"A deliberately simple, even 'dumb' model architecture was effective for Krea 2, with LLM research techniques ported over to diffusion transformers.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 157\n    },\n    {\n      \"claim\": \"Researchers should never have to reason about GPU availability; the queue should absorb that entirely.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 534\n    }\n  ],\n  \"speaker_org\": \"Krea.ai\"\n}",
+  "ttft_ms": 38632,
+  "ttft_stream_ms": 902,
+  "time_to_request_ms": 38,
+  "type": "result",
+  "duration_ms": 94949,
+  "uuid": "43faa675-989c-4eba-8498-f271eb01b2a6",
+  "passA": {
+    "summary": "Gabriel Jorge Menezes, infra engineer at Krea, walks through the training and serving infrastructure behind Krea 2 (K2), a text-to-image diffusion transformer pre-trained from scratch on thousands of Infiniband-connected GPUs. The training half is a candid reliability postmortem: runs crashed far more often than Meta's published failure estimates suggested, silent cross-node failures dominated, and the fix was less heroic debugging than aggressive metrics (tensor core utilization, GPU temperature, InfiniBand and NVLink error counters \u2014 several of which NVIDIA does not export by default) plus a fast paid filesystem that made 20\u201330 minute checkpointing free. The serving half describes a scheduler that lets one shared cluster run both research and production: Kueue-style gang scheduling gives trainings absolute priority, and a custom virtual-kubelet provider transparently evicts production inference to external GPU rentals when trainings claim the cluster, migrating it back via taints and a descheduler when GPUs free up. Worth watching if you run a mixed research/production GPU cluster and want concrete, unglamorous operational detail \u2014 including why GPU utilization is a lie and why image-model inference will happily run on nearly-dead GPUs.",
+    "key_points": [
+      "Krea 2 was pre-trained entirely from scratch with no base checkpoint, on thousands of Infiniband-connected GPUs, and released open source with both a raw pre-trained checkpoint for post-training and a fast 'turbo' post-trained checkpoint that generates images in under a second.",
+      "Failure rate scaled worse than expected with cluster size: runs that lasted days at small scale dropped to under 8 hours at 128\u2013512+ GPUs, well short of the failure estimates in Meta's published paper, and many failures were silent (NCCL timeouts with healthy-looking metrics).",
+      "The team abandoned paranoid node-swapping on every crash after learning that the same machines, code, and data could crash hourly and then suddenly run 12\u201324 hours cleanly; the practical fix was checkpointing constantly rather than diagnosing every failure.",
+      "GPU utilization is a misleading metric \u2014 it reports time spent doing work, not efficiency \u2014 so the team used tensor core utilization as the real proxy, and watched it rise as training resolution scaled from 128 to 1024 pixels.",
+      "InfiniBand metrics are not exported by DCGM by default and had to be custom-collected, but they mattered most because the majority of failures were cross-node communication problems; NVLink error counters (also unexported) caught single-node faults where the GPUs otherwise looked fine.",
+      "Ceph was abandoned after data-trust failures; a paid filesystem doing ~1.8 TB/s reads and ~1 TB/s writes let them dump a terabyte checkpoint in under 30 seconds every 20\u201330 minutes without stalling training.",
+      "Researchers never think about GPU allocation: jobs go into a Kueue-managed queue with gang scheduling and two priority tiers, where training pods always outrank production inference and forcibly evict it from the shared cluster.",
+      "A custom virtual-kubelet provider makes eviction safe by transparently rescheduling production inference onto external GPU providers, then using taints plus a descheduler (not a NoExecute taint, which would kick everything out at once) to migrate it gradually back when cluster GPUs free up.",
+      "Diffusion transformers don't need multi-node inference like large LLMs, so production inference can run on nearly any GPU \u2014 including hot, failing, or 'falling out of the bus' hardware \u2014 which is what makes offloading production to cheap external capacity viable."
+    ],
+    "notable_quotes": [
+      {
+        "text": "the whole idea about training this model was because we were kind of bored of AI images. They're quite, you know, soulless. They have no spice.",
+        "timestamp_sec": 1,
+        "why": "States the aesthetic motivation for building a from-scratch model rather than fine-tuning an existing one."
+      },
+      {
+        "text": "the whole idea was to like kind of bridge the gap between like LLM research and diffusion transformers. Uh, so my AI researchers they ported a lot of research from LLMs into into DiTs.",
+        "timestamp_sec": 122,
+        "why": "Names the core research bet behind the model architecture."
+      },
+      {
+        "text": "the whole like like the whole like architecture of the model was meant to be extremely extremely simple. And so like it is very very dumb, but like very effective.",
+        "timestamp_sec": 157,
+        "why": "Takes a side on architectural complexity in a field prone to elaborate designs."
+      },
+      {
+        "text": "we learned that like sometimes you just let it crash. It crashes, like it runs for like an hour, crash, runs for an hour, crash, and then runs again on the same set of machines, same code, same data for like 12 hours, 16 hours, 24 hours.",
+        "timestamp_sec": 198,
+        "why": "The counterintuitive operational lesson: stop debugging every failure, because identical setups behave differently run to run."
+      },
+      {
+        "text": "you can imagine doing large-scale pre-training on runs that last less than 8 hours, it is a problem, right? You want kept those GPUs fed and if things are crashing, you are not doing progress and losing time and models are going to be late.",
+        "timestamp_sec": 229,
+        "why": "Quantifies their real mean-time-to-failure and ties it directly to schedule risk."
+      },
+      {
+        "text": "Metrics are everything. That's how I can support my researchers. That's how I have visibility in the system. And like if you're doing large-scale pre-training, I highly highly recommend for you to invest heavily on metrics.",
+        "timestamp_sec": 265,
+        "why": "The talk's central prescription, stated plainly."
+      },
+      {
+        "text": "So for us it was like if there is any GPUs above like 78\u00b0, you you remove them. Don't don't think about it. Don't try to fix. Don't don't try to be smart. You just remove the GPU.",
+        "timestamp_sec": 299,
+        "why": "A concrete, actionable numeric threshold and an explicit anti-cleverness policy."
+      },
+      {
+        "text": "there is GPU utilization which is a lie. Uh, don't trust this. Uh, this is dumb.",
+        "timestamp_sec": 299,
+        "why": "Blunt rejection of the metric most teams default to."
+      },
+      {
+        "text": "What we would use uh, as a proxy was tensor core utilization. This is actually how how much of a tensor core you're using and like how effective they are being.",
+        "timestamp_sec": 332,
+        "why": "Names the replacement metric and why it's more honest."
+      },
+      {
+        "text": "if you're doing large-scale pre-training with a bunch of GPUs talking to each other between machines and you have no InfiniBand metrics, you're doing something wrong.",
+        "timestamp_sec": 361,
+        "why": "Strong normative claim about observability gaps most clusters ship with."
+      },
+      {
+        "text": "These was probably the most important stuff for us because most of our failures were like related to like cross-node communication.",
+        "timestamp_sec": 399,
+        "why": "Localizes the dominant failure mode at scale."
+      },
+      {
+        "text": "At the beginning we use SEF. SEF didn't work well. Was very annoying. It broke. We lost trust in data. So, I recommend if if you have the money go go with something paid and cuz you can trust your data.",
+        "timestamp_sec": 462,
+        "why": "A rare on-record build-vs-buy recommendation against open-source storage for training clusters."
+      },
+      {
+        "text": "We can do like 1.8 terabytes of second of reads, almost a terabyte of writes. And the file system would not choke on the training. So, we could checkpoint every like 30 minutes, 20 minutes, produce like a terabyte of data in like less than 30 seconds.",
+        "timestamp_sec": 497,
+        "why": "Hard numbers connecting storage throughput to checkpoint cadence."
+      },
+      {
+        "text": "I just want them to launch stuff and this goes into a queue and if we have GPUs we have GPUs. If we don't have GPUs we don't have GPUs.",
+        "timestamp_sec": 534,
+        "why": "Compresses the whole platform philosophy into one line about researcher experience."
+      },
+      {
+        "text": "If there's inference running on those machines, the inference gets kicked out. And you'd say, \"Oh, this is bad. Production is going to go down.\" No, you can build on top of that to to make production not go down",
+        "timestamp_sec": 570,
+        "why": "Anticipates the obvious objection to training-over-production priority and answers it."
+      },
+      {
+        "text": "production is lower priority. The site still needs to work. People still need to be use the website. But like the GPUs, they're like the value that we get off the GPUs doing trainings is more like higher than than we get out of production.",
+        "timestamp_sec": 633,
+        "why": "An explicit and contestable prioritization of research over production capacity."
+      },
+      {
+        "text": "There's this very nice project called virtual kubelet, also open source. Uh you can build on top of it. It is a very nice code base. Uh and this works by creating a fake machine in Kubernetes.",
+        "timestamp_sec": 705,
+        "why": "Names the specific mechanism enabling cross-cluster burst scheduling."
+      },
+      {
+        "text": "If something breaks on your side, something breaks on the the other side, just mark it as failed, let Kubernetes handle it, create a new one, and things keep working.",
+        "timestamp_sec": 806,
+        "why": "Argues for delegating failure recovery to the orchestrator instead of writing custom reconciliation."
+      },
+      {
+        "text": "No execute in Kubernetes would kick everything out at the same time. So, as as like at moment you put the tanks, everything will be kicked out and that's bad.",
+        "timestamp_sec": 895,
+        "why": "Explains a specific Kubernetes design tradeoff that forced a gradual-migration approach."
+      },
+      {
+        "text": "once you calibrate it was was like very very well and like changed the way we do research cuz no one else needs to care about GPUs.",
+        "timestamp_sec": 926,
+        "why": "States the payoff of the self-healing scheduler in terms of research velocity."
+      },
+      {
+        "text": "if you're doing like diffusion transformers, they're not huge like LLMs that need like multi-node like inference. Uh something that we learned like whatever GPU works. Uh the GPU can be hot, falling out of the bus. It can be exploding. Uh inference still going to run.",
+        "timestamp_sec": 957,
+        "why": "A sharp asymmetry between training and inference hardware requirements that underpins the whole cost strategy."
+      }
+    ],
+    "concepts": [
+      "large-scale pre-training reliability",
+      "diffusion transformers",
+      "training checkpointing cadence",
+      "gpu observability metrics",
+      "tensor core utilization",
+      "infiniband and nvlink monitoring",
+      "gang scheduling",
+      "gpu cluster multi-tenancy",
+      "burst offloading to external gpu providers",
+      "kubernetes taints and descheduling"
+    ],
+    "positions": [
+      {
+        "claim": "GPU utilization is a misleading metric for training efficiency; tensor core utilization is the correct proxy.",
+        "confidence": "stated",
+        "timestamp_sec": 299
+      },
+      {
+        "claim": "Any GPU running above roughly 78\u00b0C should be removed from the pool immediately rather than debugged or tuned.",
+        "confidence": "stated",
+        "timestamp_sec": 299
+      },
+      {
+        "claim": "Anyone doing multi-node large-scale pre-training without InfiniBand metrics is doing it wrong, since most failures at scale are cross-node communication failures.",
+        "confidence": "stated",
+        "timestamp_sec": 361
+      },
+      {
+        "claim": "Their training runs failed far more frequently than Meta's published failure-rate estimates predicted, often lasting under 8 hours.",
+        "confidence": "stated",
+        "timestamp_sec": 229
+      },
+      {
+        "claim": "Repeatedly swapping nodes in response to crashes is wasted effort; the same machines and code will often run for 12\u201324 hours after a series of hourly crashes.",
+        "confidence": "stated",
+        "timestamp_sec": 198
+      },
+      {
+        "claim": "Teams with budget should buy a commercial parallel filesystem rather than run Ceph, because Ceph broke and cost them trust in their data.",
+        "confidence": "stated",
+        "timestamp_sec": 462
+      },
+      {
+        "claim": "Frequent checkpointing is the primary mitigation for unreliable clusters, and a fast enough filesystem makes 20\u201330 minute checkpoints effectively free.",
+        "confidence": "stated",
+        "timestamp_sec": 497
+      },
+      {
+        "claim": "Training workloads should have strictly higher scheduling priority than production inference, because the value extracted from GPUs doing training exceeds that from serving production.",
+        "confidence": "stated",
+        "timestamp_sec": 633
+      },
+      {
+        "claim": "Evicting production inference from the training cluster does not have to cause an outage, because inference can be transparently relocated to other clusters or rented GPU capacity.",
+        "confidence": "stated",
+        "timestamp_sec": 570
+      },
+      {
+        "claim": "Custom failure-recovery logic in a cross-cluster scheduler is unnecessary; marking the pod failed and letting Kubernetes and the HPA recreate it is sufficient.",
+        "confidence": "stated",
+        "timestamp_sec": 806
+      },
+      {
+        "claim": "NoExecute taints are the wrong tool for reclaiming nodes because they evict all pods simultaneously and would take production down; a descheduler with ordinary taints migrates pods gradually instead.",
+        "confidence": "stated",
+        "timestamp_sec": 895
+      },
+      {
+        "claim": "Kueue's manually specified queue resource quotas drift out of sync on a fluid cluster where nodes come and go, and this can break gang scheduling.",
+        "confidence": "stated",
+        "timestamp_sec": 599
+      },
+      {
+        "claim": "Diffusion transformer inference is robust to bad hardware and does not require multi-node setups, unlike large LLM inference, so degraded GPUs remain usable for serving.",
+        "confidence": "stated",
+        "timestamp_sec": 957
+      },
+      {
+        "claim": "A deliberately simple, even 'dumb' model architecture was effective for Krea 2, with LLM research techniques ported over to diffusion transformers.",
+        "confidence": "stated",
+        "timestamp_sec": 157
+      },
+      {
+        "claim": "Researchers should never have to reason about GPU availability; the queue should absorb that entirely.",
+        "confidence": "stated",
+        "timestamp_sec": 534
+      }
+    ],
+    "speaker_org": "Krea.ai"
+  },
+  "_meta": {
+    "slug": "infra-behind-krea-2-how-to-train-and-serve-at-scale",
+    "video_id": "byn9PURoBNY",
+    "url": "https://www.youtube.com/watch?v=byn9PURoBNY",
+    "word_count": 3440,
+    "wall_sec": 96.6,
+    "run_at": "2026-08-19T13:16:18Z",
+    "effort": "default"
+  }
+}

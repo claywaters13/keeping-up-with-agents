@@ -4,15 +4,15 @@ type: "concept"
 slug: "local-inference"
 tier: "supporting"
 maturity: "consolidating"
-talk_count: 14
-speaker_count: 27
+talk_count: 16
+speaker_count: 31
 ---
 
 # local inference
 
 **Maturity: CONSOLIDATING** — Consolidating — converging practice, some open edges
 
-*Supporting concept* &middot; discussed across **14** talk(s) by **27** speaker(s)
+*Supporting concept* &middot; discussed across **16** talk(s) by **31** speaker(s)
 
 **Definition:** Running models on the user's own hardware — laptop, phone, edge device, or self-hosted server — instead of a hosted API.
 
@@ -20,21 +20,31 @@ speaker_count: 27
 
 ## State of Practice
 
-The debate at this conference was no longer whether local models are usable but where the remaining bottlenecks sit. A 4B model on a phone is treated as roughly GPT-4o-class, 4-bit quantization is the assumed default deployment format, and multiple speakers independently put the share of real workloads that need frontier intelligence at around 10%. The economic argument has shifted from per-token price to total spend: prices fall while agentic sessions consume tokens exponentially faster, so shifting execution to owned hardware is framed as a cost-predictability and control decision rather than a penny-pinching one. The live engineering problems are the harness (a 20-point spread on identical model and eval from harness changes alone), context management (90% of coding-agent cost is input tokens), evaluation (accuracy benchmarks miss quantization damage; LLM judges favor their own family), and usability (auto-configuring a model to arbitrary consumer hardware is still not point-and-click). The unresolved questions are how you actually get a good task model — quantize a big general one, post-train an open one, or fine-tune a tiny one on synthetic data — and whether a hosted frontier model remains permanently in the loop as planner.
+As of this conference, local inference has moved from hobbyist demo to a deployment tier practitioners actually plan around: a 4B model on an iPhone is treated as roughly GPT-4o-class, a 27B dense model beats Llama 405B, and 550B Nemotron 3 Ultra runs at 30 tok/s across four DGX Sparks. The economic argument that carries the room is not falling token prices but rising total spend — agentic sessions consume tokens exponentially faster than per-token prices drop — combined with control, data locality, and avoiding rug-pulls, which enterprises name as often as cost. The technical default is a quantized larger model rather than a natively small one (a 120B at 4-bit beats a 35B at BF16 for the same disk), with selective per-layer precision — first/last layers and QKV projections kept high, linear-attention layers left alone — and KL divergence against the BF16 checkpoint as the honest quality metric rather than accuracy benchmarks. The architecture people converge on is tiered: a frontier model for high-level planning or prototyping, small/local models for execution, with harness quality (tool scoping, post-processing, memory policy) doing much of the work — a controlled experiment holding model and eval fixed showed a 20-point spread from harness alone, and the effect is larger for weaker models. The unresolved parts are where the line sits: DRAM cost, not compute, binds at the edge (a 2B model wants 4GB+ once KV cache and OS are counted), 32K context windows break chat-memory recall from 92-95% down to 33%, and usability — point-and-click setup that auto-configures for your hardware — is repeatedly named as the real blocker, not capability.
 
 ## Consensus
 
-### The overwhelming majority of real workloads do not require frontier-level intelligence, so the right default is the smallest model that produces acceptable output.
+### Most workloads do not need frontier-level intelligence; the correct default is the smallest model that clears your acceptance bar, not the most capable one available.
 
 Support: **5** talk(s)
 
-> "most people probably do not need frontier level intelligence for like 90% of their tasks"
+> "You're going to want to select the smallest model that gives acceptable responses for your use case. Or as I like to call it, the SAGE model, the small and good enough model."
 >
-> — [Local Models: Trust, Control, Optimization](../talks/local-models-trust-control-optimization.md), [26:45](https://www.youtube.com/watch?v=FWMJQDH3iK0&t=1605s)
+> — [Frontier results, on device](../talks/frontier-results-on-device.md), [15:26](https://www.youtube.com/watch?v=fWXJM-J0ZB8&t=926s)
 
-Supporting talks: [Local Models: Trust, Control, Optimization](../talks/local-models-trust-control-optimization.md), [State of the Union: Why Local, Why Now](../talks/state-of-the-union-why-local-why-now.md), [Frontier results, on device](../talks/frontier-results-on-device.md), [Compression at the Edge](../talks/compression-at-the-edge.md), [Why Large? Tiny LMs & Agents on Edge/Robotics](../talks/why-large-tiny-lms-agents-on-edgerobotics.md)
+Supporting talks: [Frontier results, on device](../talks/frontier-results-on-device.md), [Local Models: Trust, Control, Optimization](../talks/local-models-trust-control-optimization.md), [Compression at the Edge](../talks/compression-at-the-edge.md), [State of the Union: Why Local, Why Now](../talks/state-of-the-union-why-local-why-now.md), [Why Large? Tiny LMs & Agents on Edge/Robotics](../talks/why-large-tiny-lms-agents-on-edgerobotics.md)
 
-### Total inference spend is rising even as per-token prices fall, because agentic and reasoning sessions consume tokens faster than prices drop — which is the economic case for moving execution local.
+### Local open-weight models crossed the threshold for real agentic tool-use work within the last year; this is a recent, datable step change rather than a gradual trend.
+
+Support: **5** talk(s)
+
+> "a year ago this time a year ago we didn't have any local models that were able to successfully run within clo code"
+>
+> — [The Desktop Frontier](../talks/the-desktop-frontier.md), [2:43](https://www.youtube.com/watch?v=XV2oYi7kojc&t=163s)
+
+Supporting talks: [The Desktop Frontier](../talks/the-desktop-frontier.md), [Memory Harnesses for Long-Running Research Agents](../talks/memory-harnesses-for-long-running-research-agents.md), [State of the Union: Why Local, Why Now](../talks/state-of-the-union-why-local-why-now.md), [Frontier results, on device](../talks/frontier-results-on-device.md), [Local Models: Trust, Control, Optimization](../talks/local-models-trust-control-optimization.md)
+
+### Falling per-token prices are not reducing total inference spend, because agentic and reasoning workloads grow token consumption per session faster than prices drop — this, not unit price, is the economic case for local.
 
 Support: **4** talk(s)
 
@@ -42,9 +52,9 @@ Support: **4** talk(s)
 >
 > — [Frontier results, on device](../talks/frontier-results-on-device.md), [2:11](https://www.youtube.com/watch?v=fWXJM-J0ZB8&t=131s)
 
-Supporting talks: [Frontier results, on device](../talks/frontier-results-on-device.md), [Local Models: Trust, Control, Optimization](../talks/local-models-trust-control-optimization.md), [State of the Union: Why Local, Why Now](../talks/state-of-the-union-why-local-why-now.md), [Memory Harnesses for Long-Running Research Agents](../talks/memory-harnesses-for-long-running-research-agents.md)
+Supporting talks: [Frontier results, on device](../talks/frontier-results-on-device.md), [Local Models: Trust, Control, Optimization](../talks/local-models-trust-control-optimization.md), [State of the Union: Why Local, Why Now](../talks/state-of-the-union-why-local-why-now.md), [We Cut 94% of AI Coding Tokens With a Local Code Index](../talks/we-cut-94-of-ai-coding-tokens-with-a-local-code-index.md)
 
-### Control, sovereignty, and data custody — not token cost — are the primary enterprise drivers for local and open models, including guaranteed continued access to a specific checkpoint.
+### Control, sovereignty, and data locality drive local/open adoption as much as cost — the ability to inspect the stack, keep data inside a perimeter, and not lose access to a model you depend on.
 
 Support: **6** talk(s)
 
@@ -52,49 +62,9 @@ Support: **6** talk(s)
 >
 > — [State of the Union: Why Local, Why Now](../talks/state-of-the-union-why-local-why-now.md), [15:08](https://www.youtube.com/watch?v=KB41dTlX1Uc&t=908s)
 
-Supporting talks: [State of the Union: Why Local, Why Now](../talks/state-of-the-union-why-local-why-now.md), [Local Models: Trust, Control, Optimization](../talks/local-models-trust-control-optimization.md), [Memory Harnesses for Long-Running Research Agents](../talks/memory-harnesses-for-long-running-research-agents.md), [Privacy-Preserving Intelligence](../talks/privacy-preserving-intelligence.md), [Local Agentic Theory For Mobile Games](../talks/local-agentic-theory-for-mobile-games.md), [We Cut 94% of AI Coding Tokens With a Local Code Index](../talks/we-cut-94-of-ai-coding-tokens-with-a-local-code-index.md)
+Supporting talks: [State of the Union: Why Local, Why Now](../talks/state-of-the-union-why-local-why-now.md), [Local Models: Trust, Control, Optimization](../talks/local-models-trust-control-optimization.md), [Memory Harnesses for Long-Running Research Agents](../talks/memory-harnesses-for-long-running-research-agents.md), [Privacy-Preserving Intelligence](../talks/privacy-preserving-intelligence.md), [The Agentic Web and the Bazaar Era of AI](../talks/the-agentic-web-and-the-bazaar-era-of-ai.md), [Local Agentic Theory For Mobile Games](../talks/local-agentic-theory-for-mobile-games.md)
 
-### The harness — tool access, memory, context hygiene, retry structure — is what closes the gap between local models and hosted frontier models, and it matters more the weaker the model is.
-
-Support: **5** talk(s)
-
-> "So, scores range from 52.4% to 76.2%. So, more than a 20-point difference, and only the harness changed."
->
-> — [What if the harness mattered more than the model?](../talks/what-if-the-harness-mattered-more-than-the-model.md), [2:23](https://www.youtube.com/watch?v=2e9ANoOEn28&t=143s)
-
-Supporting talks: [What if the harness mattered more than the model?](../talks/what-if-the-harness-mattered-more-than-the-model.md), [State of the Union: Why Local, Why Now](../talks/state-of-the-union-why-local-why-now.md), [Local Models: Trust, Control, Optimization](../talks/local-models-trust-control-optimization.md), [Memory Harnesses for Long-Running Research Agents](../talks/memory-harnesses-for-long-running-research-agents.md), [The State of Model Routing](../talks/the-state-of-model-routing.md)
-
-### What you feed the model dominates which model you pick as a cost lever; input tokens and recall policy are where spend actually goes.
-
-Support: **3** talk(s)
-
-> "We argue about which model is best, Opus or Sonnet. But the models may be 30% of the cost, but other 70% is what you feed it."
->
-> — [We Cut 94% of AI Coding Tokens With a Local Code Index](../talks/we-cut-94-of-ai-coding-tokens-with-a-local-code-index.md), [9:31](https://www.youtube.com/watch?v=dRmWYHuIJxM&t=571s)
-
-Supporting talks: [We Cut 94% of AI Coding Tokens With a Local Code Index](../talks/we-cut-94-of-ai-coding-tokens-with-a-local-code-index.md), [Memory Harnesses for Long-Running Research Agents](../talks/memory-harnesses-for-long-running-research-agents.md), [The State of Model Routing](../talks/the-state-of-model-routing.md)
-
-### Standard accuracy benchmarks and LLM judges are unreliable for evaluating small, quantized, or local models; you need task-specific evals and manual inspection.
-
-Support: **4** talk(s)
-
-> "Claude Opus was comparing Claude Sonnet's response to uh Llama 3.2's response, and of course Claude was favoring its little sister"
->
-> — [Frontier results, on device](../talks/frontier-results-on-device.md), [25:57](https://www.youtube.com/watch?v=fWXJM-J0ZB8&t=1557s)
-
-Supporting talks: [Compression at the Edge](../talks/compression-at-the-edge.md), [Frontier results, on device](../talks/frontier-results-on-device.md), [The State of Model Routing](../talks/the-state-of-model-routing.md), [Local Agentic Theory For Mobile Games](../talks/local-agentic-theory-for-mobile-games.md)
-
-### The emerging architecture splits planning from execution: a large model produces the plan and subtasks, smaller or local models execute them.
-
-Support: **4** talk(s)
-
-> "Your most intelligent should provide you with the overall plan and then subtasks for your smaller executioner like executioner models and that's exactly the future"
->
-> — [State of the Union: Why Local, Why Now](../talks/state-of-the-union-why-local-why-now.md), [14:30](https://www.youtube.com/watch?v=KB41dTlX1Uc&t=870s)
-
-Supporting talks: [State of the Union: Why Local, Why Now](../talks/state-of-the-union-why-local-why-now.md), [The State of Model Routing](../talks/the-state-of-model-routing.md), [Frontier results, on device](../talks/frontier-results-on-device.md), [Local Models: Trust, Control, Optimization](../talks/local-models-trust-control-optimization.md)
-
-### For a fixed memory or disk budget, running a larger model at 4-bit beats running a smaller model at full precision, which is why 4-bit is the de facto local deployment format.
+### Quantization is the default path to local deployment, and for a fixed memory or disk budget a larger model at low bit-width beats a smaller model at full precision.
 
 Support: **4** talk(s)
 
@@ -104,97 +74,109 @@ Support: **4** talk(s)
 
 Supporting talks: [Compression at the Edge](../talks/compression-at-the-edge.md), [Memory Harnesses for Long-Running Research Agents](../talks/memory-harnesses-for-long-running-research-agents.md), [Why Large? Tiny LMs & Agents on Edge/Robotics](../talks/why-large-tiny-lms-agents-on-edgerobotics.md), [State of the Union: Why Local, Why Now](../talks/state-of-the-union-why-local-why-now.md)
 
+### The production architecture is tiered: the most capable model does high-level planning (or is used only for prototyping), and smaller/local models execute the subtasks.
+
+Support: **3** talk(s)
+
+> "Your most intelligent should provide you with the overall plan and then subtasks for your smaller executioner like executioner models and that's exactly the future"
+>
+> — [State of the Union: Why Local, Why Now](../talks/state-of-the-union-why-local-why-now.md), [14:30](https://www.youtube.com/watch?v=KB41dTlX1Uc&t=870s)
+
+Supporting talks: [State of the Union: Why Local, Why Now](../talks/state-of-the-union-why-local-why-now.md), [The State of Model Routing](../talks/the-state-of-model-routing.md), [Frontier results, on device](../talks/frontier-results-on-device.md)
+
+### Public benchmarks, arenas, and peer recommendation are unreliable for selecting or validating a local model; you need your own task-specific eval set and hands-on inspection.
+
+Support: **4** talk(s)
+
+> "there's so many things that I feel can't be captured by a uh model optimizer or after quantizing it or you know certain benchmarks and it's literally me you know running through putting it in cloud code or something and running the model it's like no it doesn't feel just right"
+>
+> — [Compression at the Edge](../talks/compression-at-the-edge.md), [18:32](https://www.youtube.com/watch?v=J4_jCrTxMkk&t=1112s)
+
+Supporting talks: [Compression at the Edge](../talks/compression-at-the-edge.md), [Frontier results, on device](../talks/frontier-results-on-device.md), [Local Agentic Theory For Mobile Games](../talks/local-agentic-theory-for-mobile-games.md), [Context Engineering in 2026](../talks/context-engineering-in-2026.md)
+
 ## Disagreements
 
-### Should agents actually run on the user's own hardware, or should they be hosted in the cloud with local control enforced cryptographically?
+### For real production agent workloads, should inference actually run on the user's own hardware, or should the model stay on a server even when the stack is otherwise open?
 
 | Position A | Position B |
 |---|---|
-| Run it locally: own the hardware end to end, keep data inside the device or the developer's own machine, and treat serial or slower execution as an acceptable price for sovereignty.<br>*[The Desktop Frontier](../talks/the-desktop-frontier.md), [Local Agentic Theory For Mobile Games](../talks/local-agentic-theory-for-mobile-games.md), [Memory Harnesses for Long-Running Research Agents](../talks/memory-harnesses-for-long-running-research-agents.md), [Local Models: Trust, Control, Optimization](../talks/local-models-trust-control-optimization.md), [We Cut 94% of AI Coding Tokens With a Local Code Index](../talks/we-cut-94-of-ai-coding-tokens-with-a-local-code-index.md)* | Host the agent in the cloud for most use cases — local hosting makes you responsible for uptime, and long-running agents must operate while the user's device is offline; privacy is better achieved with attestation, enclaves, and client-held keys than with local execution.<br>*[The Agentic Web and the Bazaar Era of AI](../talks/the-agentic-web-and-the-bazaar-era-of-ai.md), [Privacy-Preserving Intelligence](../talks/privacy-preserving-intelligence.md)* |
+| Run it locally. Within a year most daily AI tasks will run on a laptop rather than an API; enterprises should buy hardware rather than fund subsidized cloud tokens, and mobile games should push intelligence onto the device to avoid round-trip latency and keep data in the device's security zone.<br>*[Local Models: Trust, Control, Optimization](../talks/local-models-trust-control-optimization.md), [The Desktop Frontier](../talks/the-desktop-frontier.md), [State of the Union: Why Local, Why Now](../talks/state-of-the-union-why-local-why-now.md), [Local Agentic Theory For Mobile Games](../talks/local-agentic-theory-for-mobile-games.md), [We Cut 94% of AI Coding Tokens With a Local Code Index](../talks/we-cut-94-of-ai-coding-tokens-with-a-local-code-index.md)* | Keep the model off the endpoint. Current LLMs cannot run on small MCUs so the model must be served from a backend; hosting an agent in the cloud beats local because local hosting makes you responsible for uptime; agents should run autonomously in an encrypted cloud perimeter without requiring the user's device to be online; and swapping in a local model is not drop-in — a 32K window cut chat recall from 92-95% to 33%.<br>*[OpenClaw in Your Hand: Building a Physical AI Terminal](../talks/openclaw-in-your-hand-building-a-physical-ai-terminal.md), [The Agentic Web and the Bazaar Era of AI](../talks/the-agentic-web-and-the-bazaar-era-of-ai.md), [Privacy-Preserving Intelligence](../talks/privacy-preserving-intelligence.md), [Context Engineering in 2026](../talks/context-engineering-in-2026.md)* |
 
-*Why it matters: This determines whether the privacy and control benefits of 'local' require local silicon at all, or can be delivered by verifiable remote execution — which changes hardware purchasing, uptime engineering, and the entire threat model.*
+*Why it matters: This decides whether you invest in hardware and on-device runtimes or in confidential-compute and attestation infrastructure — two completely different engineering programs that both claim the same privacy and control benefits.*
 
-### How do you get a model good enough to run locally on your task — post-train or fine-tune it, or take a general open model and fix the surrounding system?
-
-| Position A | Position B |
-|---|---|
-| Specialize the weights: post-train an open model on your harness (one to two weeks to beat Opus on a finance task), or fine-tune a tiny model on 10k–10M synthetic samples to match a 2–4B model on one fixed task.<br>*[Local Models: Trust, Control, Optimization](../talks/local-models-trust-control-optimization.md), [Why Large? Tiny LMs & Agents on Edge/Robotics](../talks/why-large-tiny-lms-agents-on-edgerobotics.md), [State of the Union: Why Local, Why Now](../talks/state-of-the-union-why-local-why-now.md)* | Leave the weights alone: take a general open checkpoint, quantize it, and invest in prompting, few-shot examples, deterministic post-processing, and harness design — distilled or custom-trained models are an operational liability, since every capability change means retraining and shipping a new 1–2 GB artifact to users.<br>*[Frontier results, on device](../talks/frontier-results-on-device.md), [What if the harness mattered more than the model?](../talks/what-if-the-harness-mattered-more-than-the-model.md), [Compression at the Edge](../talks/compression-at-the-edge.md)* |
-
-*Why it matters: It decides whether a local AI team needs a training pipeline and synthetic data infrastructure at all, or just evals and engineering — and whether shipping updates means a model download or a config change.*
-
-### Does a hosted frontier model need to stay permanently in the loop, or can the whole system run locally?
+### Can a good harness plus post-training on an open model close the gap to frontier, or must a frontier model remain in the loop?
 
 | Position A | Position B |
 |---|---|
-| Keep frontier intelligence always present — watching if not executing — because routing on task type is fragile, task complexity shifts mid-session, and out-of-distribution small models can increase total cost through runaway tool loops.<br>*[The State of Model Routing](../talks/the-state-of-model-routing.md), [State of the Union: Why Local, Why Now](../talks/state-of-the-union-why-local-why-now.md)* | The frontier model is eliminable: a good enough harness lets a local open model reach cutting-edge performance, most daily tasks will run on a laptop within a year, and a 3B local model plus post-processing already beat a frontier baseline on a real product task.<br>*[What if the harness mattered more than the model?](../talks/what-if-the-harness-mattered-more-than-the-model.md), [Local Models: Trust, Control, Optimization](../talks/local-models-trust-control-optimization.md), [Frontier results, on device](../talks/frontier-results-on-device.md), [Why Large? Tiny LMs & Agents on Edge/Robotics](../talks/why-large-tiny-lms-agents-on-edgerobotics.md)* |
+| Yes — a sufficiently good harness can make a local open-source model reach cutting-edge proprietary performance (20-point spread from harness alone, with the effect larger for weaker models), and a post-trained open model can beat Opus on a specialized task at a fraction of Haiku's cost in one to two weeks.<br>*[What if the harness mattered more than the model?](../talks/what-if-the-harness-mattered-more-than-the-model.md), [Local Models: Trust, Control, Optimization](../talks/local-models-trust-control-optimization.md)* | No — a frontier model should always remain present in the system, watching if not executing, because out-of-distribution small models increase cost through runaway tool loops (Opus scores 3x better than Haiku on terminal bench at 1/10 the total cost); a capability gap will always exist even as it shrinks; and current base model intelligence is insufficient for the hardest agent decisions.<br>*[The State of Model Routing](../talks/the-state-of-model-routing.md), [The Desktop Frontier](../talks/the-desktop-frontier.md), [Local Agentic Theory For Mobile Games](../talks/local-agentic-theory-for-mobile-games.md)* |
 
-*Why it matters: If a frontier model must always be reachable, offline and air-gapped deployments stay out of reach and the API dependency never goes away; if not, the hosted call becomes a prototyping tool you delete before shipping.*
+*Why it matters: If the harness closes the gap, teams should invest engineering effort in scaffolding and own their stack outright; if not, every local deployment still needs a frontier API dependency and the sovereignty argument is only partially deliverable.*
 
-### Is the local capability constraint about to dissolve, or is hardware the hard wall?
+### To make a small or local model good enough for a task, should you train it (fine-tune, distill, quantization-aware distillation) or leave the weights alone and fix the prompt and harness?
 
 | Position A | Position B |
 |---|---|
-| It dissolves fast: capability density is halving parameter counts every ~3.5 months, GLM 5.2-class intelligence lands on a single 32GB RTX 5090 within 18 months, and open models exceed today's frontier within 12.<br>*[The Desktop Frontier](../talks/the-desktop-frontier.md), [Local Models: Trust, Control, Optimization](../talks/local-models-trust-control-optimization.md), [State of the Union: Why Local, Why Now](../talks/state-of-the-union-why-local-why-now.md)* | Memory and physics push back: DRAM cost is the binding edge constraint and is getting worse (phone makers are shipping less RAM, Raspberry Pi 6GB cost up 2.5x), weight quantization is near Pareto optimality, and current model base intelligence is still insufficient for the harder on-device agent tasks.<br>*[Why Large? Tiny LMs & Agents on Edge/Robotics](../talks/why-large-tiny-lms-agents-on-edgerobotics.md), [Compression at the Edge](../talks/compression-at-the-edge.md), [Local Agentic Theory For Mobile Games](../talks/local-agentic-theory-for-mobile-games.md)* |
+| Train it. Below ~20B, post-training quantization needs quantization-aware distillation to recover accuracy; tiny models in the 50M-500M range must be fine-tuned on 10k-10M synthetic samples unless an off-the-shelf fixed-task model exists; post-training an open model on your own harness is the fastest path to a differentiated product; distilling frontier models to bootstrap open ones will be the dominant 2026-2027 pattern.<br>*[Why Large? Tiny LMs & Agents on Edge/Robotics](../talks/why-large-tiny-lms-agents-on-edgerobotics.md), [Compression at the Edge](../talks/compression-at-the-edge.md), [Local Models: Trust, Control, Optimization](../talks/local-models-trust-control-optimization.md), [State of the Union: Why Local, Why Now](../talks/state-of-the-union-why-local-why-now.md)* | Don't train it. Distilled models are a poor fit for shipped apps because every capability change means retraining and pushing a 1-2 GB model over users' data plans; few-shot examples plus deterministic post-processing in the harness closed the gap to Claude on the same task; and fine-tuning-as-a-service has not taken off precisely because model customization is itself a hard problem.<br>*[Frontier results, on device](../talks/frontier-results-on-device.md), [What if the harness mattered more than the model?](../talks/what-if-the-harness-mattered-more-than-the-model.md), [State of the Union: Why Local, Why Now](../talks/state-of-the-union-why-local-why-now.md)* |
 
-*Why it matters: It sets whether you design today's product around a model that will comfortably fit next year's consumer device, or engineer hard against a 50M–500M parameter, 4GB-DRAM ceiling that is not moving.*
+*Why it matters: Training implies owning a data pipeline, an eval loop, and a model release process; the prompt-and-harness route ships today with off-the-shelf weights but caps out at whatever the base model can do.*
+
+### On local hardware, is minimizing what you send to the model a real lever, or a false economy imported from cloud pricing intuitions?
+
+| Position A | Position B |
+|---|---|
+| Minimize aggressively. 90% of AI coding cost is input tokens, and a local hybrid index cut context from 83K to 4.9K tokens per question; models should not be used past ~200K tokens and ideally under 100K regardless of advertised windows; when the task exceeds the window a memory harness with a rank-only decisions ledger pays off and good recall policy reduces total token spend.<br>*[We Cut 94% of AI Coding Tokens With a Local Code Index](../talks/we-cut-94-of-ai-coding-tokens-with-a-local-code-index.md), [The State of Model Routing](../talks/the-state-of-model-routing.md), [Memory Harnesses for Long-Running Research Agents](../talks/memory-harnesses-for-long-running-research-agents.md), [Why Large? Tiny LMs & Agents on Edge/Robotics](../talks/why-large-tiny-lms-agents-on-edgerobotics.md)* | Do not compact by default. Keeping the full conversation untouched beat every compaction preset simultaneously on recall, cost, and latency, because 97% of tokens were cached; clearing tool outputs makes the agent re-retrieve what it already had; and distinctive facts were recalled reliably up to 800k tokens.<br>*[Context Engineering in 2026](../talks/context-engineering-in-2026.md)* |
+
+*Why it matters: The keep-everything result depends on a hosted provider's prompt cache, which local deployments do not get — so whether it generalizes determines if local inference needs a retrieval and memory layer as a hard prerequisite or just an optimization.*
 
 ## Practical Guidance
 
 **Do:**
 
-- Prototype on a frontier model, then convert production paths to the smallest model that gives acceptable responses for the specific use case.
-- Build a golden human-labeled input/output dataset first, and run regression evals continuously like CI tests so a prompt or model change cannot silently degrade behavior.
-- Evaluate quantized checkpoints with KL divergence of output logits against the BF16 model rather than with accuracy benchmarks.
-- Keep the first layer, last layer, and attention/QKV projections at higher precision while pushing middle layers to 1–2 bit.
-- Run long-context benchmarks specifically before shipping a quantized model — short benchmarks will not surface linear-attention damage.
-- Prefer few-shot examples over chain-of-thought for small models: CoT added 600ms of latency versus 200ms for few-shot, with worse gains.
-- Fix structural and length failures with deterministic post-processing in the harness instead of reaching for a bigger model.
-- Attack input tokens, not output settings — combine semantic and keyword search (missing ~1 in 10 versus ~1 in 4 alone) and use a cheap weighted score (50% semantic / 30% keyword / 20% recency, 0.4ms) instead of LLM reranking.
-- Keep agent sessions under ~200K tokens of context, ideally under 100K, regardless of the advertised window.
-- Use one long-lived sidekick agent with a running context instead of spawning fresh sub-agents, since cached tokens are ~10x cheaper.
-- Constrain agent capabilities structurally — sandbox, deny arbitrary file read/write by default, and lock tool arguments via partial application so the model cannot see or change them.
-- For on-device game agents, budget planning inside a 16ms frame at 60Hz and penalize time overruns harder than space overruns.
-- For tiny (50M–500M) models, generate 10,000–10,000,000 synthetic samples and fine-tune per fixed task; voice-to-function-calling hit 86%+ reliability across 10 functions this way.
-- Instrument real queries against a counterfactual baseline to measure token savings rather than estimating them.
+- Prototype on a foundation model, then convert individual steps to small or local models for production — 'prototype big, deploy small'
+- Build a golden dataset of human-labeled input/output pairs before selecting a local model, and run regression evals continuously like CI tests
+- Isolate one variable per prompt variant when tuning a small model; prefer few-shot examples (+200ms latency) over chain-of-thought (+600ms)
+- Fix structural and length failures with deterministic post-processing in the harness rather than reaching for a bigger model
+- Keep first and last layers and attention/QKV projections at higher precision when quantizing; the middle layers tolerate 1-2 bit
+- Evaluate quantized checkpoints by KL divergence over output logits against the BF16 model, and re-test on long-context benchmarks before shipping
+- Above ~20-30B use post-training quantization directly; below 20B budget for quantization-aware distillation to recover accuracy
+- For tiny (50M-500M) models targeting a single fixed task, generate 10k-10M synthetic samples and fine-tune — voice-to-function-calling hit 86% reliability across 10 functions this way
+- Budget ~4GB+ of device DRAM for a 2B-class model once KV cache, runtime, and OS are counted, and treat DRAM cost rather than compute as the binding edge constraint
+- For on-device game agents, complete planning inside the 16ms frame at 60Hz and penalize time overruns harder than space overruns
+- Combine BM25 keyword with dense semantic retrieval — each alone misses ~1 in 4 results, together ~1 in 10
+- Manually inspect LLM-judge scores, since judges favor models from their own family
+- Constrain local agents with sandboxing and locked tool arguments (partial function application) rather than per-action human approval, which is safe but slow
+- Self-host when your workload shape is known and stable — API pricing amortizes across all customers' usage patterns, so a specialized workload likely costs less on your own compute
 
 **Avoid:**
 
-- Do not quantize linear attention layers — short benchmarks look fine and the model turns to gibberish in real long-context production use.
-- Do not apply post-training quantization out of the box below ~20B parameters; sub-20B needs quantization-aware distillation to recover accuracy, and QAT on wrong data breaks the model rather than helping.
-- Do not pick a local model from peer recommendation — the socially recommended choice came in at ~8 seconds latency, past the 4-second limit of user believability.
-- Do not trust LLM-judge scores numerically; judges favor models from their own family, so inspect results manually.
-- Do not route on task type alone — it is extremely fragile for agentic work because complexity changes mid-session.
-- Do not assume a smaller model is cheaper: out-of-distribution small models call tools excessively and can raise total cost, and Opus scored 3x better than Haiku on terminal bench at 1/10 the total cost.
-- Do not use prompt instructions to ask for less context — the context was already transmitted and billed before the model read the prompt.
-- Do not treat compaction as a cost or throughput fix; it forces a cache miss and raises input token cost. Compact for intelligence, not economics.
-- Do not add a memory harness when the task and its relevant context fit in the window — it adds cost with no capability gain.
-- Do not ship distilled models into mobile apps if capabilities change often; each change means retraining and pushing a 1–2 GB download over users' data plans.
-- Do not use explicit negative constraints in small-model prompts — they made results worse than few-shot examples.
-- Do not rely on behavioral instructions to tame agents, and do not give agents direct access to personal computers; only sandboxing and removing the means to cause harm work.
-- Do not write your own crypto for privacy-preserving inference; reuse trustworthy existing software and keep the security-critical surface small (~20k lines in a memory-safe language).
-- Do not fine-tune SAM 3 directly — you lose the open-vocabulary capability that makes it valuable; distill to a fixed class list instead.
-- Do not economize on components in embedded AI builds — a cheap encoder cost extra pull-ups and capacitors and a bad regulator cost weeks in replacement parts.
+- Uniformly quantizing all layers — compressing 86% of weights uniformly makes a model useless, not 86% worse; selective per-layer precision is what makes it viable
+- Quantizing linear attention layers — short benchmarks look fine while long-context production output turns to gibberish
+- Picking a local model on peer recommendation: the socially recommended model came in around 8 seconds latency against a 4-second believability limit
+- Explicit negative rules in small-model prompts — strict prohibitions made output worse than few-shot examples
+- Shipping per-capability distilled models inside mobile apps, where every change forces a 1-2 GB download over users' data plans
+- Assuming a local model is a drop-in swap: a 32K window dropped chat recall from 92-95% to 33%, and raising parameter count does not expand the context window
+- Routing on task type alone — complexity changes mid-session, which makes it extremely fragile for agentic work
+- Equating cheaper-per-token with cheaper overall — out-of-distribution small models raise total cost through tool-call thrash and runaway loops
+- Expecting sparsity to be free: it degrades accuracy more than quantization does, which is why it stayed unadopted despite hardware support
+- Fine-tuning SAM 3 directly — you lose the open-vocabulary capability that makes it worth using; distill to a fixed class list instead
+- Writing your own crypto or giving an agent direct access to a personal computer — reuse audited software and remove the means to cause harm
+- malloc and markdown rendering on an MCU — use pre-allocated fixed buffers
+- Cheap components in embedded builds — a low-quality encoder cost extra pull-ups and capacitors, a bad regulator cost weeks in replacement parts
 
 ## Notable Outliers
 
-- Roughly 0.000001% of AI users have ever run an open model themselves — the local AI community is a rounding error relative to API users. ([Local Models: Trust, Control, Optimization](../talks/local-models-trust-control-optimization.md), [35:59](https://www.youtube.com/watch?v=FWMJQDH3iK0&t=2159s))
-- Reaching the majority of devices requires 50M–500M parameter models, not the 1–4B 'small model' class — small models are still too big for older laptops and consumer edge devices. ([Why Large? Tiny LMs & Agents on Edge/Robotics](../talks/why-large-tiny-lms-agents-on-edgerobotics.md), [12:16](https://www.youtube.com/watch?v=hacEQHHhu2Q&t=736s))
-- DRAM cost, not compute, is the binding edge constraint, and it is getting worse: some phone makers shipped less RAM this year and Raspberry Pi 6GB cost rose ~2.5x since launch. ([Why Large? Tiny LMs & Agents on Edge/Robotics](../talks/why-large-tiny-lms-agents-on-edgerobotics.md), [3:04](https://www.youtube.com/watch?v=hacEQHHhu2Q&t=184s))
-- Compression works only because current models are undertrained; if models were trained on ~300 trillion tokens the compression headroom would largely disappear. ([Compression at the Edge](../talks/compression-at-the-edge.md), [12:33](https://www.youtube.com/watch?v=J4_jCrTxMkk&t=753s))
-- Quantizing a single number in a model — one weight — can make it 20% dumber (the super weights result). ([Compression at the Edge](../talks/compression-at-the-edge.md), [14:03](https://www.youtube.com/watch?v=J4_jCrTxMkk&t=843s))
-- Weight quantization is close to Pareto optimality with maybe 1–3 bits left; future gains must come from KV cache compression and sparsity, and sparsity remains unadopted despite NVIDIA hardware support because it degrades accuracy more than quantization. ([Compression at the Edge](../talks/compression-at-the-edge.md), [39:54](https://www.youtube.com/watch?v=J4_jCrTxMkk&t=2394s))
-- A 10x local inference speedup on DGX Spark was achieved in ~3 weeks using only existing techniques (vLLM backend, quantization, config tuning) with no new research — and a 550B Nemotron 3 Ultra runs at 30 tok/s across four Sparks. ([State of the Union: Why Local, Why Now](../talks/state-of-the-union-why-local-why-now.md), [21:43](https://www.youtube.com/watch?v=KB41dTlX1Uc&t=1303s))
-- The local code index degrades to near-zero recall at 396 files when individual files carry many responsibilities, and the headline 94% saving is against a worst-case full-file-read baseline, not against modern agentic tools. ([We Cut 94% of AI Coding Tokens With a Local Code Index](../talks/we-cut-94-of-ai-coding-tokens-with-a-local-code-index.md), [7:35](https://www.youtube.com/watch?v=dRmWYHuIJxM&t=455s))
-- GPUs bought today appreciate as models get more efficient — the 2020-architecture RTX 3090 still sells above MSRP — so buying hardware beats renting subsidized cloud tokens that will get repriced. ([The Desktop Frontier](../talks/the-desktop-frontier.md), [16:33](https://www.youtube.com/watch?v=XV2oYi7kojc&t=993s))
-- The 5-minute KV cache lifetime is an operational and pricing decision by providers, not a physical constraint — which is part of why self-hosting for your specific workload shape costs less. ([The State of Model Routing](../talks/the-state-of-model-routing.md), [34:46](https://www.youtube.com/watch?v=QHBjufYK8TA&t=2086s))
-- Open claw's 10-minute heartbeat to the user's default model was the specific trigger that made auto-routing explode in January 2026, after two years of near-zero adoption. ([The State of Model Routing](../talks/the-state-of-model-routing.md), [27:03](https://www.youtube.com/watch?v=QHBjufYK8TA&t=1623s))
-- Continual learning will require updating model weights locally; markdown-file agent memory is only a stopgap because context length becomes inefficient. ([State of the Union: Why Local, Why Now](../talks/state-of-the-union-why-local-why-now.md), [31:31](https://www.youtube.com/watch?v=KB41dTlX1Uc&t=1891s))
-- No comprehensive public resource exists for comparing the quality of community-produced quantized checkpoints — the ecosystem ships quants nobody has systematically evaluated. ([Compression at the Edge](../talks/compression-at-the-edge.md), [44:21](https://www.youtube.com/watch?v=J4_jCrTxMkk&t=2661s))
-- Restricting a general-purpose agent for safety destroys its usefulness; a narrowly sandboxed special-purpose agent is the better tradeoff today. ([Privacy-Preserving Intelligence](../talks/privacy-preserving-intelligence.md), [14:59](https://www.youtube.com/watch?v=IvE8n-ylFYY&t=899s))
+- Compression works only because current models are undertrained — if models were trained on ~300 trillion tokens, the quantization headroom would largely disappear. ([Compression at the Edge](../talks/compression-at-the-edge.md), [12:33](https://www.youtube.com/watch?v=J4_jCrTxMkk&t=753s))
+- Quantizing a single number — one weight in the entire model — can make the model 20% dumber (the 'super weights' result). ([Compression at the Edge](../talks/compression-at-the-edge.md), [14:03](https://www.youtube.com/watch?v=J4_jCrTxMkk&t=843s))
+- Reaching the majority of devices needs models in the 50M-500M parameter range, not the 1-4B 'small model' class — small models are still too big for older laptops and consumer edge devices. ([Why Large? Tiny LMs & Agents on Edge/Robotics](../talks/why-large-tiny-lms-agents-on-edgerobotics.md), [12:16](https://www.youtube.com/watch?v=hacEQHHhu2Q&t=736s))
+- Roughly 0.000001% of AI users have ever run an open model themselves — the local ecosystem's entire visible activity is a rounding error on total usage. ([Local Models: Trust, Control, Optimization](../talks/local-models-trust-control-optimization.md), [35:59](https://www.youtube.com/watch?v=FWMJQDH3iK0&t=2159s))
+- Capability density follows a 'densing law' of ~50% fewer parameters for equivalent capability every 3.5 months, which is why a 2020-architecture RTX 3090 still sells above MSRP — GPUs bought today get more valuable over time. ([The Desktop Frontier](../talks/the-desktop-frontier.md), [16:33](https://www.youtube.com/watch?v=XV2oYi7kojc&t=993s))
+- A 10x inference speedup on DGX Spark was achieved in ~3 weeks with no new computer science — just a vLLM backend, quantization, and config tuning of techniques NVIDIA had already published. ([State of the Union: Why Local, Why Now](../talks/state-of-the-union-why-local-why-now.md), [21:43](https://www.youtube.com/watch?v=KB41dTlX1Uc&t=1303s))
+- Local models are still a real productivity tax for research: they don't support batch querying, so full evaluation pipelines can only run serially. ([Memory Harnesses for Long-Running Research Agents](../talks/memory-harnesses-for-long-running-research-agents.md), [11:48](https://www.youtube.com/watch?v=R3-anFK1YM8&t=708s))
 
 ## All Talks
 
 - [Compression at the Edge](../talks/compression-at-the-edge.md)
+- [Context Engineering in 2026](../talks/context-engineering-in-2026.md)
 - [Frontier results, on device](../talks/frontier-results-on-device.md)
 - [Local Agentic Theory For Mobile Games](../talks/local-agentic-theory-for-mobile-games.md)
 - [Local Models: Trust, Control, Optimization](../talks/local-models-trust-control-optimization.md)
@@ -207,6 +189,7 @@ Supporting talks: [Compression at the Edge](../talks/compression-at-the-edge.md)
 - [The State of Model Routing](../talks/the-state-of-model-routing.md)
 - [We Cut 94% of AI Coding Tokens With a Local Code Index](../talks/we-cut-94-of-ai-coding-tokens-with-a-local-code-index.md)
 - [What if the harness mattered more than the model?](../talks/what-if-the-harness-mattered-more-than-the-model.md)
+- [While my guitar gently speaks](../talks/while-my-guitar-gently-speaks.md)
 - [Why Large? Tiny LMs & Agents on Edge/Robotics](../talks/why-large-tiny-lms-agents-on-edgerobotics.md)
 
 ## Speakers
@@ -223,19 +206,23 @@ Supporting talks: [Compression at the Edge](../talks/compression-at-the-edge.md)
 - [George Cameron](../speakers/george-cameron.md)
 - [Joanne Song](../speakers/joanne-song.md)
 - [Joseph Nelson](../speakers/joseph-nelson.md)
+- [Louis-François Bouchard](../speakers/louis-francois-bouchard.md)
 - [Lucas Atkins](../speakers/lucas-atkins.md)
 - [Matthew Berman](../speakers/matthew-berman.md)
 - [Merve Noyan](../speakers/merve-noyan.md)
 - [Micah Hill-Smith](../speakers/micah-hill-smith.md)
 - [Nader Khalil](../speakers/nader-khalil.md)
+- [Omar Solano](../speakers/omar-solano.md)
 - [Parth Sareen](../speakers/parth-sareen.md)
 - [RL Nabors](../speakers/rl-nabors.md)
 - [Rajkumar Sakthivel](../speakers/rajkumar-sakthivel.md)
 - [Ramesh Raskar](../speakers/ramesh-raskar.md)
+- [Samridhi Vaid](../speakers/samridhi-vaid.md)
 - [Shafik Quoraishee](../speakers/shafik-quoraishee.md)
 - [Stefania Druga](../speakers/stefania-druga.md)
 - [Steve Korshakov](../speakers/steve-korshakov.md)
 - [Tanay Varshney](../speakers/tanay-varshney.md)
+- [Todd Fisher](../speakers/todd-fisher.md)
 - [Vincent Weisser](../speakers/vincent-weisser.md)
 - [Walden Yan](../speakers/walden-yan.md)
 

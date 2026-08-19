@@ -4,15 +4,15 @@ type: "concept"
 slug: "agent-skills"
 tier: "core"
 maturity: "consolidating"
-talk_count: 26
-speaker_count: 26
+talk_count: 28
+speaker_count: 28
 ---
 
 # agent skills
 
 **Maturity: CONSOLIDATING** — Consolidating — converging practice, some open edges
 
-*Core concept* &middot; discussed across **26** talk(s) by **26** speaker(s)
+*Core concept* &middot; discussed across **28** talk(s) by **28** speaker(s)
 
 **Definition:** Packaged, model-invocable units of procedural knowledge (instructions plus optional resources) that extend an agent's capabilities without retraining or hard-coding.
 
@@ -20,11 +20,11 @@ speaker_count: 26
 
 ## State of Practice
 
-Skills have moved from a novelty to the default unit in which agent capability is packaged and shipped — FactSet abandoned its proprietary "blueprints" format for them, OpenGov's product teams each author their own, and one YC-adjacent operator describes 300 skills backing 40 agents. The mechanics practitioners agree on are narrow and specific: the skill body is a folder, not a file; only the name and description live permanently in context (roughly 100-200 tokens per skill, paid on every model call), so the main skill.md is a thin index — capped at 100 lines by Amazon's AGI Lab team, under 500 lines per Google DeepMind's Skill Bench — with branch-specific reference material deferred behind context pointers. Measured effects are modest but real: ~15% average task improvement across ~100 Skill Bench tasks, ~10x less context overhead than the equivalent MCP tool definitions, and 66%→76%→80% on tau-bench as memories consolidate into skills. The dominant failure mode is not bad skill content but bad routing: half of observed skill failures are the skill never firing, descriptions are the routing signal and must be phrased as the user would phrase the request, and one FactSet skill broke on a model upgrade with zero lines changed because the newer model attended to the beginning of the file and ignored instructions at the end. Two things are converging fast — that AI-generated skills measurably underperform human-written ones, and that a skill without evals is wishful thinking. What remains open is who invokes skills, who writes them, and whether piling skills into one agent scales past a few dozen.
+Skills have moved from a novelty to the default unit in which teams ship agent capability: FactSet describes them as replacing screens and buttons as the feature primitive, OpenGov has every product team authoring them behind one entry point, and YC-backed companies encode operating procedures as skill files maintained by dedicated engineers. The mechanical craft has converged fast — a skill is a folder, not a file; skill.md stays small (100-line and 500-line caps were both stated as hard limits) with detail deferred behind context pointers; the description is the only part you pay for on every model call, so it is written to match how users phrase requests, includes negative cases, and doubles as the routing signal. Measured results are modest and specific: ~15% average task improvement across ~100 tasks on Skill Bench 1.1, ~10x less context overhead than the equivalent MCP tool definitions, and roughly 50% of skill failures traced to the skill never triggering rather than to bad content. The strongest shared warning is that AI-generated skills actively degrade performance — they accumulate no-ops, duplication, and sediment — so human authorship plus regex-level evals run with and without the skill loaded is the emerging bar. What is not settled is everything above the single-skill level: whether invocation should be model-driven or user-driven, whether a flat markdown folder survives past ten or a hundred skills, and whether the whole layer is a durable company asset or scaffolding that better-post-trained models will absorb.
 
 ## Consensus
 
-### A skill is a folder, not a document: skill.md should be a small index that defers detail to other files, because progressive disclosure is what keeps skills cheap.
+### Keep skill.md small and defer detail to sibling files: the main file is a thin index, with progressive disclosure doing the work.
 
 Support: **5** talk(s)
 
@@ -32,9 +32,9 @@ Support: **5** talk(s)
 >
 > — [Agents, codebases, and teams](../talks/agents-codebases-and-teams.md), [14:29](https://www.youtube.com/watch?v=aeTb5BdmTTc&t=869s)
 
-Supporting talks: [Agents, codebases, and teams](../talks/agents-codebases-and-teams.md), [Building Great Agent Skills: The Missing Manual](../talks/building-great-agent-skills-the-missing-manual.md), [Don't Ship Skills Without Evals](../talks/dont-ship-skills-without-evals.md), [Skills are new features: Building Skill-Centric Harness](../talks/skills-are-new-features-building-skill-centric-harness.md), [Skills are the New SDKs](../talks/skills-are-the-new-sdks.md)
+Supporting talks: [Agents, codebases, and teams](../talks/agents-codebases-and-teams.md), [Don't Ship Skills Without Evals](../talks/dont-ship-skills-without-evals.md), [Building Great Agent Skills: The Missing Manual](../talks/building-great-agent-skills-the-missing-manual.md), [Skills are new features: Building Skill-Centric Harness](../talks/skills-are-new-features-building-skill-centric-harness.md), [Skills are the New SDKs](../talks/skills-are-the-new-sdks.md)
 
-### The skill description is a permanent per-call token cost and the sole routing signal, so description quality — not body quality — determines whether a skill fires at all.
+### The description is the permanent per-call tax and the routing signal — it must be written for retrieval (matching user phrasing, distinct from siblings, with negative cases), not as a summary of the skill.
 
 Support: **4** talk(s)
 
@@ -42,29 +42,9 @@ Support: **4** talk(s)
 >
 > — [Don't Ship Skills Without Evals](../talks/dont-ship-skills-without-evals.md), [7:41](https://www.youtube.com/watch?v=0vphxNt4wyk&t=461s)
 
-Supporting talks: [Don't Ship Skills Without Evals](../talks/dont-ship-skills-without-evals.md), [Skills are new features: Building Skill-Centric Harness](../talks/skills-are-new-features-building-skill-centric-harness.md), [Building Great Agent Skills: The Missing Manual](../talks/building-great-agent-skills-the-missing-manual.md), [Skills are the New SDKs](../talks/skills-are-the-new-sdks.md)
+Supporting talks: [Don't Ship Skills Without Evals](../talks/dont-ship-skills-without-evals.md), [Building Great Agent Skills: The Missing Manual](../talks/building-great-agent-skills-the-missing-manual.md), [Skills are new features: Building Skill-Centric Harness](../talks/skills-are-new-features-building-skill-centric-harness.md), [Skills are the New SDKs](../talks/skills-are-the-new-sdks.md)
 
-### Skills should not ship without evals, and a skill change should not merge unless it improves them.
-
-Support: **4** talk(s)
-
-> "it's very important to run evals and skills without evals are really just wishful thinking"
->
-> — [Skills are new features: Building Skill-Centric Harness](../talks/skills-are-new-features-building-skill-centric-harness.md), [11:13](https://www.youtube.com/watch?v=7jjudsEhBtM&t=673s)
-
-Supporting talks: [Don't Ship Skills Without Evals](../talks/dont-ship-skills-without-evals.md), [Skills are new features: Building Skill-Centric Harness](../talks/skills-are-new-features-building-skill-centric-harness.md), [Skills are the New SDKs](../talks/skills-are-the-new-sdks.md), [Agents in Production: How OpenGov Built and Scaled OG Assist](../talks/agents-in-production-how-opengov-built-and-scaled-og-assist.md)
-
-### Skills are the unit in which product features and business logic now ship, which pushes authorship out from the core agent team to product teams and non-engineers.
-
-Support: **5** talk(s)
-
-> "this is the great place to keep your business logic that shapes your agents behavior. So skills are the new features."
->
-> — [Skills are new features: Building Skill-Centric Harness](../talks/skills-are-new-features-building-skill-centric-harness.md), [3:05](https://www.youtube.com/watch?v=7jjudsEhBtM&t=185s)
-
-Supporting talks: [Skills are new features: Building Skill-Centric Harness](../talks/skills-are-new-features-building-skill-centric-harness.md), [Agents in Production: How OpenGov Built and Scaled OG Assist](../talks/agents-in-production-how-opengov-built-and-scaled-og-assist.md), [Every company should have a Brain](../talks/every-company-should-have-a-brain.md), [WTF Is the Context Layer? The Missing Infrastructure for Production Agents](../talks/wtf-is-the-context-layer-the-missing-infrastructure-for-production-agents.md), [Your Finance Agent's Bottleneck Is You](../talks/your-finance-agents-bottleneck-is-you.md)
-
-### Human-written skills outperform AI-generated ones; letting a model author your skills degrades performance and inflates token cost.
+### Human-written skills outperform LLM-generated ones; letting an agent author your skills produces no-ops, bloat, and measurable performance loss.
 
 Support: **4** talk(s)
 
@@ -74,118 +54,118 @@ Support: **4** talk(s)
 
 Supporting talks: [Don't Ship Skills Without Evals](../talks/dont-ship-skills-without-evals.md), [Skills are the New SDKs](../talks/skills-are-the-new-sdks.md), [Content Is Code](../talks/content-is-code.md), [Building Great Agent Skills: The Missing Manual](../talks/building-great-agent-skills-the-missing-manual.md)
 
-### Skills must be managed as software artifacts — versioned, owned, access-scoped, audited — not as disposable prompt documents.
+### If the procedure is a fixed deterministic sequence, write a script or plain code — do not spend model tokens on it via a skill or agent.
 
-Support: **4** talk(s)
-
-> "skills are software which can take weeks to build so that we should actually start versioning them, evaluating and testing them, and actually writing good skills."
->
-> — [Skills are the New SDKs](../talks/skills-are-the-new-sdks.md), [26:20](https://www.youtube.com/watch?v=LC3-P7v3yoI&t=1580s)
-
-Supporting talks: [Skills are new features: Building Skill-Centric Harness](../talks/skills-are-new-features-building-skill-centric-harness.md), [Skills are the New SDKs](../talks/skills-are-the-new-sdks.md), [WTF Is the Context Layer? The Missing Infrastructure for Production Agents](../talks/wtf-is-the-context-layer-the-missing-infrastructure-for-production-agents.md), [Every company should have a Brain](../talks/every-company-should-have-a-brain.md)
-
-### Loading many skills into one agent measurably degrades it; skill count is a context budget that has to be actively managed.
-
-Support: **4** talk(s)
-
-> "there's lots of research out there that shows that if you use very many of these, it actually makes your agent substantially worse"
->
-> — [The Future Is Domain-Specific Agents](../talks/the-future-is-domain-specific-agents.md), [9:03](https://www.youtube.com/watch?v=spNAUEgq_A8&t=543s)
-
-Supporting talks: [The Future Is Domain-Specific Agents](../talks/the-future-is-domain-specific-agents.md), [Building Great Agent Skills: The Missing Manual](../talks/building-great-agent-skills-the-missing-manual.md), [Skills are new features: Building Skill-Centric Harness](../talks/skills-are-new-features-building-skill-centric-harness.md), [Skills are the New SDKs](../talks/skills-are-the-new-sdks.md)
-
-### If the procedure is a fixed sequence with an exact answer, it belongs in deterministic code or a script, not in a skill invoked by a model.
-
-Support: **4** talk(s)
+Support: **5** talk(s)
 
 > "If you have those type of use cases, you should not use skills. You maybe you should write a script because if the the process or the workflow is always the same, you don't need to waste models and tokens for that exercise."
 >
 > — [Don't Ship Skills Without Evals](../talks/dont-ship-skills-without-evals.md), [8:49](https://www.youtube.com/watch?v=0vphxNt4wyk&t=529s)
 
-Supporting talks: [Don't Ship Skills Without Evals](../talks/dont-ship-skills-without-evals.md), [Build Systems, Not Code](../talks/build-systems-not-code.md), [Loop Engineering from First Principles](../talks/loop-engineering-from-first-principles.md), [The Dark Arts of Web Automation: Teaching Agents to Use Websites Like Humans](../talks/the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans.md)
+Supporting talks: [Don't Ship Skills Without Evals](../talks/dont-ship-skills-without-evals.md), [Build Systems, Not Code](../talks/build-systems-not-code.md), [Loop Engineering from First Principles](../talks/loop-engineering-from-first-principles.md), [The Dark Arts of Web Automation: Teaching Agents to Use Websites Like Humans](../talks/the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans.md), [Every company should have a Brain](../talks/every-company-should-have-a-brain.md)
+
+### Skills are software artifacts, not documentation: they require evals gating merges, versioning against a specific model, named owners, and re-testing on model upgrade.
+
+Support: **4** talk(s)
+
+> "it's very important to run evals and skills without evals are really just wishful thinking"
+>
+> — [Skills are new features: Building Skill-Centric Harness](../talks/skills-are-new-features-building-skill-centric-harness.md), [11:13](https://www.youtube.com/watch?v=7jjudsEhBtM&t=673s)
+
+Supporting talks: [Skills are new features: Building Skill-Centric Harness](../talks/skills-are-new-features-building-skill-centric-harness.md), [Don't Ship Skills Without Evals](../talks/dont-ship-skills-without-evals.md), [Skills are the New SDKs](../talks/skills-are-the-new-sdks.md), [WTF Is the Context Layer? The Missing Infrastructure for Production Agents](../talks/wtf-is-the-context-layer-the-missing-infrastructure-for-production-agents.md)
+
+### Skills should teach taste, conventions, and org-specific procedure — the last 20% the model cannot infer — not language or framework syntax the model already knows.
+
+Support: **5** talk(s)
+
+> "Our skill is focused on taste and video aspects because the LLMs and agents already know how to write HTML and CSS and JavaScript, we don't have to teach them the language, we just teach them how to create good videos."
+>
+> — [HTML Is All Agents Need](../talks/html-is-all-agents-need.md), [9:32](https://www.youtube.com/watch?v=Cz4v1WHVyZc&t=572s)
+
+Supporting talks: [HTML Is All Agents Need](../talks/html-is-all-agents-need.md), [Building an Agentic Video Editor for Mass Consumer](../talks/building-an-agentic-video-editor-for-mass-consumer.md), [Every company should have a Brain](../talks/every-company-should-have-a-brain.md), [Chat and citations won't save your vertical AI](../talks/chat-and-citations-wont-save-your-vertical-ai.md), [Content Is Code](../talks/content-is-code.md)
+
+### The dominant failure mode is non-invocation, not bad skill content — the model silently declines to follow the pointer or loads the wrong skill.
+
+Support: **4** talk(s)
+
+> "every time you have a context pointer pointing from one resource to another, the model may just choose not to follow it, you know, even if it's absolutely perfect for the task, it may just choose not to invoke the skill."
+>
+> — [Building Great Agent Skills: The Missing Manual](../talks/building-great-agent-skills-the-missing-manual.md), [6:25](https://www.youtube.com/watch?v=UNzCG3lw6O0&t=385s)
+
+Supporting talks: [Building Great Agent Skills: The Missing Manual](../talks/building-great-agent-skills-the-missing-manual.md), [Don't Ship Skills Without Evals](../talks/dont-ship-skills-without-evals.md), [Skills are new features: Building Skill-Centric Harness](../talks/skills-are-new-features-building-skill-centric-harness.md), [CrabRAG: Why Automated Assistants Need Graph Memory, Not More Tokens](../talks/crabrag-why-automated-assistants-need-graph-memory-not-more-tokens.md)
 
 ## Disagreements
+
+### Is the skills layer a durable competitive asset, or temporary scaffolding that better models will absorb?
+
+| Position A | Position B |
+|---|---|
+| Skills and the accumulated company brain are the durable moat — model quality is rented, the harness will not disappear, and teachability is becoming a standard enterprise evaluation criterion.<br>*[Every company should have a Brain](../talks/every-company-should-have-a-brain.md), [Skills are the New SDKs](../talks/skills-are-the-new-sdks.md), [Active Graph Agent Runtime (BabyAGI 4)](../talks/active-graph-agent-runtime-babyagi-4.md), [WTF Is the Context Layer? The Missing Infrastructure for Production Agents](../talks/wtf-is-the-context-layer-the-missing-infrastructure-for-production-agents.md)* | Most of what skills encode is scaffolding for current model weaknesses: capability skills should be retired as models improve, hierarchical decomposition prompting is the new chain-of-thought and will fade with better post-training, and self-orchestrating models already need no custom tooling.<br>*[Don't Ship Skills Without Evals](../talks/dont-ship-skills-without-evals.md), [Autonomous Agents for Scientific Tasks](../talks/autonomous-agents-for-scientific-tasks.md), [Everything we knew about software has changed](../talks/everything-we-knew-about-software-has-changed.md)* |
+
+*Why it matters: It determines whether skill authoring is a standing organizational investment with owners, versioning, and governance, or a maintenance cost you should be actively deleting each time a model ships.*
+
+### Does a skill/knowledge library scale as plain markdown files, or does it need retrieval, hierarchy, and governance infrastructure?
+
+| Position A | Position B |
+|---|---|
+| Flat markdown plus a reference index is sufficient and preferable — skip vector DBs, knowledge graphs, and semantic search entirely.<br>*[Turn 10,994 Notes Into Memory](../talks/turn-10994-notes-into-memory.md), [LLM Knowledge Bases: a practical guide](../talks/llm-knowledge-bases-a-practical-guide.md), [Every company should have a Brain](../talks/every-company-should-have-a-brain.md)* | Flat file loading breaks at scale: past ~10 skills you need embedding-based shortlisting, past hundreds you need hierarchy, metadata filters, admission gates and ownership; markdown memory stops working once data exceeds the context window and graph traversal beats speculative loading.<br>*[Skills are new features: Building Skill-Centric Harness](../talks/skills-are-new-features-building-skill-centric-harness.md), [CrabRAG: Why Automated Assistants Need Graph Memory, Not More Tokens](../talks/crabrag-why-automated-assistants-need-graph-memory-not-more-tokens.md), [WTF Is the Context Layer? The Missing Infrastructure for Production Agents](../talks/wtf-is-the-context-layer-the-missing-infrastructure-for-production-agents.md)* |
+
+*Why it matters: It decides whether skill libraries are a git repo of folders or a piece of retrieval infrastructure with its own lifecycle management, and how much a team should build before hitting the wall.*
 
 ### Should skills be invoked by the model or explicitly by the user?
 
 | Position A | Position B |
 |---|---|
-| Prefer user-invoked skills: model invocation is unpredictable (the model may simply decline to follow a context pointer), which forces you into eval work purely to confirm the skill fires; explicit invocation eliminates that class of problem at the cost of user cognitive load, and fits routine dev workflows like opening a PR.<br>*[Building Great Agent Skills: The Missing Manual](../talks/building-great-agent-skills-the-missing-manual.md), [Don't Ship Skills Without Evals](../talks/dont-ship-skills-without-evals.md)* | Prefer model-driven invocation: in products aimed at non-technical users, expecting them to remember and name skills is unacceptable cognitive load — customers do not start prompts with 'use the refund skill' — so invocation must be inferred from the request and the description tuned as a routing signal.<br>*[Skills are new features: Building Skill-Centric Harness](../talks/skills-are-new-features-building-skill-centric-harness.md), [Don't Ship Skills Without Evals](../talks/dont-ship-skills-without-evals.md)* |
+| Prefer user-invoked: it eliminates invocation unpredictability and the eval burden that comes with it, and fits routine dev workflows like PR creation, at the cost of user cognitive load.<br>*[Building Great Agent Skills: The Missing Manual](../talks/building-great-agent-skills-the-missing-manual.md), [Don't Ship Skills Without Evals](../talks/dont-ship-skills-without-evals.md)* | Model-driven invocation is required in products, because non-technical end users have no idea skills exist and should not be asked to remember them; the fix is better descriptions and evals, not shifting the burden to users.<br>*[Skills are new features: Building Skill-Centric Harness](../talks/skills-are-new-features-building-skill-centric-harness.md), [Agents in Production: How OpenGov Built and Scaled OG Assist](../talks/agents-in-production-how-opengov-built-and-scaled-og-assist.md), [Chat and citations won't save your vertical AI](../talks/chat-and-citations-wont-save-your-vertical-ai.md)* |
 
-*Why it matters: Model invocation makes the description the highest-leverage artifact in the skill and makes trigger evals mandatory (half of observed failures are non-triggering); user invocation moves that burden to UX and skill discoverability instead. The two lead to entirely different eval suites and different skill-library sizes.*
+*Why it matters: Model-invoked skills force a permanent description tax in context plus trigger evals; user-invoked ones remove that whole failure class but are unavailable in any consumer-facing agent.*
 
-### Should skills be hand-authored by humans, or captured and rewritten automatically from agent traces and usage?
-
-| Position A | Position B |
-|---|---|
-| Skills must be human-written and human-curated. LLM-generated skills consume more tokens and reasoning time and can hurt performance; most published community skills are low quality because they were generated with no regard for contents or structure, and agent-written skills are where no-ops proliferate.<br>*[Don't Ship Skills Without Evals](../talks/dont-ship-skills-without-evals.md), [Skills are the New SDKs](../talks/skills-are-the-new-sdks.md), [Content Is Code](../talks/content-is-code.md), [Building Great Agent Skills: The Missing Manual](../talks/building-great-agent-skills-the-missing-manual.md)* | Skills should be captured automatically from what the system observes. A dedicated skill-authoring interface won't work — capture the user's conventions from product usage; consolidate accumulated memories into skills after roughly ten; reflect at the end of each task and write back new skills; convert every task the agent succeeds at into a reusable skill file.<br>*[Chat and citations won't save your vertical AI](../talks/chat-and-citations-wont-save-your-vertical-ai.md), [User Signal Dies at the Retrieval Boundary](../talks/user-signal-dies-at-the-retrieval-boundary.md), [CrabRAG: Why Automated Assistants Need Graph Memory, Not More Tokens](../talks/crabrag-why-automated-assistants-need-graph-memory-not-more-tokens.md), [Every company should have a Brain](../talks/every-company-should-have-a-brain.md)* |
-
-*Why it matters: If skills must be hand-written, the skill library is bounded by scarce human attention and needs governance, ownership, and PR-style admission gates; if they can be harvested from traces, the library grows on its own and the hard problems shift to dependency tracking and approval queues — one team reports self-improving skills routinely breaking downstream dependents.*
-
-### Does adding skills to one general-purpose agent scale, or do you eventually need to split into separate narrower agents?
+### Are tools plus skills a sufficient abstraction, or must capability be split across separate scoped agents?
 
 | Position A | Position B |
 |---|---|
-| Tools and skills are a sufficient abstraction — no additional orchestration primitives needed. Build one general-purpose agent engine and deliver all domain specialization through a skills folder; production agents like Codex and Claude Code ship with only a handful of tools, and skills can replace most MCP usage.<br>*[Agents in Production: How OpenGov Built and Scaled OG Assist](../talks/agents-in-production-how-opengov-built-and-scaled-og-assist.md), [Skills are the New SDKs](../talks/skills-are-the-new-sdks.md)* | Stacking skills, MCP servers, and tools into one context is functionally inheritance and breaks down the same way: past roughly ten skills the system prompt approach stops working and you need shortlisting or embedding retrieval; at hundreds you need hierarchy, metadata filters, and governance; or you abandon the single agent for narrow domain-specific agents that talk to each other in English.<br>*[Skills are new features: Building Skill-Centric Harness](../talks/skills-are-new-features-building-skill-centric-harness.md), [The Future Is Domain-Specific Agents](../talks/the-future-is-domain-specific-agents.md), [Build Systems, Not Code](../talks/build-systems-not-code.md)* |
+| Tools and skills are all you need — build one general-purpose agent engine and deliver domain specialization through skills.<br>*[Agents in Production: How OpenGov Built and Scaled OG Assist](../talks/agents-in-production-how-opengov-built-and-scaled-og-assist.md), [Skills are the New SDKs](../talks/skills-are-the-new-sdks.md)* | Piling skills, MCP servers and tools into one agent is inheritance and degrades performance; capability belongs in many narrow domain-specific agents composed together, each with its own loop, context and sandbox.<br>*[The Future Is Domain-Specific Agents](../talks/the-future-is-domain-specific-agents.md), [Build Systems, Not Code](../talks/build-systems-not-code.md)* |
 
-*Why it matters: This determines whether your skill library needs a retrieval layer and hierarchy at all, and whether the ~80% token-efficiency and 137x cost gap from running narrow agents on cheap models is available to you — or whether you keep paying frontier-model prices for a single agent carrying every skill's description.*
-
-### Are skills durable infrastructure or temporary scaffolding that better models will obsolete?
-
-| Position A | Position B |
-|---|---|
-| Capability skills are temporary — they teach models what they cannot yet do consistently, and evals are what tell you when to retire them. Structured-decomposition scaffolds are the chain-of-thought of this era and will be needed less as models are post-trained to decompose; keep the eval after you delete the skill.<br>*[Don't Ship Skills Without Evals](../talks/dont-ship-skills-without-evals.md), [Autonomous Agents for Scientific Tasks](../talks/autonomous-agents-for-scientific-tasks.md), [Everything we knew about software has changed](../talks/everything-we-knew-about-software-has-changed.md)* | The accumulated skill and context layer is the durable asset — model quality is rented, the brain is owned. Teachability is becoming an enterprise evaluation criterion alongside security and SLAs, and context, not models, is what differentiates a company once everyone has the same intelligence.<br>*[Every company should have a Brain](../talks/every-company-should-have-a-brain.md), [Skills are the New SDKs](../talks/skills-are-the-new-sdks.md), [WTF Is the Context Layer? The Missing Infrastructure for Production Agents](../talks/wtf-is-the-context-layer-the-missing-infrastructure-for-production-agents.md)* |
-
-*Why it matters: It decides whether skill investment is amortized capital or a depreciating hedge against current model gaps — and therefore whether you staff engineers to maintain a skill library indefinitely or plan to delete most of it at the next model upgrade. Note both sides partly agree via the capability/preference split: preference and business-context skills are durable either way.*
+*Why it matters: One side invests in skill-library governance and retrieval for a single agent; the other invests in multi-agent composition and per-agent sandboxing, and reports >80% token savings from narrow scoping.*
 
 ## Practical Guidance
 
 **Do:**
 
-- Cap skill.md at ~100 lines (Amazon AGI Lab) or at minimum under 500 lines (Skill Bench 1.1); push branch-specific reference material into separate files behind context pointers.
-- Budget the first prompt's baseline context at 20-25K tokens; 40-50K means progressive disclosure has failed.
-- Write descriptions in the phrasing of the user's request, not as a description of the skill, and make descriptions mutually distinct — they are the routing signal.
-- Include explicit negative cases in the description stating when not to use the skill; build ~5 happy-path and ~5 should-not-trigger eval cases per skill to catch over-triggering.
-- Run evals both with the skill loaded and without it — that comparison is the only way to know whether the skill helps and when to retire it.
-- Run skill evals in isolated workspaces; coding agents will otherwise cheat by reading prior chats and executions.
-- Run 3-6 trials per eval case (agents are non-deterministic) and test across multiple harnesses — a skill strong on Gemini can be weak on Codex.
-- Re-run every eval on model upgrade: skills are contracts versioned against a specific model, and instruction placement inside the file is model-dependent.
-- Measure task outcome, not whether the skill loaded on a given turn.
-- Gate skill changes in CI: no merge unless the diff improves the test cases. Regex assertions cover most cases — LLM-as-judge is usually unnecessary.
-- Decompose the skill library by user intent, not by data model ('pre-market briefing skill', not 'analyst rating skill'), and expect to refactor the decomposition as real use cases arrive.
-- Assign named owners, semantic versioning with deprecation warnings and changelogs, PR-style admission gates with a human in the loop, and allow-listed access-controlled tools per skill.
-- Add a shortlisting step — embedding similarity or a small model — once you pass ~10 skills; add hierarchy and metadata filters at hundreds.
-- Use leading words that the agent will echo ('thin vertical slice'); confirm they work by finding them repeated in the reasoning traces.
-- Give the skill exactly one source of truth per instruction — no duplication between steps and reference material.
-- Teach taste and domain craft in the skill, not language or framework syntax the model already knows.
-- Keep evals after retiring a skill; they become regression tests that tell you when to bring it back.
+- Cap skill.md at ~100 lines (500 max) and treat the skill as a folder, with reference material for a single branch moved out behind a context pointer.
+- Budget the baseline first prompt at 20–25K tokens of context; 40–50K means progressive disclosure has failed.
+- Write the description to mirror how users phrase requests, keep descriptions distinct from each other, and include explicit negative cases for when not to use the skill.
+- Build ~5 happy-path and ~5 should-not-trigger eval cases per skill, run 3–6 trials each because agents are non-deterministic, and block the merge if the diff doesn't improve them.
+- Run every eval both with and without the skill loaded, and keep the eval after retiring the skill as a regression test that signals when to bring it back.
+- Run skill evals in isolated workspaces — coding agents will otherwise cheat by reading prior chats and executions.
+- Use cheap regex assertions for most skill evals rather than LLM-as-judge, and test on task outcome rather than whether the skill loaded on turn one.
+- Test skills across multiple harnesses and re-run evals on every model upgrade; skills are contracts versioned to a specific model.
+- Use leading words (e.g. 'thin vertical slice') and verify they landed by watching the agent repeat them in its reasoning traces.
+- Cut the skill library by user intent (a 'pre-market briefing' skill), not by your data model (an 'analyst rating' skill).
+- Wrap data/query access in structured skills instead of letting the agent author queries freely — it cuts eval variance.
+- At enterprise scale, gate skill admission with PR-style human review, name an owner per skill, use semantic versioning with deprecation warnings, and allow-list the tools each skill may call.
+- Convert every agent task that succeeds into a reusable skill file; capture skills from observed usage rather than shipping a separate skill-authoring UI.
 
 **Avoid:**
 
-- Letting an agent write your skills unreviewed — AI-generated skills burn more tokens and reasoning time and can measurably hurt performance; they are also where no-ops accumulate.
-- No-op instructions the agent would follow anyway if deleted ('make the implementation easy to read') — delete them for the token savings even when eval scores are unchanged.
-- Using a skill for a fixed, always-identical workflow; write a script.
-- Treating a massive skill as the problem — it is a symptom of duplication, sediment from multiple contributors, or no-ops.
-- Blaming skill content for failures without checking triggering first: ~50% of observed failures are the skill never firing.
-- Installing large numbers of skills into one agent, or pulling community/marketplace skills without auditing them — marketplaces lack verification controls today, roughly where NPM was ten years ago.
-- Treating skills as documentation; they are contracts against a model.
-- Placing critical instructions at the end of a skill file — a newer model attended to the beginning and ignored them, with no lines changed.
-- Building a separate user-facing interface for authoring skills — in vertical products it doesn't get used; capture conventions from observed usage instead.
-- Letting skills self-improve without dependency and impact tracking — evolving skills break downstream consumers.
-- Hardcoding context into individual agents or giving each agent its own memory: it produces context sprawl, prevents a single version of truth, and the context is lost at each framework migration.
+- Generating skills with an LLM and shipping them — they hurt performance, and no-ops are especially common when an agent writes your skills.
+- Writing a skill for a workflow that is always the same fixed sequence; make it a script.
+- Instructions the agent would follow anyway if deleted (no-ops), duplication across steps and reference material, and 'sediment' from contributors who won't delete each other's text.
+- Assuming a huge skill is the problem — it is a symptom of duplication, sediment, or no-ops underneath.
+- Putting critical instructions at the end of a skill file: a newer model focused on the beginning and ignored them with no other change.
+- Keeping all skills in the system prompt past ~10; and expecting flat retrieval to hold at hundreds.
+- Pulling community or marketplace skills in unaudited — marketplaces lack verification controls, and remember skills execute unisolated on the agent's machine.
+- Treating skills as documentation, or as disposable prompt files exempt from versioning and testing.
+- Loading everything speculatively into context (markdown-memory dumps of 100k tokens per round) instead of using progressive disclosure.
 
 ## Notable Outliers
 
-- A skill file should be treated as an employee — one capability, one job, written clearly enough that someone can execute it; working with a coding agent is hiring, training, and managing a workforce made of markdown. ([Every company should have a Brain](../talks/every-company-should-have-a-brain.md), [4:11](https://www.youtube.com/watch?v=eBUyTS7SzV4&t=251s))
-- Splitting a process into separate skills so the agent sees only one step at a time increases the legwork it does on the current step — hiding the future goal is itself a technique. ([Building Great Agent Skills: The Missing Manual](../talks/building-great-agent-skills-the-missing-manual.md), [15:46](https://www.youtube.com/watch?v=UNzCG3lw6O0&t=946s))
-- A FactSet skill failed after a model upgrade with not a single line changed, because the newer model focused on the beginning of the file and ignored critical instructions at the end. ([Skills are new features: Building Skill-Centric Harness](../talks/skills-are-new-features-building-skill-centric-harness.md), [11:13](https://www.youtube.com/watch?v=7jjudsEhBtM&t=673s))
-- Skills impose roughly 10x less context overhead than the equivalent MCP setup — 15 MCP servers consume over 100,000 tokens per session in tool definitions alone. ([Skills are the New SDKs](../talks/skills-are-the-new-sdks.md), [13:42](https://www.youtube.com/watch?v=LC3-P7v3yoI&t=822s))
-- Skills executing on the agent's own machine with no process isolation is a genuine security weakness relative to MCP, and skill marketplaces are as unsafe today as NPM was ten years ago. ([Skills are the New SDKs](../talks/skills-are-the-new-sdks.md), [24:54](https://www.youtube.com/watch?v=LC3-P7v3yoI&t=1494s))
-- Skill descriptions should be written to match how the user phrases the request rather than to describe the skill — descriptions are routing signals, not documentation. ([Skills are new features: Building Skill-Centric Harness](../talks/skills-are-new-features-building-skill-centric-harness.md), [9:23](https://www.youtube.com/watch?v=7jjudsEhBtM&t=563s))
-- Agent skills should teach taste and domain craft rather than framework syntax, because the model already knows HTML/CSS/JS natively and teaching it a framework reduces output creativity. ([HTML Is All Agents Need](../talks/html-is-all-agents-need.md), [9:32](https://www.youtube.com/watch?v=Cz4v1WHVyZc&t=572s))
-- There is still no shared rubric for judging whether a skill is good — you cannot yet look at a skill and say what it is doing well or badly. ([Building Great Agent Skills: The Missing Manual](../talks/building-great-agent-skills-the-missing-manual.md), [1:44](https://www.youtube.com/watch?v=UNzCG3lw6O0&t=104s))
-- Wrapping query access in structured skills produced more consistent agent results than letting the agent author queries freely, which created large variance in evals. ([From Blind Spots to Merged PRs: Continuous Agentic Performance Optimization](../talks/from-blind-spots-to-merged-prs-continuous-agentic-performance-optimization.md), [12:49](https://www.youtube.com/watch?v=JJGbw4ggaFs&t=769s))
-- Consolidating accumulated memories into skills after roughly ten memories raised tau-bench policy-following from 76% to 80%, and can repair stale system prompts that reference database columns no longer in existence. ([User Signal Dies at the Retrieval Boundary](../talks/user-signal-dies-at-the-retrieval-boundary.md), [6:23](https://www.youtube.com/watch?v=Jx4ZFEAq6bY&t=383s))
+- Connecting an agent to 15 MCP servers burns over 100,000 tokens per session in tool definitions alone; skills impose roughly 10x less context overhead for the same capability. ([Skills are the New SDKs](../talks/skills-are-the-new-sdks.md), [13:42](https://www.youtube.com/watch?v=LC3-P7v3yoI&t=822s))
+- Roughly 50% of skill failures come from the skill never being triggered, not from bad skill content. ([Don't Ship Skills Without Evals](../talks/dont-ship-skills-without-evals.md), [17:04](https://www.youtube.com/watch?v=0vphxNt4wyk&t=1024s))
+- Consolidating accumulated memories into skills after about ten entries lifted tau-bench policy-following from 66% to 76% with memory alone, and to 80% once baked into skills. ([User Signal Dies at the Retrieval Boundary](../talks/user-signal-dies-at-the-retrieval-boundary.md), [6:23](https://www.youtube.com/watch?v=Jx4ZFEAq6bY&t=383s))
+- A skill that passed began failing on a newer model with not a single line changed, because the model attended to the beginning of the file and ignored critical instructions at the end. ([Skills are new features: Building Skill-Centric Harness](../talks/skills-are-new-features-building-skill-centric-harness.md), [11:13](https://www.youtube.com/watch?v=7jjudsEhBtM&t=673s))
+- Installing many skills into one agent measurably degrades it — loading skills, MCP servers and tools into one context is inheritance, and inheritance eventually breaks down. ([The Future Is Domain-Specific Agents](../talks/the-future-is-domain-specific-agents.md), [9:03](https://www.youtube.com/watch?v=spNAUEgq_A8&t=543s))
+- Splitting a process into separate skills so the agent sees only one step at a time increases the legwork it does on the current step, by hiding the future goal. ([Building Great Agent Skills: The Missing Manual](../talks/building-great-agent-skills-the-missing-manual.md), [15:46](https://www.youtube.com/watch?v=UNzCG3lw6O0&t=946s))
 
 ## All Talks
 
@@ -194,6 +174,7 @@ Supporting talks: [Don't Ship Skills Without Evals](../talks/dont-ship-skills-wi
 - [Agents in Production: How OpenGov Built and Scaled OG Assist](../talks/agents-in-production-how-opengov-built-and-scaled-og-assist.md)
 - [Autonomous Agents for Scientific Tasks](../talks/autonomous-agents-for-scientific-tasks.md)
 - [Build Systems, Not Code](../talks/build-systems-not-code.md)
+- [Building an Agentic Video Editor for Mass Consumer](../talks/building-an-agentic-video-editor-for-mass-consumer.md)
 - [Building Great Agent Skills: The Missing Manual](../talks/building-great-agent-skills-the-missing-manual.md)
 - [Chat and citations won't save your vertical AI](../talks/chat-and-citations-wont-save-your-vertical-ai.md)
 - [Content Is Code](../talks/content-is-code.md)
@@ -204,6 +185,7 @@ Supporting talks: [Don't Ship Skills Without Evals](../talks/dont-ship-skills-wi
 - [From Blind Spots to Merged PRs: Continuous Agentic Performance Optimization](../talks/from-blind-spots-to-merged-prs-continuous-agentic-performance-optimization.md)
 - [From Signal to PR: Anatomy of a Self-Improving Agent](../talks/from-signal-to-pr-anatomy-of-a-self-improving-agent.md)
 - [HTML Is All Agents Need](../talks/html-is-all-agents-need.md)
+- [LLM Knowledge Bases: a practical guide](../talks/llm-knowledge-bases-a-practical-guide.md)
 - [Loop Engineering from First Principles](../talks/loop-engineering-from-first-principles.md)
 - [Skills are new features: Building Skill-Centric Harness](../talks/skills-are-new-features-building-skill-centric-harness.md)
 - [Skills are the New SDKs](../talks/skills-are-the-new-sdks.md)
@@ -221,8 +203,10 @@ Supporting talks: [Don't Ship Skills Without Evals](../talks/dont-ship-skills-wi
 - [Aditya Khandelwal](../speakers/aditya-khandelwal.md)
 - [Angie Jones](../speakers/angie-jones.md)
 - [Atul Ramachandran](../speakers/atul-ramachandran.md)
+- [Ben Holmes](../speakers/ben-holmes.md)
 - [Benjamin Guo](../speakers/benjamin-guo.md)
 - [Corey Gallon](../speakers/corey-gallon.md)
+- [Ekaterina Deyneka](../speakers/ekaterina-deyneka.md)
 - [Elvin Aghammadzada](../speakers/elvin-aghammadzada.md)
 - [Erik Hanchett](../speakers/erik-hanchett.md)
 - [Gabe De Mesa](../speakers/gabe-de-mesa.md)

@@ -3,16 +3,16 @@ title: "offline evaluation"
 type: "concept"
 slug: "offline-evaluation"
 tier: "supporting"
-maturity: "consolidating"
-talk_count: 13
-speaker_count: 17
+maturity: "contested"
+talk_count: 15
+speaker_count: 19
 ---
 
 # offline evaluation
 
-**Maturity: CONSOLIDATING** — Consolidating — converging practice, some open edges
+**Maturity: CONTESTED** — Contested — active, unresolved disagreement across talks
 
-*Supporting concept* &middot; discussed across **13** talk(s) by **17** speaker(s)
+*Supporting concept* &middot; discussed across **15** talk(s) by **19** speaker(s)
 
 **Definition:** Pre-deployment evaluation against fixed datasets and splits, run before shipping rather than against live traffic.
 
@@ -20,11 +20,11 @@ speaker_count: 17
 
 ## State of Practice
 
-Offline evaluation is no longer treated as a static test set run once before launch; the field now builds it as a continuously repopulated private benchmark derived from production traces, executed as a release gate on every change to the agent stack. The dominant design pattern is a simulated or replayed mini-production environment — snapshotted databases, recorded tool fixtures, sidecar containers, LLM-driven user simulators — because A/B testing variants in live traffic can never be repeatable across differing database state and tool versions. Grading has moved away from scalar quality scores toward binary, domain-specific, business-tied pass/fail rubrics, with the judge itself validated like a classifier against roughly a hundred hand-labeled examples and reported with confidence intervals. Verification targets the whole trajectory — final environment state, tool calls, artifacts, cost, latency, retries — not just the final answer, and benchmarks are versioned software with their own CI, Oracle solvability checks, and held-out splits. The recurring humbling lesson is that an easy eval is worse than no eval: Lyft's 90%+ first-pass rate was an artifact of an unrealistically polite simulated user, and cybersecurity benchmarks that scored 'crash the program' as success rated a model at 50% hacking success when its real exploitation rate was 0%. What remains unsettled is how much authority offline results should carry relative to production telemetry, and whether an LLM can be trusted to grade at all.
+Offline evaluation at this conference is no longer "run the model against a fixed test set" — it is the construction and maintenance of a private, domain-specific simulation environment that gates releases. The dominant recipe: seed datasets from real production traces rather than LLM-generated test queries, snapshot tool responses and environment state as checked-in fixtures so runs are reproducible, prove each task solvable with an Oracle before it enters the suite, and verify final environment state, trace, and artifacts rather than just the model's text output. Grading has converged hard on binary, domain-specific pass/fail criteria tied to business outcomes; generic scalar metrics (helpfulness 0-1, correctness 1-5) are widely dismissed as low-signal and inconsistent across runs, and criteria are discovered by grading real outputs rather than specified up front. Judges themselves are now treated as classifiers to be validated — roughly 100 hand-labeled examples split train/dev/test, scored on precision and recall — and scores without confidence intervals are called out as not decision-grade. The unresolved fault lines are whether the offline suite is worth its maintenance cost given model and harness churn (one harness swap was reported to invalidate ~80% of tool-call evals), whether the primary quality signal should be the pre-ship gate or continuous production telemetry, and whether an LLM can be trusted to grade at all in domains where it can self-report success.
 
 ## Consensus
 
-### Offline eval datasets should be built from real production traffic, traces, and recorded tool responses rather than from synthetic or LLM-generated test cases.
+### Offline eval datasets should be seeded from real production traffic, traces, or recorded executions rather than synthetically generated test cases.
 
 Support: **5** talk(s)
 
@@ -32,9 +32,19 @@ Support: **5** talk(s)
 >
 > — [From Agent Traces to Agent Simulations](../talks/from-agent-traces-to-agent-simulations.md), [0:52](https://www.youtube.com/watch?v=Ib5t2RLtxvM&t=52s)
 
-Supporting talks: [From Agent Traces to Agent Simulations](../talks/from-agent-traces-to-agent-simulations.md), [Build Evals That Actually Matter](../talks/build-evals-that-actually-matter.md), [Your Agents Need a Save Button](../talks/your-agents-need-a-save-button.md), [Production Evals For Agentic AI Systems](../talks/production-evals-for-agentic-ai-systems.md), [Medic for Apache Spark - First Aid for Failing Jobs](../talks/medic-for-apache-spark-first-aid-for-failing-jobs.md)
+Supporting talks: [Build Evals That Actually Matter](../talks/build-evals-that-actually-matter.md), [From Agent Traces to Agent Simulations](../talks/from-agent-traces-to-agent-simulations.md), [Your Agents Need a Save Button](../talks/your-agents-need-a-save-button.md), [Production Evals For Agentic AI Systems](../talks/production-evals-for-agentic-ai-systems.md), [Medic for Apache Spark - First Aid for Failing Jobs](../talks/medic-for-apache-spark-first-aid-for-failing-jobs.md)
 
-### Every organization shipping agents needs its own private benchmark; public benchmarks and leaderboard scores are orientation only and cannot be the basis for a ship decision.
+### An offline eval is only worth building if it gates a decision — a release, a model swap, a merge — rather than producing a score someone reads.
+
+Support: **5** talk(s)
+
+> "You can put it as a release gate for your agent and verify that any change to agent stack in didn't reduce regression suddenly."
+>
+> — [From Agent Traces to Agent Simulations](../talks/from-agent-traces-to-agent-simulations.md), [5:30](https://www.youtube.com/watch?v=Ib5t2RLtxvM&t=330s)
+
+Supporting talks: [Build Evals That Actually Matter](../talks/build-evals-that-actually-matter.md), [From Agent Traces to Agent Simulations](../talks/from-agent-traces-to-agent-simulations.md), [Claude Fable, Claude Tag, and Anthropic's Culture](../talks/claude-fable-claude-tag-and-anthropics-culture.md), [Medic for Apache Spark - First Aid for Failing Jobs](../talks/medic-for-apache-spark-first-aid-for-failing-jobs.md), [The Miranda Hypothesis: How Hamilton Poisoned Persona Evals](../talks/the-miranda-hypothesis-how-hamilton-poisoned-persona-evals.md)
+
+### Public and static benchmarks are necessary for orientation but structurally cannot support shipping decisions; each team needs its own private, domain-specific eval.
 
 Support: **5** talk(s)
 
@@ -42,144 +52,105 @@ Support: **5** talk(s)
 >
 > — [From Agent Traces to Agent Simulations](../talks/from-agent-traces-to-agent-simulations.md), [3:11](https://www.youtube.com/watch?v=Ib5t2RLtxvM&t=191s)
 
-Supporting talks: [From Agent Traces to Agent Simulations](../talks/from-agent-traces-to-agent-simulations.md), [Production Evals For Agentic AI Systems](../talks/production-evals-for-agentic-ai-systems.md), [Teaching AI to Find Real Vulnerabilities](../talks/teaching-ai-to-find-real-vulnerabilities.md), [The Miranda Hypothesis: How Hamilton Poisoned Persona Evals](../talks/the-miranda-hypothesis-how-hamilton-poisoned-persona-evals.md), [The Messy Reality of Scale: Synthetic Data and Pre-Training](../talks/the-messy-reality-of-scale-synthetic-data-and-pre-training.md)
+Supporting talks: [From Agent Traces to Agent Simulations](../talks/from-agent-traces-to-agent-simulations.md), [Production Evals For Agentic AI Systems](../talks/production-evals-for-agentic-ai-systems.md), [Designing Agents (The Floor Is the Frontier)](../talks/designing-agents-the-floor-is-the-frontier.md), [Teaching AI to Find Real Vulnerabilities](../talks/teaching-ai-to-find-real-vulnerabilities.md), [The Miranda Hypothesis: How Hamilton Poisoned Persona Evals](../talks/the-miranda-hypothesis-how-hamilton-poisoned-persona-evals.md)
 
-### The offline eval suite should function as a hard release gate: no model swap, prompt change, or agent-stack change ships until the full suite shows no regression.
+### Binary, domain-specific pass/fail criteria are the correct grading unit; generic scalar quality scores (helpfulness, correctness, conciseness on 0-1 or 1-5 scales) are low-signal and not actionable.
 
-Support: **5** talk(s)
-
-> "we run the whole eval set and we make sure that for example Fable is strictly better than Opus 48 and that gives us the confidence to drop it in"
->
-> — [Claude Fable, Claude Tag, and Anthropic's Culture](../talks/claude-fable-claude-tag-and-anthropics-culture.md), [16:54](https://www.youtube.com/watch?v=uU5Gv2h8-9g&t=1014s)
-
-Supporting talks: [Build Evals That Actually Matter](../talks/build-evals-that-actually-matter.md), [From Agent Traces to Agent Simulations](../talks/from-agent-traces-to-agent-simulations.md), [Claude Fable, Claude Tag, and Anthropic's Culture](../talks/claude-fable-claude-tag-and-anthropics-culture.md), [The Miranda Hypothesis: How Hamilton Poisoned Persona Evals](../talks/the-miranda-hypothesis-how-hamilton-poisoned-persona-evals.md), [Your Agents Need a Save Button](../talks/your-agents-need-a-save-button.md)
-
-### Evaluation criteria should be binary and domain-specific rather than continuous generic quality scores; off-the-shelf helpfulness/correctness/toxicity metrics on a 0-1 or 1-5 scale are low-signal and unactionable.
-
-Support: **3** talk(s)
+Support: **4** talk(s)
 
 > "eval should be framed around a task success or failure. And a binary outcome is very easy to calibrate and train um LLM judge that can consistently score your agent trajectory."
 >
 > — [Build Evals That Actually Matter](../talks/build-evals-that-actually-matter.md), [19:32](https://www.youtube.com/watch?v=3z2uT5aDx_Y&t=1172s)
 
-Supporting talks: [Build Evals That Actually Matter](../talks/build-evals-that-actually-matter.md), [Stop Burning Tokens: Why self-improvement needs domain expertise first](../talks/stop-burning-tokens-why-self-improvement-needs-domain-expertise-first.md), [Teaching AI to Find Real Vulnerabilities](../talks/teaching-ai-to-find-real-vulnerabilities.md)
+Supporting talks: [Build Evals That Actually Matter](../talks/build-evals-that-actually-matter.md), [Stop Burning Tokens: Why self-improvement needs domain expertise first](../talks/stop-burning-tokens-why-self-improvement-needs-domain-expertise-first.md), [Teaching AI to Find Real Vulnerabilities](../talks/teaching-ai-to-find-real-vulnerabilities.md), [Using RL Agent to Detect and Remediate ETL Pipeline Failures](../talks/using-rl-agent-to-detect-and-remediate-etl-pipeline-failures.md)
 
-### Evaluation criteria cannot be fully specified in advance; they must be discovered by a human domain expert reading raw outputs and labeling them, and that expert is a build-time requirement for any credible offline eval.
+### Humans with domain expertise must label and read raw outputs; evaluation criteria are discovered by grading real data, not specified in advance.
 
 Support: **5** talk(s)
 
-> "The key idea is that we actually discover what our evaluation criteria is by looking at the data and grading our outputs."
+> "If you don't look at the data, you won't be able to create meaningful criteria uh or labels. And if you don't have labels, you won't be able to evaluate your judges. And if you're not evaluating your judges, you don't know if your uh agentic pipeline is working as as expected."
 >
-> — [Build Evals That Actually Matter](../talks/build-evals-that-actually-matter.md), [23:02](https://www.youtube.com/watch?v=3z2uT5aDx_Y&t=1382s)
+> — [Build Evals That Actually Matter](../talks/build-evals-that-actually-matter.md), [26:58](https://www.youtube.com/watch?v=3z2uT5aDx_Y&t=1618s)
 
-Supporting talks: [Build Evals That Actually Matter](../talks/build-evals-that-actually-matter.md), [Stop Burning Tokens: Why self-improvement needs domain expertise first](../talks/stop-burning-tokens-why-self-improvement-needs-domain-expertise-first.md), [The Miranda Hypothesis: How Hamilton Poisoned Persona Evals](../talks/the-miranda-hypothesis-how-hamilton-poisoned-persona-evals.md), [Teaching AI to Find Real Vulnerabilities](../talks/teaching-ai-to-find-real-vulnerabilities.md), [From Agent Traces to Agent Simulations](../talks/from-agent-traces-to-agent-simulations.md)
-
-### Scoring the agent's final output is insufficient; offline evaluation must verify the trajectory — tool calls, reasoning path, final environment state, and produced artifacts — alongside cost, latency, and retries.
-
-Support: **4** talk(s)
-
-> "Agent traces become the equivalent of distributed tracing for autonomous workloads. Without observability, evaluation becomes the guesswork."
->
-> — [Production Evals For Agentic AI Systems](../talks/production-evals-for-agentic-ai-systems.md), [5:49](https://www.youtube.com/watch?v=vljxQZfJ9wY&t=349s)
-
-Supporting talks: [From Agent Traces to Agent Simulations](../talks/from-agent-traces-to-agent-simulations.md), [Production Evals For Agentic AI Systems](../talks/production-evals-for-agentic-ai-systems.md), [The Future of Evals: From LLM as a Judge to Agent as a Judge](../talks/the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge.md), [Your Agents Need a Save Button](../talks/your-agents-need-a-save-button.md)
-
-### A single run or a small trace sample is not evidence; offline results need repeated seeds, cohort-level aggregation, and confidence intervals before they justify a decision.
-
-Support: **3** talk(s)
-
-> "So which basically means that one replay is just an anecdote and having a cohort analysis is way way way better."
->
-> — [Your Agents Need a Save Button](../talks/your-agents-need-a-save-button.md), [14:05](https://www.youtube.com/watch?v=bZISsg7H7DA&t=845s)
-
-Supporting talks: [Your Agents Need a Save Button](../talks/your-agents-need-a-save-button.md), [Build Evals That Actually Matter](../talks/build-evals-that-actually-matter.md), [Memory Harnesses for Long-Running Research Agents](../talks/memory-harnesses-for-long-running-research-agents.md)
-
-### Classical ML validation discipline transfers directly: label a few hundred examples, split into train/dev/held-out sets, and report on data the system has not seen during experimentation.
-
-Support: **3** talk(s)
-
-> "we can hand label around 100 examples with pass fail labels and then split the data into train, dev, and validation sets like how we used to do with machine learning models"
->
-> — [Build Evals That Actually Matter](../talks/build-evals-that-actually-matter.md), [21:17](https://www.youtube.com/watch?v=3z2uT5aDx_Y&t=1277s)
-
-Supporting talks: [Build Evals That Actually Matter](../talks/build-evals-that-actually-matter.md), [From Agent Traces to Agent Simulations](../talks/from-agent-traces-to-agent-simulations.md), [Stop Burning Tokens: Why self-improvement needs domain expertise first](../talks/stop-burning-tokens-why-self-improvement-needs-domain-expertise-first.md)
+Supporting talks: [Build Evals That Actually Matter](../talks/build-evals-that-actually-matter.md), [Stop Burning Tokens: Why self-improvement needs domain expertise first](../talks/stop-burning-tokens-why-self-improvement-needs-domain-expertise-first.md), [The Miranda Hypothesis: How Hamilton Poisoned Persona Evals](../talks/the-miranda-hypothesis-how-hamilton-poisoned-persona-evals.md), [Teaching AI to Find Real Vulnerabilities](../talks/teaching-ai-to-find-real-vulnerabilities.md), [Production Evals For Agentic AI Systems](../talks/production-evals-for-agentic-ai-systems.md)
 
 ## Disagreements
 
-### Should the authoritative evaluation signal come from a pre-deployment offline suite, or from continuous evaluation of live production traffic?
+### Should the primary quality signal for an agent be a pre-deployment offline gate, or continuous evaluation of live production traffic?
 
 | Position A | Position B |
 |---|---|
-| Offline is where you decide. Live users must never be the test set; production A/B comparisons are not repeatable because database state and tool versions drift, and production data ages out before regressions can be detected, so the offline benchmark is the gate you ship against.<br>*[Build Evals That Actually Matter](../talks/build-evals-that-actually-matter.md), [From Agent Traces to Agent Simulations](../talks/from-agent-traces-to-agent-simulations.md), [Medic for Apache Spark - First Aid for Failing Jobs](../talks/medic-for-apache-spark-first-aid-for-failing-jobs.md)* | Production is where you decide. The highest-value evaluation signal comes from real users on real systems; evaluation belongs in the control plane as an always-on service after deployment, and evals over live traces — not offline evals — are what produce the data for continual-learning loops.<br>*[Production Evals For Agentic AI Systems](../talks/production-evals-for-agentic-ai-systems.md), [The Future of Evals: From LLM as a Judge to Agent as a Judge](../talks/the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge.md)* |
+| Offline simulation is the primary signal: live users must not be used as test data, and production A/B comparison is not repeatable because database state and tool versions differ between runs, so the controlled offline environment is the only apples-to-apples surface. The domain expert builds the instrument once and it functions as a pre-ship gate, re-run when the base model changes.<br>*[Build Evals That Actually Matter](../talks/build-evals-that-actually-matter.md), [From Agent Traces to Agent Simulations](../talks/from-agent-traces-to-agent-simulations.md), [The Miranda Hypothesis: How Hamilton Poisoned Persona Evals](../talks/the-miranda-hypothesis-how-hamilton-poisoned-persona-evals.md), [Medic for Apache Spark - First Aid for Failing Jobs](../talks/medic-for-apache-spark-first-aid-for-failing-jobs.md)* | Production is the primary signal: it is the largest and most representative evaluation dataset an organization will ever have, evaluation should be an always-on service in the control plane rather than a pre-deployment phase, and it is live-trace evals — explicitly not offline evals — that generate the data needed for continual learning loops.<br>*[Production Evals For Agentic AI Systems](../talks/production-evals-for-agentic-ai-systems.md), [The Future of Evals: From LLM as a Judge to Agent as a Judge](../talks/the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge.md), [Designing Agents (The Floor Is the Frontier)](../talks/designing-agents-the-floor-is-the-frontier.md)* |
 
-*Why it matters: It determines whether engineering budget goes into building a repeatable simulation/replay environment or into production telemetry and online scoring infrastructure, and whether a failing offline score can block a release at all.*
+*Why it matters: It determines where the engineering budget goes — into simulation environments, fixtures, and Oracle construction, or into tracing, classifiers over production traces, and drift detection. Teams that pick wrong either ship blind or spend months maintaining a suite that never catches the failures users actually hit.*
 
-### Can an LLM be trusted to grade offline eval results, or must the grader be deterministic or human?
-
-| Position A | Position B |
-|---|---|
-| Yes, with discipline — an LLM judge validated like a binary classifier against hand-labeled data is workable, and the next step is an evaluation agent with full trace access that can score dynamic trajectories and even open a fixing PR.<br>*[Build Evals That Actually Matter](../talks/build-evals-that-actually-matter.md), [The Future of Evals: From LLM as a Judge to Agent as a Judge](../talks/the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge.md)* | No — in domains with ground truth the grader must be deterministic, because models systematically claim success they did not achieve; and where fidelity is a relation between output and an external archive, an automated metric structurally cannot adjudicate it and a domain expert must.<br>*[Teaching AI to Find Real Vulnerabilities](../talks/teaching-ai-to-find-real-vulnerabilities.md), [The Miranda Hypothesis: How Hamilton Poisoned Persona Evals](../talks/the-miranda-hypothesis-how-hamilton-poisoned-persona-evals.md)* |
-
-*Why it matters: Deterministic oracles and expert review cap how many eval cases you can run, while LLM judges scale to millions per month but can inherit the failure mode they are supposed to detect — the choice sets both the cost curve and the credibility of every reported score.*
-
-### Should the offline environment be a purpose-built simulation the agent runs live against, or a replay of checkpointed real executions?
+### Is a large hand-built offline eval suite a durable asset, or does model and harness churn make it a liability?
 
 | Position A | Position B |
 |---|---|
-| Build a mini-production simulation: snapshotted databases, sidecar containers, an LLM standing in for the user, Oracle-verified tasks, and steps with per-step verifiers — indistinguishable from production so the agent cannot detect and exploit it.<br>*[From Agent Traces to Agent Simulations](../talks/from-agent-traces-to-agent-simulations.md), [Build Evals That Actually Matter](../talks/build-evals-that-actually-matter.md), [Production Evals For Agentic AI Systems](../talks/production-evals-for-agentic-ai-systems.md)* | Don't simulate — checkpoint and replay. Grounding every counterfactual in a previously recorded execution (code, artifacts, container state) makes simulations trustworthy in a way ungrounded ones are not; record real tool responses as checked-in fixtures rather than authoring an environment.<br>*[Your Agents Need a Save Button](../talks/your-agents-need-a-save-button.md), [Medic for Apache Spark - First Aid for Failing Jobs](../talks/medic-for-apache-spark-first-aid-for-failing-jobs.md)* |
+| Every company shipping agents needs its own benchmark, treated as engineering: pinned dependencies, its own CI pipeline, 80/20 train/validation splits, held-out sets, Oracle solutions per task. Model rollouts are gated on the full suite showing the new model is strictly better than the incumbent, and the bottleneck is the skill of writing high-quality evals, not tooling.<br>*[From Agent Traces to Agent Simulations](../talks/from-agent-traces-to-agent-simulations.md), [Build Evals That Actually Matter](../talks/build-evals-that-actually-matter.md), [Claude Fable, Claude Tag, and Anthropic's Culture](../talks/claude-fable-claude-tag-and-anthropics-culture.md), [Medic for Apache Spark - First Aid for Failing Jobs](../talks/medic-for-apache-spark-first-aid-for-failing-jobs.md)* | Teams should not spend months building eval sets, because a new model or a harness switch breaks them — moving to the Claude Code CLI invalidated roughly 80% of tool-call evals. The proof that these suites are not load-bearing is that almost no team would delay a model upgrade by two weeks to update them; evals should instead be lightweight local tests living in code alongside the harness.<br>*[Designing Agents (The Floor Is the Frontier)](../talks/designing-agents-the-floor-is-the-frontier.md)* |
 
-*Why it matters: Simulation covers edge cases and tool failures that never occurred in production but costs an environment-authoring team; replay is cheap and faithful but can only re-examine paths the system already took, so it cannot test genuinely new scenarios.*
+*Why it matters: A team that treats the benchmark as long-lived infrastructure will pay continuous maintenance and may still be blocked by every model release; a team that treats evals as disposable tests loses the regression coverage that makes 'strictly better than the incumbent' a checkable claim.*
+
+### Can an LLM be trusted to grade offline eval runs, or must the grader be deterministic?
+
+| Position A | Position B |
+|---|---|
+| Graders must be deterministic and programmatic — Oracle solutions, environment-state verifiers, exploit checks, measurable conditions. LLM judges self-report success in domains where success is exactly what is in question, and they return different answers across runs on the same input, which makes them unusable as an optimization target.<br>*[Teaching AI to Find Real Vulnerabilities](../talks/teaching-ai-to-find-real-vulnerabilities.md), [Stop Burning Tokens: Why self-improvement needs domain expertise first](../talks/stop-burning-tokens-why-self-improvement-needs-domain-expertise-first.md), [From Agent Traces to Agent Simulations](../talks/from-agent-traces-to-agent-simulations.md), [Using RL Agent to Detect and Remediate ETL Pipeline Failures](../talks/using-rl-agent-to-detect-and-remediate-etl-pipeline-failures.md)* | LLM and agent judges are the correct grading mechanism for agent trajectories, provided they are validated like binary classifiers against hand labels and scored on precision and recall; the frontier is agent-as-a-judge doing adaptive trace analysis, because fixed rubrics cannot catch multi-step agent failures.<br>*[Build Evals That Actually Matter](../talks/build-evals-that-actually-matter.md), [The Future of Evals: From LLM as a Judge to Agent as a Judge](../talks/the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge.md)* |
+
+*Why it matters: Deterministic verification bounds what you can put in the suite to tasks with checkable end states, while LLM judging covers open-ended trajectories at the cost of a grader that itself drifts. Choosing wrong means either a suite that cannot express your real task or a gate that quietly moves under you.*
 
 ## Practical Guidance
 
 **Do:**
 
-- Sample eval cases from production traffic and mutate them to cover both golden paths and edge cases like tool failures and database problems, mirroring integration test design
-- Construct an Oracle solution for every benchmark task first, to prove the task is solvable before admitting it to the suite
-- Hand-label ~100 examples pass/fail, split train/dev/test, and score the judge on precision and recall like a binary classifier
-- Replace scalar quality scores with binary domain-specific checks — 'is the answer grounded in retrieved context, yes/no' rather than 'correctness: 0.7'
-- Fine-tune the user simulator on real customer verbatims until the evaluation score goes down, and treat the drop as evidence of realism
-- Attach a confidence interval to every reported score; treat 84% vs 88% on 50 traces as indistinguishable
-- Hold out a test set (roughly 80/20) that the agent never saw during experimentation, and re-run the whole gate whenever the base model changes
-- Treat the benchmark as software with its own CI pipeline: pinned dependencies, pinned base images, fixture-presence checks, and an Oracle-passes check
-- Record real downstream tool responses as fixtures checked into the repo so evals replay deterministically after production data is retained away
-- Verify final environment state, trace, and artifacts alongside the output, and report cost, latency, and retries next to pass rate
-- Make the eval harness config-driven (YAML) so analysts and data scientists can add cases without engineering work, and run it locally, at pre-commit, and in CI
-- Reserve expensive statistical rigor for high-stakes moments — ship decisions and leadership reporting — rather than applying it uniformly
-- Route failures to their root cause: fix them in the harness, skills, or structured output rather than in the prompt
-- Use replay cohorts of hundreds of runs, not one or two, before accepting a cheaper-model swap, and keep a human at the final ship/hold decision
+- Seed the eval dataset by sampling production traffic and mutating it to cover golden paths and edge cases, rather than prompting an LLM for ~50 test queries
+- Run every candidate task against a hand-built Oracle solution first to prove the task is solvable before it enters the benchmark
+- Capture real downstream tool responses in a record mode and check the fixtures into the repo as code, so eval runs are reproducible without live production
+- Verify final environment state, the trace, and produced artifacts — not only the agent's final output
+- Hand-label ~100 examples pass/fail, split into train/dev/test, and score the judge on precision and recall before trusting it
+- Attach a confidence interval to every reported score; treat 84% vs 88% on 50 traces as no evidence of a gain
+- Hold out a set the agent has not seen during experimentation; an 80/20 train/validation split is a reasonable default
+- Gate model rollouts on the full eval suite showing the new model is strictly better than the incumbent
+- Treat the benchmark as software with its own CI pipeline checking pinned dependencies, base images, missing fixtures, and Oracle passes
+- Measure cost, latency, and retries alongside pass rate
+- Fine-tune the user simulator on real user verbatim until the eval score goes down — a falling score means the eval got more realistic
+- Make the eval harness config-driven (YAML) so analysts and data scientists can add test cases without engineers
+- Run evals at multiple points: locally, at pre-commit, and in CI/CD as a regression suite
+- Decide on cohorts of replays, never on one or two runs, and keep a human at the final ship/no-ship decision
+- Decompose long-horizon tasks into steps with a separate prompt and verifier per step so runs can terminate early on failure
 
 **Avoid:**
 
-- Prompting an LLM for ~50 test queries and calling that an eval dataset
-- Believing a 90%+ first-pass rate — check whether your simulated user is unrealistically polite and articulate before celebrating
-- Shipping an LLM judge whose score gates nothing; a floating score no one acts on is worthless
-- Using pre-built generic metrics (helpfulness, toxicity, conciseness) as core metrics — a 0.5 helpfulness score tells you nothing to act on
-- Writing evaluation criteria before you have read raw outputs; not looking at the data breaks labels, criteria, and judge validation downstream
-- Letting the agent detect that it is in a simulation — it will reward-hack the environment instead of solving the task
-- Scoring a proxy for success (a crash, a single-bug find) instead of the real outcome; crash-triggering is saturated at 95% across frontier models and no longer distinguishes anything
-- Handing the model a hint that removes the reasoning step, such as a backtrace naming the vulnerable function
-- Assuming a benchmark task has exactly one correct answer or one planted defect — DARPA's hand-curated challenges accumulated unintended bugs in 50% of cases
-- Treating production A/B runs as apples-to-apples comparisons across differing database state and tool versions
-- Relying on manual end-to-end tests against live production when production data is retained only briefly, making regressions undetectable
-- Swapping in a cheaper model on cost and latency alone — the outcome quality loss shows up only in cohort-level replay
-- Running an auto-improvement loop against an eval with no plateau detection or escape hatch
+- Shipping an LLM-as-a-judge whose score gates no decision — it is dead weight
+- Using pre-built generic metrics (helpfulness, toxicity, conciseness) as core eval metrics; a helpfulness of 0.5 is not actionable
+- Trusting a 90%+ offline pass rate — it usually means the simulated user is unrealistically polite and articulate, not that the agent is good
+- Defining evaluation criteria fully before grading any real outputs
+- Manual end-to-end testing against live production, where data is retained only briefly and regressions become undetectable
+- Expecting A/B tests of agent variants in production to be apples-to-apples; database state and tool versions differ between runs
+- Letting the agent detect that it is running in a simulation — it will reward-hack the environment
+- Fixing eval failures by adding prohibitions to the prompt; route the fix to the harness, skills, or structured output based on root cause
+- Benchmarks that assume one vulnerability or one defect per program, or that score a crash as success
+- Feeding the model a backtrace pointing at the vulnerable function — it removes the reasoning the eval is meant to measure
+- Clustering traces as your issue-detection method: clusters are hard to track over time and one cluster can span unrelated root causes
+- Running A/B tests or experiments when you have five to ten users
+- Asking an agent to find anomalies; use deterministic signals to surface candidates and let the agent investigate them
 
 ## Notable Outliers
 
-- Fine-tune your user simulator until the evaluation score goes down — a falling offline score is the signal that the eval got more realistic, not that quality dropped. ([Build Evals That Actually Matter](../talks/build-evals-that-actually-matter.md), [16:55](https://www.youtube.com/watch?v=3z2uT5aDx_Y&t=1015s))
-- A model that passes τ-bench 60% of the time is self-consistent only about a quarter of the time, so a single replay is an anecdote rather than evidence. ([Your Agents Need a Save Button](../talks/your-agents-need-a-save-button.md), [14:05](https://www.youtube.com/watch?v=bZISsg7H7DA&t=845s))
-- Oracle retrieval — handing the agent exactly the right memory — still does not reach maximum task performance, because the model can ignore or misuse correct context. ([Memory Harnesses for Long-Running Research Agents](../talks/memory-harnesses-for-long-running-research-agents.md), [8:29](https://www.youtube.com/watch?v=R3-anFK1YM8&t=509s))
-- Rhetorical authenticity must be explicitly excluded as a scoring axis, because rewarding voice validates the exact failure the instrument exists to catch. ([The Miranda Hypothesis: How Hamilton Poisoned Persona Evals](../talks/the-miranda-hypothesis-how-hamilton-poisoned-persona-evals.md), [47:19](https://www.youtube.com/watch?v=IJXjTLPzvAU&t=2839s))
-- Eval tooling is not the constraint for customers; the skill of writing high-quality evals is what takes a long time. ([Claude Fable, Claude Tag, and Anthropic's Culture](../talks/claude-fable-claude-tag-and-anthropics-culture.md), [49:35](https://www.youtube.com/watch?v=uU5Gv2h8-9g&t=2975s))
-- Most of the gain from a self-improvement loop arrives in the first iteration off a clear failure signal — 68% to 78% — after which it plateaus, partly because the ground-truth labels themselves are noisy. ([Stop Burning Tokens: Why self-improvement needs domain expertise first](../talks/stop-burning-tokens-why-self-improvement-needs-domain-expertise-first.md), [11:24](https://www.youtube.com/watch?v=eAXxdtNlK04&t=684s))
-- Under a broken benchmark definition Kimi appeared to succeed at hacking 50% of the time; under a real exploitation criterion it scored 0%. ([Teaching AI to Find Real Vulnerabilities](../talks/teaching-ai-to-find-real-vulnerabilities.md), [21:32](https://www.youtube.com/watch?v=ZFxh7sqbUZo&t=1292s))
+- Switching harnesses — for instance moving to the Claude Code CLI — invalidates roughly 80% of a hand-built tool-call eval set. ([Designing Agents (The Floor Is the Frontier)](../talks/designing-agents-the-floor-is-the-frontier.md), [4:14](https://www.youtube.com/watch?v=jHMiYtjoJfA&t=254s))
+- Fine-tune the LLM user simulator until the evaluation score goes down; a falling score is the signal the eval finally got realistic. ([Build Evals That Actually Matter](../talks/build-evals-that-actually-matter.md), [16:55](https://www.youtube.com/watch?v=3z2uT5aDx_Y&t=1015s))
+- Crash-triggering has saturated as a metric — top models hit 95% (39/41) on V8 CVEs — while full control-flow hijack still separates models cleanly at 73% and 68% versus 0%. ([Teaching AI to Find Real Vulnerabilities](../talks/teaching-ai-to-find-real-vulnerabilities.md), [22:12](https://www.youtube.com/watch?v=ZFxh7sqbUZo&t=1332s))
+- Rhetorical authenticity must be explicitly excluded as a scoring axis, because rewarding a persona for sounding right validates the exact failure the eval exists to catch. ([The Miranda Hypothesis: How Hamilton Poisoned Persona Evals](../talks/the-miranda-hypothesis-how-hamilton-poisoned-persona-evals.md), [47:19](https://www.youtube.com/watch?v=IJXjTLPzvAU&t=2839s))
+- Oracle retrieval does not reach maximum task performance: handing the agent the correct memory does not guarantee it uses it, so retrieval-quality evals overstate achievable ceilings. ([Memory Harnesses for Long-Running Research Agents](../talks/memory-harnesses-for-long-running-research-agents.md), [8:29](https://www.youtube.com/watch?v=R3-anFK1YM8&t=509s))
+- Hand-curating benchmark programs with exactly one known bug is infeasible — 50% of DARPA's $60M Cyber Grand Challenge problems contained unintended exploitable bugs. ([Teaching AI to Find Real Vulnerabilities](../talks/teaching-ai-to-find-real-vulnerabilities.md), [12:38](https://www.youtube.com/watch?v=ZFxh7sqbUZo&t=758s))
 
 ## All Talks
 
 - [AI-Driven Multi-Document Correlation for Financial Compliance](../talks/ai-driven-multi-document-correlation-for-financial-compliance.md)
 - [Build Evals That Actually Matter](../talks/build-evals-that-actually-matter.md)
 - [Claude Fable, Claude Tag, and Anthropic's Culture](../talks/claude-fable-claude-tag-and-anthropics-culture.md)
+- [Designing Agents (The Floor Is the Frontier)](../talks/designing-agents-the-floor-is-the-frontier.md)
 - [From Agent Traces to Agent Simulations](../talks/from-agent-traces-to-agent-simulations.md)
 - [Medic for Apache Spark - First Aid for Failing Jobs](../talks/medic-for-apache-spark-first-aid-for-failing-jobs.md)
 - [Memory Harnesses for Long-Running Research Agents](../talks/memory-harnesses-for-long-running-research-agents.md)
@@ -189,13 +160,16 @@ Supporting talks: [Build Evals That Actually Matter](../talks/build-evals-that-a
 - [The Future of Evals: From LLM as a Judge to Agent as a Judge](../talks/the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge.md)
 - [The Messy Reality of Scale: Synthetic Data and Pre-Training](../talks/the-messy-reality-of-scale-synthetic-data-and-pre-training.md)
 - [The Miranda Hypothesis: How Hamilton Poisoned Persona Evals](../talks/the-miranda-hypothesis-how-hamilton-poisoned-persona-evals.md)
+- [Using RL Agent to Detect and Remediate ETL Pipeline Failures](../talks/using-rl-agent-to-detect-and-remediate-etl-pipeline-failures.md)
 - [Your Agents Need a Save Button](../talks/your-agents-need-a-save-button.md)
 
 ## Speakers
 
 - [Akshay Sharma](../speakers/akshay-sharma.md)
+- [Anna Marie Benzon](../speakers/anna-marie-benzon.md)
 - [Annabell Schäfer](../speakers/annabell-schafer.md)
 - [Aparna Dhinakaran](../speakers/aparna-dhinakaran.md)
+- [Ben Hylak](../speakers/ben-hylak.md)
 - [Cat Wu](../speakers/cat-wu.md)
 - [David Brumley](../speakers/david-brumley.md)
 - [Drasko Profirovic](../speakers/drasko-profirovic.md)

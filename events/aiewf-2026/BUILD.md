@@ -10,12 +10,13 @@ Corpus built 2026-08-12 through 2026-08-14 from the AI Engineer World's Fair 202
 ## Scope, before anything else
 
 The fair's official schedule listed 561 sessions: 412 sessions, 102 sponsor slots, 25
-keynotes, and 22 workshops. This corpus covers the 231 talks that had been published to
-the conference's YouTube channel at build time. Talks were still premiering during the
-build, and 12 more were private and may go public later.
+keynotes, and 22 workshops. This corpus covers the 246 talks that had been published to
+the conference's YouTube channel as of the 2026-08-19 refresh (231 at the original build).
+Talks were still premiering during the build, and 8 official-playlist videos remain private
+and may go public later.
 
 So this is a large sample of the fair, not a complete record of it. Every count in this
-repo (231 talks, 134 concepts, 248 speakers, 4,633 quotes) describes that sample. Any
+repo (246 talks, 134 concepts, 264 speakers, 4,925 quotes) describes that sample. Any
 claim about "the conference" is really a claim about the published video subset, and any
 topic that only came up in a workshop or an unpublished session is invisible here.
 
@@ -75,7 +76,7 @@ prose behind.
 ## Quote verification
 
 This project publishes quotes attributed to named people at real companies. One fabricated
-quote would end the credibility of all 4,633 of them, so verification is a hard gate, not a
+quote would end the credibility of all 4,925 of them, so verification is a hard gate, not a
 review step.
 
 It is deterministic, with no model in the loop. `verify_quotes.py` matches a normalized
@@ -224,7 +225,7 @@ counts as evidence, what to throw away, and where to refuse to let a model be th
 
 ## Known limitations
 
-1. **Coverage.** 231 of 561 scheduled sessions, limited to what the conference published as
+1. **Coverage.** 246 of 561 scheduled sessions, limited to what the conference published as
    video. See the scope section above.
 2. **Three keynote blocks are multi-talk videos**, not single talks, and are handled
    separately from the main Pass A path.
@@ -234,10 +235,29 @@ counts as evidence, what to throw away, and where to refuse to let a model be th
 4. **Company data is long-tailed**, with 151 distinct orgs, most having a single talk. Any
    lab-versus-lab comparison drawn from this corpus rests on roughly 5 to 8 talks per lab.
    That is real, but it is a small sample, and it should not be read as a survey.
-5. **75 talks have no track** from the schedule join. Playlist membership covers some of
+5. **72 talks have no track** from the schedule join. Playlist membership covers some of
    this, not all.
 6. **Maturity labels come from a deliberately adversarial rubric.** The Pass C prompt tells
    the model to hunt for disagreement and warns it that unanimity across 20 or more talks
    usually means it did not read closely enough. That is probably why the settled bucket is
    empty. See the caveat in the [README](README.md#on-the-headline-finding) before quoting
    the headline number.
+
+## Refresh 2026-08-19
+
+Re-fetched the conference playlists and found 15 newly published talks, taking the corpus
+from 231 to 246. Eight of them came from a playlist that did not exist at build time, the
+new "Generative Media: AI Engineer World's Fair 2026" track. One further candidate turned
+out to be a re-upload of an existing talk and was deduplicated by slug in `normalize.py`;
+8 videos on the official playlists are still private. Both provenance gates were re-applied
+to every new talk: zero pre-2026 upload dates, and membership in an official 2026 playlist.
+
+Pass A ran on the 15 new talks, and quote verification was re-run across the whole corpus
+with 100% verbatim retained (4,925 quotes, zero drops). The concept vocabulary did not
+move: still 134 canonical concepts, with the new talks mapping onto existing ones rather
+than forcing new vocabulary. 58 concepts gained talks and had their Pass C synthesis
+regenerated. The playlist enrichment refresh also gave 4 previously untracked existing
+talks a track and added 36 richer topic links.
+
+The headline finding survived the refresh: still zero settled concepts, with the
+distribution shifting from 87/43/4 to 80 consolidating, 50 contested, 4 frontier.

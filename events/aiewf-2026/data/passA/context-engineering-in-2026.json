@@ -1,0 +1,293 @@
+{
+  "is_error": false,
+  "duration_api_ms": 91233,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "f6e41ced-26b0-42ff-9f7d-23b05c4b881a",
+  "total_cost_usd": 0.4721005,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 25366,
+    "cache_read_input_tokens": 8113,
+    "output_tokens": 7912,
+    "output_tokens_details": {
+      "thinking_tokens": 3659
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 25366,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 7912,
+        "cache_read_input_tokens": 8113,
+        "cache_creation_input_tokens": 25366,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 25366
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 16504,
+      "outputTokens": 14,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.016574000000000002,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 7912,
+      "cacheReadInputTokens": 8113,
+      "cacheCreationInputTokens": 25366,
+      "webSearchRequests": 0,
+      "costUSD": 0.4555265,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Three speakers from Towards AI report on a large battery of experiments run against their production AI tutor to answer one question: does context compaction actually help? Louis-Fran\u00e7ois Bouchard first surveys the 2026 toolkit \u2014 truncation, sliding windows, selective retention, summarization, offloading to files/wikis, RAG \u2014 then argues that prompt caching has changed the economics so much that summarization is often a trap, since any transformation of the context invalidates the cache and you must compress ~50x to break even. Omar Solano shows the eval harness and the headline result: across 11 presets, doing nothing to the context beat their own hand-tuned production defaults on recall, cost, and latency simultaneously, because clearing tool outputs just forces the agent to re-retrieve. Samridhi Vaid extends this to cheaper models, longer contexts, and local deployment, finding keeping-everything holds up to 800k tokens and 95% detail recall on DeepSeek, but collapses locally where a 32K window kills caching and retrieval becomes mandatory. Worth watching if you are building an agent harness and want empirical numbers rather than folklore about when to compact.\",\n  \"key_points\": [\n    \"Prompt caching inverts the usual cost intuition: because cached tokens can be up to 50x cheaper, the run that sent the most tokens (full history, 97% cached) was the cheapest to operate, while summarization forces fresh reads and writes every turn.\",\n    \"For compaction to be economically worthwhile against a cached context, you need to compress by more than 50x, which is very hard to do without losing quality \u2014 so summarization is often a net loss.\",\n    \"Their hand-tuned production defaults (clear tool outputs after 5,000 tokens keeping the last five, summarize after 30,000 tokens keeping the last 20 messages) were never measured before deployment and lost to simply keeping the full history on recall, cost, and latency.\",\n    \"Clearing old tool outputs backfires because the agent then re-retrieves information it already had, adding tool calls that raise both cost and time to first token.\",\n    \"Multi-turn quality is where techniques separate: in single-turn tasks nearly every preset scored well because there weren't enough tokens to trigger the strategies at all, while production quality dropped to 38% on multi-turn.\",\n    \"Adding a second tool that let the agent browse the knowledge base with sandboxed bash commands produced identical recall to the existing hybrid-search retriever while running 50% slower, so it was cut.\",\n    \"Long-context recall held up far better than 'context rot' folklore suggests \u2014 distinctive facts were still found at 800k tokens, though recall on ambiguous facts halved.\",\n    \"Local deployment flips the conclusion entirely: with a 32K MacBook context window, caching stops helping, chat recall falls from 92\u201395% to 33%, and retrieval becomes the only viable strategy.\",\n    \"Dense semantic search alone degrades badly at scale \u2014 0% recall on facts buried in the middle at 400k tokens \u2014 while BM25 held 100%, which is why they run hybrid search.\",\n    \"Graph RAG was tested and rejected: costlier to set up and statistically tied with plain RAG on their real-user evaluations.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"So ultimately it means that summarization is potentially a trap.\",\n      \"timestamp_sec\": 1018,\n      \"why\": \"the talk's central contrarian thesis, stated in one line\"\n    },\n    {\n      \"text\": \"You need to compress by more than 50 times the context. So it can be quite difficult in some cases without losing quality.\",\n      \"timestamp_sec\": 1018,\n      \"why\": \"quantifies the break-even point that makes compaction uneconomic under caching\"\n    },\n    {\n      \"text\": \"all of this together is the is context engineering which basically means to decide what the model sees every time you call it\",\n      \"timestamp_sec\": 1265,\n      \"why\": \"the working definition of context engineering the whole talk operates under\"\n    },\n    {\n      \"text\": \"we didn't actually measure anything. It was just like oh it looks good. Okay, we will just set it set it like this.\",\n      \"timestamp_sec\": 1952,\n      \"why\": \"candid admission that their shipped production defaults were unvalidated folklore\"\n    },\n    {\n      \"text\": \"not touching uh is actually cheaper, it's faster and we have better recall overall. So keeping everything wins on on all of these three fronts.\",\n      \"timestamp_sec\": 2731,\n      \"why\": \"the headline experimental result, sweeping all three metrics\"\n    },\n    {\n      \"text\": \"if you remove the tool outputs consistently then the agent needs to rerieve uh afterwards for information it already had. So you're just making the agent uh do more tool calls\",\n      \"timestamp_sec\": 2731,\n      \"why\": \"the causal mechanism explaining why aggressive clearing costs more, not less\"\n    },\n    {\n      \"text\": \"on Deep Seek we saw um the setup that was sending the most tokens is actually the cheapest to run\",\n      \"timestamp_sec\": 3128,\n      \"why\": \"the counterintuitive cost inversion that caching creates\"\n    },\n    {\n      \"text\": \"we were still getting the best results out of it because 97% of the tokens that we had were cached\",\n      \"timestamp_sec\": 3128,\n      \"why\": \"the cache-hit number that makes the full-history strategy affordable\"\n    },\n    {\n      \"text\": \"whereas if I summarize first or if I compact um the context I had it only gave me the answer back 32% of the time.\",\n      \"timestamp_sec\": 3065,\n      \"why\": \"direct quality cost of compaction against the 95% full-history baseline\"\n    },\n    {\n      \"text\": \"So we can see that up until 800k tokens as well the model was not missing out on those facts.\",\n      \"timestamp_sec\": 3233,\n      \"why\": \"empirical pushback on the assumption that long contexts inevitably rot\"\n    },\n    {\n      \"text\": \"when we increased it to like 400k tokens it was not able to facts that were buried in the middle and it started giving us like 0% recall whereas uh you know something like BM25 it still got 100% every time.\",\n      \"timestamp_sec\": 3538,\n      \"why\": \"concrete failure mode of dense-only retrieval at scale, with the lexical baseline beating it outright\"\n    },\n    {\n      \"text\": \"once the conversation doesn't fit in the window um caching was no longer helpful for us and we uh you know we have to make um the context smaller\",\n      \"timestamp_sec\": 3333,\n      \"why\": \"names the exact constraint under which compaction becomes necessary again\"\n    },\n    {\n      \"text\": \"if we have like thousand students uh you know Gemini costs us about like $40,000 40,000 a month whereas Deep Seek Deep Seek was around 1,900 a month\",\n      \"timestamp_sec\": 3631,\n      \"why\": \"a ~20x model-choice cost delta at their projected scale\"\n    },\n    {\n      \"text\": \"So the main thing to take away is that um do not compact by default. You have to name the constraint that you have and then you know look for a better alternative.\",\n      \"timestamp_sec\": 3697,\n      \"why\": \"the talk's closing prescription, framed as constraint-first rather than technique-first\"\n    },\n    {\n      \"text\": \"So just using the first tool was enough to get all the relevant information and just having this second tool was just 50% slower.\",\n      \"timestamp_sec\": 1851,\n      \"why\": \"measured rejection of agentic filesystem browsing for their workload\"\n    },\n    {\n      \"text\": \"we compared graph rag with with rag here and it's in our case it just ended up being way costlier to set up and just tie on the results\",\n      \"timestamp_sec\": 761,\n      \"why\": \"rare public negative result on graph RAG from a real deployment\"\n    },\n    {\n      \"text\": \"the main problem is not is not that it's more costly. It's also that the quality degrades\",\n      \"timestamp_sec\": 460,\n      \"why\": \"frames context bloat as a quality problem before a billing problem\"\n    },\n    {\n      \"text\": \"right now everyone is is converging towards having more and smaller skills\",\n      \"timestamp_sec\": 892,\n      \"why\": \"a field-level trend claim on skill granularity and progressive disclosure\"\n    },\n    {\n      \"text\": \"right now I think the best way to do it is to just use use your uh code code subscription or your codec subscription because it's cheaper than using the APIs.\",\n      \"timestamp_sec\": 2349,\n      \"why\": \"practical, slightly subversive advice on cutting LLM-as-judge eval costs\"\n    },\n    {\n      \"text\": \"I I didn't expect this to to get over $500, but it did.\",\n      \"timestamp_sec\": 2591,\n      \"why\": \"grounds the real price of running a serious context-strategy eval sweep\"\n    }\n  ],\n  \"concepts\": [\n    \"context engineering\",\n    \"context compaction\",\n    \"prompt caching\",\n    \"context rot\",\n    \"hybrid retrieval\",\n    \"agentic file system browsing\",\n    \"eval harness design\",\n    \"multi-turn memory recall\",\n    \"progressive disclosure\",\n    \"llm-as-a-judge grading\",\n    \"local model deployment\",\n    \"cost per turn at scale\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Summarization is usually a trap because it invalidates the provider's prompt cache, so you must compress by more than 50x for it to pay off.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1018\n    },\n    {\n      \"claim\": \"Keeping the full conversation history untouched beat every compaction preset simultaneously on memory recall, cost, and latency in their experiments.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 2731\n    },\n    {\n      \"claim\": \"Aggressively clearing old tool outputs increases total cost because the agent re-retrieves information it already had.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 2731\n    },\n    {\n      \"claim\": \"Agents should not compact by default; compaction is only justified once a named constraint (such as a context window too small for caching to apply) forces it.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 3697\n    },\n    {\n      \"claim\": \"Graph RAG was more expensive to set up and tied with plain RAG on their real-user evaluations, so it is not worth adopting unless your data is highly interconnected.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 761\n    },\n    {\n      \"claim\": \"Letting the agent browse the knowledge base with bash commands added no recall over hybrid search and made responses 50% slower.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1851\n    },\n    {\n      \"claim\": \"Long context does not necessarily rot: distinctive facts were recalled reliably up to 800k tokens without any compaction.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 3233\n    },\n    {\n      \"claim\": \"Dense semantic search alone is insufficient at large context sizes; BM25 keyword search retained 100% recall where dense retrieval dropped to 0%.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 3538\n    },\n    {\n      \"claim\": \"Single-turn benchmarks cannot distinguish context management strategies because they never accumulate enough tokens to trigger compaction at all.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 2687\n    },\n    {\n      \"claim\": \"Running local models is not a drop-in substitute for cloud for chat memory: a 32K window cut chat recall from 92\u201395% to 33%, and increasing model parameter count does not expand the context window.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 3585\n    },\n    {\n      \"claim\": \"Using a coding-agent subscription for LLM-as-judge grading is cheaper than paying per-token API prices.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 2349\n    },\n    {\n      \"claim\": \"Many small, cross-referencing skills loaded on demand are better than large monolithic ones, because progressive disclosure conserves context.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 892\n    },\n    {\n      \"claim\": \"Sub-agents add complexity without benefit for a single-purpose tutor agent, so they were deliberately not used.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 710\n    },\n    {\n      \"claim\": \"Comprehensive per-turn logging (tokens, cache hits, cost, TTFT, tool calls, user frustration) is cheap to implement and most teams skip it.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1215\n    }\n  ],\n  \"speaker_org\": \"Towards AI\"\n}",
+  "ttft_ms": 42683,
+  "ttft_stream_ms": 955,
+  "time_to_request_ms": 39,
+  "type": "result",
+  "duration_ms": 91058,
+  "uuid": "9c6c71e8-f591-4e47-83ef-91492093679b",
+  "passA": {
+    "summary": "Three speakers from Towards AI report on a large battery of experiments run against their production AI tutor to answer one question: does context compaction actually help? Louis-Fran\u00e7ois Bouchard first surveys the 2026 toolkit \u2014 truncation, sliding windows, selective retention, summarization, offloading to files/wikis, RAG \u2014 then argues that prompt caching has changed the economics so much that summarization is often a trap, since any transformation of the context invalidates the cache and you must compress ~50x to break even. Omar Solano shows the eval harness and the headline result: across 11 presets, doing nothing to the context beat their own hand-tuned production defaults on recall, cost, and latency simultaneously, because clearing tool outputs just forces the agent to re-retrieve. Samridhi Vaid extends this to cheaper models, longer contexts, and local deployment, finding keeping-everything holds up to 800k tokens and 95% detail recall on DeepSeek, but collapses locally where a 32K window kills caching and retrieval becomes mandatory. Worth watching if you are building an agent harness and want empirical numbers rather than folklore about when to compact.",
+    "key_points": [
+      "Prompt caching inverts the usual cost intuition: because cached tokens can be up to 50x cheaper, the run that sent the most tokens (full history, 97% cached) was the cheapest to operate, while summarization forces fresh reads and writes every turn.",
+      "For compaction to be economically worthwhile against a cached context, you need to compress by more than 50x, which is very hard to do without losing quality \u2014 so summarization is often a net loss.",
+      "Their hand-tuned production defaults (clear tool outputs after 5,000 tokens keeping the last five, summarize after 30,000 tokens keeping the last 20 messages) were never measured before deployment and lost to simply keeping the full history on recall, cost, and latency.",
+      "Clearing old tool outputs backfires because the agent then re-retrieves information it already had, adding tool calls that raise both cost and time to first token.",
+      "Multi-turn quality is where techniques separate: in single-turn tasks nearly every preset scored well because there weren't enough tokens to trigger the strategies at all, while production quality dropped to 38% on multi-turn.",
+      "Adding a second tool that let the agent browse the knowledge base with sandboxed bash commands produced identical recall to the existing hybrid-search retriever while running 50% slower, so it was cut.",
+      "Long-context recall held up far better than 'context rot' folklore suggests \u2014 distinctive facts were still found at 800k tokens, though recall on ambiguous facts halved.",
+      "Local deployment flips the conclusion entirely: with a 32K MacBook context window, caching stops helping, chat recall falls from 92\u201395% to 33%, and retrieval becomes the only viable strategy.",
+      "Dense semantic search alone degrades badly at scale \u2014 0% recall on facts buried in the middle at 400k tokens \u2014 while BM25 held 100%, which is why they run hybrid search.",
+      "Graph RAG was tested and rejected: costlier to set up and statistically tied with plain RAG on their real-user evaluations."
+    ],
+    "notable_quotes": [
+      {
+        "text": "So ultimately it means that summarization is potentially a trap.",
+        "timestamp_sec": 1018,
+        "why": "the talk's central contrarian thesis, stated in one line"
+      },
+      {
+        "text": "You need to compress by more than 50 times the context. So it can be quite difficult in some cases without losing quality.",
+        "timestamp_sec": 1018,
+        "why": "quantifies the break-even point that makes compaction uneconomic under caching"
+      },
+      {
+        "text": "all of this together is the is context engineering which basically means to decide what the model sees every time you call it",
+        "timestamp_sec": 1265,
+        "why": "the working definition of context engineering the whole talk operates under"
+      },
+      {
+        "text": "we didn't actually measure anything. It was just like oh it looks good. Okay, we will just set it set it like this.",
+        "timestamp_sec": 1952,
+        "why": "candid admission that their shipped production defaults were unvalidated folklore"
+      },
+      {
+        "text": "not touching uh is actually cheaper, it's faster and we have better recall overall. So keeping everything wins on on all of these three fronts.",
+        "timestamp_sec": 2731,
+        "why": "the headline experimental result, sweeping all three metrics"
+      },
+      {
+        "text": "if you remove the tool outputs consistently then the agent needs to rerieve uh afterwards for information it already had. So you're just making the agent uh do more tool calls",
+        "timestamp_sec": 2731,
+        "why": "the causal mechanism explaining why aggressive clearing costs more, not less"
+      },
+      {
+        "text": "on Deep Seek we saw um the setup that was sending the most tokens is actually the cheapest to run",
+        "timestamp_sec": 3128,
+        "why": "the counterintuitive cost inversion that caching creates"
+      },
+      {
+        "text": "we were still getting the best results out of it because 97% of the tokens that we had were cached",
+        "timestamp_sec": 3128,
+        "why": "the cache-hit number that makes the full-history strategy affordable"
+      },
+      {
+        "text": "whereas if I summarize first or if I compact um the context I had it only gave me the answer back 32% of the time.",
+        "timestamp_sec": 3065,
+        "why": "direct quality cost of compaction against the 95% full-history baseline"
+      },
+      {
+        "text": "So we can see that up until 800k tokens as well the model was not missing out on those facts.",
+        "timestamp_sec": 3233,
+        "why": "empirical pushback on the assumption that long contexts inevitably rot"
+      },
+      {
+        "text": "when we increased it to like 400k tokens it was not able to facts that were buried in the middle and it started giving us like 0% recall whereas uh you know something like BM25 it still got 100% every time.",
+        "timestamp_sec": 3538,
+        "why": "concrete failure mode of dense-only retrieval at scale, with the lexical baseline beating it outright"
+      },
+      {
+        "text": "once the conversation doesn't fit in the window um caching was no longer helpful for us and we uh you know we have to make um the context smaller",
+        "timestamp_sec": 3333,
+        "why": "names the exact constraint under which compaction becomes necessary again"
+      },
+      {
+        "text": "if we have like thousand students uh you know Gemini costs us about like $40,000 40,000 a month whereas Deep Seek Deep Seek was around 1,900 a month",
+        "timestamp_sec": 3631,
+        "why": "a ~20x model-choice cost delta at their projected scale"
+      },
+      {
+        "text": "So the main thing to take away is that um do not compact by default. You have to name the constraint that you have and then you know look for a better alternative.",
+        "timestamp_sec": 3697,
+        "why": "the talk's closing prescription, framed as constraint-first rather than technique-first"
+      },
+      {
+        "text": "So just using the first tool was enough to get all the relevant information and just having this second tool was just 50% slower.",
+        "timestamp_sec": 1851,
+        "why": "measured rejection of agentic filesystem browsing for their workload"
+      },
+      {
+        "text": "we compared graph rag with with rag here and it's in our case it just ended up being way costlier to set up and just tie on the results",
+        "timestamp_sec": 761,
+        "why": "rare public negative result on graph RAG from a real deployment"
+      },
+      {
+        "text": "the main problem is not is not that it's more costly. It's also that the quality degrades",
+        "timestamp_sec": 460,
+        "why": "frames context bloat as a quality problem before a billing problem"
+      },
+      {
+        "text": "right now everyone is is converging towards having more and smaller skills",
+        "timestamp_sec": 892,
+        "why": "a field-level trend claim on skill granularity and progressive disclosure"
+      },
+      {
+        "text": "right now I think the best way to do it is to just use use your uh code code subscription or your codec subscription because it's cheaper than using the APIs.",
+        "timestamp_sec": 2349,
+        "why": "practical, slightly subversive advice on cutting LLM-as-judge eval costs"
+      },
+      {
+        "text": "I I didn't expect this to to get over $500, but it did.",
+        "timestamp_sec": 2591,
+        "why": "grounds the real price of running a serious context-strategy eval sweep"
+      }
+    ],
+    "concepts": [
+      "context engineering",
+      "context compaction",
+      "prompt caching",
+      "context rot",
+      "hybrid retrieval",
+      "agentic file system browsing",
+      "eval harness design",
+      "multi-turn memory recall",
+      "progressive disclosure",
+      "llm-as-a-judge grading",
+      "local model deployment",
+      "cost per turn at scale"
+    ],
+    "positions": [
+      {
+        "claim": "Summarization is usually a trap because it invalidates the provider's prompt cache, so you must compress by more than 50x for it to pay off.",
+        "confidence": "stated",
+        "timestamp_sec": 1018
+      },
+      {
+        "claim": "Keeping the full conversation history untouched beat every compaction preset simultaneously on memory recall, cost, and latency in their experiments.",
+        "confidence": "stated",
+        "timestamp_sec": 2731
+      },
+      {
+        "claim": "Aggressively clearing old tool outputs increases total cost because the agent re-retrieves information it already had.",
+        "confidence": "stated",
+        "timestamp_sec": 2731
+      },
+      {
+        "claim": "Agents should not compact by default; compaction is only justified once a named constraint (such as a context window too small for caching to apply) forces it.",
+        "confidence": "stated",
+        "timestamp_sec": 3697
+      },
+      {
+        "claim": "Graph RAG was more expensive to set up and tied with plain RAG on their real-user evaluations, so it is not worth adopting unless your data is highly interconnected.",
+        "confidence": "stated",
+        "timestamp_sec": 761
+      },
+      {
+        "claim": "Letting the agent browse the knowledge base with bash commands added no recall over hybrid search and made responses 50% slower.",
+        "confidence": "stated",
+        "timestamp_sec": 1851
+      },
+      {
+        "claim": "Long context does not necessarily rot: distinctive facts were recalled reliably up to 800k tokens without any compaction.",
+        "confidence": "stated",
+        "timestamp_sec": 3233
+      },
+      {
+        "claim": "Dense semantic search alone is insufficient at large context sizes; BM25 keyword search retained 100% recall where dense retrieval dropped to 0%.",
+        "confidence": "stated",
+        "timestamp_sec": 3538
+      },
+      {
+        "claim": "Single-turn benchmarks cannot distinguish context management strategies because they never accumulate enough tokens to trigger compaction at all.",
+        "confidence": "stated",
+        "timestamp_sec": 2687
+      },
+      {
+        "claim": "Running local models is not a drop-in substitute for cloud for chat memory: a 32K window cut chat recall from 92\u201395% to 33%, and increasing model parameter count does not expand the context window.",
+        "confidence": "stated",
+        "timestamp_sec": 3585
+      },
+      {
+        "claim": "Using a coding-agent subscription for LLM-as-judge grading is cheaper than paying per-token API prices.",
+        "confidence": "stated",
+        "timestamp_sec": 2349
+      },
+      {
+        "claim": "Many small, cross-referencing skills loaded on demand are better than large monolithic ones, because progressive disclosure conserves context.",
+        "confidence": "stated",
+        "timestamp_sec": 892
+      },
+      {
+        "claim": "Sub-agents add complexity without benefit for a single-purpose tutor agent, so they were deliberately not used.",
+        "confidence": "stated",
+        "timestamp_sec": 710
+      },
+      {
+        "claim": "Comprehensive per-turn logging (tokens, cache hits, cost, TTFT, tool calls, user frustration) is cheap to implement and most teams skip it.",
+        "confidence": "stated",
+        "timestamp_sec": 1215
+      }
+    ],
+    "speaker_org": "Towards AI"
+  },
+  "_meta": {
+    "slug": "context-engineering-in-2026",
+    "video_id": "WP3hjUXd918",
+    "url": "https://www.youtube.com/watch?v=WP3hjUXd918",
+    "word_count": 10435,
+    "wall_sec": 92.3,
+    "run_at": "2026-08-19T13:13:28Z",
+    "effort": "default"
+  }
+}

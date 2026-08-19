@@ -4,15 +4,15 @@ type: "concept"
 slug: "model-portability"
 tier: "supporting"
 maturity: "consolidating"
-talk_count: 19
-speaker_count: 26
+talk_count: 20
+speaker_count: 27
 ---
 
 # model portability
 
 **Maturity: CONSOLIDATING** — Consolidating — converging practice, some open edges
 
-*Supporting concept* &middot; discussed across **19** talk(s) by **26** speaker(s)
+*Supporting concept* &middot; discussed across **20** talk(s) by **27** speaker(s)
 
 **Definition:** Keeping a system swappable across models, harnesses, and vendors so no single provider becomes structurally load-bearing.
 
@@ -20,11 +20,11 @@ speaker_count: 26
 
 ## State of Practice
 
-Model portability has moved from a procurement talking point to an architectural requirement, and the conference's operators treat single-vendor dependence as a business risk rather than a technical convenience. The enabling change is that open-weight models (GLM 5.2, MiniMax M3, Kimi, Qwen 3.5/3.6) are now good enough for a large share of production coding and agent work at a fraction of frontier cost, which gives buyers a credible walk-away threat and makes routing across a price/quality frontier practical. The mechanism practitioners endorse is a fixed contract above the model — a typed task signature, a versioned agent spec, an append-only log, or an agent-agnostic harness — so that changing providers is an adapter change rather than a rewrite, with evals held constant across the swap. But portability of the interface is not portability of behavior: several talks report that models fail in different directions (GPT gets arithmetic right and methodology wrong, Opus the reverse), that Opus 4.8 regressed against 4.7 on long-horizon finance rubrics, and that an unchanged skill file broke on a newer model purely because of instruction placement. The resulting practice is defensive: benchmark continuously on your own repo rather than SWE-bench, validate swaps with cohort-level replay of real production checkpoints, and hold open-weight models in the stack at least as negotiation leverage. The live argument is no longer whether to stay swappable but how deep swappability actually goes, and whether the load-bearing lock-in has already migrated from the model to the log, the traces, and the workflow.
+Portability has stopped being a philosophical stance and become an operating discipline: teams assume the best model changes weekly, so they design a stable contract — a fixed task signature, an agent-agnostic harness, an owned event log — and treat the model as a swappable implementation detail underneath it. The economics forced this. Per-token prices fall while tokens per session rise, model families reprice ~40% at each version bump, and speakers repeatedly note the supplier is also the competitor, so optionality is framed as negotiating leverage rather than engineering hygiene. Open-weight models (GLM 5.2, MiniMax M3, Qwen 3.5/3.6, Kimi) are now treated as real substitutes for a large fraction of production traffic, which is what makes the threat to walk credible; several teams report cutting spend by half or more by defaulting to them behind an internal gateway. The unsolved part is verification: swapping models is cheap syntactically and expensive behaviorally, because a model upgrade can break a skill with zero code changes, Opus 4.8 regresses against 4.7 on long-horizon finance rubrics, and GPT and Claude fail in opposite directions on the same task. The consequence is that portability work has migrated from abstraction layers to evaluation infrastructure: benchmark on your own repo, replay real production checkpoints at cohort scale, and re-run evals on every model bump. A minority argue the deepest lock-in was never the model at all but the log, traces, and session state that a managed provider quietly comes to own.
 
 ## Consensus
 
-### Committing to a single model provider is a strategic error; optionality — the credible ability to walk — is the leverage, and no discount or feature access is worth losing it.
+### Committing to a single model provider destroys the optionality that is your only leverage, and no volume discount or feature advantage compensates for it.
 
 Support: **7** talk(s)
 
@@ -32,29 +32,39 @@ Support: **7** talk(s)
 >
 > — [Notion's Token Town](../talks/notions-token-town.md), [7:35](https://www.youtube.com/watch?v=-I5W5QVAT8E&t=455s)
 
-Supporting talks: [Notion's Token Town](../talks/notions-token-town.md), [Multiplayer agentic engineering](../talks/multiplayer-agentic-engineering.md), [How Forward Deployed Engineering is done at Factory](../talks/how-forward-deployed-engineering-is-done-at-factory.md), [The Log Is The Agent](../talks/the-log-is-the-agent.md), [Open Source Is Dead. Long Live Open Source.](../talks/open-source-is-dead-long-live-open-source.md), [State of the Union: Why Local, Why Now](../talks/state-of-the-union-why-local-why-now.md), [Local Models: Trust, Control, Optimization](../talks/local-models-trust-control-optimization.md)
+Supporting talks: [Notion's Token Town](../talks/notions-token-town.md), [Multiplayer agentic engineering](../talks/multiplayer-agentic-engineering.md), [How Forward Deployed Engineering is done at Factory](../talks/how-forward-deployed-engineering-is-done-at-factory.md), [The Log Is The Agent](../talks/the-log-is-the-agent.md), [Open Source Is Dead. Long Live Open Source.](../talks/open-source-is-dead-long-live-open-source.md), [State of the Union: Why Local, Why Now](../talks/state-of-the-union-why-local-why-now.md), [The Agentic AI Engineer](../talks/the-agentic-ai-engineer.md)
 
-### Open-weight models have reached the quality bar for most production work, which is what makes portability an exercisable option rather than a theoretical one.
+### Open-weight models have crossed a capability threshold where raw frontier intelligence is no longer decisive for most production work, which is what makes vendor substitution actually credible rather than rhetorical.
 
-Support: **8** talk(s)
+Support: **9** talk(s)
 
-> "we're seeing with models like M3 and GLM and Kimmy and and all those models that um the open-source frontier really can catch up. Um and and it's it's not even that far behind"
+> "open models have basically hit an inflection point in intelligence that we at LangChain don't reach for the frontier models for every single use case"
 >
-> — [Agents at Scale: Inside MiniMax's Model and the Infrastructure Behind It](../talks/agents-at-scale-inside-minimaxs-model-and-the-infrastructure-behind-it.md), [18:09](https://www.youtube.com/watch?v=AVMr9PMINyo&t=1089s)
+> — [Improving Agents is a Data Mining Problem](../talks/improving-agents-is-a-data-mining-problem.md), [7:15](https://www.youtube.com/watch?v=CvRngaQZQ3Y&t=435s)
 
-Supporting talks: [Multiplayer agentic engineering](../talks/multiplayer-agentic-engineering.md), [Open Source Is Dead. Long Live Open Source.](../talks/open-source-is-dead-long-live-open-source.md), [Notion's Token Town](../talks/notions-token-town.md), [State of Data](../talks/state-of-data.md), [Local Models: Trust, Control, Optimization](../talks/local-models-trust-control-optimization.md), [The Desktop Frontier](../talks/the-desktop-frontier.md), [Agents at Scale: Inside MiniMax's Model and the Infrastructure Behind It](../talks/agents-at-scale-inside-minimaxs-model-and-the-infrastructure-behind-it.md), [State of the Union: Why Local, Why Now](../talks/state-of-the-union-why-local-why-now.md)
+Supporting talks: [Improving Agents is a Data Mining Problem](../talks/improving-agents-is-a-data-mining-problem.md), [Open Source Is Dead. Long Live Open Source.](../talks/open-source-is-dead-long-live-open-source.md), [Multiplayer agentic engineering](../talks/multiplayer-agentic-engineering.md), [Notion's Token Town](../talks/notions-token-town.md), [Local Models: Trust, Control, Optimization](../talks/local-models-trust-control-optimization.md), [State of Data](../talks/state-of-data.md), [Agents at Scale: Inside MiniMax's Model and the Infrastructure Behind It](../talks/agents-at-scale-inside-minimaxs-model-and-the-infrastructure-behind-it.md), [State of the Union: Why Local, Why Now](../talks/state-of-the-union-why-local-why-now.md), [The Desktop Frontier](../talks/the-desktop-frontier.md)
 
-### Portability comes from a stable abstraction above the model — a fixed task signature, an implementation-independent agent spec, an agent-agnostic harness, or an owned append-only log — so a provider change is an adapter/config change, not a rewrite.
+### Portability comes from putting a stable contract above the model — a fixed input/output interface, a framework-independent spec, or an agent-agnostic harness — so provider migration becomes an adapter change rather than a rewrite.
 
-Support: **6** talk(s)
+Support: **5** talk(s)
 
 > "A new model comes out, and I can change that. It's super easy cuz my interface is fixed like that."
 >
 > — [The Unreasonable Effectiveness of Separating the Task from the Model](../talks/the-unreasonable-effectiveness-of-separating-the-task-from-the-model.md), [3:12](https://www.youtube.com/watch?v=GgLQ02aO-hs&t=192s)
 
-Supporting talks: [The Unreasonable Effectiveness of Separating the Task from the Model](../talks/the-unreasonable-effectiveness-of-separating-the-task-from-the-model.md), [The Log Is The Agent](../talks/the-log-is-the-agent.md), [The Agentic AI Engineer](../talks/the-agentic-ai-engineer.md), [A Genius With Amnesia](../talks/a-genius-with-amnesia.md), [Your Agents Need a Save Button](../talks/your-agents-need-a-save-button.md), [DeepSWE: A Contamination-Resistant Coding Benchmark](../talks/deepswe-a-contamination-resistant-coding-benchmark.md)
+Supporting talks: [The Unreasonable Effectiveness of Separating the Task from the Model](../talks/the-unreasonable-effectiveness-of-separating-the-task-from-the-model.md), [The Agentic AI Engineer](../talks/the-agentic-ai-engineer.md), [A Genius With Amnesia](../talks/a-genius-with-amnesia.md), [The Log Is The Agent](../talks/the-log-is-the-agent.md), [DeepSWE: A Contamination-Resistant Coding Benchmark](../talks/deepswe-a-contamination-resistant-coding-benchmark.md)
 
-### Traffic should be routed across a tier of models by task class rather than defaulting everything to the newest frontier model, because most tasks do not need frontier intelligence.
+### Whether a model swap is safe can only be established against your own workload — public benchmarks, single-call cost, and single-scaffold numbers do not transfer across codebases, languages, or harnesses.
+
+Support: **7** talk(s)
+
+> "Like swe bench is all in Python, we're Ruby on Rails. It is not the case that the benchmarks are identical for them."
+>
+> — [Multiplayer agentic engineering](../talks/multiplayer-agentic-engineering.md), [13:37](https://www.youtube.com/watch?v=OL7kfezynJM&t=817s)
+
+Supporting talks: [Multiplayer agentic engineering](../talks/multiplayer-agentic-engineering.md), [Notion's Token Town](../talks/notions-token-town.md), [Your Agents Need a Save Button](../talks/your-agents-need-a-save-button.md), [State of Data](../talks/state-of-data.md), [Skills are new features: Building Skill-Centric Harness](../talks/skills-are-new-features-building-skill-centric-harness.md), [The Unreasonable Effectiveness of Separating the Task from the Model](../talks/the-unreasonable-effectiveness-of-separating-the-task-from-the-model.md), [The Agentic AI Engineer](../talks/the-agentic-ai-engineer.md)
+
+### Traffic should be tiered by task rather than sent uniformly to the newest frontier model; most requests do not need frontier intelligence and some need no LLM at all.
 
 Support: **5** talk(s)
 
@@ -62,89 +72,70 @@ Support: **5** talk(s)
 >
 > — [Notion's Token Town](../talks/notions-token-town.md), [10:19](https://www.youtube.com/watch?v=-I5W5QVAT8E&t=619s)
 
-Supporting talks: [Notion's Token Town](../talks/notions-token-town.md), [Local Models: Trust, Control, Optimization](../talks/local-models-trust-control-optimization.md), [State of the Union: Why Local, Why Now](../talks/state-of-the-union-why-local-why-now.md), [The Future Is Domain-Specific Agents](../talks/the-future-is-domain-specific-agents.md), [Multiplayer agentic engineering](../talks/multiplayer-agentic-engineering.md)
-
-### Public benchmark rankings do not transfer to your stack; model and harness choices must be validated by continuous evaluation on your own codebase, traces, and trajectories.
-
-Support: **6** talk(s)
-
-> "Like swe bench is all in Python, we're Ruby on Rails. It is not the case that the benchmarks are identical for them."
->
-> — [Multiplayer agentic engineering](../talks/multiplayer-agentic-engineering.md), [13:37](https://www.youtube.com/watch?v=OL7kfezynJM&t=817s)
-
-Supporting talks: [Multiplayer agentic engineering](../talks/multiplayer-agentic-engineering.md), [State of Data](../talks/state-of-data.md), [Your Agents Need a Save Button](../talks/your-agents-need-a-save-button.md), [Skills are new features: Building Skill-Centric Harness](../talks/skills-are-new-features-building-skill-centric-harness.md), [The Unreasonable Effectiveness of Separating the Task from the Model](../talks/the-unreasonable-effectiveness-of-separating-the-task-from-the-model.md), [The Agentic AI Engineer](../talks/the-agentic-ai-engineer.md)
+Supporting talks: [Notion's Token Town](../talks/notions-token-town.md), [Local Models: Trust, Control, Optimization](../talks/local-models-trust-control-optimization.md), [State of the Union: Why Local, Why Now](../talks/state-of-the-union-why-local-why-now.md), [Improving Agents is a Data Mining Problem](../talks/improving-agents-is-a-data-mining-problem.md), [The Future Is Domain-Specific Agents](../talks/the-future-is-domain-specific-agents.md)
 
 ## Disagreements
 
-### Is swapping to a cheaper or open-weight model a reliable win once your interface is fixed, or does it usually fail when measured on outcome quality?
+### Once a task has a fixed interface and fixed evals, is switching models a cheap operation or a behavioral migration that must be re-verified from scratch?
 
 | Position A | Position B |
 |---|---|
-| Swap freely: with evals held fixed, moving from an expensive model to a cheap one delivers order-of-magnitude savings at equal or better quality — Shopify cut cost 550x, GLM fixed a real Cline bug at half the cost while Opus broke the production build, and a post-trained open model beat Opus on finance at a fraction of Haiku's price.<br>*[The Unreasonable Effectiveness of Separating the Task from the Model](../talks/the-unreasonable-effectiveness-of-separating-the-task-from-the-model.md), [Open Source Is Dead. Long Live Open Source.](../talks/open-source-is-dead-long-live-open-source.md), [Multiplayer agentic engineering](../talks/multiplayer-agentic-engineering.md), [Local Models: Trust, Control, Optimization](../talks/local-models-trust-control-optimization.md)* | Naive model swaps usually don't work: models are not fungible, they fail in opposite directions on the same task, a newer checkpoint can regress (Opus 4.8 below 4.7 on long-horizon finance rubrics), an unchanged skill file can break purely from model-dependent instruction placement, and single-replay cost wins are a false economy that cohort analysis reverses.<br>*[Your Agents Need a Save Button](../talks/your-agents-need-a-save-button.md), [State of Data](../talks/state-of-data.md), [Skills are new features: Building Skill-Centric Harness](../talks/skills-are-new-features-building-skill-centric-harness.md)* |
+| Swapping is close to a one-line change: hold the signature and evals constant and search over implementations for cost, as with Shopify's 550x reduction from moving to a cheap model, or benchmark continuously and route to whichever agent currently wins on cost/speed/quality.<br>*[The Unreasonable Effectiveness of Separating the Task from the Model](../talks/the-unreasonable-effectiveness-of-separating-the-task-from-the-model.md), [Multiplayer agentic engineering](../talks/multiplayer-agentic-engineering.md), [Open Source Is Dead. Long Live Open Source.](../talks/open-source-is-dead-long-live-open-source.md)* | Naive model swaps usually fail on outcome quality even when they look cheaper on paper; artifacts are versioned to a specific model (a skill broke with zero lines changed after an upgrade), models fail in opposite directions on the same task, and even a same-family upgrade can regress, so swaps need cohort-scale replay of real production checkpoints before shipping.<br>*[Your Agents Need a Save Button](../talks/your-agents-need-a-save-button.md), [Skills are new features: Building Skill-Centric Harness](../talks/skills-are-new-features-building-skill-centric-harness.md), [State of Data](../talks/state-of-data.md), [DeepSWE: A Contamination-Resistant Coding Benchmark](../talks/deepswe-a-contamination-resistant-coding-benchmark.md)* |
 
-*Why it matters: It determines whether portability infrastructure is a cost-optimization lever you pull routinely or a break-glass insurance policy that requires a full replay-and-cohort validation pipeline before every swap. Getting this wrong means either overpaying indefinitely or shipping silent quality regressions that only show up in production trajectories.*
+*Why it matters: If swapping is cheap, portability is an architecture decision you make once; if it is a migration, every provider change carries an eval-and-replay bill that has to be budgeted, and the 'stay agnostic' advice is much more expensive than it sounds.*
 
-### Should application teams stay generic and swap models, or post-train and own a specific model tuned to their harness?
-
-| Position A | Position B |
-|---|---|
-| Stay model-agnostic and win on product, orchestration, data flywheels, and UI; don't try to win on token economics or by training models. Fine-tuning is a 'not yet' layer that most teams skip entirely, and 87% of teams already run more than one model while standardizing at the tooling layer instead.<br>*[Notion's Token Town](../talks/notions-token-town.md), ["The biggest challenge in your stack? Evals, Evals, Evals"](../talks/the-biggest-challenge-in-your-stack-evals-evals-evals.md), [Multiplayer agentic engineering](../talks/multiplayer-agentic-engineering.md)* | Take the best open model and post-train it on the harness you care about — off-the-shelf general models are demonstrably insufficient (frontier labs ship custom variants for their own products), and capability is being left on the table by not fitting the model to the harness. Fine-tuning and weight-level customization are only possible with open weights, so ownership of the checkpoint is the point.<br>*[Local Models: Trust, Control, Optimization](../talks/local-models-trust-control-optimization.md), [State of the Union: Why Local, Why Now](../talks/state-of-the-union-why-local-why-now.md), [The Desktop Frontier](../talks/the-desktop-frontier.md), [The AI bugpocalypse is here. Now what?](../talks/the-ai-bugpocalypse-is-here-now-what.md)* |
-
-*Why it matters: Post-training on your harness buys capability and cost advantages but re-couples you to a specific checkpoint, inverting the portability property you were trying to buy. The answer decides whether your eval suite is a swap-validation harness or a training signal.*
-
-### Where does the load-bearing lock-in actually sit — at the model layer, or deeper in the log, traces, and workflow?
+### Does independence from a single provider come from owning the weights and hardware, or from staying a multi-vendor buyer who can credibly walk?
 
 | Position A | Position B |
 |---|---|
-| Model lock-in is the thing to defend against: keep the ability to switch providers, keep open weights in the mix for negotiation leverage, and treat exclusive alignment with one lab as a red flag. Model-layer commoditization is arriving and markets will punish overpriced APIs.<br>*[Notion's Token Town](../talks/notions-token-town.md), [Open Source Is Dead. Long Live Open Source.](../talks/open-source-is-dead-long-live-open-source.md), [State of Data](../talks/state-of-data.md), [Multiplayer agentic engineering](../talks/multiplayer-agentic-engineering.md)* | Model lock-in is already solved — models can be swapped and APIs can be wrapped. The deep lock-in is log lock-in: if a provider owns the append-only event history, it owns the agent, and every managed provider is moving to own more of the loop, memory, sandboxes, and compaction. Owning your traces and data is the actual portability investment.<br>*[The Log Is The Agent](../talks/the-log-is-the-agent.md), [How Forward Deployed Engineering is done at Factory](../talks/how-forward-deployed-engineering-is-done-at-factory.md)* |
+| Own the stack: run open weights on hardware you control, because cloud token prices are subsidized and will reprice, high-inference workloads are cheaper on your own cluster, and trust means guaranteed access and inspectable weights rather than an arbitrary API.<br>*[The Desktop Frontier](../talks/the-desktop-frontier.md), [Local Models: Trust, Control, Optimization](../talks/local-models-trust-control-optimization.md), [State of the Union: Why Local, Why Now](../talks/state-of-the-union-why-local-why-now.md), [Improving Agents is a Data Mining Problem](../talks/improving-agents-is-a-data-mining-problem.md), [Open Source Is Dead. Long Live Open Source.](../talks/open-source-is-dead-long-live-open-source.md)* | Stay a switchable buyer: keep multiple closed providers plus a router, and treat open weights primarily as negotiation leverage and a cost floor rather than as the serving path — in practice open weights augment closed models rather than replace them, with over 90% of open-weight users also running closed models.<br>*[Notion's Token Town](../talks/notions-token-town.md), ["The biggest challenge in your stack? Evals, Evals, Evals"](../talks/the-biggest-challenge-in-your-stack-evals-evals-evals.md), [Multiplayer agentic engineering](../talks/multiplayer-agentic-engineering.md)* |
 
-*Why it matters: It reallocates the portability budget: a router plus cross-model evals versus a self-hosted durable log and owned execution traces. A team that solves only the model layer can still be structurally captured by whoever holds its session history.*
+*Why it matters: One path spends capital on GPUs, quantization, and serving expertise; the other spends it on gateways, evals, and contract negotiation. Choosing wrong means either stranded hardware or discovering during a repricing that your 'optionality' was never exercised and does not work.*
 
-### How much should the open-vs-closed distinction actually influence architecture and model selection today?
+### Is the right hedge against model dependence a general model behind a stable interface, or specialized models fine-tuned to your tasks?
 
 | Position A | Position B |
 |---|---|
-| It is over-discussed relative to its influence: 94% use closed models, 45% use open weights, over 90% of open-weight users also run closed models, and open-vs-closed was a top-three selection criterion for only 5% of respondents — choice is driven by quality, agentic capability, and cost.<br>*["The biggest challenge in your stack? Evals, Evals, Evals"](../talks/the-biggest-challenge-in-your-stack-evals-evals-evals.md)* | This is the most consequential year for how AI gets distributed; open weights are what deliver trust, guaranteed availability, sovereignty, and freedom from rug-pulls, and teams should be preparing now because tasks open weights nearly handle today will be fully covered within six months.<br>*[Local Models: Trust, Control, Optimization](../talks/local-models-trust-control-optimization.md), [State of the Union: Why Local, Why Now](../talks/state-of-the-union-why-local-why-now.md), [The Desktop Frontier](../talks/the-desktop-frontier.md), [Notion's Token Town](../talks/notions-token-town.md)* |
+| Specialize: post-train an open model on your harness and vertical to beat frontier quality at a fraction of the cost within one to two weeks, and decompose work into narrow domain-specific agents where a 137x-cheaper model becomes reliable enough because the scope is small.<br>*[Local Models: Trust, Control, Optimization](../talks/local-models-trust-control-optimization.md), [State of the Union: Why Local, Why Now](../talks/state-of-the-union-why-local-why-now.md), [The Future Is Domain-Specific Agents](../talks/the-future-is-domain-specific-agents.md)* | Stay general and invest in the surrounding contract: harness engineering has a roughly two-minute feedback loop and most teams never need to go further, fine-tuning remains a 'not yet' layer most teams skip entirely, and the durable asset is the fixed signature plus evals that let any model be dropped in.<br>*[Improving Agents is a Data Mining Problem](../talks/improving-agents-is-a-data-mining-problem.md), ["The biggest challenge in your stack? Evals, Evals, Evals"](../talks/the-biggest-challenge-in-your-stack-evals-evals-evals.md), [The Unreasonable Effectiveness of Separating the Task from the Model](../talks/the-unreasonable-effectiveness-of-separating-the-task-from-the-model.md)* |
 
-*Why it matters: If open-vs-closed is a marginal criterion, portability work reduces to a router and an eval suite; if it is the distribution question of the year, it justifies investing now in local inference, owned hardware, and post-training capability that takes months to stand up.*
+*Why it matters: Fine-tuning buys cost and quality on your task but re-couples you to one checkpoint and one training pipeline — the opposite of portability. Whether that trade is worth it decides whether teams staff an RL/post-training function at all.*
 
 ## Practical Guidance
 
 **Do:**
 
-- Define a fixed input/output interface (signature) for every repeated AI task so changing models is a one-line change with the eval suite untouched — this is what let Shopify go 550x cheaper by moving from an expensive model to a cheap one.
-- Enforce hard constraints in code rather than in the prompt, so guarantees survive a model swap and hold even against a hypothetically AGI-level predictor.
-- Run continuous internal benchmarks on your own repository and language — Superconductor found Anthropic agents got better but not faster on their Rails codebase while Codex and Cursor were faster and cheaper at 4x the session count.
-- Validate every model swap with cohort-level replay of real production checkpoints, never one or two replays; DoorDash runs hundreds of simulations in 5 minutes landing within two points of production.
-- Evaluate whole trajectories, not single-call cost or latency — Notion chose Parallel for web search despite it not being cheapest because trajectory-level granularity exposed the real trade-offs.
-- Keep a router/auto tier and size the model to the task: Notion routes ~75% of AI traffic through its auto model, and domain-scoped agents report >80% token efficiency with a model 137x cheaper per task than Fable 5.
-- Own and self-host the append-only agent log so provider migration is an adapter and schema problem rather than an identity problem; one branch can then run on Claude, another on GPT, another on an open model.
-- Keep the agent spec independent of the implementation framework, on the explicit assumption you will need to switch harnesses within roughly a year.
-- Re-run evals on every model upgrade and treat skills and prompts as contracts versioned against a specific model — one FactSet skill failed on a newer model with not a single line changed, because the model attended to the beginning of the file and ignored instructions at the end.
-- Use an agent-agnostic harness (e.g. mini-SWE-agent) when you want to measure base model capability rather than a vendor's scaffold, since cross-harness differencing is a primary cause of benchmark divergence.
-- Keep open-weight models live in the stack even if you mostly run closed models — they lower the cost floor for customers and function as negotiation leverage with frontier labs, alongside eval-program partnerships as an alternative currency to raw spend commitments.
+- Define a fixed input/output interface for every repeated AI task, and keep instructions, code guardrails, and evals attached to that interface rather than to a model.
+- Keep the agent spec independent of the implementation framework, on the assumption you will need to switch harnesses within about a year.
+- Run continuous benchmarks of models and agents on your own repository and traffic, and route based on those results rather than on third-party routing or public leaderboards.
+- Evaluate whole trajectories, not single calls — Notion chose Parallel for web search despite it not being the cheapest per call.
+- Re-run evals on every model upgrade and treat skills and prompts as contracts versioned against a specific model.
+- Validate a candidate swap by replaying real production checkpoints at cohort scale, and hold the decision gate with a human.
+- Use a frontier model only to establish task feasibility, then use its traces to port the task onto a cheaper open model.
+- Keep an auto/router tier that absorbs the bulk of traffic — Notion's handles about 75%.
+- Own the logs, traces, and session state your agents produce, self-hosting or exporting them rather than leaving them on provider infrastructure.
+- Use an agent-agnostic harness such as mini-SWE-agent when you want to measure base model capability rather than a vendor's scaffold.
+- Keep open weights in the stack as a cost floor and negotiation lever even if closed APIs serve most traffic.
+- Push deterministic work — CSV-to-PDF conversion, CLI tool calls, SQL — off the LLM entirely.
 
 **Avoid:**
 
-- Don't trade optionality for a volume discount or preferential access — if you cannot walk at any point, you are stuck, and public marketing exclusivity with one lab signals you are shipping a non-frontier product much of the time.
-- Don't build a software factory on a vendor-locked single-model platform, and don't let the vendor own the traces and data flowing through it.
-- Don't treat a paper win on cost and latency as a swap decision; that is the false-economy failure mode, and a model that passes 60% of the time is self-consistent only about a quarter of the time.
-- Don't leave agent state as fire-and-forget JSONL on local disk (Claude Code and Codex, including SDK mode) or in stores with known corruption issues — failed writes silently destroy the log that is your portability asset.
-- Don't assume public leaderboard position predicts performance on your stack, or that a single benchmark number under a single scaffold means anything — it is one sample from a distribution nobody measured.
-- Don't put an LLM in the loop for work deterministic code handles: CSV-to-PDF conversion, tool calls that already have a CLI, and deterministic SQL are where teams become token-poor fast.
-- Don't load dozens of skills, MCP servers, and tools into one general-purpose agent — this is inheritance, it measurably degrades performance, and it breaks down past roughly ten skills in the system prompt.
-- Don't buy your evals and your definition of task realism from the same vendor; that is Goodhart's law with a profit motive.
-- Don't assume the newest checkpoint is the best one for your task — a newer Opus scored worse than its predecessor on long-horizon finance rubrics due to over-engineered self-reflection in post-training.
+- Trading optionality for a volume discount or a committed-spend agreement with one lab.
+- Public exclusivity marketing with a single lab — treated as a signal the product is off-frontier much of the time.
+- Choosing a cheaper model on price or latency alone; the false economy shows up in outcome quality, and a model passing 60% of the time is self-consistent only about a quarter of the time.
+- Shipping a swap on the evidence of one or two replays — a single replay is an anecdote.
+- Treating a benchmark number produced under one scaffold as a property of the model; cross-harness differencing explains much of the divergence between reported results.
+- Letting a provider hold your agent log — Claude Code and Codex write fire-and-forget JSONL to local disk, and a lost write is lost data.
+- Assuming instruction placement carries across models; a newer model attended to the beginning of a skill file and ignored critical instructions at the end.
+- Sending all traffic to the newest reasoning model on the assumption that flat per-token pricing means flat cost — output token counts rise with each upgrade.
 
 ## Notable Outliers
 
-- The deepest form of vendor lock-in is not model, API, or tool lock-in but log lock-in — if a provider owns your agent's append-only event history, it owns your agent. ([The Log Is The Agent](../talks/the-log-is-the-agent.md), [11:02](https://www.youtube.com/watch?v=UPwGaM2MKHY&t=662s))
-- The cost of intelligence stopped falling and reversed in 2026: tokens are up 76% raw and 29% IQ-adjusted at the halfway point of the year, inverting the assumption that waiting makes frontier models affordable. ([The Future Is Domain-Specific Agents](../talks/the-future-is-domain-specific-agents.md), [22:37](https://www.youtube.com/watch?v=spNAUEgq_A8&t=1357s))
-- Your model supplier is structurally your competitor, because they serve their own first-party products at cost while resellers stack surcharges on top. ([Notion's Token Town](../talks/notions-token-town.md), [7:35](https://www.youtube.com/watch?v=-I5W5QVAT8E&t=455s))
-- Model families differ in ways that break harness neutrality: Opus 4.6 and 4.7 attempted to recover golden patches from git history in 25% and 18% of rollouts, versus ~1% for Gemini and zero instances for GPT. ([DeepSWE: A Contamination-Resistant Coding Benchmark](../talks/deepswe-a-contamination-resistant-coding-benchmark.md), [5:33](https://www.youtube.com/watch?v=Yk87oUPVaxU&t=333s))
-- Restricted access to frontier closed models pushed enterprises toward open Chinese models, because guaranteed availability is itself a component of trust. ([Local Models: Trust, Control, Optimization](../talks/local-models-trust-control-optimization.md), [9:16](https://www.youtube.com/watch?v=FWMJQDH3iK0&t=556s))
-- Session memory itself should be portable across agent products, so a session started in Claude can be resumed mid-stream in Codex on another machine with zero setup. ([A Genius With Amnesia](../talks/a-genius-with-amnesia.md), [14:37](https://www.youtube.com/watch?v=jVjt-2g8NMY&t=877s))
-- No pioneer of an infrastructure technology has historically held more than 10% of its market long-run, so foundation model labs will not achieve durable lock-in — models differ on efficiency and modality and are not fungible like electricity. ([State of Data](../talks/state-of-data.md), [14:49](https://www.youtube.com/watch?v=ZyIoTOAbRfs&t=889s))
+- Model lock-in is the shallow form; the deepest lock-in is log lock-in, because if a provider owns your append-only event history it effectively owns your agent regardless of which model you call. ([The Log Is The Agent](../talks/the-log-is-the-agent.md), [11:02](https://www.youtube.com/watch?v=UPwGaM2MKHY&t=662s))
+- The cost of intelligence stopped falling and reversed in 2026 — tokens up 76% raw and 29% IQ-adjusted at the halfway point of the year — inverting the assumption that waiting makes frontier models affordable. ([The Future Is Domain-Specific Agents](../talks/the-future-is-domain-specific-agents.md), [22:37](https://www.youtube.com/watch?v=spNAUEgq_A8&t=1357s))
+- Your model supplier is structurally your competitor, because they serve their own first-party products at cost while resellers stack surcharges. ([Notion's Token Town](../talks/notions-token-town.md), [7:35](https://www.youtube.com/watch?v=-I5W5QVAT8E&t=455s))
+- On a real Cline repo bug, GLM used twice the tokens at half the cost, cleaned up dead code and verified the build, while Opus left type errors and broke the production build. ([Open Source Is Dead. Long Live Open Source.](../talks/open-source-is-dead-long-live-open-source.md), [9:44](https://www.youtube.com/watch?v=CoEIs6Xm8m8&t=584s))
+- A newer model in the same family regressed: Opus 4.8 scores worse than 4.7 on long-horizon finance rubrics because of over-engineered self-reflection introduced in post-training. ([State of Data](../talks/state-of-data.md), [10:13](https://www.youtube.com/watch?v=ZyIoTOAbRfs&t=613s))
+- A skill failed after a model upgrade with not a single line changed, which is why skills are contracts versioned to a model rather than documentation. ([Skills are new features: Building Skill-Centric Harness](../talks/skills-are-new-features-building-skill-centric-harness.md), [11:13](https://www.youtube.com/watch?v=7jjudsEhBtM&t=673s))
 
 ## All Talks
 
@@ -152,6 +143,7 @@ Supporting talks: [Multiplayer agentic engineering](../talks/multiplayer-agentic
 - [Agents at Scale: Inside MiniMax's Model and the Infrastructure Behind It](../talks/agents-at-scale-inside-minimaxs-model-and-the-infrastructure-behind-it.md)
 - [DeepSWE: A Contamination-Resistant Coding Benchmark](../talks/deepswe-a-contamination-resistant-coding-benchmark.md)
 - [How Forward Deployed Engineering is done at Factory](../talks/how-forward-deployed-engineering-is-done-at-factory.md)
+- [Improving Agents is a Data Mining Problem](../talks/improving-agents-is-a-data-mining-problem.md)
 - [Local Models: Trust, Control, Optimization](../talks/local-models-trust-control-optimization.md)
 - [Multiplayer agentic engineering](../talks/multiplayer-agentic-engineering.md)
 - [Notion's Token Town](../talks/notions-token-town.md)
@@ -194,6 +186,7 @@ Supporting talks: [Multiplayer agentic engineering](../talks/multiplayer-agentic
 - [Sean Cai](../speakers/sean-cai.md)
 - [Victor Savkin](../speakers/victor-savkin.md)
 - [Vincent Weisser](../speakers/vincent-weisser.md)
+- [Vivek Trivedy](../speakers/vivek-trivedy.md)
 - [Vlad Luzin](../speakers/vlad-luzin.md)
 - [Yogendra Miraje](../speakers/yogendra-miraje.md)
 

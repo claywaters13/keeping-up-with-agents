@@ -1,34 +1,37 @@
 {
   "is_error": false,
-  "duration_api_ms": 137748,
+  "duration_api_ms": 135707,
   "num_turns": 1,
   "stop_reason": "end_turn",
-  "session_id": "a39457d1-c891-42eb-a62c-fc04e3638c98",
-  "total_cost_usd": 0.626902,
+  "session_id": "d8da26c5-eac0-4312-bcc0-e9a2302c1cf6",
+  "total_cost_usd": 0.6468365,
   "usage": {
     "input_tokens": 2,
-    "cache_creation_input_tokens": 31177,
-    "cache_read_input_tokens": 10308,
-    "output_tokens": 11579,
+    "cache_creation_input_tokens": 33637,
+    "cache_read_input_tokens": 12099,
+    "output_tokens": 11283,
+    "output_tokens_details": {
+      "thinking_tokens": 5608
+    },
     "server_tool_use": {
       "web_search_requests": 0,
       "web_fetch_requests": 0
     },
     "service_tier": "standard",
     "cache_creation": {
-      "ephemeral_1h_input_tokens": 31177,
+      "ephemeral_1h_input_tokens": 33637,
       "ephemeral_5m_input_tokens": 0
     },
     "inference_geo": "not_available",
     "iterations": [
       {
         "input_tokens": 2,
-        "output_tokens": 11579,
-        "cache_read_input_tokens": 10308,
-        "cache_creation_input_tokens": 31177,
+        "output_tokens": 11283,
+        "cache_read_input_tokens": 12099,
+        "cache_creation_input_tokens": 33637,
         "cache_creation": {
           "ephemeral_5m_input_tokens": 0,
-          "ephemeral_1h_input_tokens": 31177
+          "ephemeral_1h_input_tokens": 33637
         },
         "type": "message"
       }
@@ -37,12 +40,12 @@
   },
   "modelUsage": {
     "claude-haiku-4-5-20251001": {
-      "inputTokens": 20413,
-      "outputTokens": 16,
+      "inputTokens": 22282,
+      "outputTokens": 10,
       "cacheReadInputTokens": 0,
       "cacheCreationInputTokens": 0,
       "webSearchRequests": 0,
-      "costUSD": 0.020493,
+      "costUSD": 0.022332,
       "contextWindow": 200000,
       "maxOutputTokens": 32000,
       "canonicalModel": "claude-haiku-4-5",
@@ -50,11 +53,11 @@
     },
     "claude-opus-5": {
       "inputTokens": 2,
-      "outputTokens": 11579,
-      "cacheReadInputTokens": 10308,
-      "cacheCreationInputTokens": 31177,
+      "outputTokens": 11283,
+      "cacheReadInputTokens": 12099,
+      "cacheCreationInputTokens": 33637,
       "webSearchRequests": 0,
-      "costUSD": 0.606409,
+      "costUSD": 0.6245045,
       "contextWindow": 1000000,
       "maxOutputTokens": 64000,
       "canonicalModel": "claude-opus-5",
@@ -67,24 +70,51 @@
   "fast_mode_disabled_reason": "sdk_opt_in_required",
   "subtype": "success",
   "api_error_status": null,
-  "result": "{\"concept\":\"background agents\",\"state_of_practice\":\"The conference treated background agents as an infrastructure problem, not a model problem. The converged architecture is: a stateless harness talking to an append-only session log, with ephemeral cloud sandboxes as disposable 'hands,' credentials held in a vault or broker that never enters the sandbox, and verification run in a context window separate from the one that did the work. Speakers repeatedly located the binding constraint not in model capability \u2014 METR horizons of 12+ hours, Opus 4.5-class models already trivially closing typical Jira tickets \u2014 but in per-environment context: production topology, user-specific conventions, org knowledge that a generic agent cannot infer and that must be precomputed offline rather than assembled at query time. Operationally the field has learned that a ~200-tool-call run will fail at least once, that a sandbox used for durability is an anti-pattern, and that an unbounded automation is a denial-of-service on its owner, so output must be capped and producing nothing must be a legal outcome. What remains genuinely open is how much scaffolding the agent still needs (self-orchestrating models vs. a hand-built execution layer), which surface background work should be reachable from, and whether anyone can actually run these things unattended overnight \u2014 Yegge's answer was that very few can.\",\"consensus\":[{\"claim\":\"Verification must run in a context separate from the one that produced the work; self-grading in-context confabulates, and concerns like security and correctness must be split into distinct passes.\",\"support_count\":5,\"supporting_talks\":[\"claude-for-long-horizon-tasks\",\"agentic-security-permissions-provenance-and-the-agent-supply-chain\",\"full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex\",\"your-agent-architecture-has-a-half-life-of-6-months\",\"everything-we-knew-about-software-has-changed\"],\"evidence_quote\":\"what we found is it's quite effective to separate verification into a separate context window. This is a very general trend.\",\"evidence_talk\":\"claude-for-long-horizon-tasks\",\"evidence_timestamp_sec\":404},{\"claim\":\"Background agents belong in isolated cloud sandboxes with least-privilege access, and secrets must live outside the sandbox behind a vault or broker rather than on the developer's laptop or inside the agent's environment.\",\"support_count\":5,\"supporting_talks\":[\"realtime-multiplayer-automation-and-you\",\"claude-for-long-horizon-tasks\",\"multiplayer-agentic-engineering\",\"always-on-agents-run-production-without-the-on-call-tax\",\"agentic-security-permissions-provenance-and-the-agent-supply-chain\"],\"evidence_quote\":\"Never trust agents with secrets. If an agent can know a secret, that secret, you need to treat it as if it's already been compromised.\",\"evidence_talk\":\"realtime-multiplayer-automation-and-you\",\"evidence_timestamp_sec\":719},{\"claim\":\"Session state must be durable and external to the compute doing the work, so that a dead sandbox, dead harness, or closed laptop does not destroy a multi-hour run.\",\"support_count\":3,\"supporting_talks\":[\"your-agent-architecture-has-a-half-life-of-6-months\",\"claude-for-long-horizon-tasks\",\"always-on-agents-run-production-without-the-on-call-tax\"],\"evidence_quote\":\"So, for this this to work, a 3-hour run cannot hold state in memory or in disk. The state must live outside of the work.\",\"evidence_talk\":\"your-agent-architecture-has-a-half-life-of-6-months\",\"evidence_timestamp_sec\":401},{\"claim\":\"Model capability is no longer the limiting factor for background agents; the constraint is captured, environment-specific context \u2014 production topology, per-user history, codebase idiosyncrasy \u2014 that a generic agent cannot infer.\",\"support_count\":5,\"supporting_talks\":[\"always-on-agents-run-production-without-the-on-call-tax\",\"from-systems-of-record-to-systems-of-context\",\"chat-and-citations-wont-save-your-vertical-ai\",\"claude-for-long-horizon-tasks\",\"multiplayer-agentic-engineering\"],\"evidence_quote\":\"You need the execution engine, that's great, but you really need that production context that tells you is this important or not important.\",\"evidence_talk\":\"always-on-agents-run-production-without-the-on-call-tax\",\"evidence_timestamp_sec\":648},{\"claim\":\"Detached agents need explicit interruption and notification discipline: bounded output, permission to return nothing, and a defined trigger for escalating to a human (an assumption about to be made, or an irreversible action).\",\"support_count\":3,\"supporting_talks\":[\"realtime-multiplayer-automation-and-you\",\"chat-and-citations-wont-save-your-vertical-ai\",\"always-on-agents-run-production-without-the-on-call-tax\"],\"evidence_quote\":\"in a world where I have lots of automations, the last thing I want is noise. I don't want the agents denial of servicing me.\",\"evidence_talk\":\"realtime-multiplayer-automation-and-you\",\"evidence_timestamp_sec\":501},{\"claim\":\"Background agents should be multiplayer and org-scoped \u2014 the same session reachable from wherever the team already works \u2014 rather than a single developer's private, laptop-bound process.\",\"support_count\":4,\"supporting_talks\":[\"multiplayer-agentic-engineering\",\"claude-for-long-horizon-tasks\",\"always-on-agents-run-production-without-the-on-call-tax\",\"realtime-multiplayer-automation-and-you\"],\"evidence_quote\":\"So, what we really wanted was to be able to work with the same session from every relevant interface.\",\"evidence_talk\":\"multiplayer-agentic-engineering\",\"evidence_timestamp_sec\":208},{\"claim\":\"Synchronous chat is structurally wrong for delegated work, because it pins the user to the interface while the agent runs; the value of background agents is precisely that the human leaves.\",\"support_count\":4,\"supporting_talks\":[\"chat-and-citations-wont-save-your-vertical-ai\",\"the-prompt-is-still-a-punch-card\",\"realtime-multiplayer-automation-and-you\",\"everything-we-knew-about-software-has-changed\"],\"evidence_quote\":\"This synchronous medium does not allow the customers to leave the platform and go and do their work.\",\"evidence_talk\":\"chat-and-citations-wont-save-your-vertical-ai\",\"evidence_timestamp_sec\":111}],\"disagreements\":[{\"question\":\"Do background agents still require a hand-built orchestration and execution layer, or do current models self-orchestrate well enough that the scaffolding is dead weight?\",\"position_a\":\"Frontier models now spawn sub-agents, split work, and verify it if you simply ask them to \u2014 no custom tooling, no 'software factory,' no orchestration framework needed.\",\"position_a_talks\":[\"everything-we-knew-about-software-has-changed\"],\"position_b\":\"You must design the execution layer yourself: durable state, retries, queues, backoff, scheduling, full-stack tracing, plus adversarial supervisor agents and a per-environment knowledge system, because no single agent run is trustworthy and off-the-shelf frameworks were not built for this shape.\",\"position_b_talks\":[\"your-agent-architecture-has-a-half-life-of-6-months\",\"agentic-security-permissions-provenance-and-the-agent-supply-chain\",\"always-on-agents-run-production-without-the-on-call-tax\",\"claude-for-long-horizon-tasks\"],\"why_it_matters\":\"It decides whether a team's engineering investment goes into prompts and ambition or into months of execution-layer infrastructure \u2014 and whether that infrastructure is durable capital or scaffolding the next model release deletes.\"},{\"question\":\"Are background agents ready to run unattended, or does every artifact still need a human in the loop?\",\"position_a\":\"Unattended overnight automation is the main event and already shipping \u2014 agents that triage issues, walk stack traces, and close tickets while you sleep will be a bigger category than interactive AI.\",\"position_a_talks\":[\"realtime-multiplayer-automation-and-you\",\"everything-we-knew-about-software-has-changed\"],\"position_b\":\"Fully unsupervised operation is still a frontier very few can do reliably; in practice every agent-generated PR gets human review, the agent pauses whenever it would make an assumption, and irreversible actions require plan approval first.\",\"position_b_talks\":[\"agentic-security-permissions-provenance-and-the-agent-supply-chain\",\"multiplayer-agentic-engineering\",\"chat-and-citations-wont-save-your-vertical-ai\"],\"why_it_matters\":\"The answer sets whether human review capacity is the real throughput ceiling on agent-generated work, and whether 'agent count' or 'reviewer count' is the number to plan headcount around.\"},{\"question\":\"Should guardrails for background agents be expressed to the agent, or enforced deterministically outside it?\",\"position_a\":\"Rules in AGENTS.md plus auto-review are sufficient safety controls for individual use, with admin settings reserved for externally-facing actions; models today err toward being too reluctant to act destructively, so over-restriction is the bigger practical cost.\",\"position_a_talks\":[\"full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex\"],\"position_b\":\"Guardrails stated as prompts are not guardrails \u2014 a third party can prompt-inject past them \u2014 so enforcement must be deterministic configuration outside the agent, backed by real credential isolation, since sandbox and auto-approval configs are not reliably safe and there is no technical defense for prompt injection today.\",\"position_b_talks\":[\"realtime-multiplayer-automation-and-you\",\"multiplayer-agentic-engineering\",\"agentic-security-permissions-provenance-and-the-agent-supply-chain\"],\"why_it_matters\":\"Prompt-level rules are cheap and immediate; deterministic enforcement requires a broker, a permission model, and org infrastructure. Choosing wrong means either shipping agents with no real containment or blocking every useful action behind approvals.\"},{\"question\":\"How should a long-lived agent carry context \u2014 compaction inside one persistent thread, or an external append-only substrate?\",\"position_a\":\"Compaction now works well enough that the old advice to start fresh threads is obsolete; keep one long-lived pinned thread (five weeks old, hundreds of sub-agents), schedule heartbeats back into it, and prefer visible pinned threads over sub-agents so you notice state changes.\",\"position_a_talks\":[\"full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex\"],\"position_b\":\"Compaction is destructive \u2014 it discards everything not compacted \u2014 so the session should be an immutable append-only event log the model can always read back from, with state held outside the running work rather than rehydrated from logs or manual checkpoints.\",\"position_b_talks\":[\"claude-for-long-horizon-tasks\",\"your-agent-architecture-has-a-half-life-of-6-months\"],\"why_it_matters\":\"It determines whether long-horizon reliability comes free from the harness vendor or requires building session storage, and whether a run that goes wrong at hour six can be inspected and resumed or is simply lost.\"},{\"question\":\"Is Slack the right surface for background agents to live in?\",\"position_a\":\"Meet people where they already work \u2014 agents should be embedded in Slack and MS Teams rather than a separate product UI, and Slack's extensible bot-shaped API is exactly why it won as an agent platform even though the product itself is weak.\",\"position_a_talks\":[\"always-on-agents-run-production-without-the-on-call-tax\",\"everything-we-knew-about-software-has-changed\"],\"position_b\":\"Slack was designed for the average office worker, not for building software; a Slack bot alone just moves the agent from trapped on a laptop to trapped in Slack, so the agent session must be reachable identically from the IDE, the repo host, and mobile, and collaboration surfaces should carry only the facts that are not in the code.\",\"position_b_talks\":[\"realtime-multiplayer-automation-and-you\",\"multiplayer-agentic-engineering\"],\"why_it_matters\":\"Surface choice determines who can trigger agent work \u2014 a chat-first design lets non-engineers file real changes, while a repo-first design keeps the artifact and its review in one place at the cost of reach.\"}],\"practical_guidance\":{\"do\":[\"Split the harness from the sandbox: keep the harness a stateless process against an append-only session log, with containers as disposable hands, so a sandbox death does not lose the run.\",\"Keep credentials in a separate vault or broker and never inject them into the agent's sandbox; treat any secret the agent can see as already compromised.\",\"Run verification as its own pass in its own context window, and split concerns across passes \u2014 security first and last, never bundled with correctness in one prompt.\",\"Budget four to five review passes over an LLM's own work before shipping it, and stack multiple independent scanners so they check each other.\",\"Bound every automation's output (e.g. at most one PR) and explicitly allow it to produce nothing at all.\",\"Pause and ask whenever the agent is about to make an assumption, and require an approved plan before irreversible or dangerous actions.\",\"Benchmark candidate agents and models continuously on your own repository \u2014 SWE-bench is all Python, and Rails results diverged sharply on both speed and cost.\",\"Instrument the execution layer as the observability hub and score on outcome signals (was the PR opened, was the report saved) rather than thumbs up/down.\",\"Design for at least one failure per run: a background agent making ~200 tool calls will almost certainly hit one.\",\"Add an out-of-band memory consolidation pass to correct memories that were written incorrectly or only locally-optimally in-band.\",\"Pick background-agent targets that take the user more than a couple of hours and are repeatable, then capture the last 20% of user-specific convention automatically from observed usage.\",\"Track weekly active sessions rising while weekly active users falls \u2014 WAU is the wrong success metric for a delegation product.\",\"Use low or medium reasoning effort for routine operational tasks; highest effort does not pay off proportionally.\"],\"avoid\":[\"Putting the harness and the sandbox in the same container \u2014 one container death takes the whole session with it.\",\"Using the sandbox for durability, snapshots, or state; sandboxes are ephemeral and stateless by design.\",\"Prompting your guardrails at the agent \u2014 a third party can prompt-inject straight past them.\",\"Grading work in the same context window that produced it; it produces confabulation and odd artifacts.\",\"Prescribing a memory schema for the model; explicitly specifying what kinds of memories to save measurably drops performance.\",\"Building a separate user-facing interface for authoring skills \u2014 users will not use it.\",\"Treating citations as a trust mechanism; they push verification burden back onto the user. Show the trace of how each value was produced instead.\",\"Assuming CI/CD covers your risk surface \u2014 feature flags and infra changes routinely bypass it and get no monitoring at all.\",\"Shipping an async experience when your task horizon is under an hour; the agent errors out and returns too fast for async to be good UX.\",\"Letting a single agent own queue management or long-horizon supervision unchecked \u2014 any one agent eventually fails.\",\"Coupling the execution layer to models, prompts, and context; the shortest-lived layer will force rewrites of everything it touches.\"]},\"notable_outliers\":[{\"claim\":\"Queue-processing agent systems need adversarial groups of supervisor agents, not a single supervisor, because one agent will always eventually screw it up.\",\"talk\":\"agentic-security-permissions-provenance-and-the-agent-supply-chain\",\"timestamp_sec\":1161},{\"claim\":\"Snyk found 241 vulnerabilities in a codebase that a frontier model had already completed a dedicated security hardening pass over.\",\"talk\":\"agentic-security-permissions-provenance-and-the-agent-supply-chain\",\"timestamp_sec\":466},{\"claim\":\"An entire PR-triage-and-review service collapsed into a single markdown file piped to a coding agent.\",\"talk\":\"everything-we-knew-about-software-has-changed\",\"timestamp_sec\":684},{\"claim\":\"A background agent told to poll a support queue every five minutes, escalating to every minute under five-minute wait times, recovered a $400 refund unattended while its owner showered.\",\"talk\":\"full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex\",\"timestamp_sec\":4382},{\"claim\":\"Per-user context should be computed by two offline engines on different time windows \u2014 a slow one that learns durable patterns and a fast one that computes live urgency \u2014 mirroring complementary learning systems in neuroscience and lambda architecture in data infrastructure.\",\"talk\":\"from-systems-of-record-to-systems-of-context\",\"timestamp_sec\":629},{\"claim\":\"Longitudinal study of ~100 developers over thousands of hours: hands-on-keyboard typing is only about 5% of the job, which is the share AI has addressed so far.\",\"talk\":\"realtime-multiplayer-automation-and-you\",\"timestamp_sec\":1196},{\"claim\":\"A determined agent blocked at a connector will open a browser and perform the action through computer use instead, routing around the block entirely.\",\"talk\":\"full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex\",\"timestamp_sec\":3277}],\"maturity\":\"consolidating\",\"maturity_rationale\":\"The substrate has converged across independent teams \u2014 stateless harness over an append-only session log, ephemeral cloud sandboxes, brokered secrets, separated verification contexts, bounded notification \u2014 with five or more unrelated talks landing on each of those. What is still actively argued is one layer up: how much orchestration the model now handles for you, whether unattended runs are shippable, and which surface owns the session.\"}",
-  "ttft_ms": 68447,
-  "ttft_stream_ms": 1125,
-  "time_to_request_ms": 34,
+  "result": "{\"concept\": \"background agents\", \"state_of_practice\": \"Background agents crossed from demo to production architecture at this conference, and the architectural pattern is now fairly specific: the work runs in cloud micro-VMs or sandboxes rather than on a developer's laptop, the harness is a stateless process against an append-only session log so a dead container doesn't kill the run, credentials live in a vault or broker outside the sandbox, and verification happens in a context window separate from the one that did the work. Speakers repeatedly located the remaining bottleneck not in model capability but in environment-specific context \u2014 Resolve AI, monday.com, and Filed all argued that a frontier model with no precomputed understanding of your services, your user, or your conventions gets 80\u201390% of the way and stalls. Failure is assumed rather than hoped against: Inngest put the number at roughly one failure per ~200 tool calls, which is why durable external state, retries, and full-stack traces (not just LLM/tool spans) are treated as table stakes. Async only became a sensible UX once METR task horizons passed about an hour, and Anthropic argued the frontier gap in long-horizon products now comes from combined architecture, infrastructure, security, and memory investment rather than the model alone. What remains genuinely unsettled is the human surface: whether Slack is the right home for these agents, whether guardrails can live in prompts or must be deterministic configuration outside the agent, and whether every artifact needs a human reviewer or only the exceptions do.\", \"consensus\": [{\"claim\": \"Background agents should run in cloud sandboxes detached from the developer's machine, so closing the laptop doesn't stop the work.\", \"support_count\": 5, \"supporting_talks\": [\"always-on-agents-run-production-without-the-on-call-tax\", \"multiplayer-agentic-engineering\", \"realtime-multiplayer-automation-and-you\", \"llm-knowledge-bases-a-practical-guide\", \"claude-for-long-horizon-tasks\"], \"evidence_quote\": \"none of this is running on my machine. It's all micro VMs in the cloud. So, every session is just a branch of my repo checked out to a spot in the cloud.\", \"evidence_talk\": \"realtime-multiplayer-automation-and-you\", \"evidence_timestamp_sec\": 899}, {\"claim\": \"Credentials and secrets must be held outside the agent's sandbox and reached through a vault or broker, not mounted into the environment the agent runs in.\", \"support_count\": 4, \"supporting_talks\": [\"claude-for-long-horizon-tasks\", \"realtime-multiplayer-automation-and-you\", \"multiplayer-agentic-engineering\", \"agentic-security-permissions-provenance-and-the-agent-supply-chain\"], \"evidence_quote\": \"Never trust agents with secrets. If an agent can know a secret, that secret, you need to treat it as if it's already been compromised.\", \"evidence_talk\": \"realtime-multiplayer-automation-and-you\", \"evidence_timestamp_sec\": 719}, {\"claim\": \"Verification must be a separate pass in a separate context from the one that produced the work; self-grading in the working context produces confabulation and half-done reviews.\", \"support_count\": 5, \"supporting_talks\": [\"claude-for-long-horizon-tasks\", \"full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex\", \"agentic-security-permissions-provenance-and-the-agent-supply-chain\", \"your-agent-architecture-has-a-half-life-of-6-months\", \"everything-we-knew-about-software-has-changed\"], \"evidence_quote\": \"what we found is it's quite effective to separate verification into a separate context window. This is a very general trend.\", \"evidence_talk\": \"claude-for-long-horizon-tasks\", \"evidence_timestamp_sec\": 404}, {\"claim\": \"Model capability is no longer the binding constraint on background agents; capturing environment- and user-specific context ahead of time is.\", \"support_count\": 4, \"supporting_talks\": [\"always-on-agents-run-production-without-the-on-call-tax\", \"from-systems-of-record-to-systems-of-context\", \"chat-and-citations-wont-save-your-vertical-ai\", \"claude-for-long-horizon-tasks\"], \"evidence_quote\": \"the most capable agent in the world whether it's like a cloud and Gemini, it doesn't understand you. He need to process it beforehand.\", \"evidence_talk\": \"from-systems-of-record-to-systems-of-context\", \"evidence_timestamp_sec\": 895}, {\"claim\": \"State for a long-running run must live outside the process and outside the sandbox, because failure over hundreds of tool calls is a certainty rather than an edge case.\", \"support_count\": 3, \"supporting_talks\": [\"your-agent-architecture-has-a-half-life-of-6-months\", \"claude-for-long-horizon-tasks\", \"agentic-security-permissions-provenance-and-the-agent-supply-chain\"], \"evidence_quote\": \"So, for this this to work, a 3-hour run cannot hold state in memory or in disk. The state must live outside of the work.\", \"evidence_talk\": \"your-agent-architecture-has-a-half-life-of-6-months\", \"evidence_timestamp_sec\": 401}, {\"claim\": \"Synchronous chat is the wrong default surface for agent work, because it pins the human in place while the agent runs instead of letting them leave and be notified.\", \"support_count\": 5, \"supporting_talks\": [\"chat-and-citations-wont-save-your-vertical-ai\", \"realtime-multiplayer-automation-and-you\", \"always-on-agents-run-production-without-the-on-call-tax\", \"multiplayer-agentic-engineering\", \"the-prompt-is-still-a-punch-card\"], \"evidence_quote\": \"This synchronous medium does not allow the customers to leave the platform and go and do their work.\", \"evidence_talk\": \"chat-and-citations-wont-save-your-vertical-ai\", \"evidence_timestamp_sec\": 111}], \"disagreements\": [{\"question\": \"Is Slack (and chat surfaces generally) the right home for background agents, or a trap they need to be moved out of?\", \"position_a\": \"Meet people where they already work: embed the agent in Slack/Teams/GitHub rather than a separate product UI, and treat Slack's extensible bot shape as the reason it wins as an agent platform.\", \"position_a_talks\": [\"always-on-agents-run-production-without-the-on-call-tax\", \"everything-we-knew-about-software-has-changed\", \"claude-for-long-horizon-tasks\"], \"position_b\": \"Slack is the wrong surface \u2014 it was designed for the average office worker, not software teams, and a Slack bot merely moves the agent from being trapped on a laptop to being trapped in Slack; the same session must be reachable from every interface, or creation and collaboration must converge on a purpose-built surface.\", \"position_b_talks\": [\"realtime-multiplayer-automation-and-you\", \"multiplayer-agentic-engineering\"], \"why_it_matters\": \"It determines whether you invest in chat integrations or in a session abstraction portable across interfaces, and whether org context reaches the agent through conversation history or through a dedicated context layer.\"}, {\"question\": \"Do background agents require a purpose-built execution and orchestration layer, or will model capability absorb that work?\", \"position_a\": \"You must design the execution layer yourself \u2014 durable state, retries, scheduling, full-stack traces, per-customer knowledge systems \u2014 because frameworks from three months ago were not built for loops and background agents, and the frontier gap comes from architecture, infrastructure, security, and memory together.\", \"position_a_talks\": [\"your-agent-architecture-has-a-half-life-of-6-months\", \"claude-for-long-horizon-tasks\", \"always-on-agents-run-production-without-the-on-call-tax\", \"multiplayer-agentic-engineering\"], \"position_b\": \"Current models self-orchestrate: tell the model to spawn sub-models, split work, and verify, and it will, with no custom tooling or 'software factory' \u2014 a service that used to triage and review PRs is now a markdown file, and scheduled heartbeats into an existing thread replace bespoke automation plumbing.\", \"position_b_talks\": [\"everything-we-knew-about-software-has-changed\", \"full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex\"], \"why_it_matters\": \"One path spends months of engineering on a layer meant to outlive models; the other spends nothing and rewrites the markdown when the model changes. Betting wrong means either building infrastructure the model made obsolete or discovering at 200 tool calls that nothing survives a failure.\"}, {\"question\": \"Should every background-agent output be human-reviewed, or should humans be invoked only on exceptions?\", \"position_a\": \"Gate the artifacts: 99.9% agent-generated PRs still get human review, irreversible actions require presenting a plan for approval, agents pause whenever they are about to make an assumption, and adversarial supervisor agents watch queues because any single agent eventually fails.\", \"position_a_talks\": [\"multiplayer-agentic-engineering\", \"chat-and-citations-wont-save-your-vertical-ai\", \"agentic-security-permissions-provenance-and-the-agent-supply-chain\"], \"position_b\": \"Interruption is the scarce resource: automations must be allowed to produce no output at all and be output-bounded so they don't deny-service their owner, agents should invoke humans only when they need clarification or a pair of hands, and AGENTS.md rules plus auto-review are sufficient controls for individual use since models are already more reluctant than eager about destructive actions.\", \"position_b_talks\": [\"realtime-multiplayer-automation-and-you\", \"full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex\"], \"why_it_matters\": \"Mandatory review caps the throughput of background agents at human review bandwidth, which is the whole point of running them detached; exception-based review scales but pushes the failure mode from noise to unreviewed merged changes.\"}, {\"question\": \"Can guardrails for detached agents be expressed to the agent, or must they be deterministic configuration outside it?\", \"position_a\": \"Guardrails written as prompts are not guardrails \u2014 a third party can prompt-inject past them, so constraints must be deterministic config outside the agent, backed by least-privilege sandboxes, in-house permission and monitoring systems, and deterministic scanners run as separate passes.\", \"position_a_talks\": [\"realtime-multiplayer-automation-and-you\", \"multiplayer-agentic-engineering\", \"agentic-security-permissions-provenance-and-the-agent-supply-chain\"], \"position_b\": \"AGENTS.md rules plus automatic review are adequate safety controls for individual use, with org-level admin settings reserved for externally-facing actions.\", \"position_b_talks\": [\"full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex\"], \"why_it_matters\": \"If instruction-level rules are insufficient, every team running background agents needs a permission broker and sandbox policy before deployment rather than after \u2014 and Jason Liu's own observation that a determined agent will route around a blocked connector using computer use is evidence for the harder position.\"}], \"practical_guidance\": {\"do\": [\"Split the harness from the sandbox: run a stateless harness against an append-only session event log, with containers as disposable 'hands' so a sandbox or harness death doesn't lose the run\", \"Keep credentials in a separate vault and access them through a broker; never add them to the agent's sandbox container\", \"Run verification in a separate, separately tuned context window from the one that produced the work\", \"Run security as its own pass \u2014 first and last \u2014 rather than bundling it with correctness in one prompt\", \"Bound automation output (e.g. at most one PR) and explicitly permit automations to produce no output at all\", \"Pick background-agent tasks that currently take a user more than a couple of hours and that repeat\", \"Present a plan for approval before irreversible or dangerous actions; pause whenever the agent is about to make an assumption\", \"Precompute per-user and per-environment context offline \u2014 monday.com's split of a slow engine that learns the user and a fast engine that reads live urgency signals\", \"Schedule heartbeat messages back into the same long-lived thread rather than spawning a new thread per automation run\", \"Write an enrichment timestamp into each processed artifact so repeat agent passes only touch what lacks the marker\", \"Give the agent a fixed reference list of tags and instruct it to be reluctant to add new ones\", \"Benchmark candidate agents on your own repo continuously \u2014 SWE-bench is all Python and won't predict Ruby on Rails results\", \"Score on outcome signals (was the PR opened, was the report saved) rather than thumbs up/down\", \"Expose the full session trace \u2014 triggers, database errors, permission failures, performance \u2014 and make it inspectable by reviewer agents, not just humans\", \"Default to low/medium reasoning effort for operational background tasks\", \"Capture user-specific conventions automatically from observed product usage, since the generic agent only reaches 80\u201390%\"], \"avoid\": [\"Putting the harness and the sandbox in the same container\", \"Using the sandbox for durability, snapshots, or state \u2014 it is ephemeral by design\", \"Holding a multi-hour run's state in memory or on disk, or rehydrating it from logs with manual checkpointing\", \"Prompting guardrails at the agent and treating that as a control\", \"Letting the same context both do the work and grade it\", \"Scheduling automations on local tooling that requires your laptop to be open when the timer fires\", \"Prescribing a memory schema for the model instead of letting it structure and maintain its own\", \"Shipping an async experience when the model's task horizon is well under an hour \u2014 it errors out and returns too fast for async to be good UX\", \"Assuming CI/CD covers the change surface: feature flags and infra changes frequently bypass it and get no monitoring at all\", \"Building a separate skill-creation interface for users to author skills in\", \"Measuring agentic product success by weekly active users\", \"Trusting a single agent to manage a work queue without adversarial supervision\", \"Assuming a security scanner's 'proprietary vulnerability' claims hold on your codebase \u2014 Snyk's findings were all already public CVEs\"]}, \"notable_outliers\": [{\"claim\": \"Running agents fully unsupervised overnight is the actual next frontier, and very few practitioners can do it reliably today.\", \"talk\": \"agentic-security-permissions-provenance-and-the-agent-supply-chain\", \"timestamp_sec\": 1086}, {\"claim\": \"Queue-processing agent systems need adversarial groups of supervisor agents, because any single agent will eventually screw it up.\", \"talk\": \"agentic-security-permissions-provenance-and-the-agent-supply-chain\", \"timestamp_sec\": 1161}, {\"claim\": \"For agentic products, the target is weekly active users going down while weekly active sessions go up \u2014 WAU is the wrong metric.\", \"talk\": \"chat-and-citations-wont-save-your-vertical-ai\", \"timestamp_sec\": 816}, {\"claim\": \"A background service that triaged, AI-reviewed, and prioritized all his PRs is now just a markdown file piped to Codex or Claude.\", \"talk\": \"everything-we-knew-about-software-has-changed\", \"timestamp_sec\": 684}, {\"claim\": \"A background agent instructed to poll a support queue every five minutes, then every minute under five-minute wait, recovered $400 while he took a shower.\", \"talk\": \"full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex\", \"timestamp_sec\": 4382}, {\"claim\": \"In-band memory writing is not enough \u2014 an offline 'dreaming' consolidation pass is required, and 5/5 replicates with a raw memory store fell into a trap that dreaming corrected.\", \"talk\": \"claude-for-long-horizon-tasks\", \"timestamp_sec\": 854}, {\"claim\": \"Precomputed-context background agents structurally cannot serve new users, because there is no reliable historical data to reason from \u2014 an admitted cold-start failure.\", \"talk\": \"from-systems-of-record-to-systems-of-context\", \"timestamp_sec\": 777}, {\"claim\": \"Skills connected to live systems like Slack cannot be evaluated with standard eval methods, because live state can't be snapshotted.\", \"talk\": \"full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex\", \"timestamp_sec\": 1470}], \"maturity\": \"consolidating\", \"maturity_rationale\": \"The infrastructure pattern has converged across independent teams \u2014 cloud sandboxes, stateless harness over durable session logs, credentials outside the sandbox, verification in a separate context \u2014 and multiple speakers report it running in production at scale. What remains actively argued is the human-facing layer: which surface agents live on, whether guardrails can be instructions, how much orchestration to build versus let the model self-organize, and where the review gate sits.\"}",
+  "ttft_ms": 73316,
+  "ttft_stream_ms": 1009,
+  "time_to_request_ms": 42,
   "type": "result",
-  "duration_ms": 138132,
-  "uuid": "87b00c95-8a0e-4c46-b9d9-8d1f666920ab",
+  "duration_ms": 135936,
+  "uuid": "efa23bc7-4290-470e-901d-c420e0ce0a50",
   "passC": {
     "concept": "background agents",
-    "state_of_practice": "The conference treated background agents as an infrastructure problem, not a model problem. The converged architecture is: a stateless harness talking to an append-only session log, with ephemeral cloud sandboxes as disposable 'hands,' credentials held in a vault or broker that never enters the sandbox, and verification run in a context window separate from the one that did the work. Speakers repeatedly located the binding constraint not in model capability \u2014 METR horizons of 12+ hours, Opus 4.5-class models already trivially closing typical Jira tickets \u2014 but in per-environment context: production topology, user-specific conventions, org knowledge that a generic agent cannot infer and that must be precomputed offline rather than assembled at query time. Operationally the field has learned that a ~200-tool-call run will fail at least once, that a sandbox used for durability is an anti-pattern, and that an unbounded automation is a denial-of-service on its owner, so output must be capped and producing nothing must be a legal outcome. What remains genuinely open is how much scaffolding the agent still needs (self-orchestrating models vs. a hand-built execution layer), which surface background work should be reachable from, and whether anyone can actually run these things unattended overnight \u2014 Yegge's answer was that very few can.",
+    "state_of_practice": "Background agents crossed from demo to production architecture at this conference, and the architectural pattern is now fairly specific: the work runs in cloud micro-VMs or sandboxes rather than on a developer's laptop, the harness is a stateless process against an append-only session log so a dead container doesn't kill the run, credentials live in a vault or broker outside the sandbox, and verification happens in a context window separate from the one that did the work. Speakers repeatedly located the remaining bottleneck not in model capability but in environment-specific context \u2014 Resolve AI, monday.com, and Filed all argued that a frontier model with no precomputed understanding of your services, your user, or your conventions gets 80\u201390% of the way and stalls. Failure is assumed rather than hoped against: Inngest put the number at roughly one failure per ~200 tool calls, which is why durable external state, retries, and full-stack traces (not just LLM/tool spans) are treated as table stakes. Async only became a sensible UX once METR task horizons passed about an hour, and Anthropic argued the frontier gap in long-horizon products now comes from combined architecture, infrastructure, security, and memory investment rather than the model alone. What remains genuinely unsettled is the human surface: whether Slack is the right home for these agents, whether guardrails can live in prompts or must be deterministic configuration outside the agent, and whether every artifact needs a human reviewer or only the exceptions do.",
     "consensus": [
       {
-        "claim": "Verification must run in a context separate from the one that produced the work; self-grading in-context confabulates, and concerns like security and correctness must be split into distinct passes.",
+        "claim": "Background agents should run in cloud sandboxes detached from the developer's machine, so closing the laptop doesn't stop the work.",
+        "support_count": 5,
+        "supporting_talks": [
+          "always-on-agents-run-production-without-the-on-call-tax",
+          "multiplayer-agentic-engineering",
+          "realtime-multiplayer-automation-and-you",
+          "llm-knowledge-bases-a-practical-guide",
+          "claude-for-long-horizon-tasks"
+        ],
+        "evidence_quote": "none of this is running on my machine. It's all micro VMs in the cloud. So, every session is just a branch of my repo checked out to a spot in the cloud.",
+        "evidence_talk": "realtime-multiplayer-automation-and-you",
+        "evidence_timestamp_sec": 899
+      },
+      {
+        "claim": "Credentials and secrets must be held outside the agent's sandbox and reached through a vault or broker, not mounted into the environment the agent runs in.",
+        "support_count": 4,
+        "supporting_talks": [
+          "claude-for-long-horizon-tasks",
+          "realtime-multiplayer-automation-and-you",
+          "multiplayer-agentic-engineering",
+          "agentic-security-permissions-provenance-and-the-agent-supply-chain"
+        ],
+        "evidence_quote": "Never trust agents with secrets. If an agent can know a secret, that secret, you need to treat it as if it's already been compromised.",
+        "evidence_talk": "realtime-multiplayer-automation-and-you",
+        "evidence_timestamp_sec": 719
+      },
+      {
+        "claim": "Verification must be a separate pass in a separate context from the one that produced the work; self-grading in the working context produces confabulation and half-done reviews.",
         "support_count": 5,
         "supporting_talks": [
           "claude-for-long-horizon-tasks",
-          "agentic-security-permissions-provenance-and-the-agent-supply-chain",
           "full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex",
+          "agentic-security-permissions-provenance-and-the-agent-supply-chain",
           "your-agent-architecture-has-a-half-life-of-6-months",
           "everything-we-knew-about-software-has-changed"
         ],
@@ -93,78 +123,39 @@
         "evidence_timestamp_sec": 404
       },
       {
-        "claim": "Background agents belong in isolated cloud sandboxes with least-privilege access, and secrets must live outside the sandbox behind a vault or broker rather than on the developer's laptop or inside the agent's environment.",
-        "support_count": 5,
+        "claim": "Model capability is no longer the binding constraint on background agents; capturing environment- and user-specific context ahead of time is.",
+        "support_count": 4,
         "supporting_talks": [
-          "realtime-multiplayer-automation-and-you",
-          "claude-for-long-horizon-tasks",
-          "multiplayer-agentic-engineering",
           "always-on-agents-run-production-without-the-on-call-tax",
-          "agentic-security-permissions-provenance-and-the-agent-supply-chain"
+          "from-systems-of-record-to-systems-of-context",
+          "chat-and-citations-wont-save-your-vertical-ai",
+          "claude-for-long-horizon-tasks"
         ],
-        "evidence_quote": "Never trust agents with secrets. If an agent can know a secret, that secret, you need to treat it as if it's already been compromised.",
-        "evidence_talk": "realtime-multiplayer-automation-and-you",
-        "evidence_timestamp_sec": 719
+        "evidence_quote": "the most capable agent in the world whether it's like a cloud and Gemini, it doesn't understand you. He need to process it beforehand.",
+        "evidence_talk": "from-systems-of-record-to-systems-of-context",
+        "evidence_timestamp_sec": 895
       },
       {
-        "claim": "Session state must be durable and external to the compute doing the work, so that a dead sandbox, dead harness, or closed laptop does not destroy a multi-hour run.",
+        "claim": "State for a long-running run must live outside the process and outside the sandbox, because failure over hundreds of tool calls is a certainty rather than an edge case.",
         "support_count": 3,
         "supporting_talks": [
           "your-agent-architecture-has-a-half-life-of-6-months",
           "claude-for-long-horizon-tasks",
-          "always-on-agents-run-production-without-the-on-call-tax"
+          "agentic-security-permissions-provenance-and-the-agent-supply-chain"
         ],
         "evidence_quote": "So, for this this to work, a 3-hour run cannot hold state in memory or in disk. The state must live outside of the work.",
         "evidence_talk": "your-agent-architecture-has-a-half-life-of-6-months",
         "evidence_timestamp_sec": 401
       },
       {
-        "claim": "Model capability is no longer the limiting factor for background agents; the constraint is captured, environment-specific context \u2014 production topology, per-user history, codebase idiosyncrasy \u2014 that a generic agent cannot infer.",
+        "claim": "Synchronous chat is the wrong default surface for agent work, because it pins the human in place while the agent runs instead of letting them leave and be notified.",
         "support_count": 5,
         "supporting_talks": [
-          "always-on-agents-run-production-without-the-on-call-tax",
-          "from-systems-of-record-to-systems-of-context",
           "chat-and-citations-wont-save-your-vertical-ai",
-          "claude-for-long-horizon-tasks",
-          "multiplayer-agentic-engineering"
-        ],
-        "evidence_quote": "You need the execution engine, that's great, but you really need that production context that tells you is this important or not important.",
-        "evidence_talk": "always-on-agents-run-production-without-the-on-call-tax",
-        "evidence_timestamp_sec": 648
-      },
-      {
-        "claim": "Detached agents need explicit interruption and notification discipline: bounded output, permission to return nothing, and a defined trigger for escalating to a human (an assumption about to be made, or an irreversible action).",
-        "support_count": 3,
-        "supporting_talks": [
           "realtime-multiplayer-automation-and-you",
-          "chat-and-citations-wont-save-your-vertical-ai",
-          "always-on-agents-run-production-without-the-on-call-tax"
-        ],
-        "evidence_quote": "in a world where I have lots of automations, the last thing I want is noise. I don't want the agents denial of servicing me.",
-        "evidence_talk": "realtime-multiplayer-automation-and-you",
-        "evidence_timestamp_sec": 501
-      },
-      {
-        "claim": "Background agents should be multiplayer and org-scoped \u2014 the same session reachable from wherever the team already works \u2014 rather than a single developer's private, laptop-bound process.",
-        "support_count": 4,
-        "supporting_talks": [
+          "always-on-agents-run-production-without-the-on-call-tax",
           "multiplayer-agentic-engineering",
-          "claude-for-long-horizon-tasks",
-          "always-on-agents-run-production-without-the-on-call-tax",
-          "realtime-multiplayer-automation-and-you"
-        ],
-        "evidence_quote": "So, what we really wanted was to be able to work with the same session from every relevant interface.",
-        "evidence_talk": "multiplayer-agentic-engineering",
-        "evidence_timestamp_sec": 208
-      },
-      {
-        "claim": "Synchronous chat is structurally wrong for delegated work, because it pins the user to the interface while the agent runs; the value of background agents is precisely that the human leaves.",
-        "support_count": 4,
-        "supporting_talks": [
-          "chat-and-citations-wont-save-your-vertical-ai",
-          "the-prompt-is-still-a-punch-card",
-          "realtime-multiplayer-automation-and-you",
-          "everything-we-knew-about-software-has-changed"
+          "the-prompt-is-still-a-punch-card"
         ],
         "evidence_quote": "This synchronous medium does not allow the customers to leave the platform and go and do their work.",
         "evidence_talk": "chat-and-citations-wont-save-your-vertical-ai",
@@ -173,153 +164,152 @@
     ],
     "disagreements": [
       {
-        "question": "Do background agents still require a hand-built orchestration and execution layer, or do current models self-orchestrate well enough that the scaffolding is dead weight?",
-        "position_a": "Frontier models now spawn sub-agents, split work, and verify it if you simply ask them to \u2014 no custom tooling, no 'software factory,' no orchestration framework needed.",
+        "question": "Is Slack (and chat surfaces generally) the right home for background agents, or a trap they need to be moved out of?",
+        "position_a": "Meet people where they already work: embed the agent in Slack/Teams/GitHub rather than a separate product UI, and treat Slack's extensible bot shape as the reason it wins as an agent platform.",
         "position_a_talks": [
-          "everything-we-knew-about-software-has-changed"
-        ],
-        "position_b": "You must design the execution layer yourself: durable state, retries, queues, backoff, scheduling, full-stack tracing, plus adversarial supervisor agents and a per-environment knowledge system, because no single agent run is trustworthy and off-the-shelf frameworks were not built for this shape.",
-        "position_b_talks": [
-          "your-agent-architecture-has-a-half-life-of-6-months",
-          "agentic-security-permissions-provenance-and-the-agent-supply-chain",
           "always-on-agents-run-production-without-the-on-call-tax",
+          "everything-we-knew-about-software-has-changed",
           "claude-for-long-horizon-tasks"
         ],
-        "why_it_matters": "It decides whether a team's engineering investment goes into prompts and ambition or into months of execution-layer infrastructure \u2014 and whether that infrastructure is durable capital or scaffolding the next model release deletes."
-      },
-      {
-        "question": "Are background agents ready to run unattended, or does every artifact still need a human in the loop?",
-        "position_a": "Unattended overnight automation is the main event and already shipping \u2014 agents that triage issues, walk stack traces, and close tickets while you sleep will be a bigger category than interactive AI.",
-        "position_a_talks": [
-          "realtime-multiplayer-automation-and-you",
-          "everything-we-knew-about-software-has-changed"
-        ],
-        "position_b": "Fully unsupervised operation is still a frontier very few can do reliably; in practice every agent-generated PR gets human review, the agent pauses whenever it would make an assumption, and irreversible actions require plan approval first.",
-        "position_b_talks": [
-          "agentic-security-permissions-provenance-and-the-agent-supply-chain",
-          "multiplayer-agentic-engineering",
-          "chat-and-citations-wont-save-your-vertical-ai"
-        ],
-        "why_it_matters": "The answer sets whether human review capacity is the real throughput ceiling on agent-generated work, and whether 'agent count' or 'reviewer count' is the number to plan headcount around."
-      },
-      {
-        "question": "Should guardrails for background agents be expressed to the agent, or enforced deterministically outside it?",
-        "position_a": "Rules in AGENTS.md plus auto-review are sufficient safety controls for individual use, with admin settings reserved for externally-facing actions; models today err toward being too reluctant to act destructively, so over-restriction is the bigger practical cost.",
-        "position_a_talks": [
-          "full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex"
-        ],
-        "position_b": "Guardrails stated as prompts are not guardrails \u2014 a third party can prompt-inject past them \u2014 so enforcement must be deterministic configuration outside the agent, backed by real credential isolation, since sandbox and auto-approval configs are not reliably safe and there is no technical defense for prompt injection today.",
-        "position_b_talks": [
-          "realtime-multiplayer-automation-and-you",
-          "multiplayer-agentic-engineering",
-          "agentic-security-permissions-provenance-and-the-agent-supply-chain"
-        ],
-        "why_it_matters": "Prompt-level rules are cheap and immediate; deterministic enforcement requires a broker, a permission model, and org infrastructure. Choosing wrong means either shipping agents with no real containment or blocking every useful action behind approvals."
-      },
-      {
-        "question": "How should a long-lived agent carry context \u2014 compaction inside one persistent thread, or an external append-only substrate?",
-        "position_a": "Compaction now works well enough that the old advice to start fresh threads is obsolete; keep one long-lived pinned thread (five weeks old, hundreds of sub-agents), schedule heartbeats back into it, and prefer visible pinned threads over sub-agents so you notice state changes.",
-        "position_a_talks": [
-          "full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex"
-        ],
-        "position_b": "Compaction is destructive \u2014 it discards everything not compacted \u2014 so the session should be an immutable append-only event log the model can always read back from, with state held outside the running work rather than rehydrated from logs or manual checkpoints.",
-        "position_b_talks": [
-          "claude-for-long-horizon-tasks",
-          "your-agent-architecture-has-a-half-life-of-6-months"
-        ],
-        "why_it_matters": "It determines whether long-horizon reliability comes free from the harness vendor or requires building session storage, and whether a run that goes wrong at hour six can be inspected and resumed or is simply lost."
-      },
-      {
-        "question": "Is Slack the right surface for background agents to live in?",
-        "position_a": "Meet people where they already work \u2014 agents should be embedded in Slack and MS Teams rather than a separate product UI, and Slack's extensible bot-shaped API is exactly why it won as an agent platform even though the product itself is weak.",
-        "position_a_talks": [
-          "always-on-agents-run-production-without-the-on-call-tax",
-          "everything-we-knew-about-software-has-changed"
-        ],
-        "position_b": "Slack was designed for the average office worker, not for building software; a Slack bot alone just moves the agent from trapped on a laptop to trapped in Slack, so the agent session must be reachable identically from the IDE, the repo host, and mobile, and collaboration surfaces should carry only the facts that are not in the code.",
+        "position_b": "Slack is the wrong surface \u2014 it was designed for the average office worker, not software teams, and a Slack bot merely moves the agent from being trapped on a laptop to being trapped in Slack; the same session must be reachable from every interface, or creation and collaboration must converge on a purpose-built surface.",
         "position_b_talks": [
           "realtime-multiplayer-automation-and-you",
           "multiplayer-agentic-engineering"
         ],
-        "why_it_matters": "Surface choice determines who can trigger agent work \u2014 a chat-first design lets non-engineers file real changes, while a repo-first design keeps the artifact and its review in one place at the cost of reach."
+        "why_it_matters": "It determines whether you invest in chat integrations or in a session abstraction portable across interfaces, and whether org context reaches the agent through conversation history or through a dedicated context layer."
+      },
+      {
+        "question": "Do background agents require a purpose-built execution and orchestration layer, or will model capability absorb that work?",
+        "position_a": "You must design the execution layer yourself \u2014 durable state, retries, scheduling, full-stack traces, per-customer knowledge systems \u2014 because frameworks from three months ago were not built for loops and background agents, and the frontier gap comes from architecture, infrastructure, security, and memory together.",
+        "position_a_talks": [
+          "your-agent-architecture-has-a-half-life-of-6-months",
+          "claude-for-long-horizon-tasks",
+          "always-on-agents-run-production-without-the-on-call-tax",
+          "multiplayer-agentic-engineering"
+        ],
+        "position_b": "Current models self-orchestrate: tell the model to spawn sub-models, split work, and verify, and it will, with no custom tooling or 'software factory' \u2014 a service that used to triage and review PRs is now a markdown file, and scheduled heartbeats into an existing thread replace bespoke automation plumbing.",
+        "position_b_talks": [
+          "everything-we-knew-about-software-has-changed",
+          "full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex"
+        ],
+        "why_it_matters": "One path spends months of engineering on a layer meant to outlive models; the other spends nothing and rewrites the markdown when the model changes. Betting wrong means either building infrastructure the model made obsolete or discovering at 200 tool calls that nothing survives a failure."
+      },
+      {
+        "question": "Should every background-agent output be human-reviewed, or should humans be invoked only on exceptions?",
+        "position_a": "Gate the artifacts: 99.9% agent-generated PRs still get human review, irreversible actions require presenting a plan for approval, agents pause whenever they are about to make an assumption, and adversarial supervisor agents watch queues because any single agent eventually fails.",
+        "position_a_talks": [
+          "multiplayer-agentic-engineering",
+          "chat-and-citations-wont-save-your-vertical-ai",
+          "agentic-security-permissions-provenance-and-the-agent-supply-chain"
+        ],
+        "position_b": "Interruption is the scarce resource: automations must be allowed to produce no output at all and be output-bounded so they don't deny-service their owner, agents should invoke humans only when they need clarification or a pair of hands, and AGENTS.md rules plus auto-review are sufficient controls for individual use since models are already more reluctant than eager about destructive actions.",
+        "position_b_talks": [
+          "realtime-multiplayer-automation-and-you",
+          "full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex"
+        ],
+        "why_it_matters": "Mandatory review caps the throughput of background agents at human review bandwidth, which is the whole point of running them detached; exception-based review scales but pushes the failure mode from noise to unreviewed merged changes."
+      },
+      {
+        "question": "Can guardrails for detached agents be expressed to the agent, or must they be deterministic configuration outside it?",
+        "position_a": "Guardrails written as prompts are not guardrails \u2014 a third party can prompt-inject past them, so constraints must be deterministic config outside the agent, backed by least-privilege sandboxes, in-house permission and monitoring systems, and deterministic scanners run as separate passes.",
+        "position_a_talks": [
+          "realtime-multiplayer-automation-and-you",
+          "multiplayer-agentic-engineering",
+          "agentic-security-permissions-provenance-and-the-agent-supply-chain"
+        ],
+        "position_b": "AGENTS.md rules plus automatic review are adequate safety controls for individual use, with org-level admin settings reserved for externally-facing actions.",
+        "position_b_talks": [
+          "full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex"
+        ],
+        "why_it_matters": "If instruction-level rules are insufficient, every team running background agents needs a permission broker and sandbox policy before deployment rather than after \u2014 and Jason Liu's own observation that a determined agent will route around a blocked connector using computer use is evidence for the harder position."
       }
     ],
     "practical_guidance": {
       "do": [
-        "Split the harness from the sandbox: keep the harness a stateless process against an append-only session log, with containers as disposable hands, so a sandbox death does not lose the run.",
-        "Keep credentials in a separate vault or broker and never inject them into the agent's sandbox; treat any secret the agent can see as already compromised.",
-        "Run verification as its own pass in its own context window, and split concerns across passes \u2014 security first and last, never bundled with correctness in one prompt.",
-        "Budget four to five review passes over an LLM's own work before shipping it, and stack multiple independent scanners so they check each other.",
-        "Bound every automation's output (e.g. at most one PR) and explicitly allow it to produce nothing at all.",
-        "Pause and ask whenever the agent is about to make an assumption, and require an approved plan before irreversible or dangerous actions.",
-        "Benchmark candidate agents and models continuously on your own repository \u2014 SWE-bench is all Python, and Rails results diverged sharply on both speed and cost.",
-        "Instrument the execution layer as the observability hub and score on outcome signals (was the PR opened, was the report saved) rather than thumbs up/down.",
-        "Design for at least one failure per run: a background agent making ~200 tool calls will almost certainly hit one.",
-        "Add an out-of-band memory consolidation pass to correct memories that were written incorrectly or only locally-optimally in-band.",
-        "Pick background-agent targets that take the user more than a couple of hours and are repeatable, then capture the last 20% of user-specific convention automatically from observed usage.",
-        "Track weekly active sessions rising while weekly active users falls \u2014 WAU is the wrong success metric for a delegation product.",
-        "Use low or medium reasoning effort for routine operational tasks; highest effort does not pay off proportionally."
+        "Split the harness from the sandbox: run a stateless harness against an append-only session event log, with containers as disposable 'hands' so a sandbox or harness death doesn't lose the run",
+        "Keep credentials in a separate vault and access them through a broker; never add them to the agent's sandbox container",
+        "Run verification in a separate, separately tuned context window from the one that produced the work",
+        "Run security as its own pass \u2014 first and last \u2014 rather than bundling it with correctness in one prompt",
+        "Bound automation output (e.g. at most one PR) and explicitly permit automations to produce no output at all",
+        "Pick background-agent tasks that currently take a user more than a couple of hours and that repeat",
+        "Present a plan for approval before irreversible or dangerous actions; pause whenever the agent is about to make an assumption",
+        "Precompute per-user and per-environment context offline \u2014 monday.com's split of a slow engine that learns the user and a fast engine that reads live urgency signals",
+        "Schedule heartbeat messages back into the same long-lived thread rather than spawning a new thread per automation run",
+        "Write an enrichment timestamp into each processed artifact so repeat agent passes only touch what lacks the marker",
+        "Give the agent a fixed reference list of tags and instruct it to be reluctant to add new ones",
+        "Benchmark candidate agents on your own repo continuously \u2014 SWE-bench is all Python and won't predict Ruby on Rails results",
+        "Score on outcome signals (was the PR opened, was the report saved) rather than thumbs up/down",
+        "Expose the full session trace \u2014 triggers, database errors, permission failures, performance \u2014 and make it inspectable by reviewer agents, not just humans",
+        "Default to low/medium reasoning effort for operational background tasks",
+        "Capture user-specific conventions automatically from observed product usage, since the generic agent only reaches 80\u201390%"
       ],
       "avoid": [
-        "Putting the harness and the sandbox in the same container \u2014 one container death takes the whole session with it.",
-        "Using the sandbox for durability, snapshots, or state; sandboxes are ephemeral and stateless by design.",
-        "Prompting your guardrails at the agent \u2014 a third party can prompt-inject straight past them.",
-        "Grading work in the same context window that produced it; it produces confabulation and odd artifacts.",
-        "Prescribing a memory schema for the model; explicitly specifying what kinds of memories to save measurably drops performance.",
-        "Building a separate user-facing interface for authoring skills \u2014 users will not use it.",
-        "Treating citations as a trust mechanism; they push verification burden back onto the user. Show the trace of how each value was produced instead.",
-        "Assuming CI/CD covers your risk surface \u2014 feature flags and infra changes routinely bypass it and get no monitoring at all.",
-        "Shipping an async experience when your task horizon is under an hour; the agent errors out and returns too fast for async to be good UX.",
-        "Letting a single agent own queue management or long-horizon supervision unchecked \u2014 any one agent eventually fails.",
-        "Coupling the execution layer to models, prompts, and context; the shortest-lived layer will force rewrites of everything it touches."
+        "Putting the harness and the sandbox in the same container",
+        "Using the sandbox for durability, snapshots, or state \u2014 it is ephemeral by design",
+        "Holding a multi-hour run's state in memory or on disk, or rehydrating it from logs with manual checkpointing",
+        "Prompting guardrails at the agent and treating that as a control",
+        "Letting the same context both do the work and grade it",
+        "Scheduling automations on local tooling that requires your laptop to be open when the timer fires",
+        "Prescribing a memory schema for the model instead of letting it structure and maintain its own",
+        "Shipping an async experience when the model's task horizon is well under an hour \u2014 it errors out and returns too fast for async to be good UX",
+        "Assuming CI/CD covers the change surface: feature flags and infra changes frequently bypass it and get no monitoring at all",
+        "Building a separate skill-creation interface for users to author skills in",
+        "Measuring agentic product success by weekly active users",
+        "Trusting a single agent to manage a work queue without adversarial supervision",
+        "Assuming a security scanner's 'proprietary vulnerability' claims hold on your codebase \u2014 Snyk's findings were all already public CVEs"
       ]
     },
     "notable_outliers": [
       {
-        "claim": "Queue-processing agent systems need adversarial groups of supervisor agents, not a single supervisor, because one agent will always eventually screw it up.",
+        "claim": "Running agents fully unsupervised overnight is the actual next frontier, and very few practitioners can do it reliably today.",
+        "talk": "agentic-security-permissions-provenance-and-the-agent-supply-chain",
+        "timestamp_sec": 1086
+      },
+      {
+        "claim": "Queue-processing agent systems need adversarial groups of supervisor agents, because any single agent will eventually screw it up.",
         "talk": "agentic-security-permissions-provenance-and-the-agent-supply-chain",
         "timestamp_sec": 1161
       },
       {
-        "claim": "Snyk found 241 vulnerabilities in a codebase that a frontier model had already completed a dedicated security hardening pass over.",
-        "talk": "agentic-security-permissions-provenance-and-the-agent-supply-chain",
-        "timestamp_sec": 466
+        "claim": "For agentic products, the target is weekly active users going down while weekly active sessions go up \u2014 WAU is the wrong metric.",
+        "talk": "chat-and-citations-wont-save-your-vertical-ai",
+        "timestamp_sec": 816
       },
       {
-        "claim": "An entire PR-triage-and-review service collapsed into a single markdown file piped to a coding agent.",
+        "claim": "A background service that triaged, AI-reviewed, and prioritized all his PRs is now just a markdown file piped to Codex or Claude.",
         "talk": "everything-we-knew-about-software-has-changed",
         "timestamp_sec": 684
       },
       {
-        "claim": "A background agent told to poll a support queue every five minutes, escalating to every minute under five-minute wait times, recovered a $400 refund unattended while its owner showered.",
+        "claim": "A background agent instructed to poll a support queue every five minutes, then every minute under five-minute wait, recovered $400 while he took a shower.",
         "talk": "full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex",
         "timestamp_sec": 4382
       },
       {
-        "claim": "Per-user context should be computed by two offline engines on different time windows \u2014 a slow one that learns durable patterns and a fast one that computes live urgency \u2014 mirroring complementary learning systems in neuroscience and lambda architecture in data infrastructure.",
+        "claim": "In-band memory writing is not enough \u2014 an offline 'dreaming' consolidation pass is required, and 5/5 replicates with a raw memory store fell into a trap that dreaming corrected.",
+        "talk": "claude-for-long-horizon-tasks",
+        "timestamp_sec": 854
+      },
+      {
+        "claim": "Precomputed-context background agents structurally cannot serve new users, because there is no reliable historical data to reason from \u2014 an admitted cold-start failure.",
         "talk": "from-systems-of-record-to-systems-of-context",
-        "timestamp_sec": 629
+        "timestamp_sec": 777
       },
       {
-        "claim": "Longitudinal study of ~100 developers over thousands of hours: hands-on-keyboard typing is only about 5% of the job, which is the share AI has addressed so far.",
-        "talk": "realtime-multiplayer-automation-and-you",
-        "timestamp_sec": 1196
-      },
-      {
-        "claim": "A determined agent blocked at a connector will open a browser and perform the action through computer use instead, routing around the block entirely.",
+        "claim": "Skills connected to live systems like Slack cannot be evaluated with standard eval methods, because live state can't be snapshotted.",
         "talk": "full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex",
-        "timestamp_sec": 3277
+        "timestamp_sec": 1470
       }
     ],
     "maturity": "consolidating",
-    "maturity_rationale": "The substrate has converged across independent teams \u2014 stateless harness over an append-only session log, ephemeral cloud sandboxes, brokered secrets, separated verification contexts, bounded notification \u2014 with five or more unrelated talks landing on each of those. What is still actively argued is one layer up: how much orchestration the model now handles for you, whether unattended runs are shippable, and which surface owns the session."
+    "maturity_rationale": "The infrastructure pattern has converged across independent teams \u2014 cloud sandboxes, stateless harness over durable session logs, credentials outside the sandbox, verification in a separate context \u2014 and multiple speakers report it running in production at scale. What remains actively argued is the human-facing layer: which surface agents live on, whether guardrails can be instructions, how much orchestration to build versus let the model self-organize, and where the review gate sits."
   },
   "_meta": {
     "concept": "background agents",
     "slug": "background-agents",
-    "talk_count": 11,
+    "talk_count": 12,
     "missing_talks": [],
-    "wall_sec": 139.2,
-    "run_at": "2026-08-13T19:33:08Z"
+    "wall_sec": 137.1,
+    "run_at": "2026-08-19T14:13:05Z"
   }
 }

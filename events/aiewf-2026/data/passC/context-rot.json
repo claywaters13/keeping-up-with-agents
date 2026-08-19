@@ -1,34 +1,37 @@
 {
   "is_error": false,
-  "duration_api_ms": 123915,
+  "duration_api_ms": 107792,
   "num_turns": 1,
   "stop_reason": "end_turn",
-  "session_id": "0042e4ee-6b79-4f51-9e31-221b89af9812",
-  "total_cost_usd": 0.603362,
+  "session_id": "e08264c0-bb59-4b51-8dc1-feab0e22caf7",
+  "total_cost_usd": 0.6342194999999999,
   "usage": {
     "input_tokens": 2,
-    "cache_creation_input_tokens": 31643,
-    "cache_read_input_tokens": 10308,
-    "output_tokens": 10441,
+    "cache_creation_input_tokens": 38262,
+    "cache_read_input_tokens": 8113,
+    "output_tokens": 8992,
+    "output_tokens_details": {
+      "thinking_tokens": 3642
+    },
     "server_tool_use": {
       "web_search_requests": 0,
       "web_fetch_requests": 0
     },
     "service_tier": "standard",
     "cache_creation": {
-      "ephemeral_1h_input_tokens": 31643,
+      "ephemeral_1h_input_tokens": 38262,
       "ephemeral_5m_input_tokens": 0
     },
     "inference_geo": "not_available",
     "iterations": [
       {
         "input_tokens": 2,
-        "output_tokens": 10441,
-        "cache_read_input_tokens": 10308,
-        "cache_creation_input_tokens": 31643,
+        "output_tokens": 8992,
+        "cache_read_input_tokens": 8113,
+        "cache_creation_input_tokens": 38262,
         "cache_creation": {
           "ephemeral_5m_input_tokens": 0,
-          "ephemeral_1h_input_tokens": 31643
+          "ephemeral_1h_input_tokens": 38262
         },
         "type": "message"
       }
@@ -37,12 +40,12 @@
   },
   "modelUsage": {
     "claude-haiku-4-5-20251001": {
-      "inputTokens": 20673,
-      "outputTokens": 14,
+      "inputTokens": 22683,
+      "outputTokens": 10,
       "cacheReadInputTokens": 0,
       "cacheCreationInputTokens": 0,
       "webSearchRequests": 0,
-      "costUSD": 0.020743,
+      "costUSD": 0.022733,
       "contextWindow": 200000,
       "maxOutputTokens": 32000,
       "canonicalModel": "claude-haiku-4-5",
@@ -50,11 +53,11 @@
     },
     "claude-opus-5": {
       "inputTokens": 2,
-      "outputTokens": 10441,
-      "cacheReadInputTokens": 10308,
-      "cacheCreationInputTokens": 31643,
+      "outputTokens": 8992,
+      "cacheReadInputTokens": 8113,
+      "cacheCreationInputTokens": 38262,
       "webSearchRequests": 0,
-      "costUSD": 0.582619,
+      "costUSD": 0.6114864999999999,
       "contextWindow": 1000000,
       "maxOutputTokens": 64000,
       "canonicalModel": "claude-opus-5",
@@ -67,77 +70,64 @@
   "fast_mode_disabled_reason": "sdk_opt_in_required",
   "subtype": "success",
   "api_error_status": null,
-  "result": "{\"concept\": \"context rot\", \"state_of_practice\": \"Context rot is treated as an established, measurable failure mode rather than a hypothesis: speakers cite degradation starting around 25% of window utilization, a \\\"dumb zone\\\" past 40%, tool-selection accuracy falling from ~78% at 10 tools to 13.6% at 741, and voice agents dropping system-prompt instructions after 15-20 turns. The field has largely stopped treating a longer context window or a newer model as the remedy \u2014 context is framed as a budget to be spent, with the always-resident portion (system prompt, tool schemas, skill descriptions) as the first thing to audit, since 15 MCP servers or a 741-tool catalog can consume 100k-127k tokens before the user says anything. The dominant mitigation is architectural: keep the model's working set small and push everything else behind an on-demand boundary \u2014 semantic tool routing at K\u22485, progressive-disclosure skills (sub-100-token descriptions, sub-5k activation), sub-agents, external REPL environments the model programs against, or a write-manage-read memory harness. A second, less-solved dimension is aging rather than volume: hand-maintained .md files, skills, and system prompts go stale (a column that no longer exists still sits in the prompt), and almost nobody has a feedback loop wiring eval traces or correction events back into context. Open engineering questions concentrate on where to draw the retrieval boundary, whether budgets should be expressed as a fraction of the window or a fixed token ceiling, and whether compaction is a legitimate tool or a lossy operation to be replaced by deterministic fresh context per iteration.\", \"consensus\": [{\"claim\": \"Model quality degrades well before the context window is full \u2014 filling the window is a quality decision, not just a limit question.\", \"support_count\": 8, \"supporting_talks\": [\"skills-are-the-new-sdks\", \"rlm-recursive-language-models-for-large-codebases\", \"when-all-context-matters-extended-cache-augmented-generation\", \"the-100-tool-agent-is-a-trap\", \"voice-agents-that-handle-interrupts\", \"memory-harnesses-for-long-running-research-agents\", \"the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in\", \"what-if-the-harness-mattered-more-than-the-model\"], \"evidence_quote\": \"there was a paper called context rot, and it proves that after 25% usage of the context window, so for example, for 1 million token, if you used 256K of it, the performance starts to degrade.\", \"evidence_talk\": \"skills-are-the-new-sdks\", \"evidence_timestamp_sec\": 99}, {\"claim\": \"A bigger model, a longer context window, or more knowledge sources is not the fix; context must be treated as a scarce budget that is actively filtered.\", \"support_count\": 5, \"supporting_talks\": [\"enterprise-agents-have-a-structure-problem\", \"skills-are-the-new-sdks\", \"the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in\", \"when-all-context-matters-extended-cache-augmented-generation\", \"rlm-recursive-language-models-for-large-codebases\"], \"evidence_quote\": \"Context is a budget. Context is almost like a limited resource that we need to carefully filter information. Definitely the longer context doesn't mean better.\", \"evidence_talk\": \"skills-are-the-new-sdks\", \"evidence_timestamp_sec\": 1536}, {\"claim\": \"The always-resident block \u2014 tool schemas, MCP definitions, model-invoked skill descriptions \u2014 is the largest and most fixable source of rot, because every request pays for the entire catalog whether or not it is relevant.\", \"support_count\": 4, \"supporting_talks\": [\"the-100-tool-agent-is-a-trap\", \"skills-are-the-new-sdks\", \"building-great-agent-skills-the-missing-manual\", \"what-if-the-harness-mattered-more-than-the-model\"], \"evidence_quote\": \"The important point is, basically, the design does not fail because one tool is badly written. It fails because every request is forced to carry the entire catalog.\", \"evidence_talk\": \"the-100-tool-agent-is-a-trap\", \"evidence_timestamp_sec\": 172}, {\"claim\": \"The right architecture keeps the model's working set small and holds the rest behind an on-demand boundary (routing, progressive disclosure, sub-agents, external execution environments, or a memory harness).\", \"support_count\": 5, \"supporting_talks\": [\"the-100-tool-agent-is-a-trap\", \"rlm-recursive-language-models-for-large-codebases\", \"what-if-the-harness-mattered-more-than-the-model\", \"memory-harnesses-for-long-running-research-agents\", \"skills-are-the-new-sdks\"], \"evidence_quote\": \"This is the core lesson from the benchmark. The catalog can grow, but the model's working set should stay small.\", \"evidence_talk\": \"the-100-tool-agent-is-a-trap\", \"evidence_timestamp_sec\": 932}, {\"claim\": \"Context rots by aging as well as by growing: hand-maintained skills, .md files, and system prompts drift out of date faster than teams can update them, and there is no standard mechanism that refreshes them.\", \"support_count\": 3, \"supporting_talks\": [\"enterprise-agents-have-a-structure-problem\", \"user-signal-dies-at-the-retrieval-boundary\", \"building-great-agent-skills-the-missing-manual\"], \"evidence_quote\": \"the context gets rotten, or it gets deprecated, or processes change so often that it's hard to maintain dot MD files, or keep on updating your skills with the most latest context\", \"evidence_talk\": \"enterprise-agents-have-a-structure-problem\", \"evidence_timestamp_sec\": 318}], \"disagreements\": [{\"question\": \"Should the response to context rot be to select less context up front, or to keep the whole corpus reachable and let the model curate it at runtime?\", \"position_a\": \"Cut aggressively before the model sees anything: retrieve a small relevant subset (K\u22485 tool schemas), keep skill.md minimal, put branch-specific reference material behind context pointers, and remove wrong options from the choice set entirely.\", \"position_a_talks\": [\"the-100-tool-agent-is-a-trap\", \"skills-are-the-new-sdks\", \"building-great-agent-skills-the-missing-manual\"], \"position_b\": \"The selection step is itself where the signal dies: similarity-thresholded retrieval cannot return a collection where everything is relevant, so keep the full corpus reachable \u2014 parallel KV-cached buckets with a supervisor, a programmable REPL the model writes code against, or outcome-weighted retrieval that learns rather than a static similarity cut.\", \"position_b_talks\": [\"when-all-context-matters-extended-cache-augmented-generation\", \"rlm-recursive-language-models-for-large-codebases\", \"user-signal-dies-at-the-retrieval-boundary\"], \"why_it_matters\": \"It decides whether you invest in a retrieval/routing layer with an accuracy target, or in cache lifetime management and sandboxed execution environments \u2014 completely different infrastructure and cost curves. It also determines whether recall failures are debugged as embedding-quality problems or as supervisor-exploration problems.\"}, {\"question\": \"Is the safe context budget a fraction of the model's window, or a fixed absolute ceiling independent of window size?\", \"position_a\": \"Express it as a percentage: under 25% is safe, 40% is the boundary of the smart zone, so keep system prompt plus tool definitions under 40% of whatever window you have before the first user turn.\", \"position_a_talks\": [\"skills-are-the-new-sdks\"], \"position_b\": \"Percentages do not survive bigger windows: keep working context under roughly 100k tokens (under 60k for hard problems) even with million-token windows, and in voice track turns rather than tokens, pruning or resetting after 15-20 turns.\", \"position_b_talks\": [\"the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in\", \"voice-agents-that-handle-interrupts\"], \"why_it_matters\": \"With a 1M-token window the two rules differ by 300k tokens of allowed context \u2014 one says 400k is fine, the other says you are deep into failure. It also changes whether upgrading to a larger-window model buys you headroom or nothing at all.\"}, {\"question\": \"Should the agent's durable operating context be hand-authored and reviewed, or automatically derived from live systems and runtime outcomes?\", \"position_a\": \"Skills are software: hand-write them, keep a single source of truth, delete no-ops, audit community skills before pulling them in, and version and test them \u2014 LLM-generated skills measurably hurt performance by burning more tokens and reasoning time.\", \"position_a_talks\": [\"building-great-agent-skills-the-missing-manual\", \"skills-are-the-new-sdks\"], \"position_b\": \"Hand-maintenance cannot keep pace with changing KPIs, definitions, and schemas: source context from live systems (dbt, GitHub, CRM, Tableau) and log correction events back into it, and once ~10 memories accumulate, bake the learned reasoning into skills automatically so the agent stays current without prompt rewrites.\", \"position_b_talks\": [\"enterprise-agents-have-a-structure-problem\", \"user-signal-dies-at-the-retrieval-boundary\"], \"why_it_matters\": \"One path spends human review time to keep the resident context small and correct; the other accepts machine-written context in exchange for freshness, and inherits a new failure mode where noisy review labels propagate into the agent's operating instructions.\"}], \"practical_guidance\": {\"do\": [\"Keep baseline system prompt plus tool definitions under 40% of the context window before any user turn; under 25% is where performance is still intact.\", \"Cap agent working context near 100k tokens even on million-token windows, and under 60k for the hardest problems.\", \"Past ~50 tools in production, replace static tool loading with a semantic router that injects K\u22485 schemas; run the test set at K=3, 5, and 10 and pick the smallest K meeting your accuracy target.\", \"Below 20 tools, skip the router entirely and load statically \u2014 the machinery is not worth it at 10-15 tools.\", \"Structure skills for progressive disclosure: level-one description under 100 tokens, activation under 5k, scripts below that.\", \"Move reference material used by only one branch of a skill out of skill.md and behind a context pointer.\", \"Give every part of a skill a single source of truth and delete instructions the agent would follow anyway (no-ops), which are especially common when an agent wrote the skill.\", \"Rank knowledge sources cleanest-first \u2014 semantic layer, then canonical queries, then the database graph \u2014 instead of weighting all knowledge bases equally.\", \"Prune context or reset the session after 15-20 turns in long voice conversations, before instruction following degrades.\", \"Prefer deterministically re-allocating a fresh context each iteration over compacting the existing one.\", \"Treat recall policy as a first-class metric: a good policy lowers total token spend as well as raising accuracy.\", \"Write tool descriptions in the words users actually use, including intent, action, and key entities \u2014 routing quality is bounded by description quality.\", \"Log correction events and eval outcomes back into the agent's context instead of letting the signal die in a dashboard.\"], \"avoid\": [\"Reaching for a bigger model, a longer window, or more knowledge bases and MCP servers when the agent gives bad answers.\", \"Connecting an agent to ~15 MCP servers, which burns 100k+ tokens per session in tool definitions alone before any work happens.\", \"Assuming failures that appear as tools are added are prompt problems \u2014 accuracy collapse from lost-in-the-middle is architectural.\", \"Relying on compaction to survive long runs; it is lossy and degrades fidelity.\", \"Adding a memory harness when the task and its relevant context already fit in the window \u2014 it adds cost and no capability.\", \"Assuming the model will use correct context once it is retrieved; oracle retrieval still does not reach maximum task performance.\", \"Bucketing documents by domain across parallel caches \u2014 with dense cross-document relationships the supervisor skips domains that look irrelevant at first glance.\", \"Letting shared skill and prompt files accumulate sediment because contributors add but never delete others' text.\", \"Shipping LLM-generated skills as-is; they consume more tokens and reasoning time than human-written equivalents.\", \"Pulling community skills into your agent's context without auditing them first.\"]}, \"notable_outliers\": [{\"claim\": \"Providing the agent with exactly the right memory does not guarantee it uses it \u2014 oracle retrieval still falls short of maximum task performance, so retrieval quality is not the whole story.\", \"talk\": \"memory-harnesses-for-long-running-research-agents\", \"timestamp_sec\": 509}, {\"claim\": \"Tool-selection accuracy falls to 13.6% at 741 tools \u2014 roughly one correct tool out of eight \u2014 while semantic routing holds above 83% across the same catalog sizes.\", \"talk\": \"the-100-tool-agent-is-a-trap\", \"timestamp_sec\": 237}, {\"claim\": \"Holding model and eval constant across 106 tasks, swapping only the harness moves scores from 52.4% to 76.2%, and the harness matters more for weaker models than stronger ones.\", \"talk\": \"what-if-the-harness-mattered-more-than-the-model\", \"timestamp_sec\": 143}, {\"claim\": \"Deliberately hiding future steps by splitting a process into separate skills, so the agent sees only one step at a time, increases the legwork it does on the current step.\", \"talk\": \"building-great-agent-skills-the-missing-manual\", \"timestamp_sec\": 946}, {\"claim\": \"A rank-only decisions ledger beats both vector RAG and binary memory gating on long-horizon recall, and bad memory is expensive because it spends tokens and sends the agent the wrong way.\", \"talk\": \"memory-harnesses-for-long-running-research-agents\", \"timestamp_sec\": 451}, {\"claim\": \"User-invoked skills are preferable to model-invoked ones: the higher user cognitive load buys you the elimination of invocation unpredictability and the evals needed to police it.\", \"talk\": \"building-great-agent-skills-the-missing-manual\", \"timestamp_sec\": 385}, {\"claim\": \"Instruction following in voice agents degrades after roughly 15-20 turns \u2014 models start ignoring parts of the system prompt, get verbose, and go off script.\", \"talk\": \"voice-agents-that-handle-interrupts\", \"timestamp_sec\": 1147}], \"maturity\": \"consolidating\", \"maturity_rationale\": \"The existence and rough shape of context rot is no longer argued \u2014 multiple independent talks cite concrete degradation thresholds and the same architectural remedy of shrinking the model's working set \u2014 but the field still disagrees on where to draw the retrieval boundary, whether the budget is a percentage of the window or a fixed ceiling, and whether durable context should be hand-authored or machine-refreshed.\"}",
-  "ttft_ms": 63875,
-  "ttft_stream_ms": 991,
-  "time_to_request_ms": 38,
+  "result": "{\"concept\": \"context rot\", \"state_of_practice\": \"The field now treats effective context capacity as far smaller than nominal context capacity: agents degrade \u2014 contradicting themselves, ignoring parts of the system prompt, mis-selecting tools \u2014 long before the window is full. The reported thresholds are concrete and low: performance starts sliding around 25% window utilization and a 'dumb zone' past 40%, keep working context under ~100k tokens even on million-token models, and voice agents lose instruction-following after 15\u201320 turns. The dominant mitigation is architectural rather than capacity-based: just-in-time loading of tools, skills, and reference material so the catalog can grow while the working set stays small \u2014 semantic tool routing cuts 127k tokens of schemas to ~1k while holding selection accuracy above 83%, and skills report roughly 10x less overhead than the equivalent MCP setup. A second, distinct failure mode is aging rather than dilution: hand-maintained .md files, skills, and system prompts accumulate sediment and go stale (columns that no longer exist, KPI definitions that changed), which no amount of window headroom fixes. The sharpest live dispute is whether 'rot' is real model degradation at all: one team's measurements found distinctive facts recalled reliably to 800k tokens and keeping the full untouched history beating every compaction preset on recall, cost, and latency simultaneously \u2014 locating the failure in retrieval (dense search collapsing to 0% recall at 400k where BM25 held 100%) rather than in attention.\", \"consensus\": [{\"claim\": \"Agent quality degrades well before the context window is full \u2014 effective usable context is a fraction of nominal context, so window size is not a capacity budget.\", \"support_count\": 8, \"supporting_talks\": [\"skills-are-the-new-sdks\", \"the-100-tool-agent-is-a-trap\", \"rlm-recursive-language-models-for-large-codebases\", \"when-all-context-matters-extended-cache-augmented-generation\", \"the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in\", \"voice-agents-that-handle-interrupts\", \"what-if-the-harness-mattered-more-than-the-model\", \"memory-harnesses-for-long-running-research-agents\"], \"evidence_quote\": \"there was a paper called context rot, and it proves that after 25% usage of the context window, so for example, for 1 million token, if you used 256K of it, the performance starts to degrade.\", \"evidence_talk\": \"skills-are-the-new-sdks\", \"evidence_timestamp_sec\": 99}, {\"claim\": \"The fix is just-in-time / progressive disclosure \u2014 keep pointers and descriptions in context and load the full material only when the current step needs it, so the catalog can grow while the model's working set stays small.\", \"support_count\": 6, \"supporting_talks\": [\"the-100-tool-agent-is-a-trap\", \"skills-are-the-new-sdks\", \"context-engineering-in-2026\", \"building-great-agent-skills-the-missing-manual\", \"rlm-recursive-language-models-for-large-codebases\", \"what-if-the-harness-mattered-more-than-the-model\"], \"evidence_quote\": \"This is the core lesson from the benchmark. The catalog can grow, but the model's working set should stay small.\", \"evidence_talk\": \"the-100-tool-agent-is-a-trap\", \"evidence_timestamp_sec\": 932}, {\"claim\": \"A bigger model, a longer context window, or more connected knowledge sources does not fix bad agent answers \u2014 the problem is what you put in context, not how much fits.\", \"support_count\": 4, \"supporting_talks\": [\"enterprise-agents-have-a-structure-problem\", \"skills-are-the-new-sdks\", \"the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in\", \"the-100-tool-agent-is-a-trap\"], \"evidence_quote\": \"Context is a budget. Context is almost like a limited resource that we need to carefully filter information. Definitely the longer context doesn't mean better.\", \"evidence_talk\": \"skills-are-the-new-sdks\", \"evidence_timestamp_sec\": 1536}, {\"claim\": \"The aging half of context rot is a separate failure mode: hand-maintained skills, docs, and system prompts go stale or accumulate sediment, and nothing in the current stack updates them.\", \"support_count\": 3, \"supporting_talks\": [\"enterprise-agents-have-a-structure-problem\", \"user-signal-dies-at-the-retrieval-boundary\", \"building-great-agent-skills-the-missing-manual\"], \"evidence_quote\": \"the context gets rotten, or it gets deprecated, or processes change so often that it's hard to maintain dot MD files, or keep on updating your skills with the most latest context\", \"evidence_talk\": \"enterprise-agents-have-a-structure-problem\", \"evidence_timestamp_sec\": 318}], \"disagreements\": [{\"question\": \"Does model quality actually degrade as raw context length grows, or is the observed failure really a retrieval and tool-catalog problem?\", \"position_a\": \"Yes \u2014 degradation is a property of long context itself. Performance slides past ~25% window utilization and enters a 'dumb zone' past 40%; attention weakens for material in the middle of a long prompt; instruction following breaks after 15\u201320 conversational turns; filling the window too full degrades answer quality independent of the hard limit. Therefore cap the working context (~100k, under 60k for the hardest problems).\", \"position_a_talks\": [\"skills-are-the-new-sdks\", \"the-100-tool-agent-is-a-trap\", \"the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in\", \"voice-agents-that-handle-interrupts\", \"when-all-context-matters-extended-cache-augmented-generation\", \"rlm-recursive-language-models-for-large-codebases\"], \"position_b\": \"No \u2014 measured on a real deployed tutor agent, distinctive facts were recalled reliably up to 800k tokens with no compaction, and keeping the full untouched history beat every compaction preset on recall, cost, and latency at once. What actually failed at 400k was dense semantic retrieval (0% recall on facts buried mid-context) while BM25 keyword search held 100%.\", \"position_b_talks\": [\"context-engineering-in-2026\"], \"why_it_matters\": \"If rot is a model property, the correct engineering response is aggressive context capping, routing, and externalization; if it is a retrieval property, capping throws away cached tokens and recall for nothing and the fix is keyword-plus-dense hybrid search over the full history.\", \"position_b_support_note\": \"single-talk position, but backed by direct A/B measurement rather than assertion\"}, {\"question\": \"When context grows, should you compact/prune it, or keep everything and pay for the tokens?\", \"position_a\": \"Prune or reset. Compaction is lossy but a fresh deterministically re-allocated context each iteration beats compacting; long voice sessions need context pruning or session resets after 15\u201320 turns; irrelevant tool schemas should be actively removed from the model's choice set.\", \"position_a_talks\": [\"the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in\", \"voice-agents-that-handle-interrupts\", \"the-100-tool-agent-is-a-trap\"], \"position_b\": \"Do not compact by default. Summarization invalidates the provider's prompt cache, so it only pays off above ~50x compression; clearing old tool outputs makes the agent re-retrieve information it already had, raising total cost. Only compact once you can name the constraint forcing it (e.g. a window too small for caching to apply).\", \"position_b_talks\": [\"context-engineering-in-2026\", \"memory-harnesses-for-long-running-research-agents\"], \"why_it_matters\": \"The two policies invert the cost model: with a 97% cache hit rate the largest-token setup was the cheapest to run, so a default compaction step can simultaneously raise spend and lower recall \u2014 or, on the other side, an uncapped context can silently degrade every downstream decision.\", \"position_b_support_note\": \"\"}, {\"question\": \"Should context be conserved by model-invoked progressive disclosure, or by explicit user invocation?\", \"position_a\": \"Model-invoked, many small cross-referencing units loaded on demand \u2014 descriptions under 100 tokens at level one, ~5K on activation, scripts at level three. This is what gives skills roughly 10x less context overhead than the equivalent MCP setup, and the field is converging on more and smaller skills.\", \"position_a_talks\": [\"skills-are-the-new-sdks\", \"context-engineering-in-2026\"], \"position_b\": \"User-invoked. Every context pointer is a coin flip the model may decline to follow, which forces you to write evals just to confirm skills fire at the right time. Accept the higher user cognitive load to eliminate that entire class of unpredictability.\", \"position_b_talks\": [\"building-great-agent-skills-the-missing-manual\"], \"why_it_matters\": \"Model-invoked disclosure minimizes resident tokens but adds a retrieval-reliability problem you must eval; user-invoked disclosure is deterministic but scales its cost onto the human and cannot help an autonomous long-running agent.\", \"position_b_support_note\": \"\"}], \"practical_guidance\": {\"do\": [\"Keep baseline system prompt plus tool definitions under 40% of the context window before any user turn, and treat 25% as where degradation begins\", \"Cap agent working context around 100k tokens even on million-token models; ~200k as an upper revision and under 60k for the hardest problems\", \"Past ~50 tools in production, retrieve tool schemas just-in-time by semantic search; run your test set at K=3, 5, and 10 and pick the smallest K meeting your accuracy target (K=5 is a strong default)\", \"Below 20 tools, skip the router and just load statically \u2014 the machinery is not worth it\", \"Pair BM25 keyword search with dense retrieval at large context sizes; dense-only dropped to 0% recall on mid-context facts at 400k where BM25 held 100%\", \"Name the specific constraint forcing compaction before compacting; measure recall, cost, and latency against the do-nothing baseline first\", \"Push reference material used by only one branch of a skill out of skill.md and behind a context pointer\", \"Split a procedure into separate skills so the agent sees one step at a time \u2014 hiding future steps increases legwork on the current step\", \"Source agent context from live, continuously updated systems (GitHub, CRM, Tableau, dbt) instead of static .md files, and log correction events back into that context\", \"Consolidate accumulated memories into skills (~10 memories) so stale system-prompt facts get refreshed without manual prompt rewrites\", \"Log per-turn tokens, cache hits, cost, TTFT, and tool calls \u2014 cheap to implement and most teams skip it\", \"Treat recall policy as a first-class metric: bad memory costs tokens and sends the agent the wrong way\", \"Externalize context curation into a programmable environment (REPL/code over the repo) when the corpus is too large and structured to load, as in monorepos\", \"Write tool descriptions in the words users actually use, with intent, action, and key entities \u2014 routing quality is bounded by description quality\"], \"avoid\": [\"Reaching for a bigger model, the latest model, or a longer window when the agent gives a bad answer\", \"Compacting or summarizing by default \u2014 summarization invalidates the prompt cache and needs >50x compression to pay off\", \"Aggressively clearing old tool outputs; the agent just re-retrieves what it already had and you pay for more tool calls\", \"Packing hundreds of tool schemas into the middle of the prompt \u2014 at 741 tools, selection accuracy falls to 13.6% and TTFT passes 5 seconds around 500 tools\", \"Connecting an agent to 15 MCP servers and eating 100k+ tokens per session in tool definitions alone\", \"Adding a memory harness when the task and its relevant context already fit in the window \u2014 it adds cost with no capability gain\", \"Letting shared skill files accumulate sediment, duplication, and no-op instructions the agent would follow anyway if deleted\", \"Weighting all knowledge bases equally instead of ranking sources of truth cleanest-first\", \"Letting LLMs write your skills \u2014 LLM-generated skills consume more tokens and reasoning time and measurably hurt performance\", \"Bucketing documents by domain for a supervisor model; with dense inter-document relationships it skips domains that look irrelevant at first glance\", \"Assuming a local model is a drop-in swap for chat memory \u2014 a 32K window cut recall from 92\u201395% to 33%, and more parameters do not buy more window\", \"Pulling in community-authored skills without auditing them for duplication, sediment, and no-ops first\"]}, \"notable_outliers\": [{\"claim\": \"Distinctive facts were recalled reliably up to 800k tokens with no compaction at all \u2014 the model was not missing facts buried in a very long history.\", \"talk\": \"context-engineering-in-2026\", \"timestamp_sec\": 3233}, {\"claim\": \"The setup sending the most tokens was the cheapest to run, because 97% of the tokens were cached \u2014 while compacting first dropped correct-answer rate to 32%.\", \"talk\": \"context-engineering-in-2026\", \"timestamp_sec\": 3128}, {\"claim\": \"Tool-selection accuracy falls to 13.6% at 741 tools \u2014 roughly one correct tool out of eight \u2014 and the design fails not because any single tool is badly written but because every request carries the whole catalog.\", \"talk\": \"the-100-tool-agent-is-a-trap\", \"timestamp_sec\": 237}, {\"claim\": \"Compaction is lossy enough that deterministically re-allocating a fresh context each iteration beats compacting the existing one.\", \"talk\": \"the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in\", \"timestamp_sec\": 1872}, {\"claim\": \"Giving an agent the correct memory does not make it use it \u2014 oracle retrieval still fails to reach maximum task performance because the model can ignore or misread the right context.\", \"talk\": \"memory-harnesses-for-long-running-research-agents\", \"timestamp_sec\": 509}, {\"claim\": \"A rank-only decisions ledger beat both vector RAG and binary memory gating on long-horizon recall, across two models and two benchmarks.\", \"talk\": \"memory-harnesses-for-long-running-research-agents\", \"timestamp_sec\": 451}, {\"claim\": \"Organizing documents into domain buckets actively hurts recall; distributing them in no particular order works better because the supervisor stops pre-judging which domains are relevant.\", \"talk\": \"when-all-context-matters-extended-cache-augmented-generation\", \"timestamp_sec\": 230}, {\"claim\": \"Voice agents start ignoring parts of the system prompt after 15\u201320 turns, which is a far shorter horizon than token-based rot thresholds suggest.\", \"talk\": \"voice-agents-that-handle-interrupts\", \"timestamp_sec\": 1147}, {\"claim\": \"Letting the agent browse the knowledge base with bash commands added zero recall over hybrid search and made responses 50% slower.\", \"talk\": \"context-engineering-in-2026\", \"timestamp_sec\": 1851}], \"maturity\": \"contested\", \"maturity_rationale\": \"Speakers agree agents degrade in long sessions but disagree on the mechanism and therefore on the remedy: one team's measurements show clean recall to 800k tokens and full-history retention beating every compaction preset on cost, latency, and recall, directly against the widely cited 25%/40% degradation thresholds and cap-and-compact advice. Until that is resolved, teams are making opposite default choices \u2014 compact-by-default versus never-compact \u2014 from the same underlying observation.\"}",
+  "ttft_ms": 45567,
+  "ttft_stream_ms": 1790,
+  "time_to_request_ms": 44,
   "type": "result",
-  "duration_ms": 124539,
-  "uuid": "c5fe9fd5-7a68-460f-a55f-1f2419b5ba26",
+  "duration_ms": 108096,
+  "uuid": "08ca01d7-6247-4ec1-a553-05e7096bc230",
   "passC": {
     "concept": "context rot",
-    "state_of_practice": "Context rot is treated as an established, measurable failure mode rather than a hypothesis: speakers cite degradation starting around 25% of window utilization, a \"dumb zone\" past 40%, tool-selection accuracy falling from ~78% at 10 tools to 13.6% at 741, and voice agents dropping system-prompt instructions after 15-20 turns. The field has largely stopped treating a longer context window or a newer model as the remedy \u2014 context is framed as a budget to be spent, with the always-resident portion (system prompt, tool schemas, skill descriptions) as the first thing to audit, since 15 MCP servers or a 741-tool catalog can consume 100k-127k tokens before the user says anything. The dominant mitigation is architectural: keep the model's working set small and push everything else behind an on-demand boundary \u2014 semantic tool routing at K\u22485, progressive-disclosure skills (sub-100-token descriptions, sub-5k activation), sub-agents, external REPL environments the model programs against, or a write-manage-read memory harness. A second, less-solved dimension is aging rather than volume: hand-maintained .md files, skills, and system prompts go stale (a column that no longer exists still sits in the prompt), and almost nobody has a feedback loop wiring eval traces or correction events back into context. Open engineering questions concentrate on where to draw the retrieval boundary, whether budgets should be expressed as a fraction of the window or a fixed token ceiling, and whether compaction is a legitimate tool or a lossy operation to be replaced by deterministic fresh context per iteration.",
+    "state_of_practice": "The field now treats effective context capacity as far smaller than nominal context capacity: agents degrade \u2014 contradicting themselves, ignoring parts of the system prompt, mis-selecting tools \u2014 long before the window is full. The reported thresholds are concrete and low: performance starts sliding around 25% window utilization and a 'dumb zone' past 40%, keep working context under ~100k tokens even on million-token models, and voice agents lose instruction-following after 15\u201320 turns. The dominant mitigation is architectural rather than capacity-based: just-in-time loading of tools, skills, and reference material so the catalog can grow while the working set stays small \u2014 semantic tool routing cuts 127k tokens of schemas to ~1k while holding selection accuracy above 83%, and skills report roughly 10x less overhead than the equivalent MCP setup. A second, distinct failure mode is aging rather than dilution: hand-maintained .md files, skills, and system prompts accumulate sediment and go stale (columns that no longer exist, KPI definitions that changed), which no amount of window headroom fixes. The sharpest live dispute is whether 'rot' is real model degradation at all: one team's measurements found distinctive facts recalled reliably to 800k tokens and keeping the full untouched history beating every compaction preset on recall, cost, and latency simultaneously \u2014 locating the failure in retrieval (dense search collapsing to 0% recall at 400k where BM25 held 100%) rather than in attention.",
     "consensus": [
       {
-        "claim": "Model quality degrades well before the context window is full \u2014 filling the window is a quality decision, not just a limit question.",
+        "claim": "Agent quality degrades well before the context window is full \u2014 effective usable context is a fraction of nominal context, so window size is not a capacity budget.",
         "support_count": 8,
         "supporting_talks": [
           "skills-are-the-new-sdks",
+          "the-100-tool-agent-is-a-trap",
           "rlm-recursive-language-models-for-large-codebases",
           "when-all-context-matters-extended-cache-augmented-generation",
-          "the-100-tool-agent-is-a-trap",
-          "voice-agents-that-handle-interrupts",
-          "memory-harnesses-for-long-running-research-agents",
           "the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in",
-          "what-if-the-harness-mattered-more-than-the-model"
+          "voice-agents-that-handle-interrupts",
+          "what-if-the-harness-mattered-more-than-the-model",
+          "memory-harnesses-for-long-running-research-agents"
         ],
         "evidence_quote": "there was a paper called context rot, and it proves that after 25% usage of the context window, so for example, for 1 million token, if you used 256K of it, the performance starts to degrade.",
         "evidence_talk": "skills-are-the-new-sdks",
         "evidence_timestamp_sec": 99
       },
       {
-        "claim": "A bigger model, a longer context window, or more knowledge sources is not the fix; context must be treated as a scarce budget that is actively filtered.",
-        "support_count": 5,
-        "supporting_talks": [
-          "enterprise-agents-have-a-structure-problem",
-          "skills-are-the-new-sdks",
-          "the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in",
-          "when-all-context-matters-extended-cache-augmented-generation",
-          "rlm-recursive-language-models-for-large-codebases"
-        ],
-        "evidence_quote": "Context is a budget. Context is almost like a limited resource that we need to carefully filter information. Definitely the longer context doesn't mean better.",
-        "evidence_talk": "skills-are-the-new-sdks",
-        "evidence_timestamp_sec": 1536
-      },
-      {
-        "claim": "The always-resident block \u2014 tool schemas, MCP definitions, model-invoked skill descriptions \u2014 is the largest and most fixable source of rot, because every request pays for the entire catalog whether or not it is relevant.",
-        "support_count": 4,
+        "claim": "The fix is just-in-time / progressive disclosure \u2014 keep pointers and descriptions in context and load the full material only when the current step needs it, so the catalog can grow while the model's working set stays small.",
+        "support_count": 6,
         "supporting_talks": [
           "the-100-tool-agent-is-a-trap",
           "skills-are-the-new-sdks",
+          "context-engineering-in-2026",
           "building-great-agent-skills-the-missing-manual",
-          "what-if-the-harness-mattered-more-than-the-model"
-        ],
-        "evidence_quote": "The important point is, basically, the design does not fail because one tool is badly written. It fails because every request is forced to carry the entire catalog.",
-        "evidence_talk": "the-100-tool-agent-is-a-trap",
-        "evidence_timestamp_sec": 172
-      },
-      {
-        "claim": "The right architecture keeps the model's working set small and holds the rest behind an on-demand boundary (routing, progressive disclosure, sub-agents, external execution environments, or a memory harness).",
-        "support_count": 5,
-        "supporting_talks": [
-          "the-100-tool-agent-is-a-trap",
           "rlm-recursive-language-models-for-large-codebases",
-          "what-if-the-harness-mattered-more-than-the-model",
-          "memory-harnesses-for-long-running-research-agents",
-          "skills-are-the-new-sdks"
+          "what-if-the-harness-mattered-more-than-the-model"
         ],
         "evidence_quote": "This is the core lesson from the benchmark. The catalog can grow, but the model's working set should stay small.",
         "evidence_talk": "the-100-tool-agent-is-a-trap",
         "evidence_timestamp_sec": 932
       },
       {
-        "claim": "Context rots by aging as well as by growing: hand-maintained skills, .md files, and system prompts drift out of date faster than teams can update them, and there is no standard mechanism that refreshes them.",
+        "claim": "A bigger model, a longer context window, or more connected knowledge sources does not fix bad agent answers \u2014 the problem is what you put in context, not how much fits.",
+        "support_count": 4,
+        "supporting_talks": [
+          "enterprise-agents-have-a-structure-problem",
+          "skills-are-the-new-sdks",
+          "the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in",
+          "the-100-tool-agent-is-a-trap"
+        ],
+        "evidence_quote": "Context is a budget. Context is almost like a limited resource that we need to carefully filter information. Definitely the longer context doesn't mean better.",
+        "evidence_talk": "skills-are-the-new-sdks",
+        "evidence_timestamp_sec": 1536
+      },
+      {
+        "claim": "The aging half of context rot is a separate failure mode: hand-maintained skills, docs, and system prompts go stale or accumulate sediment, and nothing in the current stack updates them.",
         "support_count": 3,
         "supporting_talks": [
           "enterprise-agents-have-a-structure-problem",
@@ -151,124 +141,142 @@
     ],
     "disagreements": [
       {
-        "question": "Should the response to context rot be to select less context up front, or to keep the whole corpus reachable and let the model curate it at runtime?",
-        "position_a": "Cut aggressively before the model sees anything: retrieve a small relevant subset (K\u22485 tool schemas), keep skill.md minimal, put branch-specific reference material behind context pointers, and remove wrong options from the choice set entirely.",
+        "question": "Does model quality actually degrade as raw context length grows, or is the observed failure really a retrieval and tool-catalog problem?",
+        "position_a": "Yes \u2014 degradation is a property of long context itself. Performance slides past ~25% window utilization and enters a 'dumb zone' past 40%; attention weakens for material in the middle of a long prompt; instruction following breaks after 15\u201320 conversational turns; filling the window too full degrades answer quality independent of the hard limit. Therefore cap the working context (~100k, under 60k for the hardest problems).",
         "position_a_talks": [
-          "the-100-tool-agent-is-a-trap",
           "skills-are-the-new-sdks",
+          "the-100-tool-agent-is-a-trap",
+          "the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in",
+          "voice-agents-that-handle-interrupts",
+          "when-all-context-matters-extended-cache-augmented-generation",
+          "rlm-recursive-language-models-for-large-codebases"
+        ],
+        "position_b": "No \u2014 measured on a real deployed tutor agent, distinctive facts were recalled reliably up to 800k tokens with no compaction, and keeping the full untouched history beat every compaction preset on recall, cost, and latency at once. What actually failed at 400k was dense semantic retrieval (0% recall on facts buried mid-context) while BM25 keyword search held 100%.",
+        "position_b_talks": [
+          "context-engineering-in-2026"
+        ],
+        "why_it_matters": "If rot is a model property, the correct engineering response is aggressive context capping, routing, and externalization; if it is a retrieval property, capping throws away cached tokens and recall for nothing and the fix is keyword-plus-dense hybrid search over the full history.",
+        "position_b_support_note": "single-talk position, but backed by direct A/B measurement rather than assertion"
+      },
+      {
+        "question": "When context grows, should you compact/prune it, or keep everything and pay for the tokens?",
+        "position_a": "Prune or reset. Compaction is lossy but a fresh deterministically re-allocated context each iteration beats compacting; long voice sessions need context pruning or session resets after 15\u201320 turns; irrelevant tool schemas should be actively removed from the model's choice set.",
+        "position_a_talks": [
+          "the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in",
+          "voice-agents-that-handle-interrupts",
+          "the-100-tool-agent-is-a-trap"
+        ],
+        "position_b": "Do not compact by default. Summarization invalidates the provider's prompt cache, so it only pays off above ~50x compression; clearing old tool outputs makes the agent re-retrieve information it already had, raising total cost. Only compact once you can name the constraint forcing it (e.g. a window too small for caching to apply).",
+        "position_b_talks": [
+          "context-engineering-in-2026",
+          "memory-harnesses-for-long-running-research-agents"
+        ],
+        "why_it_matters": "The two policies invert the cost model: with a 97% cache hit rate the largest-token setup was the cheapest to run, so a default compaction step can simultaneously raise spend and lower recall \u2014 or, on the other side, an uncapped context can silently degrade every downstream decision.",
+        "position_b_support_note": ""
+      },
+      {
+        "question": "Should context be conserved by model-invoked progressive disclosure, or by explicit user invocation?",
+        "position_a": "Model-invoked, many small cross-referencing units loaded on demand \u2014 descriptions under 100 tokens at level one, ~5K on activation, scripts at level three. This is what gives skills roughly 10x less context overhead than the equivalent MCP setup, and the field is converging on more and smaller skills.",
+        "position_a_talks": [
+          "skills-are-the-new-sdks",
+          "context-engineering-in-2026"
+        ],
+        "position_b": "User-invoked. Every context pointer is a coin flip the model may decline to follow, which forces you to write evals just to confirm skills fire at the right time. Accept the higher user cognitive load to eliminate that entire class of unpredictability.",
+        "position_b_talks": [
           "building-great-agent-skills-the-missing-manual"
         ],
-        "position_b": "The selection step is itself where the signal dies: similarity-thresholded retrieval cannot return a collection where everything is relevant, so keep the full corpus reachable \u2014 parallel KV-cached buckets with a supervisor, a programmable REPL the model writes code against, or outcome-weighted retrieval that learns rather than a static similarity cut.",
-        "position_b_talks": [
-          "when-all-context-matters-extended-cache-augmented-generation",
-          "rlm-recursive-language-models-for-large-codebases",
-          "user-signal-dies-at-the-retrieval-boundary"
-        ],
-        "why_it_matters": "It decides whether you invest in a retrieval/routing layer with an accuracy target, or in cache lifetime management and sandboxed execution environments \u2014 completely different infrastructure and cost curves. It also determines whether recall failures are debugged as embedding-quality problems or as supervisor-exploration problems."
-      },
-      {
-        "question": "Is the safe context budget a fraction of the model's window, or a fixed absolute ceiling independent of window size?",
-        "position_a": "Express it as a percentage: under 25% is safe, 40% is the boundary of the smart zone, so keep system prompt plus tool definitions under 40% of whatever window you have before the first user turn.",
-        "position_a_talks": [
-          "skills-are-the-new-sdks"
-        ],
-        "position_b": "Percentages do not survive bigger windows: keep working context under roughly 100k tokens (under 60k for hard problems) even with million-token windows, and in voice track turns rather than tokens, pruning or resetting after 15-20 turns.",
-        "position_b_talks": [
-          "the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in",
-          "voice-agents-that-handle-interrupts"
-        ],
-        "why_it_matters": "With a 1M-token window the two rules differ by 300k tokens of allowed context \u2014 one says 400k is fine, the other says you are deep into failure. It also changes whether upgrading to a larger-window model buys you headroom or nothing at all."
-      },
-      {
-        "question": "Should the agent's durable operating context be hand-authored and reviewed, or automatically derived from live systems and runtime outcomes?",
-        "position_a": "Skills are software: hand-write them, keep a single source of truth, delete no-ops, audit community skills before pulling them in, and version and test them \u2014 LLM-generated skills measurably hurt performance by burning more tokens and reasoning time.",
-        "position_a_talks": [
-          "building-great-agent-skills-the-missing-manual",
-          "skills-are-the-new-sdks"
-        ],
-        "position_b": "Hand-maintenance cannot keep pace with changing KPIs, definitions, and schemas: source context from live systems (dbt, GitHub, CRM, Tableau) and log correction events back into it, and once ~10 memories accumulate, bake the learned reasoning into skills automatically so the agent stays current without prompt rewrites.",
-        "position_b_talks": [
-          "enterprise-agents-have-a-structure-problem",
-          "user-signal-dies-at-the-retrieval-boundary"
-        ],
-        "why_it_matters": "One path spends human review time to keep the resident context small and correct; the other accepts machine-written context in exchange for freshness, and inherits a new failure mode where noisy review labels propagate into the agent's operating instructions."
+        "why_it_matters": "Model-invoked disclosure minimizes resident tokens but adds a retrieval-reliability problem you must eval; user-invoked disclosure is deterministic but scales its cost onto the human and cannot help an autonomous long-running agent.",
+        "position_b_support_note": ""
       }
     ],
     "practical_guidance": {
       "do": [
-        "Keep baseline system prompt plus tool definitions under 40% of the context window before any user turn; under 25% is where performance is still intact.",
-        "Cap agent working context near 100k tokens even on million-token windows, and under 60k for the hardest problems.",
-        "Past ~50 tools in production, replace static tool loading with a semantic router that injects K\u22485 schemas; run the test set at K=3, 5, and 10 and pick the smallest K meeting your accuracy target.",
-        "Below 20 tools, skip the router entirely and load statically \u2014 the machinery is not worth it at 10-15 tools.",
-        "Structure skills for progressive disclosure: level-one description under 100 tokens, activation under 5k, scripts below that.",
-        "Move reference material used by only one branch of a skill out of skill.md and behind a context pointer.",
-        "Give every part of a skill a single source of truth and delete instructions the agent would follow anyway (no-ops), which are especially common when an agent wrote the skill.",
-        "Rank knowledge sources cleanest-first \u2014 semantic layer, then canonical queries, then the database graph \u2014 instead of weighting all knowledge bases equally.",
-        "Prune context or reset the session after 15-20 turns in long voice conversations, before instruction following degrades.",
-        "Prefer deterministically re-allocating a fresh context each iteration over compacting the existing one.",
-        "Treat recall policy as a first-class metric: a good policy lowers total token spend as well as raising accuracy.",
-        "Write tool descriptions in the words users actually use, including intent, action, and key entities \u2014 routing quality is bounded by description quality.",
-        "Log correction events and eval outcomes back into the agent's context instead of letting the signal die in a dashboard."
+        "Keep baseline system prompt plus tool definitions under 40% of the context window before any user turn, and treat 25% as where degradation begins",
+        "Cap agent working context around 100k tokens even on million-token models; ~200k as an upper revision and under 60k for the hardest problems",
+        "Past ~50 tools in production, retrieve tool schemas just-in-time by semantic search; run your test set at K=3, 5, and 10 and pick the smallest K meeting your accuracy target (K=5 is a strong default)",
+        "Below 20 tools, skip the router and just load statically \u2014 the machinery is not worth it",
+        "Pair BM25 keyword search with dense retrieval at large context sizes; dense-only dropped to 0% recall on mid-context facts at 400k where BM25 held 100%",
+        "Name the specific constraint forcing compaction before compacting; measure recall, cost, and latency against the do-nothing baseline first",
+        "Push reference material used by only one branch of a skill out of skill.md and behind a context pointer",
+        "Split a procedure into separate skills so the agent sees one step at a time \u2014 hiding future steps increases legwork on the current step",
+        "Source agent context from live, continuously updated systems (GitHub, CRM, Tableau, dbt) instead of static .md files, and log correction events back into that context",
+        "Consolidate accumulated memories into skills (~10 memories) so stale system-prompt facts get refreshed without manual prompt rewrites",
+        "Log per-turn tokens, cache hits, cost, TTFT, and tool calls \u2014 cheap to implement and most teams skip it",
+        "Treat recall policy as a first-class metric: bad memory costs tokens and sends the agent the wrong way",
+        "Externalize context curation into a programmable environment (REPL/code over the repo) when the corpus is too large and structured to load, as in monorepos",
+        "Write tool descriptions in the words users actually use, with intent, action, and key entities \u2014 routing quality is bounded by description quality"
       ],
       "avoid": [
-        "Reaching for a bigger model, a longer window, or more knowledge bases and MCP servers when the agent gives bad answers.",
-        "Connecting an agent to ~15 MCP servers, which burns 100k+ tokens per session in tool definitions alone before any work happens.",
-        "Assuming failures that appear as tools are added are prompt problems \u2014 accuracy collapse from lost-in-the-middle is architectural.",
-        "Relying on compaction to survive long runs; it is lossy and degrades fidelity.",
-        "Adding a memory harness when the task and its relevant context already fit in the window \u2014 it adds cost and no capability.",
-        "Assuming the model will use correct context once it is retrieved; oracle retrieval still does not reach maximum task performance.",
-        "Bucketing documents by domain across parallel caches \u2014 with dense cross-document relationships the supervisor skips domains that look irrelevant at first glance.",
-        "Letting shared skill and prompt files accumulate sediment because contributors add but never delete others' text.",
-        "Shipping LLM-generated skills as-is; they consume more tokens and reasoning time than human-written equivalents.",
-        "Pulling community skills into your agent's context without auditing them first."
+        "Reaching for a bigger model, the latest model, or a longer window when the agent gives a bad answer",
+        "Compacting or summarizing by default \u2014 summarization invalidates the prompt cache and needs >50x compression to pay off",
+        "Aggressively clearing old tool outputs; the agent just re-retrieves what it already had and you pay for more tool calls",
+        "Packing hundreds of tool schemas into the middle of the prompt \u2014 at 741 tools, selection accuracy falls to 13.6% and TTFT passes 5 seconds around 500 tools",
+        "Connecting an agent to 15 MCP servers and eating 100k+ tokens per session in tool definitions alone",
+        "Adding a memory harness when the task and its relevant context already fit in the window \u2014 it adds cost with no capability gain",
+        "Letting shared skill files accumulate sediment, duplication, and no-op instructions the agent would follow anyway if deleted",
+        "Weighting all knowledge bases equally instead of ranking sources of truth cleanest-first",
+        "Letting LLMs write your skills \u2014 LLM-generated skills consume more tokens and reasoning time and measurably hurt performance",
+        "Bucketing documents by domain for a supervisor model; with dense inter-document relationships it skips domains that look irrelevant at first glance",
+        "Assuming a local model is a drop-in swap for chat memory \u2014 a 32K window cut recall from 92\u201395% to 33%, and more parameters do not buy more window",
+        "Pulling in community-authored skills without auditing them for duplication, sediment, and no-ops first"
       ]
     },
     "notable_outliers": [
       {
-        "claim": "Providing the agent with exactly the right memory does not guarantee it uses it \u2014 oracle retrieval still falls short of maximum task performance, so retrieval quality is not the whole story.",
-        "talk": "memory-harnesses-for-long-running-research-agents",
-        "timestamp_sec": 509
+        "claim": "Distinctive facts were recalled reliably up to 800k tokens with no compaction at all \u2014 the model was not missing facts buried in a very long history.",
+        "talk": "context-engineering-in-2026",
+        "timestamp_sec": 3233
       },
       {
-        "claim": "Tool-selection accuracy falls to 13.6% at 741 tools \u2014 roughly one correct tool out of eight \u2014 while semantic routing holds above 83% across the same catalog sizes.",
+        "claim": "The setup sending the most tokens was the cheapest to run, because 97% of the tokens were cached \u2014 while compacting first dropped correct-answer rate to 32%.",
+        "talk": "context-engineering-in-2026",
+        "timestamp_sec": 3128
+      },
+      {
+        "claim": "Tool-selection accuracy falls to 13.6% at 741 tools \u2014 roughly one correct tool out of eight \u2014 and the design fails not because any single tool is badly written but because every request carries the whole catalog.",
         "talk": "the-100-tool-agent-is-a-trap",
         "timestamp_sec": 237
       },
       {
-        "claim": "Holding model and eval constant across 106 tasks, swapping only the harness moves scores from 52.4% to 76.2%, and the harness matters more for weaker models than stronger ones.",
-        "talk": "what-if-the-harness-mattered-more-than-the-model",
-        "timestamp_sec": 143
+        "claim": "Compaction is lossy enough that deterministically re-allocating a fresh context each iteration beats compacting the existing one.",
+        "talk": "the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in",
+        "timestamp_sec": 1872
       },
       {
-        "claim": "Deliberately hiding future steps by splitting a process into separate skills, so the agent sees only one step at a time, increases the legwork it does on the current step.",
-        "talk": "building-great-agent-skills-the-missing-manual",
-        "timestamp_sec": 946
+        "claim": "Giving an agent the correct memory does not make it use it \u2014 oracle retrieval still fails to reach maximum task performance because the model can ignore or misread the right context.",
+        "talk": "memory-harnesses-for-long-running-research-agents",
+        "timestamp_sec": 509
       },
       {
-        "claim": "A rank-only decisions ledger beats both vector RAG and binary memory gating on long-horizon recall, and bad memory is expensive because it spends tokens and sends the agent the wrong way.",
+        "claim": "A rank-only decisions ledger beat both vector RAG and binary memory gating on long-horizon recall, across two models and two benchmarks.",
         "talk": "memory-harnesses-for-long-running-research-agents",
         "timestamp_sec": 451
       },
       {
-        "claim": "User-invoked skills are preferable to model-invoked ones: the higher user cognitive load buys you the elimination of invocation unpredictability and the evals needed to police it.",
-        "talk": "building-great-agent-skills-the-missing-manual",
-        "timestamp_sec": 385
+        "claim": "Organizing documents into domain buckets actively hurts recall; distributing them in no particular order works better because the supervisor stops pre-judging which domains are relevant.",
+        "talk": "when-all-context-matters-extended-cache-augmented-generation",
+        "timestamp_sec": 230
       },
       {
-        "claim": "Instruction following in voice agents degrades after roughly 15-20 turns \u2014 models start ignoring parts of the system prompt, get verbose, and go off script.",
+        "claim": "Voice agents start ignoring parts of the system prompt after 15\u201320 turns, which is a far shorter horizon than token-based rot thresholds suggest.",
         "talk": "voice-agents-that-handle-interrupts",
         "timestamp_sec": 1147
+      },
+      {
+        "claim": "Letting the agent browse the knowledge base with bash commands added zero recall over hybrid search and made responses 50% slower.",
+        "talk": "context-engineering-in-2026",
+        "timestamp_sec": 1851
       }
     ],
-    "maturity": "consolidating",
-    "maturity_rationale": "The existence and rough shape of context rot is no longer argued \u2014 multiple independent talks cite concrete degradation thresholds and the same architectural remedy of shrinking the model's working set \u2014 but the field still disagrees on where to draw the retrieval boundary, whether the budget is a percentage of the window or a fixed ceiling, and whether durable context should be hand-authored or machine-refreshed."
+    "maturity": "contested",
+    "maturity_rationale": "Speakers agree agents degrade in long sessions but disagree on the mechanism and therefore on the remedy: one team's measurements show clean recall to 800k tokens and full-history retention beating every compaction preset on cost, latency, and recall, directly against the widely cited 25%/40% degradation thresholds and cap-and-compact advice. Until that is resolved, teams are making opposite default choices \u2014 compact-by-default versus never-compact \u2014 from the same underlying observation."
   },
   "_meta": {
     "concept": "context rot",
     "slug": "context-rot",
-    "talk_count": 11,
+    "talk_count": 12,
     "missing_talks": [],
-    "wall_sec": 125.6,
-    "run_at": "2026-08-13T19:27:04Z"
+    "wall_sec": 109.5,
+    "run_at": "2026-08-19T14:14:55Z"
   }
 }

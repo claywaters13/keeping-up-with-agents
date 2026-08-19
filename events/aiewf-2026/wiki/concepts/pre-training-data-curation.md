@@ -4,15 +4,15 @@ type: "concept"
 slug: "pre-training-data-curation"
 tier: "supporting"
 maturity: "consolidating"
-talk_count: 12
-speaker_count: 19
+talk_count: 13
+speaker_count: 20
 ---
 
 # pre-training data curation
 
 **Maturity: CONSOLIDATING** — Consolidating — converging practice, some open edges
 
-*Supporting concept* &middot; discussed across **12** talk(s) by **19** speaker(s)
+*Supporting concept* &middot; discussed across **13** talk(s) by **20** speaker(s)
 
 **Definition:** Selecting, mixing, filtering, and sequencing training corpora, and the ablations used to attribute capability to data choices.
 
@@ -20,11 +20,11 @@ speaker_count: 19
 
 ## State of Practice
 
-The field has stopped treating the corpus as a scrape and started treating it as a designed artifact: web text fell from ~85% of GPT-3's mix to ~15% in recent frontier recipes, displaced by code, STEM, and task-shaped data that used to live only in post-training. The strongest claim on offer is that curation changes the exponent of the scaling law rather than shifting the curve — DatologyAI reports matching Qwen 3.5 4B on a VLM with 145x less training compute through curation alone, and mid-training on better domain data making an unchanged post-training harness 2-3x more effective. Rephrasing-based synthetic data has become the accepted way to stretch a scarce high-quality corpus, on the argument that all information originates in the source document so the trained model can surpass the rephraser; poolside caps it at 13% of the pre-training mix, Arcee argues it is the way forward outright. Method is converging on staged ablations — change one curation stage, measure, proceed — with small-scale proxy runs under simulated token scarcity used to derisk hero runs, though poolside's experience is that a 33B validation run is too small to surface the numerical and systems failures (BF16 unembedding accumulation, a race condition in open-source FP8 kernels corrupting 0.5% of gradients, a single broken GPU) that actually kill a recipe at scale. The live fault line is whether pre-training data is still where capability comes from at all, or whether the base model is now just a prior that needs exposure to the atomic skills RL will later compose.
+The conference treated curation, not corpus size, as the live variable in pre-training: Datology's claim that data quality changes the exponent of the scaling law rather than shifting the curve went essentially unchallenged, and Sara Hooker's position that pre-training size is no longer the most lucrative axis of scale was echoed by Arcee's argument that supervised pre-training now exists mainly to build representations for RL. The composition of the mix has visibly shifted — web text from ~85% of GPT-3 to ~15% in current recipes, with code and STEM dominating, and chat, agentic-trace, and long-context data being pulled backward out of post-training into pre-training. Synthetic data has moved from taboo to standard practice in text, but only in the specific form of rephrasing seed documents into new shapes (Q&A, true/false, restructured prose), which practitioners argue is collapse-safe because all information originates in the source document; poolside uses it at 13% of the mix over a 6T-token corpus, and Datology and Arcee both endorse it, while Krea refuses model-generated data entirely in image because the teacher's aesthetic is permanently sticky. Method is converging on staged ablations, small proxy runs with simulated token scarcity, and distilling expensive LLM/VLM filter judgments into small classifiers before sweeping billion-item corpora. The strongest counter-current is the recognition that scalar quality filters actively destroy the tail — aesthetic scores collapse stylistic diversity, and over-indexing on quality forces harmful repetition that saturates a model early. Nobody publishes their actual recipe: the competitive disincentive is explicit, which is why so much of the practical detail at this conference came from vendors and small labs rather than frontier labs.
 
 ## Consensus
 
-### Data quality, not compute or model size, is the binding constraint on model capability, and it acts as a multiplier on compute rather than a constant-factor win.
+### Data curation is a compute multiplier, not a constant-factor win — with architecture and compute fixed, the curation recipe is what determines model quality.
 
 Support: **6** talk(s)
 
@@ -32,19 +32,19 @@ Support: **6** talk(s)
 >
 > — [Data Quality Is the Compute Multiplier](../talks/data-quality-is-the-compute-multiplier.md), [5:52](https://www.youtube.com/watch?v=_PdK6x7PQNM&t=352s)
 
-Supporting talks: [Data Quality Is the Compute Multiplier](../talks/data-quality-is-the-compute-multiplier.md), [Data and Environment Curation for Post-Training LLMs](../talks/data-and-environment-curation-for-post-training-llms.md), [State of Data](../talks/state-of-data.md), [Adaption Labs: Gradient-Free Continual Learning](../talks/adaption-labs-gradient-free-continual-learning.md), [Scaling to Long Horizons](../talks/scaling-to-long-horizons.md), [The Messy Reality of Scale: Synthetic Data and Pre-Training](../talks/the-messy-reality-of-scale-synthetic-data-and-pre-training.md)
+Supporting talks: [Data Quality Is the Compute Multiplier](../talks/data-quality-is-the-compute-multiplier.md), [Adaption Labs: Gradient-Free Continual Learning](../talks/adaption-labs-gradient-free-continual-learning.md), [Scaling to Long Horizons](../talks/scaling-to-long-horizons.md), [Training Krea 2: What matters in generative model training](../talks/training-krea-2-what-matters-in-generative-model-training.md), [The Messy Reality of Scale: Synthetic Data and Pre-Training](../talks/the-messy-reality-of-scale-synthetic-data-and-pre-training.md), [State of Data](../talks/state-of-data.md)
 
-### The 'train on a representative crawl of the internet' recipe is over; corpora are now deliberately composed, with code, STEM, and curated domain text displacing general web text.
+### There is no universally optimal corpus; a mix is only optimal relative to the downstream tasks you intend the model to do, so deliberate capability gaps (e.g. weak MMLU-Pro in a coding model) are a curation choice rather than a defect.
 
 Support: **4** talk(s)
 
-> "web text, which used to make up like up to 85% of the train data in GPT uh 3, is now all the way down at 15%"
+> "A data set's only going to be optimal with respect to a particular set of output tasks that you want the model to do."
 >
-> — [The Base Model Is Dead](../talks/the-base-model-is-dead.md), [6:46](https://www.youtube.com/watch?v=xbPriQWXtWM&t=406s)
+> — [Data Quality Is the Compute Multiplier](../talks/data-quality-is-the-compute-multiplier.md), [3:08](https://www.youtube.com/watch?v=_PdK6x7PQNM&t=188s)
 
-Supporting talks: [The Base Model Is Dead](../talks/the-base-model-is-dead.md), [Scaling to Long Horizons](../talks/scaling-to-long-horizons.md), [State of Data](../talks/state-of-data.md), ["Software engineering is not about writing code"](../talks/software-engineering-is-not-about-writing-code.md)
+Supporting talks: [Data Quality Is the Compute Multiplier](../talks/data-quality-is-the-compute-multiplier.md), [The Base Model Is Dead](../talks/the-base-model-is-dead.md), [The Messy Reality of Scale: Synthetic Data and Pre-Training](../talks/the-messy-reality-of-scale-synthetic-data-and-pre-training.md), [Training Krea 2: What matters in generative model training](../talks/training-krea-2-what-matters-in-generative-model-training.md)
 
-### Rephrasing source documents into synthetic variants is a safe way to expand a high-quality corpus, because the information originates in the source document rather than in the generating model.
+### Rephrasing seed documents into new formats is the collapse-safe way to use synthetic data at pre-training scale, because all information originates in the source document rather than in the generating model.
 
 Support: **3** talk(s)
 
@@ -54,7 +54,17 @@ Support: **3** talk(s)
 
 Supporting talks: [Data Quality Is the Compute Multiplier](../talks/data-quality-is-the-compute-multiplier.md), [The Base Model Is Dead](../talks/the-base-model-is-dead.md), [The Messy Reality of Scale: Synthetic Data and Pre-Training](../talks/the-messy-reality-of-scale-synthetic-data-and-pre-training.md)
 
-### Pre-training, mid-training, and post-training should be designed as one system with data flowing backward across the boundaries, not handed off between independent teams.
+### Filtering on a single scalar quality or aesthetic score is harmful: it collapses the tail of the distribution that produces good outputs, so curation must explicitly preserve coverage and diversity.
+
+Support: **3** talk(s)
+
+> "some people like think I know like low-resolution CRT videos are like a bad image, but some people like that kind of like aesthetics, so making sure that we have like good coverage"
+>
+> — [Training Krea 2: What matters in generative model training](../talks/training-krea-2-what-matters-in-generative-model-training.md), [5:48](https://www.youtube.com/watch?v=-tviRdpmHvs&t=348s)
+
+Supporting talks: [Training Krea 2: What matters in generative model training](../talks/training-krea-2-what-matters-in-generative-model-training.md), [Ending AI Slop](../talks/ending-ai-slop.md), [The Messy Reality of Scale: Synthetic Data and Pre-Training](../talks/the-messy-reality-of-scale-synthetic-data-and-pre-training.md)
+
+### The pre-training / mid-training / post-training boundary is dissolving — data traditionally reserved for later stages (chat, agentic traces, long context) belongs earlier, and the stages should be designed as one system.
 
 Support: **3** talk(s)
 
@@ -64,91 +74,66 @@ Support: **3** talk(s)
 
 Supporting talks: [Data Quality Is the Compute Multiplier](../talks/data-quality-is-the-compute-multiplier.md), [The Base Model Is Dead](../talks/the-base-model-is-dead.md), [Adaption Labs: Gradient-Free Continual Learning](../talks/adaption-labs-gradient-free-continual-learning.md)
 
-### Curation choices must be attributed by staged ablations — change one stage, measure, then proceed — rather than by intuition or by a single end-of-run benchmark number.
-
-Support: **3** talk(s)
-
-> "the systematic way of doing this is like you run ablations and figure out which uh you know in each of these stages what works and you kind of proceed to the next"
->
-> — [Data and Environment Curation for Post-Training LLMs](../talks/data-and-environment-curation-for-post-training-llms.md), [9:38](https://www.youtube.com/watch?v=ewtOo0scUh0&t=578s)
-
-Supporting talks: [Data and Environment Curation for Post-Training LLMs](../talks/data-and-environment-curation-for-post-training-llms.md), [Data Quality Is the Compute Multiplier](../talks/data-quality-is-the-compute-multiplier.md), [How Evals and Prompts Shape Agent Behavior](../talks/how-evals-and-prompts-shape-agent-behavior.md)
-
 ## Disagreements
 
-### Does the next unit of model capability come from the pre-training corpus, or from RL and post-training with pre-training reduced to a prior?
+### Should model-generated data be a first-class ingredient in the pre-training mix, or excluded on principle?
 
 | Position A | Position B |
 |---|---|
-| Pre-training scale and pre-training data are saturated as a lever; supervised next-token training exists to build representations for RL, the base model only needs exposure to the atomic skills RL will compose, and compute should move backward into post-training. Sara Hooker states no frontier lab will supersize a model again under the current architecture.<br>*[Adaption Labs: Gradient-Free Continual Learning](../talks/adaption-labs-gradient-free-continual-learning.md), [The Base Model Is Dead](../talks/the-base-model-is-dead.md), [Scaling to Long Horizons](../talks/scaling-to-long-horizons.md)* | The pre-training and mid-training corpus is still where capability is created: curation alone, with no post-training at all, pushed a VLM past the public Pareto frontier, and better mid-training data makes an unchanged post-training harness 2-3x more effective. poolside scaled a 118B/8B-active model on 30T tokens and says the recipe held and will keep scaling.<br>*[Data Quality Is the Compute Multiplier](../talks/data-quality-is-the-compute-multiplier.md), [The Messy Reality of Scale: Synthetic Data and Pre-Training](../talks/the-messy-reality-of-scale-synthetic-data-and-pre-training.md)* |
+| Synthetic data is the way forward: rephrase and upsample seeds, decompose generation tasks so output exceeds what the teacher could produce one-shot, and ship it as a meaningful fraction of the mix (poolside settled on 13%).<br>*[The Base Model Is Dead](../talks/the-base-model-is-dead.md), [Data Quality Is the Compute Multiplier](../talks/data-quality-is-the-compute-multiplier.md), [The Messy Reality of Scale: Synthetic Data and Pre-Training](../talks/the-messy-reality-of-scale-synthetic-data-and-pre-training.md)* | Avoid model-generated data entirely — it is a shortcut that permanently imprints the teacher's distribution on your model, and the resulting collapse to the mean is exactly what 'slop' is; a trained observer can identify a heavily distilled model on sight.<br>*[Training Krea 2: What matters in generative model training](../talks/training-krea-2-what-matters-in-generative-model-training.md), [Ending AI Slop](../talks/ending-ai-slop.md)* |
 
-*Why it matters: It decides whether a team's marginal dollar buys curated pre-training tokens or RL environments and rollouts, and whether a small team can compete without co-located pre-training compute.*
+*Why it matters: It decides whether a small lab can bootstrap a competitive corpus from a frontier teacher, or must invest in expensive organic and human-expert data it cannot generate. The split tracks modality — text practitioners accept rephrasing, image practitioners reject distillation — so the resolution may be that 'synthetic' means two different things in the two camps.*
 
-### Should synthetic data replace organic data in the pre-training mix, or only complement a bounded fraction of it?
-
-| Position A | Position B |
-|---|---|
-| Synthetic data is the way forward for pre-training; rephrasing avoids collapse because the information comes from the source, and self-play generating its own problems and judgments is what will produce superhuman capability with compute as the only limit.<br>*[The Base Model Is Dead](../talks/the-base-model-is-dead.md), [Data Quality Is the Compute Multiplier](../talks/data-quality-is-the-compute-multiplier.md), ["Software engineering is not about writing code"](../talks/software-engineering-is-not-about-writing-code.md)* | Synthetic data complements organic data and does not replace it, because organic data carries implicitly hidden signal that a generator will not reproduce; poolside settled on 13% synthetic in the pre-training stages.<br>*[The Messy Reality of Scale: Synthetic Data and Pre-Training](../talks/the-messy-reality-of-scale-synthetic-data-and-pre-training.md)* |
-
-*Why it matters: It sets the ceiling on how far a team can go once organic high-quality tokens run out, and determines whether generator-model spend or token-sourcing spend dominates the data budget.*
-
-### When high-quality tokens run short, should you repeat them or replace the repeats with rephrased variants?
+### Where does the marginal curation dollar buy more capability: the pre-training corpus, or post-training data and RL environments?
 
 | Position A | Position B |
 |---|---|
-| Up to some threshold it is almost always better to repeat high-quality data than to show additional low-quality data; multi-epoch training on a small curated corpus was Galactica's core empirical result against the one-epoch consensus.<br>*[Data Quality Is the Compute Multiplier](../talks/data-quality-is-the-compute-multiplier.md), [Scaling to Long Horizons](../talks/scaling-to-long-horizons.md)* | Optimizing too hard for quality over quantity causes non-optimal repetition that saturates the model early once training budgets scale; replacing repeated high-quality tokens with rephrased variants consistently beats repeating the seeds.<br>*[The Messy Reality of Scale: Synthetic Data and Pre-Training](../talks/the-messy-reality-of-scale-synthetic-data-and-pre-training.md)* |
+| Pre-training scale and pre-training data are saturating; supervised training now mainly builds representations for RL, the base model only needs exposure to the atomic skills RL will compose, and labs are pushing post-training further back. Data and RL environments — not compute or models — are the post-training bottleneck.<br>*[The Base Model Is Dead](../talks/the-base-model-is-dead.md), [Adaption Labs: Gradient-Free Continual Learning](../talks/adaption-labs-gradient-free-continual-learning.md), [Scaling to Long Horizons](../talks/scaling-to-long-horizons.md), [Data and Environment Curation for Post-Training LLMs](../talks/data-and-environment-curation-for-post-training-llms.md)* | Pre-training and mid-training data remain the highest-leverage input, and better domain data at mid-training makes an unchanged post-training harness two to three times more effective; the recipe still scales (poolside trained 118B/8B-active on 30T tokens and is continuing to scale it).<br>*[Data Quality Is the Compute Multiplier](../talks/data-quality-is-the-compute-multiplier.md), [The Messy Reality of Scale: Synthetic Data and Pre-Training](../talks/the-messy-reality-of-scale-synthetic-data-and-pre-training.md)* |
 
-*Why it matters: It determines the epoch policy and whether a rephrasing pipeline is optional tooling or a prerequisite for any large token budget on a small curated corpus.*
+*Why it matters: It determines whether a team building a custom model buys tokens and a pre-training run, or buys RL environments and expert trajectories — very different cost structures, hiring, and timelines. Datology's framing implies the post-training gains people attribute to RL are partly mis-attributed mid-training data gains.*
 
-### Can small-scale runs validate a pre-training data recipe before the hero run?
+### When you run out of high-quality tokens, should you repeat them or replace the repeats with rephrased variants?
 
 | Position A | Position B |
 |---|---|
-| Yes — small-scale runs on properly curated data with simulated token scarcity predict large-model performance, letting a team derisk a hero run with 50-100x less compute; ablation ladders at small scale are the systematic method.<br>*[Data Quality Is the Compute Multiplier](../talks/data-quality-is-the-compute-multiplier.md), [Data and Environment Curation for Post-Training LLMs](../talks/data-and-environment-curation-for-post-training-llms.md)* | A 33B model is too small to reliably surface the failures that actually break a recipe at scale — BF16 accumulation loss, silent GPU corruption, kernel race conditions — so a much larger validation run is required.<br>*[The Messy Reality of Scale: Synthetic Data and Pre-Training](../talks/the-messy-reality-of-scale-synthetic-data-and-pre-training.md)* |
+| Repeat: up to some threshold it is almost always better to repeat high-quality data than to show additional low-quality data, and multi-epoch training on a small curated corpus was validated as far back as Galactica's 105B curated tokens.<br>*[Data Quality Is the Compute Multiplier](../talks/data-quality-is-the-compute-multiplier.md), [Scaling to Long Horizons](../talks/scaling-to-long-horizons.md)* | Repetition has a real cost that only appears once training budgets scale: poolside over-optimized quality against quantity, hit non-optimal repetition on its high-quality data, and saturated the model too early — replacing repeated seeds with rephrased variants consistently improved results.<br>*[The Messy Reality of Scale: Synthetic Data and Pre-Training](../talks/the-messy-reality-of-scale-synthetic-data-and-pre-training.md)* |
 
-*Why it matters: It sets how much compute must be spent on validation before committing, and whether a proxy-scale win on a data mix is trustworthy evidence at all.*
+*Why it matters: It sets the token budget a curation pipeline must hit before a hero run is safe, and whether a rephrasing pipeline is optional tooling or a prerequisite for scaling. The two sides may only differ on where the epoch threshold sits, but nobody published a number for it.*
 
 ## Practical Guidance
 
 **Do:**
 
-- Define the target set of downstream tasks before curating — a dataset is only optimal with respect to the outputs you want, and there is no universal best corpus.
-- Rephrase and upsample deliberately selected seed documents instead of repeating them verbatim; document selection matters, random documents rephrase badly.
-- Break synthetic generation into simpler decomposed steps (outline, then chapters) so the pipeline exceeds what the teacher model produces in one shot without losing correctness or diversity.
-- When domain-adapting, keep most of the mid-training mix representative of the pre-training distribution — this prevented catastrophic forgetting entirely in DatologyAI's runs.
-- Curate the English portion of a multilingual corpus even if you care about non-English performance; the gain transfers, scaled by language similarity (8% multilingual tokens sufficed).
-- Pull post-training-shaped data — chat pairs, agentic traces, long-context sets — back into pre-training so the model learns the shape of downstream conversations from the start.
-- Fix MoE expert load imbalance by mixing data better early rather than cranking the load-balancing coefficient during SFT.
-- Sample multiple answers per question (16x) instead of collecting proportionally more questions answered once.
-- Hash weights across data-parallel replicas every step and hard-crash the run on any mismatch.
-- Perform the tensor-parallel unembedding accumulation in FP32, not BF16 — BF16 loses enough precision as activations grow to halt convergence.
-- Attach preference data to per-rater preference vectors instead of averaging across unmodeled raters, and tie expert commentary to the specific code component that produced the visual element.
+- Replace repeated high-quality seeds with rephrased variants when upsampling, and choose which documents get rephrased — random document selection for rephrasing produces poor results.
+- Decompose synthetic generation into simpler steps (outline, then chapters) so the pipeline exceeds what the teacher model produces one-shot without losing correctness or diversity.
+- Distill expensive LLM/VLM filter judgments into a small SigLIP-scale classifier before running a filter over a billion-item corpus; Krea ended up with 30-40 in-house classifiers and heuristics over a 2-10B image corpus.
+- Keep most of the mid-training mix representative of the pre-training distribution when doing domain adaptation — this prevents catastrophic forgetting outright rather than trading general capability for domain capability.
+- Pull chat, agentic-trace, and long-context data backward into pre-training so the model learns downstream task shapes from the start instead of meeting a distribution shift at SFT.
+- Run staged ablations, deciding what works at each curation stage before proceeding to the next, and use small runs with simulated token scarcity to derisk the hero run at 50-100x less compute.
+- Curate the majority-language (English) portion of the corpus even when the target is multilingual — the gains transfer, with magnitude correlated to language similarity, at only 8% multilingual tokens.
+- Filter or undersample items whose key attributes your captioning model consistently fails to describe, even when the item itself is fine — bad captions poison the pair, not just the caption.
+- Verify training-code and hardware correctness (cross-replica weight hashes, FP32 accumulation for tensor-parallel unembedding) before attributing a bad loss curve to the data mix — a single broken GPU reproduces the same symptoms.
+- When collecting reasoning or preference data, sample many answers per question (16x) rather than proportionally more questions answered once, and attach preferences to per-rater vectors rather than averaging across unmodeled raters.
 
 **Avoid:**
 
-- Assuming a stronger model is a better teacher for distillation — some Qwen models outperformed Claude models as teachers.
-- Over-indexing on quality at the expense of quantity; it produces harmful repetition that saturates the model early once the token budget scales.
-- Rephrasing randomly selected documents — 'All documents are not created equal for rephrasing.'
-- Reading a single benchmark number under a single scaffold as recipe signal; benchmaxing and cross-harness differences make model results hard to interpret.
-- Buying your evals and your definition of task realism from the same vendor that sells you the training data.
-- Sourcing frontier data from defunct startups' codebases instead of an ongoing partnership with a live business — contrived data is routinely sold as captured data.
-- Prompting an LLM-as-judge for holistic quality in subjective domains; decompose the target into codified elements and use human judgment for the rest.
-- Handing pre-training, mid-training, and post-training to independent teams with clean handoffs.
-- Trusting open-source FP8 kernels without checking — a DeepGEMM-style race condition silently corrupted ~0.5% of gradients, and replica hash checks cannot catch forward/backward race conditions.
-- Grading model outputs only against the original artifact rather than against decomposed ground truth, which penalizes novel-but-valid solutions and drives collapse to the mean.
+- Filtering with off-the-shelf aesthetic or image-quality scores — it silently deletes the styles a meaningful share of users actually want.
+- Training on frontier-model outputs as a shortcut in generative media: the teacher's aesthetic is sticky and permanent, and it is recognizable to a trained observer.
+- Optimizing quality over quantity so hard that you must repeat your high-quality subset, which saturates the model early once the training budget grows.
+- Assuming a single golden dataset exists, or that a benchmark number under one scaffold means anything — cross-harness and cross-infrastructure differences drive much of the observed benchmark divergence.
+- Buying dead startups' codebases as a frontier-data source; the only durable supply of realistic type-one data is an ongoing partnership with a live business.
+- Buying your evals and your definition of task realism from the same vendor that sells you the training data to hill-climb them.
+- Treating answer filtering, synthetic rewriting, and task augmentation as reliable curation steps — Bespoke found they underdelivered, while synthetic question generation worked.
+- Fixing MoE expert load imbalance by cranking the load-balancing coefficient during SFT — it is a symptom of pre/post-training distribution mismatch that should have been fixed in the early mix.
 
 ## Notable Outliers
 
-- Curating only the English portion of a corpus measurably improves non-English performance, with transfer magnitude correlated to language similarity — with multilingual data at just 8% of tokens. ([Data Quality Is the Compute Multiplier](../talks/data-quality-is-the-compute-multiplier.md), [11:34](https://www.youtube.com/watch?v=_PdK6x7PQNM&t=694s))
-- Curation alone, with no post-training, matched Qwen 3.5 4B using 145x less training compute and ~35x fewer flops per correct answer, because curation also shortens responses. ([Data Quality Is the Compute Multiplier](../talks/data-quality-is-the-compute-multiplier.md), [7:47](https://www.youtube.com/watch?v=_PdK6x7PQNM&t=467s))
+- Roughly 80% of new code added to GitHub is now machine-generated, so mining human-written code as training data is reaching its end and self-play — models generating and judging their own coding challenges — is what produces superhuman coding. (["Software engineering is not about writing code"](../talks/software-engineering-is-not-about-writing-code.md), [9:33](https://www.youtube.com/watch?v=1P1hJ36rxM0&t=573s))
+- Curating only the English portion of a corpus measurably improves non-English performance, with transfer magnitude correlated to language similarity. ([Data Quality Is the Compute Multiplier](../talks/data-quality-is-the-compute-multiplier.md), [11:34](https://www.youtube.com/watch?v=_PdK6x7PQNM&t=694s))
+- A 33B-parameter validation run is too small to surface the numerical and race-condition failures that appear at scale — open-source FP8 kernels silently corrupted ~0.5% of gradients, and cross-replica hash checks structurally cannot catch it. ([The Messy Reality of Scale: Synthetic Data and Pre-Training](../talks/the-messy-reality-of-scale-synthetic-data-and-pre-training.md), [14:32](https://www.youtube.com/watch?v=KhYifX22yhE&t=872s))
+- Essentially every data vendor sells contrived (type two) data while marketing it as captured (type one) data, and then sells the benchmark built from it plus the data to hill-climb that benchmark. ([State of Data](../talks/state-of-data.md), [5:41](https://www.youtube.com/watch?v=ZyIoTOAbRfs&t=341s))
+- Sparse autoencoders trained on vision models yield an unsupervised tagging system usable for filtering watermarks, signatures, and blur out of a pre-training corpus. ([Training Krea 2: What matters in generative model training](../talks/training-krea-2-what-matters-in-generative-model-training.md), [12:33](https://www.youtube.com/watch?v=-tviRdpmHvs&t=753s))
 - A model competitive with the open frontier can be trained for under $20 million total including salaries, compute, and all failed attempts — the 'hundreds of millions' figure is false. ([Data Quality Is the Compute Multiplier](../talks/data-quality-is-the-compute-multiplier.md), [16:50](https://www.youtube.com/watch?v=_PdK6x7PQNM&t=1010s))
-- Roughly 80% of new code added to GitHub is now machine-generated, so mining human-written code as a training corpus is reaching an end and self-play must replace it. (["Software engineering is not about writing code"](../talks/software-engineering-is-not-about-writing-code.md), [9:33](https://www.youtube.com/watch?v=1P1hJ36rxM0&t=573s))
-- Essentially every data vendor sells contrived type-two data while marketing it as captured type-one data, and the same vendors then sell the data to hill-climb the benchmarks they authored. ([State of Data](../talks/state-of-data.md), [5:41](https://www.youtube.com/watch?v=ZyIoTOAbRfs&t=341s))
-- Stronger models are not always better teachers; answer filtering, synthetic rewriting, and task augmentation all failed as curation steps while synthetic question generation worked. ([Data and Environment Curation for Post-Training LLMs](../talks/data-and-environment-curation-for-post-training-llms.md), [11:16](https://www.youtube.com/watch?v=ewtOo0scUh0&t=676s))
-- A single broken GPU produced spiky loss curves and exploding gradient norms with no configuration, data, or implementation difference from the healthy run. ([The Messy Reality of Scale: Synthetic Data and Pre-Training](../talks/the-messy-reality-of-scale-synthetic-data-and-pre-training.md), [10:34](https://www.youtube.com/watch?v=KhYifX22yhE&t=634s))
-- Galactica trained on 105B curated tokens beat Palm, Chinchilla, and GPT-3.5 in scientific domains with far less compute, and was the first major result for multi-epoch training when the consensus was one epoch. ([Scaling to Long Horizons](../talks/scaling-to-long-horizons.md), [5:21](https://www.youtube.com/watch?v=2bvtay8wGYI&t=321s))
-- Automated architecture search only yielded significant returns once data quality was co-optimized with the model rather than left to the agent's discretion. ([Adaption Labs: Gradient-Free Continual Learning](../talks/adaption-labs-gradient-free-continual-learning.md), [5:59](https://www.youtube.com/watch?v=XEd_SRVHBgU&t=359s))
-- In subjective domains the most likely output is not the optimal one — quality lives at the tails, so training toward the mode is precisely what manufactures slop. ([Ending AI Slop](../talks/ending-ai-slop.md), [8:03](https://www.youtube.com/watch?v=lCBf9slCanI&t=483s))
 
 ## All Talks
 
@@ -164,6 +149,7 @@ Supporting talks: [Data and Environment Curation for Post-Training LLMs](../talk
 - [State of Data](../talks/state-of-data.md)
 - [The Base Model Is Dead](../talks/the-base-model-is-dead.md)
 - [The Messy Reality of Scale: Synthetic Data and Pre-Training](../talks/the-messy-reality-of-scale-synthetic-data-and-pre-training.md)
+- [Training Krea 2: What matters in generative model training](../talks/training-krea-2-what-matters-in-generative-model-training.md)
 
 ## Speakers
 
@@ -181,6 +167,7 @@ Supporting talks: [Data and Environment Curation for Post-Training LLMs](../talk
 - [Preetika Bhateja](../speakers/preetika-bhateja.md)
 - [Robert McHardy](../speakers/robert-mchardy.md)
 - [Ross Taylor](../speakers/ross-taylor.md)
+- [Sangwu Lee](../speakers/sangwu-lee.md)
 - [Sara Hooker](../speakers/sara-hooker.md)
 - [Sean Cai](../speakers/sean-cai.md)
 - [Thais Castello Branco](../speakers/thais-castello-branco.md)

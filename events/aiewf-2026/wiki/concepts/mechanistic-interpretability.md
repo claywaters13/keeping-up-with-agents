@@ -4,15 +4,15 @@ type: "concept"
 slug: "mechanistic-interpretability"
 tier: "supporting"
 maturity: "frontier"
-talk_count: 4
-speaker_count: 7
+talk_count: 5
+speaker_count: 8
 ---
 
 # mechanistic interpretability
 
 **Maturity: FRONTIER** — Frontier — too new or sparse for consensus yet
 
-*Supporting concept* &middot; discussed across **4** talk(s) by **7** speaker(s)
+*Supporting concept* &middot; discussed across **5** talk(s) by **8** speaker(s)
 
 **Definition:** Inspecting model internals — features, activations, circuits — to explain or steer behavior, as opposed to black-box evaluation.
 
@@ -20,90 +20,56 @@ speaker_count: 7
 
 ## State of Practice
 
-Only one talk at this conference did mechanistic interpretability proper, and its central result is that the useful object is not the model's feature space but the *difference* between a base checkpoint and its fine-tune: training a sparse autoencoder on the base-to-fine-tuned activation delta scored ~0.4 on backdoor isolation versus ~0.01 for crosscoder/joint-feature methods on the same models, with non-overlapping confidence intervals. The framing that carried was 'backdoors are directions' — an implanted trigger shows up as an anomalous activation-shift direction you can detect without knowing the trigger string in advance, which is exactly what behavioral evals cannot do. Practically it is cheap enough to be unglamorous: a 4x-expansion SAE matches a 32x one because the signal is genuinely low-dimensional, the best delta feature has zero false positives on benign code (recall is only ~25%, so you ensemble), and the result holds across middle layers and across LoRA vs. full-rank fine-tuning. The rest of the conference touched internals only obliquely — quantization practitioners treat layer-level sensitivity (first/last layers, QKV projections, linear attention) as the actionable internal structure and are migrating from accuracy benchmarks to KL divergence against the BF16 logits, while UX and agent-tooling speakers treat the model as an unopenable box and intervene at the interface and prompt layer instead. The shared thread across all four is distrust of pass/fail behavioral scoring; the disagreement is whether the fix lives inside the weights or outside the model entirely. Nothing here is tooled, benchmarked, or reproduced across labs — the delta-SAE method has not been tested against an adaptive attacker and does not apply at all to a downloaded checkpoint with no base model to diff against.
-
-## Consensus
-
-### Black-box behavioral scoring is insufficient to characterize a model; you have to inspect an internal or distributional signal (activation deltas, output logit distributions, reasoning traces) rather than end-output pass/fail.
-
-Support: **3** talk(s)
-
-> "your current defense mechanisms are essentially blind to this because they are all looking at behavior, and the behavior looks normal until the point where it stops being normal"
->
-> — [Your LLM Deception Monitor Is Broken. The Fix Is in the Training Data](../talks/your-llm-deception-monitor-is-broken-the-fix-is-in-the-training-data.md), [1:19](https://www.youtube.com/watch?v=IQkVMvXQKLY&t=79s)
-
-Supporting talks: [Your LLM Deception Monitor Is Broken. The Fix Is in the Training Data](../talks/your-llm-deception-monitor-is-broken-the-fix-is-in-the-training-data.md), [Compression at the Edge](../talks/compression-at-the-edge.md), [Building Great Agent Skills: The Missing Manual](../talks/building-great-agent-skills-the-missing-manual.md)
+Mechanistic interpretability shows up at this conference not as a research program but as a small number of shipped tools, and only one talk treats it as its central subject. The concrete result is that the base-model-to-fine-tuned activation *difference* — not joint features over both — is where implanted behavior lives: a sparse autoencoder trained on that delta reaches a ~0.4 backdoor isolation score against ~0.01 for crosscoder-style joint features, with non-overlapping confidence intervals, and the signal is invariant to which middle layer is probed and to LoRA vs. full-rank fine-tuning. Because backdoors turn out to be low-dimensional (a 4x-expansion SAE matches a 32x one) and the best delta features fire with zero false positives on benign code, the check is cheap enough to run as a per-build unit test rather than as a research artifact. Outside safety, SAEs appear as production data infrastructure: Krea trains them on vision-model activations to get an unsupervised tagging system for watermarks, signatures, and blur, as one of ~30-40 in-house filters over a 2-10B image corpus. The adjacent, non-interpretability version of the same instinct is everywhere — super-weight sensitivity guiding which layers stay at 16-bit, KL divergence over logits replacing accuracy benchmarks for quantized models — but these inspect weights and output distributions, not circuits. The shared premise across all of it is that aggregate behavioral scores hide the failure you care about; the disagreement is whether you need model internals to find it.
 
 ## Disagreements
 
-### Is the model's observable output — including its reasoning trace — valid evidence about its internal process?
+### To detect a property a model is hiding, do you need to inspect its internals, or are output-level signals (logit distributions, traces, hands-on use) sufficient?
 
 | Position A | Position B |
 |---|---|
-| Yes: you can confirm an instruction took effect by watching for it in the reasoning trace. If you put the leading word 'vertical slice' in a skill and the agent echoes it back in its thinking tokens, the technique is working; the trace is the verification mechanism.<br>*[Building Great Agent Skills: The Missing Manual](../talks/building-great-agent-skills-the-missing-manual.md)* | No: behavior and self-report are exactly what a backdoored model gets right. Surface behavior looks normal until the trigger fires, so the only trustworthy signal is the activation-space difference from the base checkpoint.<br>*[Your LLM Deception Monitor Is Broken. The Fix Is in the Training Data](../talks/your-llm-deception-monitor-is-broken-the-fix-is-in-the-training-data.md)* |
+| Internals are required: the poisoning signal is recorded as a direction in activation space and is invisible behaviorally until it fires, so you train an SAE on the base-vs-fine-tuned activation delta and monitor for anomalous directions; likewise, feature-level tags derived from a vision model's own activations beat off-the-shelf aesthetic and quality scorers for corpus filtering.<br>*[Your LLM Deception Monitor Is Broken. The Fix Is in the Training Data](../talks/your-llm-deception-monitor-is-broken-the-fix-is-in-the-training-data.md), [Training Krea 2: What matters in generative model training](../talks/training-krea-2-what-matters-in-generative-model-training.md)* | Output-level signals are what practitioners actually use and trust: measure KL divergence between the quantized and BF16 model's output logits rather than opening the model up, and fall back to running the model in a real harness because 'it doesn't feel right' catches what no optimizer or benchmark does; similarly, verify a skill's instruction landed by watching the agent repeat the leading word in its reasoning traces.<br>*[Compression at the Edge](../talks/compression-at-the-edge.md), [Building Great Agent Skills: The Missing Manual](../talks/building-great-agent-skills-the-missing-manual.md)* |
 
-*Why it matters: If traces are trustworthy evidence, prompt-level iteration and eval suites are sufficient engineering practice; if they are not, every organization that fine-tunes or downloads weights needs a white-box gate in CI that no current agent-tooling stack has.*
-
-### What is the meaningful unit of model internals — the layer, or the direction?
-
-| Position A | Position B |
-|---|---|
-| The layer. Which layer you touch dominates the outcome: first and last layers are critical while middle layers are near-useless, QKV projections must be kept at higher precision, and quantizing linear attention layers destroys long-context behavior while short benchmarks show nothing.<br>*[Compression at the Edge](../talks/compression-at-the-edge.md)* | The direction. The detection signal is independent of which middle layer you probe and independent of the fine-tuning regime (LoRA vs. full-rank) — the backdoor is a low-dimensional direction in activation space, not a property of a layer.<br>*[Your LLM Deception Monitor Is Broken. The Fix Is in the Training Data](../talks/your-llm-deception-monitor-is-broken-the-fix-is-in-the-training-data.md)* |
-
-*Why it matters: It decides where you spend your budget: layer-level sensitivity analysis means per-architecture tooling that breaks every time a new open model ships, whereas direction-level analysis means one cheap probe (a 4x SAE) that generalizes across layers and fine-tuning methods.*
-
-### Where should the intervention for model untrustworthiness live — inside the weights, or in the interface?
-
-| Position A | Position B |
-|---|---|
-| Inside. There is a clean internal signal with near-zero false positives, so gate it: run the delta-SAE check on every build as a unit test for backdoors, before the model ever reaches a user.<br>*[Your LLM Deception Monitor Is Broken. The Fix Is in the Training Data](../talks/your-llm-deception-monitor-is-broken-the-fix-is-in-the-training-data.md)* | Outside. No tool can be claimed hallucination-free and the model is a black box to the user, so the honest move is interface-layer control: citations and source trails, an action plan approved before execution, an always-available stop control, version history, and explicit AI-generated labeling.<br>*[The UX of AI: Making AI-Powered Apps Your Users Don't Hate](../talks/the-ux-of-ai-making-ai-powered-apps-your-users-dont-hate.md)* |
-
-*Why it matters: One position says trustworthiness is a pre-deployment property you can verify and certify; the other says it is irreducibly a runtime negotiation with the user, which implies you build abort, revocation, and provenance affordances no amount of interpretability lets you skip.*
-
-### How should a modified model be evaluated once you accept benchmarks are inadequate — by a distributional metric, or by human judgment?
-
-| Position A | Position B |
-|---|---|
-| A distributional metric: compute KL divergence between the modified model's output logits and the BF16 original, and drive that distance toward zero. Accuracy benchmarks are unreliable and arenas are demonstrably gameable.<br>*[Compression at the Edge](../talks/compression-at-the-edge.md)* | Human judgment on real tasks: things that no model optimizer or benchmark captures only show up when you put the checkpoint into an actual coding agent and notice it doesn't feel right — benchmarking only works for verifiable tasks.<br>*[Compression at the Edge](../talks/compression-at-the-edge.md)* |
-
-*Why it matters: KL divergence is automatable and can gate a release pipeline; vibe-testing cannot, so if the second position is right, no amount of internal measurement substitutes for a human in the loop on every checkpoint you ship.*
+*Why it matters: It decides where verification budget goes — building activation-diff tooling and per-build SAE checks, versus better output-distribution metrics and hands-on eval harnesses. The internals camp's specific counterexample is that output-level checks are structurally blind to trigger-conditional behavior you never sampled, which no amount of better black-box metric fixes.*
 
 ## Practical Guidance
 
 **Do:**
 
-- Diff, don't inspect: train the sparse autoencoder on the base-to-fine-tuned activation difference rather than on joint features of both models — ~0.4 vs. ~0.01 backdoor isolation score in a direct comparison.
-- Use a 4x-expansion SAE, not 32x — the backdoor signal is low-dimensional enough that the small one matches, which makes the check cheap enough to run on every build as a unit test.
-- Ensemble delta features: a single feature fires with zero false positives but recalls only ~25% of triggers, so combine several for coverage.
-- Pick payloads that a static analyzer can score objectively (SQL injection) instead of subjective harms requiring an LLM judge.
-- Procedurally generate poisoning data with a large combination space (~1.6 billion) so the model learns the trigger rule rather than memorizing strings.
-- Replace accuracy benchmarks with KL divergence over output logits against the BF16 reference when validating a compressed checkpoint; minimize distance and size jointly.
-- Keep the first and last layers, and the attention/QKV projections, at higher precision; treat middle layers as the compressible bulk.
-- Check the reasoning trace to confirm a prompt-level technique actually landed — if the agent isn't repeating your leading word back, it isn't working.
+- Diff activations between the base checkpoint and your fine-tune and train the sparse autoencoder on the difference, not on both models' features jointly — sparse coding over joint activations spends its budget on loud generic patterns and the backdoor disappears into the mix.
+- Use a small expansion factor: a 4x SAE performs like a 32x one on this task, so the per-build cost is eight times fewer features than you would default to.
+- Ensemble several delta features rather than shipping one — a single feature has essentially zero false positives but recalls only about a quarter of triggers.
+- Run the check on every build as a unit test, which the near-zero false-positive rate makes tolerable in CI.
+- Probe any middle layer; the signal is stable across layer choice and across LoRA vs. full-rank fine-tuning, so don't spend time tuning that.
+- Pick payloads that a static analyzer can score objectively (e.g. SQL injection) when evaluating a detector, so results don't depend on an LLM judge.
+- Generate trigger training data procedurally across a very large combination space (~1.6B) so the model must learn the rule instead of memorizing strings.
+- Train an SAE on your vision encoder to harvest unsupervised tags for corpus filtering (watermarks, signatures, blur), then distill the expensive judgments into a SigLip-sized classifier before running them over billions of images.
 
 **Avoid:**
 
-- Do not rely on behavioral testing or production behavior monitors to catch a backdoor — catching one behaviorally requires already knowing the trigger, and if you know the trigger you don't need the monitor.
-- Do not assume scale protects you: larger models retain implanted backdoors more persistently through safety training.
-- Do not apply the delta method to an opaque downloaded checkpoint with no corresponding base model — there is nothing to diff against.
-- Do not treat detection as remediation; removal is unsolved, and an adaptive attacker who knows you are running the delta check was never tested.
-- Do not validate a quantized model on short benchmarks alone — quantized linear attention layers look fine on short evals and produce gibberish under real long-context load.
-- Do not run quantization-aware distillation on wrong data; it more commonly breaks the model than helps it.
-- Do not compress uniformly — uniformly dropping 86% of weights yields a 100% useless model, not an 86% worse one.
+- Treating behavioral evals and production behavior monitors as backdoor coverage — catching a backdoor behaviorally requires knowing the trigger in advance, and if you knew the trigger you wouldn't need the monitor.
+- Assuming scale helps: larger models retain implanted backdoors more stubbornly through safety training.
+- Applying the delta method to an opaque downloaded checkpoint with no corresponding base model — there is nothing to diff against.
+- Treating detection as remediation; removing the backdoor once found is unsolved, and no one has tested an adaptive attacker who knows you are running this check.
+- Leaning on aggregate accuracy benchmarks as your fidelity signal for a modified model — short benchmarks looked clean on quantized linear-attention layers that produce gibberish under real long-context load.
+- Filtering training data with generic aesthetic or image-quality scorers, which silently strips stylistic diversity that some users specifically want.
 
 ## Notable Outliers
 
-- One number decides the model: the super weights result shows quantizing a single parameter of the entire model makes it ~20% dumber — an extreme case of the 'internals are non-uniform' finding. ([Compression at the Edge](../talks/compression-at-the-edge.md), [14:03](https://www.youtube.com/watch?v=J4_jCrTxMkk&t=843s))
-- Compression only works because current models are undertrained; train on ~300 trillion tokens and the quantization headroom largely disappears — implying today's interpretable redundancy is an artifact of the training regime, not a permanent property. ([Compression at the Edge](../talks/compression-at-the-edge.md), [12:33](https://www.youtube.com/watch?v=J4_jCrTxMkk&t=753s))
-- Standard sparse coding actively hides backdoors — it wastes its budget on loud generic patterns and the backdoor disappears into the mix, which is why the joint-feature approach scores at chance. ([Your LLM Deception Monitor Is Broken. The Fix Is in the Training Data](../talks/your-llm-deception-monitor-is-broken-the-fix-is-in-the-training-data.md), [10:23](https://www.youtube.com/watch?v=IQkVMvXQKLY&t=623s))
-- Full-rank fine-tuning produced perfect separation — 100% vulnerability injection in the trigger year and 0% in the benign year — making the implanted behavior a clean binary switch. ([Your LLM Deception Monitor Is Broken. The Fix Is in the Training Data](../talks/your-llm-deception-monitor-is-broken-the-fix-is-in-the-training-data.md), [6:44](https://www.youtube.com/watch?v=IQkVMvXQKLY&t=404s))
-- Weight quantization is near Pareto-optimal with maybe one to three bits left, so the next gains must come from KV cache compression and sparsity — and sparsity is unadopted despite NVIDIA hardware support because it degrades accuracy more than quantization does. ([Compression at the Edge](../talks/compression-at-the-edge.md), [39:54](https://www.youtube.com/watch?v=J4_jCrTxMkk&t=2394s))
+- Backdoors are directions in activation space, and the difference between base and fine-tuned model is where those directions are located — detection requires no prior knowledge of the trigger, only the observation of an anomalous direction. ([Your LLM Deception Monitor Is Broken. The Fix Is in the Training Data](../talks/your-llm-deception-monitor-is-broken-the-fix-is-in-the-training-data.md), [13:35](https://www.youtube.com/watch?v=IQkVMvXQKLY&t=815s))
+- Delta-trained SAE features reach ~0.4 backdoor isolation versus ~0.01 for crosscoder joint features — a 40x gap with non-touching confidence intervals. ([Your LLM Deception Monitor Is Broken. The Fix Is in the Training Data](../talks/your-llm-deception-monitor-is-broken-the-fix-is-in-the-training-data.md), [8:12](https://www.youtube.com/watch?v=IQkVMvXQKLY&t=492s))
+- Backdoors are low-dimensional enough that a 4x-expansion SAE matches a 32x one with eight times fewer features. ([Your LLM Deception Monitor Is Broken. The Fix Is in the Training Data](../talks/your-llm-deception-monitor-is-broken-the-fix-is-in-the-training-data.md), [9:43](https://www.youtube.com/watch?v=IQkVMvXQKLY&t=583s))
+- The super weights result: quantizing a single number in the entire model makes it roughly 20% dumber — individual weights, not just layers, carry outsized causal load. ([Compression at the Edge](../talks/compression-at-the-edge.md), [14:03](https://www.youtube.com/watch?v=J4_jCrTxMkk&t=843s))
+- Sparse autoencoders trained on a vision model yield a usable unsupervised tagging system, deployed as production data-curation infrastructure over a 2-10 billion image corpus rather than as an interpretability experiment. ([Training Krea 2: What matters in generative model training](../talks/training-krea-2-what-matters-in-generative-model-training.md), [11:46](https://www.youtube.com/watch?v=-tviRdpmHvs&t=706s))
+- First and last layers are disproportionately important while middle layers are comparatively expendable, which is why a model at 14% of its size can retain ~76% of its accuracy under mixed precision. ([Compression at the Edge](../talks/compression-at-the-edge.md), [12:33](https://www.youtube.com/watch?v=J4_jCrTxMkk&t=753s))
+- A behavioral proxy for internal state that actually works in practice: put a leading word in the skill text and confirm it landed by watching the agent repeat that word back in its reasoning traces. ([Building Great Agent Skills: The Missing Manual](../talks/building-great-agent-skills-the-missing-manual.md), [13:13](https://www.youtube.com/watch?v=UNzCG3lw6O0&t=793s))
 
 ## All Talks
 
 - [Building Great Agent Skills: The Missing Manual](../talks/building-great-agent-skills-the-missing-manual.md)
 - [Compression at the Edge](../talks/compression-at-the-edge.md)
 - [The UX of AI: Making AI-Powered Apps Your Users Don't Hate](../talks/the-ux-of-ai-making-ai-powered-apps-your-users-dont-hate.md)
+- [Training Krea 2: What matters in generative model training](../talks/training-krea-2-what-matters-in-generative-model-training.md)
 - [Your LLM Deception Monitor Is Broken. The Fix Is in the Training Data](../talks/your-llm-deception-monitor-is-broken-the-fix-is-in-the-training-data.md)
 
 ## Speakers
@@ -115,4 +81,5 @@ Supporting talks: [Your LLM Deception Monitor Is Broken. The Fix Is in the Train
 - [Merve Noyan](../speakers/merve-noyan.md)
 - [Parth Sareen](../speakers/parth-sareen.md)
 - [Sachin Kumar](../speakers/sachin-kumar.md)
+- [Sangwu Lee](../speakers/sangwu-lee.md)
 

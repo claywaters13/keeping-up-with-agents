@@ -4,7 +4,7 @@ type: "speaker"
 slug: "lina-colucci"
 role: "CEO"
 company: "LemonSlice"
-talk_count: 1
+talk_count: 2
 ---
 
 # Lina Colucci
@@ -18,6 +18,7 @@ Co-Founder and CEO of LemonSlice, an AI lab working to break the avatar Turing t
 ## Talks
 
 - [Voice Agents That Handle Interrupts](../talks/voice-agents-that-handle-interrupts.md) (Generative Media)
+- [Voice agents with Realtime Video](../talks/voice-agents-with-realtime-video.md) (Generative Media)
 
 ## Scheduled Sessions
 
@@ -25,9 +26,17 @@ Co-Founder and CEO of LemonSlice, an AI lab working to break the avatar Turing t
 
 ## Concepts
 
+- [agent harness design](../concepts/agent-harness-design.md)
+- [agent reliability engineering](../concepts/agent-reliability-engineering.md)
 - [context rot](../concepts/context-rot.md)
+- [generative media pipelines](../concepts/generative-media-pipelines.md)
+- [inference cost optimization](../concepts/inference-cost-optimization.md)
+- [knowledge distillation](../concepts/knowledge-distillation.md)
 - [latency budgets](../concepts/latency-budgets.md)
+- [subjective and non-verifiable task evaluation](../concepts/subjective-and-non-verifiable-task-evaluation.md)
+- [vision-language models](../concepts/vision-language-models.md)
 - [voice agents](../concepts/voice-agents.md)
+- [world models](../concepts/world-models.md)
 
 ## Quotes
 
@@ -122,4 +131,92 @@ Co-Founder and CEO of LemonSlice, an AI lab working to break the avatar Turing t
 > "So, definitely this is just a a quick demo, but in practice, you would probably combine both the turn detection model and the silence detection."
 >
 > — [Voice Agents That Handle Interrupts](../talks/voice-agents-that-handle-interrupts.md), [29:12](https://www.youtube.com/watch?v=hMlLw1LeIK8&t=1752s)
+
+> "And Lemon Slice is on a mission to break the Avatar Turing test. What we mean by this is making an Avatar that is indistinguishable from a human on a video call."
+>
+> — [Voice agents with Realtime Video](../talks/voice-agents-with-realtime-video.md), [0:01](https://www.youtube.com/watch?v=z1dqv74SpUs&t=1s)
+
+> "So, our bet here is in the long term we think most interactions between AI and humans will have a visual visual layer."
+>
+> — [Voice agents with Realtime Video](../talks/voice-agents-with-realtime-video.md), [4:07](https://www.youtube.com/watch?v=z1dqv74SpUs&t=247s)
+
+> "Essentially what we do is we take these world models and we focus them on humans."
+>
+> — [Voice agents with Realtime Video](../talks/voice-agents-with-realtime-video.md), [4:55](https://www.youtube.com/watch?v=z1dqv74SpUs&t=295s)
+
+> "even though it's harder to get the initial model working, it's harder to train the model, it's harder to deploy the model. Once you have a model, you get all of these nice emergent properties"
+>
+> — [Voice agents with Realtime Video](../talks/voice-agents-with-realtime-video.md), [4:55](https://www.youtube.com/watch?v=z1dqv74SpUs&t=295s)
+
+> "most audio encoders today are trained on basically audiobooks, which is very monotone, very simple, don't have a lot of emotions. So, if you want to have a very expressive model, you can't use those audio encoders"
+>
+> — [Voice agents with Realtime Video](../talks/voice-agents-with-realtime-video.md), [9:13](https://www.youtube.com/watch?v=z1dqv74SpUs&t=553s)
+
+> "usually video models are bidirectional, so they can look into the past, but they actually also can look into the future"
+>
+> — [Voice agents with Realtime Video](../talks/voice-agents-with-realtime-video.md), [10:01](https://www.youtube.com/watch?v=z1dqv74SpUs&t=601s)
+
+> "we basically train a model with an attention mask so that the model can only look into the past. So, when you do inference, it never can see the future because the future doesn't exist because like you haven't given it those inputs yet."
+>
+> — [Voice agents with Realtime Video](../talks/voice-agents-with-realtime-video.md), [10:38](https://www.youtube.com/watch?v=z1dqv74SpUs&t=638s)
+
+> "let's say 30 steps. You spend 30 steps like removing the noise to generate the beautiful beautiful videos. And what we need to do is go from like 30 steps, bring it out to one step."
+>
+> — [Voice agents with Realtime Video](../talks/voice-agents-with-realtime-video.md), [11:22](https://www.youtube.com/watch?v=z1dqv74SpUs&t=682s)
+
+> "So now you're looking in the past, you're looking at the error, you're adding more error to it, and then just the error compounds over time."
+>
+> — [Voice agents with Realtime Video](../talks/voice-agents-with-realtime-video.md), [11:58](https://www.youtube.com/watch?v=z1dqv74SpUs&t=718s)
+
+> "Like the teddy avatar is generating continuously non-stop frame by frame for 8 hours straight with like no reset throughout the entire process. We have another one that's going to be generating for 16 hours straight."
+>
+> — [Voice agents with Realtime Video](../talks/voice-agents-with-realtime-video.md), [12:36](https://www.youtube.com/watch?v=z1dqv74SpUs&t=756s)
+
+> "we've been able to make the models small enough and efficient enough so that the costs are about the same as a voice model."
+>
+> — [Voice agents with Realtime Video](../talks/voice-agents-with-realtime-video.md), [13:20](https://www.youtube.com/watch?v=z1dqv74SpUs&t=800s)
+
+> "I feel like the model hardness is something that is often overlooked but is actually super important and super hard."
+>
+> — [Voice agents with Realtime Video](../talks/voice-agents-with-realtime-video.md), [14:11](https://www.youtube.com/watch?v=z1dqv74SpUs&t=851s)
+
+> "you have to orchestrate this perfectly in a way that like the video always remains real time. There is never any stutter that happens inside of the video."
+>
+> — [Voice agents with Realtime Video](../talks/voice-agents-with-realtime-video.md), [14:56](https://www.youtube.com/watch?v=z1dqv74SpUs&t=896s)
+
+> "It has the capabilities to do this. It's just not controllable enough to like make it real time with the conversation and not deterministic enough to to make it useful with the conversation."
+>
+> — [Voice agents with Realtime Video](../talks/voice-agents-with-realtime-video.md), [18:05](https://www.youtube.com/watch?v=z1dqv74SpUs&t=1085s)
+
+> "So I strongly believe that in the end uh there'll be a single model um that is the EQ layer for AI."
+>
+> — [Voice agents with Realtime Video](../talks/voice-agents-with-realtime-video.md), [18:46](https://www.youtube.com/watch?v=z1dqv74SpUs&t=1126s)
+
+> "What we're not saying is that this EQ model will be very intelligent. Uh it'll be very it'll have very high EQ and it'll be very good at like interacting with people"
+>
+> — [Voice agents with Realtime Video](../talks/voice-agents-with-realtime-video.md), [19:38](https://www.youtube.com/watch?v=z1dqv74SpUs&t=1178s)
+
+> "but I feel strongly that within two or three years you'll be seeing these kinds of end-to-end EQ models coming on the market."
+>
+> — [Voice agents with Realtime Video](../talks/voice-agents-with-realtime-video.md), [20:32](https://www.youtube.com/watch?v=z1dqv74SpUs&t=1232s)
+
+> "we're uh in the process of figuring out our own version of the Turing test for these avatars, which will just include real people."
+>
+> — [Voice agents with Realtime Video](../talks/voice-agents-with-realtime-video.md), [23:09](https://www.youtube.com/watch?v=z1dqv74SpUs&t=1389s)
+
+> "Again, like the cost of this is at the same level as an audio model in terms of what we charge for it."
+>
+> — [Voice agents with Realtime Video](../talks/voice-agents-with-realtime-video.md), [25:06](https://www.youtube.com/watch?v=z1dqv74SpUs&t=1506s)
+
+> "I think there'll also be very cool architectural updates to to move to more of like a token approach instead of a diffusion approach that will make video like this type of video generation way cheaper."
+>
+> — [Voice agents with Realtime Video](../talks/voice-agents-with-realtime-video.md), [25:48](https://www.youtube.com/watch?v=z1dqv74SpUs&t=1548s)
+
+> "Now the way this is used, just for for kind of everybody's information, is we're mostly the API layer. So, we provide an API. People bring their own LLM. People bring their own usually like voices."
+>
+> — [Voice agents with Realtime Video](../talks/voice-agents-with-realtime-video.md), [7:40](https://www.youtube.com/watch?v=z1dqv74SpUs&t=460s)
+
+> "the funny thing is he was scheduled to be there for, you know, a quick minute, one interaction, and he actually stayed for 10 minutes."
+>
+> — [Voice agents with Realtime Video](../talks/voice-agents-with-realtime-video.md), [3:28](https://www.youtube.com/watch?v=z1dqv74SpUs&t=208s)
 

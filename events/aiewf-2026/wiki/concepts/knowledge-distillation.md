@@ -4,15 +4,15 @@ type: "concept"
 slug: "knowledge-distillation"
 tier: "supporting"
 maturity: "consolidating"
-talk_count: 11
-speaker_count: 19
+talk_count: 16
+speaker_count: 24
 ---
 
 # knowledge distillation
 
 **Maturity: CONSOLIDATING** — Consolidating — converging practice, some open edges
 
-*Supporting concept* &middot; discussed across **11** talk(s) by **19** speaker(s)
+*Supporting concept* &middot; discussed across **16** talk(s) by **24** speaker(s)
 
 **Definition:** Transferring capability from a larger or stronger teacher model into a smaller student, including on-policy and reasoning-trace variants.
 
@@ -20,129 +20,152 @@ speaker_count: 19
 
 ## State of Practice
 
-Distillation has become the default way teams ship anything into production that has a latency, cost, or on-device constraint: take an expensive teacher (a frontier LLM, a committee of LLM judges, a large open checkpoint) and compress its behavior into a small student that runs near the generation loop. Character.ai distills a committee of frontier video judges into a small VLM that scores a 15-second video in ~3 seconds; Mixedbread SFTs a small retrieval agent from a larger teacher and then runs on-policy RL with a combined retrieval + trajectory reward; Roboflow distills SAM 3 to a fixed class list rather than fine-tuning it. Two things shifted at this conference. First, the teacher no longer has to be stronger than the student: Bespoke found Qwen teachers beating Claude teachers in Open Thoughts Agents, and Trajectory's on-policy self-distillation gives the same model privileged hints in its prompt and matches the un-hinted student's log-probs to the hinted teacher's — explicitly because 'when we're trying to push the frontier we don't magically have some smarter model.' Second, the failure modes are now well-characterized and all live in the data: students trained on naively generated teacher labels learn surface vibe instead of the axes you asked for, quantization-aware distillation with wrong data breaks models outright, and hint leakage is the self-distillation analogue of reward hacking. The open argument is about ceilings — whether distillation is a durable improvement axis or a bounded transfer that saturates the moment the student has absorbed a fixed teacher-generated dataset.
+Distillation has stopped being a compression trick and become the default production path: teams use a frontier model only long enough to prove a task is possible, then move the task onto a cheaper open or in-house student trained on the frontier model's traces — LangChain reports Opus-comparable trace judging one to two orders of magnitude cheaper, Character.ai distills a committee of expensive video judges into a small VLM that scores a 15-second clip in ~3 seconds, and Krea distills large-VLM filtering decisions into a SigLip-sized classifier to survive a 2-10B image corpus. The sharpest technical movement of the conference was away from offline SFT on teacher traces and toward on-policy variants, where the student generates the rollout and a teacher with privileged information (a 'hint') supervises it: Applied Compute and Trajectory both report that a hint given to the same model makes it a competent teacher of itself, removing the requirement for a stronger model at all. The engineering details that make this work are specific — a judge picks where in the rollout to inject the hint, the KL signal decays with distance so loss is restricted to the next step or few, and an LLM judge masks teacher tokens (connector words) that carry the teacher's idiosyncrasies rather than the target behavior. The known failure modes now have names: hint leakage (OPSD's analogue of reward hacking), catastrophic degradation of out-of-distribution behavior from naive SFT, and a local optimum of hedging tokens ('wait', 'but', 'maybe') when a teacher repeatedly course-corrects a divergent student on long-horizon tasks. What remains genuinely open is whether distillation is a ceiling-raiser or only a compressor: Engram argues any fixed dataset saturates, Trajectory claims OPSD shifts entire distributions and has surpassed RL on 12B agents at 100+ tool calls.
 
 ## Consensus
 
-### Distilling a large teacher (or a committee of expensive judges) into a small student is the standard production path; teams accept measurable accuracy loss in exchange for latency, cost, and deployability.
+### The right workflow is to use a frontier model to establish that a task is feasible, then distill its traces into a smaller or open model for production serving.
 
-Support: **5** talk(s)
+Support: **4** talk(s)
+
+> "this year and and next year you're going to see a lot of using these like monster frontier models to bootstrap, you know, like a more efficient setup that runs on open source"
+>
+> — [State of the Union: Why Local, Why Now](../talks/state-of-the-union-why-local-why-now.md), [38:30](https://www.youtube.com/watch?v=KB41dTlX1Uc&t=2310s)
+
+Supporting talks: [Improving Agents is a Data Mining Problem](../talks/improving-agents-is-a-data-mining-problem.md), [State of the Union: Why Local, Why Now](../talks/state-of-the-union-why-local-why-now.md), [How we taught agents to use good retrieval](../talks/how-we-taught-agents-to-use-good-retrieval.md), [Compression at the Edge](../talks/compression-at-the-edge.md)
+
+### Purely offline SFT on teacher-generated traces degrades the student's general and out-of-distribution performance, even when every training trace exhibits the desired behavior; on-policy rollouts under teacher supervision avoid this.
+
+Support: **4** talk(s)
+
+> "even doing SFT on traces where we knew the hyperlink was correctly formatted, we saw that there was this sort of degradation in overall coding agent performance"
+>
+> — [Bringing Continual Learning into Enterprises](../talks/bringing-continual-learning-into-enterprises.md), [14:35](https://www.youtube.com/watch?v=ZTA0GwpAUak&t=875s)
+
+Supporting talks: [Bringing Continual Learning into Enterprises](../talks/bringing-continual-learning-into-enterprises.md), [Scaling Compute on Context](../talks/scaling-compute-on-context.md), [Scaling up Continual Learning](../talks/scaling-up-continual-learning.md), [How we taught agents to use good retrieval](../talks/how-we-taught-agents-to-use-good-retrieval.md)
+
+### Distilling an expensive committee of large judges/filters into one small student model is the standard way to make evaluation and data curation affordable at production volume.
+
+Support: **3** talk(s)
 
 > "the solution is actually actually to take all these committee of experts and distill it into one small model that is also very very fast, but it is able to give us a response that is not whether or not this video is slap or not, but why is it slap?"
 >
 > — [Evaling Video Slop](../talks/evaling-video-slop.md), [7:27](https://www.youtube.com/watch?v=b_PmGocP4rc&t=447s)
 
-Supporting talks: [Evaling Video Slop](../talks/evaling-video-slop.md), [How we taught agents to use good retrieval](../talks/how-we-taught-agents-to-use-good-retrieval.md), [State of the Union: Why Local, Why Now](../talks/state-of-the-union-why-local-why-now.md), [Compression at the Edge](../talks/compression-at-the-edge.md), [Adaption Labs: Gradient-Free Continual Learning](../talks/adaption-labs-gradient-free-continual-learning.md)
+Supporting talks: [Evaling Video Slop](../talks/evaling-video-slop.md), [Training Krea 2: What matters in generative model training](../talks/training-krea-2-what-matters-in-generative-model-training.md), [Improving Agents is a Data Mining Problem](../talks/improving-agents-is-a-data-mining-problem.md)
 
-### The teacher does not need to be a stronger model — a same-size or weaker model, or the student itself given privileged information, is often the better teacher.
-
-Support: **4** talk(s)
-
-> "when we're trying to push the frontier we don't magically have some smarter model, right?"
->
-> — [Scaling up Continual Learning](../talks/scaling-up-continual-learning.md), [7:52](https://www.youtube.com/watch?v=zL1kLftVTlo&t=472s)
-
-Supporting talks: [Scaling up Continual Learning](../talks/scaling-up-continual-learning.md), [Data and Environment Curation for Post-Training LLMs](../talks/data-and-environment-curation-for-post-training-llms.md), [Learning on the Job: The Future of Post-Training](../talks/learning-on-the-job-the-future-of-post-training.md), [Scaling Compute on Context](../talks/scaling-compute-on-context.md)
-
-### Distillation quality is set almost entirely by how the teacher data was generated; naive or contaminated teacher output produces a student that learns the wrong thing rather than a slightly worse student.
-
-Support: **4** talk(s)
-
-> "The reason it was wrong is because how we generated that data, right? It It um it scored the vibe as opposed to the the the axes."
->
-> — [Evaling Video Slop](../talks/evaling-video-slop.md), [11:14](https://www.youtube.com/watch?v=b_PmGocP4rc&t=674s)
-
-Supporting talks: [Evaling Video Slop](../talks/evaling-video-slop.md), [Compression at the Edge](../talks/compression-at-the-edge.md), [Scaling up Continual Learning](../talks/scaling-up-continual-learning.md), [Data and Environment Curation for Post-Training LLMs](../talks/data-and-environment-curation-for-post-training-llms.md)
-
-### Supervised distillation from a teacher carries most of the post-training gain; RL is the expensive add-on that buys the remaining few points.
+### A teacher does not have to be a separate, stronger model — giving the same model privileged information (a hint, the answer's context, the future of the trace) makes it a usable teacher for itself.
 
 Support: **3** talk(s)
 
-> "SFT still contributed a lot to the gains um RL was kind of you know it's very comput inensive and for for the last few few percentages it really helped"
+> "in order to create a teacher that's smarter than this on-policy model, we need to create some kind of hint or have some kind of privileged information"
 >
-> — [Data and Environment Curation for Post-Training LLMs](../talks/data-and-environment-curation-for-post-training-llms.md), [12:12](https://www.youtube.com/watch?v=ewtOo0scUh0&t=732s)
+> — [Bringing Continual Learning into Enterprises](../talks/bringing-continual-learning-into-enterprises.md), [3:46](https://www.youtube.com/watch?v=ZTA0GwpAUak&t=226s)
 
-Supporting talks: [Data and Environment Curation for Post-Training LLMs](../talks/data-and-environment-curation-for-post-training-llms.md), [How we taught agents to use good retrieval](../talks/how-we-taught-agents-to-use-good-retrieval.md), [Scaling up Continual Learning](../talks/scaling-up-continual-learning.md)
+Supporting talks: [Bringing Continual Learning into Enterprises](../talks/bringing-continual-learning-into-enterprises.md), [Scaling up Continual Learning](../talks/scaling-up-continual-learning.md), [Learning on the Job: The Future of Post-Training](../talks/learning-on-the-job-the-future-of-post-training.md)
+
+### Distilled or compressed smaller models are capability-sufficient for the majority of production workloads; frontier-level models are not needed per-use-case.
+
+Support: **4** talk(s)
+
+> "open models have basically hit an inflection point in intelligence that we at LangChain don't reach for the frontier models for every single use case"
+>
+> — [Improving Agents is a Data Mining Problem](../talks/improving-agents-is-a-data-mining-problem.md), [7:15](https://www.youtube.com/watch?v=CvRngaQZQ3Y&t=435s)
+
+Supporting talks: [Compression at the Edge](../talks/compression-at-the-edge.md), [Improving Agents is a Data Mining Problem](../talks/improving-agents-is-a-data-mining-problem.md), [State of the Union: Why Local, Why Now](../talks/state-of-the-union-why-local-why-now.md), [Adaption Labs: Gradient-Free Continual Learning](../talks/adaption-labs-gradient-free-continual-learning.md)
+
+### Distillation reliably transfers narrow, specific behaviors but breaks down as you scale to large students and long-horizon agentic tasks, where run-to-run variance, format errors, and degenerate token preferences appear.
+
+Support: **4** talk(s)
+
+> "this works really well for small models short horizon tasks like something like a chatbot. But this is where academic papers kind of end and where you really need to scale things up to start to to see the limitations."
+>
+> — [Scaling up Continual Learning](../talks/scaling-up-continual-learning.md), [12:10](https://www.youtube.com/watch?v=zL1kLftVTlo&t=730s)
+
+Supporting talks: [Scaling up Continual Learning](../talks/scaling-up-continual-learning.md), [Learning on the Job: The Future of Post-Training](../talks/learning-on-the-job-the-future-of-post-training.md), [Scaling Compute on Context](../talks/scaling-compute-on-context.md), [Bringing Continual Learning into Enterprises](../talks/bringing-continual-learning-into-enterprises.md)
 
 ## Disagreements
 
-### Should the teacher be the strongest available frontier model, or is teacher selection an empirical question where weaker or same-size teachers often win?
+### Does an effective teacher need to be a stronger model than the student?
 
 | Position A | Position B |
 |---|---|
-| Use the biggest frontier model you can afford as the teacher — bootstrapping efficient open/local models off 'monster frontier models' is the dominant 2026-2027 pattern, and SFT from a larger teacher LLM is step one of the recipe.<br>*[State of the Union: Why Local, Why Now](../talks/state-of-the-union-why-local-why-now.md), [How we taught agents to use good retrieval](../talks/how-we-taught-agents-to-use-good-retrieval.md)* | Teacher strength is not the right selection criterion — Qwen models beat Claude models as teachers in agent distillation, and the strongest results come from the model teaching itself with privileged hints in the prompt rather than importing a stronger model at all.<br>*[Data and Environment Curation for Post-Training LLMs](../talks/data-and-environment-curation-for-post-training-llms.md), [Scaling up Continual Learning](../talks/scaling-up-continual-learning.md), [Learning on the Job: The Future of Post-Training](../talks/learning-on-the-job-the-future-of-post-training.md)* |
+| Yes — reach for the strongest available frontier model as the teacher and bootstrap the student from its traces; that is where the capability you are transferring comes from.<br>*[Improving Agents is a Data Mining Problem](../talks/improving-agents-is-a-data-mining-problem.md), [State of the Union: Why Local, Why Now](../talks/state-of-the-union-why-local-why-now.md), [How we taught agents to use good retrieval](../talks/how-we-taught-agents-to-use-good-retrieval.md)* | No — stronger models are frequently worse teachers empirically (Qwen beat Claude as a teacher in Open Thoughts Agents), and when pushing the frontier no smarter model exists, so the teacher should be the same model conditioned on privileged information.<br>*[Data and Environment Curation for Post-Training LLMs](../talks/data-and-environment-curation-for-post-training-llms.md), [Scaling up Continual Learning](../talks/scaling-up-continual-learning.md), [Bringing Continual Learning into Enterprises](../talks/bringing-continual-learning-into-enterprises.md), [Learning on the Job: The Future of Post-Training](../talks/learning-on-the-job-the-future-of-post-training.md)* |
 
-*Why it matters: If teacher strength is what matters, distillation is permanently gated on access to (and licensing of) the frontier lab's checkpoints; if it is not, any team can push its own model past its current level with no external teacher and no per-token teacher spend.*
+*Why it matters: If the teacher must be stronger, distillation is permanently gated on frontier API access and your student's ceiling is someone else's model; if privileged information suffices, distillation becomes a self-improvement loop that any team with production traces can run.*
 
-### Is RL with grouped parallel rollouts (GRPO) the right mechanism for pushing a model past its current level, or should on-policy self-distillation replace it?
-
-| Position A | Position B |
-|---|---|
-| RL is the mechanism: build environments, run async GRPO-style training, accept ~16 steps off-policy, and note that a 1,000-step frontier-scale run on real agentic tasks now costs ~$50K — cheaper than a month of token spend.<br>*[Modern Post-Training: A Deep Dive](../talks/modern-post-training-a-deep-dive.md), [Morgan Stanley's ALPHALAB: Multi-Agent Research Across Optimization Domains](../talks/morgan-stanleys-alphalab-multi-agent-research-across-optimization-domains.md), [Data and Environment Curation for Post-Training LLMs](../talks/data-and-environment-curation-for-post-training-llms.md)* | GRPO's parallel-rollout requirement cannot be met in real production settings (a customer support chat is not replayable), it collapses messy real-world signal into one scalar, and it saturates around Sonnet-level on LiveCodeBench; on-policy self-distillation learns from a single non-replayable interaction and has surpassed RL on 100+ tool-call agents.<br>*[Scaling up Continual Learning](../talks/scaling-up-continual-learning.md), [Learning on the Job: The Future of Post-Training](../talks/learning-on-the-job-the-future-of-post-training.md)* |
-
-*Why it matters: The two paths imply opposite infrastructure bets: RL requires building high-fidelity environments and rollout fleets, while self-distillation requires only production traces plus a hint-design and divergence-weighting discipline — and only the latter works when the environment is the customer's live harness.*
-
-### Is distillation a durable axis you can keep pouring compute into, or a bounded transfer that saturates once the student has absorbed a fixed teacher-generated dataset?
+### Can distillation push a student past its teacher's capability, or does it only compress capability that already exists?
 
 | Position A | Position B |
 |---|---|
-| Durable and sufficient: most business workloads never need frontier capability, a 120B at 4-bit beats a 35B at BF16 for the same disk, and distilled/compressed small models are already the right default for the overwhelming majority of production traffic.<br>*[Compression at the Edge](../talks/compression-at-the-edge.md), [State of the Union: Why Local, Why Now](../talks/state-of-the-union-why-local-why-now.md), [Evaling Video Slop](../talks/evaling-video-slop.md)* | Bounded: distillation is on the list of approaches that all plateau — once you fix a dataset and train on it, the model learns all of it and stops improving unless it is underparameterized, and self-distillation today only induces narrow, specific behaviors with no known generalization.<br>*[Scaling Compute on Context](../talks/scaling-compute-on-context.md), [Learning on the Job: The Future of Post-Training](../talks/learning-on-the-job-the-future-of-post-training.md)* |
+| It only compresses and saturates — any approach that fixes a dataset and trains on it hits an upper bound once the information transfers into the weights, and self-distillation today works only for narrow induced behaviors.<br>*[Scaling Compute on Context](../talks/scaling-compute-on-context.md), [Learning on the Job: The Future of Post-Training](../talks/learning-on-the-job-the-future-of-post-training.md), [Adaption Labs: Gradient-Free Continual Learning](../talks/adaption-labs-gradient-free-continual-learning.md)* | It raises the ceiling — on-policy self-distillation shifts entire distributions rather than sharpening one, reaches territory GRPO cannot (which saturates around Sonnet-level on LiveCodeBench), and has surpassed RL on 12B agents requiring 100+ tool calls.<br>*[Scaling up Continual Learning](../talks/scaling-up-continual-learning.md), [Bringing Continual Learning into Enterprises](../talks/bringing-continual-learning-into-enterprises.md)* |
 
-*Why it matters: If distillation saturates, teams need a self-improvement mechanism that makes its own training data harder over time (the AlphaGo property) rather than more teacher tokens; if it does not, buying more teacher inference is a straightforward and sufficient roadmap.*
+*Why it matters: This determines whether post-training budget should go into distillation at all or into RL environments and data acquisition; if distillation saturates, every dollar past the plateau is wasted and self-improving difficulty curricula are the only path forward.*
+
+### Is training a student on a teacher model's generated outputs acceptable, or does it permanently imprint the teacher's characteristics?
+
+| Position A | Position B |
+|---|---|
+| Avoid it — synthetic teacher outputs are 'sticky': training on AI-generated images permanently stamps a recognizable ChatGPT/Nano Banana aesthetic on the model, and evaluator models trained on naively generated data learn surface gloss rather than the axes you intended to measure.<br>*[Training Krea 2: What matters in generative model training](../talks/training-krea-2-what-matters-in-generative-model-training.md), [Evaling Video Slop](../talks/evaling-video-slop.md)* | Embrace it — bootstrapping open models from frontier model outputs is the dominant efficiency pattern, legitimate, and practically impossible to stop.<br>*[State of the Union: Why Local, Why Now](../talks/state-of-the-union-why-local-why-now.md), [Improving Agents is a Data Mining Problem](../talks/improving-agents-is-a-data-mining-problem.md), [How we taught agents to use good retrieval](../talks/how-we-taught-agents-to-use-good-retrieval.md)* |
+
+*Why it matters: In generative media the teacher's fingerprint is the product — a distilled model that looks like everyone else's has no differentiation — whereas in agentic text tasks the teacher's style is irrelevant next to task completion, so the same technique is a shortcut in one domain and a trap in the other.*
 
 ## Practical Guidance
 
 **Do:**
 
-- Distill an ensemble of frontier judges into one small model and put it inside the generation loop rather than after assembly — catching defects at the starting-frame and clip level is far cheaper than fixing an assembled output.
-- Train distilled judges on A-vs-B pairs, not absolute 1-10 scores: humans do not agree on absolute scales but do agree on comparisons, so the pairwise labels are the ones that transfer.
-- Score the specific axes you care about (narrative, pacing, physics, character consistency) in the distillation data — they do not emerge on their own from a general quality label.
-- Order the recipe as SFT from a larger teacher first, then on-policy RL with a reward that combines the end metric (retrieval NDCG) with a trajectory reward that grades intermediate behavior.
-- For self-distillation, put privileged information in the teacher's prompt and match the un-hinted student's log-probs to the hinted teacher's — this removes the parallel-rollout requirement, so a single example yields signal.
-- On long-horizon self-distillation, weight each token by the teacher/student divergence at that step instead of applying a flat KL penalty, to avoid the hedging-token local optimum.
-- When distilling for a fixed question set, sample ~16 answers per question rather than collecting 16x more questions answered once.
-- For students under ~20B, budget for quantization-aware distillation to recover accuracy; above roughly 20-30B, post-training quantization works out of the box.
-- Train several RL experts on a shared base model and distill them into a single checkpoint, rather than training one model across all environments simultaneously.
-- Evaluate a distilled or quantized student by KL divergence between its output logits and the BF16 teacher's, not by accuracy benchmarks.
-- Distill SAM 3 down to a fixed class list with a lighter detector instead of fine-tuning it directly.
-- Check the unit economics before distilling: the committee-of-experts approach is fine at low volume and only pays back at thousands to tens of thousands of items per day.
+- Use a judge to choose where in the rollout to inject the hint rather than hinting at the start, and restrict the distillation loss to the next step or a few steps forward, because the KL learning signal decays with distance from the hint.
+- Mask which teacher tokens the student learns from with an LLM judge, so the student acquires the target behavior instead of the teacher's preferred connector words.
+- Design hints as 'what the model should reasonably have known' — filter the actual solution out — to prevent hint leakage producing reasoning traces that can never occur in production.
+- Add a single on-policy rollout step to an otherwise offline production trace; that alone yields a larger SWE-bench pass-rate gain than the fully offline setup.
+- Train distilled judges on A-vs-B pairs rather than absolute 1-10 scores, since humans agree on comparisons but not on absolute scales.
+- Ablate teacher choice explicitly instead of defaulting to the strongest model, and sample many answers per question (e.g. 16x) rather than collecting proportionally more questions answered once.
+- For students under ~20B parameters, use quantization-aware distillation to recover accuracy; post-training quantization only works out of the box above ~20-30B.
+- Evaluate a compressed or distilled student by KL divergence against the BF16 teacher's output logits, not by accuracy benchmarks.
+- Distill large-VLM filtering judgments into a SigLip-sized classifier before running data curation over billions of images.
+- Train separate specialist experts (photography, text rendering; or per-environment RL experts) and merge/distill them into a single student, which is more reliable than training one model on everything at once.
+- Only train and serve a distilled evaluator once volume justifies it — thousands to tens of thousands of items per day; below that the expensive committee of experts is cheaper.
 
 **Avoid:**
 
-- Generating teacher labels naively and assuming the student inherits your intent — it will score surface gloss and coherence ('the vibe') and rate camera work 9.2 on a static shot.
-- Building pairs as human-made = good vs AI-made = bad; unless encoding and annotation methodology match on both sides you train an AI detector, not a quality detector.
-- Leaking the solution into the hint during self-distillation — the resulting reasoning traces cannot occur in production, which is the OPSD analogue of reward hacking.
-- Running quantization-aware distillation on wrong data: it most commonly breaks the model rather than helping it.
-- Assuming the stronger model is the better teacher, or that answer filtering, synthetic rewriting, and task augmentation will improve a distillation set — those curation steps did not work, while synthetic question generation did.
-- Expecting self-distillation to generalize — today it only induces narrow, specific behaviors.
-- Plain next-token-prediction fine-tuning on your own corpus: loss goes to ~0.0001, generation collapses, and no useful generalization appears.
-- Quantizing linear attention layers — short benchmarks look clean while long-context production output turns to gibberish.
-- Judging a compressed or distilled student on accuracy benchmarks alone; arenas are gameable and benchmarks only cover verifiable tasks.
-- Uniformly compressing weights: 86% uniform compression makes a model 100% useless, not 86% worse — selective per-layer precision is what makes it viable.
+- Do not do plain next-token-prediction finetuning on your own corpus: loss goes to ~0.0001, generation collapses, and the model answers nothing that is not verbatim encoded in the data.
+- Do not assume SFT on format-correct teacher traces is safe — it degrades out-of-distribution coding agent performance, as does reward shaping for the same output format.
+- Do not distill over the entire rollout following a hint.
+- Do not train image models on AI-generated images; a trained observer can identify heavily distilled models, and the teacher's aesthetic cannot be removed later.
+- Do not build judge training data by pairing human footage as 'good' against AI footage as 'bad' — you will train an AI detector, not a quality detector.
+- Do not treat distillation as an unbounded scaling axis; a fixed dataset saturates unless the model is underparameterized or training difficulty escalates.
+- Do not assume distillation results from small-model, short-horizon papers transfer — at 120B with 50-100 tool calls, eval accuracy varies widely, run-to-run variance is extreme, and tool-call format errors appear.
+- Do not assume a distillation setup needs a golden answer or rubric; most enterprise continual-learning situations have neither, and methods that require one do not deploy.
+- Do not quantize linear attention layers when compressing a student — short benchmarks look fine while long-context output becomes gibberish.
 
 ## Notable Outliers
 
-- Qwen models outperformed Claude models as distillation teachers in the Open Thoughts Agents work — stronger models are not always better teachers. ([Data and Environment Curation for Post-Training LLMs](../talks/data-and-environment-curation-for-post-training-llms.md), [12:12](https://www.youtube.com/watch?v=ewtOo0scUh0&t=732s))
-- The trick of on-policy distillation is to show the model text and then make it think the text was in context. ([Scaling Compute on Context](../talks/scaling-compute-on-context.md), [13:01](https://www.youtube.com/watch?v=WiqDvX6isc4&t=781s))
-- A model kept at high precision only in the first, last, and attention/QKV layers can be squeezed to 14% of its size and still recover ~76% of accuracy — and compression works at all only because current models are undertrained; at ~300T tokens the headroom largely disappears. ([Compression at the Edge](../talks/compression-at-the-edge.md), [12:33](https://www.youtube.com/watch?v=J4_jCrTxMkk&t=753s))
-- GRPO saturates around Sonnet-level performance on LiveCodeBench, while on-policy self-distillation shifts entire distributions rather than sharpening one — and reduces the tokens needed to solve hard problems instead of increasing them. ([Scaling up Continual Learning](../talks/scaling-up-continual-learning.md), [10:50](https://www.youtube.com/watch?v=zL1kLftVTlo&t=650s))
-- The larger evaluator model was measurably more accurate, and they shipped the smaller distilled one anyway because the accuracy gain did not justify the latency. ([Evaling Video Slop](../talks/evaling-video-slop.md), [8:14](https://www.youtube.com/watch?v=b_PmGocP4rc&t=494s))
-- SFT data pipelines that export, reformat, and re-upload datasets are unnecessary — SFT is just rollouts in an environment where the actor happens to be a teacher. ([Modern Post-Training: A Deep Dive](../talks/modern-post-training-a-deep-dive.md), [11:27](https://www.youtube.com/watch?v=V-EDrhIhHzQ&t=687s))
-- Using proprietary frontier models to bootstrap open-source models is legitimate, hard to stop, and will be a defining pattern of 2026-2027. ([State of the Union: Why Local, Why Now](../talks/state-of-the-union-why-local-why-now.md), [38:30](https://www.youtube.com/watch?v=KB41dTlX1Uc&t=2310s))
+- Stronger models are not always better teachers — some Qwen models outperformed Claude models as distillation teachers in the Open Thoughts Agents work. ([Data and Environment Curation for Post-Training LLMs](../talks/data-and-environment-curation-for-post-training-llms.md), [11:16](https://www.youtube.com/watch?v=ewtOo0scUh0&t=676s))
+- A teacher can move a student toward calling a tool purely by reshaping the reasoning path leading up to it, without ever modifying the tool-call tokens themselves — task-complete call rate went from ~22% to ~60%. ([Bringing Continual Learning into Enterprises](../talks/bringing-continual-learning-into-enterprises.md), [13:20](https://www.youtube.com/watch?v=ZTA0GwpAUak&t=800s))
+- On long-horizon tasks the teacher repeatedly course-corrects a divergent student, driving it into a local optimum dominated by hedging tokens like 'wait', 'but', and 'maybe'. ([Scaling up Continual Learning](../talks/scaling-up-continual-learning.md), [13:28](https://www.youtube.com/watch?v=zL1kLftVTlo&t=808s))
+- Compression and distillation headroom exists only because current models are undertrained; if models were trained on ~300 trillion tokens that headroom would largely disappear. ([Compression at the Edge](../talks/compression-at-the-edge.md), [12:33](https://www.youtube.com/watch?v=J4_jCrTxMkk&t=753s))
+- Real-time video is a distillation problem in disguise: collapsing ~30 denoising steps into a single step is what makes interactive avatar generation cost the same as a voice model. ([Voice agents with Realtime Video](../talks/voice-agents-with-realtime-video.md), [11:22](https://www.youtube.com/watch?v=z1dqv74SpUs&t=682s))
+- On-policy distillation is essentially a trick — you show the model text and make it think the text was in context — and it forfeits the benefits you get from taking gradients over genuinely new data. ([Scaling Compute on Context](../talks/scaling-compute-on-context.md), [13:01](https://www.youtube.com/watch?v=WiqDvX6isc4&t=781s))
+- SFT data pipelines that export, reformat, and re-upload datasets are unnecessary; SFT is just rollouts in an environment where the actor happens to be a teacher. ([Modern Post-Training: A Deep Dive](../talks/modern-post-training-a-deep-dive.md), [11:27](https://www.youtube.com/watch?v=V-EDrhIhHzQ&t=687s))
 
 ## All Talks
 
 - [Adaption Labs: Gradient-Free Continual Learning](../talks/adaption-labs-gradient-free-continual-learning.md)
+- [Bringing Continual Learning into Enterprises](../talks/bringing-continual-learning-into-enterprises.md)
 - [Compression at the Edge](../talks/compression-at-the-edge.md)
 - [Data and Environment Curation for Post-Training LLMs](../talks/data-and-environment-curation-for-post-training-llms.md)
 - [Evaling Video Slop](../talks/evaling-video-slop.md)
+- [Generative Video at the Speed of Light](../talks/generative-video-at-the-speed-of-light.md)
 - [How we taught agents to use good retrieval](../talks/how-we-taught-agents-to-use-good-retrieval.md)
+- [Improving Agents is a Data Mining Problem](../talks/improving-agents-is-a-data-mining-problem.md)
 - [Learning on the Job: The Future of Post-Training](../talks/learning-on-the-job-the-future-of-post-training.md)
 - [Modern Post-Training: A Deep Dive](../talks/modern-post-training-a-deep-dive.md)
 - [Morgan Stanley's ALPHALAB: Multi-Agent Research Across Optimization Domains](../talks/morgan-stanleys-alphalab-multi-agent-research-across-optimization-domains.md)
 - [Scaling Compute on Context](../talks/scaling-compute-on-context.md)
 - [Scaling up Continual Learning](../talks/scaling-up-continual-learning.md)
 - [State of the Union: Why Local, Why Now](../talks/state-of-the-union-why-local-why-now.md)
+- [Training Krea 2: What matters in generative model training](../talks/training-krea-2-what-matters-in-generative-model-training.md)
+- [Voice agents with Realtime Video](../talks/voice-agents-with-realtime-video.md)
 
 ## Speakers
 
@@ -155,6 +178,8 @@ Supporting talks: [Data and Environment Curation for Post-Training LLMs](../talk
 - [Hanna Lichtenberg](../speakers/hanna-lichtenberg.md)
 - [Jack Morris](../speakers/jack-morris.md)
 - [Joseph Nelson](../speakers/joseph-nelson.md)
+- [Keegan McCallum](../speakers/keegan-mccallum.md)
+- [Lina Colucci](../speakers/lina-colucci.md)
 - [Mahesh Sathiamoorthy](../speakers/mahesh-sathiamoorthy.md)
 - [Maor Bril](../speakers/maor-bril.md)
 - [Matthew Berman](../speakers/matthew-berman.md)
@@ -163,6 +188,9 @@ Supporting talks: [Data and Environment Curation for Post-Training LLMs](../talk
 - [Parth Sareen](../speakers/parth-sareen.md)
 - [Raymond Feng](../speakers/raymond-feng.md)
 - [Ronak Malde](../speakers/ronak-malde.md)
+- [Samuel Denton](../speakers/samuel-denton.md)
+- [Sangwu Lee](../speakers/sangwu-lee.md)
 - [Sara Hooker](../speakers/sara-hooker.md)
+- [Vivek Trivedy](../speakers/vivek-trivedy.md)
 - [Will Brown](../speakers/will-brown.md)
 

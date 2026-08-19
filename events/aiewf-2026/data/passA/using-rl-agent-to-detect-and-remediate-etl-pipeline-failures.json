@@ -1,0 +1,274 @@
+{
+  "is_error": false,
+  "duration_api_ms": 78069,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "26adf4d5-00e5-4601-a243-f2645687800b",
+  "total_cost_usd": 0.3054985,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 11464,
+    "cache_read_input_tokens": 8113,
+    "output_tokens": 7289,
+    "output_tokens_details": {
+      "thinking_tokens": 3275
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 11464,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 7289,
+        "cache_read_input_tokens": 8113,
+        "cache_creation_input_tokens": 11464,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 11464
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 4482,
+      "outputTokens": 17,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.004567,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 7289,
+      "cacheReadInputTokens": 8113,
+      "cacheCreationInputTokens": 11464,
+      "webSearchRequests": 0,
+      "costUSD": 0.3009315,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "```json\n{\n  \"summary\": \"Anna Marie Benzon walks through a capstone system that automatically detects and remediates AWS Glue ETL pipeline failures using a reinforcement-learning policy wrapped in deterministic guardrails. The architecture is deliberately layered: rule-based detectors establish observable facts (schema drift, data quality, error class, risk), a small tabular Q-learning policy chooses among six bounded actions (retry, schema fix, roll back, quarantine, escalate, log), and a safety override sitting outside the learned policy can veto or force escalation. On a synthetic control benchmark she reports ~5.24 minute mean resolution versus a modeled 2.5-working-day manual baseline (~99.85% MTTR reduction), a 74.63% simulated success rate, and \u2014 importantly \u2014 that the RL policy only matched an equivalent hand-written deterministic policy within 0.19 percentage points. Her honest conclusion is that the reliability came from state design, sensible decision logic, and external safety constraints rather than from RL itself, with RL's value being an inspectable learned decision surface that scales as incident history grows. Worth watching if you build operational or incident-response agents and want a concrete template for bounding agent authority and evaluating it against a dumb baseline.\",\n  \"key_points\": [\n    \"The expensive part of an ETL failure is not the failure but the surrounding work \u2014 log inspection, diagnosis, choosing a safe fix, rerunning, and validating output \u2014 which the speaker models as a ~2.5 working day manual recovery baseline.\",\n    \"The system splits three concerns explicitly: deterministic rules for facts, a learned policy for bounded contextual action selection, and a safety override that sits outside the learned policy so a policy update cannot silently expand its own authority.\",\n    \"Each incident is modeled as a single-step contextual decision with a compact state (failure category, risk level, countability, data quality) and six actions, which keeps the Q-table small enough that every decision can be inspected directly.\",\n    \"Escalation is a first-class action in the action space, not a failure mode; the speaker argues that optimizing purely for a low escalation rate is the wrong target for an operational agent.\",\n    \"On the control benchmark the rule-based anomaly detector hit precision 1.0, recall 0.8, F-score 0.889 \u2014 deliberately conservative, and a reminder that perfect precision is not perfect detection.\",\n    \"Reported benchmark results: ~5.24 minute mean resolution across 30 runs, 74.63% \u00b11.51pp simulated success, 88.63% \u00b10.89pp non-escalation, and roughly a 99.85% MTTR reduction against the modeled manual baseline.\",\n    \"The headline negative result is that the RL policy matched an equivalent hand-defined deterministic policy to within 0.19 percentage points on this compact state space; the gains over random selection (15.63 points) and from the safety layer are where the value actually lives.\",\n    \"Validation limits are stated plainly: synthetic scenarios, reactive rather than predictive, simulated and bounded remediation actions, with shadow-mode deployment on real incident traces as the next step before granting execution authority.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"The failure itself may be small, but the expensive part is everything around it: inspection, diagnosis, choosing a safe, running the job, and confirming that we didn't make the data error.\",\n      \"timestamp_sec\": 0,\n      \"why\": \"Frames the cost model that motivates the entire system \u2014 the fix is cheap, the process is not.\"\n    },\n    {\n      \"text\": \"The central question is simply whether an agent can act, but whether it can act usefully, explainably, and within the boundaries that an operation would actually trust.\",\n      \"timestamp_sec\": 0,\n      \"why\": \"States the talk's thesis: trustworthiness and bounded authority, not raw capability.\"\n    },\n    {\n      \"text\": \"Evaluate the manual recovery baseline was modeled at roughly 2.5 working days.\",\n      \"timestamp_sec\": 55,\n      \"why\": \"The baseline number every later speedup claim is measured against.\"\n    },\n    {\n      \"text\": \"The learn policy does not have final authority. It proposes an action.\",\n      \"timestamp_sec\": 230,\n      \"why\": \"The core architectural commitment \u2014 the model is a proposer, not an executor.\"\n    },\n    {\n      \"text\": \"I use RQ learning. Because the state and action spaces are small, the Q tables are small and every decision can be inspected directly\",\n      \"timestamp_sec\": 230,\n      \"why\": \"Justifies choosing tabular Q-learning over anything larger on inspectability grounds.\"\n    },\n    {\n      \"text\": \"Notice that escalation is included in the action space that is not the agent giving up. It is the system correctly recognizing the boundary of its evidence and authority for an operational agent.\",\n      \"timestamp_sec\": 382,\n      \"why\": \"Reframes escalation as a capability rather than a failure \u2014 a position many autonomy-maximizing designs reject.\"\n    },\n    {\n      \"text\": \"An action can be safe in principle and still be unavailable in the current environment.\",\n      \"timestamp_sec\": 437,\n      \"why\": \"Names the distinction between policy permission and execution capability, a common blind spot in agent design.\"\n    },\n    {\n      \"text\": \"The system does not pretend that the fix should happen. It proposes an action. Reports that execution was unavailable and identifies the incident for manual review.\",\n      \"timestamp_sec\": 437,\n      \"why\": \"Concrete walkthrough of graceful degradation when the remediation path doesn't exist.\"\n    },\n    {\n      \"text\": \"Perfect precision does not mean perfect detection for cases where the RL-guided work flow resolved the incident successfully.\",\n      \"timestamp_sec\": 552,\n      \"why\": \"Honest caveat on a metric that could otherwise be oversold.\"\n    },\n    {\n      \"text\": \"The mean resolution time was about 5.24 minutes across the 30 runs.\",\n      \"timestamp_sec\": 552,\n      \"why\": \"The headline performance number with its sample size attached.\"\n    },\n    {\n      \"text\": \"In the benchmark, that is approximately a 99.85% reduction in MTTR.\",\n      \"timestamp_sec\": 552,\n      \"why\": \"The topline claim, explicitly scoped to the benchmark rather than production.\"\n    },\n    {\n      \"text\": \"The RL policy matches the equivalent deterministic policy. The difference of 0.19 percentage points (with a 0.19 point confidence interval) on this compact state space.\",\n      \"timestamp_sec\": 611,\n      \"why\": \"The most important negative result in the talk \u2014 RL bought no measurable accuracy over hand-written rules.\"\n    },\n    {\n      \"text\": \"That decrease is intentional. The garden system escalates more often when its autonomy would be inappropriate.\",\n      \"timestamp_sec\": 611,\n      \"why\": \"Defends a metric regression as a design goal, not a bug.\"\n    },\n    {\n      \"text\": \"So why did the reliability come from primarily from the initial state? Sensible decision logic and external safety constraints, not from RL alone.\",\n      \"timestamp_sec\": 663,\n      \"why\": \"The speaker's own attribution of where the wins came from, undercutting the talk's own title.\"\n    },\n    {\n      \"text\": \"RL provides an inspectable learned decision service rather than an immediate success rate advantage.\",\n      \"timestamp_sec\": 663,\n      \"why\": \"Precisely scopes what RL is and isn't buying here.\"\n    },\n    {\n      \"text\": \"The results come from synthetic scenarios. The agent responds after a failure signal. It does not predict a failure before it happens.\",\n      \"timestamp_sec\": 720,\n      \"why\": \"Unusually explicit statement of the validation boundary.\"\n    },\n    {\n      \"text\": \"Third, place safety constraints outside the learned policy, so a policy update cannot silently redefine its own authority.\",\n      \"timestamp_sec\": 720,\n      \"why\": \"The single most transferable design rule in the talk.\"\n    },\n    {\n      \"text\": \"A practical self-healing system does not need the largest possible model. It needs a clear, state-bound, action-reproducible, evaluation observable.\",\n      \"timestamp_sec\": 771,\n      \"why\": \"Direct pushback on model-scale-first approaches to agent reliability.\"\n    },\n    {\n      \"text\": \"the goal is not to eliminate human judgment; it is to stop spending that judgment and the same recognizable failure at two in the morning\",\n      \"timestamp_sec\": 771,\n      \"why\": \"Closing statement of what automation is actually for in incident response.\"\n    }\n  ],\n  \"concepts\": [\n    \"agent authority boundaries\",\n    \"escalation as a first-class action\",\n    \"safety layer outside the learned policy\",\n    \"contextual bandit decision making\",\n    \"tabular q-learning\",\n    \"schema drift detection\",\n    \"etl incident remediation\",\n    \"shadow mode deployment\",\n    \"deterministic baseline comparison\",\n    \"mttr measurement\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Safety constraints must live outside the learned policy so that a policy update cannot silently redefine the agent's own authority.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 720\n    },\n    {\n      \"claim\": \"Escalation should be an explicit action in an operational agent's action space, and measuring success only by non-escalation rate is the wrong optimization target.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 382\n    },\n    {\n      \"claim\": \"On this compact state space, the RL policy delivered no meaningful success-rate advantage over an equivalent hand-defined deterministic policy \u2014 a difference of only 0.19 percentage points.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 611\n    },\n    {\n      \"claim\": \"The system's reliability came primarily from state design, sensible decision logic, and external safety constraints rather than from reinforcement learning.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 663\n    },\n    {\n      \"claim\": \"RL's value in this setting is an inspectable learned decision service that grows more valuable as incident history gets richer and manual preference maintenance gets harder.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 663\n    },\n    {\n      \"claim\": \"Use deterministic logic for facts that can be measured directly, and use learning only where contextual action selection has real value.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 720\n    },\n    {\n      \"claim\": \"Being 'ML ready' is not the same as requiring ML; the simplest reliable component should be preferred for classification tasks over observable data conditions.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 230\n    },\n    {\n      \"claim\": \"A practical self-healing system does not need the largest possible model \u2014 it needs bounded state, reproducible actions, and observable evaluation.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 771\n    },\n    {\n      \"claim\": \"Manual ETL failure recovery takes roughly 2.5 working days when moving through normal queueing, investigation, and approval, versus about 5.24 minutes for the agent-guided workflow in benchmark.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 55\n    },\n    {\n      \"claim\": \"Agents should be evaluated across repeated runs against a simple baseline, because a single favorable run is a demo rather than evidence.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 771\n    },\n    {\n      \"claim\": \"An agent must explicitly represent the difference between an action being unsafe and an action being unavailable in the current environment.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 437\n    },\n    {\n      \"claim\": \"These benchmark results are a feasibility demonstration only, not production validation; shadow-mode deployment on real incident traces should precede granting execution authority.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 720\n    }\n  ],\n  \"speaker_org\": null\n}\n```",
+  "ttft_ms": 36304,
+  "ttft_stream_ms": 967,
+  "time_to_request_ms": 39,
+  "type": "result",
+  "duration_ms": 78521,
+  "uuid": "24bbb69e-1ba7-4a1f-b80b-fdf4a09d7161",
+  "passA": {
+    "summary": "Anna Marie Benzon walks through a capstone system that automatically detects and remediates AWS Glue ETL pipeline failures using a reinforcement-learning policy wrapped in deterministic guardrails. The architecture is deliberately layered: rule-based detectors establish observable facts (schema drift, data quality, error class, risk), a small tabular Q-learning policy chooses among six bounded actions (retry, schema fix, roll back, quarantine, escalate, log), and a safety override sitting outside the learned policy can veto or force escalation. On a synthetic control benchmark she reports ~5.24 minute mean resolution versus a modeled 2.5-working-day manual baseline (~99.85% MTTR reduction), a 74.63% simulated success rate, and \u2014 importantly \u2014 that the RL policy only matched an equivalent hand-written deterministic policy within 0.19 percentage points. Her honest conclusion is that the reliability came from state design, sensible decision logic, and external safety constraints rather than from RL itself, with RL's value being an inspectable learned decision surface that scales as incident history grows. Worth watching if you build operational or incident-response agents and want a concrete template for bounding agent authority and evaluating it against a dumb baseline.",
+    "key_points": [
+      "The expensive part of an ETL failure is not the failure but the surrounding work \u2014 log inspection, diagnosis, choosing a safe fix, rerunning, and validating output \u2014 which the speaker models as a ~2.5 working day manual recovery baseline.",
+      "The system splits three concerns explicitly: deterministic rules for facts, a learned policy for bounded contextual action selection, and a safety override that sits outside the learned policy so a policy update cannot silently expand its own authority.",
+      "Each incident is modeled as a single-step contextual decision with a compact state (failure category, risk level, countability, data quality) and six actions, which keeps the Q-table small enough that every decision can be inspected directly.",
+      "Escalation is a first-class action in the action space, not a failure mode; the speaker argues that optimizing purely for a low escalation rate is the wrong target for an operational agent.",
+      "On the control benchmark the rule-based anomaly detector hit precision 1.0, recall 0.8, F-score 0.889 \u2014 deliberately conservative, and a reminder that perfect precision is not perfect detection.",
+      "Reported benchmark results: ~5.24 minute mean resolution across 30 runs, 74.63% \u00b11.51pp simulated success, 88.63% \u00b10.89pp non-escalation, and roughly a 99.85% MTTR reduction against the modeled manual baseline.",
+      "The headline negative result is that the RL policy matched an equivalent hand-defined deterministic policy to within 0.19 percentage points on this compact state space; the gains over random selection (15.63 points) and from the safety layer are where the value actually lives.",
+      "Validation limits are stated plainly: synthetic scenarios, reactive rather than predictive, simulated and bounded remediation actions, with shadow-mode deployment on real incident traces as the next step before granting execution authority."
+    ],
+    "notable_quotes": [
+      {
+        "text": "The failure itself may be small, but the expensive part is everything around it: inspection, diagnosis, choosing a safe, running the job, and confirming that we didn't make the data error.",
+        "timestamp_sec": 0,
+        "why": "Frames the cost model that motivates the entire system \u2014 the fix is cheap, the process is not."
+      },
+      {
+        "text": "The central question is simply whether an agent can act, but whether it can act usefully, explainably, and within the boundaries that an operation would actually trust.",
+        "timestamp_sec": 0,
+        "why": "States the talk's thesis: trustworthiness and bounded authority, not raw capability."
+      },
+      {
+        "text": "Evaluate the manual recovery baseline was modeled at roughly 2.5 working days.",
+        "timestamp_sec": 55,
+        "why": "The baseline number every later speedup claim is measured against."
+      },
+      {
+        "text": "The learn policy does not have final authority. It proposes an action.",
+        "timestamp_sec": 230,
+        "why": "The core architectural commitment \u2014 the model is a proposer, not an executor."
+      },
+      {
+        "text": "I use RQ learning. Because the state and action spaces are small, the Q tables are small and every decision can be inspected directly",
+        "timestamp_sec": 230,
+        "why": "Justifies choosing tabular Q-learning over anything larger on inspectability grounds."
+      },
+      {
+        "text": "Notice that escalation is included in the action space that is not the agent giving up. It is the system correctly recognizing the boundary of its evidence and authority for an operational agent.",
+        "timestamp_sec": 382,
+        "why": "Reframes escalation as a capability rather than a failure \u2014 a position many autonomy-maximizing designs reject."
+      },
+      {
+        "text": "An action can be safe in principle and still be unavailable in the current environment.",
+        "timestamp_sec": 437,
+        "why": "Names the distinction between policy permission and execution capability, a common blind spot in agent design."
+      },
+      {
+        "text": "The system does not pretend that the fix should happen. It proposes an action. Reports that execution was unavailable and identifies the incident for manual review.",
+        "timestamp_sec": 437,
+        "why": "Concrete walkthrough of graceful degradation when the remediation path doesn't exist."
+      },
+      {
+        "text": "Perfect precision does not mean perfect detection for cases where the RL-guided work flow resolved the incident successfully.",
+        "timestamp_sec": 552,
+        "why": "Honest caveat on a metric that could otherwise be oversold."
+      },
+      {
+        "text": "The mean resolution time was about 5.24 minutes across the 30 runs.",
+        "timestamp_sec": 552,
+        "why": "The headline performance number with its sample size attached."
+      },
+      {
+        "text": "In the benchmark, that is approximately a 99.85% reduction in MTTR.",
+        "timestamp_sec": 552,
+        "why": "The topline claim, explicitly scoped to the benchmark rather than production."
+      },
+      {
+        "text": "The RL policy matches the equivalent deterministic policy. The difference of 0.19 percentage points (with a 0.19 point confidence interval) on this compact state space.",
+        "timestamp_sec": 611,
+        "why": "The most important negative result in the talk \u2014 RL bought no measurable accuracy over hand-written rules."
+      },
+      {
+        "text": "That decrease is intentional. The garden system escalates more often when its autonomy would be inappropriate.",
+        "timestamp_sec": 611,
+        "why": "Defends a metric regression as a design goal, not a bug."
+      },
+      {
+        "text": "So why did the reliability come from primarily from the initial state? Sensible decision logic and external safety constraints, not from RL alone.",
+        "timestamp_sec": 663,
+        "why": "The speaker's own attribution of where the wins came from, undercutting the talk's own title."
+      },
+      {
+        "text": "RL provides an inspectable learned decision service rather than an immediate success rate advantage.",
+        "timestamp_sec": 663,
+        "why": "Precisely scopes what RL is and isn't buying here."
+      },
+      {
+        "text": "The results come from synthetic scenarios. The agent responds after a failure signal. It does not predict a failure before it happens.",
+        "timestamp_sec": 720,
+        "why": "Unusually explicit statement of the validation boundary."
+      },
+      {
+        "text": "Third, place safety constraints outside the learned policy, so a policy update cannot silently redefine its own authority.",
+        "timestamp_sec": 720,
+        "why": "The single most transferable design rule in the talk."
+      },
+      {
+        "text": "A practical self-healing system does not need the largest possible model. It needs a clear, state-bound, action-reproducible, evaluation observable.",
+        "timestamp_sec": 771,
+        "why": "Direct pushback on model-scale-first approaches to agent reliability."
+      },
+      {
+        "text": "the goal is not to eliminate human judgment; it is to stop spending that judgment and the same recognizable failure at two in the morning",
+        "timestamp_sec": 771,
+        "why": "Closing statement of what automation is actually for in incident response."
+      }
+    ],
+    "concepts": [
+      "agent authority boundaries",
+      "escalation as a first-class action",
+      "safety layer outside the learned policy",
+      "contextual bandit decision making",
+      "tabular q-learning",
+      "schema drift detection",
+      "etl incident remediation",
+      "shadow mode deployment",
+      "deterministic baseline comparison",
+      "mttr measurement"
+    ],
+    "positions": [
+      {
+        "claim": "Safety constraints must live outside the learned policy so that a policy update cannot silently redefine the agent's own authority.",
+        "confidence": "stated",
+        "timestamp_sec": 720
+      },
+      {
+        "claim": "Escalation should be an explicit action in an operational agent's action space, and measuring success only by non-escalation rate is the wrong optimization target.",
+        "confidence": "stated",
+        "timestamp_sec": 382
+      },
+      {
+        "claim": "On this compact state space, the RL policy delivered no meaningful success-rate advantage over an equivalent hand-defined deterministic policy \u2014 a difference of only 0.19 percentage points.",
+        "confidence": "stated",
+        "timestamp_sec": 611
+      },
+      {
+        "claim": "The system's reliability came primarily from state design, sensible decision logic, and external safety constraints rather than from reinforcement learning.",
+        "confidence": "stated",
+        "timestamp_sec": 663
+      },
+      {
+        "claim": "RL's value in this setting is an inspectable learned decision service that grows more valuable as incident history gets richer and manual preference maintenance gets harder.",
+        "confidence": "stated",
+        "timestamp_sec": 663
+      },
+      {
+        "claim": "Use deterministic logic for facts that can be measured directly, and use learning only where contextual action selection has real value.",
+        "confidence": "stated",
+        "timestamp_sec": 720
+      },
+      {
+        "claim": "Being 'ML ready' is not the same as requiring ML; the simplest reliable component should be preferred for classification tasks over observable data conditions.",
+        "confidence": "stated",
+        "timestamp_sec": 230
+      },
+      {
+        "claim": "A practical self-healing system does not need the largest possible model \u2014 it needs bounded state, reproducible actions, and observable evaluation.",
+        "confidence": "stated",
+        "timestamp_sec": 771
+      },
+      {
+        "claim": "Manual ETL failure recovery takes roughly 2.5 working days when moving through normal queueing, investigation, and approval, versus about 5.24 minutes for the agent-guided workflow in benchmark.",
+        "confidence": "stated",
+        "timestamp_sec": 55
+      },
+      {
+        "claim": "Agents should be evaluated across repeated runs against a simple baseline, because a single favorable run is a demo rather than evidence.",
+        "confidence": "stated",
+        "timestamp_sec": 771
+      },
+      {
+        "claim": "An agent must explicitly represent the difference between an action being unsafe and an action being unavailable in the current environment.",
+        "confidence": "stated",
+        "timestamp_sec": 437
+      },
+      {
+        "claim": "These benchmark results are a feasibility demonstration only, not production validation; shadow-mode deployment on real incident traces should precede granting execution authority.",
+        "confidence": "stated",
+        "timestamp_sec": 720
+      }
+    ],
+    "speaker_org": null
+  },
+  "_meta": {
+    "slug": "using-rl-agent-to-detect-and-remediate-etl-pipeline-failures",
+    "video_id": "LrGCT7G_rU8",
+    "url": "https://www.youtube.com/watch?v=LrGCT7G_rU8",
+    "word_count": 1808,
+    "wall_sec": 79.7,
+    "run_at": "2026-08-19T13:19:59Z",
+    "effort": "default"
+  }
+}

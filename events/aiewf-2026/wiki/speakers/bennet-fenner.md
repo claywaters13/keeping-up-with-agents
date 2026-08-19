@@ -9,7 +9,7 @@ talk_count: 1
 
 ## Talks
 
-- [Building an ACP-Compatible Agent Live](../talks/building-an-acp-compatible-agent-live.md)
+- [Building an ACP-Compatible Agent Live](../talks/building-an-acp-compatible-agent-live.md) (Agent & Harness Engineering)
 
 ## Concepts
 

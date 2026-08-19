@@ -4,15 +4,15 @@ type: "concept"
 slug: "ontology-design"
 tier: "supporting"
 maturity: "consolidating"
-talk_count: 9
-speaker_count: 9
+talk_count: 10
+speaker_count: 10
 ---
 
 # ontology design
 
 **Maturity: CONSOLIDATING** — Consolidating — converging practice, some open edges
 
-*Supporting concept* &middot; discussed across **9** talk(s) by **9** speaker(s)
+*Supporting concept* &middot; discussed across **10** talk(s) by **10** speaker(s)
 
 **Definition:** Defining the entity types and relationships of a domain as an explicit schema that agents and graphs are built on.
 
@@ -20,11 +20,11 @@ speaker_count: 9
 
 ## State of Practice
 
-The field has converged on a blunt claim: agents cannot infer a domain's entity types and relationships at runtime, and every serious deployment presented here front-loads that schema as an explicit artifact. Free-form triple extraction and "let the agent read the tables" both fail the same way — ZS reported agents fabricating relationships that don't exist in the data, and Good Collective reported unschematized subject-predicate-object graphs you "wouldn't get very far with." The ontology is increasingly treated not as a data model but as a runtime control surface: Neo4j pushes discovery, mapping, and source-trust logic down into a shared semantic layer (business ontology + technical ontology of data-source metadata + a mapping + execution traces) so agents can stay thin; ZS uses the knowledge graph to bound which investigation hypotheses an agent may pursue at all, one hypothesis per edge; UC Berkeley runs OWL domain/range and cardinality constraints as a post-LLM validator before any write. A parallel thread from finance and forward-deployed engineering reframes the ontology as organizational rather than universal — Kepler's position is that verification means conforming to one firm's "nouns and verbs," since two desks can read identical data in opposite directions. The live arguments are about authorship (hand-written OWL versus embedding-learned matching and trace-derived source scores), reuse (schema.org versus bespoke), and whether an enterprise should be forced onto one canonical vocabulary at all.
+The conference converged on a hard prerequisite: an LLM will not derive a usable schema on its own, so the entity types, relationships, and constraints of a domain have to be authored up front and then imposed on the model. Free-form subject-predicate-object extraction and agents inferring relationships from raw tables both fail the same way — they produce plausible structure that does not exist in the data — while a supplied schema plus explicit naming/unit instructions produces something queryable. The center of gravity has shifted from ontology-as-data-model to ontology-as-control-plane: Neo4j's semantic layer splits it into a business ontology, a technical ontology of data-source metadata, and runtime execution traces, with agents kept thin above it; ZS Associates uses the graph to dictate which investigation paths and hypotheses an agent may pursue, treating each edge as a hypothesis; Berkeley's neuro-symbolic framing runs OWL validation over agent output before any write. Crucially, the ontology is understood to encode a specific organization's nouns, verbs, and rules rather than universal truth — Kepler's point is that two desks with identical data can be long and short the same stock, so verification means conformance to firm definitions, and Palantir-lineage FDE practice treats each team's divergent terminology as a fact to model, not a defect to normalize away. What remains unsettled is how formal it must be (OWL reasoners versus a flat tag list), whether to reuse public vocabularies or build bespoke ones, and whether canonicalization is a curated closed vocabulary or learned embedding matching.
 
 ## Consensus
 
-### Agents and extractors must be given an explicit domain schema; letting an LLM infer entities and relationships from raw data or free text produces unusable or fabricated structure.
+### Letting the model infer the schema — free-form triple extraction or relationship inference over raw tables — produces relationships that do not exist; the entity/relationship types must be supplied to the extractor in advance.
 
 Support: **4** talk(s)
 
@@ -32,19 +32,19 @@ Support: **4** talk(s)
 >
 > — [Why We Killed Our Multi-Agent Pipeline](../talks/why-we-killed-our-multi-agent-pipeline.md), [9:11](https://www.youtube.com/watch?v=u6jJcIFDLE4&t=551s)
 
-Supporting talks: [A Practitioner's Guide to Graphs](../talks/a-practitioners-guide-to-graphs.md), [Why We Killed Our Multi-Agent Pipeline](../talks/why-we-killed-our-multi-agent-pipeline.md), [Thinner Agents on a Smarter Substrate: The Ontology-based Semantic Layer](../talks/thinner-agents-on-a-smarter-substrate-the-ontology-based-semantic-layer.md), [Why Agentic Systems Need Ontologies](../talks/why-agentic-systems-need-ontologies.md)
+Supporting talks: [A Practitioner's Guide to Graphs](../talks/a-practitioners-guide-to-graphs.md), [Why We Killed Our Multi-Agent Pipeline](../talks/why-we-killed-our-multi-agent-pipeline.md), [LLM Knowledge Bases: a practical guide](../talks/llm-knowledge-bases-a-practical-guide.md), [Why Agentic Systems Need Ontologies](../talks/why-agentic-systems-need-ontologies.md)
 
-### The ontology should be expressed in the organization's own business vocabulary and rules rather than in database-level naming — it encodes a firm's definitions, not universal truth.
+### The ontology's job is to encode one organization's own vocabulary and rules, expressed in language its humans use, not database-level naming or a universal ground truth.
 
 Support: **4** talk(s)
 
-> "you don't say if underscore name. No, you have a customer and they have a first name."
+> "It is verifying that you got an output that respects the nouns and verbs or the rules of your organization."
 >
-> — [Thinner Agents on a Smarter Substrate: The Ontology-based Semantic Layer](../talks/thinner-agents-on-a-smarter-substrate-the-ontology-based-semantic-layer.md), [4:56](https://www.youtube.com/watch?v=VGN22pPpb-8&t=296s)
+> — [How Kepler Built Verifiable AI for Financial Services](../talks/how-kepler-built-verifiable-ai-for-financial-services.md), [7:26](https://www.youtube.com/watch?v=Tt2kX2sgQio&t=446s)
 
 Supporting talks: [Thinner Agents on a Smarter Substrate: The Ontology-based Semantic Layer](../talks/thinner-agents-on-a-smarter-substrate-the-ontology-based-semantic-layer.md), [How Kepler Built Verifiable AI for Financial Services](../talks/how-kepler-built-verifiable-ai-for-financial-services.md), [How Forward Deployed Engineering is done at Kepler](../talks/how-forward-deployed-engineering-is-done-at-kepler.md), [Why Agentic Systems Need Ontologies](../talks/why-agentic-systems-need-ontologies.md)
 
-### The ontology/graph is a control and guardrail layer that constrains what an agent may do or conclude, not merely a lookup or retrieval layer.
+### The ontology should function as a runtime control and validation plane that constrains what the agent may do, not merely as a lookup/retrieval schema.
 
 Support: **4** talk(s)
 
@@ -54,86 +54,77 @@ Support: **4** talk(s)
 
 Supporting talks: [Why We Killed Our Multi-Agent Pipeline](../talks/why-we-killed-our-multi-agent-pipeline.md), [Why Agentic Systems Need Ontologies](../talks/why-agentic-systems-need-ontologies.md), [Thinner Agents on a Smarter Substrate: The Ontology-based Semantic Layer](../talks/thinner-agents-on-a-smarter-substrate-the-ontology-based-semantic-layer.md), [How Kepler Built Verifiable AI for Financial Services](../talks/how-kepler-built-verifiable-ai-for-financial-services.md)
 
-### Prompt text, markdown files, and larger context windows are not substitutes for a structured schema; constraints that are trivial to state formally are unreliable to enforce in natural language.
+### Prompt text, markdown files, and a bigger context window are not substitutes for an explicit schema — constraints that are trivial to state structurally are unreliable to enforce in English.
 
 Support: **4** talk(s)
 
-> "A second refund on the same order is a is is a problem. But ontologies could catch it, whereas it's it's very tricky to do that in in English."
+> "we've seen a ton of team that tried to solve this problem using just Markdown files. And the summary is it is part of the solution, but it is not the solution."
 >
-> — [Why Agentic Systems Need Ontologies](../talks/why-agentic-systems-need-ontologies.md), [18:58](https://www.youtube.com/watch?v=Sir59K8ZDPU&t=1138s)
+> — [Thinner Agents on a Smarter Substrate: The Ontology-based Semantic Layer](../talks/thinner-agents-on-a-smarter-substrate-the-ontology-based-semantic-layer.md), [3:31](https://www.youtube.com/watch?v=VGN22pPpb-8&t=211s)
 
-Supporting talks: [Why Agentic Systems Need Ontologies](../talks/why-agentic-systems-need-ontologies.md), [Thinner Agents on a Smarter Substrate: The Ontology-based Semantic Layer](../talks/thinner-agents-on-a-smarter-substrate-the-ontology-based-semantic-layer.md), [From Systems of Record to Systems of Context](../talks/from-systems-of-record-to-systems-of-context.md), [A Practitioner's Guide to Graphs](../talks/a-practitioners-guide-to-graphs.md)
-
-### Deterministic work — computation, signal detection, validation, precomputed context — belongs outside the probabilistic model, with the schema layer serving as that deterministic substrate.
-
-Support: **4** talk(s)
-
-> "any complex workflows will have deterministic parts and agentic parts. Don't let agents actually run the deterministic part, right?"
->
-> — [Why We Killed Our Multi-Agent Pipeline](../talks/why-we-killed-our-multi-agent-pipeline.md), [13:51](https://www.youtube.com/watch?v=u6jJcIFDLE4&t=831s)
-
-Supporting talks: [Why We Killed Our Multi-Agent Pipeline](../talks/why-we-killed-our-multi-agent-pipeline.md), [How Kepler Built Verifiable AI for Financial Services](../talks/how-kepler-built-verifiable-ai-for-financial-services.md), [Why Agentic Systems Need Ontologies](../talks/why-agentic-systems-need-ontologies.md), [From Systems of Record to Systems of Context](../talks/from-systems-of-record-to-systems-of-context.md)
+Supporting talks: [Thinner Agents on a Smarter Substrate: The Ontology-based Semantic Layer](../talks/thinner-agents-on-a-smarter-substrate-the-ontology-based-semantic-layer.md), [From Systems of Record to Systems of Context](../talks/from-systems-of-record-to-systems-of-context.md), [Why Agentic Systems Need Ontologies](../talks/why-agentic-systems-need-ontologies.md), [A Practitioner's Guide to Graphs](../talks/a-practitioners-guide-to-graphs.md)
 
 ## Disagreements
 
-### Should an enterprise converge on one canonical ontology, or should the layer accommodate each team's divergent vocabulary?
+### How formal does an agent-facing ontology need to be?
 
 | Position A | Position B |
 |---|---|
-| Build a single business-facing ontology expressed in language every human in the organization understands, and make it the shared substrate all agents resolve against — a formal specification of one shared conceptualization.<br>*[Thinner Agents on a Smarter Substrate: The Ontology-based Semantic Layer](../talks/thinner-agents-on-a-smarter-substrate-the-ontology-based-semantic-layer.md), [Why Agentic Systems Need Ontologies](../talks/why-agentic-systems-need-ontologies.md)* | Terminology divergence across sales, ops, finance, and engineering ("customers" / "clients" / "billing entities" / "org IDs") is how humans actually work and should not be eliminated by forcing one schema; the platform's leverage comes from becoming the linguistic foundation others map into, not from flattening vocabulary.<br>*[How Forward Deployed Engineering is done at Kepler](../talks/how-forward-deployed-engineering-is-done-at-kepler.md)* |
+| Use real description logic: OWL classes with domains and ranges, a reasoner that infers facts (Bob teaches Scooter ⇒ Bob is a teacher), and semantic validation of every agent result before it hits the ledger — Pydantic at the door, ontology at the ledger.<br>*[Why Agentic Systems Need Ontologies](../talks/why-agentic-systems-need-ontologies.md)* | Keep it deliberately thin. The core concepts are simple and people add unnecessary complexity; in practice a node/edge type list with naming and unit conventions, or even a flat reference folder of allowed tags, is enough to get the benefit.<br>*[Thinner Agents on a Smarter Substrate: The Ontology-based Semantic Layer](../talks/thinner-agents-on-a-smarter-substrate-the-ontology-based-semantic-layer.md), [A Practitioner's Guide to Graphs](../talks/a-practitioners-guide-to-graphs.md), [LLM Knowledge Bases: a practical guide](../talks/llm-knowledge-bases-a-practical-guide.md)* |
 
-*Why it matters: It decides whether the ontology project is a one-time normalization effort or an ongoing mapping-and-aliasing problem, and whether disagreement about names is a defect to fix or a permanent input to model.*
+*Why it matters: Formal logic buys you enforceable invariants (no duplicate refund, no payout to the wrong entity type) but requires an ontology engineer and a reasoner in the write path; a thin schema ships in a week but pushes constraint enforcement back into prompts and code where speakers agree it is unreliable.*
 
-### Should teams adopt existing public ontologies or author a bespoke domain schema?
-
-| Position A | Position B |
-|---|---|
-| Reuse the taxonomies people have refined for 15–20 years — schema.org, FOAF, Dublin Core, DBpedia — instead of reinventing the wheel, and get OWL inference for free.<br>*[Why Agentic Systems Need Ontologies](../talks/why-agentic-systems-need-ontologies.md)* | The value is in the domain-specific schema: a custom extraction ontology with naming and unit standardization instructions, a business ontology mapped to your own data-source metadata, or a KG of your own metrics and entities that defines the agent's hypothesis space.<br>*[A Practitioner's Guide to Graphs](../talks/a-practitioners-guide-to-graphs.md), [Thinner Agents on a Smarter Substrate: The Ontology-based Semantic Layer](../talks/thinner-agents-on-a-smarter-substrate-the-ontology-based-semantic-layer.md), [Why We Killed Our Multi-Agent Pipeline](../talks/why-we-killed-our-multi-agent-pipeline.md)* |
-
-*Why it matters: Starting from a public vocabulary buys standard reasoners and interoperability but rarely covers the firm-specific rules that verification actually depends on; starting bespoke means writing and maintaining every constraint yourself.*
-
-### Should the mapping between vocabulary and data be hand-curated or learned from signals?
+### Should teams adopt existing public ontologies or author a bespoke one per organization?
 
 | Position A | Position B |
 |---|---|
-| Learn it: embedding-based entity matching beats hand-curated mapping because you cannot know all entities in advance, source trustworthiness should be scored bottom-up from execution traces, and per-user structure should be computed offline from thousands of behavioral data points.<br>*[A Practitioner's Guide to Graphs](../talks/a-practitioners-guide-to-graphs.md), [Thinner Agents on a Smarter Substrate: The Ontology-based Semantic Layer](../talks/thinner-agents-on-a-smarter-substrate-the-ontology-based-semantic-layer.md), [From Systems of Record to Systems of Context](../talks/from-systems-of-record-to-systems-of-context.md)* | Author it formally: OWL classes, domain/range, and cardinality constraints checked by a deterministic reasoner, or explicit graph edges enumerating the hypotheses an agent is permitted to evaluate — anything probabilistic in the validation path defeats the purpose.<br>*[Why Agentic Systems Need Ontologies](../talks/why-agentic-systems-need-ontologies.md), [Why We Killed Our Multi-Agent Pipeline](../talks/why-we-killed-our-multi-agent-pipeline.md), [How Kepler Built Verifiable AI for Financial Services](../talks/how-kepler-built-verifiable-ai-for-financial-services.md)* |
+| Reuse what already exists — schema.org, FOAF, Dublin Core, DBpedia represent 15–20 years of work and there is no reason to reinvent the wheel.<br>*[Why Agentic Systems Need Ontologies](../talks/why-agentic-systems-need-ontologies.md)* | The value is precisely in the organization's own divergent vocabulary. Sales says customers, ops says clients, finance says billing entities, devs say org IDs — that divergence is how humans work, and verification means conforming to the firm's definitions, not to a shared standard.<br>*[How Forward Deployed Engineering is done at Kepler](../talks/how-forward-deployed-engineering-is-done-at-kepler.md), [How Kepler Built Verifiable AI for Financial Services](../talks/how-kepler-built-verifiable-ai-for-financial-services.md), [Thinner Agents on a Smarter Substrate: The Ontology-based Semantic Layer](../talks/thinner-agents-on-a-smarter-substrate-the-ontology-based-semantic-layer.md)* |
 
-*Why it matters: Learned mappings scale to open-world data but reintroduce probability into the layer that was supposed to constrain the model; hand-authored ones are auditable and repeatable but cap the domain at what someone wrote down.*
+*Why it matters: Standard vocabularies make cross-org data interoperable and cut authoring cost to near zero; bespoke ones are the thing that makes agent output auditable inside a firm and, per the FDE argument, become commercial lock-in once the enterprise adopts your language.*
+
+### Should entity canonicalization run off a curated closed vocabulary or learned embedding matching?
+
+| Position A | Position B |
+|---|---|
+| Hand-curated mapping is a trap because it is applied retrospectively and requires knowing every entity ahead of time; embedding-based matching after extraction handles the open world and is where graph and AI techniques hybridize best.<br>*[A Practitioner's Guide to Graphs](../talks/a-practitioners-guide-to-graphs.md)* | Pin the vocabulary. Give the agent a fixed reference list of tags and instruct it to be reluctant to add new ones, or let the graph itself enumerate the only entities and paths the agent is permitted to touch.<br>*[LLM Knowledge Bases: a practical guide](../talks/llm-knowledge-bases-a-practical-guide.md), [Why We Killed Our Multi-Agent Pipeline](../talks/why-we-killed-our-multi-agent-pipeline.md)* |
+
+*Why it matters: A closed vocabulary is auditable and prevents drift but silently drops anything the curator did not anticipate; embedding matching absorbs new entities but reintroduces a probabilistic step into the layer whose whole purpose was determinism.*
 
 ## Practical Guidance
 
 **Do:**
 
-- Give the extraction model a domain schema plus explicit naming and unit standardization instructions — the instructions matter as much to output quality as the schema itself.
-- Follow extraction with a separate entity-matching step (embedding-based) rather than trusting prompt-level standardization to deduplicate entities.
-- Structure the semantic layer as three pillars: a business-facing ontology, a technical ontology of all data-source metadata, and runtime execution traces — plus an explicit mapping between the first two.
-- Score data sources both top-down by human curation and bottom-up by what execution traces show actually worked, so source selection improves across agents over time.
-- Validate LLM output against ontology constraints before any database write: Pydantic at the door for types, ontology at the ledger for semantics, and keep agents side-effect-free until validation passes.
-- Encode constraints that natural language can't reliably enforce — duplicate refunds, payouts to the wrong entity type, invalid status values — as OWL properties.
-- Treat each graph edge as one hypothesis the agent is allowed to evaluate, and forbid investigation outside that boundary.
-- Precompute contextual structure offline on a schedule rather than assembling it at query time; split it into a slow engine that learns durable patterns and a fast engine that recomputes live signals over recent activity.
-- Let the model decide what to compute and route the arithmetic to code — it is both more correct and cheaper than running 1+1 through a multi-billion-parameter model.
-- Isolate data sources behind a serve-time verification layer that falls back to last-verified context, so a bad feed degrades the system instead of breaking it.
+- Hand the extractor a domain schema plus explicit ontology instructions for naming and unit standardization — the instructions matter as much to extraction quality as the type list does.
+- Add a separate post-extraction matching step to canonicalize entities; do not rely on the prompt to standardize them.
+- Split the semantic layer into three pillars — a business-facing ontology in end-user language, a technical ontology of data-source metadata, and runtime execution traces — plus an explicit mapping between the first two.
+- Name business entities the way people speak: a customer with a first name, not `if_name`.
+- Score data-source trustworthiness both top-down by human curation and bottom-up from execution traces of what actually worked, then weight future source selection by context.
+- Treat every edge in the graph as a hypothesis the agent is allowed to evaluate, and forbid it from going outside that set.
+- Keep agents side-effect-free: validate the result against the ontology before any database write. Pydantic at the door, ontology at the ledger.
+- Express invariants like 'no second refund on the same order' as ontology properties rather than natural-language instructions.
+- Pull deterministic work out of the agentic system entirely — statistical signal detection before the agent wakes, arithmetic routed to code, so the agent decides what to compute and never computes it.
+- Maintain a fixed reference list of tags/types and instruct the agent to be reluctant to add new ones, since models will invent new ones on every pass.
+- Write an enrichment timestamp into each record so repeat agent passes only touch what has not been processed.
 
 **Avoid:**
 
-- Free-form subject-predicate-object triple extraction with no schema — the resulting graph is not usable.
-- Letting the agent infer entity and KPI relationships by reading raw tables at runtime; it does not scale and invents relationships absent from the data.
-- Treating markdown files, skills, or a bigger prompt as the schema — they are part of the solution, not the solution, and cross-agent learning is lost when the wiring lives in code and prompts.
-- Reaching for GraphRAG or a graph database expecting an instant payoff; a startup with one application on one Postgres does not need this architecture.
-- Using multiple probabilistic models to check each other's work as a stand-in for deterministic validation.
-- Treating evals or citations as verification — a citation is an after-the-fact audit, and 94% extraction accuracy still means a wrong number 6% of the time.
-- Copying a human analyst's workflow steps into your agent topology; splitting the work that way loses context at every handoff and leaves no agent owning the end-to-end picture.
-- Distributing judgment across sub-agents — delegate investigation and return results, never reasoning or conclusions.
-- Assuming the schema you build retrospectively will hold; naive retrospective mapping requires knowing all entities ahead of time.
+- Free-form subject-predicate-object triple extraction with no schema — the resulting graph will not get you very far.
+- Letting an agent infer entity and KPI relationships by staring at raw tables.
+- Hand-curated entity mapping applied retrospectively, which only works if you already know every entity in the data.
+- Assuming more memory or a longer context window substitutes for a structured model — the most capable frontier model still does not understand your domain or your user.
+- Markdown files alone as the enterprise semantic layer; you cannot vibe code your way to data access across a hundred databases.
+- Forcing every team onto a single vocabulary — terminology divergence across sales, ops, finance, and engineering is a feature of how humans work, not a bug.
+- Building this architecture at a startup with one application on one Postgres database, where the problem does not exist.
+- Treating evals or a panel of probabilistic models checking each other as verification; neither turns a non-deterministic system into a deterministic one.
+- Wiring business-intent-to-data-source logic into each agent's code and prompts, which violates DRY and means no agent is smarter tomorrow and there is no cross-agent learning.
 
 ## Notable Outliers
 
-- Hallucination is a feature of LLMs rather than a defect, and the fix is neuro-symbolic guardrails — agentic AI is a return to 1980s expert systems, which failed only because they could not scale. ([Why Agentic Systems Need Ontologies](../talks/why-agentic-systems-need-ontologies.md), [4:04](https://www.youtube.com/watch?v=Sir59K8ZDPU&t=244s))
-- Controlling the enterprise's vocabulary through your platform's ontology is the lock-in mechanism: users don't just adopt your product, they adopt your language, and if you become the linguistic foundation you are locked in. ([How Forward Deployed Engineering is done at Kepler](../talks/how-forward-deployed-engineering-is-done-at-kepler.md), [15:20](https://www.youtube.com/watch?v=1OMHGsUZiqA&t=920s))
-- Verification is not ground truth — in finance two desks can be long and short off identical data, so the ontology's job is verifying output respects one organization's nouns, verbs, and rules. ([How Kepler Built Verifiable AI for Financial Services](../talks/how-kepler-built-verifiable-ai-for-financial-services.md), [6:44](https://www.youtube.com/watch?v=Tt2kX2sgQio&t=404s))
-- Schema-driven subgraph retrieval cut tool calls for code search by 40% on a .NET codebase, surfacing intermediate nodes that neither vector search nor symbol/reference lookup could reach. ([A Practitioner's Guide to Graphs](../talks/a-practitioners-guide-to-graphs.md), [10:28](https://www.youtube.com/watch?v=3ySF0I5iE_0&t=628s))
-- Atomic provenance: the model writes a reference to a number and can never write or manipulate the number itself — it doesn't even understand what the number is. ([How Kepler Built Verifiable AI for Financial Services](../talks/how-kepler-built-verifiable-ai-for-financial-services.md), [10:11](https://www.youtube.com/watch?v=Tt2kX2sgQio&t=611s))
+- Whoever controls the enterprise's vocabulary through their platform's ontology becomes the linguistic foundation and is therefore locked in — ontology design as a commercial moat, not just a modeling exercise. ([How Forward Deployed Engineering is done at Kepler](../talks/how-forward-deployed-engineering-is-done-at-kepler.md), [15:20](https://www.youtube.com/watch?v=1OMHGsUZiqA&t=920s))
+- Hallucination is not a defect to be engineered away — it is the feature of LLMs, and the correct response is a formal ontology acting as guardrails around it rather than trying to make the model deterministic. ([Why Agentic Systems Need Ontologies](../talks/why-agentic-systems-need-ontologies.md), [4:04](https://www.youtube.com/watch?v=Sir59K8ZDPU&t=244s))
+- Schema-guided shortest-path subgraph retrieval cut tool calls for code search by 40% on a .NET codebase, surfacing intermediate nodes that neither vector search nor symbol/reference lookup could reach. ([A Practitioner's Guide to Graphs](../talks/a-practitioners-guide-to-graphs.md), [10:28](https://www.youtube.com/watch?v=3ySF0I5iE_0&t=628s))
+- Agentic AI is a return to 1980s symbolic AI and expert systems, with loops being the addition that makes the stack Turing complete. ([Why Agentic Systems Need Ontologies](../talks/why-agentic-systems-need-ontologies.md), [13:37](https://www.youtube.com/watch?v=Sir59K8ZDPU&t=817s))
+- Contextual understanding of a user cannot be assembled at query time at all — it must be precomputed offline by two engines on different time windows, mirroring complementary learning systems in neuroscience and lambda architecture in data infrastructure. ([From Systems of Record to Systems of Context](../talks/from-systems-of-record-to-systems-of-context.md), [10:29](https://www.youtube.com/watch?v=Btk8wDUVs74&t=629s))
 
 ## All Talks
 
@@ -142,6 +133,7 @@ Supporting talks: [Why We Killed Our Multi-Agent Pipeline](../talks/why-we-kille
 - [From Systems of Record to Systems of Context](../talks/from-systems-of-record-to-systems-of-context.md)
 - [How Forward Deployed Engineering is done at Kepler](../talks/how-forward-deployed-engineering-is-done-at-kepler.md)
 - [How Kepler Built Verifiable AI for Financial Services](../talks/how-kepler-built-verifiable-ai-for-financial-services.md)
+- [LLM Knowledge Bases: a practical guide](../talks/llm-knowledge-bases-a-practical-guide.md)
 - [The Dirty Secret of Forward Deployed Engineering](../talks/the-dirty-secret-of-forward-deployed-engineering.md)
 - [Thinner Agents on a Smarter Substrate: The Ontology-based Semantic Layer](../talks/thinner-agents-on-a-smarter-substrate-the-ontology-based-semantic-layer.md)
 - [Why Agentic Systems Need Ontologies](../talks/why-agentic-systems-need-ontologies.md)
@@ -150,6 +142,7 @@ Supporting talks: [Why We Killed Our Multi-Agent Pipeline](../talks/why-we-kille
 ## Speakers
 
 - [Abhilash Asokan](../speakers/abhilash-asokan.md)
+- [Ben Holmes](../speakers/ben-holmes.md)
 - [Emil Eifrem](../speakers/emil-eifrem.md)
 - [Frank Coyle](../speakers/frank-coyle.md)
 - [Joseph Wang](../speakers/joseph-wang.md)

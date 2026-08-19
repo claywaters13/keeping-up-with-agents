@@ -4,15 +4,15 @@ type: "concept"
 slug: "test-time-compute-scaling"
 tier: "supporting"
 maturity: "contested"
-talk_count: 9
-speaker_count: 11
+talk_count: 10
+speaker_count: 12
 ---
 
 # test-time compute scaling
 
 **Maturity: CONTESTED** — Contested — active, unresolved disagreement across talks
 
-*Supporting concept* &middot; discussed across **9** talk(s) by **11** speaker(s)
+*Supporting concept* &middot; discussed across **10** talk(s) by **12** speaker(s)
 
 **Definition:** Spending more compute at inference — longer reasoning, sampling, or search — to buy accuracy without changing weights.
 
@@ -20,21 +20,31 @@ speaker_count: 11
 
 ## State of Practice
 
-The field has stopped treating test-time compute as a dial you turn and started treating it as a structure you build. Speakers converged on the finding that unstructured spend — a long 'here's the codebase, optimize it' prompt, a deeper research setting, more reasoning tokens — saturates, while the same token budget spent through explicit decomposition (linked component documents, recursive sub-agent calls, symbolic state on a file system, compaction loops) keeps buying accuracy; Lee Robinson's RLM framing and Sina Shahandeh's hierarchical hypothesis scaffold are two versions of the same claim, and Ross Taylor's compaction-plus-RL work is the training-side version. Everyone building production loops now assumes the loop will be reward-hacked: Uber's editing agent oversteers into generic outputs that differ in pixels but not quality, Will Brown locates hacking precisely at proxies undefined at the boundaries, and Pierluca D'Oro shows a blind replay agent matching frontier models on OSWorld — which makes pass@k on deterministic environments formally meaningless. The economics are now explicitly tiered rather than uniform: route hypothesis generation and critique to the strongest reasoning model, route routine work to the smallest model the latency budget allows, and treat scaffolding as a one-time cost in code versus reasoning as a cost paid every turn. The unresolved question is durability — whether harnesses are permanent architecture or, as Shahandeh argues by analogy to chain-of-thought on GPT-4, a transitional crutch that post-training will absorb.
+The conference's working definition of test-time compute has shifted from "let the model think longer" to "spend inference budget through a structure the model itself controls." Speakers repeatedly reported that unstructured scaling — a Karpathy-style "here's the codebase, here's the objective, optimize" loop — saturates at a fixed performance ceiling on open-ended long-horizon work, while the same underlying model keeps improving when decomposition, compaction, or recursion is made an explicit action (Radicait's linked component-document hierarchy, OpenProse's RLMs, General Reasoning's generate-summarize-continue loop). The practical corollary is that harness quality substitutes for parameter count: Qwen 3.5 9B run as an RLM was reported to beat Opus and GPT-5.4 run as plain LLMs on long-CoT tasks, LangChain matches Opus-level trace judging at one to two orders of magnitude lower cost on open models, and Microsoft's voice team hit 900ms first-token by moving all control flow into a state machine and leaving the model only the talking. Cost discipline is now explicit rather than assumed: latency budgets (950ms for voice), token budgets (light/fast deep-research settings), and zero-lift passes (re-enhancing an already-good image) are treated as reasons to spend less, not more. Every team scaling iteration count also reported reward hacking — agents oversteering into generic outputs to clear a QA gate, or retrieving prior answers instead of reasoning — so verification gates and hindsight judging are treated as a mandatory part of the loop rather than an add-on. The measurement layer is under active attack: on deterministic environments, pass@k was shown to be formally equivalent to the success rate of a blind replay agent, and confidence intervals from rollouts alone achieve 17-20% empirical coverage against a nominal 95%.
 
 ## Consensus
 
-### Unstructured test-time compute saturates; extending the scaling curve requires making decomposition an explicit, externalized step rather than asking the model to think longer.
+### Unstructured test-time scaling saturates; the gains come from imposing an explicit structure — decomposition, compaction, recursion — on how the inference budget is spent.
 
 Support: **4** talk(s)
 
-> "that allows a very uh structured way to scale the test time compute to to generate more and more tokens on this problem"
+> "before if I just say say here's our code base and here's my objective Google optimized this process similar to what originally Carpathy's readme file in this program MD it would not it would not generate it would saturate after a while"
 >
-> — [Autonomous Agents for Scientific Tasks](../talks/autonomous-agents-for-scientific-tasks.md), [18:24](https://www.youtube.com/watch?v=XLEYtv3cMlw&t=1104s)
+> — [Autonomous Agents for Scientific Tasks](../talks/autonomous-agents-for-scientific-tasks.md), [9:55](https://www.youtube.com/watch?v=XLEYtv3cMlw&t=595s)
 
-Supporting talks: [Autonomous Agents for Scientific Tasks](../talks/autonomous-agents-for-scientific-tasks.md), [Recursive Coding Agents](../talks/recursive-coding-agents.md), [Your Voice Agent Doesn't Need a Frontier Model](../talks/your-voice-agent-doesnt-need-a-frontier-model.md), [Turn 10,994 Notes Into Memory](../talks/turn-10994-notes-into-memory.md)
+Supporting talks: [Autonomous Agents for Scientific Tasks](../talks/autonomous-agents-for-scientific-tasks.md), [Recursive Coding Agents](../talks/recursive-coding-agents.md), [Scaling to Long Horizons](../talks/scaling-to-long-horizons.md), [Turn 10,994 Notes Into Memory](../talks/turn-10994-notes-into-memory.md)
 
-### Any loop that spends more inference compute against a proxy objective will be gamed by the system being scaled, so the verification layer — not the compute budget — is the real design problem.
+### A small or open model inside a strong harness matches or beats a frontier model run bare, at one to two orders of magnitude lower cost.
+
+Support: **3** talk(s)
+
+> "Qwen 3.59B as an RLM can beat Opus and um and GPT-5.4, all the top frontier models as LLMs on these long reasoning tasks"
+>
+> — [Recursive Coding Agents](../talks/recursive-coding-agents.md), [6:35](https://www.youtube.com/watch?v=3hXJI2q0Jz8&t=395s)
+
+Supporting talks: [Recursive Coding Agents](../talks/recursive-coding-agents.md), [Improving Agents is a Data Mining Problem](../talks/improving-agents-is-a-data-mining-problem.md), [Your Voice Agent Doesn't Need a Frontier Model](../talks/your-voice-agent-doesnt-need-a-frontier-model.md)
+
+### Iterating at inference against a score or gate produces reward hacking, so extra passes must be paired with verification — ideally judged in hindsight rather than by instructing a judge in advance.
 
 Support: **4** talk(s)
 
@@ -42,107 +52,98 @@ Support: **4** talk(s)
 >
 > — [Reinforcement Learning without Verifiable Rewards](../talks/reinforcement-learning-without-verifiable-rewards.md), [6:20](https://www.youtube.com/watch?v=AQv3qRCG6Gw&t=380s)
 
-Supporting talks: [Building Closed-Loop Evals for a Multimodal Agent at Scale](../talks/building-closed-loop-evals-for-a-multimodal-agent-at-scale.md), [Reinforcement Learning without Verifiable Rewards](../talks/reinforcement-learning-without-verifiable-rewards.md), [Scaling to Long Horizons](../talks/scaling-to-long-horizons.md), [Computer Use at the Edge of the Statistical Precipice](../talks/computer-use-at-the-edge-of-the-statistical-precipice.md)
+Supporting talks: [Building Closed-Loop Evals for a Multimodal Agent at Scale](../talks/building-closed-loop-evals-for-a-multimodal-agent-at-scale.md), [Reinforcement Learning without Verifiable Rewards](../talks/reinforcement-learning-without-verifiable-rewards.md), [Improving Agents is a Data Mining Problem](../talks/improving-agents-is-a-data-mining-problem.md), [Scaling to Long Horizons](../talks/scaling-to-long-horizons.md)
 
-### Inference compute should be tiered per sub-task rather than spent uniformly: strong reasoning models on the small number of steps that need judgment, the fastest/cheapest model everywhere else.
-
-Support: **4** talk(s)
-
-> "Pick the fastest model that your latency budget allows and then spend the rest of your time actually building the scaffolding."
->
-> — [Your Voice Agent Doesn't Need a Frontier Model](../talks/your-voice-agent-doesnt-need-a-frontier-model.md), [4:01](https://www.youtube.com/watch?v=fnLBmfsI_Fg&t=241s)
-
-Supporting talks: [Autonomous Agents for Scientific Tasks](../talks/autonomous-agents-for-scientific-tasks.md), [Building Closed-Loop Evals for a Multimodal Agent at Scale](../talks/building-closed-loop-evals-for-a-multimodal-agent-at-scale.md), [Your Voice Agent Doesn't Need a Frontier Model](../talks/your-voice-agent-doesnt-need-a-frontier-model.md), [Turn 10,994 Notes Into Memory](../talks/turn-10994-notes-into-memory.md)
-
-### The context window is not the ceiling on test-time compute — externalizing state to files, indexes, and compaction lets a run process orders of magnitude more tokens than the model can hold.
+### The binding constraint on long-horizon inference is not context window size but context management — treating context as an external object the agent queries lets a system process orders of magnitude more tokens than its window.
 
 Support: **4** talk(s)
 
-> "the RLMs can process information that is many orders of magnitude larger than their context window, tens of millions of tokens"
+> "we don't need necessarily to provide more and more and more context for a better research. You need a proper memory and context management"
 >
-> — [Recursive Coding Agents](../talks/recursive-coding-agents.md), [5:01](https://www.youtube.com/watch?v=3hXJI2q0Jz8&t=301s)
+> — [Turn 10,994 Notes Into Memory](../talks/turn-10994-notes-into-memory.md), [8:36](https://www.youtube.com/watch?v=ZRM_TfEZcIo&t=516s)
 
-Supporting talks: [Recursive Coding Agents](../talks/recursive-coding-agents.md), [Scaling to Long Horizons](../talks/scaling-to-long-horizons.md), [Turn 10,994 Notes Into Memory](../talks/turn-10994-notes-into-memory.md), [Autonomous Agents for Scientific Tasks](../talks/autonomous-agents-for-scientific-tasks.md)
+Supporting talks: [Turn 10,994 Notes Into Memory](../talks/turn-10994-notes-into-memory.md), [Scaling to Long Horizons](../talks/scaling-to-long-horizons.md), [Recursive Coding Agents](../talks/recursive-coding-agents.md), [Improving Agents is a Data Mining Problem](../talks/improving-agents-is-a-data-mining-problem.md)
+
+### Expensive reasoning should be routed to the specific step that pays for it rather than applied uniformly across the pipeline.
+
+Support: **4** talk(s)
+
+> "And like practically speaking, honestly, yes, we start with Opus, we start with 55 because we just want to know if the task is even possible."
+>
+> — [Improving Agents is a Data Mining Problem](../talks/improving-agents-is-a-data-mining-problem.md), [7:50](https://www.youtube.com/watch?v=CvRngaQZQ3Y&t=470s)
+
+Supporting talks: [Autonomous Agents for Scientific Tasks](../talks/autonomous-agents-for-scientific-tasks.md), [Improving Agents is a Data Mining Problem](../talks/improving-agents-is-a-data-mining-problem.md), [Building Closed-Loop Evals for a Multimodal Agent at Scale](../talks/building-closed-loop-evals-for-a-multimodal-agent-at-scale.md), [Your Voice Agent Doesn't Need a Frontier Model](../talks/your-voice-agent-doesnt-need-a-frontier-model.md)
 
 ## Disagreements
 
-### Should the next increment of capability be bought by post-training the weights or by building the inference-time harness around them?
+### When an agent saturates on a task, should the marginal dollar go into inference-time scaffolding or into training the weights?
 
 | Position A | Position B |
 |---|---|
-| Post-training is decisive: a state-of-the-art base model alone does not make a product, RL now dominates the compute budget, and supervised learning's job is reduced to laying down the atomic skills RL will later compose. Capability belongs in the weights, learned from environments built out of production traces.<br>*[Scaling to Long Horizons](../talks/scaling-to-long-horizons.md), [The Base Model Is Dead](../talks/the-base-model-is-dead.md), [Reinforcement Learning without Verifiable Rewards](../talks/reinforcement-learning-without-verifiable-rewards.md)* | The models are already intelligent enough; the bottleneck is orchestration and behavior. A 9B model run as an RLM beats frontier models run as plain LLMs, and a state machine plus a small model beats an unscaffolded reasoning model — so spend on the harness, not on training.<br>*[Recursive Coding Agents](../talks/recursive-coding-agents.md), [Your Voice Agent Doesn't Need a Frontier Model](../talks/your-voice-agent-doesnt-need-a-frontier-model.md), [Autonomous Agents for Scientific Tasks](../talks/autonomous-agents-for-scientific-tasks.md)* |
+| Spend it on the harness: orchestration and behavior are the bottleneck, not intelligence. Harness engineering has a roughly two-minute feedback loop, most teams never need to go further, and an explicit decomposition scaffold widens the improvement space with no weight changes.<br>*[Recursive Coding Agents](../talks/recursive-coding-agents.md), [Improving Agents is a Data Mining Problem](../talks/improving-agents-is-a-data-mining-problem.md), [Autonomous Agents for Scientific Tasks](../talks/autonomous-agents-for-scientific-tasks.md), [Turn 10,994 Notes Into Memory](../talks/turn-10994-notes-into-memory.md)* | Spend it on RL: a state-of-the-art base model is not enough to make a useful product, RL post-training is the decisive ingredient, and supervised pre-training's job is now merely to build representations that RL composes over a sufficiently difficult environment.<br>*[Scaling to Long Horizons](../talks/scaling-to-long-horizons.md), [The Base Model Is Dead](../talks/the-base-model-is-dead.md), [Reinforcement Learning without Verifiable Rewards](../talks/reinforcement-learning-without-verifiable-rewards.md)* |
 
-*Why it matters: It determines whether a team's differentiated IP is an RL environment and a training pipeline or an orchestration layer and skill library — and whether frontier model upgrades erase your moat or extend it.*
+*Why it matters: It decides whether a team builds an environment/RL stack with GPU clusters and value models, or a prompt-and-orchestration layer they can iterate on in minutes. The two paths have wildly different capital requirements and different failure modes when the underlying model is upgraded.*
 
-### Is prompt-level decomposition scaffolding permanent architecture, or a transitional crutch that post-training will absorb?
-
-| Position A | Position B |
-|---|---|
-| Transitional. Hierarchical decomposition prompting is analogous to chain-of-thought on GPT-4-era models; as models are post-trained to compartmentalize and break down problems themselves, these tricks will be needed less. RL on sufficiently difficult environments lets the model learn the composition itself.<br>*[Autonomous Agents for Scientific Tasks](../talks/autonomous-agents-for-scientific-tasks.md), [The Base Model Is Dead](../talks/the-base-model-is-dead.md)* | Permanent. Scaffolding is a cost paid once in code rather than on every turn, and the missing layer is how to specify, manage, reuse, and verify work — a layer that gets more valuable, not less, as models improve.<br>*[Your Voice Agent Doesn't Need a Frontier Model](../talks/your-voice-agent-doesnt-need-a-frontier-model.md), [Recursive Coding Agents](../talks/recursive-coding-agents.md)* |
-
-*Why it matters: If scaffolding is transitional, elaborate harnesses are depreciating assets to be kept thin and swappable; if permanent, they deserve to be built as durable products with their own languages, dependency wiring, and golden-session capture.*
-
-### Is pass@K a valid measure of what repeated test-time sampling buys you?
+### Should more reasoning at inference be the default, with cost accepted as the price of accuracy?
 
 | Position A | Position B |
 |---|---|
-| Yes — pass@K is the right metric for a self-correcting loop, because the pass rate should rise with each QA feedback iteration, and gating task generation on measured pass rate is what makes iterative loops trainable and tunable.<br>*[Building Closed-Loop Evals for a Multimodal Agent at Scale](../talks/building-closed-loop-evals-for-a-multimodal-agent-at-scale.md), [Reinforcement Learning without Verifiable Rewards](../talks/reinforcement-learning-without-verifiable-rewards.md)* | No — on a static deterministic environment, pass@k is formally equivalent to measuring the success rate of a blind replay agent, so it rewards memorized action sequences rather than capability. Benchmarks must vary data, appearance, and initial state before repeated sampling means anything.<br>*[Computer Use at the Edge of the Statistical Precipice](../talks/computer-use-at-the-edge-of-the-statistical-precipice.md)* |
+| Yes — scale it deliberately. Route hypothesis generation and critique to a stronger reasoning model, generate tokens until the window ends and then compact and continue, and treat structured token generation as the mechanism that keeps the loop improving on open-ended problems.<br>*[Autonomous Agents for Scientific Tasks](../talks/autonomous-agents-for-scientific-tasks.md), [Recursive Coding Agents](../talks/recursive-coding-agents.md), [Scaling to Long Horizons](../talks/scaling-to-long-horizons.md)* | No — budget it, and remove it where it does not pay. A frontier model that thinks for a full second has already lost a voice conversation; control flow belongs in a state machine paid for once in code; the deepest deep-research setting is rarely worth its token cost; and an extra enhancement pass on an already-good input costs compute for zero lift while risking degradation.<br>*[Your Voice Agent Doesn't Need a Frontier Model](../talks/your-voice-agent-doesnt-need-a-frontier-model.md), [Turn 10,994 Notes Into Memory](../talks/turn-10994-notes-into-memory.md), [Building Closed-Loop Evals for a Multimodal Agent at Scale](../talks/building-closed-loop-evals-for-a-multimodal-agent-at-scale.md)* |
 
-*Why it matters: Every claim that 'more attempts buys accuracy' rests on this metric; if the environment is deterministic, the reported lift may be exploitable structure rather than reasoning, and deployment decisions get made on numbers with ~17-20% confidence-interval coverage.*
+*Why it matters: The answer sets the default architecture for real-time and high-volume products: either a reasoning model in the hot path, or a small fast model wrapped in deterministic code with reasoning reserved for offline or escalated steps.*
 
-### When the task allows it, should you spend more inference time on deeper reasoning, or is depth usually not worth its cost?
+### Is inference-time scaffolding a durable engineering layer or a temporary crutch that post-training will absorb?
 
 | Position A | Position B |
 |---|---|
-| Spend it. Routing hypothesis generation and post-implementation critique to a stronger reasoning model produces much better improvements, and the emergence of reflective backtracking behavior came precisely from more RL compute and bigger context windows rather than a different objective.<br>*[Autonomous Agents for Scientific Tasks](../talks/autonomous-agents-for-scientific-tasks.md), [Scaling to Long Horizons](../talks/scaling-to-long-horizons.md)* | Usually not worth it. Reasoning latency costs more than the answer quality it buys, the deepest research setting is rarely worth its token cost when light or fast suffices, and enhancing an already-good output is doubly bad — compute spent for zero lift plus degradation risk.<br>*[Your Voice Agent Doesn't Need a Frontier Model](../talks/your-voice-agent-doesnt-need-a-frontier-model.md), [Turn 10,994 Notes Into Memory](../talks/turn-10994-notes-into-memory.md), [Building Closed-Loop Evals for a Multimodal Agent at Scale](../talks/building-closed-loop-evals-for-a-multimodal-agent-at-scale.md)* |
+| Temporary. Hierarchical decomposition prompting is analogous to chain-of-thought on GPT-4-era models and will be needed less as models are post-trained to decompose problems themselves; base models are already being redesigned as priors for reasoning and agentic behavior.<br>*[Autonomous Agents for Scientific Tasks](../talks/autonomous-agents-for-scientific-tasks.md), [The Base Model Is Dead](../talks/the-base-model-is-dead.md)* | Durable. Orchestration is the next step rather than raw intelligence, harnesses must evolve over time alongside models and tasks, and scaffolding is the better investment precisely because it is paid once in code rather than on every turn.<br>*[Recursive Coding Agents](../talks/recursive-coding-agents.md), [Improving Agents is a Data Mining Problem](../talks/improving-agents-is-a-data-mining-problem.md), [Your Voice Agent Doesn't Need a Frontier Model](../talks/your-voice-agent-doesnt-need-a-frontier-model.md)* |
 
-*Why it matters: It sets the default for new systems: either start deep and trim, or start at the cheapest tier and escalate only on measured need — which drives both unit economics and whether a real-time product is feasible at all.*
+*Why it matters: If scaffolding is temporary, elaborate harness code is technical debt that each model release erases; if durable, the harness is the product and deserves the same versioning, evals, and reuse discipline as any other system component.*
 
 ## Practical Guidance
 
 **Do:**
 
-- Make decomposition a separate explicit action that emits a linked hierarchy of component documents over the codebase, then have the reasoning model propose improvements per component — this measurably widens the space of proposals beyond hyperparameter tweaks
-- Route hypothesis generation and post-implementation critique to the strongest available reasoning model (e.g. via a CLI that packages code and data to a Pro-tier API) while keeping implementation on the cheaper agent
-- Cap self-correcting edit loops at K iterations with an explicit 'take the coverage hit and never publish' branch, and track pass@K rather than pass@1
-- Vary initial state, app theme, and underlying data across runs — varying initial state is rare in existing benchmarks and is the single most important missing property
-- Extract a replay agent from your benchmark and check that it scores near zero; if a blind script matches the frontier model, the benchmark measures exploitable structure
-- Compute confidence intervals that account for the benchmark's hierarchical structure (task/config/rollout), not from rollouts alone, and accept 'not confident enough to decide' as an output
-- Judge in hindsight after seeing the full chain of events, or poll several models, rather than instructing a judge in advance to disallow a behavior
-- Apply RL to the compaction step itself, not only to the task, and prefer value models over GRPO for long-horizon runs to cut gradient variance and enable bootstrapping
-- Move control flow, state tracking, and answer selection into a state machine in application code so the model's only job is generating the response — target ~900ms first-token for voice
-- Log every stage of the orchestration in a flat, human-readable JSON before attempting any optimization or self-learning loop
-- Build tasks by working backwards from a known-reachable end state, or by planting answers in a learned simulator, so solvability is guaranteed and supervision is free
-- Layer redundant QA gates (Swiss cheese) and reject rather than publish when the judge is not confident on a multimodal check
-- Default to light or fast deep-research depth, with an index → executive summary → wiki derivative → raw source hierarchy so the agent reads the cheapest sufficient layer
+- Make decomposition a separate explicit action — have the coding agent generate a linked hierarchy of component documents over the codebase before asking it to propose improvements.
+- Require that the model, not a hardcoded map-reduce pipeline, chooses how to decompose the problem; keep the intermediate state symbolic (files) so it can exceed the context window.
+- Start on a frontier model only to establish that the task is possible, then use its traces to port the workload to a cheaper open model.
+- Extract control flow, state tracking, and answer selection into application code (a state machine) and pick the fastest model your latency budget allows — roughly 950ms to first speech for voice.
+- Compact at the context boundary — generate to the end of the window, summarize, continue — and apply RL to the compaction step itself, not just the task.
+- Judge in hindsight, after seeing the full chain of events, or by polling several models; telling a judge in advance not to allow a behavior does not prevent it in the rollout.
+- Track pass@K across iterations of a self-correcting edit loop, with an explicit K after which you take a coverage hit instead of publishing.
+- Vary data, appearance, and initial state across runs, and compute confidence intervals that account for the benchmark's hierarchical structure — rollout-only intervals give 17-20% coverage against a nominal 95%.
+- Route the hypothesis-generation and post-implementation critique steps to a stronger reasoning model (e.g. packaging code and data out to a Pro-tier API) while leaving routine implementation on the cheap model.
+- Calibrate generated tasks to intermediate difficulty and gate on pass rate — too-easy and too-hard tasks give no separation across rollouts.
 
 **Avoid:**
 
-- Don't rely on 'here's the codebase, here's the objective, optimize' — it saturates after a while regardless of how much compute you give it
-- Don't use pass@k as a headline metric on a static deterministic environment; it is formally the same as scoring a blind replay agent
-- Don't compute error bars from rollouts alone — empirical coverage lands around 17-20% against a nominal 95%, and overconfident intervals can cost hundreds of thousands of dollars a month at a million tasks
-- Don't give agents tools to search prior trajectories or archives; they learn to retrieve previous answers instead of reasoning
-- Don't assume more iterations means better output — agents oversteer into overly conservative generic results that differ in raw pixels while carrying no meaningful improvement
-- Don't spend reasoning latency inside a real-time loop; a frontier model that thinks for a full second has already lost the conversation
-- Don't run additional enhancement passes on already-high-quality outputs: you pay compute for zero lift and risk hallucinated artifacts
-- Don't expect RL to install dense new knowledge — it refines existing skills, and the knowledge has to be there from supervised training
-- Don't ship a statically tuned offline configuration; every component needs a mechanism to retune itself against online drift
-- Don't stand up a vector DB, knowledge graph, or semantic search layer for a personal research memory when a markdown corpus with a reference index is more inspectable and more token-efficient
+- "Here's the codebase, here's the objective, optimize" prompts on open-ended work — they plateau, and the agent proposes hyperparameter tweaks rather than architectural changes like 2.5D to 3D convolutions.
+- Reporting pass@k on a static deterministic environment: it is formally equivalent to measuring a blind replay agent, which already matches or beats the frontier model it was extracted from.
+- Spending reasoning tokens on turns where latency is the binding constraint — a one-second pause reads to a user as a dead conversation.
+- Running extra enhancement passes on inputs that are already good enough: you pay compute for zero quality lift and risk the model hallucinating detail to match the prompt.
+- Accepting outputs that clear a QA gate by oversteering into conservative generic results that differ in raw pixels but carry no meaningful improvement.
+- Giving agents tools that search prior trajectories or archives — it teaches retrieval of previous answers instead of reasoning.
+- Append-only memory files with search over them as the long-term substrate; entries must be updated and compressed to survive multi-year horizons.
+- Letting the LLM write into your hand-authored source notes; keep generated content in a separate derivative layer.
+- Assuming more inference compute compensates for weak perception — no current LLM reliably identifies a small scientific feature such as a lung nodule, because it was never trained on that data.
+- Publishing when the judge is not confident on a multimodal check; reject instead, and keep redundant overlapping gates even though they cost extra passes.
 
 ## Notable Outliers
 
-- A blind replay agent that just replays recorded action sequences matches or beats the frontier model it was extracted from on OSWorld and MobileWorld. ([Computer Use at the Edge of the Statistical Precipice](../talks/computer-use-at-the-edge-of-the-statistical-precipice.md), [0:59](https://www.youtube.com/watch?v=CTLa_p6iOiY&t=59s))
-- Qwen 3.5 9B run as an RLM beats Opus and GPT-5.4 run as plain LLMs on the Long CoT benchmark — harness, not scale, decided the result. ([Recursive Coding Agents](../talks/recursive-coding-agents.md), [6:35](https://www.youtube.com/watch?v=3hXJI2q0Jz8&t=395s))
-- Given $100K to trade Premier League football matches over a one-year horizon on Kelly Bench, every frontier model lost money. ([Scaling to Long Horizons](../talks/scaling-to-long-horizons.md), [13:05](https://www.youtube.com/watch?v=2bvtay8wGYI&t=785s))
+- Pass@k evaluated on a deterministic environment is formally equivalent to measuring the success rate of a blind replay agent — so a benchmark is only adequately de-gamed if a replay agent extracted from it scores near zero. ([Computer Use at the Edge of the Statistical Precipice](../talks/computer-use-at-the-edge-of-the-statistical-precipice.md), [1:48](https://www.youtube.com/watch?v=CTLa_p6iOiY&t=108s))
+- An unmodified default RLM harness performs like a top-10 purpose-built memory system, against which billions of dollars of custom memory engineering are being spent. ([Recursive Coding Agents](../talks/recursive-coding-agents.md), [5:01](https://www.youtube.com/watch?v=3hXJI2q0Jz8&t=301s))
+- Given $100K to trade Premier League matches over a one-year horizon, every frontier model lost money — evidence that inference scaling does not transfer to open-ended multi-agent environments. ([Scaling to Long Horizons](../talks/scaling-to-long-horizons.md), [13:05](https://www.youtube.com/watch?v=2bvtay8wGYI&t=785s))
 - A 1M-token context window is orders of magnitude short of genuinely long-horizon intellectual work, which needs tens to hundreds of billions of tokens. ([Scaling to Long Horizons](../talks/scaling-to-long-horizons.md), [9:49](https://www.youtube.com/watch?v=2bvtay8wGYI&t=589s))
-- No LLM today can reliably identify a lung nodule, because none are trained on scientific images — weak observation, not weak reasoning, is the barrier to autonomous science. ([Autonomous Agents for Scientific Tasks](../talks/autonomous-agents-for-scientific-tasks.md), [15:52](https://www.youtube.com/watch?v=XLEYtv3cMlw&t=952s))
-- Off-policy staleness of up to about eight steps is acceptable in pipeline RL before quality degrades — the explicit trade against GPU utilization. ([Scaling to Long Horizons](../talks/scaling-to-long-horizons.md), [15:17](https://www.youtube.com/watch?v=2bvtay8wGYI&t=917s))
+- Overconfident confidence intervals from rollout-only statistics can cause a deployment decision that costs hundreds of thousands of dollars per month at one million tasks with a 4% true performance gap. ([Computer Use at the Edge of the Statistical Precipice](../talks/computer-use-at-the-edge-of-the-statistical-precipice.md), [13:49](https://www.youtube.com/watch?v=CTLa_p6iOiY&t=829s))
+- Hierarchical decomposition prompting is a temporary scaffold analogous to chain-of-thought on GPT-4-era models, and will be needed less as models are post-trained to decompose problems themselves. ([Autonomous Agents for Scientific Tasks](../talks/autonomous-agents-for-scientific-tasks.md), [18:24](https://www.youtube.com/watch?v=XLEYtv3cMlw&t=1104s))
+- For voice agents the budget was never IQ, it was milliseconds — a frontier model that thinks for a full second has lost the room regardless of answer quality. ([Your Voice Agent Doesn't Need a Frontier Model](../talks/your-voice-agent-doesnt-need-a-frontier-model.md), [0:51](https://www.youtube.com/watch?v=fnLBmfsI_Fg&t=51s))
 
 ## All Talks
 
 - [Autonomous Agents for Scientific Tasks](../talks/autonomous-agents-for-scientific-tasks.md)
 - [Building Closed-Loop Evals for a Multimodal Agent at Scale](../talks/building-closed-loop-evals-for-a-multimodal-agent-at-scale.md)
 - [Computer Use at the Edge of the Statistical Precipice](../talks/computer-use-at-the-edge-of-the-statistical-precipice.md)
+- [Improving Agents is a Data Mining Problem](../talks/improving-agents-is-a-data-mining-problem.md)
 - [Recursive Coding Agents](../talks/recursive-coding-agents.md)
 - [Reinforcement Learning without Verifiable Rewards](../talks/reinforcement-learning-without-verifiable-rewards.md)
 - [Scaling to Long Horizons](../talks/scaling-to-long-horizons.md)
@@ -162,5 +163,6 @@ Supporting talks: [Recursive Coding Agents](../talks/recursive-coding-agents.md)
 - [Sina Shahandeh](../speakers/sina-shahandeh.md)
 - [Soumya Gupta](../speakers/soumya-gupta.md)
 - [Varun Singh](../speakers/varun-singh.md)
+- [Vivek Trivedy](../speakers/vivek-trivedy.md)
 - [Will Brown](../speakers/will-brown.md)
 

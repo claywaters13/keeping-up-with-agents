@@ -1,34 +1,37 @@
 {
   "is_error": false,
-  "duration_api_ms": 104819,
+  "duration_api_ms": 123532,
   "num_turns": 1,
   "stop_reason": "end_turn",
-  "session_id": "22eac924-a14f-4fbd-898c-fa99c3297145",
-  "total_cost_usd": 0.5642389999999999,
+  "session_id": "79fdb604-8dbf-44cb-a1ff-7778c0b8f38c",
+  "total_cost_usd": 0.6651085,
   "usage": {
     "input_tokens": 2,
-    "cache_creation_input_tokens": 31950,
-    "cache_read_input_tokens": 10308,
-    "output_tokens": 8744,
+    "cache_creation_input_tokens": 38718,
+    "cache_read_input_tokens": 8113,
+    "output_tokens": 10032,
+    "output_tokens_details": {
+      "thinking_tokens": 5189
+    },
     "server_tool_use": {
       "web_search_requests": 0,
       "web_fetch_requests": 0
     },
     "service_tier": "standard",
     "cache_creation": {
-      "ephemeral_1h_input_tokens": 31950,
+      "ephemeral_1h_input_tokens": 38718,
       "ephemeral_5m_input_tokens": 0
     },
     "inference_geo": "not_available",
     "iterations": [
       {
         "input_tokens": 2,
-        "output_tokens": 8744,
-        "cache_read_input_tokens": 10308,
-        "cache_creation_input_tokens": 31950,
+        "output_tokens": 10032,
+        "cache_read_input_tokens": 8113,
+        "cache_creation_input_tokens": 38718,
         "cache_creation": {
           "ephemeral_5m_input_tokens": 0,
-          "ephemeral_1h_input_tokens": 31950
+          "ephemeral_1h_input_tokens": 38718
         },
         "type": "message"
       }
@@ -37,12 +40,12 @@
   },
   "modelUsage": {
     "claude-haiku-4-5-20251001": {
-      "inputTokens": 20905,
-      "outputTokens": 14,
+      "inputTokens": 23012,
+      "outputTokens": 10,
       "cacheReadInputTokens": 0,
       "cacheCreationInputTokens": 0,
       "webSearchRequests": 0,
-      "costUSD": 0.020975,
+      "costUSD": 0.023062000000000003,
       "contextWindow": 200000,
       "maxOutputTokens": 32000,
       "canonicalModel": "claude-haiku-4-5",
@@ -50,11 +53,11 @@
     },
     "claude-opus-5": {
       "inputTokens": 2,
-      "outputTokens": 8744,
-      "cacheReadInputTokens": 10308,
-      "cacheCreationInputTokens": 31950,
+      "outputTokens": 10032,
+      "cacheReadInputTokens": 8113,
+      "cacheCreationInputTokens": 38718,
       "webSearchRequests": 0,
-      "costUSD": 0.543264,
+      "costUSD": 0.6420465,
       "contextWindow": 1000000,
       "maxOutputTokens": 64000,
       "canonicalModel": "claude-opus-5",
@@ -67,199 +70,215 @@
   "fast_mode_disabled_reason": "sdk_opt_in_required",
   "subtype": "success",
   "api_error_status": null,
-  "result": "{\"concept\": \"session management\", \"state_of_practice\": \"The field has converged on treating an agent session as a durable object that outlives the process, machine, and client that created it \u2014 the working definition several speakers arrived at independently is that the append-only event log (user inputs, model outputs, tool calls, results, permission decisions, failures) *is* the agent, and the running loop is disposable. Practically this means: model APIs are stateless so every turn is a replay of the log; the context window is a projection of the session rather than the session itself; and resumption, forking, and hand-off to another human or another vendor's agent are all log operations rather than process operations. Protocol work is standardizing the surface \u2014 ACP exposes newSession/loadSession/session-update notifications over JSON-RPC with ~40 client implementations, and making an existing agent compatible is roughly four functions. Production pressure is pushing execution off laptops into sandboxes with least-privilege credentials in vaults, and pushing the agent loop out of the tool-execution container (Anthropic measured 60% faster time-to-first-token at P50, >90% at P95, from that split alone). The live arguments are not about whether sessions should be durable but about who holds the log, whether compaction is good enough to make long-lived threads the primary abstraction, and whether the session or an external document is the real unit of state.\", \"consensus\": [{\"claim\": \"Session state must be a durable artifact external to the agent process \u2014 not one process per agent pinned to a machine \u2014 so that a crashed worker, dead sandbox, or restarted host is an execution detail rather than a lost agent.\", \"support_count\": 6, \"supporting_talks\": [\"the-log-is-the-agent\", \"evolution-of-agentic-surfaces\", \"a-genius-with-amnesia\", \"multiplayer-agentic-engineering\", \"velocity-sickness-what-happens-when-your-whole-team-gets-10x-faster\", \"wtf-is-the-context-layer-the-missing-infrastructure-for-production-agents\"], \"evidence_quote\": \"When the log is the state, you flip that model. One process can now advance thousands of agents.\", \"evidence_talk\": \"the-log-is-the-agent\", \"evidence_timestamp_sec\": 444}, {\"claim\": \"The same session, with identical state, should be attachable from any client or interface \u2014 Slack, editor, mobile, GitHub, or a different vendor's agent \u2014 rather than being bound to the tool that started it.\", \"support_count\": 3, \"supporting_talks\": [\"multiplayer-agentic-engineering\", \"a-genius-with-amnesia\", \"building-an-acp-compatible-agent-live\"], \"evidence_quote\": \"So, what we really wanted was to be able to work with the same session from every relevant interface.\", \"evidence_talk\": \"multiplayer-agentic-engineering\", \"evidence_timestamp_sec\": 208}, {\"claim\": \"Sessions are a multiplayer unit: handing a live session to another engineer \u2014 with full materialized state and zero setup \u2014 is more valuable than handing over the artifact the session produced.\", \"support_count\": 3, \"supporting_talks\": [\"a-genius-with-amnesia\", \"multiplayer-agentic-engineering\", \"velocity-sickness-what-happens-when-your-whole-team-gets-10x-faster\"], \"evidence_quote\": \"I resume their session on my machine, I get the exact state, fully functional, zero setup, and then I just talk to my agent about the decisions we made\", \"evidence_talk\": \"a-genius-with-amnesia\", \"evidence_timestamp_sec\": 877}, {\"claim\": \"Session transcripts are the raw material for memory and self-improvement, not disposable exhaust \u2014 a batch process should distill them back into durable structured context that improves later sessions.\", \"support_count\": 5, \"supporting_talks\": [\"the-log-is-the-agent\", \"evolution-of-agentic-surfaces\", \"wtf-is-the-context-layer-the-missing-infrastructure-for-production-agents\", \"wearing-the-agent-from-group-chats-to-glasses\", \"a-genius-with-amnesia\"], \"evidence_quote\": \"you're going to stop treating the log as this exhaust from the system, and you're going to treat it as the system itself\", \"evidence_talk\": \"the-log-is-the-agent\", \"evidence_timestamp_sec\": 850}, {\"claim\": \"Sessions need branch/fork/rollback semantics, not just linear resume \u2014 you should be able to re-enter a run at an arbitrary earlier point and continue along a different path.\", \"support_count\": 3, \"supporting_talks\": [\"the-log-is-the-agent\", \"computer-use-20-agents-just-got-multi-cursor\", \"the-ux-of-ai-making-ai-powered-apps-your-users-dont-hate\"], \"evidence_quote\": \"Every run that we record can be forked through any moment in its trajectory to give you the state of the computer at that moment.\", \"evidence_talk\": \"computer-use-20-agents-just-got-multi-cursor\", \"evidence_timestamp_sec\": 615}], \"disagreements\": [{\"question\": \"Who should own and host the session log \u2014 the managed agent provider, or the team running the agent?\", \"position_a\": \"Session management is undifferentiated infrastructure alongside hosting, sandboxing, credentials, and observability; teams should take it from the harness vendor and own only system prompts, skills, tools, and domain context.\", \"position_a_talks\": [\"evolution-of-agentic-surfaces\"], \"position_b\": \"Log lock-in is the deepest and most durable form of vendor lock-in \u2014 deeper than model, API, or tool lock-in, because a log cannot be wrapped or adapted away. Teams should self-host their logs, and the continuity layer should sit above the agent as an agent-agnostic meta-harness or an external context layer, precisely because agent tooling churns roughly annually.\", \"position_b_talks\": [\"the-log-is-the-agent\", \"a-genius-with-amnesia\", \"wtf-is-the-context-layer-the-missing-infrastructure-for-production-agents\", \"multiplayer-agentic-engineering\"], \"why_it_matters\": \"This decides whether switching models or agent vendors is an adapter-and-schema migration or a total loss of accumulated organizational context; one talk described migrating across five agent stacks in twelve months and losing trapped context at every hop.\"}, {\"question\": \"Is compaction good enough to make one long-lived thread the primary session abstraction?\", \"position_a\": \"Compaction now works well enough that the old advice to start a fresh thread after a long conversation is obsolete; threads five weeks old with hundreds of subagents still behave correctly, and scheduled automation should post heartbeats back into the existing thread rather than spawning new ones.\", \"position_a_talks\": [\"full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex\"], \"position_b\": \"Compaction is inherently lossy and throws information away; it should be treated as a best-effort fork resumed as a new log with the raw log retained. Related: state should be extracted as atomic facts or pushed into durable docs rather than accumulated in a thread and squeezed.\", \"position_b_talks\": [\"the-log-is-the-agent\", \"wearing-the-agent-from-group-chats-to-glasses\", \"velocity-sickness-what-happens-when-your-whole-team-gets-10x-faster\"], \"why_it_matters\": \"If compaction is trustworthy, the thread is the session and persistence is a UX problem; if it is lossy, every product needs raw-log retention plus a separate distillation path, and 'resume' has to mean replay-from-log rather than reload-the-summary.\"}, {\"question\": \"Is the session itself the durable unit of state, or should the session be treated as stateless action against an external document?\", \"position_a\": \"The session is the state \u2014 persist and resume the full session object (intent, repos, PRs, traces, permission state) so a human or another agent can continue it mid-stream; pooling sessions across an org gives an agent more context than any individual has.\", \"position_a_talks\": [\"a-genius-with-amnesia\", \"the-log-is-the-agent\", \"multiplayer-agentic-engineering\"], \"position_b\": \"Separate agent-as-action from doc-as-state: decisions go into a durable shared document up front, which makes agents effectively stateless and removes the need to resume anything. Per-agent memory is an anti-pattern that causes context sprawl and prevents a single version of truth; extracting decisions ahead of time beats having an LLM summarize sessions afterward, which risks picking the wrong things.\", \"position_b_talks\": [\"velocity-sickness-what-happens-when-your-whole-team-gets-10x-faster\", \"wtf-is-the-context-layer-the-missing-infrastructure-for-production-agents\"], \"why_it_matters\": \"It determines where engineering effort goes: durable log infrastructure with fork/resume semantics, versus a versioned, reviewed context store that agents read from and that nobody needs to resume. The second camp argues the first reproduces per-agent memory silos at session granularity.\"}], \"practical_guidance\": {\"do\": [\"Persist an append-only event log of every user input, model output, tool call, tool result, permission decision, and failure; treat the context window, UI, debug view, and audit trail as projections of it.\", \"Split the agent loop from tool execution into separate containers so first-token reasoning does not block on sandbox setup \u2014 measured at 60% faster TTFT at P50 and >90% at P95.\", \"Implement newSession and loadSession over a client-agent protocol (ACP is JSON-RPC over stdio, ~4 functions, ~15 minutes to retrofit an existing agent) so any client can attach to a session.\", \"Read files through the client's proxied filesystem rather than native fs APIs, since the client may hold unsaved buffer state the agent must see.\", \"Keep the raw log when compacting and resume the compacted summary as a new forked log rather than overwriting history.\", \"Materialize enough state \u2014 intent, repos, PRs, traces \u2014 that another person can resume the session on their own machine with zero setup.\", \"Store credentials in a vault decrypted only at tool-execution time so security tokens never enter the session transcript or model context.\", \"Run sessions in isolated cloud sandboxes with least-privilege access instead of on developer laptops holding production tokens.\", \"Feed session transcripts plus current memory state through a periodic batch distillation process that edits memory for subsequent sessions.\", \"Give users version history, an always-available prominent stop control, and visible control over what the session remembers and forgets.\", \"Route scheduled automation and heartbeats back into an existing thread rather than creating a new thread per run.\", \"Benchmark agents and harnesses on your own repository rather than trusting SWE-bench-style public results when choosing what backs your sessions.\"], \"avoid\": [\"Assuming a pending permission prompt survives process death \u2014 Claude Code drops it on resume and leaves the agent paused, which is unacceptable in production.\", \"Relying on fire-and-forget JSONL writes to local disk (Claude Code, Codex SDK mode) or on SQLite state with known corruption issues as your only session persistence.\", \"One process per agent with sticky sessions, which forces state migration and coordination overhead the log-centric design removes entirely.\", \"Conflating the context window with the session \u2014 traditional harnesses make them one and the same, which breaks recovery and observability.\", \"Giving each agent its own memory system: it produces context sprawl, divergent learning, and no single version of truth, and makes failures untraceable between model, agent, and context.\", \"Leaving your only copy of the session log on a provider's infrastructure; if a provider owns your log, the provider owns your agent.\", \"Putting the agent loop and tool execution in the same container, which couples their failure domains.\", \"Carrying forward harness workarounds written for an older model's limitations \u2014 they become pure overhead, adding latency and invalidating the cache incorrectly.\", \"Treating chat as durable state: it is isolated, ephemeral, and encourages accepting the agent's recommendation without thinking; plan mode is still just a rich chat message.\", \"Assuming a Slack bot solves portability \u2014 it moves the agent from trapped on a laptop to trapped in Slack.\", \"Shipping widget or UI-only session output without alternate model-visible content, which starves the model on clients that do not render it.\"]}, \"notable_outliers\": [{\"claim\": \"Once the log is the agent, different branches of the same session can run on different providers \u2014 one on Claude, one on GPT, one on an open-weight model \u2014 because provider migration is only an adapter and schema problem, not an identity problem.\", \"talk\": \"the-log-is-the-agent\", \"timestamp_sec\": 484}, {\"claim\": \"Memory should be portable across agent products, so a session begun in Claude can be continued in Codex mid-stream.\", \"talk\": \"a-genius-with-amnesia\", \"timestamp_sec\": 877}, {\"claim\": \"Compaction is now good enough that threads five weeks old containing ~400 subagents still know what they need to do.\", \"talk\": \"full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex\", \"timestamp_sec\": 209}, {\"claim\": \"Once state lives in the doc and agents are stateless, 'declaring agent bankruptcy' stops being a thing you ever do.\", \"talk\": \"velocity-sickness-what-happens-when-your-whole-team-gets-10x-faster\", \"timestamp_sec\": 998}, {\"claim\": \"Session permissions in a shared/group agent should be enforced by per-user LoRA adapters over a shared memory layer rather than by access-control code \u2014 whether something is private depends on the room, not the data.\", \"talk\": \"wearing-the-agent-from-group-chats-to-glasses\", \"timestamp_sec\": 1032}, {\"claim\": \"Pooling sessions across every developer in an organization gives the agent more context than any single developer possesses, because it crosses developer boundaries.\", \"talk\": \"a-genius-with-amnesia\", \"timestamp_sec\": 1153}], \"maturity\": \"consolidating\", \"maturity_rationale\": \"Six independent talks arrived at the same core architecture \u2014 a durable, externalized, resumable, forkable session object decoupled from the running process \u2014 and a protocol (ACP) with ~40 client implementations is standardizing the interface, which is more convergence than a frontier topic shows. But the edges are genuinely live: who holds the log, whether compaction is trustworthy enough to make the long thread the primary abstraction, and whether the session or an external doc is the real unit of state all had credible speakers on opposing sides.\"}",
-  "ttft_ms": 48379,
-  "ttft_stream_ms": 1023,
-  "time_to_request_ms": 91,
+  "result": "{\"concept\": \"session management\", \"state_of_practice\": \"The field converged this year on treating an agent session as a durable, portable object rather than as a process or a chat window, but it has not converged on how. Three incompatible substrates were pitched: a standardized live wire protocol between client and agent (Zed's ACP, ~40 client implementations, four methods to adopt, stdio-only today), an append-only event log owned by the operator that any executor can advance (Omnara), and a managed harness where hosting, session state, sandboxing and credentials are outsourced to the provider (Anthropic's agentic surfaces stack). Everyone agrees the current baseline is broken in specific, cited ways: Claude Code and Codex write fire-and-forget JSONL to local disk, a pending permission prompt is lost if the process dies and resumes, OpenCode's SQLite state has documented corruption, and per-product memory silos force users and teams to rebuild context on every tool migration. The most concrete new capability demonstrated is cross-boundary resume \u2014 picking up a colleague's session on your machine with zero setup, forking a recorded computer-use trajectory to any moment, or running one branch on Claude and another on GPT \u2014 which reframes the session from disposable exhaust into the org's reusable asset. The live argument is over whether a long-lived compacted thread is a sound container at all, or whether decisions must be externalized into documents and logs that make the session itself stateless.\", \"consensus\": [{\"claim\": \"A session must be resumable outside the process, machine, client, and vendor that created it \u2014 portability across boundaries is the design goal, not a nice-to-have.\", \"support_count\": 5, \"supporting_talks\": [\"a-genius-with-amnesia\", \"the-log-is-the-agent\", \"multiplayer-agentic-engineering\", \"building-an-acp-compatible-agent-live\", \"evolution-of-agentic-surfaces\"], \"evidence_quote\": \"I resume their session on my machine, I get the exact state, fully functional, zero setup, and then I just talk to my agent about the decisions we made\", \"evidence_talk\": \"a-genius-with-amnesia\", \"evidence_timestamp_sec\": 877}, {\"claim\": \"The durable substrate is an append-only event log of the session (inputs, model outputs, tool calls, results, permissions, failures); model context, UI, audit and compaction are all views derived from it.\", \"support_count\": 4, \"supporting_talks\": [\"the-log-is-the-agent\", \"evolution-of-agentic-surfaces\", \"a-genius-with-amnesia\", \"wtf-is-the-context-layer-the-missing-infrastructure-for-production-agents\"], \"evidence_quote\": \"underneath every serious database is a log. And that log is the durable sequence of changes. Everything else is a view.\", \"evidence_talk\": \"the-log-is-the-agent\", \"evidence_timestamp_sec\": 198}, {\"claim\": \"The executor is disposable and should be treated as fallible infrastructure: one-process-per-agent on a developer laptop is the wrong deployment shape for production sessions.\", \"support_count\": 3, \"supporting_talks\": [\"the-log-is-the-agent\", \"multiplayer-agentic-engineering\", \"evolution-of-agentic-surfaces\"], \"evidence_quote\": \"And if an agent is a running process, that's extremely terrifying. But if the agent is the log, it's simply an execution detail.\", \"evidence_talk\": \"the-log-is-the-agent\", \"evidence_timestamp_sec\": 748}, {\"claim\": \"The trajectory of a session is worth as much as its output \u2014 sessions should be replayable, forkable and mineable as organizational assets, not discarded when the task ends.\", \"support_count\": 5, \"supporting_talks\": [\"the-log-is-the-agent\", \"a-genius-with-amnesia\", \"evolution-of-agentic-surfaces\", \"wtf-is-the-context-layer-the-missing-infrastructure-for-production-agents\", \"computer-use-20-agents-just-got-multi-cursor\"], \"evidence_quote\": \"the value is not just what the agent produced, it's also the log, which indicates how it got there\", \"evidence_talk\": \"the-log-is-the-agent\", \"evidence_timestamp_sec\": 525}, {\"claim\": \"Binding memory and context to the session (or to a single agent product) is a dead end; context has to outlive any individual session, framework, or vendor.\", \"support_count\": 4, \"supporting_talks\": [\"lessons-from-studying-every-memory-system\", \"wtf-is-the-context-layer-the-missing-infrastructure-for-production-agents\", \"a-genius-with-amnesia\", \"evolution-of-agentic-surfaces\"], \"evidence_quote\": \"Each of these products is trying to build its own memory of me. None of these memories are shared with each other. So I have to rebuild context within every single product from scratch.\", \"evidence_talk\": \"lessons-from-studying-every-memory-system\", \"evidence_timestamp_sec\": 1063}], \"disagreements\": [{\"question\": \"Is a long-lived, compacted thread a sound container for ongoing work, or must session state be externalized into durable artifacts?\", \"position_a\": \"Stay in one thread indefinitely \u2014 compaction is now good enough that five-week-old threads with hundreds of sub-agents still know what to do, and scheduled automations should heartbeat back into the existing thread rather than opening a new one.\", \"position_a_talks\": [\"full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex\"], \"position_b\": \"Compaction throws information away, so the thread cannot be the state: retain the raw log and treat any compacted continuation as a best-effort lossy fork, extract atomic facts instead of compacting on overflow, and hold decisions in a durable doc so every agent starts stateless.\", \"position_b_talks\": [\"the-log-is-the-agent\", \"wearing-the-agent-from-group-chats-to-glasses\", \"velocity-sickness-what-happens-when-your-whole-team-gets-10x-faster\"], \"why_it_matters\": \"It decides whether you invest in thread-management UX (pinning, renaming, inter-thread messaging) or in log persistence, forking, and doc-as-state infrastructure. It also determines whether 'agent bankruptcy' is a real failure mode you must design around or an artifact of bad session hygiene.\"}, {\"question\": \"Should teams outsource session persistence to a managed agent platform, or own the session state themselves?\", \"position_a\": \"Hosting, session management, sandboxing, credentials and observability are undifferentiated infrastructure; developers should own only system prompts, skills, tools and domain context and let the harness supply the rest.\", \"position_a_talks\": [\"evolution-of-agentic-surfaces\"], \"position_b\": \"Whoever owns the log owns the agent \u2014 log lock-in is deeper than model or API lock-in, memory must be built in-house rather than outsourced, and teams should stay model- and harness-agnostic because the best option changes weekly.\", \"position_b_talks\": [\"the-log-is-the-agent\", \"lessons-from-studying-every-memory-system\", \"multiplayer-agentic-engineering\"], \"why_it_matters\": \"Managed session infrastructure buys measured wins (60% faster P50 time-to-first-token from decoupling the loop from tool containers) at the cost of a migration path; self-owned logs preserve the ability to swap providers mid-session but require building durability, forking and compaction yourself.\"}, {\"question\": \"Does session portability come from standardizing the live client-agent protocol or from standardizing the persisted session object?\", \"position_a\": \"Standardize the wire protocol: implement four JSON-RPC methods and any client can drive any agent, with the client owning terminals, diffing, and a proxied filesystem \u2014 sessions are created per client thread and the agent keeps its own state.\", \"position_a_talks\": [\"building-an-acp-compatible-agent-live\"], \"position_b\": \"Standardize the state itself: materialize the full session as a portable object \u2014 log, repos, PRs, traces \u2014 so it can be handed to another person, another machine, or another vendor's agent mid-stream, independent of any live connection.\", \"position_b_talks\": [\"the-log-is-the-agent\", \"a-genius-with-amnesia\", \"multiplayer-agentic-engineering\"], \"why_it_matters\": \"The protocol approach makes sessions interchangeable across UIs but not across time or machines \u2014 ACP is stdio-only with no remote transport yet \u2014 while the state approach makes sessions durable and shareable but leaves every client rendering them differently.\"}, {\"question\": \"Should sessions be pooled across an organization by default, or gated by who is in the room?\", \"position_a\": \"Pool them: crossing developer boundaries gives the agent more context than any single developer has, and replaying a respected engineer's session beats every implementation being bespoke.\", \"position_a_talks\": [\"a-genius-with-amnesia\", \"multiplayer-agentic-engineering\"], \"position_b\": \"Gate them: whether information is public or private depends on the room it was shared in, not the data, so permissions belong in the memory layer itself (per-user adapters over shared memory) and the user must retain visible, final say over what is remembered.\", \"position_b_talks\": [\"wearing-the-agent-from-group-chats-to-glasses\", \"the-ux-of-ai-making-ai-powered-apps-your-users-dont-hate\"], \"why_it_matters\": \"A shared session pool is the single biggest context multiplier on offer, but if permission scoping is bolted on afterward the pool becomes an exfiltration surface \u2014 and retrofitting per-room privacy onto an already-merged corpus is far harder than designing for it.\"}], \"practical_guidance\": {\"do\": [\"Persist an append-only event history \u2014 every user input, model output, tool call, tool result, permission and failure \u2014 and resume from it rather than from in-process state.\", \"Treat compaction as a lossy fork resumed as a new log, and keep the raw log around.\", \"Decouple the agent loop from the tool-execution container so first-token reasoning does not block on container setup (measured: 60% faster TTFT at P50, >90% at P95).\", \"Make the same session, with identical context, reachable from Slack, desktop/mobile and GitHub instead of adding a Slack bot on top of a laptop-bound agent.\", \"To make an existing agent client-portable, implement ACP's four methods; read files through the client's proxied filesystem so unsaved buffer state is visible, and send old text plus new text so the client renders the diff.\", \"Record trajectories so any run can be forked at an arbitrary moment to recover the state of the machine at that point.\", \"Run a periodic batch pass over session transcripts plus current memory state to extract and reorganize what the next day's sessions start with.\", \"Externalize the decisions that matter into a durable doc up front rather than asking an LLM to summarize the session afterward.\", \"Move sessions into isolated cloud sandboxes with least-privilege access instead of running them on laptops holding production credentials.\", \"Keep security credentials in a vault decrypted only at tool-execution time so the model never sees them in session context.\", \"Give users version history and a visible, revocable record of what the session remembered, with an always-available stop control.\"], \"avoid\": [\"Fire-and-forget JSONL writes to local disk as the only persistence layer \u2014 a failed write silently loses the session.\", \"Resuming into a state where a pending permission prompt has been dropped and the agent sits paused forever.\", \"One process per agent with sticky sessions pinned to a machine; it forces state migration and coordination overhead that log-centric design removes.\", \"Letting the provider hold the only copy of the log \u2014 model, API and tool lock-in can be wrapped or swapped, log lock-in cannot.\", \"Treating the context window and the session as the same object.\", \"Giving each agent its own memory system, which produces context sprawl and no single version of truth.\", \"Hardcoding business context into agents, which loses it at every framework migration (Relevance \u2192 Google ADK \u2192 Glean \u2192 Claude Code \u2192 Codex in ~12 months).\", \"Making the human the memory layer by starting every session from a blank slate and re-explaining the same change per repo.\", \"Reading files with native fs APIs from inside an ACP agent, which misses unsaved client buffers.\", \"Spawning a new thread per scheduled automation when a heartbeat into the existing thread would preserve continuity.\"]}, \"notable_outliers\": [{\"claim\": \"The deepest form of vendor lock-in is not model or API lock-in but log lock-in \u2014 whoever owns your session log owns your agent.\", \"talk\": \"the-log-is-the-agent\", \"timestamp_sec\": 662}, {\"claim\": \"Threads five weeks old containing roughly 400 sub-agents still work fine \u2014 the advice to start fresh after ~20 messages is obsolete.\", \"talk\": \"full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex\", \"timestamp_sec\": 209}, {\"claim\": \"Every recorded computer-use run can be forked at any moment in its trajectory to recover the exact state of the computer at that moment.\", \"talk\": \"computer-use-20-agents-just-got-multi-cursor\", \"timestamp_sec\": 615}, {\"claim\": \"Pooling sessions across developer boundaries gives the agent more context than any single developer possesses \u2014 effectively photographic memory of the organization.\", \"talk\": \"a-genius-with-amnesia\", \"timestamp_sec\": 1153}, {\"claim\": \"One process can advance thousands of agents once the log rather than the runtime holds the state.\", \"talk\": \"the-log-is-the-agent\", \"timestamp_sec\": 444}, {\"claim\": \"ACP has reached roughly 40 client implementations but still runs only over standard IO \u2014 remote transport does not exist yet.\", \"talk\": \"building-an-acp-compatible-agent-live\", \"timestamp_sec\": 1056}, {\"claim\": \"A separate branch of the same session can run on Claude while another runs on GPT and another on an open-source model, because provider migration is only an adapter and schema problem.\", \"talk\": \"the-log-is-the-agent\", \"timestamp_sec\": 484}], \"maturity\": \"frontier\", \"maturity_rationale\": \"Speakers agree on the goal \u2014 durable, forkable, portable sessions \u2014 but every implementation presented is a bespoke first attempt (a meta-harness above agents, a protocol standard, an owned event log, a managed provider stack) with no interoperability between them. The evidence base is early failure reports rather than settled practice: dropped permission prompts on resume, fire-and-forget writes losing data, SQLite corruption, and context trapped in each successive framework migration.\"}",
+  "ttft_ms": 65317,
+  "ttft_stream_ms": 996,
+  "time_to_request_ms": 42,
   "type": "result",
-  "duration_ms": 105152,
-  "uuid": "036f4674-f006-44f8-9a55-e950f0d9888d",
+  "duration_ms": 123698,
+  "uuid": "d558b7a8-b9ab-42ad-b183-bbf0f18fc3a9",
   "passC": {
     "concept": "session management",
-    "state_of_practice": "The field has converged on treating an agent session as a durable object that outlives the process, machine, and client that created it \u2014 the working definition several speakers arrived at independently is that the append-only event log (user inputs, model outputs, tool calls, results, permission decisions, failures) *is* the agent, and the running loop is disposable. Practically this means: model APIs are stateless so every turn is a replay of the log; the context window is a projection of the session rather than the session itself; and resumption, forking, and hand-off to another human or another vendor's agent are all log operations rather than process operations. Protocol work is standardizing the surface \u2014 ACP exposes newSession/loadSession/session-update notifications over JSON-RPC with ~40 client implementations, and making an existing agent compatible is roughly four functions. Production pressure is pushing execution off laptops into sandboxes with least-privilege credentials in vaults, and pushing the agent loop out of the tool-execution container (Anthropic measured 60% faster time-to-first-token at P50, >90% at P95, from that split alone). The live arguments are not about whether sessions should be durable but about who holds the log, whether compaction is good enough to make long-lived threads the primary abstraction, and whether the session or an external document is the real unit of state.",
+    "state_of_practice": "The field converged this year on treating an agent session as a durable, portable object rather than as a process or a chat window, but it has not converged on how. Three incompatible substrates were pitched: a standardized live wire protocol between client and agent (Zed's ACP, ~40 client implementations, four methods to adopt, stdio-only today), an append-only event log owned by the operator that any executor can advance (Omnara), and a managed harness where hosting, session state, sandboxing and credentials are outsourced to the provider (Anthropic's agentic surfaces stack). Everyone agrees the current baseline is broken in specific, cited ways: Claude Code and Codex write fire-and-forget JSONL to local disk, a pending permission prompt is lost if the process dies and resumes, OpenCode's SQLite state has documented corruption, and per-product memory silos force users and teams to rebuild context on every tool migration. The most concrete new capability demonstrated is cross-boundary resume \u2014 picking up a colleague's session on your machine with zero setup, forking a recorded computer-use trajectory to any moment, or running one branch on Claude and another on GPT \u2014 which reframes the session from disposable exhaust into the org's reusable asset. The live argument is over whether a long-lived compacted thread is a sound container at all, or whether decisions must be externalized into documents and logs that make the session itself stateless.",
     "consensus": [
       {
-        "claim": "Session state must be a durable artifact external to the agent process \u2014 not one process per agent pinned to a machine \u2014 so that a crashed worker, dead sandbox, or restarted host is an execution detail rather than a lost agent.",
-        "support_count": 6,
+        "claim": "A session must be resumable outside the process, machine, client, and vendor that created it \u2014 portability across boundaries is the design goal, not a nice-to-have.",
+        "support_count": 5,
         "supporting_talks": [
+          "a-genius-with-amnesia",
           "the-log-is-the-agent",
-          "evolution-of-agentic-surfaces",
-          "a-genius-with-amnesia",
           "multiplayer-agentic-engineering",
-          "velocity-sickness-what-happens-when-your-whole-team-gets-10x-faster",
-          "wtf-is-the-context-layer-the-missing-infrastructure-for-production-agents"
-        ],
-        "evidence_quote": "When the log is the state, you flip that model. One process can now advance thousands of agents.",
-        "evidence_talk": "the-log-is-the-agent",
-        "evidence_timestamp_sec": 444
-      },
-      {
-        "claim": "The same session, with identical state, should be attachable from any client or interface \u2014 Slack, editor, mobile, GitHub, or a different vendor's agent \u2014 rather than being bound to the tool that started it.",
-        "support_count": 3,
-        "supporting_talks": [
-          "multiplayer-agentic-engineering",
-          "a-genius-with-amnesia",
-          "building-an-acp-compatible-agent-live"
-        ],
-        "evidence_quote": "So, what we really wanted was to be able to work with the same session from every relevant interface.",
-        "evidence_talk": "multiplayer-agentic-engineering",
-        "evidence_timestamp_sec": 208
-      },
-      {
-        "claim": "Sessions are a multiplayer unit: handing a live session to another engineer \u2014 with full materialized state and zero setup \u2014 is more valuable than handing over the artifact the session produced.",
-        "support_count": 3,
-        "supporting_talks": [
-          "a-genius-with-amnesia",
-          "multiplayer-agentic-engineering",
-          "velocity-sickness-what-happens-when-your-whole-team-gets-10x-faster"
+          "building-an-acp-compatible-agent-live",
+          "evolution-of-agentic-surfaces"
         ],
         "evidence_quote": "I resume their session on my machine, I get the exact state, fully functional, zero setup, and then I just talk to my agent about the decisions we made",
         "evidence_talk": "a-genius-with-amnesia",
         "evidence_timestamp_sec": 877
       },
       {
-        "claim": "Session transcripts are the raw material for memory and self-improvement, not disposable exhaust \u2014 a batch process should distill them back into durable structured context that improves later sessions.",
-        "support_count": 5,
+        "claim": "The durable substrate is an append-only event log of the session (inputs, model outputs, tool calls, results, permissions, failures); model context, UI, audit and compaction are all views derived from it.",
+        "support_count": 4,
         "supporting_talks": [
           "the-log-is-the-agent",
           "evolution-of-agentic-surfaces",
-          "wtf-is-the-context-layer-the-missing-infrastructure-for-production-agents",
-          "wearing-the-agent-from-group-chats-to-glasses",
-          "a-genius-with-amnesia"
+          "a-genius-with-amnesia",
+          "wtf-is-the-context-layer-the-missing-infrastructure-for-production-agents"
         ],
-        "evidence_quote": "you're going to stop treating the log as this exhaust from the system, and you're going to treat it as the system itself",
+        "evidence_quote": "underneath every serious database is a log. And that log is the durable sequence of changes. Everything else is a view.",
         "evidence_talk": "the-log-is-the-agent",
-        "evidence_timestamp_sec": 850
+        "evidence_timestamp_sec": 198
       },
       {
-        "claim": "Sessions need branch/fork/rollback semantics, not just linear resume \u2014 you should be able to re-enter a run at an arbitrary earlier point and continue along a different path.",
+        "claim": "The executor is disposable and should be treated as fallible infrastructure: one-process-per-agent on a developer laptop is the wrong deployment shape for production sessions.",
         "support_count": 3,
         "supporting_talks": [
           "the-log-is-the-agent",
-          "computer-use-20-agents-just-got-multi-cursor",
-          "the-ux-of-ai-making-ai-powered-apps-your-users-dont-hate"
+          "multiplayer-agentic-engineering",
+          "evolution-of-agentic-surfaces"
         ],
-        "evidence_quote": "Every run that we record can be forked through any moment in its trajectory to give you the state of the computer at that moment.",
-        "evidence_talk": "computer-use-20-agents-just-got-multi-cursor",
-        "evidence_timestamp_sec": 615
+        "evidence_quote": "And if an agent is a running process, that's extremely terrifying. But if the agent is the log, it's simply an execution detail.",
+        "evidence_talk": "the-log-is-the-agent",
+        "evidence_timestamp_sec": 748
+      },
+      {
+        "claim": "The trajectory of a session is worth as much as its output \u2014 sessions should be replayable, forkable and mineable as organizational assets, not discarded when the task ends.",
+        "support_count": 5,
+        "supporting_talks": [
+          "the-log-is-the-agent",
+          "a-genius-with-amnesia",
+          "evolution-of-agentic-surfaces",
+          "wtf-is-the-context-layer-the-missing-infrastructure-for-production-agents",
+          "computer-use-20-agents-just-got-multi-cursor"
+        ],
+        "evidence_quote": "the value is not just what the agent produced, it's also the log, which indicates how it got there",
+        "evidence_talk": "the-log-is-the-agent",
+        "evidence_timestamp_sec": 525
+      },
+      {
+        "claim": "Binding memory and context to the session (or to a single agent product) is a dead end; context has to outlive any individual session, framework, or vendor.",
+        "support_count": 4,
+        "supporting_talks": [
+          "lessons-from-studying-every-memory-system",
+          "wtf-is-the-context-layer-the-missing-infrastructure-for-production-agents",
+          "a-genius-with-amnesia",
+          "evolution-of-agentic-surfaces"
+        ],
+        "evidence_quote": "Each of these products is trying to build its own memory of me. None of these memories are shared with each other. So I have to rebuild context within every single product from scratch.",
+        "evidence_talk": "lessons-from-studying-every-memory-system",
+        "evidence_timestamp_sec": 1063
       }
     ],
     "disagreements": [
       {
-        "question": "Who should own and host the session log \u2014 the managed agent provider, or the team running the agent?",
-        "position_a": "Session management is undifferentiated infrastructure alongside hosting, sandboxing, credentials, and observability; teams should take it from the harness vendor and own only system prompts, skills, tools, and domain context.",
-        "position_a_talks": [
-          "evolution-of-agentic-surfaces"
-        ],
-        "position_b": "Log lock-in is the deepest and most durable form of vendor lock-in \u2014 deeper than model, API, or tool lock-in, because a log cannot be wrapped or adapted away. Teams should self-host their logs, and the continuity layer should sit above the agent as an agent-agnostic meta-harness or an external context layer, precisely because agent tooling churns roughly annually.",
-        "position_b_talks": [
-          "the-log-is-the-agent",
-          "a-genius-with-amnesia",
-          "wtf-is-the-context-layer-the-missing-infrastructure-for-production-agents",
-          "multiplayer-agentic-engineering"
-        ],
-        "why_it_matters": "This decides whether switching models or agent vendors is an adapter-and-schema migration or a total loss of accumulated organizational context; one talk described migrating across five agent stacks in twelve months and losing trapped context at every hop."
-      },
-      {
-        "question": "Is compaction good enough to make one long-lived thread the primary session abstraction?",
-        "position_a": "Compaction now works well enough that the old advice to start a fresh thread after a long conversation is obsolete; threads five weeks old with hundreds of subagents still behave correctly, and scheduled automation should post heartbeats back into the existing thread rather than spawning new ones.",
+        "question": "Is a long-lived, compacted thread a sound container for ongoing work, or must session state be externalized into durable artifacts?",
+        "position_a": "Stay in one thread indefinitely \u2014 compaction is now good enough that five-week-old threads with hundreds of sub-agents still know what to do, and scheduled automations should heartbeat back into the existing thread rather than opening a new one.",
         "position_a_talks": [
           "full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex"
         ],
-        "position_b": "Compaction is inherently lossy and throws information away; it should be treated as a best-effort fork resumed as a new log with the raw log retained. Related: state should be extracted as atomic facts or pushed into durable docs rather than accumulated in a thread and squeezed.",
+        "position_b": "Compaction throws information away, so the thread cannot be the state: retain the raw log and treat any compacted continuation as a best-effort lossy fork, extract atomic facts instead of compacting on overflow, and hold decisions in a durable doc so every agent starts stateless.",
         "position_b_talks": [
           "the-log-is-the-agent",
           "wearing-the-agent-from-group-chats-to-glasses",
           "velocity-sickness-what-happens-when-your-whole-team-gets-10x-faster"
         ],
-        "why_it_matters": "If compaction is trustworthy, the thread is the session and persistence is a UX problem; if it is lossy, every product needs raw-log retention plus a separate distillation path, and 'resume' has to mean replay-from-log rather than reload-the-summary."
+        "why_it_matters": "It decides whether you invest in thread-management UX (pinning, renaming, inter-thread messaging) or in log persistence, forking, and doc-as-state infrastructure. It also determines whether 'agent bankruptcy' is a real failure mode you must design around or an artifact of bad session hygiene."
       },
       {
-        "question": "Is the session itself the durable unit of state, or should the session be treated as stateless action against an external document?",
-        "position_a": "The session is the state \u2014 persist and resume the full session object (intent, repos, PRs, traces, permission state) so a human or another agent can continue it mid-stream; pooling sessions across an org gives an agent more context than any individual has.",
+        "question": "Should teams outsource session persistence to a managed agent platform, or own the session state themselves?",
+        "position_a": "Hosting, session management, sandboxing, credentials and observability are undifferentiated infrastructure; developers should own only system prompts, skills, tools and domain context and let the harness supply the rest.",
         "position_a_talks": [
-          "a-genius-with-amnesia",
+          "evolution-of-agentic-surfaces"
+        ],
+        "position_b": "Whoever owns the log owns the agent \u2014 log lock-in is deeper than model or API lock-in, memory must be built in-house rather than outsourced, and teams should stay model- and harness-agnostic because the best option changes weekly.",
+        "position_b_talks": [
           "the-log-is-the-agent",
+          "lessons-from-studying-every-memory-system",
           "multiplayer-agentic-engineering"
         ],
-        "position_b": "Separate agent-as-action from doc-as-state: decisions go into a durable shared document up front, which makes agents effectively stateless and removes the need to resume anything. Per-agent memory is an anti-pattern that causes context sprawl and prevents a single version of truth; extracting decisions ahead of time beats having an LLM summarize sessions afterward, which risks picking the wrong things.",
-        "position_b_talks": [
-          "velocity-sickness-what-happens-when-your-whole-team-gets-10x-faster",
-          "wtf-is-the-context-layer-the-missing-infrastructure-for-production-agents"
+        "why_it_matters": "Managed session infrastructure buys measured wins (60% faster P50 time-to-first-token from decoupling the loop from tool containers) at the cost of a migration path; self-owned logs preserve the ability to swap providers mid-session but require building durability, forking and compaction yourself."
+      },
+      {
+        "question": "Does session portability come from standardizing the live client-agent protocol or from standardizing the persisted session object?",
+        "position_a": "Standardize the wire protocol: implement four JSON-RPC methods and any client can drive any agent, with the client owning terminals, diffing, and a proxied filesystem \u2014 sessions are created per client thread and the agent keeps its own state.",
+        "position_a_talks": [
+          "building-an-acp-compatible-agent-live"
         ],
-        "why_it_matters": "It determines where engineering effort goes: durable log infrastructure with fork/resume semantics, versus a versioned, reviewed context store that agents read from and that nobody needs to resume. The second camp argues the first reproduces per-agent memory silos at session granularity."
+        "position_b": "Standardize the state itself: materialize the full session as a portable object \u2014 log, repos, PRs, traces \u2014 so it can be handed to another person, another machine, or another vendor's agent mid-stream, independent of any live connection.",
+        "position_b_talks": [
+          "the-log-is-the-agent",
+          "a-genius-with-amnesia",
+          "multiplayer-agentic-engineering"
+        ],
+        "why_it_matters": "The protocol approach makes sessions interchangeable across UIs but not across time or machines \u2014 ACP is stdio-only with no remote transport yet \u2014 while the state approach makes sessions durable and shareable but leaves every client rendering them differently."
+      },
+      {
+        "question": "Should sessions be pooled across an organization by default, or gated by who is in the room?",
+        "position_a": "Pool them: crossing developer boundaries gives the agent more context than any single developer has, and replaying a respected engineer's session beats every implementation being bespoke.",
+        "position_a_talks": [
+          "a-genius-with-amnesia",
+          "multiplayer-agentic-engineering"
+        ],
+        "position_b": "Gate them: whether information is public or private depends on the room it was shared in, not the data, so permissions belong in the memory layer itself (per-user adapters over shared memory) and the user must retain visible, final say over what is remembered.",
+        "position_b_talks": [
+          "wearing-the-agent-from-group-chats-to-glasses",
+          "the-ux-of-ai-making-ai-powered-apps-your-users-dont-hate"
+        ],
+        "why_it_matters": "A shared session pool is the single biggest context multiplier on offer, but if permission scoping is bolted on afterward the pool becomes an exfiltration surface \u2014 and retrofitting per-room privacy onto an already-merged corpus is far harder than designing for it."
       }
     ],
     "practical_guidance": {
       "do": [
-        "Persist an append-only event log of every user input, model output, tool call, tool result, permission decision, and failure; treat the context window, UI, debug view, and audit trail as projections of it.",
-        "Split the agent loop from tool execution into separate containers so first-token reasoning does not block on sandbox setup \u2014 measured at 60% faster TTFT at P50 and >90% at P95.",
-        "Implement newSession and loadSession over a client-agent protocol (ACP is JSON-RPC over stdio, ~4 functions, ~15 minutes to retrofit an existing agent) so any client can attach to a session.",
-        "Read files through the client's proxied filesystem rather than native fs APIs, since the client may hold unsaved buffer state the agent must see.",
-        "Keep the raw log when compacting and resume the compacted summary as a new forked log rather than overwriting history.",
-        "Materialize enough state \u2014 intent, repos, PRs, traces \u2014 that another person can resume the session on their own machine with zero setup.",
-        "Store credentials in a vault decrypted only at tool-execution time so security tokens never enter the session transcript or model context.",
-        "Run sessions in isolated cloud sandboxes with least-privilege access instead of on developer laptops holding production tokens.",
-        "Feed session transcripts plus current memory state through a periodic batch distillation process that edits memory for subsequent sessions.",
-        "Give users version history, an always-available prominent stop control, and visible control over what the session remembers and forgets.",
-        "Route scheduled automation and heartbeats back into an existing thread rather than creating a new thread per run.",
-        "Benchmark agents and harnesses on your own repository rather than trusting SWE-bench-style public results when choosing what backs your sessions."
+        "Persist an append-only event history \u2014 every user input, model output, tool call, tool result, permission and failure \u2014 and resume from it rather than from in-process state.",
+        "Treat compaction as a lossy fork resumed as a new log, and keep the raw log around.",
+        "Decouple the agent loop from the tool-execution container so first-token reasoning does not block on container setup (measured: 60% faster TTFT at P50, >90% at P95).",
+        "Make the same session, with identical context, reachable from Slack, desktop/mobile and GitHub instead of adding a Slack bot on top of a laptop-bound agent.",
+        "To make an existing agent client-portable, implement ACP's four methods; read files through the client's proxied filesystem so unsaved buffer state is visible, and send old text plus new text so the client renders the diff.",
+        "Record trajectories so any run can be forked at an arbitrary moment to recover the state of the machine at that point.",
+        "Run a periodic batch pass over session transcripts plus current memory state to extract and reorganize what the next day's sessions start with.",
+        "Externalize the decisions that matter into a durable doc up front rather than asking an LLM to summarize the session afterward.",
+        "Move sessions into isolated cloud sandboxes with least-privilege access instead of running them on laptops holding production credentials.",
+        "Keep security credentials in a vault decrypted only at tool-execution time so the model never sees them in session context.",
+        "Give users version history and a visible, revocable record of what the session remembered, with an always-available stop control."
       ],
       "avoid": [
-        "Assuming a pending permission prompt survives process death \u2014 Claude Code drops it on resume and leaves the agent paused, which is unacceptable in production.",
-        "Relying on fire-and-forget JSONL writes to local disk (Claude Code, Codex SDK mode) or on SQLite state with known corruption issues as your only session persistence.",
-        "One process per agent with sticky sessions, which forces state migration and coordination overhead the log-centric design removes entirely.",
-        "Conflating the context window with the session \u2014 traditional harnesses make them one and the same, which breaks recovery and observability.",
-        "Giving each agent its own memory system: it produces context sprawl, divergent learning, and no single version of truth, and makes failures untraceable between model, agent, and context.",
-        "Leaving your only copy of the session log on a provider's infrastructure; if a provider owns your log, the provider owns your agent.",
-        "Putting the agent loop and tool execution in the same container, which couples their failure domains.",
-        "Carrying forward harness workarounds written for an older model's limitations \u2014 they become pure overhead, adding latency and invalidating the cache incorrectly.",
-        "Treating chat as durable state: it is isolated, ephemeral, and encourages accepting the agent's recommendation without thinking; plan mode is still just a rich chat message.",
-        "Assuming a Slack bot solves portability \u2014 it moves the agent from trapped on a laptop to trapped in Slack.",
-        "Shipping widget or UI-only session output without alternate model-visible content, which starves the model on clients that do not render it."
+        "Fire-and-forget JSONL writes to local disk as the only persistence layer \u2014 a failed write silently loses the session.",
+        "Resuming into a state where a pending permission prompt has been dropped and the agent sits paused forever.",
+        "One process per agent with sticky sessions pinned to a machine; it forces state migration and coordination overhead that log-centric design removes.",
+        "Letting the provider hold the only copy of the log \u2014 model, API and tool lock-in can be wrapped or swapped, log lock-in cannot.",
+        "Treating the context window and the session as the same object.",
+        "Giving each agent its own memory system, which produces context sprawl and no single version of truth.",
+        "Hardcoding business context into agents, which loses it at every framework migration (Relevance \u2192 Google ADK \u2192 Glean \u2192 Claude Code \u2192 Codex in ~12 months).",
+        "Making the human the memory layer by starting every session from a blank slate and re-explaining the same change per repo.",
+        "Reading files with native fs APIs from inside an ACP agent, which misses unsaved client buffers.",
+        "Spawning a new thread per scheduled automation when a heartbeat into the existing thread would preserve continuity."
       ]
     },
     "notable_outliers": [
       {
-        "claim": "Once the log is the agent, different branches of the same session can run on different providers \u2014 one on Claude, one on GPT, one on an open-weight model \u2014 because provider migration is only an adapter and schema problem, not an identity problem.",
+        "claim": "The deepest form of vendor lock-in is not model or API lock-in but log lock-in \u2014 whoever owns your session log owns your agent.",
         "talk": "the-log-is-the-agent",
-        "timestamp_sec": 484
+        "timestamp_sec": 662
       },
       {
-        "claim": "Memory should be portable across agent products, so a session begun in Claude can be continued in Codex mid-stream.",
-        "talk": "a-genius-with-amnesia",
-        "timestamp_sec": 877
-      },
-      {
-        "claim": "Compaction is now good enough that threads five weeks old containing ~400 subagents still know what they need to do.",
+        "claim": "Threads five weeks old containing roughly 400 sub-agents still work fine \u2014 the advice to start fresh after ~20 messages is obsolete.",
         "talk": "full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex",
         "timestamp_sec": 209
       },
       {
-        "claim": "Once state lives in the doc and agents are stateless, 'declaring agent bankruptcy' stops being a thing you ever do.",
-        "talk": "velocity-sickness-what-happens-when-your-whole-team-gets-10x-faster",
-        "timestamp_sec": 998
+        "claim": "Every recorded computer-use run can be forked at any moment in its trajectory to recover the exact state of the computer at that moment.",
+        "talk": "computer-use-20-agents-just-got-multi-cursor",
+        "timestamp_sec": 615
       },
       {
-        "claim": "Session permissions in a shared/group agent should be enforced by per-user LoRA adapters over a shared memory layer rather than by access-control code \u2014 whether something is private depends on the room, not the data.",
-        "talk": "wearing-the-agent-from-group-chats-to-glasses",
-        "timestamp_sec": 1032
-      },
-      {
-        "claim": "Pooling sessions across every developer in an organization gives the agent more context than any single developer possesses, because it crosses developer boundaries.",
+        "claim": "Pooling sessions across developer boundaries gives the agent more context than any single developer possesses \u2014 effectively photographic memory of the organization.",
         "talk": "a-genius-with-amnesia",
         "timestamp_sec": 1153
+      },
+      {
+        "claim": "One process can advance thousands of agents once the log rather than the runtime holds the state.",
+        "talk": "the-log-is-the-agent",
+        "timestamp_sec": 444
+      },
+      {
+        "claim": "ACP has reached roughly 40 client implementations but still runs only over standard IO \u2014 remote transport does not exist yet.",
+        "talk": "building-an-acp-compatible-agent-live",
+        "timestamp_sec": 1056
+      },
+      {
+        "claim": "A separate branch of the same session can run on Claude while another runs on GPT and another on an open-source model, because provider migration is only an adapter and schema problem.",
+        "talk": "the-log-is-the-agent",
+        "timestamp_sec": 484
       }
     ],
-    "maturity": "consolidating",
-    "maturity_rationale": "Six independent talks arrived at the same core architecture \u2014 a durable, externalized, resumable, forkable session object decoupled from the running process \u2014 and a protocol (ACP) with ~40 client implementations is standardizing the interface, which is more convergence than a frontier topic shows. But the edges are genuinely live: who holds the log, whether compaction is trustworthy enough to make the long thread the primary abstraction, and whether the session or an external doc is the real unit of state all had credible speakers on opposing sides."
+    "maturity": "frontier",
+    "maturity_rationale": "Speakers agree on the goal \u2014 durable, forkable, portable sessions \u2014 but every implementation presented is a bespoke first attempt (a meta-harness above agents, a protocol standard, an owned event log, a managed provider stack) with no interoperability between them. The evidence base is early failure reports rather than settled practice: dropped permission prompts on resume, fire-and-forget writes losing data, SQLite corruption, and context trapped in each successive framework migration."
   },
   "_meta": {
     "concept": "session management",
     "slug": "session-management",
-    "talk_count": 12,
+    "talk_count": 13,
     "missing_talks": [],
-    "wall_sec": 107.3,
-    "run_at": "2026-08-13T19:11:21Z"
+    "wall_sec": 124.9,
+    "run_at": "2026-08-19T14:08:02Z"
   }
 }

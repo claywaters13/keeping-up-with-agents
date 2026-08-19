@@ -4,15 +4,15 @@ type: "concept"
 slug: "context-engineering"
 tier: "core"
 maturity: "consolidating"
-talk_count: 29
-speaker_count: 32
+talk_count: 31
+speaker_count: 36
 ---
 
 # context engineering
 
 **Maturity: CONSOLIDATING** — Consolidating — converging practice, some open edges
 
-*Core concept* &middot; discussed across **29** talk(s) by **32** speaker(s)
+*Core concept* &middot; discussed across **31** talk(s) by **36** speaker(s)
 
 **Definition:** The practice of deciding what information enters a model's context and in what form, treating context assembly as a first-class engineering discipline rather than prompt wording.
 
@@ -20,11 +20,11 @@ speaker_count: 32
 
 ## State of Practice
 
-The consensus position at this conference is that model capability has stopped being the binding constraint and context assembly has become it — speakers from OpenAI, Anthropic, Tesla, Microsoft, Snapchat and half a dozen startups independently made some version of the claim that the same weights produce 2x or 100x results depending on how the work is wired. The second consensus is that context is a strictly finite budget to be spent, not a window to be filled: the referenced context-rot result (degradation past ~25% utilization), Codex's 2% cap on the available-skills list, the lost-in-the-middle collapse of tool-selection accuracy from ~78% at 10 tools to 13.6% at 741, and the observation that CLAUDE.md plus skills plus MCPs can consume ~25% of context before the task even arrives, all converge on the same engineering move — load less, later. Progressive disclosure is now the default technique: deferred tools behind a tool-search call, semantic tool routing at K≈5, skill frontmatter under 100 tokens, local code indexes replacing whole-file reads. State is moving out of the context window entirely and into durable artifacts — files on disk, session logs, planning docs, semantic layers, 'company brains' — on the theory that anything living only in the model's context is lost at compaction, crash, or harness migration. Where the field is genuinely unsettled is authorship and timing: whether that durable context should be hand-written markdown a human prunes or a pipeline that derives it from systems of record, and whether understanding should be precomputed offline or retrieved just-in-time.
+By this conference the field has stopped treating context as prompt wording and started treating it as a budgeted, versioned, auditable resource: what enters the window, in what form, from which ranked source, and who owns it after the turn ends. The dominant framing across tracks is that model capability is no longer the binding constraint — harnesses, retrieval, and organization-specific knowledge are — and speakers back this with numbers rather than vibes (Codex caps its available-skills list at 2% of the context window; a 741-tool catalog costs ~127k tokens per request and drops tool-selection accuracy to 13.6%; 15 MCP servers burn >100k tokens per session in tool definitions alone; ~90% of AI coding spend is input tokens). The consensus mechanics are progressive disclosure and just-in-time loading (deferred tools, tool search, semantic routing to K≈5, small cross-referencing skills), hybrid retrieval rather than dense-vector-only, and durable state on disk so a context can be cleared and rehydrated instead of summarized. Where the field is genuinely split is on whether long context actually degrades: one camp cites context rot and lost-in-the-middle and engineers hard to keep the working set small, while a team that ran controlled experiments reports reliable recall of distinctive facts to 800k tokens and found that never compacting won simultaneously on recall, cost, and latency because 97% of tokens stayed cached. A second live split is whether context scaffolding is permanent architecture or temporary compensation — Anthropic and OpenAI speakers report harness fixes becoming pure overhead and prompts shrinking ~50% per model step-jump, while brand-voice and enterprise-data speakers argue deterministic layers and semantic hierarchies are load-bearing regardless of model quality. Underneath all of it, the strategic claim repeated across GTM, infra, and startup tracks is that context is the owned asset and the model is rented.
 
 ## Consensus
 
-### Model capability is no longer the limiting factor for production agents; the context and harness around the model are.
+### Model capability is no longer the binding constraint on agent quality; the context and harness surrounding the model are.
 
 Support: **10** talk(s)
 
@@ -32,59 +32,59 @@ Support: **10** talk(s)
 >
 > — [Every company should have a Brain](../talks/every-company-should-have-a-brain.md), [2:52](https://www.youtube.com/watch?v=eBUyTS7SzV4&t=172s)
 
-Supporting talks: [Every company should have a Brain](../talks/every-company-should-have-a-brain.md), [Always-on agents run production without the on-call tax](../talks/always-on-agents-run-production-without-the-on-call-tax.md), [Evolution of agentic surfaces](../talks/evolution-of-agentic-surfaces.md), [From Systems of Record to Systems of Context](../talks/from-systems-of-record-to-systems-of-context.md), [WTF Is the Context Layer? The Missing Infrastructure for Production Agents](../talks/wtf-is-the-context-layer-the-missing-infrastructure-for-production-agents.md), [Enterprise Agents Have a Structure Problem](../talks/enterprise-agents-have-a-structure-problem.md), [Your Agent Didn't Fail. Your Harness Did.](../talks/your-agent-didnt-fail-your-harness-did.md), [Agent Output Is Not UX: Rendering Layer Your LLM Pipeline Is Missing](../talks/agent-output-is-not-ux-rendering-layer-your-llm-pipeline-is-missing.md), [We Cut 94% of AI Coding Tokens With a Local Code Index](../talks/we-cut-94-of-ai-coding-tokens-with-a-local-code-index.md), [From Blind Spots to Merged PRs: Continuous Agentic Performance Optimization](../talks/from-blind-spots-to-merged-prs-continuous-agentic-performance-optimization.md)
+Supporting talks: [Every company should have a Brain](../talks/every-company-should-have-a-brain.md), [Evolution of agentic surfaces](../talks/evolution-of-agentic-surfaces.md), [WTF Is the Context Layer? The Missing Infrastructure for Production Agents](../talks/wtf-is-the-context-layer-the-missing-infrastructure-for-production-agents.md), [Enterprise Agents Have a Structure Problem](../talks/enterprise-agents-have-a-structure-problem.md), [Always-on agents run production without the on-call tax](../talks/always-on-agents-run-production-without-the-on-call-tax.md), [From Systems of Record to Systems of Context](../talks/from-systems-of-record-to-systems-of-context.md), [Your Agent Didn't Fail. Your Harness Did.](../talks/your-agent-didnt-fail-your-harness-did.md), [We Cut 94% of AI Coding Tokens With a Local Code Index](../talks/we-cut-94-of-ai-coding-tokens-with-a-local-code-index.md), [From Blind Spots to Merged PRs: Continuous Agentic Performance Optimization](../talks/from-blind-spots-to-merged-prs-continuous-agentic-performance-optimization.md), [How Forward Deployed Engineering is done at Cognition](../talks/how-forward-deployed-engineering-is-done-at-cognition.md)
 
-### Context is a finite budget, not a container to fill — more context actively degrades output quality, and a bigger context window is not a fix for bad answers.
+### Filling the context window degrades output quality, not merely cost — irrelevant or contradictory material actively makes decisions worse.
 
-Support: **9** talk(s)
+Support: **8** talk(s)
 
-> "Context is a budget. Context is almost like a limited resource that we need to carefully filter information. Definitely the longer context doesn't mean better."
+> "the more context you have in your in your context, the higher it is that you have contradicting information and it causes confusion for the model."
 >
-> — [Skills are the New SDKs](../talks/skills-are-the-new-sdks.md), [25:36](https://www.youtube.com/watch?v=LC3-P7v3yoI&t=1536s)
+> — [Codex, Behind the Harness](../talks/codex-behind-the-harness.md), [4:05](https://www.youtube.com/watch?v=shRR1e2HXMk&t=245s)
 
-Supporting talks: [Codex, Behind the Harness](../talks/codex-behind-the-harness.md), [Skills are the New SDKs](../talks/skills-are-the-new-sdks.md), [The 100-Tool Agent Is a Trap](../talks/the-100-tool-agent-is-a-trap.md), [Guide, Verify, Solve](../talks/guide-verify-solve.md), [We Cut 94% of AI Coding Tokens With a Local Code Index](../talks/we-cut-94-of-ai-coding-tokens-with-a-local-code-index.md), [Develop at Idea Velocity](../talks/develop-at-idea-velocity.md), [Enterprise Agents Have a Structure Problem](../talks/enterprise-agents-have-a-structure-problem.md), [From Systems of Record to Systems of Context](../talks/from-systems-of-record-to-systems-of-context.md), [From Blind Spots to Merged PRs: Continuous Agentic Performance Optimization](../talks/from-blind-spots-to-merged-prs-continuous-agentic-performance-optimization.md)
+Supporting talks: [Codex, Behind the Harness](../talks/codex-behind-the-harness.md), [Skills are the New SDKs](../talks/skills-are-the-new-sdks.md), [The 100-Tool Agent Is a Trap](../talks/the-100-tool-agent-is-a-trap.md), [Guide, Verify, Solve](../talks/guide-verify-solve.md), [In the Land of AI Agents, the Verifiers Are King](../talks/in-the-land-of-ai-agents-the-verifiers-are-king.md), [The Next Game Engine Won't Have a Manual](../talks/the-next-game-engine-wont-have-a-manual.md), [Enterprise Agents Have a Structure Problem](../talks/enterprise-agents-have-a-structure-problem.md), [From Systems of Record to Systems of Context](../talks/from-systems-of-record-to-systems-of-context.md)
 
-### Capabilities (tools, skills, code) should be disclosed progressively and loaded just-in-time rather than declared up front in every request.
+### Tools, skills, and scene detail should be loaded just-in-time through progressive disclosure rather than declared up front in the system prompt.
 
 Support: **5** talk(s)
 
-> "I mean, this is not a new software idea. We have used lazy loading, just-in-time compilation, and on-demand resource loading from years. We are just applying the simple and same principle to the LLM context."
+> "And with just-in-time routing, the prompt may include only three to five relevant schemas, closer to about 1,000 tokens."
 >
-> — [The 100-Tool Agent Is a Trap](../talks/the-100-tool-agent-is-a-trap.md), [11:13](https://www.youtube.com/watch?v=vh2VGuQ3zhY&t=673s)
+> — [The 100-Tool Agent Is a Trap](../talks/the-100-tool-agent-is-a-trap.md), [5:40](https://www.youtube.com/watch?v=vh2VGuQ3zhY&t=340s)
 
-Supporting talks: [Codex, Behind the Harness](../talks/codex-behind-the-harness.md), [The 100-Tool Agent Is a Trap](../talks/the-100-tool-agent-is-a-trap.md), [Skills are the New SDKs](../talks/skills-are-the-new-sdks.md), [We Cut 94% of AI Coding Tokens With a Local Code Index](../talks/we-cut-94-of-ai-coding-tokens-with-a-local-code-index.md), [Guide, Verify, Solve](../talks/guide-verify-solve.md)
+Supporting talks: [Codex, Behind the Harness](../talks/codex-behind-the-harness.md), [Skills are the New SDKs](../talks/skills-are-the-new-sdks.md), [The 100-Tool Agent Is a Trap](../talks/the-100-tool-agent-is-a-trap.md), [Context Engineering in 2026](../talks/context-engineering-in-2026.md), [The Next Game Engine Won't Have a Manual](../talks/the-next-game-engine-wont-have-a-manual.md)
 
-### Durable agent state belongs in files, docs, or session logs outside the context window, so that work survives compaction, crashes, and harness migrations.
+### Durable agent state belongs in files and external systems outside the context window and outside any one agent framework, so it survives resets, crashes, and tool migrations.
 
-Support: **5** talk(s)
+Support: **6** talk(s)
 
 > "The state lives in files. It is not trapped inside one model. And this is the single most practical thing I learned all year."
 >
 > — [I Run a Fleet of AI Agents Across Three Machines. Here's What Broke.](../talks/i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke.md), [2:25](https://www.youtube.com/watch?v=4kYl2_mqmnQ&t=145s)
 
-Supporting talks: [I Run a Fleet of AI Agents Across Three Machines. Here's What Broke.](../talks/i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke.md), [Velocity Sickness: What Happens When Your Whole Team Gets 10x Faster](../talks/velocity-sickness-what-happens-when-your-whole-team-gets-10x-faster.md), [Every company should have a Brain](../talks/every-company-should-have-a-brain.md), [WTF Is the Context Layer? The Missing Infrastructure for Production Agents](../talks/wtf-is-the-context-layer-the-missing-infrastructure-for-production-agents.md), [Evolution of agentic surfaces](../talks/evolution-of-agentic-surfaces.md)
+Supporting talks: [I Run a Fleet of AI Agents Across Three Machines. Here's What Broke.](../talks/i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke.md), [Velocity Sickness: What Happens When Your Whole Team Gets 10x Faster](../talks/velocity-sickness-what-happens-when-your-whole-team-gets-10x-faster.md), [Every company should have a Brain](../talks/every-company-should-have-a-brain.md), [WTF Is the Context Layer? The Missing Infrastructure for Production Agents](../talks/wtf-is-the-context-layer-the-missing-infrastructure-for-production-agents.md), [Evolution of agentic surfaces](../talks/evolution-of-agentic-surfaces.md), [Enterprise Agents Have a Structure Problem](../talks/enterprise-agents-have-a-structure-problem.md)
 
-### A context corpus without curation, provenance, and active pruning degrades into confidently wrong output; context needs lifecycle management like code.
+### Dense vector similarity alone is not sufficient retrieval; keyword/lexical methods must be combined with it.
+
+Support: **3** talk(s)
+
+> "By themselves, both searches miss about one in four results. Together, they miss about one in 10."
+>
+> — [We Cut 94% of AI Coding Tokens With a Local Code Index](../talks/we-cut-94-of-ai-coding-tokens-with-a-local-code-index.md), [4:35](https://www.youtube.com/watch?v=dRmWYHuIJxM&t=275s)
+
+Supporting talks: [On AI and Knowledge](../talks/on-ai-and-knowledge.md), [Context Engineering in 2026](../talks/context-engineering-in-2026.md), [We Cut 94% of AI Coding Tokens With a Local Code Index](../talks/we-cut-94-of-ai-coding-tokens-with-a-local-code-index.md)
+
+### Agent output quality is capped by the structure and hygiene of the organization's written context — documentation, definitions, provenance, and lifecycle management — which most companies do not maintain.
 
 Support: **6** talk(s)
 
-> "a brain nobody curates becomes a garbage dump with great search. Retrieval will surface a stale fact with total confidence."
+> "Even if you have really good agents, they're not going to know how to solve these problems if they don't have documentation or skills"
 >
-> — [Every company should have a Brain](../talks/every-company-should-have-a-brain.md), [13:58](https://www.youtube.com/watch?v=eBUyTS7SzV4&t=838s)
+> — [Content Is Code](../talks/content-is-code.md), [7:22](https://www.youtube.com/watch?v=yv6xovSsB1U&t=442s)
 
-Supporting talks: [Every company should have a Brain](../talks/every-company-should-have-a-brain.md), [Enterprise Agents Have a Structure Problem](../talks/enterprise-agents-have-a-structure-problem.md), [Content Is Code](../talks/content-is-code.md), [Skills are the New SDKs](../talks/skills-are-the-new-sdks.md), [WTF Is the Context Layer? The Missing Infrastructure for Production Agents](../talks/wtf-is-the-context-layer-the-missing-infrastructure-for-production-agents.md), [Design Patterns for AI Trust: Juries, Libraries, and Agent Tiers](../talks/design-patterns-for-ai-trust-juries-libraries-and-agent-tiers.md)
+Supporting talks: [Content Is Code](../talks/content-is-code.md), [Every company should have a Brain](../talks/every-company-should-have-a-brain.md), [WTF Is the Context Layer? The Missing Infrastructure for Production Agents](../talks/wtf-is-the-context-layer-the-missing-infrastructure-for-production-agents.md), [Enterprise Agents Have a Structure Problem](../talks/enterprise-agents-have-a-structure-problem.md), [Design Patterns for AI Trust: Juries, Libraries, and Agent Tiers](../talks/design-patterns-for-ai-trust-juries-libraries-and-agent-tiers.md), [Skills are the New SDKs](../talks/skills-are-the-new-sdks.md)
 
-### Retrieval itself is largely solved; the hard and valuable part is structuring, ranking, and understanding what gets retrieved.
-
-Support: **4** talk(s)
-
-> "The problem was never the missing of data, the retrieval. The problem is like the missing understanding."
->
-> — [From Systems of Record to Systems of Context](../talks/from-systems-of-record-to-systems-of-context.md), [1:46](https://www.youtube.com/watch?v=Btk8wDUVs74&t=106s)
-
-Supporting talks: [From Systems of Record to Systems of Context](../talks/from-systems-of-record-to-systems-of-context.md), [Every company should have a Brain](../talks/every-company-should-have-a-brain.md), [Enterprise Agents Have a Structure Problem](../talks/enterprise-agents-have-a-structure-problem.md), [On AI and Knowledge](../talks/on-ai-and-knowledge.md)
-
-### Verification must run in a context separate from generation — the agent that produced the work should not be the one that checks it, and ideally should not even expose its reasoning to the checker.
+### Verification should be done by a separate agent deliberately denied the producing agent's context, reasoning traces, or model, because self-review is biased.
 
 Support: **5** talk(s)
 
@@ -96,85 +96,91 @@ Supporting talks: [Using LLMs to Secure Source Code](../talks/using-llms-to-secu
 
 ## Disagreements
 
-### Should an agent's context be hand-authored and human-maintained, or continuously derived from live systems and self-improvement loops?
+### Does long context actually degrade model performance enough to justify aggressively shrinking the working set?
 
 | Position A | Position B |
 |---|---|
-| Context artifacts are written and pruned by humans. Skill files are the unit of work — one capability, written down clearly — and machine-generated ones are measurably worse; asking the model to improve its own instructions yields micromanagement.<br>*[Every company should have a Brain](../talks/every-company-should-have-a-brain.md), [Content Is Code](../talks/content-is-code.md), [Skills are the New SDKs](../talks/skills-are-the-new-sdks.md), [Design Patterns for AI Trust: Juries, Libraries, and Agent Tiers](../talks/design-patterns-for-ai-trust-juries-libraries-and-agent-tiers.md)* | Hand-maintained markdown cannot keep pace with how fast enterprise definitions and processes change; context should be sourced from live systems (dbt, CRM, GitHub, Tableau) and instructions should be hill-climbed automatically from evals and production traces, which outperform handwritten ones.<br>*[Enterprise Agents Have a Structure Problem](../talks/enterprise-agents-have-a-structure-problem.md), [On AI and Knowledge](../talks/on-ai-and-knowledge.md), [WTF Is the Context Layer? The Missing Infrastructure for Production Agents](../talks/wtf-is-the-context-layer-the-missing-infrastructure-for-production-agents.md), [Evolution of agentic surfaces](../talks/evolution-of-agentic-surfaces.md)* |
+| Yes — performance falls off well before the window is full (degradation from ~25% utilization, a 'dumb zone' past 40%, lost-in-the-middle collapsing tool selection to 13.6% at 741 tools), so builders must keep the working set small and never dump whole codebases or scenes into context.<br>*[Skills are the New SDKs](../talks/skills-are-the-new-sdks.md), [The 100-Tool Agent Is a Trap](../talks/the-100-tool-agent-is-a-trap.md), [Codex, Behind the Harness](../talks/codex-behind-the-harness.md), [Guide, Verify, Solve](../talks/guide-verify-solve.md), [The Next Game Engine Won't Have a Manual](../talks/the-next-game-engine-wont-have-a-manual.md)* | Not necessarily — controlled experiments recalled distinctive facts reliably up to 800k tokens with no compaction, and the setup sending the most tokens was the cheapest to run because 97% of tokens were cached; the real failure mode is dense retrieval, not context length.<br>*[Context Engineering in 2026](../talks/context-engineering-in-2026.md)* |
 
-*Why it matters: It determines whether you staff humans to write and prune skills as a permanent job, or build a derivation pipeline plus approval gate — and whether your context goes stale between releases or drifts without anyone noticing.*
+*Why it matters: If length itself is benign, the engineering effort belongs in retrieval quality and cache preservation rather than in routers, truncation, and eviction policies — and much of the tooling built to shrink context is wasted overhead.*
 
-### When context fills up, should the system summarize what happened or discard it and re-read durable artifacts?
-
-| Position A | Position B |
-|---|---|
-| Compact automatically, server-side, in the form the model was trained on so post-compaction performance is unchanged; periodic batch summarization of transcripts into memory ('dreaming') makes later sessions smarter.<br>*[Codex, Behind the Harness](../talks/codex-behind-the-harness.md), [Evolution of agentic surfaces](../talks/evolution-of-agentic-surfaces.md)* | Never compact. Compaction is slow, you cannot choose what survives, and what it drops is gone — clear context entirely and re-read self-written handoff files; extracting decisions into durable docs up front beats letting an LLM summarize the session afterward.<br>*[I Run a Fleet of AI Agents Across Three Machines. Here's What Broke.](../talks/i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke.md), [Velocity Sickness: What Happens When Your Whole Team Gets 10x Faster](../talks/velocity-sickness-what-happens-when-your-whole-team-gets-10x-faster.md)* |
-
-*Why it matters: If summarization is lossy in ways you cannot control, every long-running agent silently loses the specific constraint that mattered; if it is not, writing and maintaining handoff files is wasted engineering.*
-
-### Should contextual understanding be precomputed offline, or assembled just-in-time at query time?
+### When a conversation outgrows the window, should the agent compact/summarize it?
 
 | Position A | Position B |
 |---|---|
-| Understanding cannot be constructed at query time and must be computed ahead of time — slow and fast engines running offline over user history, a curated semantic layer consulted cleanest-first, structure defined before the agent is turned loose, and an owned context pipeline rather than rented per-query lookups.<br>*[From Systems of Record to Systems of Context](../talks/from-systems-of-record-to-systems-of-context.md), [Enterprise Agents Have a Structure Problem](../talks/enterprise-agents-have-a-structure-problem.md), [Design Patterns for AI Trust: Juries, Libraries, and Agent Tiers](../talks/design-patterns-for-ai-trust-juries-libraries-and-agent-tiers.md), [The Rise of CaaS: Context-as-a-Service for Agentic AI](../talks/the-rise-of-caas-context-as-a-service-for-agentic-ai.md)* | Assemble at runtime: retrieve tool schemas semantically per request, defer tools behind a search call, disclose skills progressively, and let an agentic retrieval loop reflect on whether the information need is satisfied before returning.<br>*[The 100-Tool Agent Is a Trap](../talks/the-100-tool-agent-is-a-trap.md), [Codex, Behind the Harness](../talks/codex-behind-the-harness.md), [Skills are the New SDKs](../talks/skills-are-the-new-sdks.md), [On AI and Knowledge](../talks/on-ai-and-knowledge.md)* |
+| Yes, but compaction must be server-side and in the exact form the model was trained on, so post-compaction performance is unchanged; auto-compaction runs by default.<br>*[Codex, Behind the Harness](../talks/codex-behind-the-harness.md)* | No — do not compact by default. Either keep the full history (which measured cheaper, faster, and higher-recall than every compaction preset) or clear the context entirely and rehydrate from self-written handoff and state documents, because summarization invalidates the prompt cache and permanently discards content you cannot choose.<br>*[Context Engineering in 2026](../talks/context-engineering-in-2026.md), [I Run a Fleet of AI Agents Across Three Machines. Here's What Broke.](../talks/i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke.md), [Velocity Sickness: What Happens When Your Whole Team Gets 10x Faster](../talks/velocity-sickness-what-happens-when-your-whole-team-gets-10x-faster.md)* |
 
-*Why it matters: Precomputation buys latency and consistency but has a cold-start hole and cannot answer what it did not anticipate; runtime assembly covers the long tail but pays per-request latency and can silently retrieve the wrong slice.*
+*Why it matters: Compaction is on by default in most harnesses; if summarization is a cache-invalidating net loss, the default is costing teams money and recall, and the correct investment is durable file-backed state plus a reset command instead of a summarizer.*
 
-### Does adding another data source or knowledge base make an agent better or worse?
+### With hundreds of available capabilities, do you retrieve tools dynamically or eliminate most tools in favor of filesystem skills?
 
 | Position A | Position B |
 |---|---|
-| Additional sources are cheap and purely additive — the surface only grows, and combining retrieval methods and company-wide ambient grounding measurably beats narrow curated datasets.<br>*[From Systems of Record to Systems of Context](../talks/from-systems-of-record-to-systems-of-context.md), [On AI and Knowledge](../talks/on-ai-and-knowledge.md), [The Rise of CaaS: Context-as-a-Service for Agentic AI](../talks/the-rise-of-caas-context-as-a-service-for-agentic-ai.md)* | Adding knowledge bases and MCP servers is precisely what does not fix bad answers; sources must be ranked into a hierarchy, irrelevant tools removed from the choice set, and the corpus actively pruned.<br>*[Enterprise Agents Have a Structure Problem](../talks/enterprise-agents-have-a-structure-problem.md), [The 100-Tool Agent Is a Trap](../talks/the-100-tool-agent-is-a-trap.md), [Skills are the New SDKs](../talks/skills-are-the-new-sdks.md), [Every company should have a Brain](../talks/every-company-should-have-a-brain.md)* |
+| Build a semantic router or deferred-tool search: embed the catalog, retrieve K≈5 schemas per request, and keep the full catalog available but out of the prompt (~99% token reduction, TTFT stays flat past 500 tools).<br>*[The 100-Tool Agent Is a Trap](../talks/the-100-tool-agent-is-a-trap.md), [Codex, Behind the Harness](../talks/codex-behind-the-harness.md)* | Don't route a large tool catalog — collapse it. Production agents ship with only a handful of tools, and a skills folder with progressive disclosure replaces MCP for most use cases at roughly 10x less context overhead; MCP is reserved for auth, process isolation, restricted-environment data, and compute the local machine lacks.<br>*[Skills are the New SDKs](../talks/skills-are-the-new-sdks.md)* |
 
-*Why it matters: It decides whether the roadmap for a struggling agent is 'connect more systems' or 'rank and cut what is already connected' — and the two spend engineering effort in opposite directions.*
+*Why it matters: One path buys embedding infrastructure and a retrieval-quality problem tied to tool-description wording; the other buys a filesystem convention with a real security gap (skills execute unisolated on the agent's own machine, from marketplaces with no verification).*
+
+### Should the context an agent needs be precomputed offline into a structured layer, or assembled at query time by an exploring agent?
+
+| Position A | Position B |
+|---|---|
+| Precompute. Understanding cannot be constructed at query time — build a ranked source-of-truth hierarchy, a semantic layer, and slow/fast profile engines ahead of the question, fed from live systems rather than hand-maintained docs.<br>*[From Systems of Record to Systems of Context](../talks/from-systems-of-record-to-systems-of-context.md), [Enterprise Agents Have a Structure Problem](../talks/enterprise-agents-have-a-structure-problem.md), [WTF Is the Context Layer? The Missing Infrastructure for Production Agents](../talks/wtf-is-the-context-layer-the-missing-infrastructure-for-production-agents.md), [Every company should have a Brain](../talks/every-company-should-have-a-brain.md)* | Let the agent retrieve and explore at request time — agentic retrieval beats single-shot on hard cases with a user-tunable effort knob, and precollected context is structurally capped: if the field wasn't collected, the agent can never get it, whereas a searching agent keeps going.<br>*[On AI and Knowledge](../talks/on-ai-and-knowledge.md), [The Rise of CaaS: Context-as-a-Service for Agentic AI](../talks/the-rise-of-caas-context-as-a-service-for-agentic-ai.md)* |
+
+*Why it matters: This determines whether the spend goes into an offline pipeline with cold-start gaps and compounding coverage, or into per-query latency and token burn where frequency, not volume, becomes the cost killer.*
+
+### Does context scaffolding become thinner as models improve, or is layered structure permanent architecture?
+
+| Position A | Position B |
+|---|---|
+| Thinner. Harness fixes encoding yesterday's model limitations become pure overhead (added latency, broken caching) once the limitation disappears, and prompts should be cut ~50% and made less prescriptive with each step-jump model version.<br>*[Evolution of agentic surfaces](../talks/evolution-of-agentic-surfaces.md), [Using LLMs to Secure Source Code](../talks/using-llms-to-secure-source-code.md)* | Permanent. Instructions are probabilistic and a prompt will eventually lose, so identity rules, deterministic output vetoes, ranked semantic layers, and pre-built scaffolding must exist as structure the model physically cannot override — you scaffold first, then turn the model loose.<br>*[Stop Writing Tone Instructions. Layer Them.](../talks/stop-writing-tone-instructions-layer-them.md), [Design Patterns for AI Trust: Juries, Libraries, and Agent Tiers](../talks/design-patterns-for-ai-trust-juries-libraries-and-agent-tiers.md), [Guide, Verify, Solve](../talks/guide-verify-solve.md)* |
+
+*Why it matters: It decides whether teams should be deleting context machinery at each model release or hardening it — and whether a migration to a new model is a week of cleanup or a rewrite of load-bearing safety layers.*
 
 ## Practical Guidance
 
 **Do:**
 
-- Cap the available-skills/tool-description block as a fraction of the context window — Codex caps it at 2% and progressively truncates beyond that.
-- Mark rarely-used tools as deferred so they are reachable via tool search rather than resident in the context window.
-- Keep baseline system prompt plus tool definitions under 40% of the context window before the first user turn.
-- Past ~50 tools in production, route semantically and inject only the top-K schemas; K=5 is the recommended default, and below 20 tools skip the router entirely.
-- Keep agent state in files on disk and recover by clearing context and re-reading handoff/history files rather than compacting.
-- Rank sources of truth explicitly — semantic layer and canonical queries first (~80% of cases), database graph last.
-- Give the verifier a different context than the generator: deny it the discovery agent's reasoning traces and have it assume the finding is false by default.
-- Supply the model a fixed catalog to select from (e.g. UI components gated by client app version) so it can never emit something the client cannot render.
-- Write goal prompts that are concrete and verifiable rather than long essays, since the loop only terminates when the model can detect the goal is met.
-- Use commander's intent — tell the agent why it should do something, not just what to do.
-- Attach citations back to source systems so a human can follow a claim to its origin.
-- Combine retrieval methods rather than relying on vector similarity alone; one team weighted 50% semantic / 30% keyword / 20% recency.
-- Log correction events and feed them back into agent context as an explicit feedback loop.
-- Build your own eval before optimizing context, so model and harness choices are made on your own cost/performance frontier.
-- Write tool descriptions in the words users actually use, including intent, action, and key entities — routing quality is bounded by description quality.
-- Remove harness workarounds once a model no longer needs them; stale compensations become pure latency and cache-invalidation overhead.
+- Budget context blocks as an explicit fraction of the window — Codex caps the available-skills list at 2% and truncates beyond it; keep baseline system prompt plus tool definitions under 40% before the first user turn.
+- Mark tools as deferred / retrieve them via search or a semantic router once the catalog passes ~50 tools; below 20 tools just load them statically.
+- Start K at 5 retrieved tools, run the test set at K=3, 5, and 10, and pick the smallest K that hits your accuracy target.
+- Pair BM25/keyword retrieval with dense search — at 400k tokens dense recall dropped to 0% on buried facts while BM25 held 100%.
+- Before summarizing anything, check the compression ratio against the prompt cache: you need better than ~50x compression for summarization to pay for the cache invalidation.
+- Write agent state to files (handoff docs, history, per-machine directories, shared state changed only via PR) so you can clear context and rehydrate instead of compacting.
+- Rank knowledge sources into an explicit hierarchy — semantic layer, then canonical queries, then the database graph — and consult cleanest-first instead of weighting all knowledge bases equally.
+- Source agent context from live systems (GitHub, CRM, dbt, Tableau) and log correction events back into it, rather than hand-maintaining .md files against fast-changing enterprise definitions.
+- Give the model a fixed catalog to select from rather than open generation — e.g. UI components gated by client app version so a 2.0 card is only offered to 2.0+ clients.
+- Grade context by relevance the way rendering grades level-of-detail: send detail near the editing focus, stubs for what's far away.
+- Give verification agents a different model, a different methodology, and no access to the producing agent's reasoning traces; default to assuming the finding is false.
+- Instrument every turn — tokens, cache hit rate, cost, TTFT, tool calls, user frustration — since it is cheap and most teams skip it, then measure savings against a fixed counterfactual baseline instead of estimating.
+- Externalize instructions, tool definitions, and skills as configuration so they can be evaluated and hill-climbed automatically against production traces.
+- Supply agents explicit codebase context and constraints up front; Sonar measured >30% fewer tokens consumed per problem.
 
 **Avoid:**
 
-- Dumping the entire codebase into the agent's context — it thrashes, explores, and burns tokens.
-- Connecting an agent to ~15 MCP servers, which can cost over 100,000 tokens per session in tool definitions alone.
-- Reaching for a bigger model or a longer context window when the agent gives a bad answer.
-- Letting each agent keep its own memory system, which causes context sprawl and prevents a single version of truth.
-- Hardcoding context into agents or trapping it inside one agent framework, since the framework will churn within about a year.
-- Optimizing output tokens, max_tokens, or temperature to cut coding spend — roughly 90% of the cost is input.
-- Instructing the model in the prompt to send less context; the context was transmitted and billed before the prompt was read.
-- Mass-generating skills with an LLM — published measurements show generated skills consume more tokens and more reasoning time than human-written ones.
-- Asking one system prompt to do four different jobs (situational mode, expressive voice, hard identity rules, output check).
-- Asking the model to improve its own prompts, which produces micromanagement because it was trained on human-produced management material.
-- Holding large combinatorial state (e.g. an 800-person seating arrangement) in the context window instead of deterministic code.
-- Treating a transcript as proof of what happened instead of a receipt recording what was allowed, attempted, executed, and confirmed.
+- Dumping the entire codebase, the entire scene, or every connected knowledge base into the agent and letting it thrash.
+- Compacting by default — name the specific constraint (e.g. the conversation no longer fits and caching stopped helping) before you compact anything.
+- Aggressively clearing old tool outputs: the agent re-retrieves what it already had, raising total cost and tool-call count.
+- Connecting an agent to 15 MCP servers, which spends over 100,000 tokens per session on tool definitions alone.
+- Assuming a bigger model, a longer context window, or another knowledge base will fix a wrong answer — it won't tell the agent which source is authoritative.
+- Adding prompt instructions asking the model to use less context; the context was transmitted and billed before the model read the prompt.
+- Hardcoding context into individual agents or giving each agent its own memory system — it produces context sprawl, no single version of truth, and total loss on each framework migration.
+- Shipping LLM-generated skills unreviewed; they measurably burn more tokens and reasoning time than human-written ones, and a skill is only as good as the human who wrote it.
+- Letting the agent that produced the work grade the work — it self-censors, loses recall, and reports that its own PR is great.
+- Holding large combinatorial state (e.g. a seating arrangement for 800 people) in the context window instead of in deterministic compute.
+- Keeping a memory layer without provenance, contradiction checks, and active pruning — it degrades into a garbage dump with great search that surfaces stale facts confidently.
 
 ## Notable Outliers
 
-- Tool-selection accuracy collapses from ~78% at 10 tools to ~40% at 100 tools to 13.6% at 741 tools — roughly one correct tool in eight — and the cause is lost-in-the-middle attention, not badly written tools. ([The 100-Tool Agent Is a Trap](../talks/the-100-tool-agent-is-a-trap.md), [3:57](https://www.youtube.com/watch?v=vh2VGuQ3zhY&t=237s))
-- Roughly 25% of a coding agent's context is consumed by CLAUDE.md, skills, and MCPs before any task-specific content arrives, which is the argument for keeping spec/goal/history context in a separate orchestration layer. ([Develop at Idea Velocity](../talks/develop-at-idea-velocity.md), [5:19](https://www.youtube.com/watch?v=9arM9b7JgOo&t=319s))
-- Prompts should shrink about 50% with each step-jump model version; for newer models 'look for where untrusted data hits the trust boundary' replaces a long prescriptive prompt. ([Using LLMs to Secure Source Code](../talks/using-llms-to-secure-source-code.md), [9:51](https://www.youtube.com/watch?v=imFedndyXYQ&t=591s))
-- For persona systems, context-window anchoring is strictly better than fine-tuning, because fine-tuning layers a thin personal signal over vast cultural sediment in ways no longer open to audit — the persona is the configuration, not the checkpoint. ([The Miranda Hypothesis: How Hamilton Poisoned Persona Evals](../talks/the-miranda-hypothesis-how-hamilton-poisoned-persona-evals.md), [27:12](https://www.youtube.com/watch?v=IJXjTLPzvAU&t=1632s))
-- Supplying explicit codebase context and constraints cut tokens consumed per problem by over 30%, and cleaning a codebase measurably reduced the tokens and reasoning needed for identical agentic tasks. ([In the Land of AI Agents, the Verifiers Are King](../talks/in-the-land-of-ai-agents-the-verifiers-are-king.md), [10:45](https://www.youtube.com/watch?v=VrpEyglYgeU&t=645s))
-- Routing to the right metric definition based on who is asking — per-team and per-individual preference — is an open research problem that neither semantic layers nor agent memory solves. ([Enterprise Agents Have a Structure Problem](../talks/enterprise-agents-have-a-structure-problem.md), [11:03](https://www.youtube.com/watch?v=B8l81jhvHbI&t=663s))
-- Retrieval effort should be a user-facing knob because it is a direct latency-versus-quality tradeoff, and retrieval should be optimized for information density per token rather than relevance alone. ([On AI and Knowledge](../talks/on-ai-and-knowledge.md), [10:24](https://www.youtube.com/watch?v=RGSFUqzqErE&t=624s))
-- Owning a scraping pipeline beats renting context-as-a-service past roughly 15,000 entities or queries, because query frequency rather than record volume is the cost driver — owned context compounds while rented decays. ([The Rise of CaaS: Context-as-a-Service for Agentic AI](../talks/the-rise-of-caas-context-as-a-service-for-agentic-ai.md), [18:59](https://www.youtube.com/watch?v=Ot4OPrPH4xY&t=1139s))
-- Whether an action should be approved cannot be decided from the action alone — deleting a file is acceptable or not depending on whether the user asked for it, so approval requires task context. ([Codex, Behind the Harness](../talks/codex-behind-the-harness.md), [14:25](https://www.youtube.com/watch?v=shRR1e2HXMk&t=865s))
+- Doing nothing beat every compaction preset at once: keeping the full untouched conversation was cheaper, faster, and higher-recall, because 97% of tokens were cached — while summarizing first dropped correct answers to 32%. ([Context Engineering in 2026](../talks/context-engineering-in-2026.md), [45:31](https://www.youtube.com/watch?v=WP3hjUXd918&t=2731s))
+- Distinctive facts were still recalled reliably at 800k tokens with no compaction at all — long context did not rot. ([Context Engineering in 2026](../talks/context-engineering-in-2026.md), [53:53](https://www.youtube.com/watch?v=WP3hjUXd918&t=3233s))
+- Tool-selection accuracy falls from ~78% at 10 tools to 13.6% at 741 tools — roughly one correct tool out of eight — purely from catalog size, not from badly written tools. ([The 100-Tool Agent Is a Trap](../talks/the-100-tool-agent-is-a-trap.md), [3:57](https://www.youtube.com/watch?v=vh2VGuQ3zhY&t=237s))
+- About 90% of AI coding spend is input tokens, so shorter answers, max-token caps, and temperature tuning cannot move the bill. ([We Cut 94% of AI Coding Tokens With a Local Code Index](../talks/we-cut-94-of-ai-coding-tokens-with-a-local-code-index.md), [1:57](https://www.youtube.com/watch?v=dRmWYHuIJxM&t=117s))
+- Prompts should shrink about 50% with every step-jump model version — for newer models 'look for where untrusted data hits the trust boundary' is enough. ([Using LLMs to Secure Source Code](../talks/using-llms-to-secure-source-code.md), [9:51](https://www.youtube.com/watch?v=imFedndyXYQ&t=591s))
+- Ordering soft human context before numeric constraints in the prompt produces less mechanically slotted prose, because the model commits to the numeric framing first if you reverse it. ([Stop Writing Tone Instructions. Layer Them.](../talks/stop-writing-tone-instructions-layer-them.md), [9:58](https://www.youtube.com/watch?v=ij-AU9dpJjc&t=598s))
+- Context-window anchoring beats fine-tuning for personas: fine-tuning layers a thin personal signal over vast cultural sediment in the base weights and removes it from audit — the persona is the configuration, not the checkpoint. ([The Miranda Hypothesis: How Hamilton Poisoned Persona Evals](../talks/the-miranda-hypothesis-how-hamilton-poisoned-persona-evals.md), [27:12](https://www.youtube.com/watch?v=IJXjTLPzvAU&t=1632s))
+- Build-vs-rent break-even for web context arrives at just over 15,000 entities or queries, because frequency rather than record volume is the cost driver — owned context compounds while rented decays. ([The Rise of CaaS: Context-as-a-Service for Agentic AI](../talks/the-rise-of-caas-context-as-a-service-for-agentic-ai.md), [18:59](https://www.youtube.com/watch?v=Ot4OPrPH4xY&t=1139s))
+- Feeding session transcripts plus current memory state through a periodic batch 'dreaming' process makes the next day's agent sessions measurably more intelligent with no retraining. ([Evolution of agentic surfaces](../talks/evolution-of-agentic-surfaces.md), [27:07](https://www.youtube.com/watch?v=K0X9QDRkIdg&t=1627s))
+- Letting the agent browse the knowledge base with bash commands added zero recall over hybrid search and made responses 50% slower. ([Context Engineering in 2026](../talks/context-engineering-in-2026.md), [30:51](https://www.youtube.com/watch?v=WP3hjUXd918&t=1851s))
 
 ## All Talks
 
@@ -182,6 +188,7 @@ Supporting talks: [Using LLMs to Secure Source Code](../talks/using-llms-to-secu
 - [Always-on agents run production without the on-call tax](../talks/always-on-agents-run-production-without-the-on-call-tax.md)
 - [Codex, Behind the Harness](../talks/codex-behind-the-harness.md)
 - [Content Is Code](../talks/content-is-code.md)
+- [Context Engineering in 2026](../talks/context-engineering-in-2026.md)
 - [Design Patterns for AI Trust: Juries, Libraries, and Agent Tiers](../talks/design-patterns-for-ai-trust-juries-libraries-and-agent-tiers.md)
 - [Develop at Idea Velocity](../talks/develop-at-idea-velocity.md)
 - [Enterprise Agents Have a Structure Problem](../talks/enterprise-agents-have-a-structure-problem.md)
@@ -201,6 +208,7 @@ Supporting talks: [Using LLMs to Secure Source Code](../talks/using-llms-to-secu
 - [Stop Writing Tone Instructions. Layer Them.](../talks/stop-writing-tone-instructions-layer-them.md)
 - [The 100-Tool Agent Is a Trap](../talks/the-100-tool-agent-is-a-trap.md)
 - [The Miranda Hypothesis: How Hamilton Poisoned Persona Evals](../talks/the-miranda-hypothesis-how-hamilton-poisoned-persona-evals.md)
+- [The Next Game Engine Won't Have a Manual](../talks/the-next-game-engine-wont-have-a-manual.md)
 - [The Rise of CaaS: Context-as-a-Service for Agentic AI](../talks/the-rise-of-caas-context-as-a-service-for-agentic-ai.md)
 - [Using LLMs to Secure Source Code](../talks/using-llms-to-secure-source-code.md)
 - [Velocity Sickness: What Happens When Your Whole Team Gets 10x Faster](../talks/velocity-sickness-what-happens-when-your-whole-team-gets-10x-faster.md)
@@ -214,6 +222,7 @@ Supporting talks: [Using LLMs to Secure Source Code](../talks/using-llms-to-secu
 - [Alex Shaw](../speakers/alex-shaw.md)
 - [Anirban Chatterjee](../speakers/anirban-chatterjee.md)
 - [Ankush Rastogi](../speakers/ankush-rastogi.md)
+- [Arturo Nunez](../speakers/arturo-nunez.md)
 - [Bala Ramdoss](../speakers/bala-ramdoss.md)
 - [Dominik Kundel](../speakers/dominik-kundel.md)
 - [Elvin Aghammadzada](../speakers/elvin-aghammadzada.md)
@@ -229,15 +238,18 @@ Supporting talks: [Using LLMs to Secure Source Code](../talks/using-llms-to-secu
 - [Justin Smith](../speakers/justin-smith.md)
 - [Kyle Jaejun Lee](../speakers/kyle-jaejun-lee.md)
 - [Leo Mehr](../speakers/leo-mehr.md)
+- [Louis-François Bouchard](../speakers/louis-francois-bouchard.md)
 - [Matt Dailey](../speakers/matt-dailey.md)
 - [May Walter](../speakers/may-walter.md)
 - [Nicholas Arcolano](../speakers/nicholas-arcolano.md)
+- [Omar Solano](../speakers/omar-solano.md)
 - [Omer Primor](../speakers/omer-primor.md)
 - [Omri Bruchim](../speakers/omri-bruchim.md)
 - [Pablo Castro](../speakers/pablo-castro.md)
 - [Prukalpa Sankar](../speakers/prukalpa-sankar.md)
 - [Rajkumar Sakthivel](../speakers/rajkumar-sakthivel.md)
 - [Ryan Marten](../speakers/ryan-marten.md)
+- [Samridhi Vaid](../speakers/samridhi-vaid.md)
 - [Sohail Shaikh](../speakers/sohail-shaikh.md)
 - [Tariq Shaukat](../speakers/tariq-shaukat.md)
 - [Vinoth Govindarajan](../speakers/vinoth-govindarajan.md)

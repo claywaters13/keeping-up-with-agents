@@ -1,6 +1,6 @@
 # AI Engineer World's Fair 2026 Wiki
 
-A linked, graph-style wiki built from 231 talks at the AI Engineer World's Fair
+A linked, graph-style wiki built from 246 talks at the AI Engineer World's Fair
 2026 (Moscone West, San Francisco, June 29 to July 2, 2026), transcribed from the
 conference's own YouTube channel and distilled into summaries, extracted quotes, concepts,
 and cross-talk syntheses. Every claim links back to the source video at the exact
@@ -9,23 +9,23 @@ timestamp.
 ## Scope
 
 The fair's official schedule listed 561 sessions across talks, keynotes, workshops, and
-sponsor slots. This corpus covers the 231 that had been published to the
+sponsor slots. This corpus covers the 246 that had been published to the
 conference's YouTube channel when it was built, and more were still premiering at the
 time. It is a large sample of the fair, not a complete record of it. Every count below
 describes that sample.
 
 ## What this is
 
-- **231 talks** (229 individual talks plus 2 full-day livestream compilations)
-- **933,897 deduplicated words**, **93.9 hours** of source material.
-  Raw totals across all 231 entries are 1,011,341 words and
-  101.7 hours. The difference is roughly 77,444 words of
+- **246 talks** (244 individual talks plus 2 full-day livestream compilations)
+- **988,963 deduplicated words**, **99.2 hours** of source material.
+  Raw totals across all 246 entries are 1,066,407 words and
+  107.0 hours. The difference is roughly 77,444 words of
   livestream-compilation content that duplicates individual talks already covered
   separately, kept as its own entry but not double-counted above.
-- **248 speakers**
+- **264 speakers**
 - **134 concepts**, each with a cross-talk synthesis: state of practice,
   consensus, open disagreements, and do/avoid guidance
-- **4,633 verified quotes**, every one checked verbatim against the raw YouTube
+- **4,925 verified quotes**, every one checked verbatim against the raw YouTube
   captions before publication (see Quote verification below)
 
 ### Concept maturity
@@ -33,8 +33,8 @@ describes that sample.
 | Maturity | Count | Meaning |
 |---|---|---|
 | Settled | 0 | Broad agreement, established practice |
-| Consolidating | 87 | Converging practice, some open edges |
-| Contested | 43 | Active, unresolved disagreement across talks |
+| Consolidating | 80 | Converging practice, some open edges |
+| Contested | 50 | Active, unresolved disagreement across talks |
 | Frontier | 4 | Too new or sparse for consensus yet |
 
 The empty settled bucket needs a caveat before it gets quoted. The synthesis prompt that
@@ -53,7 +53,7 @@ rather than replacing them.
 **Not included:** `data/livestream_segments/` (incomplete segmentation, low-confidence
 speaker attribution, excluded from this wiki entirely rather than just de-duplicated).
 
-**Speaker attribution:** 30 talks have multiple speakers. Where the
+**Speaker attribution:** 31 talks have multiple speakers. Where the
 extraction cannot tell which co-presenter said which line, quotes and positions are kept
 at talk level and are rendered on speaker pages under a clearly labeled "From Talks This
 Speaker Co-Presented" heading. They are never attributed to one individual as their own
@@ -64,10 +64,10 @@ words.
 ```
 wiki/
   README.md            this file
-  talks/<slug>.md       231 talk pages: summary, key points, quotes, positions, concepts
+  talks/<slug>.md       246 talk pages: summary, key points, quotes, positions, concepts
   concepts/<slug>.md    134 concept pages: definition, state of practice, consensus,
                         disagreements, do/avoid guidance, full talk list, speakers
-  speakers/<slug>.md    248 speaker pages: role, company, bio, talks, sessions,
+  speakers/<slug>.md    264 speaker pages: role, company, bio, talks, sessions,
                         concepts, quotes
 ```
 
@@ -93,15 +93,15 @@ Every quote in this wiki passed a deterministic verification pass against the ra
 caption files (`raw/caps/<video_id>.en.json3`) before publication, using normalized
 word-sequence matching rather than a model judgment call. Quotes that failed verbatim
 verification were dropped, not edited (see `data/passA/_dropped_quotes.json` for the list).
-4,633 quotes passed and are rendered across the 231 talk pages:
-3,913 individually speaker-attributed, and 720
+4,925 quotes passed and are rendered across the 246 talk pages:
+4,185 individually speaker-attributed, and 740
 talk-level from multi-speaker sessions.
 
 ## Source data
 
 Generated deterministically (no model calls) by `scripts/build_wiki.py` from:
 
-- `data/index.json`, the corpus index (231 entries)
+- `data/index.json`, the corpus index (246 entries)
 - `data/passA/<slug>.json`, per-talk extraction (summary, quotes, concepts, positions)
 - `data/passC/<concept-slug>.json`, per-concept cross-talk synthesis
 - `data/concepts/canonical.json` and `data/concepts/concept_talks.json`, concept vocabulary

@@ -4,15 +4,15 @@ type: "concept"
 slug: "institutional-knowledge-capture"
 tier: "supporting"
 maturity: "consolidating"
-talk_count: 11
-speaker_count: 13
+talk_count: 12
+speaker_count: 14
 ---
 
 # institutional knowledge capture
 
 **Maturity: CONSOLIDATING** — Consolidating — converging practice, some open edges
 
-*Supporting concept* &middot; discussed across **11** talk(s) by **13** speaker(s)
+*Supporting concept* &middot; discussed across **12** talk(s) by **14** speaker(s)
 
 **Definition:** Turning tacit organizational and team knowledge into durable, retrievable artifacts that agents and people can both use.
 
@@ -20,61 +20,51 @@ speaker_count: 13
 
 ## State of Practice
 
-The field has stopped treating knowledge capture as a documentation chore and started treating it as the load-bearing layer of agentic systems: speakers repeatedly reported that identical frontier models produce wildly different results depending on what durable context surrounds them, so the bottleneck is memory organization rather than model choice, context length, or number of MCP servers. The dominant architecture is a curated, versioned corpus — markdown skill files, wiki derivative layers, semantic layers, or property graphs — with explicit provenance, contradiction resolution where human corrections win, and a pruning process (human plus agent) that keeps stale facts from being retrieved confidently. Capture is understood as a loop, not a write: correction events, closed-won/closed-lost outcomes, eval failures, and questions asked of the base all feed back into it, and a quarterly-or-faster refresh is treated as mandatory because definitions and processes drift. The hard, unsolved part is tacit knowledge that was never written anywhere — a PM's model of their product, a data owner's join logic and reporting conventions, which of two equally correct metric definitions a given team means — and speakers were candid that existing Notion docs, help centers, and hand-maintained .md files do not contain it. The economic argument is now explicit: the accumulated corpus, not the model or the UI, is the defensible asset, because models are rented and chat interfaces are commodity. Where practitioners still split is on substrate (plain files vs. modeled semantic layer/graph) and on authorship (deliberate human curation vs. automatic harvest from sessions, Slack, and live systems).
+The consensus position across this conference is that the differentiator in agentic systems has moved from the model to the knowledge layer around it: identical frontier models produce wildly different results depending on what organizational context they can retrieve, and 'bad answer → bigger model / longer context / more MCP servers' is explicitly named as the wrong reflex. Practitioners are converging on an architecture with four parts: an explicit hierarchy of sources of truth (semantic layer and canonical queries first, graph or raw stores last), a derivative layer of agent-generated artifacts (wikis, skills, procedures) kept separate from hand-authored source notes, hygiene machinery (provenance, salience gating, contradiction resolution where human corrections win, active pruning), and a feedback loop that writes corrections, wins/losses, eval failures, and answered questions back into context. Two failure modes dominate the reports: hand-maintained .md files and skills rot faster than enterprise definitions change, and an uncurated store becomes 'a garbage dump with great search' that returns stale facts confidently. The hardest unsolved problems named are preference routing (two teams computing the same metric differently, both correct, with no way to route by requester identity), memory compaction, and getting genuinely tacit knowledge — what a PM or data owner holds in their head — into a durable artifact at all. Economically, several speakers argue the accumulated brain is the only durable moat, since model quality is rented; costs cited are low ($30K to build a 39-agent factory brain, a couple thousand a month to run, zero training spend).
 
 ## Consensus
 
-### Bad agent output is a knowledge-organization failure, not a model failure — the same frontier model produces radically different results depending on the durable context around it.
+### Agent quality is bounded by the organization and retrievability of captured knowledge, not by model capability — swapping in a bigger model or longer context does not fix bad answers.
 
-Support: **5** talk(s)
+Support: **6** talk(s)
 
-> "The 2X people and the 100X people are using the exact same Claude. Same weights, same context window, same API. So, the leverage is not in the weights. It's in how you wire the work."
+> "The brain isn't a smarter model. It's actually a really, really well-organized memory."
 >
-> — [Every company should have a Brain](../talks/every-company-should-have-a-brain.md), [2:52](https://www.youtube.com/watch?v=eBUyTS7SzV4&t=172s)
+> — [The Factory That Dreams: 39 AI Agents, No Framework](../talks/the-factory-that-dreams-39-ai-agents-no-framework.md), [2:37](https://www.youtube.com/watch?v=jtzh-GBXBWc&t=157s)
 
-Supporting talks: [Every company should have a Brain](../talks/every-company-should-have-a-brain.md), [The Factory That Dreams: 39 AI Agents, No Framework](../talks/the-factory-that-dreams-39-ai-agents-no-framework.md), [Enterprise Agents Have a Structure Problem](../talks/enterprise-agents-have-a-structure-problem.md), [Content Is Code](../talks/content-is-code.md), [A Genius With Amnesia](../talks/a-genius-with-amnesia.md)
+Supporting talks: [Enterprise Agents Have a Structure Problem](../talks/enterprise-agents-have-a-structure-problem.md), [The Factory That Dreams: 39 AI Agents, No Framework](../talks/the-factory-that-dreams-39-ai-agents-no-framework.md), [Every company should have a Brain](../talks/every-company-should-have-a-brain.md), [Content Is Code](../talks/content-is-code.md), [Your Moat Is Your Data Model](../talks/your-moat-is-your-data-model.md), [Turn 10,994 Notes Into Memory](../talks/turn-10994-notes-into-memory.md)
 
-### The accumulated, organization-specific knowledge base is the durable competitive asset; models, agents, and chat UIs are rented or commodity.
+### Without an explicit external memory layer, every session restarts from zero and the human is forced to act as the organization's memory; the durable artifact, not the model, is what compounds.
 
-Support: **3** talk(s)
+Support: **4** talk(s)
 
 > "The organization that captures what it learns like this gets smarter every single day. The one that doesn't wakes up every morning with amnesia, no matter how good the model is. Model quality is rented, but if you build your brain, you you own that brain."
 >
 > — [Every company should have a Brain](../talks/every-company-should-have-a-brain.md), [16:06](https://www.youtube.com/watch?v=eBUyTS7SzV4&t=966s)
 
-Supporting talks: [Every company should have a Brain](../talks/every-company-should-have-a-brain.md), [Your Moat Is Your Data Model](../talks/your-moat-is-your-data-model.md), [The Factory That Dreams: 39 AI Agents, No Framework](../talks/the-factory-that-dreams-39-ai-agents-no-framework.md)
+Supporting talks: [A Genius With Amnesia](../talks/a-genius-with-amnesia.md), [The Factory That Dreams: 39 AI Agents, No Framework](../talks/the-factory-that-dreams-39-ai-agents-no-framework.md), [Every company should have a Brain](../talks/every-company-should-have-a-brain.md), [Turn 10,994 Notes Into Memory](../talks/turn-10994-notes-into-memory.md)
 
-### A knowledge store degrades without active hygiene — provenance, contradiction checking against existing facts, and deliberate pruning of stale entries — because retrieval will surface rotten context with full confidence.
-
-Support: **4** talk(s)
-
-> "a brain nobody curates becomes a garbage dump with great search. Retrieval will surface a stale fact with total confidence."
->
-> — [Every company should have a Brain](../talks/every-company-should-have-a-brain.md), [13:58](https://www.youtube.com/watch?v=eBUyTS7SzV4&t=838s)
-
-Supporting talks: [Every company should have a Brain](../talks/every-company-should-have-a-brain.md), [The Factory That Dreams: 39 AI Agents, No Framework](../talks/the-factory-that-dreams-39-ai-agents-no-framework.md), [Enterprise Agents Have a Structure Problem](../talks/enterprise-agents-have-a-structure-problem.md), [Turn 10,994 Notes Into Memory](../talks/turn-10994-notes-into-memory.md)
-
-### Capture must be a closed loop: corrections, wins/losses, and eval failures are logged and written back into the knowledge base, otherwise the system silently drifts from reality.
+### A knowledge store requires active hygiene — salience gating on write, provenance, contradiction detection with a deterministic precedence rule, and pruning — or retrieval surfaces stale facts with full confidence.
 
 Support: **5** talk(s)
 
-> "All of these events need to be captured, logged, and used to update your data agent context."
+> "A salience gate that decides what's even worth remembering, so the brain doesn't fill up with junk. When two facts disagree, corrections win."
 >
-> — [Enterprise Agents Have a Structure Problem](../talks/enterprise-agents-have-a-structure-problem.md), [6:54](https://www.youtube.com/watch?v=B8l81jhvHbI&t=414s)
+> — [The Factory That Dreams: 39 AI Agents, No Framework](../talks/the-factory-that-dreams-39-ai-agents-no-framework.md), [6:49](https://www.youtube.com/watch?v=jtzh-GBXBWc&t=409s)
 
-Supporting talks: [Enterprise Agents Have a Structure Problem](../talks/enterprise-agents-have-a-structure-problem.md), [Build the AI GTM Agent That Knows the Buyer](../talks/build-the-ai-gtm-agent-that-knows-the-buyer.md), [The Factory That Dreams: 39 AI Agents, No Framework](../talks/the-factory-that-dreams-39-ai-agents-no-framework.md), [Your Moat Is Your Data Model](../talks/your-moat-is-your-data-model.md), [Every company should have a Brain](../talks/every-company-should-have-a-brain.md)
+Supporting talks: [Every company should have a Brain](../talks/every-company-should-have-a-brain.md), [The Factory That Dreams: 39 AI Agents, No Framework](../talks/the-factory-that-dreams-39-ai-agents-no-framework.md), [Enterprise Agents Have a Structure Problem](../talks/enterprise-agents-have-a-structure-problem.md), [LLM Knowledge Bases: a practical guide](../talks/llm-knowledge-bases-a-practical-guide.md), [Turn 10,994 Notes Into Memory](../talks/turn-10994-notes-into-memory.md)
 
-### Captured knowledge should be encoded as executable, reusable artifacts (skill files / written procedures agents run) with named humans responsible for maintaining them, not as prose nobody reads.
+### Capture must be a closed loop: corrections, answered questions, closed-won/closed-lost outcomes, and eval failures have to be written back into the knowledge layer, not just ingested once.
 
-Support: **3** talk(s)
+Support: **5** talk(s)
 
-> "The AI-native companies that I see inside YC encode all of that as skills, written procedures that their agents execute, and they hire they hire engineers whose job it is to maintain those skills, to do the work the skills can't do yet."
+> "every send, every reply, and every closed deal should make the model smarter, should make your system smarter"
 >
-> — [Every company should have a Brain](../talks/every-company-should-have-a-brain.md), [6:25](https://www.youtube.com/watch?v=eBUyTS7SzV4&t=385s)
+> — [Build the AI GTM Agent That Knows the Buyer](../talks/build-the-ai-gtm-agent-that-knows-the-buyer.md), [25:54](https://www.youtube.com/watch?v=ltv-L5oMPIs&t=1554s)
 
-Supporting talks: [Every company should have a Brain](../talks/every-company-should-have-a-brain.md), [The Factory That Dreams: 39 AI Agents, No Framework](../talks/the-factory-that-dreams-39-ai-agents-no-framework.md), [Content Is Code](../talks/content-is-code.md)
+Supporting talks: [Enterprise Agents Have a Structure Problem](../talks/enterprise-agents-have-a-structure-problem.md), [Build the AI GTM Agent That Knows the Buyer](../talks/build-the-ai-gtm-agent-that-knows-the-buyer.md), [Your Moat Is Your Data Model](../talks/your-moat-is-your-data-model.md), [Turn 10,994 Notes Into Memory](../talks/turn-10994-notes-into-memory.md), [The Factory That Dreams: 39 AI Agents, No Framework](../talks/the-factory-that-dreams-39-ai-agents-no-framework.md)
 
-### The knowledge that matters most was never written down — existing docs, help centers, and knowledge bases do not contain the procedural and semantic knowledge held by PMs and data owners, so it must be actively elicited from people.
+### Existing documentation and knowledge bases are insufficient because the knowledge that matters is tacit — held by data owners and PMs — and must be actively elicited from them rather than inferred from artifacts.
 
 Support: **3** talk(s)
 
@@ -82,78 +72,83 @@ Support: **3** talk(s)
 >
 > — [How Forward Deployed Engineering is done at Ramp](../talks/how-forward-deployed-engineering-is-done-at-ramp.md), [11:55](https://www.youtube.com/watch?v=ITMXwI6QL6A&t=715s)
 
-Supporting talks: [How Forward Deployed Engineering is done at Ramp](../talks/how-forward-deployed-engineering-is-done-at-ramp.md), [Your Moat Is Your Data Model](../talks/your-moat-is-your-data-model.md), [Content Is Code](../talks/content-is-code.md)
+Supporting talks: [Your Moat Is Your Data Model](../talks/your-moat-is-your-data-model.md), [How Forward Deployed Engineering is done at Ramp](../talks/how-forward-deployed-engineering-is-done-at-ramp.md), [Content Is Code](../talks/content-is-code.md)
+
+### Captured knowledge should be materialized as reusable executable artifacts (skill files, written procedures) rather than prose, and every successful one-off task should be promoted into one.
+
+Support: **4** talk(s)
+
+> "The AI-native companies that I see inside YC encode all of that as skills, written procedures that their agents execute, and they hire they hire engineers whose job it is to maintain those skills, to do the work the skills can't do yet."
+>
+> — [Every company should have a Brain](../talks/every-company-should-have-a-brain.md), [6:25](https://www.youtube.com/watch?v=eBUyTS7SzV4&t=385s)
+
+Supporting talks: [Every company should have a Brain](../talks/every-company-should-have-a-brain.md), [The Factory That Dreams: 39 AI Agents, No Framework](../talks/the-factory-that-dreams-39-ai-agents-no-framework.md), [Content Is Code](../talks/content-is-code.md), [500 people vibe-coded for 30 days. I was one of them.](../talks/500-people-vibe-coded-for-30-days-i-was-one-of-them.md)
 
 ## Disagreements
 
-### What substrate should institutional knowledge live in — plain files an agent reads directly, or a modeled semantic layer / knowledge graph?
+### Does an agent-facing institutional knowledge layer need modeled structure (semantic layer, property graph, dependency graph), or are plain markdown files and a reference index sufficient?
 
 | Position A | Position B |
 |---|---|
-| Plain markdown on a file system with a reference index is sufficient and superior; skip vector databases, knowledge graphs, and semantic search entirely (one system is 80,000 markdown files; Claude Tag is one markdown file per Slack channel).<br>*[Turn 10,994 Notes Into Memory](../talks/turn-10994-notes-into-memory.md), [Every company should have a Brain](../talks/every-company-should-have-a-brain.md), [Claude Fable, Claude Tag, and Anthropic's Culture](../talks/claude-fable-claude-tag-and-anthropics-culture.md), [500 people vibe-coded for 30 days. I was one of them.](../talks/500-people-vibe-coded-for-30-days-i-was-one-of-them.md)* | Hand-maintained .md files and skills cannot keep pace with changing KPIs, definitions, and processes; knowledge must be modeled into a ranked hierarchy — semantic layer, canonical queries, then a property graph — sourced from live systems and exposed via MCP.<br>*[Enterprise Agents Have a Structure Problem](../talks/enterprise-agents-have-a-structure-problem.md), [Your Moat Is Your Data Model](../talks/your-moat-is-your-data-model.md)* |
+| Build modeled structure: a ranked semantic layer over canonical queries, a property graph the agent can discover and traverse at query time, or an extracted cross-repo dependency graph. Files cannot express which source is authoritative, how fields join, or how entities relate.<br>*[Your Moat Is Your Data Model](../talks/your-moat-is-your-data-model.md), [Enterprise Agents Have a Structure Problem](../talks/enterprise-agents-have-a-structure-problem.md), [Build the AI GTM Agent That Knows the Buyer](../talks/build-the-ai-gtm-agent-that-knows-the-buyer.md), [A Genius With Amnesia](../talks/a-genius-with-amnesia.md)* | Skip the infrastructure: plain markdown plus a reference-based index, wiki derivative layers, and per-channel or per-skill markdown files. Vector DBs, knowledge graphs, and semantic search are explicitly named as things to forget for this use case.<br>*[Turn 10,994 Notes Into Memory](../talks/turn-10994-notes-into-memory.md), [LLM Knowledge Bases: a practical guide](../talks/llm-knowledge-bases-a-practical-guide.md), [Every company should have a Brain](../talks/every-company-should-have-a-brain.md), [Claude Fable, Claude Tag, and Anthropic's Culture](../talks/claude-fable-claude-tag-and-anthropics-culture.md)* |
 
-*Why it matters: It decides whether you staff writers and librarians or data engineers and schema owners, and whether the artifact rots between reviews or updates itself from systems of record. The file camp gets started in a day; the modeled camp is the only one with an answer for metrics that two teams define differently.*
+*Why it matters: The graph camp is committing months of data modeling, data-owner interviews, and eval-driven schema iteration before the agent works at all; the file camp ships in a weekend and treats retrieval as trivially solved. The split partly tracks scope — the file advocates work over personal or team-scale corpora while the graph advocates span thousands of employees and systems of record — but both camps are shipping to production, so the crossover point is undefined.*
 
-### Who authors the durable artifact — humans writing deliberately, or the system harvesting automatically from work traces?
-
-| Position A | Position B |
-|---|---|
-| Humans author and curate; the LLM must never write into hand-authored notes, and quality depends on organizational discipline (clean tagged PRs, accurate diffs, conscientiousness) that must exist before agents can help.<br>*[Turn 10,994 Notes Into Memory](../talks/turn-10994-notes-into-memory.md), [Content Is Code](../talks/content-is-code.md), [Every company should have a Brain](../talks/every-company-should-have-a-brain.md)* | Hand-authoring does not scale and is the wrong layer; capture belongs in a harness above the agent that materializes sessions, PRs, traces, and Slack channels automatically, and context should be pulled from continuously-updated systems rather than documents.<br>*[A Genius With Amnesia](../talks/a-genius-with-amnesia.md), [Claude Fable, Claude Tag, and Anthropic's Culture](../talks/claude-fable-claude-tag-and-anthropics-culture.md), [Enterprise Agents Have a Structure Problem](../talks/enterprise-agents-have-a-structure-problem.md)* |
-
-*Why it matters: If capture is authored, the prerequisite is a behavior-change program and a librarian headcount; if it is harvested, the prerequisite is infrastructure and defaults (public Slack channels, session recording) and the org gets a corpus it never explicitly wrote — with correspondingly weaker provenance.*
-
-### Can the human judgment layer eventually be captured and automated away, or must a human gate stay permanently in the loop?
+### Should the durable knowledge layer be deliberately authored by humans as an organizational discipline, or extracted automatically from live systems because humans will not maintain it?
 
 | Position A | Position B |
 |---|---|
-| A human gate is permanent: agents draft, humans send; taste and judgment over final output remain the human's responsibility even in a fully agentic pipeline.<br>*[The Factory That Dreams: 39 AI Agents, No Framework](../talks/the-factory-that-dreams-39-ai-agents-no-framework.md), [How Forward Deployed Engineering is done at Ramp](../talks/how-forward-deployed-engineering-is-done-at-ramp.md)* | Humans should be removed from the loop for non-core work; with months of eval and infrastructure investment, automated review already catches 100% of issues in those categories and carries lower residual risk than an average human reviewer.<br>*[Claude Fable, Claude Tag, and Anthropic's Culture](../talks/claude-fable-claude-tag-and-anthropics-culture.md)* |
+| Derive it. Hand-maintained .md files and skills go stale faster than enterprise definitions, KPIs, and processes change, so context should be sourced from continuously-updated systems (GitHub, dbt, CRM, Tableau), extracted repo metadata, and pooled agent sessions.<br>*[Enterprise Agents Have a Structure Problem](../talks/enterprise-agents-have-a-structure-problem.md), [Your Moat Is Your Data Model](../talks/your-moat-is-your-data-model.md), [A Genius With Amnesia](../talks/a-genius-with-amnesia.md), [Build the AI GTM Agent That Knows the Buyer](../talks/build-the-ai-gtm-agent-that-knows-the-buyer.md)* | Author it. Clean tagged PRs, real descriptions, documented async practices, curated skills, and recorded exploration sessions are the scarce input; AI rewards conscientiousness and organizational excellence, and the fix is instilling that discipline rather than routing around it.<br>*[Content Is Code](../talks/content-is-code.md), [Every company should have a Brain](../talks/every-company-should-have-a-brain.md), [The Factory That Dreams: 39 AI Agents, No Framework](../talks/the-factory-that-dreams-39-ai-agents-no-framework.md), [500 people vibe-coded for 30 days. I was one of them.](../talks/500-people-vibe-coded-for-30-days-i-was-one-of-them.md)* |
 
-*Why it matters: It determines whether captured knowledge is an input to human decisions or a replacement for them, and therefore whether throughput is capped by review capacity or by eval quality.*
+*Why it matters: This decides whether you staff librarians and skill maintainers and change human process, or build extraction pipelines and treat human-written docs as untrustworthy. It also determines whether an org with poor documentation hygiene is blocked from agentic work or can bootstrap around it.*
+
+### Once institutional knowledge is captured well enough, can the human be removed from the output loop?
+
+| Position A | Position B |
+|---|---|
+| No — the human gate is permanent by design. Agents draft, humans send; taste and judgment over the final output remain a human responsibility even in a fully agentic pipeline.<br>*[The Factory That Dreams: 39 AI Agents, No Framework](../talks/the-factory-that-dreams-39-ai-agents-no-framework.md), [How Forward Deployed Engineering is done at Ramp](../talks/how-forward-deployed-engineering-is-done-at-ramp.md)* | Yes — removing humans from the loop is the explicit goal, achievable with months of eval and infrastructure investment; automated review already catches 100% of issues on non-core changes and lands 65% of product PRs.<br>*[Claude Fable, Claude Tag, and Anthropic's Culture](../talks/claude-fable-claude-tag-and-anthropics-culture.md)* |
+
+*Why it matters: If the human gate is permanent, the knowledge layer only needs to be good enough to draft, and review capacity caps throughput; if it can be removed, the captured knowledge plus eval suite becomes the entire quality bar and the investment shifts from reviewers to evals.*
 
 ## Practical Guidance
 
 **Do:**
 
-- Rank knowledge sources into an explicit cleanest-first hierarchy (semantic layer → canonical queries → database graph) and build the first two tiers before attempting a graph — they cover roughly 80% of enterprise data-agent questions.
-- Attach provenance to every stored fact, run contradiction checks when new information collides with old, and staff a librarian (human plus agent) whose actual job is pruning.
-- Make human corrections permanently outrank model-derived facts when two stored facts disagree, and put a salience gate in front of writes so the store doesn't fill with junk.
-- Convert every agent task that succeeds into a reusable skill file — if you have to ask for the same thing twice, the capture failed.
-- Structure retrieval as index → executive summary → wiki derivative → raw source so the agent can stop at the cheapest layer that answers the question.
-- Keep hand-authored notes immutable and write all generated content into a separate derivative layer the LLM owns.
-- Update the knowledge base from questions asked of it, not just from ingestion — every query should leave a trace.
-- Retrain or refresh agents quarterly against closed-won and closed-lost outcomes so ICP and definition drift don't accumulate silently.
-- Engage data owners directly to capture field semantics, join logic, data limitations, and security trimming; this cannot be inferred from the data itself.
-- Compute eval ground truth by running a stored query against the live graph at runtime rather than freezing expected answers, when the underlying data changes constantly.
-- Feed eval gaps and ambiguities back into the data model, domain rules, and schema descriptions — treat evals as a data-modeling feedback loop, not a score.
-- Answer questions the way the organization has historically answered them under existing reporting conventions, not merely correctly.
-- Default Slack channels to public, since channel-derived institutional context is only as complete as what the system can see.
-- Record exploration chats and ideas into a project folder file system from the start of a project, not after.
-- Pool sessions across all developers so the agent has more context than any individual engineer holds, and keep session state portable across agent products.
-- Serve the knowledge platform into tools users already have via MCP instead of building another chat UI.
+- Rank knowledge sources into an explicit hierarchy — semantic layer, then canonical queries, then database graph — and consult cleanest-first; build the first two tiers before attempting the graph, since they cover roughly 80% of enterprise data-agent questions.
+- Log every user correction event and feed it back into agent context, and retrain agents quarterly on closed-won and closed-lost data to counter ICP/definition drift.
+- Keep hand-authored notes immutable and write all agent-generated content into a separate derivative layer (index → executive summary → wiki → raw source), which is also more token-efficient to retrieve from.
+- Give enrichment agents a fixed reference list of tags and instruct them to be reluctant to add new ones; stamp each processed note with an enrichment timestamp so repeat passes only touch unprocessed notes.
+- Attach provenance to every fact, run contradiction checks when new information collides with old, and assign a named librarian (human plus agent) whose actual job is pruning.
+- Promote every agent task that succeeds into a reusable skill file — if you have to ask for the same thing twice, the capture failed.
+- Interview data owners directly for field semantics, join logic, data limitations, safeguards, and security trimming; validate baseline assumptions with the customer before building on them.
+- Compute eval ground truth at runtime by running a stored query against the live graph rather than freezing expected answers, and route eval failures back into the data model and schema descriptions.
+- Expose the knowledge layer through MCP into tools people already use rather than building another chat UI, and expect off-the-shelf MCP servers to need forking and state-passing for production use.
+- Mask PII, classify sensitivity, and enforce per-user entitlements inside the curation pipeline, because AI makes theoretically-accessible data practically accessible.
 
 **Avoid:**
 
-- Reaching for a bigger model, a longer context window, or more knowledge bases and MCP servers when answers are bad — none of these fix an unranked, unmaintained source of truth.
-- Treating retrieval as the product; an uncurated store is a garbage dump with great search that returns stale facts confidently.
-- Relying on hand-maintained .md files and skills as the system of record for definitions, KPIs, and processes that change faster than anyone updates them.
-- Assuming Notion docs and help articles carry the tacit knowledge a PM or data owner holds in their head.
-- Publishing auto-generated skills without regard for their contents or structure — most skills in circulation are low quality for exactly this reason.
-- Holding large combinatorial state (e.g. a seating arrangement for 800 people) in the context window instead of deterministic code.
-- Letting agents send outbound communication autonomously; every draft passes a human.
-- Standing up vector databases, knowledge graphs, or semantic search for a personal or small-team research system where markdown and a reference index suffice.
-- Building your own AI Slackbot over internal knowledge — the prompt-injection attack surface is too large.
-- Conflating fit score with intent score, or flagging everything as hot; reps stop acting and stop trusting the system.
-- Shipping AI-drafted output that takes a human longer than 30 seconds to edit — past that, people revert to doing it themselves and the initiative is dead.
-- Assuming tool access alone drives adoption; without champions, experimentation space, and real agency, the behavior change doesn't happen.
+- Responding to bad agent answers by reaching for a bigger model, a longer context window, or more knowledge bases and MCP servers.
+- Weighting all knowledge bases equally so the agent has no signal about which source holds the truth.
+- Relying on hand-maintained .md files and skills as the mechanism for definitions, KPIs, and processes that change frequently — the context rots.
+- Publishing agent-generated skills without curating their contents or structure; most skills in circulation were generated with no regard for either.
+- Letting the LLM write into your hand-authored personal notes instead of a separate generated layer.
+- Treating retrieval as the product — an uncurated brain becomes a garbage dump with great search that returns stale facts confidently.
+- Letting agents send outbound communication autonomously; drafts should pass a human.
+- Holding large combinatorial state (e.g. a seating chart for 800 people) in the context window instead of deterministic compute.
+- Automating an intake or request pipeline without scoping discipline, which produces high-volume low-quality output.
+- Conflating fit score with intent score, or flagging everything as hot — reps stop acting and stop trusting the system.
+- Assuming tool access alone drives adoption in a large org; without champions, experimentation space, and agency the behavior does not change.
 
 ## Notable Outliers
 
-- A 100-person factory with no data scientists built a 39-agent company brain for ~$30k against a $230k agency quote, with zero training cost — the expensive part was teaching the company to remember itself, and the resulting architecture is transferable but the knowledge is not, so the only sellable product is an empty forkable shell. ([The Factory That Dreams: 39 AI Agents, No Framework](../talks/the-factory-that-dreams-39-ai-agents-no-framework.md), [8:28](https://www.youtube.com/watch?v=jtzh-GBXBWc&t=508s))
-- The memory/company-brain layer should be open source infrastructure like Linux rather than a proprietary profit center — the moat is the accumulated brain, not the software that holds it. ([Every company should have a Brain](../talks/every-company-should-have-a-brain.md), [17:22](https://www.youtube.com/watch?v=eBUyTS7SzV4&t=1042s))
-- Structure, not taste, is the scarce and expensive input — clean tagged PRs, accurate diffs, real documentation — and almost no organization actually does it, which is why AI rewards conscientiousness over raw engineering skill. ([Content Is Code](../talks/content-is-code.md), [6:42](https://www.youtube.com/watch?v=yv6xovSsB1U&t=402s))
-- Institutional memory should be session-portable across vendors: resume a colleague's session on your machine with exact state and zero setup, and continue a Claude session in Codex mid-stream. ([A Genius With Amnesia](../talks/a-genius-with-amnesia.md), [14:37](https://www.youtube.com/watch?v=jVjt-2g8NMY&t=877s))
-- Preference is an unsolved research problem — two teams can compute the same metric differently and both be correct, and neither semantic layers nor memory tools (mem0, memory.md) can route to the right definition based on who is asking. ([Enterprise Agents Have a Structure Problem](../talks/enterprise-agents-have-a-structure-problem.md), [11:03](https://www.youtube.com/watch?v=B8l81jhvHbI&t=663s))
-- Loading the real open-source repository into a session beats documentation-retrieval tools like Context7, because with the actual code the agent can go deep instead of reading someone's summary of it. ([A Genius With Amnesia](../talks/a-genius-with-amnesia.md), [18:35](https://www.youtube.com/watch?v=jVjt-2g8NMY&t=1115s))
+- The architecture of a company brain is transferable but the knowledge is not, so the correct product to ship other companies is an empty forkable shell — no vendor can build your brain for you. ([The Factory That Dreams: 39 AI Agents, No Framework](../talks/the-factory-that-dreams-39-ai-agents-no-framework.md), [9:13](https://www.youtube.com/watch?v=jtzh-GBXBWc&t=553s))
+- Structure — clean tagged PRs, real descriptions, knowing what was reverted — is the expensive scarce input in AI-assisted production, not taste; and essentially no organization actually does it. ([Content Is Code](../talks/content-is-code.md), [6:42](https://www.youtube.com/watch?v=yv6xovSsB1U&t=402s))
+- The knowledge/memory layer should be open-source infrastructure like Linux rather than a proprietary profit center. ([Every company should have a Brain](../talks/every-company-should-have-a-brain.md), [17:22](https://www.youtube.com/watch?v=eBUyTS7SzV4&t=1042s))
+- Preference — two teams computing the same metric correctly but differently — is unsolved by both semantic layers and agent memory; the answer is routing to the right definition by requester identity, and neither frontier labs nor industry have it. ([Enterprise Agents Have a Structure Problem](../talks/enterprise-agents-have-a-structure-problem.md), [11:03](https://www.youtube.com/watch?v=B8l81jhvHbI&t=663s))
+- Pooling agent sessions across all developers in an organization gives the agent more context than any single developer possesses, and that session state should be portable enough to resume someone else's work in a different agent product. ([A Genius With Amnesia](../talks/a-genius-with-amnesia.md), [19:13](https://www.youtube.com/watch?v=jVjt-2g8NMY&t=1153s))
+- Once eval scores are strong, remaining failures are dominated by user-intent ambiguity rather than factually wrong answers — the answer is right, just not what the user meant. ([Your Moat Is Your Data Model](../talks/your-moat-is-your-data-model.md), [19:08](https://www.youtube.com/watch?v=jt1Pbr_n6oU&t=1148s))
+- Claude Tag's accuracy depends on Slack channels being public, so knowledge-capture accuracy becomes an argument for defaulting the whole organization to public channels. ([Claude Fable, Claude Tag, and Anthropic's Culture](../talks/claude-fable-claude-tag-and-anthropics-culture.md), [45:17](https://www.youtube.com/watch?v=uU5Gv2h8-9g&t=2717s))
+- Loading the real open-source repository into a session beats documentation-retrieval tools like Context7 for deep diagnosis — source code is a better knowledge artifact than docs about it. ([A Genius With Amnesia](../talks/a-genius-with-amnesia.md), [18:35](https://www.youtube.com/watch?v=jVjt-2g8NMY&t=1115s))
 
 ## All Talks
 
@@ -165,12 +160,14 @@ Supporting talks: [How Forward Deployed Engineering is done at Ramp](../talks/ho
 - [Enterprise Agents Have a Structure Problem](../talks/enterprise-agents-have-a-structure-problem.md)
 - [Every company should have a Brain](../talks/every-company-should-have-a-brain.md)
 - [How Forward Deployed Engineering is done at Ramp](../talks/how-forward-deployed-engineering-is-done-at-ramp.md)
+- [LLM Knowledge Bases: a practical guide](../talks/llm-knowledge-bases-a-practical-guide.md)
 - [The Factory That Dreams: 39 AI Agents, No Framework](../talks/the-factory-that-dreams-39-ai-agents-no-framework.md)
 - [Turn 10,994 Notes Into Memory](../talks/turn-10994-notes-into-memory.md)
 - [Your Moat Is Your Data Model](../talks/your-moat-is-your-data-model.md)
 
 ## Speakers
 
+- [Ben Holmes](../speakers/ben-holmes.md)
 - [Cat Wu](../speakers/cat-wu.md)
 - [Garry Tan](../speakers/garry-tan.md)
 - [Ishita Daga](../speakers/ishita-daga.md)

@@ -761,13 +761,33 @@ def render_readme(ctx, real_talk_count, multi_speaker_count):
     raw_word_count = sum(t.get('word_count', 0) for t in talks.values())
     raw_hours = sum(t.get('duration_sec', 0) for t in talks.values()) / 3600.0
 
-    word_count = 933897
-    hours = 93.9
-    dup_words = raw_word_count - word_count
+    # Livestream-duplication offset. The overlap between the two full-day keynote
+    # livestreams and the individually-published talks is MEASURED by
+    # scripts/segment_livestreams.py (shingle alignment), not derivable from
+    # index.json, so it is carried here as a constant sourced from
+    # data/livestream_segments/manifest.json -> corpus_stats.excluded_duplicate.
+    # Re-run that script and update these two numbers if the livestream segmentation
+    # or the set of individually-published keynote talks changes. Everything else
+    # below is derived, so a corpus refresh no longer strands these totals.
+    DUP_WORDS = 77444
+    DUP_HOURS = 7.79
 
-    quote_count = 4633
-    attributed_quote_count = 3913
-    talk_level_quote_count = 720
+    dup_words = DUP_WORDS
+    word_count = raw_word_count - DUP_WORDS
+    hours = raw_hours - DUP_HOURS
+
+    # Quote totals, derived from the same source data the pages render from:
+    # every notable_quote in Pass A ships on a talk page; the ones that could be
+    # pinned to an individual speaker also ship on that speaker's page.
+    quote_count = sum(
+        len((pa or {}).get('notable_quotes') or [])
+        for pa in ctx['passA_by_slug'].values()
+    )
+    attributed_quote_count = sum(
+        len([q for q in sp.get('quotes', []) if q.get('speaker_attributed')])
+        for sp in ctx['speaker_by_id'].values()
+    )
+    talk_level_quote_count = quote_count - attributed_quote_count
 
     maturity_counts = defaultdict(int)
     for cslug, passC in ctx['passC_by_slug'].items():
@@ -845,9 +865,10 @@ def verify(root, ctx):
     for sub in ('talks', 'concepts', 'speakers'):
         n = len(glob.glob(os.path.join(wiki_dir, sub, '*.md')))
         counts[sub] = n
+    expected = (len(ctx['talks_by_slug']), len(ctx['concept_by_slug']), len(ctx['speaker_by_id']))
     report.append(f'Page counts: talks={counts["talks"]} concepts={counts["concepts"]} '
                    f'speakers={counts["speakers"]} '
-                   f'(expected 231/134/248)')
+                   f'(expected {expected[0]}/{expected[1]}/{expected[2]} from source data)')
 
     # link integrity
     link_re = re.compile(r'\]\((\.\./[a-z]+/[^)]+\.md)\)')
@@ -872,7 +893,14 @@ def verify(root, ctx):
         if '## Notable Quotes' in text:
             section = text.split('## Notable Quotes', 1)[1].split('\n## ', 1)[0]
             quote_total += len(re.findall(r'^> "', section, re.M))
-    report.append(f'Quote count across talk pages: {quote_total} (expect 4633)')
+    expected_quotes = sum(
+        len((pa or {}).get('notable_quotes') or [])
+        for pa in ctx['passA_by_slug'].values()
+    )
+    report.append(
+        f'Quote count across talk pages: {quote_total} '
+        f'(expect {expected_quotes} from Pass A){"" if quote_total == expected_quotes else "  MISMATCH"}'
+    )
 
     # speaker_attributed false check: our own generator never writes
     # non-attributed quotes into the "## Quotes" section (only into the

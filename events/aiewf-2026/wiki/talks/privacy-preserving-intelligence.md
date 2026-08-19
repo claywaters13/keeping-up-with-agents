@@ -2,6 +2,7 @@
 title: "Privacy-Preserving Intelligence"
 type: "talk"
 slug: "privacy-preserving-intelligence"
+track: "Snyk Security Track"
 org: "Bee (acq. Amazon)"
 video_id: "IvE8n-ylFYY"
 duration_sec: 953
@@ -15,7 +16,7 @@ speakers: ["Steve Korshakov"]
 
 **Org:** Bee (acq. Amazon)
 
-**Duration:** 15m 53s
+**Track:** Snyk Security Track &nbsp;|&nbsp; **Duration:** 15m 53s
 
 [Watch on YouTube](https://www.youtube.com/watch?v=IvE8n-ylFYY)
 

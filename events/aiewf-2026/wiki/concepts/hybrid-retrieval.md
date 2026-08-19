@@ -4,15 +4,15 @@ type: "concept"
 slug: "hybrid-retrieval"
 tier: "supporting"
 maturity: "consolidating"
-talk_count: 9
-speaker_count: 9
+talk_count: 10
+speaker_count: 12
 ---
 
 # hybrid retrieval
 
 **Maturity: CONSOLIDATING** — Consolidating — converging practice, some open edges
 
-*Supporting concept* &middot; discussed across **9** talk(s) by **9** speaker(s)
+*Supporting concept* &middot; discussed across **10** talk(s) by **12** speaker(s)
 
 **Definition:** Combining dense vector search with lexical or structured search and fusing the result sets.
 
@@ -20,41 +20,31 @@ speaker_count: 9
 
 ## State of Practice
 
-The field has closed the book on pure dense retrieval: every talk that touched retrieval quality reported that cosine similarity over embeddings alone loses a material fraction of relevant results, and that adding a second, differently-biased retrieval leg recovers most of it (Tesco measured ~25% miss for each of semantic and keyword alone versus ~10% fused; Microsoft reported combined methods beating individual methods specifically on real customer scenarios rather than academic sets). The failure modes are now named and specific rather than vague: exact identifiers (SKUs, medication names, diagnosis and procedure codes) that embeddings blur, negation and coverage questions ('what documentation are we missing') that similarity structurally cannot express, and multi-hop chains where every fact is indexed but no single chunk is similar to the question. What is unsettled is what the second leg should be — BM25/lexical, metadata pre-filters, or graph traversal seeded by vector hits — and whether fusion should be a fixed, deterministic scoring pipeline or an agent that reflects and re-queries. Fusion itself is trending cheap and deterministic: a weighted score (50% semantic / 30% keyword / 20% recency) at 0.4ms and SQL-side reciprocal rank fusion were both preferred over LLM rerankers that add 2-3 seconds. The same retrieval-plus-fusion pattern is now being pointed at non-document corpora — tool schemas, agent memory, warehouse metadata — on the argument that teams already running RAG need no new infrastructure to do it.
+The field has abandoned the idea that a single retrieval method is sufficient: dense vector search is now treated as one signal among several, always paired with lexical (BM25/grep), metadata filters, or structural traversal, with results fused before they reach the model. The failure mode driving this is specific and repeatable — embeddings blur exact tokens (diagnosis and procedure codes, SKUs, medication names, identifiers buried mid-corpus), so teams report dense recall collapsing to near zero on facts where BM25 holds at 100%, and roughly a 25% miss rate for either method alone versus ~10% fused. Several teams now argue retrieval, not reasoning, is the binding constraint on end-to-end accuracy: models score near-Oracle when handed the right documents and drop by an order of magnitude on the same questions against a noisy corpus. Around the fusion core, the live engineering questions are the shape of the retrieval loop (fixed pipeline versus an agent that issues its own searches), whether a graph or document-tree layer earns its setup cost, and how many candidates to hand back — with speakers converging on tuning top-k per domain against a real eval set rather than shipping a default. Cheap deterministic fusion (weighted score blends, metadata-derived labels, heading-based chunking) is repeatedly reported to beat LLM-in-the-loop reranking and LLM-based extraction on cost, latency, and reproducibility.
 
 ## Consensus
 
-### Vector/semantic similarity alone is insufficient for production retrieval; it must be combined with a lexical, metadata, or structural retrieval method.
+### Dense vector similarity alone is not a sufficient retrieval layer; production systems must combine it with lexical/keyword search, metadata filtering, or structural traversal.
 
-Support: **6** talk(s)
+Support: **8** talk(s)
 
-> "I think, you know, for a hot second as an industry, we thought that if we could get really, really good at computing cosine similarity between vectors, we were all set for retrieval. It turns out, you know, things never are are never that easy."
+> "And you can see how individual methods don't do as well as combined methods, particularly when you apply them to real-world customer scenarios."
 >
 > — [On AI and Knowledge](../talks/on-ai-and-knowledge.md), [7:24](https://www.youtube.com/watch?v=RGSFUqzqErE&t=444s)
 
-Supporting talks: [On AI and Knowledge](../talks/on-ai-and-knowledge.md), [We Cut 94% of AI Coding Tokens With a Local Code Index](../talks/we-cut-94-of-ai-coding-tokens-with-a-local-code-index.md), [Bypassing the Multimodal Tax: Hybrid RAG, SQL RRF & UI Telemetry](../talks/bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry.md), [AI System Design: From Idea to Production](../talks/ai-system-design-from-idea-to-production.md), [AI on Your Lakehouse: Context Comes in Shapes, Not Queries](../talks/ai-on-your-lakehouse-context-comes-in-shapes-not-queries.md), [CrabRAG: Why Automated Assistants Need Graph Memory, Not More Tokens](../talks/crabrag-why-automated-assistants-need-graph-memory-not-more-tokens.md)
+Supporting talks: [On AI and Knowledge](../talks/on-ai-and-knowledge.md), [Bypassing the Multimodal Tax: Hybrid RAG, SQL RRF & UI Telemetry](../talks/bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry.md), [Context Engineering in 2026](../talks/context-engineering-in-2026.md), [We Cut 94% of AI Coding Tokens With a Local Code Index](../talks/we-cut-94-of-ai-coding-tokens-with-a-local-code-index.md), [AI System Design: From Idea to Production](../talks/ai-system-design-from-idea-to-production.md), [AI on Your Lakehouse: Context Comes in Shapes, Not Queries](../talks/ai-on-your-lakehouse-context-comes-in-shapes-not-queries.md), [CrabRAG: Why Automated Assistants Need Graph Memory, Not More Tokens](../talks/crabrag-why-automated-assistants-need-graph-memory-not-more-tokens.md), [How we taught agents to use good retrieval](../talks/how-we-taught-agents-to-use-good-retrieval.md)
 
-### Fusing two retrieval modalities measurably lifts recall over either one alone, and the gain shows up on real workloads rather than only in theory.
+### The specific failure that forces lexical search into the stack is exact-match retrieval — codes, identifiers, product names, drug names — where semantic similarity returns near-misses that are wrong.
 
-Support: **3** talk(s)
-
-> "By themselves, both searches miss about one in four results. Together, they miss about one in 10."
->
-> — [We Cut 94% of AI Coding Tokens With a Local Code Index](../talks/we-cut-94-of-ai-coding-tokens-with-a-local-code-index.md), [4:35](https://www.youtube.com/watch?v=dRmWYHuIJxM&t=275s)
-
-Supporting talks: [We Cut 94% of AI Coding Tokens With a Local Code Index](../talks/we-cut-94-of-ai-coding-tokens-with-a-local-code-index.md), [On AI and Knowledge](../talks/on-ai-and-knowledge.md), [Bypassing the Multimodal Tax: Hybrid RAG, SQL RRF & UI Telemetry](../talks/bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry.md)
-
-### The specific trigger for adding a lexical/keyword leg is corpora containing exact identifiers — medications, SKUs, brand names, diagnosis and procedure codes — where 'similar' is a wrong answer.
-
-Support: **3** talk(s)
+Support: **4** talk(s)
 
 > "if it's a medical chatbot, you need the exact medication. You need don't need something similar or close to it. So, we need to have both both basically uh keyword search and um and the semantic search together."
 >
 > — [Bypassing the Multimodal Tax: Hybrid RAG, SQL RRF & UI Telemetry](../talks/bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry.md), [30:07](https://www.youtube.com/watch?v=Akm1sqvWG4A&t=1807s)
 
-Supporting talks: [Bypassing the Multimodal Tax: Hybrid RAG, SQL RRF & UI Telemetry](../talks/bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry.md), [AI System Design: From Idea to Production](../talks/ai-system-design-from-idea-to-production.md), [We Cut 94% of AI Coding Tokens With a Local Code Index](../talks/we-cut-94-of-ai-coding-tokens-with-a-local-code-index.md)
+Supporting talks: [Bypassing the Multimodal Tax: Hybrid RAG, SQL RRF & UI Telemetry](../talks/bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry.md), [AI System Design: From Idea to Production](../talks/ai-system-design-from-idea-to-production.md), [Context Engineering in 2026](../talks/context-engineering-in-2026.md), [We Cut 94% of AI Coding Tokens With a Local Code Index](../talks/we-cut-94-of-ai-coding-tokens-with-a-local-code-index.md)
 
-### Retrieval quality, not model capability, is the binding constraint on answer accuracy and on cost — so effort belongs in the retrieval layer rather than in model selection.
+### Retrieval quality, not model choice or reasoning capability, is the binding constraint on answer accuracy and on cost.
 
 Support: **4** talk(s)
 
@@ -62,89 +52,98 @@ Support: **4** talk(s)
 >
 > — [How we taught agents to use good retrieval](../talks/how-we-taught-agents-to-use-good-retrieval.md), [2:25](https://www.youtube.com/watch?v=1IdzkRVmWAA&t=145s)
 
-Supporting talks: [How we taught agents to use good retrieval](../talks/how-we-taught-agents-to-use-good-retrieval.md), [We Cut 94% of AI Coding Tokens With a Local Code Index](../talks/we-cut-94-of-ai-coding-tokens-with-a-local-code-index.md), [AI System Design: From Idea to Production](../talks/ai-system-design-from-idea-to-production.md), [Bypassing the Multimodal Tax: Hybrid RAG, SQL RRF & UI Telemetry](../talks/bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry.md)
+Supporting talks: [How we taught agents to use good retrieval](../talks/how-we-taught-agents-to-use-good-retrieval.md), [We Cut 94% of AI Coding Tokens With a Local Code Index](../talks/we-cut-94-of-ai-coding-tokens-with-a-local-code-index.md), [AI System Design: From Idea to Production](../talks/ai-system-design-from-idea-to-production.md), [CrabRAG: Why Automated Assistants Need Graph Memory, Not More Tokens](../talks/crabrag-why-automated-assistants-need-graph-memory-not-more-tokens.md)
 
-### Fusion and ranking should be done with deterministic code (weighted scores, RRF, structural rules) rather than an LLM call in the retrieval path, because deterministic paths are faster, reproducible, and testable.
+### Vector search is best used to pick entry points, with structure (graph edges, document tree, metadata joins) assembling the rest of the context, rather than chaining more vector hits.
 
 Support: **3** talk(s)
 
-> "It runs 0.4 milliseconds, no extra AI calls needed. The lesson we learned, simple formula beats the complex model most of the time."
+> "it uses the vector search to get the seed nodes where it starts the traversal. And then it uses a graph search pulling the the nearest neighbors and then ranking those by how related they are."
 >
-> — [We Cut 94% of AI Coding Tokens With a Local Code Index](../talks/we-cut-94-of-ai-coding-tokens-with-a-local-code-index.md), [5:33](https://www.youtube.com/watch?v=dRmWYHuIJxM&t=333s)
+> — [CrabRAG: Why Automated Assistants Need Graph Memory, Not More Tokens](../talks/crabrag-why-automated-assistants-need-graph-memory-not-more-tokens.md), [10:10](https://www.youtube.com/watch?v=Q0VkgCyNVUg&t=610s)
 
-Supporting talks: [We Cut 94% of AI Coding Tokens With a Local Code Index](../talks/we-cut-94-of-ai-coding-tokens-with-a-local-code-index.md), [Bypassing the Multimodal Tax: Hybrid RAG, SQL RRF & UI Telemetry](../talks/bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry.md), [AI on Your Lakehouse: Context Comes in Shapes, Not Queries](../talks/ai-on-your-lakehouse-context-comes-in-shapes-not-queries.md)
+Supporting talks: [CrabRAG: Why Automated Assistants Need Graph Memory, Not More Tokens](../talks/crabrag-why-automated-assistants-need-graph-memory-not-more-tokens.md), [AI on Your Lakehouse: Context Comes in Shapes, Not Queries](../talks/ai-on-your-lakehouse-context-comes-in-shapes-not-queries.md), [AI System Design: From Idea to Production](../talks/ai-system-design-from-idea-to-production.md)
+
+### How many results to return is a domain-specific parameter that must be swept against a test set, not a framework default — more candidates for breadth-style catalogs, fewer where a wrong result carries liability.
+
+Support: **3** talk(s)
+
+> "Run your test set at K equals to three, five, and 10, and then pick the smallest K that meets your accuracy target."
+>
+> — [The 100-Tool Agent Is a Trap](../talks/the-100-tool-agent-is-a-trap.md), [21:19](https://www.youtube.com/watch?v=vh2VGuQ3zhY&t=1279s)
+
+Supporting talks: [The 100-Tool Agent Is a Trap](../talks/the-100-tool-agent-is-a-trap.md), [Bypassing the Multimodal Tax: Hybrid RAG, SQL RRF & UI Telemetry](../talks/bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry.md), [How we taught agents to use good retrieval](../talks/how-we-taught-agents-to-use-good-retrieval.md)
 
 ## Disagreements
 
-### Should the retrieval path be a fixed pipeline, or should an agent drive search with multiple reflective rounds?
+### Should retrieval run as a fixed pipeline, or should the agent drive its own multi-round search loop?
 
 | Position A | Position B |
 |---|---|
-| Use a fixed direct-RAG pipeline: embed query, run the hybrid retriever, answer. Agent loops add 20-30 seconds of latency, break the citation chain back to source chunks, and make the execution path unpredictable — disqualifying when compliance matters.<br>*[Bypassing the Multimodal Tax: Hybrid RAG, SQL RRF & UI Telemetry](../talks/bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry.md), [We Cut 94% of AI Coding Tokens With a Local Code Index](../talks/we-cut-94-of-ai-coding-tokens-with-a-local-code-index.md)* | Let an agent run the search: cap it at ~4 rounds with parallel searches inside each round, or expose retrieval effort as a user-facing latency-versus-quality knob where single-shot handles easy cases and a reflective loop handles hard ones. Agentic retrieval beats single-shot on evidence recall and answer completeness for difficult queries.<br>*[How we taught agents to use good retrieval](../talks/how-we-taught-agents-to-use-good-retrieval.md), [On AI and Knowledge](../talks/on-ai-and-knowledge.md)* |
+| Fix the pipeline: embed query, run the hybrid retriever, answer. Agent-driven search breaks the citation chain back to source chunks, makes the execution path unpredictable under compliance, and three or four agent loops add 20-30 seconds of latency; one team measured an agentic browse layer adding zero recall over plain hybrid search while being 50% slower, and another found a 0.4ms weighted heuristic beat LLM reranking that cost 2-3 seconds per query.<br>*[Bypassing the Multimodal Tax: Hybrid RAG, SQL RRF & UI Telemetry](../talks/bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry.md), [Context Engineering in 2026](../talks/context-engineering-in-2026.md), [We Cut 94% of AI Coding Tokens With a Local Code Index](../talks/we-cut-94-of-ai-coding-tokens-with-a-local-code-index.md)* | Let the agent search iteratively: agentic retrieval beats single-shot on hard cases across evidence recall and answer completeness, a capped loop (four rounds, parallel searches inside each) with differentiated semantic and lexical tools closes most of the Oracle gap, and as text-to-query capability improves agents should be writing free-form structured queries rather than calling prebuilt shapes.<br>*[How we taught agents to use good retrieval](../talks/how-we-taught-agents-to-use-good-retrieval.md), [On AI and Knowledge](../talks/on-ai-and-knowledge.md), [AI on Your Lakehouse: Context Comes in Shapes, Not Queries](../talks/ai-on-your-lakehouse-context-comes-in-shapes-not-queries.md), [CrabRAG: Why Automated Assistants Need Graph Memory, Not More Tokens](../talks/crabrag-why-automated-assistants-need-graph-memory-not-more-tokens.md)* |
 
-*Why it matters: This determines whether hybrid retrieval is a library call you can unit-test and cite from, or a runtime policy you have to evaluate, budget, and monitor. It also decides whether latency is bounded by construction or only in expectation.*
+*Why it matters: It decides whether retrieval effort is a fixed cost you can budget and cite, or a variable latency/quality knob that has to be exposed and monitored. It also determines whether your engineering investment goes into fusion and ranking, or into training and rewarding agent search behavior.*
 
-### What should the second retrieval leg be — lexical keyword search, or structural graph traversal?
-
-| Position A | Position B |
-|---|---|
-| Pair dense search with BM25/keyword and metadata filters, fused by a scoring formula or SQL-side RRF. Two text-space modalities cut the miss rate to roughly one in ten, and the infrastructure is a Postgres/vector table you already run.<br>*[Bypassing the Multimodal Tax: Hybrid RAG, SQL RRF & UI Telemetry](../talks/bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry.md), [We Cut 94% of AI Coding Tokens With a Local Code Index](../talks/we-cut-94-of-ai-coding-tokens-with-a-local-code-index.md), [AI System Design: From Idea to Production](../talks/ai-system-design-from-idea-to-production.md)* | Pair dense search with graph traversal: use vector search only to pick seed nodes, then traverse relationships and rank by relatedness. Similarity in vector space is not relationship, so multi-hop questions stay unanswerable no matter how good the lexical leg is — and chaining vector hits adds a fresh chance of retrieving the wrong document at every hop.<br>*[CrabRAG: Why Automated Assistants Need Graph Memory, Not More Tokens](../talks/crabrag-why-automated-assistants-need-graph-memory-not-more-tokens.md), [AI on Your Lakehouse: Context Comes in Shapes, Not Queries](../talks/ai-on-your-lakehouse-context-comes-in-shapes-not-queries.md)* |
-
-*Why it matters: It sets the ingest burden: heading-based chunking and a keyword index versus entity extraction, a graph schema, and a Cypher-capable query layer. Note both position-B talks are from Neo4j, so the graph side is less independently corroborated than its two-talk count suggests; the lakehouse talk also explicitly says graph navigation is not a replacement and expects hybrid vector/full-text anyway.*
-
-### Should agents be steered toward keyword-style queries, or away from them?
+### Is the right lever on cost sending fewer tokens, or sending more tokens that stay in the prompt cache?
 
 | Position A | Position B |
 |---|---|
-| Keyword queries are load-bearing — BM25 is a first-class leg of the retriever and exact-token matching is exactly what dense search cannot do, so keep the keyword score in the fusion formula (30% in Tesco's weighting) and expose keyword search as a tool.<br>*[Bypassing the Multimodal Tax: Hybrid RAG, SQL RRF & UI Telemetry](../talks/bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry.md), [We Cut 94% of AI Coding Tokens With a Local Code Index](../talks/we-cut-94-of-ai-coding-tokens-with-a-local-code-index.md)* | Agents write keyword-stuffed 'caveman' queries because they were trained on grep-based code exploration and benchmarked on BEIR/NanoBEIR, which structurally favor BM25 — this is a training artifact to be corrected. Instruct the model to write one concise natural sentence describing what it wants to find, and RL-reward it for doing so.<br>*[How we taught agents to use good retrieval](../talks/how-we-taught-agents-to-use-good-retrieval.md)* |
+| Send less. About 90% of spend is input tokens, so the entire game is shrinking what gets shipped: a local hybrid code index cut 83K to 4.9K tokens per question, tool routing cut ~127k of schemas to ~1,000, and speculative markdown memory loading 100k tokens per round is waste that graph traversal removes.<br>*[We Cut 94% of AI Coding Tokens With a Local Code Index](../talks/we-cut-94-of-ai-coding-tokens-with-a-local-code-index.md), [The 100-Tool Agent Is a Trap](../talks/the-100-tool-agent-is-a-trap.md), [CrabRAG: Why Automated Assistants Need Graph Memory, Not More Tokens](../talks/crabrag-why-automated-assistants-need-graph-memory-not-more-tokens.md), [Bypassing the Multimodal Tax: Hybrid RAG, SQL RRF & UI Telemetry](../talks/bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry.md)* | Send more, but keep it stable. Leaving the full history untouched won on cost, latency, and recall simultaneously because 97% of tokens were cache hits — the configuration sending the most tokens was the cheapest to run — while trimming tool outputs made the agent re-retrieve what it already had.<br>*[Context Engineering in 2026](../talks/context-engineering-in-2026.md)* |
 
-*Why it matters: One camp tunes the fusion weights; the other changes the query the agent emits and treats the retrieval benchmark suite itself as the bug. If position B is right, teams optimizing hybrid weights against BEIR-style evals are hill-climbing a metric that rewards the wrong query distribution.*
+*Why it matters: The two strategies are in direct conflict: aggressive retrieval and pruning invalidate the prefix cache that makes the keep-everything approach cheap. Getting this backwards can move the bill by an order of magnitude either direction, and the answer depends on whether your provider caches and whether the conversation still fits the window.*
 
-### Should the retriever return a wide candidate set or the smallest set that meets the accuracy target?
+### Does a graph layer earn its cost alongside vector search?
 
 | Position A | Position B |
 |---|---|
-| Go wide first: a broad semantic pass returning up to 50 chunks, shown to the agent as summaries, gives it an overview of the corpus before it narrows.<br>*[How we taught agents to use good retrieval](../talks/how-we-taught-agents-to-use-good-retrieval.md)* | Keep the working set small and domain-tuned: test K at 3, 5, and 10 and pick the smallest that meets the target (K=5 as default), retrieve more for product catalogs and fewer for medical answers because of accuracy and liability, and remember that removing irrelevant candidates is as valuable as surfacing the right ones.<br>*[The 100-Tool Agent Is a Trap](../talks/the-100-tool-agent-is-a-trap.md), [Bypassing the Multimodal Tax: Hybrid RAG, SQL RRF & UI Telemetry](../talks/bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry.md)* |
+| Yes, for relationship and multi-hop questions. Similarity in vector space is not the same as an actual relationship, so long reasoning chains fail even when every fact is stored; a graph store gives precise, explainable, auditable subgraphs on the same source data, and used as a metadata semantic layer it lets an agent see how hundreds of tables interrelate without any ETL.<br>*[CrabRAG: Why Automated Assistants Need Graph Memory, Not More Tokens](../talks/crabrag-why-automated-assistants-need-graph-memory-not-more-tokens.md), [AI on Your Lakehouse: Context Comes in Shapes, Not Queries](../talks/ai-on-your-lakehouse-context-comes-in-shapes-not-queries.md)* | Not by default. On real-user evaluations GraphRAG was substantially more expensive to set up and merely tied with plain RAG, so it is not worth adopting unless the data is genuinely highly interconnected.<br>*[Context Engineering in 2026](../talks/context-engineering-in-2026.md)* |
 
-*Why it matters: Candidate-set width drives both token spend and the lost-in-the-middle degradation that the 100-tool benchmark measured directly; a wide set is only safe if something downstream (summarization, a second narrowing round) shrinks it before the answer model sees it.*
+*Why it matters: Graph adds an ingestion pipeline, a schema, and a second query language to maintain. Adopting it on the wrong corpus buys reproducibility and traversal you never use; skipping it on a highly interconnected corpus leaves multi-hop questions structurally unanswerable.*
+
+### Is heavy reliance on lexical search a permanent architectural component, or a symptom of weak dense retrieval and badly formed agent queries?
+
+| Position A | Position B |
+|---|---|
+| Permanent. BM25 held 100% recall at 400k tokens where dense retrieval hit 0%, exact-match domains need it outright, and a fixed weighted blend of semantic plus keyword plus recency scores is the cheap, reliable answer.<br>*[Context Engineering in 2026](../talks/context-engineering-in-2026.md), [Bypassing the Multimodal Tax: Hybrid RAG, SQL RRF & UI Telemetry](../talks/bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry.md), [We Cut 94% of AI Coding Tokens With a Local Code Index](../talks/we-cut-94-of-ai-coding-tokens-with-a-local-code-index.md), [AI System Design: From Idea to Production](../talks/ai-system-design-from-idea-to-production.md)* | Symptom. Agents write keyword-stuffed 'caveman style' queries because they were trained on grep-based code exploration and evaluated on benchmarks (BEIR, NanoBEIR) whose entity queries structurally favor BM25; fixing the query formulation and swapping in late-interaction search closes the Oracle gap to three points without changing the reasoning model.<br>*[How we taught agents to use good retrieval](../talks/how-we-taught-agents-to-use-good-retrieval.md)* |
+
+*Why it matters: One reading says invest in fusion weights and keep BM25 forever; the other says invest in retriever quality and query-formulation training, and expect the lexical crutch to shrink. It also implies current retrieval benchmarks are actively misleading as a basis for picking a retriever.*
 
 ## Practical Guidance
 
 **Do:**
 
-- Run dense and BM25/keyword retrieval in parallel and fuse the result sets; budget on the observed drop from ~1-in-4 misses per method to ~1-in-10 fused.
-- Fuse with a cheap deterministic score — e.g. 50% semantic + 30% keyword + 20% recency with an adaptive threshold — and keep it in the sub-millisecond range rather than calling an LLM reranker that adds 2-3 seconds.
-- Add a metadata pre-filter leg whenever documents carry codified identifiers (diagnosis and procedure codes, SKUs, medication names); vector search alone will not resolve them.
-- Chunk on document headings (question/answer pairs) so a retrieval failure names a specific chunk you can trace, rather than an anonymous 512-character window.
-- Sweep top-k at 3, 5, and 10 and ship the smallest K that hits your accuracy target; bias k up for product catalogs and down for medical or liability-sensitive answers.
-- Expose several differentiated retrieval tools (wide semantic search, grep/lexical, structured query) instead of one generic search tool, so each intent hits the modality that fits it.
-- Instruct the model to write 'one concise sentence describing what it wants to find' rather than 'write a search query', to keep it out of the keyword-stuffing pattern.
-- For multi-hop questions, use vector search only to select seed nodes and then traverse relationships, ranking neighbors by relatedness, instead of chaining more vector hits.
-- Make retrieval effort a configurable latency-versus-quality knob: single-shot for easy queries, a reflective/agentic loop for hard ones, capped at roughly four rounds with parallel searches inside each round.
-- Optimize the retriever for information density per token, not relevance alone — the answer model pays for every retrieved token.
-- Instrument real queries against a counterfactual baseline before claiming token or cost savings, and state which baseline the number is against.
+- Run dense and keyword search side by side and fuse the results — one team measured each method alone missing ~25% of relevant results and the pair missing ~10%.
+- Route exact-token queries (diagnosis and procedure codes, SKUs, medication names) through lexical search or metadata pre-filtering rather than trusting embeddings.
+- Chunk on document structure — headings, question/answer units — so each retrieved chunk is citable and a retrieval miss can be traced to a specific chunk.
+- Fuse with a cheap deterministic score (e.g. 50% semantic / 30% keyword / 20% recency at 0.4ms) before adding an LLM reranker that costs 2-3 seconds per query.
+- Sweep top-k at 3, 5, and 10 on your own test set and ship the smallest K that hits the accuracy target; retrieve more for product catalogs, fewer for medical answers.
+- Use vector hits as seed nodes and traverse structure (graph edges, document outline, extracted codes) from there instead of chaining additional vector lookups.
+- Instruct the model to write 'one concise sentence describing what it wants to find' rather than 'write a search query', to stop it emitting keyword-stuffed BM25-shaped queries.
+- Expose several differentiated retrieval tools (wide semantic search over chunk summaries, lexical/grep) and cap the loop — e.g. four rounds max with parallel searches inside each round.
+- Optimize retrieved results for information density per token, not relevance alone, and make retrieval effort a configurable latency-versus-quality knob.
+- Instrument per-turn tokens, cache hits, cost, and TTFT for retrieval, and measure savings against a fixed counterfactual baseline instead of estimating them.
 
 **Avoid:**
 
-- Treating cosine similarity as the whole retrieval system — it was a hot-second industry assumption that did not survive real customer scenarios.
-- Asking semantic search to answer negative or coverage questions ('what documentation are we missing'); similarity can only match, it cannot prove absence.
-- Putting an LLM judge or reranker in the hot retrieval path when a weighted formula gets there in 0.4ms.
-- Chaining multiple vector hits to reach a multi-hop answer — each additional hop is another chance to retrieve the wrong document.
-- Bulk-uploading unstructured documents into a chatbot and paying for the tokens before a question is even asked; preprocess into structured chunks instead.
-- Enabling full agent mode over the retriever when citations or compliance matter — agent-driven search breaks the chain back to source chunks.
-- Letting the agent emit entity-stuffed 'caveman' queries; that behavior is inherited from grep-style code search and BM25-favoring benchmarks, not from what your corpus needs.
-- Assuming a code-index-style hybrid retriever generalizes to large repos where files carry many responsibilities — recall collapsed to near zero at 396 files.
-- Making infrastructure decisions off published benchmarks that may be measuring the wrong thing rather than first-principles napkin math.
+- Shipping cosine similarity as the entire retrieval layer — the industry's 'get really good at vectors and we're set' phase is over.
+- Expecting semantic search to answer negative or coverage questions ('what documentation are we missing') — similarity can only match things that exist.
+- Bulk-uploading unstructured documents into a hosted chatbot: you pay tokens before any question is asked, you cannot see how it chunked, and accuracy drops while hallucination rises.
+- Resolving multi-hop questions by chaining vector hits — each additional hit is another chance to retrieve the wrong document, and similarity search cannot close a long reasoning chain even when every fact is stored.
+- Adopting LLM-generated community summaries (GraphRAG-style) by reflex: costlier, slower, non-reproducible across runs, and one team's real-user eval had it merely tied with plain RAG.
+- Setting chunk size, overlap, and top-k by eyeball — 'we didn't actually measure anything, it was just like oh it looks good' was named as the mistake.
+- Assuming a hybrid index generalizes across codebases: recall dropped to nearly zero at 396 files once individual files carried many responsibilities.
+- Reading BEIR/NanoBEIR-style benchmark results as evidence about your retriever — their entity-based queries structurally advantage BM25.
+- Layering an agentic browse step on top of a working hybrid retriever without measuring it — one team found zero added recall and 50% higher latency.
+- Reaching for fine-tuning when the failure is retrieval or orchestration; reserve it for behavioral failures or domain-specific performance needs.
 
 ## Notable Outliers
 
-- Standard retrieval benchmarks (BEIR, NanoBEIR) use entity-based 'caveman style' queries that structurally favor BM25, and this is why agents have learned to write bad semantic queries — the eval suite is the root cause, not the retriever. ([How we taught agents to use good retrieval](../talks/how-we-taught-agents-to-use-good-retrieval.md), [4:52](https://www.youtube.com/watch?v=1IdzkRVmWAA&t=292s))
-- Late-interaction search alone closed the Oracle gap to three points on BrowseComp Plus and nearly entirely on Office QA Pro without changing the reasoning model — evidence that a sufficiently good single retriever may matter more than the fusion strategy. ([How we taught agents to use good retrieval](../talks/how-we-taught-agents-to-use-good-retrieval.md), [3:14](https://www.youtube.com/watch?v=1IdzkRVmWAA&t=194s))
-- Moving vectors to object storage with a memory cache for the working set is roughly 100x cheaper than DRAM-resident vector databases — a million vectors for a dollar versus ~$100 per million — which changes the cost calculus of keeping a dense leg at all. ([Building Turbopuffer: Gergely Orosz (@pragmaticengineer ) × Simon Eskildsen (CEO)](../talks/building-turbopuffer-gergely-orosz-pragmaticengineer-simon-eskildsen-ceo.md), [30:32](https://www.youtube.com/watch?v=jQDXzEVHMSE&t=1832s))
-- The same retrieve-then-fuse pattern applied to tool schemas instead of documents cut tool-context from ~127k tokens to ~1,000 and held selection accuracy above 83% from 10 to 1041 tools, versus 13.6% for loading the full catalog. ([The 100-Tool Agent Is a Trap](../talks/the-100-tool-agent-is-a-trap.md), [6:38](https://www.youtube.com/watch?v=vh2VGuQ3zhY&t=398s))
-- A 0.5-billion-parameter model (Qwen 2.5, ~400MB) running on CPU is sufficient for an FAQ assistant and hallucinates less than larger models, provided the retrieved context is well-vetted. ([Bypassing the Multimodal Tax: Hybrid RAG, SQL RRF & UI Telemetry](../talks/bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry.md), [42:30](https://www.youtube.com/watch?v=Akm1sqvWG4A&t=2550s))
-- A deterministic regex/structure-based document load beats LLM entity extraction when documents are already structured and interlinked, because it is idempotent and faster — and metadata-derived theme labels beat LLM community summaries on cost, speed, and reproducibility. ([AI on Your Lakehouse: Context Comes in Shapes, Not Queries](../talks/ai-on-your-lakehouse-context-comes-in-shapes-not-queries.md), [50:27](https://www.youtube.com/watch?v=kRkcNOsRyYg&t=3027s))
-- The speaker states outright that none of the efficiency or accuracy claims in the workshop were benchmarked. ([AI on Your Lakehouse: Context Comes in Shapes, Not Queries](../talks/ai-on-your-lakehouse-context-comes-in-shapes-not-queries.md), [1:54:56](https://www.youtube.com/watch?v=kRkcNOsRyYg&t=6896s))
+- At 400k tokens, dense retrieval gave 0% recall on facts buried in the middle while BM25 still returned them 100% of the time. ([Context Engineering in 2026](../talks/context-engineering-in-2026.md), [58:58](https://www.youtube.com/watch?v=WP3hjUXd918&t=3538s))
+- A weighted 50/30/20 semantic-keyword-recency formula running in 0.4 milliseconds outperformed LLM-based reranking — simple formulas beat complex models most of the time. ([We Cut 94% of AI Coding Tokens With a Local Code Index](../talks/we-cut-94-of-ai-coding-tokens-with-a-local-code-index.md), [5:33](https://www.youtube.com/watch?v=dRmWYHuIJxM&t=333s))
+- Semantic search structurally cannot prove a negative, so coverage questions ('what documentation are we missing') require structured retrieval, not better embeddings. ([AI on Your Lakehouse: Context Comes in Shapes, Not Queries](../talks/ai-on-your-lakehouse-context-comes-in-shapes-not-queries.md), [5:14](https://www.youtube.com/watch?v=kRkcNOsRyYg&t=314s))
+- Moving vectors from DRAM to object storage with a memory cache makes a million vectors cost about a dollar, versus roughly $100 per million for DRAM-resident vector databases. ([Building Turbopuffer: Gergely Orosz (@pragmaticengineer ) × Simon Eskildsen (CEO)](../talks/building-turbopuffer-gergely-orosz-pragmaticengineer-simon-eskildsen-ceo.md), [30:32](https://www.youtube.com/watch?v=jQDXzEVHMSE&t=1832s))
+- A 0.5B-parameter model (Qwen 2.5, ~400MB) running on CPU is sufficient for an FAQ assistant and hallucinates less than larger models, provided the retrieved context is well-vetted. ([Bypassing the Multimodal Tax: Hybrid RAG, SQL RRF & UI Telemetry](../talks/bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry.md), [42:30](https://www.youtube.com/watch?v=Akm1sqvWG4A&t=2550s))
+- The same retrieval pattern applied to tool schemas instead of documents holds tool-selection accuracy above 83% from 10 to 1041 tools, where static loading falls to 13.6% at 741 tools. ([The 100-Tool Agent Is a Trap](../talks/the-100-tool-agent-is-a-trap.md), [4:51](https://www.youtube.com/watch?v=vh2VGuQ3zhY&t=291s))
 
 ## All Talks
 
@@ -152,6 +151,7 @@ Supporting talks: [We Cut 94% of AI Coding Tokens With a Local Code Index](../ta
 - [AI System Design: From Idea to Production](../talks/ai-system-design-from-idea-to-production.md)
 - [Building Turbopuffer: Gergely Orosz (@pragmaticengineer ) × Simon Eskildsen (CEO)](../talks/building-turbopuffer-gergely-orosz-pragmaticengineer-simon-eskildsen-ceo.md)
 - [Bypassing the Multimodal Tax: Hybrid RAG, SQL RRF & UI Telemetry](../talks/bypassing-the-multimodal-tax-hybrid-rag-sql-rrf-ui-telemetry.md)
+- [Context Engineering in 2026](../talks/context-engineering-in-2026.md)
 - [CrabRAG: Why Automated Assistants Need Graph Memory, Not More Tokens](../talks/crabrag-why-automated-assistants-need-graph-memory-not-more-tokens.md)
 - [How we taught agents to use good retrieval](../talks/how-we-taught-agents-to-use-good-retrieval.md)
 - [On AI and Knowledge](../talks/on-ai-and-knowledge.md)
@@ -164,8 +164,11 @@ Supporting talks: [We Cut 94% of AI Coding Tokens With a Local Code Index](../ta
 - [Ankush Rastogi](../speakers/ankush-rastogi.md)
 - [Apoorva Joshi](../speakers/apoorva-joshi.md)
 - [Hanna Lichtenberg](../speakers/hanna-lichtenberg.md)
+- [Louis-François Bouchard](../speakers/louis-francois-bouchard.md)
+- [Omar Solano](../speakers/omar-solano.md)
 - [Pablo Castro](../speakers/pablo-castro.md)
 - [Rajkumar Sakthivel](../speakers/rajkumar-sakthivel.md)
+- [Samridhi Vaid](../speakers/samridhi-vaid.md)
 - [Sohail Shaikh](../speakers/sohail-shaikh.md)
 - [Stephen Chin](../speakers/stephen-chin.md)
 - [Zach Blumenfeld](../speakers/zach-blumenfeld.md)

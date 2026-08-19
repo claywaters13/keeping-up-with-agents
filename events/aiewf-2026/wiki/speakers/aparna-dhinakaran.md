@@ -17,7 +17,7 @@ Aparna Dhinakaran is the Co-Founder and Chief Product Officer at Arize AI, a pio
 
 ## Talks
 
-- [The Future of Evals: From LLM as a Judge to Agent as a Judge](../talks/the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge.md)
+- [The Future of Evals: From LLM as a Judge to Agent as a Judge](../talks/the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge.md) (Arize Evals Track)
 
 ## Scheduled Sessions
 

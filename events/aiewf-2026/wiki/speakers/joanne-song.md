@@ -14,7 +14,7 @@ talk_count: 1
 
 ## Talks
 
-- [Local Agentic Theory For Mobile Games](../talks/local-agentic-theory-for-mobile-games.md) (co-presented)
+- [Local Agentic Theory For Mobile Games](../talks/local-agentic-theory-for-mobile-games.md) (Neo4j Graphs Track, co-presented)
 
 ## Scheduled Sessions
 

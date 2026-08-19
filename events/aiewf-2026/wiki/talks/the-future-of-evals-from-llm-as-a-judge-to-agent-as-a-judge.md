@@ -2,6 +2,7 @@
 title: "The Future of Evals: From LLM as a Judge to Agent as a Judge"
 type: "talk"
 slug: "the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge"
+track: "Arize Evals Track"
 org: "Arize AI"
 video_id: "q2JrUKBMf0w"
 duration_sec: 366
@@ -15,7 +16,7 @@ speakers: ["Aparna Dhinakaran"]
 
 **Org:** Arize AI
 
-**Duration:** 6m 06s
+**Track:** Arize Evals Track &nbsp;|&nbsp; **Duration:** 6m 06s
 
 [Watch on YouTube](https://www.youtube.com/watch?v=q2JrUKBMf0w)
 

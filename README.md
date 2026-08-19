@@ -31,9 +31,9 @@ server: the link graph plus grep is the index.
 
 ### [AI Engineer World's Fair 2026](events/aiewf-2026/)
 
-231 talks, 134 concepts, 248 speakers, almost a million words. Headline finding: of
-134 concepts synthesized across those talks, zero came back settled practice (87
-consolidating, 43 contested, 4 frontier). Browse the
+246 talks, 134 concepts, 264 speakers, almost a million words. Headline finding: of
+134 concepts synthesized across those talks, zero came back settled practice (80
+consolidating, 50 contested, 4 frontier). Browse the
 [wiki](events/aiewf-2026/wiki/README.md), open it as an Obsidian vault, or poke at the
 [interactive concept explorer](https://claywaters13.github.io/keeping-up-with-agents/events/aiewf-2026/viz/explorer/).
 
@@ -43,7 +43,7 @@ plugin users.
 ## How it's built
 
 Talks are transcribed from the event's own published videos, distilled by an LLM
-pipeline, and then verified: 4,633 quotes checked character for character against the
+pipeline, and then verified: 4,925 quotes checked character for character against the
 raw captions before publication, cross-talk syntheses that only quote from that
 verified set, and a 10-case eval suite (`evals/`) that gates plugin releases,
 including graders for quote fidelity and refusal outside the corpus. The published

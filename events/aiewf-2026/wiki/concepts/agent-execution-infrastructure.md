@@ -4,15 +4,15 @@ type: "concept"
 slug: "agent-execution-infrastructure"
 tier: "supporting"
 maturity: "consolidating"
-talk_count: 21
-speaker_count: 25
+talk_count: 22
+speaker_count: 26
 ---
 
 # agent execution infrastructure
 
 **Maturity: CONSOLIDATING** — Consolidating — converging practice, some open edges
 
-*Supporting concept* &middot; discussed across **21** talk(s) by **25** speaker(s)
+*Supporting concept* &middot; discussed across **22** talk(s) by **26** speaker(s)
 
 **Definition:** The compute substrate agents run on — VM and container pools, warm starts, cloud dev environments — as an operations and cost problem distinct from security isolation.
 
@@ -20,136 +20,128 @@ speaker_count: 25
 
 ## State of Practice
 
-The conference treated agent compute as a fleet-operations problem with GPU-denominated economics: an idle sandbox is not a latency annoyance but wasted accelerator time, so the accepted move is to push spin-up cost onto cheap infrastructure via demand-scaled warm pools plus incremental memory snapshots, and to decouple the agent loop from tool execution so container setup never blocks first-token reasoning (Anthropic reported 60% faster TTFT at P50, >90% at P95). Hardware virtualization has become the default substrate — OpenAI's sandbox team and Form3 both landed on micro VMs after exhausting fork/exec, containers, and gVisor, and GitHub's automations run entirely as micro VMs in the cloud. The second structural shift is that durable state moved out of the execution process: session logs, handoff files, and snapshot lineages are the agent, and the worker is disposable, which is what makes autoscaling, migration, and crash recovery tractable at all. Storage, not compute, was repeatedly named as the current frontier — incremental snapshot/restore, block devices over filesystem passthrough, and scheduler placement scored by which snapshot layers a node already has cached. Where the field is still unsettled: whether a single containerized node is even a valid unit for real infrastructure work, whether to build this layer or rent it, and whether the scarce resource to optimize around is GPU time or general-purpose CPU.
+The conference treated agent compute as a scheduling-and-cost problem that has outgrown the laptop: sessions are micro VMs in the cloud, and the local-versus-cloud distinction is being designed away rather than exposed to users. The dominant cost lever named repeatedly is idle time on the expensive resource — GPU workers stalling on sandbox spin-up during RL rollouts, or agent reasoning blocked on container boot — so the pattern that emerged is to move provisioning off the critical path via demand-scaled warm pools, incremental memory/disk snapshots, and decoupling the agent loop from tool execution (Anthropic reported 60% faster time-to-first-token at P50, >90% at P95, from that split alone). On the primitive itself, OpenAI and Form3 both landed on hardware virtualization after exhausting containers, gVisor, and seccomp, and both advise starting there. The second consistent move is refusing to reinvent the substrate: Kubernetes for placement and secrets, existing CI runners for agent loops, virtual-kubelet and deschedulers for cross-cluster capacity, distributed-systems reliability patterns for retries and consistency. What is unresolved is where durability lives — in snapshotted machine state or in an append-only log that makes the executor disposable — and whether a single-node sandbox can represent real infrastructure work at all. Multi-machine fleet orchestration was described outright as still unsolved.
 
 ## Consensus
 
-### The durable home for agent execution is cloud-hosted, persistent environments rather than the developer's laptop; local-only running is a transitional state.
+### Agent execution should move off developer laptops onto cloud compute the operator controls, with the local/cloud split hidden from the user.
 
-Support: **6** talk(s)
+Support: **5** talk(s)
 
 > "it's kind of a slap on the face for 20 years of cloud computing that everyone's running this locally on on their laptops"
 >
 > — [From fork() to Fleet: Designing an Agent Sandbox Cloud](../talks/from-fork-to-fleet-designing-an-agent-sandbox-cloud.md), [5:37](https://www.youtube.com/watch?v=OqM67QG_Ikk&t=337s)
 
-Supporting talks: [From fork() to Fleet: Designing an Agent Sandbox Cloud](../talks/from-fork-to-fleet-designing-an-agent-sandbox-cloud.md), [Realtime multiplayer, automation, and you!](../talks/realtime-multiplayer-automation-and-you.md), [Multiplayer agentic engineering](../talks/multiplayer-agentic-engineering.md), [The Golden Age of AI Engineering](../talks/the-golden-age-of-ai-engineering.md), [Every Harness Will Become A Claw](../talks/every-harness-will-become-a-claw.md), [I Run a Fleet of AI Agents Across Three Machines. Here's What Broke.](../talks/i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke.md)
+Supporting talks: [From fork() to Fleet: Designing an Agent Sandbox Cloud](../talks/from-fork-to-fleet-designing-an-agent-sandbox-cloud.md), [Realtime multiplayer, automation, and you!](../talks/realtime-multiplayer-automation-and-you.md), [Multiplayer agentic engineering](../talks/multiplayer-agentic-engineering.md), [Every Harness Will Become A Claw](../talks/every-harness-will-become-a-claw.md), [The Golden Age of AI Engineering](../talks/the-golden-age-of-ai-engineering.md)
 
-### Sandbox startup and reset latency should be absorbed by over-provisioned, demand-scaled infrastructure so that expensive model/GPU workers never sit idle waiting on an environment.
+### Sandbox provisioning must be pulled off the critical path of the expensive resource — over-provisioned warm pools and pre-booted environments are worth their idle cost because the GPU or the model call is the thing you cannot afford to leave waiting.
 
 Support: **3** talk(s)
 
-> "you're paying the cost of that startup time on the infrastructure side not on the GPU side so your GPU workers have full utilization"
+> "these also could be like, you know, easily uh two to four times cheaper than your GPUs. So having a little bit of redundancy here, uh you still wind up saving money because you're maximizing the use of your GPU time."
 >
 > — [Computer-Use 2.0: Agents Just Got Multi-Cursor](../talks/computer-use-20-agents-just-got-multi-cursor.md), [13:48](https://www.youtube.com/watch?v=ZSQb5fzRFPw&t=828s)
 
 Supporting talks: [Computer-Use 2.0: Agents Just Got Multi-Cursor](../talks/computer-use-20-agents-just-got-multi-cursor.md), [From fork() to Fleet: Designing an Agent Sandbox Cloud](../talks/from-fork-to-fleet-designing-an-agent-sandbox-cloud.md), [Evolution of agentic surfaces](../talks/evolution-of-agentic-surfaces.md)
 
-### Agent state must be externalized to durable substrate (append-only logs, files on disk, snapshots) so the executing process, container, or machine can be treated as disposable and replaceable.
-
-Support: **4** talk(s)
-
-> "When the log is the agent, the executor is allowed to be fallible."
->
-> — [The Log Is The Agent](../talks/the-log-is-the-agent.md), [7:24](https://www.youtube.com/watch?v=UPwGaM2MKHY&t=444s)
-
-Supporting talks: [The Log Is The Agent](../talks/the-log-is-the-agent.md), [I Run a Fleet of AI Agents Across Three Machines. Here's What Broke.](../talks/i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke.md), [From fork() to Fleet: Designing an Agent Sandbox Cloud](../talks/from-fork-to-fleet-designing-an-agent-sandbox-cloud.md), [Evolution of agentic surfaces](../talks/evolution-of-agentic-surfaces.md)
-
-### Hardware-virtualized micro VMs, not containers or userspace kernels, are the substrate teams converge on for agent execution — and should be adopted up front rather than arrived at after two years of iteration.
+### Hardware-virtualized micro VMs, not containers or userspace kernels, are the execution primitive teams converge on for agent workloads — and teams that iterated through the cheaper options say to skip straight to them.
 
 Support: **3** talk(s)
 
-> "in the end, everyone always wants a VM because they tried everything. They tried containers, G visor, V8s."
+> "if you're a startup or a founder like in this space, like let me save you the story and two years of grief. Just please use micro VMs from the start."
 >
 > — [From fork() to Fleet: Designing an Agent Sandbox Cloud](../talks/from-fork-to-fleet-designing-an-agent-sandbox-cloud.md), [29:03](https://www.youtube.com/watch?v=OqM67QG_Ikk&t=1743s)
 
 Supporting talks: [From fork() to Fleet: Designing an Agent Sandbox Cloud](../talks/from-fork-to-fleet-designing-an-agent-sandbox-cloud.md), [We Gave an Agent Production Code Access and Then Tried to Sleep at Night](../talks/we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night.md), [Realtime multiplayer, automation, and you!](../talks/realtime-multiplayer-automation-and-you.md)
 
-### Existing distributed-systems infrastructure — Kubernetes, CI runners, established reliability patterns — should be reused for agent compute, secrets, and scheduling rather than reinvented as agent-specific systems.
+### Agent infrastructure should be built by adapting existing cloud-native machinery — Kubernetes scheduling, CI runners, distributed-systems reliability patterns — rather than inventing a new substrate; only the orchestration/review/context layer above it is genuinely new.
 
-Support: **3** talk(s)
+Support: **4** talk(s)
 
 > "These are the exact questions Kubernetes already answers. So, that's where I'm headed. I'm not going to reinvent compute, secrets, and tools. Kubernetes already nailed those."
 >
 > — [I Run a Fleet of AI Agents Across Three Machines. Here's What Broke.](../talks/i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke.md), [8:23](https://www.youtube.com/watch?v=4kYl2_mqmnQ&t=503s)
 
-Supporting talks: [I Run a Fleet of AI Agents Across Three Machines. Here's What Broke.](../talks/i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke.md), [Deterministic Infra for Non-Deterministic AI Agents](../talks/deterministic-infra-for-non-deterministic-ai-agents.md), [Loop Engineering from First Principles](../talks/loop-engineering-from-first-principles.md)
+Supporting talks: [I Run a Fleet of AI Agents Across Three Machines. Here's What Broke.](../talks/i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke.md), [Deterministic Infra for Non-Deterministic AI Agents](../talks/deterministic-infra-for-non-deterministic-ai-agents.md), [Loop Engineering from First Principles](../talks/loop-engineering-from-first-principles.md), [Infra behind Krea 2: How to train and serve at scale](../talks/infra-behind-krea-2-how-to-train-and-serve-at-scale.md)
+
+### Durable agent state must live outside the running process — in files, an append-only session log, or a restorable snapshot — so that a crashed worker, a dead sandbox, or a wiped context does not destroy the work.
+
+Support: **4** talk(s)
+
+> "The context can get wiped, the machine can even crash, and the work still survives because it was never only in the model."
+>
+> — [I Run a Fleet of AI Agents Across Three Machines. Here's What Broke.](../talks/i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke.md), [3:10](https://www.youtube.com/watch?v=4kYl2_mqmnQ&t=190s)
+
+Supporting talks: [The Log Is The Agent](../talks/the-log-is-the-agent.md), [I Run a Fleet of AI Agents Across Three Machines. Here's What Broke.](../talks/i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke.md), [Evolution of agentic surfaces](../talks/evolution-of-agentic-surfaces.md), [From fork() to Fleet: Designing an Agent Sandbox Cloud](../talks/from-fork-to-fleet-designing-an-agent-sandbox-cloud.md)
 
 ## Disagreements
 
-### Is a single-node containerized or micro-VM sandbox an adequate execution unit for agent work, or does real infrastructure work require multi-node environments with live cloud resources?
+### Should durability come from persisting the execution environment itself, or from persisting only the event log and treating compute as fungible?
 
 | Position A | Position B |
 |---|---|
-| A single sandbox per rollout is the right unit; scale and fidelity come from warm pools, incremental snapshotting, and checkpoint/restore of that one node — you can even fork a run at any point in its trajectory.<br>*[From fork() to Fleet: Designing an Agent Sandbox Cloud](../talks/from-fork-to-fleet-designing-an-agent-sandbox-cloud.md), [Computer-Use 2.0: Agents Just Got Multi-Cursor](../talks/computer-use-20-agents-just-got-multi-cursor.md)* | Single-node sandboxing hits a hard ceiling: you cannot provision EC2 or Cloud Run inside one node, and deterministic simulation of network failures does not represent AWS-scale behavior, so environments must provision real infrastructure across multiple nodes.<br>*[Emulated: The Data for Fully Autonomous Software Engineers and Companies](../talks/emulated-the-data-for-fully-autonomous-software-engineers-and-companies.md)* |
+| Persist the machine: incremental VM memory and disk snapshots, checkpoint/restore, and snapshot-lineage-aware scheduling turn the sandbox into a durable workspace, and disk persistence is the next major unlock for agents.<br>*[From fork() to Fleet: Designing an Agent Sandbox Cloud](../talks/from-fork-to-fleet-designing-an-agent-sandbox-cloud.md)* | Persist the log: the executor should be explicitly fallible and disposable, state lives in an append-only log or in files on disk, and one process can then advance thousands of agents without sticky sessions or state migration.<br>*[The Log Is The Agent](../talks/the-log-is-the-agent.md), [I Run a Fleet of AI Agents Across Three Machines. Here's What Broke.](../talks/i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke.md), [Evolution of agentic surfaces](../talks/evolution-of-agentic-surfaces.md)* |
 
-*Why it matters: It determines whether agent execution infra is a pooling-and-snapshotting problem solvable with one VM image, or a cloud-provisioning-per-rollout problem where a single environment takes hours to stand up and blows the economics of a post-training rollout.*
+*Why it matters: The choice determines whether you invest engineering in a snapshot/restore storage layer and node affinity, or in a durable event store and stateless workers — and it sets whether sandboxes are pets that must be recoverable or cattle that may be killed at any moment.*
 
-### Should teams build their own agent execution substrate, or treat hosting, sandboxing, session management, and credentials as undifferentiated work to outsource to a provider?
-
-| Position A | Position B |
-|---|---|
-| It is undifferentiated heavy lifting — developers should own only system prompts, skills, tools, and domain context, and consume the agent loop, sandboxing, vaults, and session logs from a managed harness that ships the same primitives its vendor uses internally.<br>*[Evolution of agentic surfaces](../talks/evolution-of-agentic-surfaces.md), [The Golden Age of AI Engineering](../talks/the-golden-age-of-ai-engineering.md)* | The execution/control plane is precisely where competitive advantage now lives, and handing your logs and sandboxes to a provider is the deepest form of lock-in — prompts and models are commoditizing, so teams should own and inspect the substrate themselves.<br>*[Deterministic Infra for Non-Deterministic AI Agents](../talks/deterministic-infra-for-non-deterministic-ai-agents.md), [The Log Is The Agent](../talks/the-log-is-the-agent.md)* |
-
-*Why it matters: It decides whether an engineering org staffs a platform team for agent runtime, snapshotting, and log durability, or buys it — and whether agent history stays portable across providers.*
-
-### Do agent loops need purpose-built sandbox fleets, or should they run on the CI infrastructure teams already have?
+### Is a single-node containerized sandbox an adequate execution environment for agent work and agent training?
 
 | Position A | Position B |
 |---|---|
-| Use GitHub Actions, GitLab, or CircleCI as the loop runtime — it already has your code and your secrets, and a dedicated cluster is unnecessary.<br>*[Loop Engineering from First Principles](../talks/loop-engineering-from-first-principles.md)* | Agent execution needs its own fleet: micro VMs with warm pools, snapshot-lineage-aware scheduling, per-turn incremental checkpointing, and isolation that CI runners do not provide — and isolated cloud sandboxes are the prerequisite for least-privilege access and non-technical teammates triggering real work.<br>*[From fork() to Fleet: Designing an Agent Sandbox Cloud](../talks/from-fork-to-fleet-designing-an-agent-sandbox-cloud.md), [Computer-Use 2.0: Agents Just Got Multi-Cursor](../talks/computer-use-20-agents-just-got-multi-cursor.md), [Multiplayer agentic engineering](../talks/multiplayer-agentic-engineering.md)* |
+| Yes, with engineering: one micro VM or container per rollout, optimized via warm pools, snapshot restore, and window-scoped observation, is the right unit and the remaining work is startup latency and utilization.<br>*[From fork() to Fleet: Designing an Agent Sandbox Cloud](../talks/from-fork-to-fleet-designing-an-agent-sandbox-cloud.md), [Computer-Use 2.0: Agents Just Got Multi-Cursor](../talks/computer-use-20-agents-just-got-multi-cursor.md)* | No: past a threshold a single node cannot represent infrastructure work at all — you cannot simulate EC2 or Cloud Run inside a sandbox, and deterministic network-failure simulation does not reproduce AWS-scale behavior, so environments must provision real multi-node cloud resources.<br>*[Emulated: The Data for Fully Autonomous Software Engineers and Companies](../talks/emulated-the-data-for-fully-autonomous-software-engineers-and-companies.md)* |
 
-*Why it matters: One path is a weekend of YAML on infrastructure you already pay for; the other is a standing platform investment in VMM plumbing, snapshot storage, and autoscalers.*
+*Why it matters: If single-node holds, sandbox clouds are a latency and packing problem solvable with snapshots; if it does not, RL rollouts need real cloud provisioning per episode, which breaks rollout time budgets (spinning up an AWS-Lambda-like stack takes hours) and changes the cost model entirely.*
 
-### Which resource should agent execution infrastructure be optimized around — accelerator time, or general-purpose CPU?
+### Is agent execution infrastructure undifferentiated plumbing to outsource, or the primary source of competitive advantage?
 
 | Position A | Position B |
 |---|---|
-| GPU time is the scarce, expensive resource; deliberately over-provision cheap sandbox compute (2–4x cheaper) and eat idle CPU and memory in warm pools to keep accelerators busy.<br>*[Computer-Use 2.0: Agents Just Got Multi-Cursor](../talks/computer-use-20-agents-just-got-multi-cursor.md), [From fork() to Fleet: Designing an Agent Sandbox Cloud](../talks/from-fork-to-fleet-designing-an-agent-sandbox-cloud.md)* | CPU is now scarce too — RL training environments and agent workloads are consuming general-purpose compute, cloud capacity is bounded by regional power allocation, and the shortage will get worse before it gets better.<br>*[Building Turbopuffer: Gergely Orosz (@pragmaticengineer ) × Simon Eskildsen (CEO)](../talks/building-turbopuffer-gergely-orosz-pragmaticengineer-simon-eskildsen-ceo.md)* |
+| Undifferentiated: hosting, session management, sandboxing, credential handling, and observability should come from a harness vendor; developers should own only system prompts, skills, tools, and domain context.<br>*[Evolution of agentic surfaces](../talks/evolution-of-agentic-surfaces.md)* | Differentiating: prompts and models are both commoditizing and the agentic control plane is the next frontier, and whoever owns the log owns the agent — so teams should build and self-host this layer rather than hand it to a provider.<br>*[Deterministic Infra for Non-Deterministic AI Agents](../talks/deterministic-infra-for-non-deterministic-ai-agents.md), [The Log Is The Agent](../talks/the-log-is-the-agent.md)* |
 
-*Why it matters: If CPU is also constrained, the standard advice to over-provision warm sandbox pools stops being free money and becomes a bid against your own training fleet for the same capacity.*
+*Why it matters: This decides whether a team's scarce infra engineers go into an internal control plane and log store or into domain tooling on top of a managed loop — and it determines exposure to log-level vendor lock-in, which was argued to be deeper than model or API lock-in.*
 
 ## Practical Guidance
 
 **Do:**
 
-- Run the agent loop and tool execution in separate failure domains so container setup does not block model reasoning — Anthropic measured 60% faster time-to-first-token at P50 and over 90% at P95 after decoupling
-- Size the sandbox warm pool with a demand-based autoscaler that tracks how many workers currently need a sandbox, since the optimal pool size shifts over a multi-day training run and cannot be set upfront
-- Deliberately over-provision the warm pool: sandbox compute runs 2–4x cheaper than GPU time, so redundancy still nets savings
-- Combine warm pools with memory-snapshot restore rather than choosing one — the hybrid gets low creation latency without permanently idle capacity
-- Snapshot incrementally per turn and return the snapshot immediately while uploading in the background, instead of saving multi-gigabyte images synchronously
+- Run the agent loop and the tool-execution container as separate failure domains so model reasoning starts before the sandbox is ready (measured at 60% faster TTFT at P50, >90% at P95)
+- Size the sandbox warm pool with a demand-based autoscaler tied to the number of GPU workers currently needing a sandbox, and re-scale it during multi-day runs rather than fixing it up front
+- Combine a warm pool with memory-snapshot restore to get both low creation latency and fast state recovery
+- Snapshot incrementally rather than writing full multi-gigabyte images per turn, and return the snapshot call immediately while uploading to object storage in the background
 - Score scheduler nodes by how many snapshot lineage layers they already have cached, to cut restore download time
-- Expose storage to the guest as a block device rather than shared-folder filesystem passthrough, so you use the guest cache and avoid a VM exit on every filesystem operation; prefer POSIX-compliant storage over NFS
-- Adopt micro VMs from day one rather than iterating through fork/exec, containers, gVisor, and V8 isolates
-- Keep agent state in files on disk or an append-only log so a context wipe or machine crash does not destroy work, and build a single boot command that brings the whole fleet back up from that state
-- Give each machine its own directory for machine-specific state and route all changes to shared state through pull requests, to stop silent divergence between hosts
-- Run the fleet's single control point on an always-on machine — a laptop that sleeps cannot be a control plane
-- Let agents declare their resource requirements and have the scheduler place them, instead of a human picking which machine each agent runs on
-- Cap retries explicitly at the infrastructure layer, treating uncontrolled retry as a compute-incident risk rather than a resilience feature
-- Reuse Kubernetes and existing CI for compute, secrets, and scheduling; build only the orchestration, review flow, and context management on top
+- Expose sandbox storage as a block device using the guest cache rather than shared-folder filesystem passthrough, and prefer POSIX-compliant filesystems over NFS
+- Run agent control loops on existing CI (GitHub Actions, GitLab, CircleCI) which already has code and secrets access, instead of standing up a dedicated cluster
+- Put the fleet's single control point on an always-on machine; a laptop that sleeps cannot be a control plane
+- Let agents declare their resource requirements and have the scheduler place them, rather than assigning machines by hand
+- Separate per-machine state into per-machine directories and change shared state only through pull requests when multiple machines share a context directory
+- Store credentials in a vault decrypted only at tool-execution time, and offer MCP tunnels so enterprise tool execution runs inside the customer's own VPC with outbound-only calls to the agent loop
+- For GPU fleets: track tensor core utilization and InfiniBand metrics, pull any GPU running above ~78°C out of the pool immediately, and checkpoint every 20-30 minutes on a filesystem fast enough to make that free
+- Handle cross-cluster failures by marking the pod failed and letting Kubernetes and the HPA recreate it, instead of writing custom recovery logic
+- Bound retries explicitly — an uncontrolled retry storm turns a minor API error into a compute incident
 
 **Avoid:**
 
-- Giving an agent access to the Docker socket inside a container sandbox — it can spawn a privileged container and escape, making the container boundary meaningless
-- Relying on the sandboxes shipped inside Codex and Claude Code as your isolation boundary for anything that needs Docker
-- Seccomp syscall allowlists for open-ended agent workloads, since you cannot know in advance which syscalls the workload needs and you end up blocking real users
-- Saving full multi-gigabyte snapshots on every turn — it is infeasible on both cost and latency
-- Stacking many Claude Code and MCP processes on a single machine until memory is exhausted and swap fills
-- Pointing two machines at the same shared context directory without separating machine-specific state
-- Leaving harness workarounds in place after the model no longer needs them — Opus 4.5 dropped context anxiety and the old fixes became pure overhead, adding latency and causing incorrect cache discards
-- Fire-and-forget writes of session logs to local disk (Claude Code and Codex JSONL, OpenCode SQLite), where a failed write silently loses the run's history
-- Letting the model directly control production systems instead of emitting proposals that infrastructure validates and a gateway enforces
-- Treating context compaction as the default recovery mechanism — it is slow, you cannot choose what survives, and what it drops is gone
+- Putting the agent loop and tool execution in the same container — it blocks first-token reasoning on container setup and couples the failure domains
+- Relying on seccomp allowlists for open-ended agent workloads; you cannot know the syscall set in advance and you end up blocking real users
+- Handing an agent a Docker socket — it can spawn a privileged container and escape, which makes the built-in Codex and Claude sandboxes worthless
+- Optimizing sandbox startup time alone for computer-use environments that can be 40 GB
+- Using NoExecute taints to reclaim nodes — they evict every pod simultaneously and take production down; use a descheduler with ordinary taints for gradual migration
+- Trusting the GPU utilization metric as a training-efficiency proxy, or running Ceph as the parallel filesystem if you can afford a commercial one
+- Swapping nodes reflexively after crashes — the same machines and code often run 12-24 hours after a series of hourly failures
+- Fire-and-forget local JSONL log writes (Claude Code, Codex SDK mode) and SQLite state with known corruption issues (OpenCode) as the durability story for production agents
+- Leaving authentication defaults off when promoting ML infrastructure to production — the Ray cluster exposure was an unset default, not a novel attack
+- Letting the model directly control production systems; it should emit proposals that infrastructure validates, policy approves, and a gateway enforces
+- Stacking many agent and MCP processes on one machine until memory is exhausted and swap fills
 
 ## Notable Outliers
 
-- Disk persistence, not compute, is the next major unlock for agent sandboxes — the thing that turns agents from ephemeral executors into durable knowledge workers. ([From fork() to Fleet: Designing an Agent Sandbox Cloud](../talks/from-fork-to-fleet-designing-an-agent-sandbox-cloud.md), [41:18](https://www.youtube.com/watch?v=OqM67QG_Ikk&t=2478s))
-- Checkpoint/restore lets a harness run Monte Carlo tree search over sandbox states across many days, backtracking and re-exploring branches of the environment itself. ([From fork() to Fleet: Designing an Agent Sandbox Cloud](../talks/from-fork-to-fleet-designing-an-agent-sandbox-cloud.md), [32:52](https://www.youtube.com/watch?v=OqM67QG_Ikk&t=1972s))
-- Scoping the agent's view to a single window instead of the full desktop raised pass rate from 62% to 80% while cutting token usage 34% — an infrastructure-side change that beat model swaps. ([Computer-Use 2.0: Agents Just Got Multi-Cursor](../talks/computer-use-20-agents-just-got-multi-cursor.md), [8:38](https://www.youtube.com/watch?v=ZSQb5fzRFPw&t=518s))
-- Spinning up the entire stack for something like AWS Lambda takes hours, which simply does not fit inside a post-training rollout. ([Emulated: The Data for Fully Autonomous Software Engineers and Companies](../talks/emulated-the-data-for-fully-autonomous-software-engineers-and-companies.md), [12:13](https://www.youtube.com/watch?v=zkX03APVj0M&t=733s))
-- With the log as the unit of state, one process can advance thousands of agents, eliminating sticky sessions and state migration entirely. ([The Log Is The Agent](../talks/the-log-is-the-agent.md), [7:24](https://www.youtube.com/watch?v=UPwGaM2MKHY&t=444s))
-- CPUs — not just GPUs — are now scarce because RL environments and agent workloads consume general-purpose compute, and cloud capacity is ultimately allocated by where power is available. ([Building Turbopuffer: Gergely Orosz (@pragmaticengineer ) × Simon Eskildsen (CEO)](../talks/building-turbopuffer-gergely-orosz-pragmaticengineer-simon-eskildsen-ceo.md), [39:06](https://www.youtube.com/watch?v=jQDXzEVHMSE&t=2346s))
-- KV cache handling at 500K–1M context under concurrency is fundamentally a distributed file system / database problem, not conceptually hard — just unfamiliar to ML practitioners. ([Agents at Scale: Inside MiniMax's Model and the Infrastructure Behind It](../talks/agents-at-scale-inside-minimaxs-model-and-the-infrastructure-behind-it.md), [16:32](https://www.youtube.com/watch?v=AVMr9PMINyo&t=992s))
-- GPU-accelerated sandboxes are poorly served by micro VMs today because VFIO passthrough cannot be shared across multiple tenants. ([From fork() to Fleet: Designing an Agent Sandbox Cloud](../talks/from-fork-to-fleet-designing-an-agent-sandbox-cloud.md), [28:24](https://www.youtube.com/watch?v=OqM67QG_Ikk&t=1704s))
+- Disk persistence, not compute, is the next major unlock for agent sandboxes — it is what turns agents from ephemeral executors into durable knowledge workers. ([From fork() to Fleet: Designing an Agent Sandbox Cloud](../talks/from-fork-to-fleet-designing-an-agent-sandbox-cloud.md), [41:18](https://www.youtube.com/watch?v=OqM67QG_Ikk&t=2478s))
+- Checkpoint/restore of sandbox state lets a harness run Monte Carlo tree search over machine states across many days, backtracking and re-exploring branches. ([From fork() to Fleet: Designing an Agent Sandbox Cloud](../talks/from-fork-to-fleet-designing-an-agent-sandbox-cloud.md), [32:52](https://www.youtube.com/watch?v=OqM67QG_Ikk&t=1972s))
+- CPUs, not just GPUs, are now scarce, because RL training environments and agent workloads consume large amounts of general-purpose compute — and it will get worse before it gets better. ([Building Turbopuffer: Gergely Orosz (@pragmaticengineer ) × Simon Eskildsen (CEO)](../talks/building-turbopuffer-gergely-orosz-pragmaticengineer-simon-eskildsen-ceo.md), [39:06](https://www.youtube.com/watch?v=jQDXzEVHMSE&t=2346s))
+- Training workloads should preempt production inference on shared GPU clusters, because the value extracted from GPUs doing training exceeds that from serving production — and evicted inference can be transparently relocated to rented capacity without an outage. ([Infra behind Krea 2: How to train and serve at scale](../talks/infra-behind-krea-2-how-to-train-and-serve-at-scale.md), [10:33](https://www.youtube.com/watch?v=byn9PURoBNY&t=633s))
+- Scoping a computer-use agent to a single window rather than the whole desktop raised pass rate from 62% to 80% while using 34% fewer tokens. ([Computer-Use 2.0: Agents Just Got Multi-Cursor](../talks/computer-use-20-agents-just-got-multi-cursor.md), [8:38](https://www.youtube.com/watch?v=ZSQb5fzRFPw&t=518s))
+- When the log is the state, one process can advance thousands of agents — removing sticky sessions, state migration, and coordination overhead from the execution layer. ([The Log Is The Agent](../talks/the-log-is-the-agent.md), [7:24](https://www.youtube.com/watch?v=UPwGaM2MKHY&t=444s))
+- Multi-machine agent orchestration remains unsolved: one machine is manageable, across machines is still rough. ([I Run a Fleet of AI Agents Across Three Machines. Here's What Broke.](../talks/i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke.md), [8:23](https://www.youtube.com/watch?v=4kYl2_mqmnQ&t=503s))
 
 ## All Talks
 
@@ -163,6 +155,7 @@ Supporting talks: [I Run a Fleet of AI Agents Across Three Machines. Here's What
 - [Forward Deployed Engineering 101](../talks/forward-deployed-engineering-101.md)
 - [From fork() to Fleet: Designing an Agent Sandbox Cloud](../talks/from-fork-to-fleet-designing-an-agent-sandbox-cloud.md)
 - [I Run a Fleet of AI Agents Across Three Machines. Here's What Broke.](../talks/i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke.md)
+- [Infra behind Krea 2: How to train and serve at scale](../talks/infra-behind-krea-2-how-to-train-and-serve-at-scale.md)
 - [Loop Engineering from First Principles](../talks/loop-engineering-from-first-principles.md)
 - [Multiplayer agentic engineering](../talks/multiplayer-agentic-engineering.md)
 - [OpenClaw in Your Hand: Building a Physical AI Terminal](../talks/openclaw-in-your-hand-building-a-physical-ai-terminal.md)
@@ -183,6 +176,7 @@ Supporting talks: [I Run a Fleet of AI Agents Across Three Machines. Here's What
 - [Dan Fu](../speakers/dan-fu.md)
 - [Dillon DuPont](../speakers/dillon-dupont.md)
 - [Francesco Bonacci](../speakers/francesco-bonacci.md)
+- [Gabriel Jorge Menezes](../speakers/gabriel-jorge-menezes.md)
 - [Gagan Bhat](../speakers/gagan-bhat.md)
 - [George Cameron](../speakers/george-cameron.md)
 - [Idan Gazit](../speakers/idan-gazit.md)

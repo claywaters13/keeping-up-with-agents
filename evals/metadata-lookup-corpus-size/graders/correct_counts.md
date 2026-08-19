@@ -3,7 +3,7 @@ type: llm
 weight: 2
 ---
 
-The corpus has 231 talks, 134 concepts, and 248 speakers (per wiki/README.md and
+The corpus has 246 talks, 134 concepts, and 264 speakers (per wiki/README.md and
 data/index.json).
 
 You have no tools. Judge ONLY the three counts as stated in the response text. Do not

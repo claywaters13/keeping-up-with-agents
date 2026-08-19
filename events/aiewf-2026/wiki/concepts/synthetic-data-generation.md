@@ -4,15 +4,15 @@ type: "concept"
 slug: "synthetic-data-generation"
 tier: "core"
 maturity: "consolidating"
-talk_count: 12
-speaker_count: 15
+talk_count: 14
+speaker_count: 17
 ---
 
 # synthetic data generation
 
 **Maturity: CONSOLIDATING** — Consolidating — converging practice, some open edges
 
-*Core concept* &middot; discussed across **12** talk(s) by **15** speaker(s)
+*Core concept* &middot; discussed across **14** talk(s) by **17** speaker(s)
 
 **Definition:** Model-generated training, fine-tuning, or evaluation data, including quality control and the risks of training on generated distributions.
 
@@ -20,21 +20,21 @@ speaker_count: 15
 
 ## State of Practice
 
-The conference treated synthetic data as the default production technique, not an experiment — but with a sharp split between the two things it is used for. In pre-training, the consensus recipe is *rephrasing*: take real seed documents and generate variants rather than repeating the seed tokens, which sidesteps the model-collapse objection because all information still originates in a human-authored source (poolside runs ~13% synthetic in its pre-training mix; Arcee and Datology report the same pattern, and web text has fallen from ~85% of GPT-3's mix to ~15% in recent models). In evaluation and post-training, the technique is *simulation*: generating multi-turn trajectories, user simulators, personas, and RL environments because production traces are too slow, too sparse, and too costly to experiment on. What separates teams that got value from teams that fooled themselves is whether they measured the sim-to-real gap: Lyft's first offline eval reported a 90%+ pass rate that turned out to be an artifact of an unrealistically polite LLM user, while Nubank validated sim-derived evals against production and had 80% of domain-expert labels confirm the data was usable. Pipeline design is now understood to matter more than generator strength — decompose the task, sample many completions per seed, choose seeds deliberately, and run per-stage ablations, because stronger teacher models are not reliably better teachers. The live argument is whether generated data is an indefinite scaling axis or hits an information ceiling once a fixed corpus has been fully exploited.
+Synthetic data has moved from a suspect shortcut to the default mechanism for producing pre-training mix, post-training corpora, RL environments, and eval sets — the field's position is now that data, not compute or architecture, is the binding constraint, and that generated data is how you relieve it. The technique that carries the most agreement is grounded transformation rather than free generation: rephrasing a seed document, or decomposing a task so the generator's job is strictly easier than producing the target artifact in one shot. poolside runs 13% synthetic in a 6T-token pre-training corpus and uses rephrased variants in place of repeating high-quality seeds; DatologyAI argues rephrasing sidesteps collapse entirely because all information originates in the source document; Arcee reports web text falling from ~85% of GPT-3's mix to ~15% as generated code/STEM/chat-shaped data takes its place. On the agent side, the analogous move is generating environments rather than examples — production logs and traces are treated as raw material that must be lifted into replayable simulators with deterministic graders before any fix is verifiable. The unresolved parts are the naive-generation failure modes everyone hit: simulated users that are unrealistically polite (Lyft's fake 90%+ pass rate), personas that get the mean right and the distribution wrong, image models that permanently absorb a ChatGPT/Nano Banana aesthetic, and fixed synthetic corpora that saturate at an upper bound. The practical consequence is that every serious deployment pairs generation with an explicit measurement of the sim-to-real gap against human or production ground truth.
 
 ## Consensus
 
-### Data and environments, not compute or model architecture, are the binding constraint on model and agent quality — capability gaps are data gaps.
+### Data — including generated data and generated environments — is the binding constraint on model and agent quality, ahead of compute, architecture, or model choice.
 
-Support: **4** talk(s)
+Support: **6** talk(s)
 
-> "the gap in models is usually a gap in data. Models typically are only as good at as data is."
+> "ultimately for post training be it SFT or or uh reinforcement learning data is the bottleneck"
 >
-> — [Emulated: The Data for Fully Autonomous Software Engineers and Companies](../talks/emulated-the-data-for-fully-autonomous-software-engineers-and-companies.md), [2:20](https://www.youtube.com/watch?v=zkX03APVj0M&t=140s)
+> — [Data and Environment Curation for Post-Training LLMs](../talks/data-and-environment-curation-for-post-training-llms.md), [3:47](https://www.youtube.com/watch?v=ewtOo0scUh0&t=227s)
 
-Supporting talks: [Data and Environment Curation for Post-Training LLMs](../talks/data-and-environment-curation-for-post-training-llms.md), [Data Quality Is the Compute Multiplier](../talks/data-quality-is-the-compute-multiplier.md), [Emulated: The Data for Fully Autonomous Software Engineers and Companies](../talks/emulated-the-data-for-fully-autonomous-software-engineers-and-companies.md), [The Messy Reality of Scale: Synthetic Data and Pre-Training](../talks/the-messy-reality-of-scale-synthetic-data-and-pre-training.md)
+Supporting talks: [Data and Environment Curation for Post-Training LLMs](../talks/data-and-environment-curation-for-post-training-llms.md), [Data Quality Is the Compute Multiplier](../talks/data-quality-is-the-compute-multiplier.md), [Emulated: The Data for Fully Autonomous Software Engineers and Companies](../talks/emulated-the-data-for-fully-autonomous-software-engineers-and-companies.md), [Training Krea 2: What matters in generative model training](../talks/training-krea-2-what-matters-in-generative-model-training.md), [SimulationMaxxing: How we ship agents 20× faster](../talks/simulationmaxxing-how-we-ship-agents-20-faster.md), [The Messy Reality of Scale: Synthetic Data and Pre-Training](../talks/the-messy-reality-of-scale-synthetic-data-and-pre-training.md)
 
-### Rephrasing real seed documents into synthetic variants is the safe, working form of synthetic pre-training data: it avoids model collapse because all information originates in the source document, and it beats simply repeating high-quality tokens.
+### Synthetic data generated by transforming a specific source document (rephrasing, restructuring) is safe at pre-training scale, because all information originates in the seed rather than in the generator's priors.
 
 Support: **3** talk(s)
 
@@ -42,111 +42,105 @@ Support: **3** talk(s)
 >
 > — [Data Quality Is the Compute Multiplier](../talks/data-quality-is-the-compute-multiplier.md), [12:46](https://www.youtube.com/watch?v=_PdK6x7PQNM&t=766s)
 
-Supporting talks: [Data Quality Is the Compute Multiplier](../talks/data-quality-is-the-compute-multiplier.md), [The Base Model Is Dead](../talks/the-base-model-is-dead.md), [The Messy Reality of Scale: Synthetic Data and Pre-Training](../talks/the-messy-reality-of-scale-synthetic-data-and-pre-training.md)
+Supporting talks: [Data Quality Is the Compute Multiplier](../talks/data-quality-is-the-compute-multiplier.md), [The Messy Reality of Scale: Synthetic Data and Pre-Training](../talks/the-messy-reality-of-scale-synthetic-data-and-pre-training.md), [The Base Model Is Dead](../talks/the-base-model-is-dead.md)
 
-### Synthetic evaluation data must be explicitly validated against real user behavior or production traces before its scores are trusted; unvalidated simulators produce flattering, unrealistically easy results.
+### Generated data is only trustworthy once its gap to reality has been explicitly measured against human or production ground truth; unvalidated synthetic pipelines produce flattering, misleading numbers.
+
+Support: **5** talk(s)
+
+> "in order for any of these gains to really be unlocked uh you know you really need to close out the sim toreal gap"
+>
+> — [SimulationMaxxing: How we ship agents 20× faster](../talks/simulationmaxxing-how-we-ship-agents-20-faster.md), [15:01](https://www.youtube.com/watch?v=KMR_RBoCa4M&t=901s)
+
+Supporting talks: [SimulationMaxxing: How we ship agents 20× faster](../talks/simulationmaxxing-how-we-ship-agents-20-faster.md), [Build Evals That Actually Matter](../talks/build-evals-that-actually-matter.md), [Persona Engineering: A Field Guide to AI Synthetic Personas](../talks/persona-engineering-a-field-guide-to-ai-synthetic-personas.md), [Emulated: The Data for Fully Autonomous Software Engineers and Companies](../talks/emulated-the-data-for-fully-autonomous-software-engineers-and-companies.md), [When Will The Benchmaxxing Plague End?](../talks/when-will-the-benchmaxxing-plague-end.md)
+
+### Generation tasks must be decomposed so the generator is doing something easier than producing the target artifact in one shot; asking a teacher for the finished thing loses correctness and diversity, and the strongest available model is not automatically the best teacher.
+
+Support: **3** talk(s)
+
+> "the rule of thumb is if task is too hard for your model, then your model will start to fall on its face. Lose correctness, lose diversity. So break down the task, make it simpler."
+>
+> — [The Messy Reality of Scale: Synthetic Data and Pre-Training](../talks/the-messy-reality-of-scale-synthetic-data-and-pre-training.md), [5:58](https://www.youtube.com/watch?v=KhYifX22yhE&t=358s)
+
+Supporting talks: [The Messy Reality of Scale: Synthetic Data and Pre-Training](../talks/the-messy-reality-of-scale-synthetic-data-and-pre-training.md), [Data and Environment Curation for Post-Training LLMs](../talks/data-and-environment-curation-for-post-training-llms.md), [Data Quality Is the Compute Multiplier](../talks/data-quality-is-the-compute-multiplier.md)
+
+### Production logs and traces are not usable training or eval data on their own; they must be synthesized into replayable environments with explicit graders before any change can be verified.
 
 Support: **4** talk(s)
 
-> "our first attempt at our offline evaluation gave us 90 plus pass rate or accuracy rate, right? Uh this almost sounds too good to be true, and I think it indeed is the too good to be true."
+> "Here we have log and feedback, but what we really need is a replayable learning environment, a simulation that we can rerun with defined grading on what success looks like, not one instance of what happened and the feedback on top of it."
 >
-> — [Build Evals That Actually Matter](../talks/build-evals-that-actually-matter.md), [13:40](https://www.youtube.com/watch?v=3z2uT5aDx_Y&t=820s)
+> — [Continual Learning for AI Agents: From Failures to Durable Improvements](../talks/continual-learning-for-ai-agents-from-failures-to-durable-improvements.md), [3:57](https://www.youtube.com/watch?v=2IxD9OB3XuQ&t=237s)
 
-Supporting talks: [Build Evals That Actually Matter](../talks/build-evals-that-actually-matter.md), [SimulationMaxxing: How we ship agents 20× faster](../talks/simulationmaxxing-how-we-ship-agents-20-faster.md), [Persona Engineering: A Field Guide to AI Synthetic Personas](../talks/persona-engineering-a-field-guide-to-ai-synthetic-personas.md), [Emulated: The Data for Fully Autonomous Software Engineers and Companies](../talks/emulated-the-data-for-fully-autonomous-software-engineers-and-companies.md)
-
-### How you structure the generation pipeline matters more than which model generates — decompose hard tasks, sample multiple completions per seed, and select seeds deliberately, because a stronger generator is not automatically a better teacher.
-
-Support: **4** talk(s)
-
-> "the stronger teachers are not always the best uh uh stronger models are not always the better teachers"
->
-> — [Data and Environment Curation for Post-Training LLMs](../talks/data-and-environment-curation-for-post-training-llms.md), [11:16](https://www.youtube.com/watch?v=ewtOo0scUh0&t=676s)
-
-Supporting talks: [Data and Environment Curation for Post-Training LLMs](../talks/data-and-environment-curation-for-post-training-llms.md), [The Messy Reality of Scale: Synthetic Data and Pre-Training](../talks/the-messy-reality-of-scale-synthetic-data-and-pre-training.md), [Data Quality Is the Compute Multiplier](../talks/data-quality-is-the-compute-multiplier.md), [Persona Engineering: A Field Guide to AI Synthetic Personas](../talks/persona-engineering-a-field-guide-to-ai-synthetic-personas.md)
-
-### Synthetic data amplifies real data rather than replacing it; a human-authored or human-graded anchor has to stay in the loop, whether as the seed corpus, the labeling set, or the ground-truth comparison.
-
-Support: **4** talk(s)
-
-> "at least at Pulsar we don't see it as a way to replace organic data"
->
-> — [The Messy Reality of Scale: Synthetic Data and Pre-Training](../talks/the-messy-reality-of-scale-synthetic-data-and-pre-training.md), [2:10](https://www.youtube.com/watch?v=KhYifX22yhE&t=130s)
-
-Supporting talks: [The Messy Reality of Scale: Synthetic Data and Pre-Training](../talks/the-messy-reality-of-scale-synthetic-data-and-pre-training.md), [Persona Engineering: A Field Guide to AI Synthetic Personas](../talks/persona-engineering-a-field-guide-to-ai-synthetic-personas.md), [When Will The Benchmaxxing Plague End?](../talks/when-will-the-benchmaxxing-plague-end.md), [Scaling Compute on Context](../talks/scaling-compute-on-context.md)
+Supporting talks: [Continual Learning for AI Agents: From Failures to Durable Improvements](../talks/continual-learning-for-ai-agents-from-failures-to-durable-improvements.md), [SimulationMaxxing: How we ship agents 20× faster](../talks/simulationmaxxing-how-we-ship-agents-20-faster.md), [Data and Environment Curation for Post-Training LLMs](../talks/data-and-environment-curation-for-post-training-llms.md), [Emulated: The Data for Fully Autonomous Software Engineers and Companies](../talks/emulated-the-data-for-fully-autonomous-software-engineers-and-companies.md)
 
 ## Disagreements
 
-### Is synthetic data generation an indefinite scaling axis, or does generating from a fixed corpus hit a hard information ceiling?
+### Is training on model-generated data a scalable capability lever, or does it imprint the generator and hit a hard ceiling?
 
 | Position A | Position B |
 |---|---|
-| Synthetic generation scales: curation recipes show a scaling law where metrics keep improving as the generated dataset grows, synthetic mixes now make up a large and growing share of pre-training corpora, and recipes validated at 33B held at 118B/30T tokens — so keep scaling generation.<br>*[Data and Environment Curation for Post-Training LLMs](../talks/data-and-environment-curation-for-post-training-llms.md), [The Base Model Is Dead](../talks/the-base-model-is-dead.md), [Data Quality Is the Compute Multiplier](../talks/data-quality-is-the-compute-multiplier.md), [The Messy Reality of Scale: Synthetic Data and Pre-Training](../talks/the-messy-reality-of-scale-synthetic-data-and-pre-training.md)* | Any approach that fixes a dataset and generates from it saturates — there is a 'data wall in the synthetic sense' where the model has learned all of the synthetic data, and naive next-token finetuning on your own corpus drives loss to ~0 while the model collapses at generation time; escaping the plateau requires self-improvement mechanisms that make the training data progressively harder, not more generation.<br>*[Scaling Compute on Context](../talks/scaling-compute-on-context.md)* |
+| Synthetic data is the path forward: grounded rephrasing defuses collapse, the trained model can surpass the model that generated the data, and metrics keep improving as the curated synthetic set scales (poolside runs it at 13% of a 6T-token mix; Arcee argues post-training-shaped synthetic data should be pulled into pre-training; a fine-tuned tiny model reaches parity with a 2–4B model on 10k–10M synthetic samples).<br>*[The Base Model Is Dead](../talks/the-base-model-is-dead.md), [Data Quality Is the Compute Multiplier](../talks/data-quality-is-the-compute-multiplier.md), [The Messy Reality of Scale: Synthetic Data and Pre-Training](../talks/the-messy-reality-of-scale-synthetic-data-and-pre-training.md), [Why Large? Tiny LMs & Agents on Edge/Robotics](../talks/why-large-tiny-lms-agents-on-edgerobotics.md)* | Generated data carries the generator's fingerprint and its information ceiling: Krea deliberately excluded AI-generated images entirely because the aesthetic is 'sticky' and identifiable by a trained observer, and Engram found that any fixed synthetic set derived from a corpus saturates — a synthetic data wall — unless the generation process makes its own examples progressively harder.<br>*[Training Krea 2: What matters in generative model training](../talks/training-krea-2-what-matters-in-generative-model-training.md), [Scaling Compute on Context](../talks/scaling-compute-on-context.md)* |
 
-*Why it matters: If generation scales, the right investment is a bigger generation pipeline and more compute against a fixed seed corpus; if it saturates, that spend plateaus and the real work is difficulty-escalation machinery or acquiring genuinely new source data.*
+*Why it matters: If generation is a real scaling axis, teams can buy capability with inference compute against a corpus they already own; if it is bounded, the money has to go to sourcing organic data or to self-improving difficulty curricula, and the generator you distill from becomes a permanent constraint on the ceiling of your model.*
 
-### Can simulated agent data substitute for production experiments, or is the fidelity gap still too large to trust?
-
-| Position A | Position B |
-|---|---|
-| Yes, today: sim-derived eval results correlate highly with production, 80% of domain-expert labels confirmed sim data was usable for greenfield as well as mature agents, and simulation collapsed roughly ten planned A/B tests per quarter down to about one while catching a regression and a self-service-rate degradation before launch.<br>*[SimulationMaxxing: How we ship agents 20× faster](../talks/simulationmaxxing-how-we-ship-agents-20-faster.md)* | Not off the shelf: frontier models make systematically unrealistic user simulators because they are trained to be helpful, so the simulator itself must be fine-tuned on real user verbatim until eval scores fall; and for infrastructure-scale work, industry emulation is 'incredibly contrived and low fidelity' — a sim-to-real gap persists even when environments provision real cloud resources, because live customer traffic and scale-dependent failures are absent.<br>*[Build Evals That Actually Matter](../talks/build-evals-that-actually-matter.md), [Emulated: The Data for Fully Autonomous Software Engineers and Companies](../talks/emulated-the-data-for-fully-autonomous-software-engineers-and-companies.md)* |
-
-*Why it matters: It decides whether a simulated pass rate is a shipping gate or merely a smoke test, and whether the budget goes into generating more simulated trajectories or into raising the fidelity of the environment itself.*
-
-### Is human-generated data still the ground truth that synthetic data must be measured against?
+### Can synthetically generated data replace real user data as the basis for evaluation and shipping decisions?
 
 | Position A | Position B |
 |---|---|
-| Yes — human evaluation is the ground truth benchmarks are lossily approximating, you cannot push the frontier from within the frontier without injecting external human expertise, and judges/criteria only become valid after a human hand-labels ~100 examples and looks at raw data; domain-expert feedback, though low volume, is what captures the knowledge automated feedback misses.<br>*[When Will The Benchmaxxing Plague End?](../talks/when-will-the-benchmaxxing-plague-end.md), [Build Evals That Actually Matter](../talks/build-evals-that-actually-matter.md), [Continual Learning for AI Agents: From Failures to Durable Improvements](../talks/continual-learning-for-ai-agents-from-failures-to-durable-improvements.md)* | Not unconditionally — human-only studies are losing their claim to ground truth now that purchase and consideration decisions are mediated by AI agents, the realistic counterfactual to synthetic data is usually no research or somebody's opinion rather than a human study, and AI agents in production are already meeting or exceeding human-level customer satisfaction.<br>*[Persona Engineering: A Field Guide to AI Synthetic Personas](../talks/persona-engineering-a-field-guide-to-ai-synthetic-personas.md), [SimulationMaxxing: How we ship agents 20× faster](../talks/simulationmaxxing-how-we-ship-agents-20-faster.md)* |
+| Yes, once correlation is established: Nubank generates thousands of multi-turn simulated conversations with mocked tools, found eval results on sim correlate highly with production and 80% of domain-expert labels confirmed usability, and now replaces roughly nine of ten planned pre-launch A/B tests with simulation. RELAI likewise generates learning environments from logs and optimizes against them, reporting 78% → 97% evaluator scores.<br>*[SimulationMaxxing: How we ship agents 20× faster](../talks/simulationmaxxing-how-we-ship-agents-20-faster.md), [Continual Learning for AI Agents: From Failures to Durable Improvements](../talks/continual-learning-for-ai-agents-from-failures-to-durable-improvements.md)* | No, generated eval data must stay anchored to real humans: Lyft rejects prompting an LLM for ~50 test queries and samples eval sets from production traffic instead, fine-tuning its user simulator on real customer verbatims until scores drop; Surge argues obviously-synthetic benchmark data triggers eval awareness and that human evaluation is the ground truth benchmarks only approximate; InsightSciences insists synthetic personas are complementary forecasts and that rerunning them cannot buy statistical significance.<br>*[Build Evals That Actually Matter](../talks/build-evals-that-actually-matter.md), [When Will The Benchmaxxing Plague End?](../talks/when-will-the-benchmaxxing-plague-end.md), [Persona Engineering: A Field Guide to AI Synthetic Personas](../talks/persona-engineering-a-field-guide-to-ai-synthetic-personas.md)* |
 
-*Why it matters: It sets the cost floor for any synthetic-data program: either every generated dataset needs a paid human validation set attached to it, or synthetic data can be validated once against a human baseline and then run unattended at scale.*
+*Why it matters: This decides whether the iteration loop is hours or weeks, and whether a green synthetic eval is sufficient to ship — a wrong call in either direction means either exposing live users to regressions or paying for production A/B tests you did not need.*
+
+### How much fidelity does a generated training or evaluation environment actually need?
+
+| Position A | Position B |
+|---|---|
+| Mocked and containerized simulations are good enough when their correlation to production is measured: Nubank runs thousands of trajectories against the real agent with tools mocked, and RELAI builds deterministic evaluators with deliberately seeded regression traps out of logs.<br>*[SimulationMaxxing: How we ship agents 20× faster](../talks/simulationmaxxing-how-we-ship-agents-20-faster.md), [Continual Learning for AI Agents: From Failures to Durable Improvements](../talks/continual-learning-for-ai-agents-from-failures-to-durable-improvements.md)* | Contrived, low-fidelity emulation breaks past a critical mass: a single-node container cannot provision EC2 or Cloud Run, deterministic simulation of network failures does not reproduce what an AWS-scale service encounters, and the future is multi-node environments backed by real cloud resources — even though spinning up a full stack takes hours and does not fit a post-training rollout.<br>*[Emulated: The Data for Fully Autonomous Software Engineers and Companies](../talks/emulated-the-data-for-fully-autonomous-software-engineers-and-companies.md)* |
+
+*Why it matters: Environment fidelity sets the cost floor for the whole synthetic-data program — mocked sandboxes are cheap and massively parallel, while real-infra environments require rethinking rollout infrastructure and may make the domains agents can be trained on a function of what you can afford to provision.*
 
 ## Practical Guidance
 
 **Do:**
 
-- Replace repeated high-quality tokens with rephrased synthetic variants of the same seed documents instead of repeating the seeds; poolside settled on 13% synthetic in the pre-training mix (pre-training stages only) over a 6T-token corpus.
-- Choose which documents get rephrased — picking random documents to rephrase does not produce good results.
-- Decompose a generation task into simpler steps (outline first, then chapters one by one) so output exceeds what the teacher model can produce in one shot without losing correctness or diversity.
-- Sample multiple completions per question (e.g. 16x on one question) rather than spending the same budget on many more questions answered once.
-- Run ablations stage by stage through the curation pipeline and only proceed to the next stage once you know what worked.
-- Fine-tune your user simulator on real user verbatim until evaluation scores go down — a falling score means the eval got more realistic.
-- Measure and report the sim-to-real gap explicitly: correlate sim-computed evals against production-computed evals and get domain experts to label whether sim data is usable.
-- Ground personas in personality, context, and the study's own construction — the opposite of the human-subject norm of hiding study design — because the LLM has no universe outside the prompt and will otherwise invent confounders.
-- Elicit free-text persona responses and map them to a scale via semantic similarity to human-written anchors instead of prompting for a naive 1-5 rating, to recover distribution shape.
-- Score persona fidelity with at least two metrics — a correlation metric plus a distribution-shape metric — since a model can match the average and still muddle the variance into the middle.
-- Estimate your accuracy ceiling by splitting real human data in two, treating one half as 'synthetic', and repeating the correlation measurement thousands of times.
-- Add structural tags to prompt-response pairs when fine-tuning on imbalanced data so the model attends to form rather than hallucinating specific numbers (e.g. APR values).
-- De-risk a large training run with small-scale runs on curated data plus simulated token scarcity, at 50-100x less compute.
-- Build regression traps into generated benchmarks and make no-regression-on-past-environments part of the optimization objective, not a post-hoc check.
-- Hand-label ~100 examples pass/fail, split into train/dev/test, and validate LLM judges on precision and recall like binary classifiers.
-- For a tiny model on a single fixed task, generate 10,000 to 10 million synthetic samples and fine-tune — that reaches the quality of a 2-4B model.
+- Generate synthetic pre-training tokens by rephrasing a specific seed document rather than free-generating, and select which documents get rephrased — random document choice produces poor results.
+- Replace repeated high-quality tokens with rephrased variants of the same seeds rather than repeating the seeds, which saturates the model early once training budgets scale.
+- Decompose generation into steps (outline, then chapters) so the output can exceed what the teacher would produce in one shot.
+- Run stage-by-stage ablations on the generation pipeline and test candidate teacher models empirically — some Qwen models beat Claude models as teachers in Open Thoughts Agents.
+- Sample multiple answers per question (e.g. 16x) rather than collecting proportionally more questions answered once.
+- Fine-tune your user simulator on real customer verbatims and keep going until the eval score goes down — a falling score means the simulation got realistic, not that quality dropped.
+- Validate synthetic personas against known human ground truth using both a correlation metric and a distribution-shape metric, and establish the human self-consistency ceiling (~80% in one study) by splitting real data in half and treating one half as 'synthetic'.
+- Elicit free-text persona responses and map them to a scale via semantic similarity to human-written anchors, instead of prompting for a naive 1–5 rating.
+- Have domain experts label a sample of generated data before trusting it — Nubank's 80% expert confirmation is what licensed replacing pre-launch A/B tests.
+- Add structural tags to synthetic prompt-response pairs so a fine-tuned model attends to form rather than memorizing specific numbers in imbalanced datasets.
+- Distill expensive VLM filtering judgments into a SigLIP-sized classifier before running filters over billions of images, and consider SAE features as an unsupervised tagging system for artifacts like watermarks and blur.
+- For a fixed single task on a tiny (50M–500M param) model, budget 10,000 to 10 million synthetic samples — enough for high reliability, e.g. 86%+ on 10-function voice-to-function-calling.
+- Build regression traps into generated learning environments so the optimizer must prove it did not break what already worked.
 
 **Avoid:**
 
-- Prompting an LLM to produce ~50 test queries and calling that an offline eval dataset — sample from production traffic and mutate instead.
-- Using off-the-shelf frontier models as user simulators for support scenarios; they are trained to be helpful and produce unrealistically polite, articulate complaints while real users are impatient and already frustrated.
-- Accepting a 90%+ pass rate on a first-pass simulated eval as a signal of quality.
-- Piling on more demographic detail in a persona construction on the assumption that specificity improves fidelity — it can amplify model bias and move results further from reality.
-- Re-running the same synthetic sample with unchanged inputs to boost statistical significance; it sharpens your estimate of the model, not the accuracy of the forecast.
-- Shipping obviously synthetic benchmark data — it increases eval awareness and pushes the model out of distribution, invalidating the measurement.
-- Plain next-token-prediction finetuning on your own corpus: loss goes to ~0.0001, generation collapses, and you get no useful generalization.
-- Answer filtering, synthetic rewriting, and task augmentation as curation steps — these underperformed in Bespoke's ablations, while synthetic question generation worked.
-- Over-optimizing for quality over quantity, which causes non-optimal repetition of high-quality data and saturates the model too early once budgets scale.
-- Single-node containerized sandboxes for infrastructure tasks — you cannot simulate provisioning EC2 or Cloud Run inside one node, and deterministic network-failure simulation doesn't represent AWS-scale reality.
-- Treating production logs plus feedback as a learning environment; without a replayable simulator and defined grading, a fix is not testable and can introduce hidden regressions.
-- Using LLM-as-a-judge to evaluate writing quality — LLMs don't have good taste in writing.
-- Assuming public benchmark data is uncontaminated; contamination is the default outcome, and model cards report SWE scores without disclosing memorization.
+- Prompting an LLM to write ~50 test queries and calling that an offline eval dataset.
+- Using an off-the-shelf frontier model as a customer-support user simulator — it produces unrealistically polite, articulate complaints and inflated pass rates (Lyft's first run reported 90%+).
+- Training an image model on AI-generated images at all: it is a shortcut that permanently imprints a recognizable ChatGPT/Nano Banana aesthetic that trained observers can identify.
+- Assuming a stronger model is a better teacher.
+- Answer filtering, synthetic rewriting, and task augmentation as agent post-training curation steps — they underperformed, while synthetic question generation worked.
+- Obviously-synthetic phrasing in benchmark items, which increases eval awareness and pushes the model out of distribution.
+- Piling more demographic detail into a persona construction on the assumption that richer means more accurate — it can amplify model bias and move results further from reality.
+- Rerunning synthetic samples with unchanged inputs to boost statistical significance; it sharpens your estimate of the model, not the forecast.
+- Plain next-token-prediction finetuning on your own private corpus — loss goes to ~0.0001, generation collapses, and no useful generalization appears.
+- Filtering training images with off-the-shelf aesthetic or image-quality scores, which silently strips stylistic diversity.
+- Treating a trace-plus-coding-agent edit as an improvement: it is untestable and can introduce hidden regressions.
+- Assuming a single-node containerized sandbox represents infrastructure work — you cannot simulate EC2 or Cloud Run inside one node.
 
 ## Notable Outliers
 
-- 10,000 to 10 million synthetically generated samples is enough to fine-tune a 50M-500M parameter model to high reliability on a fixed task (e.g. 10 output functions callable at over 86% reliability), shipping features that previously required a server subscription entirely offline. ([Why Large? Tiny LMs & Agents on Edge/Robotics](../talks/why-large-tiny-lms-agents-on-edgerobotics.md), [16:49](https://www.youtube.com/watch?v=hacEQHHhu2Q&t=1009s))
-- Curating only the English portion of a corpus measurably improves non-English performance, with transfer magnitude correlated to language similarity — with multilingual tokens at just 8% of the data. ([Data Quality Is the Compute Multiplier](../talks/data-quality-is-the-compute-multiplier.md), [11:34](https://www.youtube.com/watch?v=_PdK6x7PQNM&t=694s))
-- There is a hard ceiling on synthetic persona accuracy set by human self-inconsistency: one study measured humans as only about 80% consistent with themselves. ([Persona Engineering: A Field Guide to AI Synthetic Personas](../talks/persona-engineering-a-field-guide-to-ai-synthetic-personas.md), [17:03](https://www.youtube.com/watch?v=YnNF55QV0zs&t=1023s))
-- The correct stopping criterion for a fine-tuned user simulator is that evaluation scores go down — a falling score is evidence of realism, not degradation. ([Build Evals That Actually Matter](../talks/build-evals-that-actually-matter.md), [16:55](https://www.youtube.com/watch?v=3z2uT5aDx_Y&t=1015s))
-- The alternative to a synthetic persona is usually not human research — it's no research, or somebody's opinion. ([Persona Engineering: A Field Guide to AI Synthetic Personas](../talks/persona-engineering-a-field-guide-to-ai-synthetic-personas.md), [19:17](https://www.youtube.com/watch?v=YnNF55QV0zs&t=1157s))
-- A model competitive with the open frontier can be trained for under $20 million total, including salaries, compute, and all failed attempts — the 'hundreds of millions to customize a model' figure is false. ([Data Quality Is the Compute Multiplier](../talks/data-quality-is-the-compute-multiplier.md), [16:50](https://www.youtube.com/watch?v=_PdK6x7PQNM&t=1010s))
-- The next step for training environments is multi-node sandboxes that provision real cloud infrastructure — 'a cloud in a box' — because a critical mass of real infra work simply cannot be sandboxed on one node. ([Emulated: The Data for Fully Autonomous Software Engineers and Companies](../talks/emulated-the-data-for-fully-autonomous-software-engineers-and-companies.md), [10:46](https://www.youtube.com/watch?v=zkX03APVj0M&t=646s))
-- A serious 1,000-task agentic coding benchmark costs about $15M to build and ~$5M/year to maintain, and you cannot substitute AI assistance or cheap labor for the human expertise required. ([When Will The Benchmaxxing Plague End?](../talks/when-will-the-benchmaxxing-plague-end.md), [3:33](https://www.youtube.com/watch?v=-npY6XjM8CQ&t=213s))
+- Curating only the English portion of a corpus measurably improves non-English performance, with transfer magnitude tracking language similarity — with multilingual tokens at just 8% of the data. ([Data Quality Is the Compute Multiplier](../talks/data-quality-is-the-compute-multiplier.md), [11:34](https://www.youtube.com/watch?v=_PdK6x7PQNM&t=694s))
+- Humans are only about 80% consistent with themselves, which sets a hard ceiling on how accurate any synthetic persona can be — reported agent alignment of 83% is normalized against that noise. ([Persona Engineering: A Field Guide to AI Synthetic Personas](../talks/persona-engineering-a-field-guide-to-ai-synthetic-personas.md), [17:03](https://www.youtube.com/watch?v=YnNF55QV0zs&t=1023s))
+- A trained researcher can tell by eye when a model has been heavily distilled on ChatGPT or Nano Banana Pro outputs — synthetic imagery is 'so sticky' that it survives as a visible signature. ([Training Krea 2: What matters in generative model training](../talks/training-krea-2-what-matters-in-generative-model-training.md), [8:02](https://www.youtube.com/watch?v=-tviRdpmHvs&t=482s))
+- Any fixed synthetic dataset generated from a corpus D has a natural upper bound — a synthetic data wall — and escaping it requires the generation process to make its own training questions harder, the AlphaGo mechanism. ([Scaling Compute on Context](../talks/scaling-compute-on-context.md), [17:30](https://www.youtube.com/watch?v=WiqDvX6isc4&t=1050s))
+- The open-source DeepGEMM-style FP8 kernels contain a race condition that silently corrupts about 0.5% of gradients, and replica hash checking cannot detect it because real runs have no redundancy in forward/backward. ([The Messy Reality of Scale: Synthetic Data and Pre-Training](../talks/the-messy-reality-of-scale-synthetic-data-and-pre-training.md), [14:32](https://www.youtube.com/watch?v=KhYifX22yhE&t=872s))
+- A serious 1,000-task agentic coding benchmark costs about $15M to build and $5M/year to maintain, and you cannot substitute AI assistance or cheap labor — external human expertise must be injected. ([When Will The Benchmaxxing Plague End?](../talks/when-will-the-benchmaxxing-plague-end.md), [3:33](https://www.youtube.com/watch?v=-npY6XjM8CQ&t=213s))
 
 ## All Talks
 
@@ -160,11 +154,14 @@ Supporting talks: [The Messy Reality of Scale: Synthetic Data and Pre-Training](
 - [SimulationMaxxing: How we ship agents 20× faster](../talks/simulationmaxxing-how-we-ship-agents-20-faster.md)
 - [The Base Model Is Dead](../talks/the-base-model-is-dead.md)
 - [The Messy Reality of Scale: Synthetic Data and Pre-Training](../talks/the-messy-reality-of-scale-synthetic-data-and-pre-training.md)
+- [The Next Medium: Why Real-Time Interactive Video Changes Everything](../talks/the-next-medium-why-real-time-interactive-video-changes-everything.md)
+- [Training Krea 2: What matters in generative model training](../talks/training-krea-2-what-matters-in-generative-model-training.md)
 - [When Will The Benchmaxxing Plague End?](../talks/when-will-the-benchmaxxing-plague-end.md)
 - [Why Large? Tiny LMs & Agents on Edge/Robotics](../talks/why-large-tiny-lms-agents-on-edgerobotics.md)
 
 ## Speakers
 
+- [Ahmed Ahres](../speakers/ahmed-ahres.md)
 - [Akshay Sharma](../speakers/akshay-sharma.md)
 - [Aman Gupta](../speakers/aman-gupta.md)
 - [Ari Morcos](../speakers/ari-morcos.md)
@@ -177,6 +174,7 @@ Supporting talks: [The Messy Reality of Scale: Synthetic Data and Pre-Training](
 - [Nick Heiner](../speakers/nick-heiner.md)
 - [Nick Ung](../speakers/nick-ung.md)
 - [Robert McHardy](../speakers/robert-mchardy.md)
+- [Sangwu Lee](../speakers/sangwu-lee.md)
 - [Shreya Rajpal](../speakers/shreya-rajpal.md)
 - [Soheil Feizi](../speakers/soheil-feizi.md)
 - [Varun Singh](../speakers/varun-singh.md)

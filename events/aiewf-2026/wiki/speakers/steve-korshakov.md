@@ -9,7 +9,7 @@ talk_count: 1
 
 ## Talks
 
-- [Privacy-Preserving Intelligence](../talks/privacy-preserving-intelligence.md)
+- [Privacy-Preserving Intelligence](../talks/privacy-preserving-intelligence.md) (Snyk Security Track)
 
 ## Concepts
 

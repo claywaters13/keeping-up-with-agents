@@ -6,20 +6,21 @@ corpus is event-agnostic and lives at the
 [repo root](../../README.md#claude-code-plugin) (`skills/event-wiki/`,
 `commands/ask.md`, `evals/`, `.claude-plugin/`).*
 
-A linked, graph-style wiki built from 231 talks at the AI Engineer World's Fair 2026
-(Moscone West, San Francisco, June 29 to July 2, 2026): 134 concepts, 248 speakers, and a
+A linked, graph-style wiki built from 246 talks at the AI Engineer World's Fair 2026
+(Moscone West, San Francisco, June 29 to July 2, 2026): 134 concepts, 264 speakers, and a
 Claude Code plugin so an agent can answer questions from it directly.
 
 There is no vector database here. The link graph is the index.
 
 **Scope, stated up front:** the fair's official schedule listed 561 sessions across talks,
-keynotes, workshops, and sponsor slots. This corpus covers the 231 that had been published
+keynotes, workshops, and sponsor slots. This corpus covers the 246 that had been published
 to the conference's YouTube channel when it was built. It is a large sample of the fair,
-not a complete record of it. See [`wiki/README.md`](wiki/README.md) for the full corpus
-writeup.
+not a complete record of it. A refresh on 2026-08-19 re-fetched the conference playlists
+and added 15 newly published talks, including the whole new Generative Media track. See
+[`wiki/README.md`](wiki/README.md) for the full corpus writeup.
 
-**Headline finding:** of the 134 concepts synthesized across those 231 talks, zero are
-settled practice. 87 are consolidating, 43 contested, 4 frontier. That number needs a
+**Headline finding:** of the 134 concepts synthesized across those 246 talks, zero are
+settled practice. 80 are consolidating, 50 contested, 4 frontier. That number needs a
 caveat, which is [below](#on-the-headline-finding) rather than buried.
 
 **Publishing posture:** this repo ships the derived layer only, meaning summaries,

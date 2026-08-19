@@ -1,0 +1,239 @@
+{
+  "is_error": false,
+  "duration_api_ms": 96950,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "d4184d0a-1350-44c9-a286-1686b28f7c45",
+  "total_cost_usd": 0.3631985,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 13925,
+    "cache_read_input_tokens": 8113,
+    "output_tokens": 8522,
+    "output_tokens_details": {
+      "thinking_tokens": 5125
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 13925,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 8522,
+        "cache_read_input_tokens": 8113,
+        "cache_creation_input_tokens": 13925,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 13925
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 6767,
+      "outputTokens": 13,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.0068319999999999995,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 8522,
+      "cacheReadInputTokens": 8113,
+      "cacheCreationInputTokens": 13925,
+      "webSearchRequests": 0,
+      "costUSD": 0.3563665,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "```json\n{\n  \"summary\": \"Todd Fisher walks through a personal side project: a Logic Pro audio plugin that makes an electric guitar talk and eventually sing. He traces the guitar's chain of augmentation \u2014 pickups, effects pedals, Peter Frampton's talk box, software emulation \u2014 and positions LLM-driven speech as the next step, then shows the actual signal path he built: text-to-speech audio sliced per word, YIN pitch detection on the guitar signal, a synthesized sawtooth note pushed through the voice clip and a vocoder, and a Whisper + local-LLM loop so the guitar can answer audience questions. Most of the talk is honest engineering detail about where it breaks: energy-gap segmentation fails when there is no silence between spoken words, sonority-peak syllabification only partly fixes it, and the sample-based singing path (VocalSet samples pitch-shifted with World) is too heavy to run live and must be pre-baked. Live demos misfire on stage and he keeps going, which is part of the point. Watch it if you want a concrete tour of real-time audio DSP plus AI glue code, or a low-stakes nudge to build the passion project sitting in your backlog; skip it if you want production AI-engineering practice.\",\n  \"key_points\": [\n    \"The project's core signal chain is: detect the guitar's fundamental pitch with the YIN algorithm, generate a synthesized sawtooth note with an ADSR envelope, fill it with TTS voice content, and push it through a vocoder so the note carries speech.\",\n    \"Slicing TTS audio into individual words by energy-gap segmentation is unreliable because natural speech often has no silence between words, so the cut points are not 100% foolproof.\",\n    \"Adding sonority-peak syllabification \u2014 finding vowels as syllable markers \u2014 on top of energy gaps improved segmentation but still did not work well enough, so Fisher fell back to manually dragging segment boundaries in the plugin UI.\",\n    \"Making the guitar conversational required only off-the-shelf glue: Whisper for speech-to-text, any local LLM for the response, and the existing TTS-to-guitar path for output; Fisher says the choice of LLM does not matter.\",\n    \"The singing version uses open-source VocalSet recordings pitch-shifted with the World library and mapped per fret, but the processing is heavy enough that it must be pre-baked offline rather than run live.\",\n    \"He demoed only the five vowel sounds because pre-baking a fuller sample set takes too long, and concedes the result is 'not quite your opera singer' \u2014 the singing goal is not yet reached.\",\n    \"JUCE is his recommended framework for building audio software, and a DAW is framed as the musician's equivalent of an IDE, with the plugin dropping into Logic Pro like any other effect.\",\n    \"The framing argument is that AI has collapsed the time cost of side projects, so the backlog of 'cool idea' projects engineers keep is now worth actually building.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"part of uh my goal today is to inspire you guys to find whatever project you're passionate about, go start building it because it's super easy now with AI it's easier with AI.\",\n      \"timestamp_sec\": 141,\n      \"why\": \"states the talk's thesis about AI lowering the cost of passion projects\"\n    },\n    {\n      \"text\": \"There is the argument made hot take uh that maybe you don't need all those physical effects pedals anymore.\",\n      \"timestamp_sec\": 214,\n      \"why\": \"an explicitly flagged hot take about software emulation displacing hardware\"\n    },\n    {\n      \"text\": \"And then of course looking forward it's what is that next evolution of the guitar uh with AI in the picture?\",\n      \"timestamp_sec\": 214,\n      \"why\": \"frames the whole project as the next entry in the guitar's augmentation lineage\"\n    },\n    {\n      \"text\": \"And I settled on this idea of like, \\\"Hey, how hard would it be to make my guitar speak?\\\" It sounds easy, maybe, maybe not.\",\n      \"timestamp_sec\": 329,\n      \"why\": \"names the project's driving question and hedges the difficulty up front\"\n    },\n    {\n      \"text\": \"And for those that are not aware, your DAW is effectively your IDE but for musicians and and music producers.\",\n      \"timestamp_sec\": 362,\n      \"why\": \"the analogy that makes the rest of the plugin architecture legible to software engineers\"\n    },\n    {\n      \"text\": \"the idea there is there's typically silence in between words. So, let's just cut it whenever the decibels are are very much close to zero, right?\",\n      \"timestamp_sec\": 483,\n      \"why\": \"states the naive segmentation heuristic he tried first\"\n    },\n    {\n      \"text\": \"there's actually no silence in between some of my words. So, it gets a little bit challenging to where it's not 100% foolproof, right?\",\n      \"timestamp_sec\": 483,\n      \"why\": \"names the concrete failure mode of energy-gap segmentation\"\n    },\n    {\n      \"text\": \"I effectively identifying the syllables of the audio signal and identifying that there's vowels in here. Vowels typically lead to syllables.\",\n      \"timestamp_sec\": 512,\n      \"why\": \"explains the sonority-peak fallback layered on top of the energy-gap approach\"\n    },\n    {\n      \"text\": \"long story short, uh I settled on just the ability to go and actually I could drag this and manually edit some of these uh uh segments in here.\",\n      \"timestamp_sec\": 561,\n      \"why\": \"admits the automated segmentation was not good enough and a human-in-the-loop editor won\"\n    },\n    {\n      \"text\": \"there is definitely a fundamental frequency or the the kind of the the one that we identify as the note, but there's a bunch of other frequencies.\",\n      \"timestamp_sec\": 593,\n      \"why\": \"sets up why pitch detection is a nontrivial problem, not a lookup\"\n    },\n    {\n      \"text\": \"Uh we then push it through uh the the voice clip effectively. So, think of the talk box. Uh we're kind of filling up the cavity of the talk of the voice, that is. And we push it through a vocoder, and it should sing.\",\n      \"timestamp_sec\": 659,\n      \"why\": \"the clearest statement of the full synthesis architecture and its talk-box analogy\"\n    },\n    {\n      \"text\": \"was going to uh play a song that is very much related to the talk or the the title of my talk, uh while my guitar gently speaks, but because it's going to be posted online, I don't want to muddy up the waters with any copyright things.\",\n      \"timestamp_sec\": 704,\n      \"why\": \"a working musician-engineer navigating copyright constraints on recorded demos\"\n    },\n    {\n      \"text\": \"Uh it doesn't really matter what LLM, just any local model. I have a conversation coming and then from that output go and plop it on the guitar.\",\n      \"timestamp_sec\": 856,\n      \"why\": \"takes the position that model choice is interchangeable for this application\"\n    },\n    {\n      \"text\": \"Uh this is a very heavy process, and so I can't really do that live. I have to effectively pre-bake that. And then once it's already pre-baked, I could then go and jam out with it.\",\n      \"timestamp_sec\": 963,\n      \"why\": \"names the central real-time compute constraint that shapes the singing feature\"\n    },\n    {\n      \"text\": \"Go and build awesome things because nowadays with AI, we could build so many really cool things, and time is typically not the the big time suck that that it once was, right?\",\n      \"timestamp_sec\": 1061,\n      \"why\": \"the closing argument, and the reason the project is presented as a template rather than a product\"\n    }\n  ],\n  \"concepts\": [\n    \"audio plugin development\",\n    \"text-to-speech\",\n    \"word-level audio segmentation\",\n    \"fundamental pitch detection\",\n    \"vocoder synthesis\",\n    \"speech-to-text transcription\",\n    \"local llm inference\",\n    \"sample-based pitch shifting\",\n    \"real-time audio constraints\",\n    \"human-in-the-loop correction\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Software emulation of effects has advanced far enough that guitarists may no longer need physical effects pedals.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 214\n    },\n    {\n      \"claim\": \"Energy-gap segmentation alone cannot reliably split speech audio into words, because real speech often contains no silence between words.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 483\n    },\n    {\n      \"claim\": \"Combining sonority-peak syllabification with energy-gap detection still does not produce good enough automatic word slicing; manual segment editing is required.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 561\n    },\n    {\n      \"claim\": \"For a conversational guitar loop, the specific LLM is irrelevant \u2014 any local model suffices.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 856\n    },\n    {\n      \"claim\": \"Sample-based singing synthesis using World pitch shifting is too computationally heavy to run live and must be pre-baked ahead of performance.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 963\n    },\n    {\n      \"claim\": \"The current system speaks but does not yet sing convincingly \u2014 it is closer to singing but 'not quite your opera singer.'\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1008\n    },\n    {\n      \"claim\": \"AI has removed time as the main barrier to side projects, so engineers should start building the projects on their backlog now.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1061\n    },\n    {\n      \"claim\": \"JUCE is the framework to use for building audio software.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 362\n    },\n    {\n      \"claim\": \"The talk box is the right conceptual model for AI-driven guitar speech: a synthesized pitched note carries the voice content through a vocoder rather than the voice being generated directly at pitch.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 659\n    }\n  ],\n  \"speaker_org\": \"Philo Ventures\"\n}\n```",
+  "ttft_ms": 58931,
+  "ttft_stream_ms": 1404,
+  "time_to_request_ms": 38,
+  "type": "result",
+  "duration_ms": 97483,
+  "uuid": "0d063dd7-0d1f-4a3e-923d-49cf1b06ff10",
+  "passA": {
+    "summary": "Todd Fisher walks through a personal side project: a Logic Pro audio plugin that makes an electric guitar talk and eventually sing. He traces the guitar's chain of augmentation \u2014 pickups, effects pedals, Peter Frampton's talk box, software emulation \u2014 and positions LLM-driven speech as the next step, then shows the actual signal path he built: text-to-speech audio sliced per word, YIN pitch detection on the guitar signal, a synthesized sawtooth note pushed through the voice clip and a vocoder, and a Whisper + local-LLM loop so the guitar can answer audience questions. Most of the talk is honest engineering detail about where it breaks: energy-gap segmentation fails when there is no silence between spoken words, sonority-peak syllabification only partly fixes it, and the sample-based singing path (VocalSet samples pitch-shifted with World) is too heavy to run live and must be pre-baked. Live demos misfire on stage and he keeps going, which is part of the point. Watch it if you want a concrete tour of real-time audio DSP plus AI glue code, or a low-stakes nudge to build the passion project sitting in your backlog; skip it if you want production AI-engineering practice.",
+    "key_points": [
+      "The project's core signal chain is: detect the guitar's fundamental pitch with the YIN algorithm, generate a synthesized sawtooth note with an ADSR envelope, fill it with TTS voice content, and push it through a vocoder so the note carries speech.",
+      "Slicing TTS audio into individual words by energy-gap segmentation is unreliable because natural speech often has no silence between words, so the cut points are not 100% foolproof.",
+      "Adding sonority-peak syllabification \u2014 finding vowels as syllable markers \u2014 on top of energy gaps improved segmentation but still did not work well enough, so Fisher fell back to manually dragging segment boundaries in the plugin UI.",
+      "Making the guitar conversational required only off-the-shelf glue: Whisper for speech-to-text, any local LLM for the response, and the existing TTS-to-guitar path for output; Fisher says the choice of LLM does not matter.",
+      "The singing version uses open-source VocalSet recordings pitch-shifted with the World library and mapped per fret, but the processing is heavy enough that it must be pre-baked offline rather than run live.",
+      "He demoed only the five vowel sounds because pre-baking a fuller sample set takes too long, and concedes the result is 'not quite your opera singer' \u2014 the singing goal is not yet reached.",
+      "JUCE is his recommended framework for building audio software, and a DAW is framed as the musician's equivalent of an IDE, with the plugin dropping into Logic Pro like any other effect.",
+      "The framing argument is that AI has collapsed the time cost of side projects, so the backlog of 'cool idea' projects engineers keep is now worth actually building."
+    ],
+    "notable_quotes": [
+      {
+        "text": "part of uh my goal today is to inspire you guys to find whatever project you're passionate about, go start building it because it's super easy now with AI it's easier with AI.",
+        "timestamp_sec": 141,
+        "why": "states the talk's thesis about AI lowering the cost of passion projects"
+      },
+      {
+        "text": "There is the argument made hot take uh that maybe you don't need all those physical effects pedals anymore.",
+        "timestamp_sec": 214,
+        "why": "an explicitly flagged hot take about software emulation displacing hardware"
+      },
+      {
+        "text": "And then of course looking forward it's what is that next evolution of the guitar uh with AI in the picture?",
+        "timestamp_sec": 214,
+        "why": "frames the whole project as the next entry in the guitar's augmentation lineage"
+      },
+      {
+        "text": "And I settled on this idea of like, \"Hey, how hard would it be to make my guitar speak?\" It sounds easy, maybe, maybe not.",
+        "timestamp_sec": 329,
+        "why": "names the project's driving question and hedges the difficulty up front"
+      },
+      {
+        "text": "And for those that are not aware, your DAW is effectively your IDE but for musicians and and music producers.",
+        "timestamp_sec": 362,
+        "why": "the analogy that makes the rest of the plugin architecture legible to software engineers"
+      },
+      {
+        "text": "the idea there is there's typically silence in between words. So, let's just cut it whenever the decibels are are very much close to zero, right?",
+        "timestamp_sec": 483,
+        "why": "states the naive segmentation heuristic he tried first"
+      },
+      {
+        "text": "there's actually no silence in between some of my words. So, it gets a little bit challenging to where it's not 100% foolproof, right?",
+        "timestamp_sec": 483,
+        "why": "names the concrete failure mode of energy-gap segmentation"
+      },
+      {
+        "text": "I effectively identifying the syllables of the audio signal and identifying that there's vowels in here. Vowels typically lead to syllables.",
+        "timestamp_sec": 512,
+        "why": "explains the sonority-peak fallback layered on top of the energy-gap approach"
+      },
+      {
+        "text": "long story short, uh I settled on just the ability to go and actually I could drag this and manually edit some of these uh uh segments in here.",
+        "timestamp_sec": 561,
+        "why": "admits the automated segmentation was not good enough and a human-in-the-loop editor won"
+      },
+      {
+        "text": "there is definitely a fundamental frequency or the the kind of the the one that we identify as the note, but there's a bunch of other frequencies.",
+        "timestamp_sec": 593,
+        "why": "sets up why pitch detection is a nontrivial problem, not a lookup"
+      },
+      {
+        "text": "Uh we then push it through uh the the voice clip effectively. So, think of the talk box. Uh we're kind of filling up the cavity of the talk of the voice, that is. And we push it through a vocoder, and it should sing.",
+        "timestamp_sec": 659,
+        "why": "the clearest statement of the full synthesis architecture and its talk-box analogy"
+      },
+      {
+        "text": "was going to uh play a song that is very much related to the talk or the the title of my talk, uh while my guitar gently speaks, but because it's going to be posted online, I don't want to muddy up the waters with any copyright things.",
+        "timestamp_sec": 704,
+        "why": "a working musician-engineer navigating copyright constraints on recorded demos"
+      },
+      {
+        "text": "Uh it doesn't really matter what LLM, just any local model. I have a conversation coming and then from that output go and plop it on the guitar.",
+        "timestamp_sec": 856,
+        "why": "takes the position that model choice is interchangeable for this application"
+      },
+      {
+        "text": "Uh this is a very heavy process, and so I can't really do that live. I have to effectively pre-bake that. And then once it's already pre-baked, I could then go and jam out with it.",
+        "timestamp_sec": 963,
+        "why": "names the central real-time compute constraint that shapes the singing feature"
+      },
+      {
+        "text": "Go and build awesome things because nowadays with AI, we could build so many really cool things, and time is typically not the the big time suck that that it once was, right?",
+        "timestamp_sec": 1061,
+        "why": "the closing argument, and the reason the project is presented as a template rather than a product"
+      }
+    ],
+    "concepts": [
+      "audio plugin development",
+      "text-to-speech",
+      "word-level audio segmentation",
+      "fundamental pitch detection",
+      "vocoder synthesis",
+      "speech-to-text transcription",
+      "local llm inference",
+      "sample-based pitch shifting",
+      "real-time audio constraints",
+      "human-in-the-loop correction"
+    ],
+    "positions": [
+      {
+        "claim": "Software emulation of effects has advanced far enough that guitarists may no longer need physical effects pedals.",
+        "confidence": "stated",
+        "timestamp_sec": 214
+      },
+      {
+        "claim": "Energy-gap segmentation alone cannot reliably split speech audio into words, because real speech often contains no silence between words.",
+        "confidence": "stated",
+        "timestamp_sec": 483
+      },
+      {
+        "claim": "Combining sonority-peak syllabification with energy-gap detection still does not produce good enough automatic word slicing; manual segment editing is required.",
+        "confidence": "stated",
+        "timestamp_sec": 561
+      },
+      {
+        "claim": "For a conversational guitar loop, the specific LLM is irrelevant \u2014 any local model suffices.",
+        "confidence": "stated",
+        "timestamp_sec": 856
+      },
+      {
+        "claim": "Sample-based singing synthesis using World pitch shifting is too computationally heavy to run live and must be pre-baked ahead of performance.",
+        "confidence": "stated",
+        "timestamp_sec": 963
+      },
+      {
+        "claim": "The current system speaks but does not yet sing convincingly \u2014 it is closer to singing but 'not quite your opera singer.'",
+        "confidence": "stated",
+        "timestamp_sec": 1008
+      },
+      {
+        "claim": "AI has removed time as the main barrier to side projects, so engineers should start building the projects on their backlog now.",
+        "confidence": "stated",
+        "timestamp_sec": 1061
+      },
+      {
+        "claim": "JUCE is the framework to use for building audio software.",
+        "confidence": "stated",
+        "timestamp_sec": 362
+      },
+      {
+        "claim": "The talk box is the right conceptual model for AI-driven guitar speech: a synthesized pitched note carries the voice content through a vocoder rather than the voice being generated directly at pitch.",
+        "confidence": "implied",
+        "timestamp_sec": 659
+      }
+    ],
+    "speaker_org": "Philo Ventures"
+  },
+  "_meta": {
+    "slug": "while-my-guitar-gently-speaks",
+    "video_id": "E_Txocq-Lrw",
+    "url": "https://www.youtube.com/watch?v=E_Txocq-Lrw",
+    "word_count": 3216,
+    "wall_sec": 98.7,
+    "run_at": "2026-08-19T13:23:21Z",
+    "effort": "default"
+  }
+}

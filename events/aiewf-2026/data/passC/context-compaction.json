@@ -1,34 +1,37 @@
 {
   "is_error": false,
-  "duration_api_ms": 101128,
+  "duration_api_ms": 103203,
   "num_turns": 1,
   "stop_reason": "end_turn",
-  "session_id": "7c6eed93-2ea9-4f98-89d0-65a712c680f5",
-  "total_cost_usd": 0.78388,
+  "session_id": "489e9503-3528-42da-9c67-f02598fb209f",
+  "total_cost_usd": 0.8202435,
   "usage": {
     "input_tokens": 2,
-    "cache_creation_input_tokens": 53296,
-    "cache_read_input_tokens": 7516,
-    "output_tokens": 8522,
+    "cache_creation_input_tokens": 57123,
+    "cache_read_input_tokens": 8113,
+    "output_tokens": 8355,
+    "output_tokens_details": {
+      "thinking_tokens": 3886
+    },
     "server_tool_use": {
       "web_search_requests": 0,
       "web_fetch_requests": 0
     },
     "service_tier": "standard",
     "cache_creation": {
-      "ephemeral_1h_input_tokens": 53296,
+      "ephemeral_1h_input_tokens": 57123,
       "ephemeral_5m_input_tokens": 0
     },
     "inference_geo": "not_available",
     "iterations": [
       {
         "input_tokens": 2,
-        "output_tokens": 8522,
-        "cache_read_input_tokens": 7516,
-        "cache_creation_input_tokens": 53296,
+        "output_tokens": 8355,
+        "cache_read_input_tokens": 8113,
+        "cache_creation_input_tokens": 57123,
         "cache_creation": {
           "ephemeral_5m_input_tokens": 0,
-          "ephemeral_1h_input_tokens": 53296
+          "ephemeral_1h_input_tokens": 57123
         },
         "type": "message"
       }
@@ -37,12 +40,12 @@
   },
   "modelUsage": {
     "claude-haiku-4-5-20251001": {
-      "inputTokens": 34012,
-      "outputTokens": 18,
+      "inputTokens": 36022,
+      "outputTokens": 10,
       "cacheReadInputTokens": 0,
       "cacheCreationInputTokens": 0,
       "webSearchRequests": 0,
-      "costUSD": 0.034102,
+      "costUSD": 0.036072,
       "contextWindow": 200000,
       "maxOutputTokens": 32000,
       "canonicalModel": "claude-haiku-4-5",
@@ -50,11 +53,11 @@
     },
     "claude-opus-5": {
       "inputTokens": 2,
-      "outputTokens": 8522,
-      "cacheReadInputTokens": 7516,
-      "cacheCreationInputTokens": 53296,
+      "outputTokens": 8355,
+      "cacheReadInputTokens": 8113,
+      "cacheCreationInputTokens": 57123,
       "webSearchRequests": 0,
-      "costUSD": 0.7497780000000001,
+      "costUSD": 0.7841715,
       "contextWindow": 1000000,
       "maxOutputTokens": 64000,
       "canonicalModel": "claude-opus-5",
@@ -67,64 +70,63 @@
   "fast_mode_disabled_reason": "sdk_opt_in_required",
   "subtype": "success",
   "api_error_status": null,
-  "result": "{\"concept\":\"context compaction\",\"state_of_practice\":\"Compaction has moved from a client-side hack to a first-class architectural decision, and the field split over it at this conference. One camp reports that summarization-based compaction now works well enough to be invisible \u2014 OpenAI ships auto-compaction server-side in the form the model was trained on so post-compaction performance is unchanged, and practitioners report threads weeks old with hundreds of subagents that still know what they are doing. The opposing camp treats destructive compaction as an anti-pattern: because a compaction step discards everything it did not summarize, they back the agent with an append-only session log or plain files on disk, and treat any compacted view as a lossy fork off that durable record rather than as the state itself. Both camps agree on the underlying physics: a full context window degrades answer quality because contradictory content confuses the model, so several speakers recommend staying under ~200K tokens (ideally under 100K) regardless of advertised window size, capping skill/tool description blocks at ~2% of the window, and deferring the rest to tool search. Where the two camps land determines whether you build recall over summaries or recall over raw logs. A widely-missed detail: compaction is not primarily a cost optimization \u2014 rewriting the prefix forces a KV-cache miss, so the next call's input tokens cost roughly 10x, and the real justification is intelligence.\",\"consensus\":[{\"claim\":\"Durable state outside the context window \u2014 an append-only session log or files on disk \u2014 is what makes compaction survivable; the context window should be a rebuildable projection, not the system of record.\",\"support_count\":5,\"supporting_talks\":[\"the-log-is-the-agent\",\"claude-for-long-horizon-tasks\",\"i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke\",\"evolution-of-agentic-surfaces\",\"turn-10994-notes-into-memory\"],\"evidence_quote\":\"The state lives in files. It is not trapped inside one model. And this is the single most practical thing I learned all year.\",\"evidence_talk\":\"i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke\",\"evidence_timestamp_sec\":145},{\"claim\":\"A large context window is not free capacity \u2014 filling it degrades answer accuracy, so limiting what enters context is a quality decision, not only a cost decision.\",\"support_count\":4,\"supporting_talks\":[\"codex-behind-the-harness\",\"anthropics-cca-exam-as-a-field-guide-for-agentic-engineering\",\"the-state-of-model-routing\",\"turn-10994-notes-into-memory\"],\"evidence_quote\":\"the more context you have in your in your context, the higher it is that you have contradicting information and it causes confusion for the model.\",\"evidence_talk\":\"codex-behind-the-harness\",\"evidence_timestamp_sec\":245},{\"claim\":\"Compaction is lossy: whatever the summarizer does not retain is permanently gone unless a separate mechanism can fetch it back.\",\"support_count\":4,\"supporting_talks\":[\"the-log-is-the-agent\",\"claude-for-long-horizon-tasks\",\"i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke\",\"your-agent-is-wasting-tokens-and-you-dont-know-it\"],\"evidence_quote\":\"Compaction is lossy. A compacted summary is not going to perfectly reproduce the state of the agent in a smaller form. It's actually going to throw information away.\",\"evidence_talk\":\"the-log-is-the-agent\",\"evidence_timestamp_sec\":287},{\"claim\":\"If you must shrink history in-band, summarize what falls out of the window rather than plainly truncating to the most recent N messages.\",\"support_count\":3,\"supporting_talks\":[\"agents-in-production-how-opengov-built-and-scaled-og-assist\",\"your-agent-is-wasting-tokens-and-you-dont-know-it\",\"scaling-to-long-horizons\"],\"evidence_quote\":\"we found that having some sort of um rolling summarization was more effective than you know always stuffing in the latest and most recent uh messages\",\"evidence_talk\":\"agents-in-production-how-opengov-built-and-scaled-og-assist\",\"evidence_timestamp_sec\":732}],\"disagreements\":[{\"question\":\"Should long-horizon agents compact their history, or should they never compact and instead reset onto a durable external record?\",\"position_a\":\"Compaction is the right primitive and has crossed the quality bar: run rolling summarization (or server-side auto-compaction) and keep the same thread running for weeks; the old advice to start a fresh thread after a long conversation is obsolete.\",\"position_a_talks\":[\"full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex\",\"codex-behind-the-harness\",\"the-golden-age-of-ai-engineering\",\"agents-in-production-how-opengov-built-and-scaled-og-assist\",\"your-agent-is-wasting-tokens-and-you-dont-know-it\"],\"position_b\":\"Destructive compaction is the wrong default because you cannot choose what survives and what it drops is gone; instead keep an append-only immutable session log (or self-written handoff files), clear the context entirely, and let the model re-read what it needs \u2014 any compacted view is a best-effort fork, not the state.\",\"position_b_talks\":[\"claude-for-long-horizon-tasks\",\"the-log-is-the-agent\",\"i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke\",\"evolution-of-agentic-surfaces\"],\"why_it_matters\":\"It decides whether your agent's identity lives in a mutable rolling summary or in an immutable event log, which in turn determines whether you can fork, migrate providers, resume after a crash, or audit how an answer was reached.\"},{\"question\":\"Where should compaction execute \u2014 inside the harness, or server-side in the model provider's stack?\",\"position_a\":\"Compaction belongs server-side, performed in the exact form the model was trained on, so measured performance is unchanged across the compaction boundary; this is exposed as an API primitive precisely so builders stop rolling their own.\",\"position_a_talks\":[\"codex-behind-the-harness\",\"the-golden-age-of-ai-engineering\"],\"position_b\":\"Compaction is harness-level application logic the team owns: rolling summarization with a truncated recent window and recall over the summary, sliding-window conversation managers with summarized overflow, or an explicit /compact triggered at a token threshold such as 150K.\",\"position_b_talks\":[\"agents-in-production-how-opengov-built-and-scaled-og-assist\",\"your-agent-is-wasting-tokens-and-you-dont-know-it\",\"anthropics-cca-exam-as-a-field-guide-for-agentic-engineering\",\"i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke\"],\"why_it_matters\":\"Harness-side compaction gives you control over what survives but drifts out of the model's training distribution and can silently degrade after a model upgrade; server-side compaction preserves performance but hands the provider your history and removes your ability to choose what is retained.\"},{\"question\":\"Is compaction a cost optimization?\",\"position_a\":\"No \u2014 compacting rewrites the prefix and forces a KV-cache miss, so the following call pays roughly 10x on input tokens; the actual reason to compact is intelligence, and cost is better attacked by staying under 100-200K tokens and reusing cache via a long-lived sidekick context.\",\"position_a_talks\":[\"the-state-of-model-routing\"],\"position_b\":\"Shrinking what you send is the main cost lever available, since roughly 90% of agent spend is input tokens: cache the system prompt, trim and summarize conversation history, keep large tool results out of context, and retrieve narrow slices instead of whole files.\",\"position_b_talks\":[\"your-agent-is-wasting-tokens-and-you-dont-know-it\",\"we-cut-94-of-ai-coding-tokens-with-a-local-code-index\",\"stop-renting-your-cognitive-infrastructure\"],\"why_it_matters\":\"If compaction is cache-hostile, aggressive context trimming can raise your bill while appearing to lower it, and the right optimization shifts from summarizing history to preserving a stable cacheable prefix.\"}],\"practical_guidance\":{\"do\":[\"Back the agent with an append-only, immutable event log (or files on disk) so compaction, a harness crash, or a dead sandbox never destroys recoverable state\",\"Treat a compacted context as a best-effort lossy fork resumed as a new log, and retain the raw log alongside it\",\"Pair rolling summarization with recall: let the model query back into the summary and the discarded history rather than only reading the newest messages\",\"Cap the available-skills/tool-description block at 2% of the total context window and mark remaining tools as deferred, discoverable via tool search\",\"Keep working context under ~200K tokens, ideally under 100K, regardless of the advertised context window\",\"Trigger compaction at a threshold (around 150K tokens) rather than riding the window to exhaustion and branching on stop_reason so truncated output is not silently accepted\",\"Run compaction server-side in the form the model was trained on when the provider exposes it, so post-compaction performance is measurably unchanged\",\"Extract atomic facts from conversations with a continually adapting relevance scorer (knowledge-based compaction) instead of storing everything and compacting only on overflow\",\"Move verification and grading into a separate context window from the one that did the work\",\"Store large tool results outside the context and pass back a summary or handle instead of re-sending them every loop iteration\",\"Give subagents only the claim and evidence, and keep their full output out of the primary thread\",\"Run an out-of-band consolidation ('dreaming') pass over transcripts plus memory state to correct memories that were locally optimal when written in-band\",\"Budget for the KV-cache miss that compaction causes \u2014 prefer one long-lived sidekick context with a running cache over spawning fresh subagents\"],\"avoid\":[\"Filling a million-token window just because it exists \u2014 more context means more contradicting information and a less accurate answer\",\"Naive destructive compaction that silently discards everything it did not summarize with no path to fetch it back\",\"Letting every subtask dump its full output into the primary thread, crowding out the parent context\",\"Assuming compaction is a cost win \u2014 rewriting the prefix invalidates the cache and can raise input cost roughly 10x on the next call\",\"Sliding-window truncation with no summarization of what falls off the front, which quietly loses the beginning of the conversation\",\"Prescribing an explicit memory schema for the model; specifying memory structure up front measurably drops performance versus letting the model manage its own\",\"Self-grading in the same context window that produced the work, which yields confabulation and odd artifacts\",\"Clever model-side memory injection that breaks KV-cache reuse\",\"Prompt instructions asking the model to use less context \u2014 the context is already transmitted and billed before the prompt is read\",\"Carrying harness-side context workarounds forward after a model upgrade; fixes for context anxiety became pure overhead and cache bugs once Opus 4.5 no longer had the problem\"]},\"notable_outliers\":[{\"claim\":\"Compaction now works well enough that threads five weeks old containing 400 subagents still know what to do \u2014 the standing advice to start a new thread after ~20 messages or per feature is no longer true.\",\"talk\":\"full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex\",\"timestamp_sec\":209},{\"claim\":\"Stopped compacting entirely: it is slow, offers no control over what survives, and discards permanently \u2014 reset the context to zero instead and re-read self-written handoff and history files.\",\"talk\":\"i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke\",\"timestamp_sec\":145},{\"claim\":\"RL should be applied to the compaction step itself, not just the task \u2014 generate to the end of the window, summarize, continue, and train the summarizer.\",\"talk\":\"scaling-to-long-horizons\",\"timestamp_sec\":642},{\"claim\":\"The main reason to compact is intelligence, not cost \u2014 compaction forces a cache miss so you pay roughly 10x more for those input tokens than if you hadn't compacted.\",\"talk\":\"the-state-of-model-routing\",\"timestamp_sec\":1923},{\"claim\":\"KV compaction is a dead end as a learning mechanism: it only applies to what fits in context and forfeits the generalization you get from taking gradients.\",\"talk\":\"scaling-compute-on-context\",\"timestamp_sec\":781},{\"claim\":\"In a traditional harness the context window and the session are treated as one and the same, and separating them is what makes the session log serve as observability, recovery, and memory substrate simultaneously.\",\"talk\":\"evolution-of-agentic-surfaces\",\"timestamp_sec\":873}],\"maturity\":\"contested\",\"maturity_rationale\":\"Credible practitioners take opposite fundamental positions \u2014 one group reports compaction now works so well that multi-week threads are routine, while another has abandoned destructive compaction outright in favor of append-only logs and full context resets \u2014 and they further disagree on whether compaction belongs in the harness or the provider's stack and whether it saves money at all.\"}",
-  "ttft_ms": 50625,
-  "ttft_stream_ms": 1494,
-  "time_to_request_ms": 43,
+  "result": "{\"concept\":\"context compaction\",\"state_of_practice\":\"Compaction moved from a background implementation detail to one of the most actively argued design decisions in the agent stack, and the conference did not settle it. The clearest technical agreement is mechanical: compaction is lossy and it invalidates the prompt cache, so the compacted turn costs roughly an order of magnitude more per input token than the cached turn it replaced \u2014 meaning compaction has to be justified by intelligence or by a hard window limit, not by an assumption that fewer tokens are cheaper. The strongest architectural response, voiced by Anthropic, Omnara, and independent fleet operators, is to stop treating the context window as the agent's state at all: back the session with an append-only event log or on-disk files, and treat compaction as a best-effort lossy fork that can always fetch back what it dropped. OpenAI's counter-position is that compaction is now a solved provider primitive \u2014 Codex auto-compacts server-side in the form the model was trained on so performance holds across the boundary, which is what made five-week-old threads and persistent manager-agent workflows viable. Against both camps, the Towards AI team measured compaction presets against an untouched full history and found no-compaction won on recall, cost, and latency simultaneously, with distinctive facts still recalled at 800k tokens. What everyone rejects is naive uniform trimming: rolling summaries you can recall over, atomic-fact extraction, relevance-scored knowledge compaction, and out-of-context tool-result storage all beat dropping the oldest N messages.\",\"consensus\":[{\"claim\":\"Compaction is irreversibly lossy, so the durable substrate must be something outside the context window \u2014 an append-only session log or files on disk \u2014 with the compacted view treated as a derived projection.\",\"support_count\":4,\"supporting_talks\":[\"the-log-is-the-agent\",\"claude-for-long-horizon-tasks\",\"i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke\",\"evolution-of-agentic-surfaces\"],\"evidence_quote\":\"Compaction is lossy. A compacted summary is not going to perfectly reproduce the state of the agent in a smaller form. It's actually going to throw information away.\",\"evidence_talk\":\"the-log-is-the-agent\",\"evidence_timestamp_sec\":287},{\"claim\":\"Compaction breaks the KV/prompt cache, and that cache miss is a first-order cost that has to be weighed against the token savings \u2014 compaction is not automatically cheaper.\",\"support_count\":3,\"supporting_talks\":[\"the-state-of-model-routing\",\"context-engineering-in-2026\",\"wearing-the-agent-from-group-chats-to-glasses\"],\"evidence_quote\":\"you're actually then now like paying 10 times as much for the for those input tokens if you didn't compact. Um the main reason we compact is actually intelligence.\",\"evidence_talk\":\"the-state-of-model-routing\",\"evidence_timestamp_sec\":1923},{\"claim\":\"Oversized context degrades answer quality, not just cost, because contradicting or irrelevant material confuses the model \u2014 so bound what enters the window rather than filling the advertised capacity.\",\"support_count\":4,\"supporting_talks\":[\"codex-behind-the-harness\",\"anthropics-cca-exam-as-a-field-guide-for-agentic-engineering\",\"the-state-of-model-routing\",\"we-cut-94-of-ai-coding-tokens-with-a-local-code-index\"],\"evidence_quote\":\"the more context you have in your in your context, the higher it is that you have contradicting information and it causes confusion for the model.\",\"evidence_talk\":\"codex-behind-the-harness\",\"evidence_timestamp_sec\":245},{\"claim\":\"Recency-based trimming is the wrong shrinking policy; selective retention \u2014 rolling summaries you can recall over, extracted atomic facts, or tool results moved to external storage \u2014 outperforms dropping the oldest messages.\",\"support_count\":4,\"supporting_talks\":[\"agents-in-production-how-opengov-built-and-scaled-og-assist\",\"wearing-the-agent-from-group-chats-to-glasses\",\"your-agent-is-wasting-tokens-and-you-dont-know-it\",\"turn-10994-notes-into-memory\"],\"evidence_quote\":\"we found that having some sort of um rolling summarization was more effective than you know always stuffing in the latest and most recent uh messages\",\"evidence_talk\":\"agents-in-production-how-opengov-built-and-scaled-og-assist\",\"evidence_timestamp_sec\":732}],\"disagreements\":[{\"question\":\"Should long-running agents compact by default, or only when a named constraint forces it?\",\"position_a\":\"Compaction is now good enough to be the invisible default \u2014 it is what makes multi-week threads, persistent manager agents, and long-horizon tasks work at all, and the old advice to start a fresh thread is obsolete.\",\"position_a_talks\":[\"codex-behind-the-harness\",\"full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex\",\"the-golden-age-of-ai-engineering\"],\"position_b\":\"Do not compact by default. Keeping the full untouched history beat every compaction preset on recall, cost, and latency at once; compaction is slow, destroys what you didn't choose to keep, and should be replaced by a full reset plus re-read of durable files, or by an append-only log the model can fetch back from.\",\"position_b_talks\":[\"context-engineering-in-2026\",\"i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke\",\"claude-for-long-horizon-tasks\",\"the-log-is-the-agent\"],\"why_it_matters\":\"If compaction is the default, you build around a provider primitive and stop thinking about window management; if it isn't, you must build durable external state, retrieval, and an explicit trigger condition before your agent ever runs long. The two paths produce incompatible architectures and very different cost curves once caching is factored in.\",\"position_a_talks_count\":3},{\"question\":\"Does long context actually degrade recall, or is 'context rot' overstated?\",\"position_a\":\"Long context rots: quality falls as the window fills, so cap usable context well below the advertised window \u2014 never past ~200K tokens and ideally under 100K \u2014 and limit what goes in even with a million-token window available.\",\"position_a_talks\":[\"the-state-of-model-routing\",\"anthropics-cca-exam-as-a-field-guide-for-agentic-engineering\",\"codex-behind-the-harness\"],\"position_b\":\"Long context does not necessarily rot: distinctive facts were recalled reliably up to 800k tokens with no compaction at all, and compacting first dropped answer rate to 32%. The real retrieval failure was dense semantic search, where BM25 held 100% recall as embeddings went to 0%.\",\"position_b_talks\":[\"context-engineering-in-2026\"],\"why_it_matters\":\"The entire justification for compaction rests on this. If long context holds up, compaction is a pure cost and cache regression you should skip; if it degrades, compaction buys accuracy and the cache miss is the price of correctness.\"},{\"question\":\"Should compaction be owned by the provider (server-side) or by the harness/operator?\",\"position_a\":\"Compact server-side, in the exact form the model was trained on, so performance stays the same across the boundary \u2014 and expose it as an API primitive so every builder gets the same behavior the first-party harness gets.\",\"position_a_talks\":[\"codex-behind-the-harness\",\"the-golden-age-of-ai-engineering\"],\"position_b\":\"Own the compaction step yourself, because a provider-managed compactor gives you no control over what survives, and whoever owns the log owns the agent \u2014 log lock-in is deeper than model or API lock-in.\",\"position_b_talks\":[\"the-log-is-the-agent\",\"i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke\",\"context-engineering-in-2026\"],\"why_it_matters\":\"Server-side compaction is the only version that can be trained-for and therefore performance-neutral, but it makes your agent's memory a vendor artifact you cannot inspect, fork, or migrate. Teams choosing wrong here discover it during a provider migration or an audit, not during development.\"}],\"practical_guidance\":{\"do\":[\"Name the specific constraint forcing compaction (window overflow, caching no longer applying) before enabling it, and benchmark cost, latency, and recall against an untouched-history baseline first\",\"Back the session with an append-only event log or on-disk files so the harness and sandbox are disposable and a compaction or full context reset is recoverable rather than destructive\",\"Treat compaction as a best-effort lossy fork resumed as a new log, retaining the raw log alongside it\",\"Keep the rolling summary itself retrievable so the agent can do recall over the summarization instead of only reading the summary\",\"Use provider server-side auto-compaction where available, since it is compacted in the form the model was trained on and is designed to hold performance across the boundary\",\"Prevent context growth upstream instead of compacting later: cap the available-skills block (Codex uses 2% of the max context window), mark tools as deferred so they load via tool search, and give each subagent only its claim and evidence rather than its full output\",\"Store large tool results outside the context and pass a summary or handle, so they are not re-sent on every loop iteration\",\"Extract atomic facts continuously as conversation happens rather than storing everything and compacting on overflow, and score relevance adaptively so compaction is knowledge-based\",\"Keep BM25/keyword retrieval in the mix at large context sizes \u2014 dense semantic search dropped to 0% recall at 400k tokens where BM25 held 100%\",\"Instrument per-turn tokens, cache-hit rate, cost, and TTFT, since these are cheap to log and are the only way to tell whether a compaction policy is helping\",\"Cap tool-loop max iterations so a runaway loop cannot force compaction in the first place\",\"Run verification and grading in a separate context window from the one that did the work\"],\"avoid\":[\"Compacting on a schedule or by default with no measured constraint \u2014 it is slow, you cannot choose what survives, and what it throws away is gone\",\"Summarizing for compression ratios under ~50x, because the prompt-cache invalidation costs more than the tokens saved\",\"Aggressively clearing old tool outputs \u2014 the agent re-retrieves what it already had, producing more tool calls and higher total cost\",\"Letting every subtask dump its full output into the primary thread, crowding out the main context\",\"Comparing context-management strategies on single-turn benchmarks, which never accumulate enough tokens to trigger compaction at all\",\"Treating the context window and the session as the same thing, which is what most traditional harness implementations do\",\"Relying on Claude Code's or Codex's local JSONL writes as your durable log \u2014 in SDK mode those writes are fire-and-forget, so a failed write loses the data\",\"Prescribing an explicit memory schema for the model; performance drops relative to letting the model structure its own memory\",\"Carrying forward harness-side context workarounds after a model no longer needs them \u2014 they become pure overhead and can cause the cache to be discarded incorrectly\",\"Assuming a smaller local model is a drop-in substitute: a 32K window cut chat recall from 92-95% to 33%, and more parameters do not widen the window\"]},\"notable_outliers\":[{\"claim\":\"Keeping the entire conversation history untouched beat every compaction preset on memory recall, cost, and latency simultaneously \u2014 on DeepSeek the setup sending the most tokens was the cheapest to run, because 97% of tokens were cached.\",\"talk\":\"context-engineering-in-2026\",\"timestamp_sec\":2731},{\"claim\":\"Compaction now works well enough that a single thread can stay alive for five weeks with ~400 subagents in it and still know what it needs to do.\",\"talk\":\"full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex\",\"timestamp_sec\":209},{\"claim\":\"Apply RL to the compaction step itself, not just to the task \u2014 generate to the end of the window, summarize, then keep generating, and train that summarization decision.\",\"talk\":\"scaling-to-long-horizons\",\"timestamp_sec\":642},{\"claim\":\"Don't compact \u2014 reset. Clear the context completely and have the agent re-read its own handoff and history files from disk, because state in files survives context wipes and machine crashes.\",\"talk\":\"i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke\",\"timestamp_sec\":145},{\"claim\":\"KV compaction is a dead end as a learning mechanism: it only applies to what fits in context and forfeits the benefits of taking gradients.\",\"talk\":\"scaling-compute-on-context\",\"timestamp_sec\":781},{\"claim\":\"Memory injection and compaction engines must be KV-cache-aware, because clever model-side manipulation breaks cache reuse and erases the savings.\",\"talk\":\"wearing-the-agent-from-group-chats-to-glasses\",\"timestamp_sec\":923}],\"maturity\":\"contested\",\"maturity_rationale\":\"Credible practitioners disagree on fundamentals: OpenAI treats server-side compaction as a solved, performance-neutral default while Anthropic, Omnara, and independent operators argue for append-only logs and no destructive compaction, and a measured study found no-compaction winning on cost, latency, and recall at once. Even the premise \u2014 whether long context degrades \u2014 was directly contradicted with 800k-token recall data, and one speaker called memory compaction unsolved and rapidly moving in their own system.\"}",
+  "ttft_ms": 49201,
+  "ttft_stream_ms": 2506,
+  "time_to_request_ms": 44,
   "type": "result",
-  "duration_ms": 100716,
-  "uuid": "31374edc-9388-4de8-954b-ec34e1eb527b",
+  "duration_ms": 102821,
+  "uuid": "acec1b4e-0c76-4c13-a3ee-5acb56231ed7",
   "passC": {
     "concept": "context compaction",
-    "state_of_practice": "Compaction has moved from a client-side hack to a first-class architectural decision, and the field split over it at this conference. One camp reports that summarization-based compaction now works well enough to be invisible \u2014 OpenAI ships auto-compaction server-side in the form the model was trained on so post-compaction performance is unchanged, and practitioners report threads weeks old with hundreds of subagents that still know what they are doing. The opposing camp treats destructive compaction as an anti-pattern: because a compaction step discards everything it did not summarize, they back the agent with an append-only session log or plain files on disk, and treat any compacted view as a lossy fork off that durable record rather than as the state itself. Both camps agree on the underlying physics: a full context window degrades answer quality because contradictory content confuses the model, so several speakers recommend staying under ~200K tokens (ideally under 100K) regardless of advertised window size, capping skill/tool description blocks at ~2% of the window, and deferring the rest to tool search. Where the two camps land determines whether you build recall over summaries or recall over raw logs. A widely-missed detail: compaction is not primarily a cost optimization \u2014 rewriting the prefix forces a KV-cache miss, so the next call's input tokens cost roughly 10x, and the real justification is intelligence.",
+    "state_of_practice": "Compaction moved from a background implementation detail to one of the most actively argued design decisions in the agent stack, and the conference did not settle it. The clearest technical agreement is mechanical: compaction is lossy and it invalidates the prompt cache, so the compacted turn costs roughly an order of magnitude more per input token than the cached turn it replaced \u2014 meaning compaction has to be justified by intelligence or by a hard window limit, not by an assumption that fewer tokens are cheaper. The strongest architectural response, voiced by Anthropic, Omnara, and independent fleet operators, is to stop treating the context window as the agent's state at all: back the session with an append-only event log or on-disk files, and treat compaction as a best-effort lossy fork that can always fetch back what it dropped. OpenAI's counter-position is that compaction is now a solved provider primitive \u2014 Codex auto-compacts server-side in the form the model was trained on so performance holds across the boundary, which is what made five-week-old threads and persistent manager-agent workflows viable. Against both camps, the Towards AI team measured compaction presets against an untouched full history and found no-compaction won on recall, cost, and latency simultaneously, with distinctive facts still recalled at 800k tokens. What everyone rejects is naive uniform trimming: rolling summaries you can recall over, atomic-fact extraction, relevance-scored knowledge compaction, and out-of-context tool-result storage all beat dropping the oldest N messages.",
     "consensus": [
       {
-        "claim": "Durable state outside the context window \u2014 an append-only session log or files on disk \u2014 is what makes compaction survivable; the context window should be a rebuildable projection, not the system of record.",
-        "support_count": 5,
-        "supporting_talks": [
-          "the-log-is-the-agent",
-          "claude-for-long-horizon-tasks",
-          "i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke",
-          "evolution-of-agentic-surfaces",
-          "turn-10994-notes-into-memory"
-        ],
-        "evidence_quote": "The state lives in files. It is not trapped inside one model. And this is the single most practical thing I learned all year.",
-        "evidence_talk": "i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke",
-        "evidence_timestamp_sec": 145
-      },
-      {
-        "claim": "A large context window is not free capacity \u2014 filling it degrades answer accuracy, so limiting what enters context is a quality decision, not only a cost decision.",
-        "support_count": 4,
-        "supporting_talks": [
-          "codex-behind-the-harness",
-          "anthropics-cca-exam-as-a-field-guide-for-agentic-engineering",
-          "the-state-of-model-routing",
-          "turn-10994-notes-into-memory"
-        ],
-        "evidence_quote": "the more context you have in your in your context, the higher it is that you have contradicting information and it causes confusion for the model.",
-        "evidence_talk": "codex-behind-the-harness",
-        "evidence_timestamp_sec": 245
-      },
-      {
-        "claim": "Compaction is lossy: whatever the summarizer does not retain is permanently gone unless a separate mechanism can fetch it back.",
+        "claim": "Compaction is irreversibly lossy, so the durable substrate must be something outside the context window \u2014 an append-only session log or files on disk \u2014 with the compacted view treated as a derived projection.",
         "support_count": 4,
         "supporting_talks": [
           "the-log-is-the-agent",
           "claude-for-long-horizon-tasks",
           "i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke",
-          "your-agent-is-wasting-tokens-and-you-dont-know-it"
+          "evolution-of-agentic-surfaces"
         ],
         "evidence_quote": "Compaction is lossy. A compacted summary is not going to perfectly reproduce the state of the agent in a smaller form. It's actually going to throw information away.",
         "evidence_talk": "the-log-is-the-agent",
         "evidence_timestamp_sec": 287
       },
       {
-        "claim": "If you must shrink history in-band, summarize what falls out of the window rather than plainly truncating to the most recent N messages.",
+        "claim": "Compaction breaks the KV/prompt cache, and that cache miss is a first-order cost that has to be weighed against the token savings \u2014 compaction is not automatically cheaper.",
         "support_count": 3,
         "supporting_talks": [
+          "the-state-of-model-routing",
+          "context-engineering-in-2026",
+          "wearing-the-agent-from-group-chats-to-glasses"
+        ],
+        "evidence_quote": "you're actually then now like paying 10 times as much for the for those input tokens if you didn't compact. Um the main reason we compact is actually intelligence.",
+        "evidence_talk": "the-state-of-model-routing",
+        "evidence_timestamp_sec": 1923
+      },
+      {
+        "claim": "Oversized context degrades answer quality, not just cost, because contradicting or irrelevant material confuses the model \u2014 so bound what enters the window rather than filling the advertised capacity.",
+        "support_count": 4,
+        "supporting_talks": [
+          "codex-behind-the-harness",
+          "anthropics-cca-exam-as-a-field-guide-for-agentic-engineering",
+          "the-state-of-model-routing",
+          "we-cut-94-of-ai-coding-tokens-with-a-local-code-index"
+        ],
+        "evidence_quote": "the more context you have in your in your context, the higher it is that you have contradicting information and it causes confusion for the model.",
+        "evidence_talk": "codex-behind-the-harness",
+        "evidence_timestamp_sec": 245
+      },
+      {
+        "claim": "Recency-based trimming is the wrong shrinking policy; selective retention \u2014 rolling summaries you can recall over, extracted atomic facts, or tool results moved to external storage \u2014 outperforms dropping the oldest messages.",
+        "support_count": 4,
+        "supporting_talks": [
           "agents-in-production-how-opengov-built-and-scaled-og-assist",
+          "wearing-the-agent-from-group-chats-to-glasses",
           "your-agent-is-wasting-tokens-and-you-dont-know-it",
-          "scaling-to-long-horizons"
+          "turn-10994-notes-into-memory"
         ],
         "evidence_quote": "we found that having some sort of um rolling summarization was more effective than you know always stuffing in the latest and most recent uh messages",
         "evidence_talk": "agents-in-production-how-opengov-built-and-scaled-og-assist",
@@ -133,125 +135,122 @@
     ],
     "disagreements": [
       {
-        "question": "Should long-horizon agents compact their history, or should they never compact and instead reset onto a durable external record?",
-        "position_a": "Compaction is the right primitive and has crossed the quality bar: run rolling summarization (or server-side auto-compaction) and keep the same thread running for weeks; the old advice to start a fresh thread after a long conversation is obsolete.",
+        "question": "Should long-running agents compact by default, or only when a named constraint forces it?",
+        "position_a": "Compaction is now good enough to be the invisible default \u2014 it is what makes multi-week threads, persistent manager agents, and long-horizon tasks work at all, and the old advice to start a fresh thread is obsolete.",
         "position_a_talks": [
-          "full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex",
           "codex-behind-the-harness",
-          "the-golden-age-of-ai-engineering",
-          "agents-in-production-how-opengov-built-and-scaled-og-assist",
-          "your-agent-is-wasting-tokens-and-you-dont-know-it"
+          "full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex",
+          "the-golden-age-of-ai-engineering"
         ],
-        "position_b": "Destructive compaction is the wrong default because you cannot choose what survives and what it drops is gone; instead keep an append-only immutable session log (or self-written handoff files), clear the context entirely, and let the model re-read what it needs \u2014 any compacted view is a best-effort fork, not the state.",
+        "position_b": "Do not compact by default. Keeping the full untouched history beat every compaction preset on recall, cost, and latency at once; compaction is slow, destroys what you didn't choose to keep, and should be replaced by a full reset plus re-read of durable files, or by an append-only log the model can fetch back from.",
         "position_b_talks": [
-          "claude-for-long-horizon-tasks",
-          "the-log-is-the-agent",
+          "context-engineering-in-2026",
           "i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke",
-          "evolution-of-agentic-surfaces"
+          "claude-for-long-horizon-tasks",
+          "the-log-is-the-agent"
         ],
-        "why_it_matters": "It decides whether your agent's identity lives in a mutable rolling summary or in an immutable event log, which in turn determines whether you can fork, migrate providers, resume after a crash, or audit how an answer was reached."
+        "why_it_matters": "If compaction is the default, you build around a provider primitive and stop thinking about window management; if it isn't, you must build durable external state, retrieval, and an explicit trigger condition before your agent ever runs long. The two paths produce incompatible architectures and very different cost curves once caching is factored in.",
+        "position_a_talks_count": 3
       },
       {
-        "question": "Where should compaction execute \u2014 inside the harness, or server-side in the model provider's stack?",
-        "position_a": "Compaction belongs server-side, performed in the exact form the model was trained on, so measured performance is unchanged across the compaction boundary; this is exposed as an API primitive precisely so builders stop rolling their own.",
+        "question": "Does long context actually degrade recall, or is 'context rot' overstated?",
+        "position_a": "Long context rots: quality falls as the window fills, so cap usable context well below the advertised window \u2014 never past ~200K tokens and ideally under 100K \u2014 and limit what goes in even with a million-token window available.",
+        "position_a_talks": [
+          "the-state-of-model-routing",
+          "anthropics-cca-exam-as-a-field-guide-for-agentic-engineering",
+          "codex-behind-the-harness"
+        ],
+        "position_b": "Long context does not necessarily rot: distinctive facts were recalled reliably up to 800k tokens with no compaction at all, and compacting first dropped answer rate to 32%. The real retrieval failure was dense semantic search, where BM25 held 100% recall as embeddings went to 0%.",
+        "position_b_talks": [
+          "context-engineering-in-2026"
+        ],
+        "why_it_matters": "The entire justification for compaction rests on this. If long context holds up, compaction is a pure cost and cache regression you should skip; if it degrades, compaction buys accuracy and the cache miss is the price of correctness."
+      },
+      {
+        "question": "Should compaction be owned by the provider (server-side) or by the harness/operator?",
+        "position_a": "Compact server-side, in the exact form the model was trained on, so performance stays the same across the boundary \u2014 and expose it as an API primitive so every builder gets the same behavior the first-party harness gets.",
         "position_a_talks": [
           "codex-behind-the-harness",
           "the-golden-age-of-ai-engineering"
         ],
-        "position_b": "Compaction is harness-level application logic the team owns: rolling summarization with a truncated recent window and recall over the summary, sliding-window conversation managers with summarized overflow, or an explicit /compact triggered at a token threshold such as 150K.",
+        "position_b": "Own the compaction step yourself, because a provider-managed compactor gives you no control over what survives, and whoever owns the log owns the agent \u2014 log lock-in is deeper than model or API lock-in.",
         "position_b_talks": [
-          "agents-in-production-how-opengov-built-and-scaled-og-assist",
-          "your-agent-is-wasting-tokens-and-you-dont-know-it",
-          "anthropics-cca-exam-as-a-field-guide-for-agentic-engineering",
-          "i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke"
+          "the-log-is-the-agent",
+          "i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke",
+          "context-engineering-in-2026"
         ],
-        "why_it_matters": "Harness-side compaction gives you control over what survives but drifts out of the model's training distribution and can silently degrade after a model upgrade; server-side compaction preserves performance but hands the provider your history and removes your ability to choose what is retained."
-      },
-      {
-        "question": "Is compaction a cost optimization?",
-        "position_a": "No \u2014 compacting rewrites the prefix and forces a KV-cache miss, so the following call pays roughly 10x on input tokens; the actual reason to compact is intelligence, and cost is better attacked by staying under 100-200K tokens and reusing cache via a long-lived sidekick context.",
-        "position_a_talks": [
-          "the-state-of-model-routing"
-        ],
-        "position_b": "Shrinking what you send is the main cost lever available, since roughly 90% of agent spend is input tokens: cache the system prompt, trim and summarize conversation history, keep large tool results out of context, and retrieve narrow slices instead of whole files.",
-        "position_b_talks": [
-          "your-agent-is-wasting-tokens-and-you-dont-know-it",
-          "we-cut-94-of-ai-coding-tokens-with-a-local-code-index",
-          "stop-renting-your-cognitive-infrastructure"
-        ],
-        "why_it_matters": "If compaction is cache-hostile, aggressive context trimming can raise your bill while appearing to lower it, and the right optimization shifts from summarizing history to preserving a stable cacheable prefix."
+        "why_it_matters": "Server-side compaction is the only version that can be trained-for and therefore performance-neutral, but it makes your agent's memory a vendor artifact you cannot inspect, fork, or migrate. Teams choosing wrong here discover it during a provider migration or an audit, not during development."
       }
     ],
     "practical_guidance": {
       "do": [
-        "Back the agent with an append-only, immutable event log (or files on disk) so compaction, a harness crash, or a dead sandbox never destroys recoverable state",
-        "Treat a compacted context as a best-effort lossy fork resumed as a new log, and retain the raw log alongside it",
-        "Pair rolling summarization with recall: let the model query back into the summary and the discarded history rather than only reading the newest messages",
-        "Cap the available-skills/tool-description block at 2% of the total context window and mark remaining tools as deferred, discoverable via tool search",
-        "Keep working context under ~200K tokens, ideally under 100K, regardless of the advertised context window",
-        "Trigger compaction at a threshold (around 150K tokens) rather than riding the window to exhaustion and branching on stop_reason so truncated output is not silently accepted",
-        "Run compaction server-side in the form the model was trained on when the provider exposes it, so post-compaction performance is measurably unchanged",
-        "Extract atomic facts from conversations with a continually adapting relevance scorer (knowledge-based compaction) instead of storing everything and compacting only on overflow",
-        "Move verification and grading into a separate context window from the one that did the work",
-        "Store large tool results outside the context and pass back a summary or handle instead of re-sending them every loop iteration",
-        "Give subagents only the claim and evidence, and keep their full output out of the primary thread",
-        "Run an out-of-band consolidation ('dreaming') pass over transcripts plus memory state to correct memories that were locally optimal when written in-band",
-        "Budget for the KV-cache miss that compaction causes \u2014 prefer one long-lived sidekick context with a running cache over spawning fresh subagents"
+        "Name the specific constraint forcing compaction (window overflow, caching no longer applying) before enabling it, and benchmark cost, latency, and recall against an untouched-history baseline first",
+        "Back the session with an append-only event log or on-disk files so the harness and sandbox are disposable and a compaction or full context reset is recoverable rather than destructive",
+        "Treat compaction as a best-effort lossy fork resumed as a new log, retaining the raw log alongside it",
+        "Keep the rolling summary itself retrievable so the agent can do recall over the summarization instead of only reading the summary",
+        "Use provider server-side auto-compaction where available, since it is compacted in the form the model was trained on and is designed to hold performance across the boundary",
+        "Prevent context growth upstream instead of compacting later: cap the available-skills block (Codex uses 2% of the max context window), mark tools as deferred so they load via tool search, and give each subagent only its claim and evidence rather than its full output",
+        "Store large tool results outside the context and pass a summary or handle, so they are not re-sent on every loop iteration",
+        "Extract atomic facts continuously as conversation happens rather than storing everything and compacting on overflow, and score relevance adaptively so compaction is knowledge-based",
+        "Keep BM25/keyword retrieval in the mix at large context sizes \u2014 dense semantic search dropped to 0% recall at 400k tokens where BM25 held 100%",
+        "Instrument per-turn tokens, cache-hit rate, cost, and TTFT, since these are cheap to log and are the only way to tell whether a compaction policy is helping",
+        "Cap tool-loop max iterations so a runaway loop cannot force compaction in the first place",
+        "Run verification and grading in a separate context window from the one that did the work"
       ],
       "avoid": [
-        "Filling a million-token window just because it exists \u2014 more context means more contradicting information and a less accurate answer",
-        "Naive destructive compaction that silently discards everything it did not summarize with no path to fetch it back",
-        "Letting every subtask dump its full output into the primary thread, crowding out the parent context",
-        "Assuming compaction is a cost win \u2014 rewriting the prefix invalidates the cache and can raise input cost roughly 10x on the next call",
-        "Sliding-window truncation with no summarization of what falls off the front, which quietly loses the beginning of the conversation",
-        "Prescribing an explicit memory schema for the model; specifying memory structure up front measurably drops performance versus letting the model manage its own",
-        "Self-grading in the same context window that produced the work, which yields confabulation and odd artifacts",
-        "Clever model-side memory injection that breaks KV-cache reuse",
-        "Prompt instructions asking the model to use less context \u2014 the context is already transmitted and billed before the prompt is read",
-        "Carrying harness-side context workarounds forward after a model upgrade; fixes for context anxiety became pure overhead and cache bugs once Opus 4.5 no longer had the problem"
+        "Compacting on a schedule or by default with no measured constraint \u2014 it is slow, you cannot choose what survives, and what it throws away is gone",
+        "Summarizing for compression ratios under ~50x, because the prompt-cache invalidation costs more than the tokens saved",
+        "Aggressively clearing old tool outputs \u2014 the agent re-retrieves what it already had, producing more tool calls and higher total cost",
+        "Letting every subtask dump its full output into the primary thread, crowding out the main context",
+        "Comparing context-management strategies on single-turn benchmarks, which never accumulate enough tokens to trigger compaction at all",
+        "Treating the context window and the session as the same thing, which is what most traditional harness implementations do",
+        "Relying on Claude Code's or Codex's local JSONL writes as your durable log \u2014 in SDK mode those writes are fire-and-forget, so a failed write loses the data",
+        "Prescribing an explicit memory schema for the model; performance drops relative to letting the model structure its own memory",
+        "Carrying forward harness-side context workarounds after a model no longer needs them \u2014 they become pure overhead and can cause the cache to be discarded incorrectly",
+        "Assuming a smaller local model is a drop-in substitute: a 32K window cut chat recall from 92-95% to 33%, and more parameters do not widen the window"
       ]
     },
     "notable_outliers": [
       {
-        "claim": "Compaction now works well enough that threads five weeks old containing 400 subagents still know what to do \u2014 the standing advice to start a new thread after ~20 messages or per feature is no longer true.",
+        "claim": "Keeping the entire conversation history untouched beat every compaction preset on memory recall, cost, and latency simultaneously \u2014 on DeepSeek the setup sending the most tokens was the cheapest to run, because 97% of tokens were cached.",
+        "talk": "context-engineering-in-2026",
+        "timestamp_sec": 2731
+      },
+      {
+        "claim": "Compaction now works well enough that a single thread can stay alive for five weeks with ~400 subagents in it and still know what it needs to do.",
         "talk": "full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex",
         "timestamp_sec": 209
       },
       {
-        "claim": "Stopped compacting entirely: it is slow, offers no control over what survives, and discards permanently \u2014 reset the context to zero instead and re-read self-written handoff and history files.",
-        "talk": "i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke",
-        "timestamp_sec": 145
-      },
-      {
-        "claim": "RL should be applied to the compaction step itself, not just the task \u2014 generate to the end of the window, summarize, continue, and train the summarizer.",
+        "claim": "Apply RL to the compaction step itself, not just to the task \u2014 generate to the end of the window, summarize, then keep generating, and train that summarization decision.",
         "talk": "scaling-to-long-horizons",
         "timestamp_sec": 642
       },
       {
-        "claim": "The main reason to compact is intelligence, not cost \u2014 compaction forces a cache miss so you pay roughly 10x more for those input tokens than if you hadn't compacted.",
-        "talk": "the-state-of-model-routing",
-        "timestamp_sec": 1923
+        "claim": "Don't compact \u2014 reset. Clear the context completely and have the agent re-read its own handoff and history files from disk, because state in files survives context wipes and machine crashes.",
+        "talk": "i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke",
+        "timestamp_sec": 145
       },
       {
-        "claim": "KV compaction is a dead end as a learning mechanism: it only applies to what fits in context and forfeits the generalization you get from taking gradients.",
+        "claim": "KV compaction is a dead end as a learning mechanism: it only applies to what fits in context and forfeits the benefits of taking gradients.",
         "talk": "scaling-compute-on-context",
         "timestamp_sec": 781
       },
       {
-        "claim": "In a traditional harness the context window and the session are treated as one and the same, and separating them is what makes the session log serve as observability, recovery, and memory substrate simultaneously.",
-        "talk": "evolution-of-agentic-surfaces",
-        "timestamp_sec": 873
+        "claim": "Memory injection and compaction engines must be KV-cache-aware, because clever model-side manipulation breaks cache reuse and erases the savings.",
+        "talk": "wearing-the-agent-from-group-chats-to-glasses",
+        "timestamp_sec": 923
       }
     ],
     "maturity": "contested",
-    "maturity_rationale": "Credible practitioners take opposite fundamental positions \u2014 one group reports compaction now works so well that multi-week threads are routine, while another has abandoned destructive compaction outright in favor of append-only logs and full context resets \u2014 and they further disagree on whether compaction belongs in the harness or the provider's stack and whether it saves money at all."
+    "maturity_rationale": "Credible practitioners disagree on fundamentals: OpenAI treats server-side compaction as a solved, performance-neutral default while Anthropic, Omnara, and independent operators argue for append-only logs and no destructive compaction, and a measured study found no-compaction winning on cost, latency, and recall at once. Even the premise \u2014 whether long context degrades \u2014 was directly contradicted with 800k-token recall data, and one speaker called memory compaction unsolved and rapidly moving in their own system."
   },
   "_meta": {
     "concept": "context compaction",
     "slug": "context-compaction",
-    "talk_count": 20,
+    "talk_count": 21,
     "missing_talks": [],
-    "wall_sec": 101.9,
-    "run_at": "2026-08-13T19:01:47Z"
+    "wall_sec": 104.1,
+    "run_at": "2026-08-19T13:44:11Z"
   }
 }

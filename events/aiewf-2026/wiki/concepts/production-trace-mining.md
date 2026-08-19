@@ -4,15 +4,15 @@ type: "concept"
 slug: "production-trace-mining"
 tier: "core"
 maturity: "consolidating"
-talk_count: 9
-speaker_count: 12
+talk_count: 12
+speaker_count: 15
 ---
 
 # production trace mining
 
 **Maturity: CONSOLIDATING** — Consolidating — converging practice, some open edges
 
-*Core concept* &middot; discussed across **9** talk(s) by **12** speaker(s)
+*Core concept* &middot; discussed across **12** talk(s) by **15** speaker(s)
 
 **Definition:** Harvesting real production agent transcripts as the raw material for evals, training data, and failure discovery.
 
@@ -20,21 +20,51 @@ speaker_count: 12
 
 ## State of Practice
 
-The field has converged on real production transcripts as the highest-value raw material for evaluation — Meta's position that "production is the largest and the most representative evaluation data any organization will ever have" went essentially unchallenged, and Snorkel, Prime Intellect, Arize, and SonderMind all described pipelines whose input is a continuously repopulated stream of deployed-agent traces rather than a static hand-authored set. The unit of harvest is the full trajectory, not the final answer: reasoning path, tool calls, memory access, state transitions, and terminal environment state, because multi-step agents fail in ways (loops, silent tool degradation, drift) that output-only scoring cannot see. What splits the room is what happens next. One camp replays and scores mined traces in place, treating production telemetry as the eval set and pushing evaluation into the control plane as an always-on service; the other treats traces only as seed material for simulated environments — snapshot databases, sidecar containers, LLM-played users — because you cannot run repeatable A/B comparisons against live users and shifting database state. A second live split is how much human gating the loop needs: SonderMind, Langfuse, and Atlan insist a named domain expert owns the definition of "correct" and approves every learned change, while Prime Intellect, Snorkel, and Arize argue humans should be reserved for top-level goal judgments with compute — hindsight judges, verifier disagreement triage, auto-generated PRs — doing the rest. Nobody at the conference argued that a pre-deployment eval gate is sufficient.
+By this conference the field had settled that production transcripts — not benchmarks, not hand-written eval sets — are the highest-value corpus an AI team owns, and that the same trace store feeds three consumers at once: failure discovery, eval/benchmark construction, and training data (SFT, on-policy distillation, RL task synthesis). Meta's framing that benchmarks measure model capability while production measures system behavior, and that the gap widens with autonomy, was echoed across the Evals and Memory tracks. The hard problem has moved from collection to conversion: traces arrive without golden answers, so teams manufacture supervision from them — Oracle solutions to prove task solvability, hindsight judging after the full chain is visible, per-step hint injection chosen by a judge, working backwards from a known-reachable end state. Scale forces a second shift: nobody reads traces anymore, so mining is done by classifiers-as-code run in a sandbox, judge models an order or two of magnitude cheaper than Opus, and agents pointed at other agents' traces — with humans reserved for defining 'correct' and adjudicating disagreement. The live arguments are whether raw production traces or trace-seeded simulation environments are the right substrate, whether mined signal should land in weights or in the harness, and how durable any trace-derived eval set can be when a harness swap invalidates 80% of it.
 
 ## Consensus
 
-### Real deployed-agent traces, not hand-authored test sets or public benchmarks, are the primary source material for evals and training data.
+### Production traces are the highest-value evaluation signal available, and benchmarks or scenario evals alone are insufficient for agentic systems.
 
-Support: **5** talk(s)
+Support: **6** talk(s)
 
 > "Production is the largest and the most representative evaluation data any organization will ever have."
 >
 > — [Production Evals For Agentic AI Systems](../talks/production-evals-for-agentic-ai-systems.md), [3:58](https://www.youtube.com/watch?v=vljxQZfJ9wY&t=238s)
 
-Supporting talks: [Production Evals For Agentic AI Systems](../talks/production-evals-for-agentic-ai-systems.md), [From Agent Traces to Agent Simulations](../talks/from-agent-traces-to-agent-simulations.md), [Reinforcement Learning without Verifiable Rewards](../talks/reinforcement-learning-without-verifiable-rewards.md), [The Future of Evals: From LLM as a Judge to Agent as a Judge](../talks/the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge.md), [Evals-Driven Development for a Mental Health AI Coach](../talks/evals-driven-development-for-a-mental-health-ai-coach.md)
+Supporting talks: [Production Evals For Agentic AI Systems](../talks/production-evals-for-agentic-ai-systems.md), [From Agent Traces to Agent Simulations](../talks/from-agent-traces-to-agent-simulations.md), [The Future of Evals: From LLM as a Judge to Agent as a Judge](../talks/the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge.md), [Improving Agents is a Data Mining Problem](../talks/improving-agents-is-a-data-mining-problem.md), [Reinforcement Learning without Verifiable Rewards](../talks/reinforcement-learning-without-verifiable-rewards.md), [Evals-Driven Development for a Mental Health AI Coach](../talks/evals-driven-development-for-a-mental-health-ai-coach.md)
 
-### A pre-deployment eval gate is insufficient; evaluation must run continuously on live traffic after release, because reliability degrades gradually rather than in visible single-change failures.
+### Deployed agent traces are usable directly as training/improvement source material, not merely as monitoring output.
+
+Support: **4** talk(s)
+
+> "what we found is super helpful is taking existing traces from a deployed agent and treating these as the source material"
+>
+> — [Reinforcement Learning without Verifiable Rewards](../talks/reinforcement-learning-without-verifiable-rewards.md), [9:41](https://www.youtube.com/watch?v=AQv3qRCG6Gw&t=581s)
+
+Supporting talks: [Reinforcement Learning without Verifiable Rewards](../talks/reinforcement-learning-without-verifiable-rewards.md), [Bringing Continual Learning into Enterprises](../talks/bringing-continual-learning-into-enterprises.md), [Improving Agents is a Data Mining Problem](../talks/improving-agents-is-a-data-mining-problem.md), [From Agent Traces to Agent Simulations](../talks/from-agent-traces-to-agent-simulations.md)
+
+### Trace mining must assume no golden answer or rubric accompanies the trace; supervision has to be manufactured after the fact.
+
+Support: **4** talk(s)
+
+> "a lot of distillation work is done assuming you have some kind of golden answer that you can distill into the model. And this is often not the case."
+>
+> — [Bringing Continual Learning into Enterprises](../talks/bringing-continual-learning-into-enterprises.md), [9:47](https://www.youtube.com/watch?v=ZTA0GwpAUak&t=587s)
+
+Supporting talks: [Bringing Continual Learning into Enterprises](../talks/bringing-continual-learning-into-enterprises.md), [Reinforcement Learning without Verifiable Rewards](../talks/reinforcement-learning-without-verifiable-rewards.md), [From Agent Traces to Agent Simulations](../talks/from-agent-traces-to-agent-simulations.md), [Stop Burning Tokens: Why self-improvement needs domain expertise first](../talks/stop-burning-tokens-why-self-improvement-needs-domain-expertise-first.md)
+
+### Trace volume has outgrown both human reading and naive context-stuffing, so mining must be done by cheap machine-scale readers (classifiers as code, distilled judges, agents reading agents).
+
+Support: **4** talk(s)
+
+> "reading traces at scale is super expensive, uh especially if you have millions of traces and if you have millions of tokens per trace"
+>
+> — [Improving Agents is a Data Mining Problem](../talks/improving-agents-is-a-data-mining-problem.md), [6:29](https://www.youtube.com/watch?v=CvRngaQZQ3Y&t=389s)
+
+Supporting talks: [Improving Agents is a Data Mining Problem](../talks/improving-agents-is-a-data-mining-problem.md), [Designing Agents (The Floor Is the Frontier)](../talks/designing-agents-the-floor-is-the-frontier.md), [The Future of Evals: From LLM as a Judge to Agent as a Judge](../talks/the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge.md), [Production Evals For Agentic AI Systems](../talks/production-evals-for-agentic-ai-systems.md)
+
+### Evaluation from traces is a continuous post-deployment loop, not a pre-deployment gate.
 
 Support: **4** talk(s)
 
@@ -42,110 +72,105 @@ Support: **4** talk(s)
 >
 > — [Evals-Driven Development for a Mental Health AI Coach](../talks/evals-driven-development-for-a-mental-health-ai-coach.md), [9:12](https://www.youtube.com/watch?v=O72p-rBb2bA&t=552s)
 
-Supporting talks: [Evals-Driven Development for a Mental Health AI Coach](../talks/evals-driven-development-for-a-mental-health-ai-coach.md), [Production Evals For Agentic AI Systems](../talks/production-evals-for-agentic-ai-systems.md), [The Future of Evals: From LLM as a Judge to Agent as a Judge](../talks/the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge.md), [From Agent Traces to Agent Simulations](../talks/from-agent-traces-to-agent-simulations.md)
+Supporting talks: [Production Evals For Agentic AI Systems](../talks/production-evals-for-agentic-ai-systems.md), [Evals-Driven Development for a Mental Health AI Coach](../talks/evals-driven-development-for-a-mental-health-ai-coach.md), [The Future of Evals: From LLM as a Judge to Agent as a Judge](../talks/the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge.md), [Improving Agents is a Data Mining Problem](../talks/improving-agents-is-a-data-mining-problem.md)
 
-### Public benchmarks are useful only for orientation; every team shipping agents needs a private benchmark built from its own domain's traces, tools, and policies.
+### Humans, specifically domain experts, must own the definition of 'correct' for trace-derived evals; the mining pipeline surfaces candidates but does not adjudicate them.
 
-Support: **3** talk(s)
+Support: **5** talk(s)
 
-> "public benchmark is useful to orient and build your prior, but your private benchmark is useful to ship."
+> "our system isn't deciding what correct is in a clinical edge case like this one. A licensed professional is."
 >
-> — [From Agent Traces to Agent Simulations](../talks/from-agent-traces-to-agent-simulations.md), [3:11](https://www.youtube.com/watch?v=Ib5t2RLtxvM&t=191s)
+> — [Evals-Driven Development for a Mental Health AI Coach](../talks/evals-driven-development-for-a-mental-health-ai-coach.md), [11:27](https://www.youtube.com/watch?v=O72p-rBb2bA&t=687s)
 
-Supporting talks: [From Agent Traces to Agent Simulations](../talks/from-agent-traces-to-agent-simulations.md), [Production Evals For Agentic AI Systems](../talks/production-evals-for-agentic-ai-systems.md), [Reinforcement Learning without Verifiable Rewards](../talks/reinforcement-learning-without-verifiable-rewards.md)
-
-### Mined traces are unlabeled until a named domain expert defines what correct looks like; the loop cannot discover the target function on its own.
-
-Support: **4** talk(s)
-
-> "the clinical theme owns the definition of good. So vibes don't count here. An accountable judgment from a licensed expert does."
->
-> — [Evals-Driven Development for a Mental Health AI Coach](../talks/evals-driven-development-for-a-mental-health-ai-coach.md), [13:50](https://www.youtube.com/watch?v=O72p-rBb2bA&t=830s)
-
-Supporting talks: [Evals-Driven Development for a Mental Health AI Coach](../talks/evals-driven-development-for-a-mental-health-ai-coach.md), [Stop Burning Tokens: Why self-improvement needs domain expertise first](../talks/stop-burning-tokens-why-self-improvement-needs-domain-expertise-first.md), [WTF Is the Context Layer? The Missing Infrastructure for Production Agents](../talks/wtf-is-the-context-layer-the-missing-infrastructure-for-production-agents.md), [Reinforcement Learning without Verifiable Rewards](../talks/reinforcement-learning-without-verifiable-rewards.md)
-
-### The unit of evaluation is the whole trajectory — tool calls, state transitions, intermediate artifacts — not the final output, so ordinary application logs are inadequate and full traces are mandatory infrastructure.
-
-Support: **4** talk(s)
-
-> "Agent traces become the equivalent of distributed tracing for autonomous workloads. Without observability, evaluation becomes the guesswork."
->
-> — [Production Evals For Agentic AI Systems](../talks/production-evals-for-agentic-ai-systems.md), [5:49](https://www.youtube.com/watch?v=vljxQZfJ9wY&t=349s)
-
-Supporting talks: [Production Evals For Agentic AI Systems](../talks/production-evals-for-agentic-ai-systems.md), [From Agent Traces to Agent Simulations](../talks/from-agent-traces-to-agent-simulations.md), [The Future of Evals: From LLM as a Judge to Agent as a Judge](../talks/the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge.md), [fighting slop with slop](../talks/fighting-slop-with-slop.md)
+Supporting talks: [Evals-Driven Development for a Mental Health AI Coach](../talks/evals-driven-development-for-a-mental-health-ai-coach.md), [Stop Burning Tokens: Why self-improvement needs domain expertise first](../talks/stop-burning-tokens-why-self-improvement-needs-domain-expertise-first.md), [Improving Agents is a Data Mining Problem](../talks/improving-agents-is-a-data-mining-problem.md), [Reinforcement Learning without Verifiable Rewards](../talks/reinforcement-learning-without-verifiable-rewards.md), [WTF Is the Context Layer? The Missing Infrastructure for Production Agents](../talks/wtf-is-the-context-layer-the-missing-infrastructure-for-production-agents.md)
 
 ## Disagreements
 
-### Should the eval dataset be harvested from live production traffic, or synthesized in simulation with traces used only as seed material?
+### Should teams evaluate and iterate on real production traces, or on simulation environments seeded from them?
 
 | Position A | Position B |
 |---|---|
-| Mine and score real production traces directly — production telemetry is higher-value signal than any scenario-based eval, so evaluation should be moved into the production control plane and run continuously on live traffic.<br>*[Production Evals For Agentic AI Systems](../talks/production-evals-for-agentic-ai-systems.md), [The Future of Evals: From LLM as a Judge to Agent as a Judge](../talks/the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge.md), [Evals-Driven Development for a Mental Health AI Coach](../talks/evals-driven-development-for-a-mental-health-ai-coach.md)* | Don't wait on or experiment against production data — traces seed task construction, but evaluation should run in a snapshot 'mini production' (sidecar containers, mocked tools, LLM-played users), because live A/B tests are never apples-to-apples and every production experiment is run on real users.<br>*[SimulationMaxxing: How we ship agents 20× faster](../talks/simulationmaxxing-how-we-ship-agents-20-faster.md), [From Agent Traces to Agent Simulations](../talks/from-agent-traces-to-agent-simulations.md), [Reinforcement Learning without Verifiable Rewards](../talks/reinforcement-learning-without-verifiable-rewards.md)* |
+| Mine and evaluate the production traces themselves — production is the only representative distribution, and offline trace batches already yield improvement without any replayable environment.<br>*[Production Evals For Agentic AI Systems](../talks/production-evals-for-agentic-ai-systems.md), [Bringing Continual Learning into Enterprises](../talks/bringing-continual-learning-into-enterprises.md), [Improving Agents is a Data Mining Problem](../talks/improving-agents-is-a-data-mining-problem.md), [Designing Agents (The Floor Is the Frontier)](../talks/designing-agents-the-floor-is-the-frontier.md)* | Production is not repeatable — database state and tool versions drift, and every test runs on live users — so convert traces into simulated or learned environments and do the iteration there.<br>*[From Agent Traces to Agent Simulations](../talks/from-agent-traces-to-agent-simulations.md), [SimulationMaxxing: How we ship agents 20× faster](../talks/simulationmaxxing-how-we-ship-agents-20-faster.md), [Reinforcement Learning without Verifiable Rewards](../talks/reinforcement-learning-without-verifiable-rewards.md)* |
 
-*Why it matters: It decides whether your investment goes into production observability and control-plane evals or into environment engineering (DB snapshots, tool mocks, Oracle solutions, sim-to-real gap measurement), and whether pre-launch A/B tests stay on the critical path — Nubank claims cutting ten planned A/B tests per quarter to about one.*
+*Why it matters: It determines whether you build a trace-mining and classifier stack or a simulation/environment engineering stack, and whether your release gate is a live A/B test or a sim run — Nubank claims the sim path collapses a few weeks of iteration into under a day, while trace-first teams argue sim results are only trustworthy after you have separately measured the sim-to-real gap.*
 
-### How much human gating does the trace-to-improvement loop need?
-
-| Position A | Position B |
-|---|---|
-| A licensed or named domain expert must define correctness and approve each learned change; production data must be reviewed by a human, not only by coding agents, because failure modes and usage shift over time.<br>*[Evals-Driven Development for a Mental Health AI Coach](../talks/evals-driven-development-for-a-mental-health-ai-coach.md), [Stop Burning Tokens: Why self-improvement needs domain expertise first](../talks/stop-burning-tokens-why-self-improvement-needs-domain-expertise-first.md), [WTF Is the Context Layer? The Missing Infrastructure for Production Agents](../talks/wtf-is-the-context-layer-the-missing-infrastructure-for-production-agents.md)* | Reserve humans for the highest-level judgments about goals and quality and let compute do the rest — hindsight judges and polled models catch most reward hacks, SMEs are routed only to verifier-disagreement cases, and an eval agent can go as far as opening the fix PR itself.<br>*[Reinforcement Learning without Verifiable Rewards](../talks/reinforcement-learning-without-verifiable-rewards.md), [From Agent Traces to Agent Simulations](../talks/from-agent-traces-to-agent-simulations.md), [The Future of Evals: From LLM as a Judge to Agent as a Judge](../talks/the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge.md)* |
-
-*Why it matters: This sets the throughput ceiling of the loop and where the accountability sits: expert-gated loops scale with expert hours (SonderMind ships a clinician's judgment into CI), while compute-gated loops scale with tokens but inherit whatever the judge model gets wrong.*
-
-### When generic LLM-as-a-judge fails on mined agent traces, should judges get more agentic or more constrained?
+### Where should improvements discovered in traces be applied — model weights or the harness?
 
 | Position A | Position B |
 |---|---|
-| Make the judge an agent — fixed rubrics with fixed scores cannot catch multi-step failures like a subagent looping, so evaluation needs adaptive analysis over the full trace, alongside (not replacing) deterministic and LLM-judge evals.<br>*[The Future of Evals: From LLM as a Judge to Agent as a Judge](../talks/the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge.md), [Production Evals For Agentic AI Systems](../talks/production-evals-for-agentic-ai-systems.md)* | Make the judge smaller and binary — scalar 0-1/1-5 quality scores are low-signal and inconsistent across runs, so decompose the task into per-step verifiers and yes/no domain-specific checks with a clinician- or expert-authored definition behind each.<br>*[Stop Burning Tokens: Why self-improvement needs domain expertise first](../talks/stop-burning-tokens-why-self-improvement-needs-domain-expertise-first.md), [From Agent Traces to Agent Simulations](../talks/from-agent-traces-to-agent-simulations.md), [Evals-Driven Development for a Mental Health AI Coach](../talks/evals-driven-development-for-a-mental-health-ai-coach.md)* |
+| Distill or train on the mined traces: hint-guided distillation and RL task synthesis move the model itself, and vertical fine-tunes on trace data can match frontier models.<br>*[Bringing Continual Learning into Enterprises](../talks/bringing-continual-learning-into-enterprises.md), [Reinforcement Learning without Verifiable Rewards](../talks/reinforcement-learning-without-verifiable-rewards.md), [Improving Agents is a Data Mining Problem](../talks/improving-agents-is-a-data-mining-problem.md)* | Fix it in the harness, skills, or structured output first — most teams never need to train, the harness feedback loop is about two minutes, and training on filtered traces measurably degrades out-of-distribution behavior.<br>*[From Agent Traces to Agent Simulations](../talks/from-agent-traces-to-agent-simulations.md), [Designing Agents (The Floor Is the Frontier)](../talks/designing-agents-the-floor-is-the-frontier.md), [Improving Agents is a Data Mining Problem](../talks/improving-agents-is-a-data-mining-problem.md)* |
 
-*Why it matters: Judge determinism is what makes a mined-trace benchmark usable as a release gate; if the judge itself returns different answers across runs, regression detection and RL reward both become unreliable.*
+*Why it matters: The weights path requires trace volume, judges, masking, and training infrastructure; the harness path requires none of it. Applied Compute's own numbers show naive SFT on correct traces degrading general coding performance, so choosing the training path without per-step hinting and judge-based token masking can make the agent worse.*
+
+### Can agents be trusted to mine traces autonomously, or must a human read the data?
+
+| Position A | Position B |
+|---|---|
+| Automate it — send agents to read other agents' traces, let an evaluation agent do full trace analysis and open the fixing PR, and reserve humans for the highest-level judgments about goals and quality.<br>*[The Future of Evals: From LLM as a Judge to Agent as a Judge](../talks/the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge.md), [Reinforcement Learning without Verifiable Rewards](../talks/reinforcement-learning-without-verifiable-rewards.md), [Improving Agents is a Data Mining Problem](../talks/improving-agents-is-a-data-mining-problem.md)* | Humans must review production data directly, because failure modes and usage shift over time, agents are bad at anomaly detection, and self-improvement derived from traces should route to a human maintainer for approve/reject.<br>*[Stop Burning Tokens: Why self-improvement needs domain expertise first](../talks/stop-burning-tokens-why-self-improvement-needs-domain-expertise-first.md), [Designing Agents (The Floor Is the Frontier)](../talks/designing-agents-the-floor-is-the-frontier.md), [WTF Is the Context Layer? The Missing Infrastructure for Production Agents](../talks/wtf-is-the-context-layer-the-missing-infrastructure-for-production-agents.md), [Evals-Driven Development for a Mental Health AI Coach](../talks/evals-driven-development-for-a-mental-health-ai-coach.md)* |
+
+*Why it matters: It sets whether trace mining is a staffed function with a domain-expert review budget or a background compute job, and it decides whether agent-authored fixes reach production unreviewed — where a mined 'improvement' can silently break downstream skills or, in clinical settings, ship a miscalibrated guardrail.*
+
+### Is it worth building a durable eval set out of production traces?
+
+| Position A | Position B |
+|---|---|
+| No — hand-built eval datasets break on every model or harness change (switching to Claude Code CLI invalidated ~80% of tool-call evals), and since nobody would delay a model upgrade two weeks to update them, they were never load-bearing.<br>*[Designing Agents (The Floor Is the Frontier)](../talks/designing-agents-the-floor-is-the-frontier.md)* | Yes — every company needs a private benchmark continuously populated from production traces, treated as software with its own CI, pinned dependencies, held-out splits, and release-gate status.<br>*[From Agent Traces to Agent Simulations](../talks/from-agent-traces-to-agent-simulations.md), [Evals-Driven Development for a Mental Health AI Coach](../talks/evals-driven-development-for-a-mental-health-ai-coach.md), [Production Evals For Agentic AI Systems](../talks/production-evals-for-agentic-ai-systems.md), [SimulationMaxxing: How we ship agents 20× faster](../talks/simulationmaxxing-how-we-ship-agents-20-faster.md)* |
+
+*Why it matters: One camp invests engineer-months in benchmark infrastructure and gates releases on it; the other spends that time on issue detection over live traces and local code-shaped tests. If Hylak is right, the benchmark investment depreciates with every harness swap.*
 
 ## Practical Guidance
 
 **Do:**
 
-- Construct an Oracle solution for every task mined from traces to prove it is solvable before admitting it to the benchmark
-- Verify final environment state, the trace, and produced artifacts — not just the agent's output text
-- Treat the benchmark as software with its own CI pipeline checking pinned dependencies, base images, missing fixtures, and Oracle passes
-- Hold out a split (roughly 80/20) the agent has not seen during experimentation, and cover both bread-and-butter paths and edge cases like tool failures and database problems
-- Route subject-matter-expert review specifically to cases where the agent and the verifiers disagree, rather than reviewing everything
-- Judge in hindsight after seeing the full chain of events, or by polling several models, instead of instructing a judge against failures in advance
-- Replace scalar correctness/helpfulness/hallucination scores with binary domain-specific checks (e.g. 'the answer is based on the knowledge base — yes/no')
-- Report cost, latency, and retries alongside pass rate when comparing agent configurations
-- Score every prompt, model, and guardrail change against the expert-labeled trace set in CI so the expert's judgment lives in the pipeline
-- Explicitly measure and close the sim-to-real gap before trusting simulated eval results
-- Give optimization loops traditional-ML validation plus an escape hatch so they stop at a plateau instead of burning tokens
-- Decompose long-horizon mined tasks into steps with separate prompts and verifiers per step, terminating early when the agent fails
-- Calibrate mined tasks to intermediate difficulty — not too easy, not too hard — so the advantage signal separates across rollouts
+- Turn on tracing and point an agent at the trace store as the first, cheapest improvement action.
+- Write trace classifiers as code and run them in a sandbox over production volume, rather than clustering traces into issues.
+- Use deterministic signals (e.g. keyword frequency) to surface anomaly candidates and give the agent only the investigation step.
+- Record, for every mined issue, when it started and what percentage of users it affects — you cannot prioritize without both.
+- Judge trace failures in hindsight, after the full chain of events is visible, or by polling several models, rather than instructing a judge against failures in advance.
+- Use a judge to choose where in a rollout to inject a hint, and restrict distillation to the next step or a few steps after the injection point, since the KL signal decays with distance.
+- Mask which teacher tokens the student learns from with an LLM judge, so the student picks up the target behavior instead of the teacher's connector-word preferences.
+- Construct an Oracle solution for every trace-derived benchmark task to prove it is solvable before admitting it to the suite.
+- Verify final environment state, the trace, and artifacts — not just the agent's output text.
+- Route to subject-matter experts specifically the cases where the agent and the verifiers disagree, instead of asking them to review everything.
+- Replace 0–1 or 1–5 quality scores with binary domain-specific checks ('is the answer grounded in the knowledge base, yes/no'), which give usable optimization signal.
+- Track cost, latency, and retries alongside pass rate when comparing agent versions.
+- Measure and close the sim-to-real gap explicitly before trusting simulation-derived eval results.
+- Commit the domain expert's judgment on a flagged trace into CI so every prompt, model, and guardrail change is rescored against it.
 
 **Avoid:**
 
-- Fixing a failure discovered in traces by adding a prohibition to the prompt — locate the root cause in the harness, skills, or structured output instead
-- Using production A/B tests as the comparison mechanism, since database state and tool versions differ between runs and it is never apples-to-apples
-- Letting the agent detect it is running in simulation — it will reward-hack the environment once it knows
-- Generic 0-1 or 1-5 evaluators whose levels are never defined, which are low-signal and inconsistent across runs
-- Chasing a perfect benchmark score, which drifts focus from the humans the benchmark exists to protect
-- Assuming hallucination is the primary production failure mode — it is one category among many for agents
-- Per-agent memory systems that each learn separately from their own traces, producing context sprawl and no single version of truth
-- Reviewing production data only with coding agents instead of also as a human
-- Positioning humans as fallback handlers instead of as the evaluators of the system
+- Clustering traces as your issue-detection method — cluster boundaries are uncontrollable, hard to track over time, and one cluster can span unrelated root causes.
+- Asking an agent to find anomalies in traces; it can only investigate ones you have already surfaced.
+- Feeding raw trace data straight into a reading agent's context once you have millions of traces at millions of tokens each.
+- Fixing a trace-discovered failure by adding a prohibition to the prompt — locate the root cause in the harness, skills, or structured output instead.
+- Running A/B tests as your improvement loop when you have five to ten users, or treating a production A/B as an apples-to-apples comparison at any scale.
+- Assuming every mined task comes with a golden answer or rubric.
+- Plain SFT on filtered 'correctly formatted' traces or format-targeted reward shaping — both degraded general coding agent performance.
+- Letting the agent be able to tell it is running in a simulation, or it will detect and reward-hack the environment.
+- Spending months building an eval dataset that a model or harness swap will invalidate.
+- Append-only memory files with search on top as the long-term store for what traces teach you.
+- Chasing benchmark perfection on trace-derived suites, which drifts focus from the users the benchmark exists to protect.
+- Letting optimization loops run against a plateau without traditional-ML validation and an explicit escape hatch.
 
 ## Notable Outliers
 
-- Work backwards from a known-reachable end state, throw away the solution, then have the model learn to find it again — this yields supervision for free without any labels and generalizes well beyond code. ([Reinforcement Learning without Verifiable Rewards](../talks/reinforcement-learning-without-verifiable-rewards.md), [11:17](https://www.youtube.com/watch?v=AQv3qRCG6Gw&t=677s))
-- For tools and websites that cannot be programmatically reproduced, learn a simulator of them — full back-end controllability lets you plant the answer and guarantee solvability, making learned simulators better RL environments than real production systems. ([Reinforcement Learning without Verifiable Rewards](../talks/reinforcement-learning-without-verifiable-rewards.md), [12:24](https://www.youtube.com/watch?v=AQv3qRCG6Gw&t=744s))
-- An evaluation agent with full trace analysis can go past scoring and automatically open a pull request with the fix. ([The Future of Evals: From LLM as a Judge to Agent as a Judge](../talks/the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge.md), [5:12](https://www.youtube.com/watch?v=q2JrUKBMf0w&t=312s))
-- Fixing one flagged trace through the annotation-to-eval loop lifted the entire self-harm risk category, not just that scenario. ([Evals-Driven Development for a Mental Health AI Coach](../talks/evals-driven-development-for-a-mental-health-ai-coach.md), [12:54](https://www.youtube.com/watch?v=O72p-rBb2bA&t=774s))
-- 80% of Nubank domain-expert labels confirmed simulated conversations produce usable eval data — for greenfield agents as well as mature ones — and eval results on sim correlate highly with real production data. ([SimulationMaxxing: How we ship agents 20× faster](../talks/simulationmaxxing-how-we-ship-agents-20-faster.md), [11:16](https://www.youtube.com/watch?v=KMR_RBoCa4M&t=676s))
-- In a codebase nobody fully reads, the execution trace is the only way to understand the code — and full-program tracing can be made effectively zero-cost if designed in from first principles, which is untenable in Python or TypeScript. ([fighting slop with slop](../talks/fighting-slop-with-slop.md), [10:39](https://www.youtube.com/watch?v=AMiyLItEtLA&t=639s))
-- General-purpose model guardrails had to be turned off on day one because they are over-calibrated, and an inappropriate guardrail trigger is itself a harm — the objective is trigger accuracy, not trigger frequency. ([Evals-Driven Development for a Mental Health AI Coach](../talks/evals-driven-development-for-a-mental-health-ai-coach.md), [6:24](https://www.youtube.com/watch?v=O72p-rBb2bA&t=384s))
-- Most of the gain from a self-improvement loop arrived in the first iteration (68% to ~78%, plateauing near 83%) where the failure signal was clear-cut — you could have stopped there. ([Stop Burning Tokens: Why self-improvement needs domain expertise first](../talks/stop-burning-tokens-why-self-improvement-needs-domain-expertise-first.md), [11:24](https://www.youtube.com/watch?v=eAXxdtNlK04&t=684s))
+- Switching harnesses invalidates roughly 80% of hand-built tool-call evals — a concrete depreciation rate for trace-derived eval assets. ([Designing Agents (The Floor Is the Frontier)](../talks/designing-agents-the-floor-is-the-frontier.md), [4:14](https://www.youtube.com/watch?v=jHMiYtjoJfA&t=254s))
+- A teacher can move a student toward calling a tool purely by reshaping the reasoning path, never touching the tool-call tokens — task-complete rate went from ~22% to ~60% on SWE-bench with test pass rate holding. ([Bringing Continual Learning into Enterprises](../talks/bringing-continual-learning-into-enterprises.md), [13:20](https://www.youtube.com/watch?v=ZTA0GwpAUak&t=800s))
+- Learned simulators are better RL environments than real production systems, because full back-end control lets you plant the answer and guarantee solvability. ([Reinforcement Learning without Verifiable Rewards](../talks/reinforcement-learning-without-verifiable-rewards.md), [12:24](https://www.youtube.com/watch?v=AQv3qRCG6Gw&t=744s))
+- Online hints constructed per-rollout beat a fixed offline hint by a wide margin — ~15% to ~80% correct hyperlink formatting versus a small climb. ([Bringing Continual Learning into Enterprises](../talks/bringing-continual-learning-into-enterprises.md), [15:21](https://www.youtube.com/watch?v=ZTA0GwpAUak&t=921s))
+- An evaluation agent with full trace analysis can go past scoring and open a pull request with the fix. ([The Future of Evals: From LLM as a Judge to Agent as a Judge](../talks/the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge.md), [5:12](https://www.youtube.com/watch?v=q2JrUKBMf0w&t=312s))
+- In a codebase nobody reads, the execution trace is the only remaining way to understand the code — trace mining as a language design requirement, not an ops concern. ([fighting slop with slop](../talks/fighting-slop-with-slop.md), [10:39](https://www.youtube.com/watch?v=AMiyLItEtLA&t=639s))
+- Trace-judging quality comparable to Opus is reachable with a cheaper open model at one to two orders of magnitude lower cost, shown on Harvey's legal benchmark. ([Improving Agents is a Data Mining Problem](../talks/improving-agents-is-a-data-mining-problem.md), [8:25](https://www.youtube.com/watch?v=CvRngaQZQ3Y&t=505s))
+- Most of the gain from a self-improvement loop arrives in the first iteration when the failure signal is clear-cut; the rest is plateau. ([Stop Burning Tokens: Why self-improvement needs domain expertise first](../talks/stop-burning-tokens-why-self-improvement-needs-domain-expertise-first.md), [11:24](https://www.youtube.com/watch?v=eAXxdtNlK04&t=684s))
 
 ## All Talks
 
+- [Bringing Continual Learning into Enterprises](../talks/bringing-continual-learning-into-enterprises.md)
+- [Designing Agents (The Floor Is the Frontier)](../talks/designing-agents-the-floor-is-the-frontier.md)
 - [Evals-Driven Development for a Mental Health AI Coach](../talks/evals-driven-development-for-a-mental-health-ai-coach.md)
 - [fighting slop with slop](../talks/fighting-slop-with-slop.md)
 - [From Agent Traces to Agent Simulations](../talks/from-agent-traces-to-agent-simulations.md)
+- [Improving Agents is a Data Mining Problem](../talks/improving-agents-is-a-data-mining-problem.md)
 - [Production Evals For Agentic AI Systems](../talks/production-evals-for-agentic-ai-systems.md)
 - [Reinforcement Learning without Verifiable Rewards](../talks/reinforcement-learning-without-verifiable-rewards.md)
 - [SimulationMaxxing: How we ship agents 20× faster](../talks/simulationmaxxing-how-we-ship-agents-20-faster.md)
@@ -159,12 +184,15 @@ Supporting talks: [Production Evals For Agentic AI Systems](../talks/production-
 - [Aman Gupta](../speakers/aman-gupta.md)
 - [Annabell Schäfer](../speakers/annabell-schafer.md)
 - [Aparna Dhinakaran](../speakers/aparna-dhinakaran.md)
+- [Ben Hylak](../speakers/ben-hylak.md)
 - [Dave Revere](../speakers/dave-revere.md)
 - [Doug Keller](../speakers/doug-keller.md)
 - [Nishant Gupta](../speakers/nishant-gupta.md)
 - [Prukalpa Sankar](../speakers/prukalpa-sankar.md)
 - [Rustem Feyzkhanov](../speakers/rustem-feyzkhanov.md)
+- [Samuel Denton](../speakers/samuel-denton.md)
 - [Shreya Rajpal](../speakers/shreya-rajpal.md)
 - [Vaibhav Gupta](../speakers/vaibhav-gupta.md)
+- [Vivek Trivedy](../speakers/vivek-trivedy.md)
 - [Will Brown](../speakers/will-brown.md)
 

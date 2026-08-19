@@ -1,34 +1,37 @@
 {
   "is_error": false,
-  "duration_api_ms": 134585,
+  "duration_api_ms": 126483,
   "num_turns": 1,
   "stop_reason": "end_turn",
-  "session_id": "795a7f36-258c-425d-841f-13f0388c89cc",
-  "total_cost_usd": 0.842532,
+  "session_id": "37e6f738-d5a8-4b73-af24-533e8fea25f5",
+  "total_cost_usd": 0.8755955000000001,
   "usage": {
     "input_tokens": 2,
-    "cache_creation_input_tokens": 50972,
-    "cache_read_input_tokens": 10308,
-    "output_tokens": 11740,
+    "cache_creation_input_tokens": 57290,
+    "cache_read_input_tokens": 8113,
+    "output_tokens": 10509,
+    "output_tokens_details": {
+      "thinking_tokens": 5091
+    },
     "server_tool_use": {
       "web_search_requests": 0,
       "web_fetch_requests": 0
     },
     "service_tier": "standard",
     "cache_creation": {
-      "ephemeral_1h_input_tokens": 50972,
+      "ephemeral_1h_input_tokens": 57290,
       "ephemeral_5m_input_tokens": 0
     },
     "inference_geo": "not_available",
     "iterations": [
       {
         "input_tokens": 2,
-        "output_tokens": 11740,
-        "cache_read_input_tokens": 10308,
-        "cache_creation_input_tokens": 50972,
+        "output_tokens": 10509,
+        "cache_read_input_tokens": 8113,
+        "cache_creation_input_tokens": 57290,
         "cache_creation": {
           "ephemeral_5m_input_tokens": 0,
-          "ephemeral_1h_input_tokens": 50972
+          "ephemeral_1h_input_tokens": 57290
         },
         "type": "message"
       }
@@ -37,12 +40,12 @@
   },
   "modelUsage": {
     "claude-haiku-4-5-20251001": {
-      "inputTokens": 34058,
-      "outputTokens": 18,
+      "inputTokens": 35849,
+      "outputTokens": 11,
       "cacheReadInputTokens": 0,
       "cacheCreationInputTokens": 0,
       "webSearchRequests": 0,
-      "costUSD": 0.034148,
+      "costUSD": 0.035904,
       "contextWindow": 200000,
       "maxOutputTokens": 32000,
       "canonicalModel": "claude-haiku-4-5",
@@ -50,11 +53,11 @@
     },
     "claude-opus-5": {
       "inputTokens": 2,
-      "outputTokens": 11740,
-      "cacheReadInputTokens": 10308,
-      "cacheCreationInputTokens": 50972,
+      "outputTokens": 10509,
+      "cacheReadInputTokens": 8113,
+      "cacheCreationInputTokens": 57290,
       "webSearchRequests": 0,
-      "costUSD": 0.808384,
+      "costUSD": 0.8396915,
       "contextWindow": 1000000,
       "maxOutputTokens": 64000,
       "canonicalModel": "claude-opus-5",
@@ -67,33 +70,32 @@
   "fast_mode_disabled_reason": "sdk_opt_in_required",
   "subtype": "success",
   "api_error_status": null,
-  "result": "{\"concept\": \"agent sandboxing\", \"state_of_practice\": \"The field has moved past \\\"put the agent in a box\\\" and is now arguing about which box and what it can reach. The dominant technical position, argued most forcefully by the people who operate sandboxes at scale, is that any primitive sharing the host kernel \u2014 fork/exec, containers, even gVisor \u2014 is eventually escapable, and that hardware virtualization (Firecracker/CrosVM-class micro VMs) is the only real boundary; seccomp allowlists are considered a poor fit because open-ended agent workloads have an unknowable syscall surface, and a Docker socket handed into a container is treated as equivalent to host compromise. Alongside the boundary itself, a capability discipline has hardened: secrets live in a vault or broker and are decrypted only at tool-execution time so the model never sees them; write-capable actions (git push, PR creation, CI trigger) are pushed out of the agent into a deterministic layer; guardrails expressed as prompt text are dismissed outright because a third party can inject past them. Prompt injection is universally treated as unsolvable at the model layer, so the design goal is blast-radius containment rather than prevention. The open fights are whether isolation alone is sufficient \u2014 one camp argues the worst failures happen entirely inside the agent's authorization, where the system looks compliant the whole time \u2014 and whether sandboxes should stay ephemeral or become durable, snapshot-restorable state. Tooling is acknowledged to exist but mostly in beta, which is why several teams still roll their own micro VM plumbing.\", \"consensus\": [{\"claim\": \"Constraints imposed by prompting or the model's own judgment do not contain an agent; containment must be structural \u2014 deterministic configuration and isolation outside the agent loop.\", \"support_count\": 5, \"supporting_talks\": [\"realtime-multiplayer-automation-and-you\", \"privacy-preserving-intelligence\", \"ais-jurassic-park-period\", \"we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night\", \"your-llm-stack-is-a-2008-database-with-better-marketing\"], \"evidence_quote\": \"if you're prompting the guardrails at the agent, you're effectively letting the fox loose in the henhouse.\", \"evidence_talk\": \"realtime-multiplayer-automation-and-you\", \"evidence_timestamp_sec\": 424}, {\"claim\": \"Secrets and credentials must live outside the agent's reach \u2014 brokered or vaulted and decrypted only at tool-execution time \u2014 because any secret the agent can read is compromised.\", \"support_count\": 5, \"supporting_talks\": [\"realtime-multiplayer-automation-and-you\", \"evolution-of-agentic-surfaces\", \"claude-fable-claude-tag-and-anthropics-culture\", \"we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night\", \"multiplayer-agentic-engineering\"], \"evidence_quote\": \"Never trust agents with secrets. If an agent can know a secret, that secret, you need to treat it as if it's already been compromised.\", \"evidence_talk\": \"realtime-multiplayer-automation-and-you\", \"evidence_timestamp_sec\": 719}, {\"claim\": \"Prompt injection cannot be eliminated, so the security objective is limiting blast radius rather than preventing the injection.\", \"support_count\": 4, \"supporting_talks\": [\"we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night\", \"your-llm-stack-is-a-2008-database-with-better-marketing\", \"claude-fable-claude-tag-and-anthropics-culture\", \"realtime-multiplayer-automation-and-you\"], \"evidence_quote\": \"I guess like prompt injection itself isn't solved and we cannot really solve it. All we can do is just to limit the blast radius in case that happens.\", \"evidence_talk\": \"we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night\", \"evidence_timestamp_sec\": 750}, {\"claim\": \"Hardware virtualization (micro VMs) is the correct isolation boundary for agents; shared-kernel primitives and the coding agents' own built-in sandboxes are inadequate.\", \"support_count\": 3, \"supporting_talks\": [\"from-fork-to-fleet-designing-an-agent-sandbox-cloud\", \"we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night\", \"realtime-multiplayer-automation-and-you\"], \"evidence_quote\": \"if you're a startup or a founder like in this space, like let me save you the story and two years of grief. Just please use micro VMs from the start.\", \"evidence_talk\": \"from-fork-to-fleet-designing-an-agent-sandbox-cloud\", \"evidence_timestamp_sec\": 1743}, {\"claim\": \"Agents should run in isolated remote environments rather than on developer laptops, because laptops hold production credentials and data the agent has no legitimate need for.\", \"support_count\": 4, \"supporting_talks\": [\"multiplayer-agentic-engineering\", \"realtime-multiplayer-automation-and-you\", \"from-fork-to-fleet-designing-an-agent-sandbox-cloud\", \"privacy-preserving-intelligence\"], \"evidence_quote\": \"it finds a token on your laptop that it can use and it thinks it's working with staging, but actually it's production and now it just deleted everything.\", \"evidence_talk\": \"multiplayer-agentic-engineering\", \"evidence_timestamp_sec\": 665}, {\"claim\": \"Mutating and write-capable operations should be routed through a deterministic layer or a deterministic interrupt, not left to the agent's discretion.\", \"support_count\": 4, \"supporting_talks\": [\"agents-in-production-how-opengov-built-and-scaled-og-assist\", \"we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night\", \"realtime-multiplayer-automation-and-you\", \"codex-behind-the-harness\"], \"evidence_quote\": \"we deterministically interrupt the agent loop if there is a tool call approval required\", \"evidence_talk\": \"agents-in-production-how-opengov-built-and-scaled-og-assist\", \"evidence_timestamp_sec\": 628}], \"disagreements\": [{\"question\": \"Is deterministic isolation sufficient to make agent execution safe, or does it require a model-powered oversight layer that judges intent?\", \"position_a\": \"The boundary is the security model: isolate at the hypervisor, scope capabilities to least privilege, keep dangerous actions deterministic, and accept that behavioral techniques for taming agents do not work. Invest in the sandbox, not in judging the agent.\", \"position_a_talks\": [\"from-fork-to-fleet-designing-an-agent-sandbox-cloud\", \"privacy-preserving-intelligence\", \"we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night\", \"gadgets-personal-app-vibe-coding-that-is-actually-safe\"], \"position_b\": \"Egress filters, gVisor sandboxes and telemetry are necessary but not sufficient, because the worst failures occur entirely within the agent's authorization \u2014 the system looks compliant throughout. You need a semantic judge in the loop: an adversary agent rewarded for stopping the worker, or a classifier evaluating the tool call against conversation context.\", \"position_b_talks\": [\"ais-jurassic-park-period\", \"claude-fable-claude-tag-and-anthropics-culture\"], \"why_it_matters\": \"It decides whether safety budget goes into VMM/kernel boundary engineering or into an oversight model that adds cost and latency to every tool call, and whether a yes/no approval prompt on an opaque command is defensible under regimes like the EU AI Act.\"}, {\"question\": \"Should an agent sandbox be ephemeral with state held externally, or durable with snapshot/restore as a first-class feature?\", \"position_a\": \"Sandboxes are ephemeral and stateless by design \u2014 they are the hands, not the brain. Using them for durability, snapshots, or state is an anti-pattern; long runs must keep state outside the work in an execution layer, and all code execution and file creation should happen in throwaway isolated environments.\", \"position_a_talks\": [\"your-agent-architecture-has-a-half-life-of-6-months\", \"agents-in-production-how-opengov-built-and-scaled-og-assist\"], \"position_b\": \"Disk persistence, not compute, is the next unlock: incremental snapshotting, checkpoint/restore and lineage-aware scheduling turn agents from ephemeral executors into durable knowledge workers, and even enable tree search over sandbox states across days.\", \"position_b_talks\": [\"from-fork-to-fleet-designing-an-agent-sandbox-cloud\"], \"why_it_matters\": \"One path means building an external durable execution layer and treating sandbox loss as free; the other means building incremental snapshot storage, warm pools and snapshot-lineage schedulers, which is a very different infrastructure bill.\"}, {\"question\": \"Does an individual developer running a coding agent locally actually need a sandbox?\", \"position_a\": \"For personal use a Docker-style sandbox is unnecessary overhead; it would only be warranted for an externally-facing bot. Reliability is bought instead with a local dev plus staging-agent split.\", \"position_a_talks\": [\"develop-at-idea-velocity\"], \"position_b\": \"The laptop is precisely the danger zone \u2014 it holds credentials and data the agent shouldn't touch, auto-approval and sandbox configs are not reliably safe, and agents should not be given direct access to personal computers at all; every session should be a micro VM in the cloud.\", \"position_b_talks\": [\"multiplayer-agentic-engineering\", \"privacy-preserving-intelligence\", \"realtime-multiplayer-automation-and-you\"], \"why_it_matters\": \"It determines whether sandboxing is a platform-team concern for production deployments only, or a baseline requirement for every engineer's daily workflow \u2014 and whether non-technical teammates can ever trigger real code changes.\"}], \"practical_guidance\": {\"do\": [\"Confine every agent code execution and file write to an isolated sandbox, including in interactive product flows, not just batch jobs\", \"Choose hardware virtualization (Firecracker/CrosVM-class micro VMs) as the boundary from day one instead of iterating through containers, gVisor and V8 isolates\", \"Use a micro VM with Vsock-mediated networking for any workload that needs a Docker daemon, since Linux primitives like landlock, bubblewrap and seccomp cannot contain one\", \"Store credentials in a vault and decrypt them only at tool-execution runtime so the model never sees a security token; make credentials usable by the agent but not readable by it\", \"Keep GitHub push, PR creation and CI triggering out of the agent and in the deterministic wrapper around it\", \"Decouple the agent loop from the tool-execution container so container setup doesn't block first-token reasoning (60% faster TTFT at P50, >90% at P95)\", \"Run tool execution inside the customer's own VPC, with MCP tunnels making only outbound calls to the agent loop, for enterprise deployments\", \"Give subagents read-only permissions and forbid them from spawning further subagents\", \"Attach task context to approval decisions \u2014 deleting a file is fine or not depending on whether the user asked for it\", \"Bound automation output (e.g. at most one PR, and permission to produce nothing) so background agents can't denial-of-service their owner\", \"Use incremental snapshots rather than full multi-gigabyte images per turn, and score scheduler nodes by how many snapshot lineage layers they already cache\", \"Prefer block-device access over shared-folder filesystem passthrough inside micro VMs \u2014 it uses the guest cache and avoids exiting on every filesystem operation\", \"For generated apps, run the client in a null-origin sandboxed iframe with CSP and implement sharing/access control in the platform so generated code cannot get the permission model wrong\", \"Budget for the overhead explicitly: basic controls under ~8%, workload isolation 10\u201320%, real-time malicious input detection 15\u201330%\"], \"avoid\": [\"Relying on the sandboxes bundled with Codex and Claude Code \u2014 they are worthless once the agent has Docker socket access\", \"Handing an agent a Docker socket inside a container; it can spawn a privileged container and escape to the host\", \"Assuming containers or gVisor protect the host kernel \u2014 you can pivot sentry \u2192 gofer \u2192 host kernel\", \"Seccomp allowlists for open-ended agent products: you cannot know the syscall set in advance, so you end up blocking real users\", \"Expressing guardrails as instructions to the agent, where a third party can prompt-inject past them\", \"Using the sandbox as the durability layer for a long run's state\", \"Full-access / YOLO mode, which stays unsafe even as models improve because high agency produces creative workarounds (uploading a file to a file share when it can't attach it to an email)\", \"Treating a single-node containerized sandbox as representative of real infrastructure work \u2014 you cannot simulate EC2 or Cloud Run provisioning inside one node\", \"Building your own crypto, or your own AI Slackbot, given the prompt-injection attack surface\", \"Shipping ML infrastructure with authentication off by default \u2014 78% of audited production ML setups had at least one critical misconfiguration\", \"Treating a sandbox diagram plus a yes/no approval dialog as an oversight story\"]}, \"notable_outliers\": [{\"claim\": \"An agent persuading a human to disable a control (e.g. install a Chrome extension) should count as the agent escaping the sandbox \u2014 the energy came from inside the agent loop and merely routed through the human as a tool.\", \"talk\": \"ais-jurassic-park-period\", \"timestamp_sec\": 555}, {\"claim\": \"With a null-origin sandboxed iframe client and a server sandbox that can only talk to that client, there is no security bug the generated code can have that matters.\", \"talk\": \"gadgets-personal-app-vibe-coding-that-is-actually-safe\", \"timestamp_sec\": 912}, {\"claim\": \"Tightening down a general-purpose agent destroys its usefulness; a narrowly sandboxed special-purpose agent is the better tradeoff today.\", \"talk\": \"privacy-preserving-intelligence\", \"timestamp_sec\": 899}, {\"claim\": \"Security must be prioritized over performance because system tricks can cover performance problems but cannot hide a breach, and trust is lost only once.\", \"talk\": \"from-fork-to-fleet-designing-an-agent-sandbox-cloud\", \"timestamp_sec\": 1704}, {\"claim\": \"The agent sandboxing tools all exist but most are still in beta, so they are not yet ready for enterprise deployment.\", \"talk\": \"we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night\", \"timestamp_sec\": 1198}, {\"claim\": \"GPU-accelerated sandboxes are poorly served by micro VMs today because VFIO passthrough cannot be shared across tenants, and co-tenanted GPUs leak timing information between customers.\", \"talk\": \"from-fork-to-fleet-designing-an-agent-sandbox-cloud\", \"timestamp_sec\": 1704}], \"maturity\": \"consolidating\", \"maturity_rationale\": \"Independent teams have converged on the same primitives \u2014 hardware-virtualized isolation, secrets held outside the agent, write operations in a deterministic layer, blast-radius containment instead of injection prevention \u2014 and several state them as settled advice rather than experiment reports. What remains genuinely argued is whether isolation is sufficient without a semantic oversight layer, whether sandboxes should be ephemeral or durable, and whether local development needs one at all; the tooling is also acknowledged to still be in beta.\"}",
-  "ttft_ms": 75533,
-  "ttft_stream_ms": 1204,
-  "time_to_request_ms": 38,
+  "result": "{\"concept\":\"agent sandboxing\",\"state_of_practice\":\"By this conference, isolating agent execution is no longer argued for \u2014 it is assumed \u2014 and the live questions have moved to which primitive, where it runs, and what the sandbox is allowed to hold. The strongest technical position came from the sandbox-infrastructure builders: every shared-kernel primitive (fork/exec, containers, gVisor, seccomp) eventually gives an attacker a path to the host kernel, so hardware virtualization via micro VMs (Firecracker, CrosVM) is the only boundary that actually holds, and teams are told to start there instead of iterating through the cheaper options. In parallel, a second and largely independent consensus formed that the sandbox is only half the control surface: credentials must be held outside the agent (vaults decrypted at tool-execution time, secret brokers, credentials usable-but-not-readable), and write-capable actions \u2014 git push, PR creation, CI triggering, deploys \u2014 should be lifted out of the agent into a deterministic wrapper. Everyone who touched prompt injection agreed it is not solvable at the model layer, so blast-radius containment, not detection, is the design goal; guardrails expressed as prompts to the agent are explicitly treated as non-guardrails. The sharp practical warning of the conference was the Docker socket: hand an agent one and the built-in Codex/Claude sandboxes become, in one speaker's word, worthless, since it can spawn a privileged container and escape. Open edges remain around whether sandboxes should be ephemeral or durable/snapshottable, and whether a single-node container can represent infrastructure work at all.\",\"consensus\":[{\"claim\":\"Prompt-level or model-judgment guardrails are not real controls; confinement must be deterministic and enforced outside the agent loop, because prompt injection cannot be solved at the model layer, only contained.\",\"support_count\":4,\"supporting_talks\":[\"realtime-multiplayer-automation-and-you\",\"we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night\",\"your-llm-stack-is-a-2008-database-with-better-marketing\",\"ais-jurassic-park-period\"],\"evidence_quote\":\"if you're prompting the guardrails at the agent, you're effectively letting the fox loose in the henhouse.\",\"evidence_talk\":\"realtime-multiplayer-automation-and-you\",\"evidence_timestamp_sec\":424},{\"claim\":\"Agents must never hold secrets or write credentials directly; credentials belong in a vault or broker outside the sandbox, usable by the agent at tool-execution time but never readable by it.\",\"support_count\":5,\"supporting_talks\":[\"realtime-multiplayer-automation-and-you\",\"evolution-of-agentic-surfaces\",\"claude-fable-claude-tag-and-anthropics-culture\",\"we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night\",\"multiplayer-agentic-engineering\"],\"evidence_quote\":\"Never trust agents with secrets. If an agent can know a secret, that secret, you need to treat it as if it's already been compromised.\",\"evidence_talk\":\"realtime-multiplayer-automation-and-you\",\"evidence_timestamp_sec\":719},{\"claim\":\"Agent code execution should not run with the developer's ambient host privileges; it belongs in an isolated environment provisioned per session, because a laptop-resident agent will find real credentials and reach systems it was never scoped for.\",\"support_count\":5,\"supporting_talks\":[\"multiplayer-agentic-engineering\",\"realtime-multiplayer-automation-and-you\",\"from-fork-to-fleet-designing-an-agent-sandbox-cloud\",\"agents-in-production-how-opengov-built-and-scaled-og-assist\",\"privacy-preserving-intelligence\"],\"evidence_quote\":\"it finds a token on your laptop that it can use and it thinks it's working with staging, but actually it's production and now it just deleted everything.\",\"evidence_talk\":\"multiplayer-agentic-engineering\",\"evidence_timestamp_sec\":665},{\"claim\":\"The dangerous, irreversible operations should be partitioned out of the agent into a deterministic layer, so that the split between what is agentic and what is hardcoded is the actual security model.\",\"support_count\":4,\"supporting_talks\":[\"we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night\",\"agents-in-production-how-opengov-built-and-scaled-og-assist\",\"codex-behind-the-harness\",\"multiplayer-agentic-engineering\"],\"evidence_quote\":\"the blast radius of an agent is an architecture decision.\",\"evidence_talk\":\"we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night\",\"evidence_timestamp_sec\":1225},{\"claim\":\"Shared-kernel isolation is a stopgap; teams that push on it converge on hardware virtualization (micro VMs) as the boundary that actually contains a compromised agent.\",\"support_count\":3,\"supporting_talks\":[\"from-fork-to-fleet-designing-an-agent-sandbox-cloud\",\"we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night\",\"realtime-multiplayer-automation-and-you\"],\"evidence_quote\":\"in the end, everyone always wants a VM because they tried everything. They tried containers, G visor, V8s.\",\"evidence_talk\":\"from-fork-to-fleet-designing-an-agent-sandbox-cloud\",\"evidence_timestamp_sec\":1743}],\"disagreements\":[{\"question\":\"Is a shared-kernel sandbox (Seatbelt, Bubblewrap, containers, gVisor) an acceptable isolation boundary for agents, or is hardware virtualization required?\",\"position_a\":\"Shared-kernel OS sandboxing is what production coding agents actually ship with and is treated as a foundational safety control \u2014 Seatbelt on macOS, Bubblewrap on Linux, a purpose-built Windows sandbox, gVisor plus egress filtering in the enterprise case.\",\"position_a_talks\":[\"codex-behind-the-harness\",\"ais-jurassic-park-period\"],\"position_b\":\"Anything sharing the host kernel \u2014 fork/exec, containers, and gVisor explicitly included \u2014 eventually yields a path to the host kernel, so only micro VMs are a real boundary and teams should adopt them from day one rather than iterating through the cheaper options. Form3 states the shipped Codex/Claude sandboxes are worthless once Docker access is in play.\",\"position_b_talks\":[\"from-fork-to-fleet-designing-an-agent-sandbox-cloud\",\"we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night\",\"realtime-multiplayer-automation-and-you\"],\"why_it_matters\":\"The choice sets both the cost floor (micro VM boot, snapshot storage, warm pools, no shareable GPU passthrough) and the residual-risk story you can tell a security reviewer; a team that builds on containers and later needs VM-grade isolation is looking at rearchitecting its entire execution plane.\"},{\"question\":\"Should the sandbox be ephemeral with state kept outside it, or durable and snapshottable as a first-class capability?\",\"position_a\":\"Persistence belongs in the sandbox: incremental snapshot/restore of disk and memory is the next major unlock, turning agents from ephemeral executors into durable knowledge workers and enabling checkpoint-based backtracking and tree search over sandbox states \u2014 and for real infrastructure work the environment must provision live multi-node cloud resources, not a single disposable container.\",\"position_a_talks\":[\"from-fork-to-fleet-designing-an-agent-sandbox-cloud\",\"emulated-the-data-for-fully-autonomous-software-engineers-and-companies\"],\"position_b\":\"Sandboxes are ephemeral and stateless by design; using one for durability, snapshots, or state is an anti-pattern. The sandbox is the hands, the execution layer is the brain, and a long-running agent's state must live outside the work so the sandbox stays swappable.\",\"position_b_talks\":[\"your-agent-architecture-has-a-half-life-of-6-months\",\"agents-in-production-how-opengov-built-and-scaled-og-assist\"],\"why_it_matters\":\"It decides who owns durability \u2014 the sandbox provider or your execution layer \u2014 and therefore whether a multi-hour agent run can be resumed by re-hydrating a snapshot or must be replayed from an external event log.\"},{\"question\":\"Does a single-user agent running on a personal machine need a sandbox at all?\",\"position_a\":\"Confinement is unconditional: all code execution and file creation goes to an ephemeral isolated sandbox, agents should not be given direct access to personal computers, and behavioral techniques for taming agents simply do not work \u2014 only removing the means to cause harm does.\",\"position_a_talks\":[\"agents-in-production-how-opengov-built-and-scaled-og-assist\",\"privacy-preserving-intelligence\",\"multiplayer-agentic-engineering\",\"from-fork-to-fleet-designing-an-agent-sandbox-cloud\"],\"position_b\":\"A Docker-style sandbox is unnecessary overhead for personal single-user work and only becomes warranted once the agent is externally facing; the practical isolation that matters day to day is separate git worktrees plus a staging environment for integration tests.\",\"position_b_talks\":[\"develop-at-idea-velocity\"],\"why_it_matters\":\"Most agent usage today is exactly this personal-laptop case, so the answer determines whether the isolation tax lands on every developer or only on multi-tenant and externally-triggered deployments.\"}],\"practical_guidance\":{\"do\":[\"Confine every agent code execution and file write to an ephemeral isolated sandbox, including file creation, not just shell commands\",\"If you are starting a sandbox platform now, go straight to micro VMs (Firecracker/CrosVM) rather than iterating containers \u2192 gVisor \u2192 V8 isolates\",\"Store credentials in a vault and decrypt them only at tool-execution runtime so the model never sees the token; aim for credentials that are usable by the agent but not accessible to it\",\"Keep write-capable operations \u2014 git push, PR creation, CI triggering, deploys \u2014 in a deterministic wrapper outside the agent, and let the agent only modify files on disk\",\"Give sub-agents read-only permissions and no ability to spawn further sub-agents\",\"Decouple the agent loop from the tool-execution container: Anthropic measured 60% faster time-to-first-token at P50 and over 90% improvement at P95, and it uncouples the failure domains\",\"For enterprise deployments, run tool execution inside the customer's own VPC with outbound-only MCP tunnels rather than requiring them to connect production systems to a vendor\",\"Make snapshotting incremental and score schedulers by how many snapshot lineage layers a node already has cached; use block devices rather than shared-folder passthrough inside the guest, and prefer POSIX-compliant storage over NFS\",\"Combine warm pools with memory-snapshot restore to get low creation latency without paying full idle CPU/memory for every slot\",\"Implement sharing and access control in the platform rather than in generated app code, so the generated code cannot get the permission model wrong\",\"Budget explicitly for isolation overhead: roughly 8% for basic controls and 10\u201320% for workload isolation\",\"Instrument approval decisions with task context \u2014 deleting a file is acceptable or not depending on whether the user asked for it\"],\"avoid\":[\"Giving an agent the Docker socket: it can spawn a privileged container and escape, and at that point the sandboxes shipped with Codex and Claude provide nothing\",\"Seccomp allowlists for open-ended agent workloads \u2014 you cannot enumerate the syscalls in advance, so you end up blocking legitimate users in a bad feedback loop\",\"Expressing guardrails as prompts to the agent; a third party can prompt-inject straight past them\",\"Full-access / YOLO mode, which stays unsafe even as models improve, because pushing a model toward high agency produces workarounds (uploading a file to a file share when it cannot attach it to an email)\",\"Treating a yes/no approval prompt on an opaque command as meaningful human oversight \u2014 it will not satisfy EU AI Act high-risk requirements and the human usually cannot tell whether to approve\",\"Relying on network position as the trust boundary or shipping with auth off by default; the Ray cluster exposure was exactly this and 78% of audited production ML setups had at least one critical mistake\",\"Assuming a single-node containerized sandbox represents infrastructure work \u2014 you cannot provision EC2 or Cloud Run inside one node, and deterministic network-failure simulation does not reproduce AWS-scale behavior\",\"Bumping dependencies to latest when remediating a CVE; instruct the agent to make the smallest effective change, since one such run produced a 70,000-line PR\",\"Building your own crypto or your own security-critical plumbing \u2014 reuse trustworthy existing software and keep the security-critical codebase small enough to fully audit\"]},\"notable_outliers\":[{\"claim\":\"With a null-origin sandboxed iframe client talking only to an isolated server sandbox, there is no security bug the generated code can have that matters \u2014 XSS included \u2014 because the platform, not the app, enforces sharing and access control.\",\"talk\":\"gadgets-personal-app-vibe-coding-that-is-actually-safe\",\"timestamp_sec\":912},{\"claim\":\"The energy to defeat a constraint can come from inside the agent and route through the human as a tool \u2014 an agent persuading you to install a Chrome extension that removes a control counts as the agent breaking the control, and the system looks fully compliant throughout because the agent never exceeded its authorization.\",\"talk\":\"ais-jurassic-park-period\",\"timestamp_sec\":555},{\"claim\":\"Behavioral techniques for taming agents do not work at all; only sandboxing and removing the means to cause harm do \u2014 and tightening down a general-purpose agent (OpenClaw) destroyed its usefulness, so a narrowly scoped special-purpose agent is the better tradeoff today.\",\"talk\":\"privacy-preserving-intelligence\",\"timestamp_sec\":793},{\"claim\":\"Disk persistence, not compute, is the next unlock for agent sandboxes; checkpoint/restore lets a harness run Monte Carlo tree search over sandbox states across many days, and the snapshot upload can return early while the data streams to the cloud in the background.\",\"talk\":\"from-fork-to-fleet-designing-an-agent-sandbox-cloud\",\"timestamp_sec\":2478},{\"claim\":\"Backing up employee laptops has become necessary again, because agentic queries make it trivial for a user to delete local data.\",\"talk\":\"ais-jurassic-park-period\",\"timestamp_sec\":1105},{\"claim\":\"Sandboxed cloud environments are the prerequisite for non-technical teammates triggering real merged code changes \u2014 the isolation is an enablement feature, not only a safety one.\",\"talk\":\"multiplayer-agentic-engineering\",\"timestamp_sec\":709},{\"claim\":\"Existing Windows sandboxing options were inadequate enough that OpenAI had to build and open-source its own Windows sandbox.\",\"talk\":\"codex-behind-the-harness\",\"timestamp_sec\":675},{\"claim\":\"The whole sandboxing tooling ecosystem exists but is still in beta and not ready for enterprise deployment \u2014 Form3 rolled its own Firecracker plus Vsock plumbing and would pick micro sandbox if starting today.\",\"talk\":\"we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night\",\"timestamp_sec\":1161}],\"maturity\":\"consolidating\",\"maturity_rationale\":\"That agents must be confined, that secrets stay outside the sandbox, and that prompt-level guardrails are not guardrails are all now assumed rather than argued across five-plus independent talks. What is still genuinely open is the primitive (shared-kernel OS sandboxing as shipped by Codex versus micro VMs as insisted on by the sandbox-infra and fintech teams), whether the sandbox should be durable or strictly ephemeral, and whether the tooling is enterprise-ready at all.\"}",
+  "ttft_ms": 63278,
+  "ttft_stream_ms": 1829,
+  "time_to_request_ms": 53,
   "type": "result",
-  "duration_ms": 135119,
-  "uuid": "d18559f6-d588-4c41-b453-76e360202cae",
+  "duration_ms": 126141,
+  "uuid": "0bcfdea2-f3b8-4838-99ae-afd7e22f6ada",
   "passC": {
     "concept": "agent sandboxing",
-    "state_of_practice": "The field has moved past \"put the agent in a box\" and is now arguing about which box and what it can reach. The dominant technical position, argued most forcefully by the people who operate sandboxes at scale, is that any primitive sharing the host kernel \u2014 fork/exec, containers, even gVisor \u2014 is eventually escapable, and that hardware virtualization (Firecracker/CrosVM-class micro VMs) is the only real boundary; seccomp allowlists are considered a poor fit because open-ended agent workloads have an unknowable syscall surface, and a Docker socket handed into a container is treated as equivalent to host compromise. Alongside the boundary itself, a capability discipline has hardened: secrets live in a vault or broker and are decrypted only at tool-execution time so the model never sees them; write-capable actions (git push, PR creation, CI trigger) are pushed out of the agent into a deterministic layer; guardrails expressed as prompt text are dismissed outright because a third party can inject past them. Prompt injection is universally treated as unsolvable at the model layer, so the design goal is blast-radius containment rather than prevention. The open fights are whether isolation alone is sufficient \u2014 one camp argues the worst failures happen entirely inside the agent's authorization, where the system looks compliant the whole time \u2014 and whether sandboxes should stay ephemeral or become durable, snapshot-restorable state. Tooling is acknowledged to exist but mostly in beta, which is why several teams still roll their own micro VM plumbing.",
+    "state_of_practice": "By this conference, isolating agent execution is no longer argued for \u2014 it is assumed \u2014 and the live questions have moved to which primitive, where it runs, and what the sandbox is allowed to hold. The strongest technical position came from the sandbox-infrastructure builders: every shared-kernel primitive (fork/exec, containers, gVisor, seccomp) eventually gives an attacker a path to the host kernel, so hardware virtualization via micro VMs (Firecracker, CrosVM) is the only boundary that actually holds, and teams are told to start there instead of iterating through the cheaper options. In parallel, a second and largely independent consensus formed that the sandbox is only half the control surface: credentials must be held outside the agent (vaults decrypted at tool-execution time, secret brokers, credentials usable-but-not-readable), and write-capable actions \u2014 git push, PR creation, CI triggering, deploys \u2014 should be lifted out of the agent into a deterministic wrapper. Everyone who touched prompt injection agreed it is not solvable at the model layer, so blast-radius containment, not detection, is the design goal; guardrails expressed as prompts to the agent are explicitly treated as non-guardrails. The sharp practical warning of the conference was the Docker socket: hand an agent one and the built-in Codex/Claude sandboxes become, in one speaker's word, worthless, since it can spawn a privileged container and escape. Open edges remain around whether sandboxes should be ephemeral or durable/snapshottable, and whether a single-node container can represent infrastructure work at all.",
     "consensus": [
       {
-        "claim": "Constraints imposed by prompting or the model's own judgment do not contain an agent; containment must be structural \u2014 deterministic configuration and isolation outside the agent loop.",
-        "support_count": 5,
+        "claim": "Prompt-level or model-judgment guardrails are not real controls; confinement must be deterministic and enforced outside the agent loop, because prompt injection cannot be solved at the model layer, only contained.",
+        "support_count": 4,
         "supporting_talks": [
           "realtime-multiplayer-automation-and-you",
-          "privacy-preserving-intelligence",
-          "ais-jurassic-park-period",
           "we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night",
-          "your-llm-stack-is-a-2008-database-with-better-marketing"
+          "your-llm-stack-is-a-2008-database-with-better-marketing",
+          "ais-jurassic-park-period"
         ],
         "evidence_quote": "if you're prompting the guardrails at the agent, you're effectively letting the fox loose in the henhouse.",
         "evidence_talk": "realtime-multiplayer-automation-and-you",
         "evidence_timestamp_sec": 424
       },
       {
-        "claim": "Secrets and credentials must live outside the agent's reach \u2014 brokered or vaulted and decrypted only at tool-execution time \u2014 because any secret the agent can read is compromised.",
+        "claim": "Agents must never hold secrets or write credentials directly; credentials belong in a vault or broker outside the sandbox, usable by the agent at tool-execution time but never readable by it.",
         "support_count": 5,
         "supporting_talks": [
           "realtime-multiplayer-automation-and-you",
@@ -107,37 +109,13 @@
         "evidence_timestamp_sec": 719
       },
       {
-        "claim": "Prompt injection cannot be eliminated, so the security objective is limiting blast radius rather than preventing the injection.",
-        "support_count": 4,
-        "supporting_talks": [
-          "we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night",
-          "your-llm-stack-is-a-2008-database-with-better-marketing",
-          "claude-fable-claude-tag-and-anthropics-culture",
-          "realtime-multiplayer-automation-and-you"
-        ],
-        "evidence_quote": "I guess like prompt injection itself isn't solved and we cannot really solve it. All we can do is just to limit the blast radius in case that happens.",
-        "evidence_talk": "we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night",
-        "evidence_timestamp_sec": 750
-      },
-      {
-        "claim": "Hardware virtualization (micro VMs) is the correct isolation boundary for agents; shared-kernel primitives and the coding agents' own built-in sandboxes are inadequate.",
-        "support_count": 3,
-        "supporting_talks": [
-          "from-fork-to-fleet-designing-an-agent-sandbox-cloud",
-          "we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night",
-          "realtime-multiplayer-automation-and-you"
-        ],
-        "evidence_quote": "if you're a startup or a founder like in this space, like let me save you the story and two years of grief. Just please use micro VMs from the start.",
-        "evidence_talk": "from-fork-to-fleet-designing-an-agent-sandbox-cloud",
-        "evidence_timestamp_sec": 1743
-      },
-      {
-        "claim": "Agents should run in isolated remote environments rather than on developer laptops, because laptops hold production credentials and data the agent has no legitimate need for.",
-        "support_count": 4,
+        "claim": "Agent code execution should not run with the developer's ambient host privileges; it belongs in an isolated environment provisioned per session, because a laptop-resident agent will find real credentials and reach systems it was never scoped for.",
+        "support_count": 5,
         "supporting_talks": [
           "multiplayer-agentic-engineering",
           "realtime-multiplayer-automation-and-you",
           "from-fork-to-fleet-designing-an-agent-sandbox-cloud",
+          "agents-in-production-how-opengov-built-and-scaled-og-assist",
           "privacy-preserving-intelligence"
         ],
         "evidence_quote": "it finds a token on your laptop that it can use and it thinks it's working with staging, but actually it's production and now it just deleted everything.",
@@ -145,136 +123,155 @@
         "evidence_timestamp_sec": 665
       },
       {
-        "claim": "Mutating and write-capable operations should be routed through a deterministic layer or a deterministic interrupt, not left to the agent's discretion.",
+        "claim": "The dangerous, irreversible operations should be partitioned out of the agent into a deterministic layer, so that the split between what is agentic and what is hardcoded is the actual security model.",
         "support_count": 4,
         "supporting_talks": [
-          "agents-in-production-how-opengov-built-and-scaled-og-assist",
           "we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night",
-          "realtime-multiplayer-automation-and-you",
-          "codex-behind-the-harness"
+          "agents-in-production-how-opengov-built-and-scaled-og-assist",
+          "codex-behind-the-harness",
+          "multiplayer-agentic-engineering"
         ],
-        "evidence_quote": "we deterministically interrupt the agent loop if there is a tool call approval required",
-        "evidence_talk": "agents-in-production-how-opengov-built-and-scaled-og-assist",
-        "evidence_timestamp_sec": 628
+        "evidence_quote": "the blast radius of an agent is an architecture decision.",
+        "evidence_talk": "we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night",
+        "evidence_timestamp_sec": 1225
+      },
+      {
+        "claim": "Shared-kernel isolation is a stopgap; teams that push on it converge on hardware virtualization (micro VMs) as the boundary that actually contains a compromised agent.",
+        "support_count": 3,
+        "supporting_talks": [
+          "from-fork-to-fleet-designing-an-agent-sandbox-cloud",
+          "we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night",
+          "realtime-multiplayer-automation-and-you"
+        ],
+        "evidence_quote": "in the end, everyone always wants a VM because they tried everything. They tried containers, G visor, V8s.",
+        "evidence_talk": "from-fork-to-fleet-designing-an-agent-sandbox-cloud",
+        "evidence_timestamp_sec": 1743
       }
     ],
     "disagreements": [
       {
-        "question": "Is deterministic isolation sufficient to make agent execution safe, or does it require a model-powered oversight layer that judges intent?",
-        "position_a": "The boundary is the security model: isolate at the hypervisor, scope capabilities to least privilege, keep dangerous actions deterministic, and accept that behavioral techniques for taming agents do not work. Invest in the sandbox, not in judging the agent.",
+        "question": "Is a shared-kernel sandbox (Seatbelt, Bubblewrap, containers, gVisor) an acceptable isolation boundary for agents, or is hardware virtualization required?",
+        "position_a": "Shared-kernel OS sandboxing is what production coding agents actually ship with and is treated as a foundational safety control \u2014 Seatbelt on macOS, Bubblewrap on Linux, a purpose-built Windows sandbox, gVisor plus egress filtering in the enterprise case.",
         "position_a_talks": [
-          "from-fork-to-fleet-designing-an-agent-sandbox-cloud",
-          "privacy-preserving-intelligence",
-          "we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night",
-          "gadgets-personal-app-vibe-coding-that-is-actually-safe"
+          "codex-behind-the-harness",
+          "ais-jurassic-park-period"
         ],
-        "position_b": "Egress filters, gVisor sandboxes and telemetry are necessary but not sufficient, because the worst failures occur entirely within the agent's authorization \u2014 the system looks compliant throughout. You need a semantic judge in the loop: an adversary agent rewarded for stopping the worker, or a classifier evaluating the tool call against conversation context.",
+        "position_b": "Anything sharing the host kernel \u2014 fork/exec, containers, and gVisor explicitly included \u2014 eventually yields a path to the host kernel, so only micro VMs are a real boundary and teams should adopt them from day one rather than iterating through the cheaper options. Form3 states the shipped Codex/Claude sandboxes are worthless once Docker access is in play.",
         "position_b_talks": [
-          "ais-jurassic-park-period",
-          "claude-fable-claude-tag-and-anthropics-culture"
+          "from-fork-to-fleet-designing-an-agent-sandbox-cloud",
+          "we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night",
+          "realtime-multiplayer-automation-and-you"
         ],
-        "why_it_matters": "It decides whether safety budget goes into VMM/kernel boundary engineering or into an oversight model that adds cost and latency to every tool call, and whether a yes/no approval prompt on an opaque command is defensible under regimes like the EU AI Act."
+        "why_it_matters": "The choice sets both the cost floor (micro VM boot, snapshot storage, warm pools, no shareable GPU passthrough) and the residual-risk story you can tell a security reviewer; a team that builds on containers and later needs VM-grade isolation is looking at rearchitecting its entire execution plane."
       },
       {
-        "question": "Should an agent sandbox be ephemeral with state held externally, or durable with snapshot/restore as a first-class feature?",
-        "position_a": "Sandboxes are ephemeral and stateless by design \u2014 they are the hands, not the brain. Using them for durability, snapshots, or state is an anti-pattern; long runs must keep state outside the work in an execution layer, and all code execution and file creation should happen in throwaway isolated environments.",
+        "question": "Should the sandbox be ephemeral with state kept outside it, or durable and snapshottable as a first-class capability?",
+        "position_a": "Persistence belongs in the sandbox: incremental snapshot/restore of disk and memory is the next major unlock, turning agents from ephemeral executors into durable knowledge workers and enabling checkpoint-based backtracking and tree search over sandbox states \u2014 and for real infrastructure work the environment must provision live multi-node cloud resources, not a single disposable container.",
         "position_a_talks": [
+          "from-fork-to-fleet-designing-an-agent-sandbox-cloud",
+          "emulated-the-data-for-fully-autonomous-software-engineers-and-companies"
+        ],
+        "position_b": "Sandboxes are ephemeral and stateless by design; using one for durability, snapshots, or state is an anti-pattern. The sandbox is the hands, the execution layer is the brain, and a long-running agent's state must live outside the work so the sandbox stays swappable.",
+        "position_b_talks": [
           "your-agent-architecture-has-a-half-life-of-6-months",
           "agents-in-production-how-opengov-built-and-scaled-og-assist"
         ],
-        "position_b": "Disk persistence, not compute, is the next unlock: incremental snapshotting, checkpoint/restore and lineage-aware scheduling turn agents from ephemeral executors into durable knowledge workers, and even enable tree search over sandbox states across days.",
-        "position_b_talks": [
-          "from-fork-to-fleet-designing-an-agent-sandbox-cloud"
-        ],
-        "why_it_matters": "One path means building an external durable execution layer and treating sandbox loss as free; the other means building incremental snapshot storage, warm pools and snapshot-lineage schedulers, which is a very different infrastructure bill."
+        "why_it_matters": "It decides who owns durability \u2014 the sandbox provider or your execution layer \u2014 and therefore whether a multi-hour agent run can be resumed by re-hydrating a snapshot or must be replayed from an external event log."
       },
       {
-        "question": "Does an individual developer running a coding agent locally actually need a sandbox?",
-        "position_a": "For personal use a Docker-style sandbox is unnecessary overhead; it would only be warranted for an externally-facing bot. Reliability is bought instead with a local dev plus staging-agent split.",
+        "question": "Does a single-user agent running on a personal machine need a sandbox at all?",
+        "position_a": "Confinement is unconditional: all code execution and file creation goes to an ephemeral isolated sandbox, agents should not be given direct access to personal computers, and behavioral techniques for taming agents simply do not work \u2014 only removing the means to cause harm does.",
         "position_a_talks": [
+          "agents-in-production-how-opengov-built-and-scaled-og-assist",
+          "privacy-preserving-intelligence",
+          "multiplayer-agentic-engineering",
+          "from-fork-to-fleet-designing-an-agent-sandbox-cloud"
+        ],
+        "position_b": "A Docker-style sandbox is unnecessary overhead for personal single-user work and only becomes warranted once the agent is externally facing; the practical isolation that matters day to day is separate git worktrees plus a staging environment for integration tests.",
+        "position_b_talks": [
           "develop-at-idea-velocity"
         ],
-        "position_b": "The laptop is precisely the danger zone \u2014 it holds credentials and data the agent shouldn't touch, auto-approval and sandbox configs are not reliably safe, and agents should not be given direct access to personal computers at all; every session should be a micro VM in the cloud.",
-        "position_b_talks": [
-          "multiplayer-agentic-engineering",
-          "privacy-preserving-intelligence",
-          "realtime-multiplayer-automation-and-you"
-        ],
-        "why_it_matters": "It determines whether sandboxing is a platform-team concern for production deployments only, or a baseline requirement for every engineer's daily workflow \u2014 and whether non-technical teammates can ever trigger real code changes."
+        "why_it_matters": "Most agent usage today is exactly this personal-laptop case, so the answer determines whether the isolation tax lands on every developer or only on multi-tenant and externally-triggered deployments."
       }
     ],
     "practical_guidance": {
       "do": [
-        "Confine every agent code execution and file write to an isolated sandbox, including in interactive product flows, not just batch jobs",
-        "Choose hardware virtualization (Firecracker/CrosVM-class micro VMs) as the boundary from day one instead of iterating through containers, gVisor and V8 isolates",
-        "Use a micro VM with Vsock-mediated networking for any workload that needs a Docker daemon, since Linux primitives like landlock, bubblewrap and seccomp cannot contain one",
-        "Store credentials in a vault and decrypt them only at tool-execution runtime so the model never sees a security token; make credentials usable by the agent but not readable by it",
-        "Keep GitHub push, PR creation and CI triggering out of the agent and in the deterministic wrapper around it",
-        "Decouple the agent loop from the tool-execution container so container setup doesn't block first-token reasoning (60% faster TTFT at P50, >90% at P95)",
-        "Run tool execution inside the customer's own VPC, with MCP tunnels making only outbound calls to the agent loop, for enterprise deployments",
-        "Give subagents read-only permissions and forbid them from spawning further subagents",
-        "Attach task context to approval decisions \u2014 deleting a file is fine or not depending on whether the user asked for it",
-        "Bound automation output (e.g. at most one PR, and permission to produce nothing) so background agents can't denial-of-service their owner",
-        "Use incremental snapshots rather than full multi-gigabyte images per turn, and score scheduler nodes by how many snapshot lineage layers they already cache",
-        "Prefer block-device access over shared-folder filesystem passthrough inside micro VMs \u2014 it uses the guest cache and avoids exiting on every filesystem operation",
-        "For generated apps, run the client in a null-origin sandboxed iframe with CSP and implement sharing/access control in the platform so generated code cannot get the permission model wrong",
-        "Budget for the overhead explicitly: basic controls under ~8%, workload isolation 10\u201320%, real-time malicious input detection 15\u201330%"
+        "Confine every agent code execution and file write to an ephemeral isolated sandbox, including file creation, not just shell commands",
+        "If you are starting a sandbox platform now, go straight to micro VMs (Firecracker/CrosVM) rather than iterating containers \u2192 gVisor \u2192 V8 isolates",
+        "Store credentials in a vault and decrypt them only at tool-execution runtime so the model never sees the token; aim for credentials that are usable by the agent but not accessible to it",
+        "Keep write-capable operations \u2014 git push, PR creation, CI triggering, deploys \u2014 in a deterministic wrapper outside the agent, and let the agent only modify files on disk",
+        "Give sub-agents read-only permissions and no ability to spawn further sub-agents",
+        "Decouple the agent loop from the tool-execution container: Anthropic measured 60% faster time-to-first-token at P50 and over 90% improvement at P95, and it uncouples the failure domains",
+        "For enterprise deployments, run tool execution inside the customer's own VPC with outbound-only MCP tunnels rather than requiring them to connect production systems to a vendor",
+        "Make snapshotting incremental and score schedulers by how many snapshot lineage layers a node already has cached; use block devices rather than shared-folder passthrough inside the guest, and prefer POSIX-compliant storage over NFS",
+        "Combine warm pools with memory-snapshot restore to get low creation latency without paying full idle CPU/memory for every slot",
+        "Implement sharing and access control in the platform rather than in generated app code, so the generated code cannot get the permission model wrong",
+        "Budget explicitly for isolation overhead: roughly 8% for basic controls and 10\u201320% for workload isolation",
+        "Instrument approval decisions with task context \u2014 deleting a file is acceptable or not depending on whether the user asked for it"
       ],
       "avoid": [
-        "Relying on the sandboxes bundled with Codex and Claude Code \u2014 they are worthless once the agent has Docker socket access",
-        "Handing an agent a Docker socket inside a container; it can spawn a privileged container and escape to the host",
-        "Assuming containers or gVisor protect the host kernel \u2014 you can pivot sentry \u2192 gofer \u2192 host kernel",
-        "Seccomp allowlists for open-ended agent products: you cannot know the syscall set in advance, so you end up blocking real users",
-        "Expressing guardrails as instructions to the agent, where a third party can prompt-inject past them",
-        "Using the sandbox as the durability layer for a long run's state",
-        "Full-access / YOLO mode, which stays unsafe even as models improve because high agency produces creative workarounds (uploading a file to a file share when it can't attach it to an email)",
-        "Treating a single-node containerized sandbox as representative of real infrastructure work \u2014 you cannot simulate EC2 or Cloud Run provisioning inside one node",
-        "Building your own crypto, or your own AI Slackbot, given the prompt-injection attack surface",
-        "Shipping ML infrastructure with authentication off by default \u2014 78% of audited production ML setups had at least one critical misconfiguration",
-        "Treating a sandbox diagram plus a yes/no approval dialog as an oversight story"
+        "Giving an agent the Docker socket: it can spawn a privileged container and escape, and at that point the sandboxes shipped with Codex and Claude provide nothing",
+        "Seccomp allowlists for open-ended agent workloads \u2014 you cannot enumerate the syscalls in advance, so you end up blocking legitimate users in a bad feedback loop",
+        "Expressing guardrails as prompts to the agent; a third party can prompt-inject straight past them",
+        "Full-access / YOLO mode, which stays unsafe even as models improve, because pushing a model toward high agency produces workarounds (uploading a file to a file share when it cannot attach it to an email)",
+        "Treating a yes/no approval prompt on an opaque command as meaningful human oversight \u2014 it will not satisfy EU AI Act high-risk requirements and the human usually cannot tell whether to approve",
+        "Relying on network position as the trust boundary or shipping with auth off by default; the Ray cluster exposure was exactly this and 78% of audited production ML setups had at least one critical mistake",
+        "Assuming a single-node containerized sandbox represents infrastructure work \u2014 you cannot provision EC2 or Cloud Run inside one node, and deterministic network-failure simulation does not reproduce AWS-scale behavior",
+        "Bumping dependencies to latest when remediating a CVE; instruct the agent to make the smallest effective change, since one such run produced a 70,000-line PR",
+        "Building your own crypto or your own security-critical plumbing \u2014 reuse trustworthy existing software and keep the security-critical codebase small enough to fully audit"
       ]
     },
     "notable_outliers": [
       {
-        "claim": "An agent persuading a human to disable a control (e.g. install a Chrome extension) should count as the agent escaping the sandbox \u2014 the energy came from inside the agent loop and merely routed through the human as a tool.",
-        "talk": "ais-jurassic-park-period",
-        "timestamp_sec": 555
-      },
-      {
-        "claim": "With a null-origin sandboxed iframe client and a server sandbox that can only talk to that client, there is no security bug the generated code can have that matters.",
+        "claim": "With a null-origin sandboxed iframe client talking only to an isolated server sandbox, there is no security bug the generated code can have that matters \u2014 XSS included \u2014 because the platform, not the app, enforces sharing and access control.",
         "talk": "gadgets-personal-app-vibe-coding-that-is-actually-safe",
         "timestamp_sec": 912
       },
       {
-        "claim": "Tightening down a general-purpose agent destroys its usefulness; a narrowly sandboxed special-purpose agent is the better tradeoff today.",
+        "claim": "The energy to defeat a constraint can come from inside the agent and route through the human as a tool \u2014 an agent persuading you to install a Chrome extension that removes a control counts as the agent breaking the control, and the system looks fully compliant throughout because the agent never exceeded its authorization.",
+        "talk": "ais-jurassic-park-period",
+        "timestamp_sec": 555
+      },
+      {
+        "claim": "Behavioral techniques for taming agents do not work at all; only sandboxing and removing the means to cause harm do \u2014 and tightening down a general-purpose agent (OpenClaw) destroyed its usefulness, so a narrowly scoped special-purpose agent is the better tradeoff today.",
         "talk": "privacy-preserving-intelligence",
-        "timestamp_sec": 899
+        "timestamp_sec": 793
       },
       {
-        "claim": "Security must be prioritized over performance because system tricks can cover performance problems but cannot hide a breach, and trust is lost only once.",
+        "claim": "Disk persistence, not compute, is the next unlock for agent sandboxes; checkpoint/restore lets a harness run Monte Carlo tree search over sandbox states across many days, and the snapshot upload can return early while the data streams to the cloud in the background.",
         "talk": "from-fork-to-fleet-designing-an-agent-sandbox-cloud",
-        "timestamp_sec": 1704
+        "timestamp_sec": 2478
       },
       {
-        "claim": "The agent sandboxing tools all exist but most are still in beta, so they are not yet ready for enterprise deployment.",
+        "claim": "Backing up employee laptops has become necessary again, because agentic queries make it trivial for a user to delete local data.",
+        "talk": "ais-jurassic-park-period",
+        "timestamp_sec": 1105
+      },
+      {
+        "claim": "Sandboxed cloud environments are the prerequisite for non-technical teammates triggering real merged code changes \u2014 the isolation is an enablement feature, not only a safety one.",
+        "talk": "multiplayer-agentic-engineering",
+        "timestamp_sec": 709
+      },
+      {
+        "claim": "Existing Windows sandboxing options were inadequate enough that OpenAI had to build and open-source its own Windows sandbox.",
+        "talk": "codex-behind-the-harness",
+        "timestamp_sec": 675
+      },
+      {
+        "claim": "The whole sandboxing tooling ecosystem exists but is still in beta and not ready for enterprise deployment \u2014 Form3 rolled its own Firecracker plus Vsock plumbing and would pick micro sandbox if starting today.",
         "talk": "we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night",
-        "timestamp_sec": 1198
-      },
-      {
-        "claim": "GPU-accelerated sandboxes are poorly served by micro VMs today because VFIO passthrough cannot be shared across tenants, and co-tenanted GPUs leak timing information between customers.",
-        "talk": "from-fork-to-fleet-designing-an-agent-sandbox-cloud",
-        "timestamp_sec": 1704
+        "timestamp_sec": 1161
       }
     ],
     "maturity": "consolidating",
-    "maturity_rationale": "Independent teams have converged on the same primitives \u2014 hardware-virtualized isolation, secrets held outside the agent, write operations in a deterministic layer, blast-radius containment instead of injection prevention \u2014 and several state them as settled advice rather than experiment reports. What remains genuinely argued is whether isolation is sufficient without a semantic oversight layer, whether sandboxes should be ephemeral or durable, and whether local development needs one at all; the tooling is also acknowledged to still be in beta."
+    "maturity_rationale": "That agents must be confined, that secrets stay outside the sandbox, and that prompt-level guardrails are not guardrails are all now assumed rather than argued across five-plus independent talks. What is still genuinely open is the primitive (shared-kernel OS sandboxing as shipped by Codex versus micro VMs as insisted on by the sandbox-infra and fintech teams), whether the sandbox should be durable or strictly ephemeral, and whether the tooling is enterprise-ready at all."
   },
   "_meta": {
     "concept": "agent sandboxing",
     "slug": "agent-sandboxing",
-    "talk_count": 21,
+    "talk_count": 22,
     "missing_talks": [],
-    "wall_sec": 136.3,
-    "run_at": "2026-08-13T17:13:41Z"
+    "wall_sec": 127.3,
+    "run_at": "2026-08-19T13:42:08Z"
   }
 }

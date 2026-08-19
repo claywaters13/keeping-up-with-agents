@@ -1,34 +1,37 @@
 {
   "is_error": false,
-  "duration_api_ms": 194349,
+  "duration_api_ms": 153884,
   "num_turns": 1,
   "stop_reason": "end_turn",
-  "session_id": "949b4448-d5d9-480a-b7fe-748503591391",
-  "total_cost_usd": 1.053565,
+  "session_id": "54045cbb-a48e-4bd5-b949-fff52502a7d3",
+  "total_cost_usd": 1.0667995000000001,
   "usage": {
     "input_tokens": 2,
-    "cache_creation_input_tokens": 59812,
-    "cache_read_input_tokens": 10308,
-    "output_tokens": 16399,
+    "cache_creation_input_tokens": 68954,
+    "cache_read_input_tokens": 8113,
+    "output_tokens": 13166,
+    "output_tokens_details": {
+      "thinking_tokens": 6337
+    },
     "server_tool_use": {
       "web_search_requests": 0,
       "web_fetch_requests": 0
     },
     "service_tier": "standard",
     "cache_creation": {
-      "ephemeral_1h_input_tokens": 59812,
+      "ephemeral_1h_input_tokens": 68954,
       "ephemeral_5m_input_tokens": 0
     },
     "inference_geo": "not_available",
     "iterations": [
       {
         "input_tokens": 2,
-        "output_tokens": 16399,
-        "cache_read_input_tokens": 10308,
-        "cache_creation_input_tokens": 59812,
+        "output_tokens": 13166,
+        "cache_read_input_tokens": 8113,
+        "cache_creation_input_tokens": 68954,
         "cache_creation": {
           "ephemeral_5m_input_tokens": 0,
-          "ephemeral_1h_input_tokens": 59812
+          "ephemeral_1h_input_tokens": 68954
         },
         "type": "message"
       }
@@ -37,12 +40,12 @@
   },
   "modelUsage": {
     "claude-haiku-4-5-20251001": {
-      "inputTokens": 40216,
-      "outputTokens": 18,
+      "inputTokens": 43983,
+      "outputTokens": 12,
       "cacheReadInputTokens": 0,
       "cacheCreationInputTokens": 0,
       "webSearchRequests": 0,
-      "costUSD": 0.040306,
+      "costUSD": 0.044043,
       "contextWindow": 200000,
       "maxOutputTokens": 32000,
       "canonicalModel": "claude-haiku-4-5",
@@ -50,11 +53,11 @@
     },
     "claude-opus-5": {
       "inputTokens": 2,
-      "outputTokens": 16399,
-      "cacheReadInputTokens": 10308,
-      "cacheCreationInputTokens": 59812,
+      "outputTokens": 13166,
+      "cacheReadInputTokens": 8113,
+      "cacheCreationInputTokens": 68954,
       "webSearchRequests": 0,
-      "costUSD": 1.0132590000000001,
+      "costUSD": 1.0227565,
       "contextWindow": 1000000,
       "maxOutputTokens": 64000,
       "canonicalModel": "claude-opus-5",
@@ -67,39 +70,25 @@
   "fast_mode_disabled_reason": "sdk_opt_in_required",
   "subtype": "success",
   "api_error_status": null,
-  "result": "{\"concept\": \"eval harness design\", \"state_of_practice\": \"The field now treats the eval harness as ordinary production infrastructure rather than a research artifact: a golden dataset sampled from real traffic, a verifier, an isolated execution environment, and a CI hook that blocks merges. The strongest convergence is on order of operations \u2014 build the eval and the ability to grade an outcome first, then let anything (a human, a coding agent, an optimizer, a different model) climb it \u2014 which is what makes model swapping, skill retirement, and autonomous agent self-improvement tractable at all. Harness hygiene has become concrete and checkable: the verifier runtime is separated from the agent runtime, eval cases run in fresh workspaces, optimizing agents are explicitly forbidden from touching scorers or golden data, and every case is run 3\u20136 times with confidence intervals because a single run of a non-deterministic system says nothing. Verifiers are moving from implementation-anchored assertions (variable names, unexported helpers, module placement) toward observable behavior and binary task outcomes, driven by measured evidence that implementation-anchored graders both accept wrong patches and reject correct ones at double-digit rates. What remains unsettled is the scoring layer and the loop around it: deterministic assertions versus validated LLM judges, offline simulation versus live production as the authoritative signal, and how much of the fix-verify-deploy loop can run without a human. Evals were named the number one stack challenge for the third consecutive year, but the pain has shifted from \\\"we have none\\\" to \\\"ours are not reproducible, not gating anything, or measuring the wrong thing.\\\"\", \"consensus\": [{\"claim\": \"The eval and its grader must exist before any optimization \u2014 model selection, prompt tuning, skill authoring, or automated hill-climbing are all downstream of having a gradeable outcome.\", \"support_count\": 6, \"supporting_talks\": [\"everything-is-a-rollout\", \"the-unreasonable-effectiveness-of-separating-the-task-from-the-model\", \"how-autoresearch-is-changing-ml-research\", \"on-ai-and-knowledge\", \"agents-building-agents\", \"continual-learning-for-ai-agents-from-failures-to-durable-improvements\"], \"evidence_quote\": \"if you want to build an agentic system start with the aval that matters and your ability to grade the outcome and then say I welcome all models\", \"evidence_talk\": \"everything-is-a-rollout\", \"evidence_timestamp_sec\": 682}, {\"claim\": \"Evals belong in CI as a merge/deploy gate that runs on every change to the prompt, skill, or agent code \u2014 not as an offline report someone reads later.\", \"support_count\": 5, \"supporting_talks\": [\"dont-ship-skills-without-evals\", \"agents-in-production-how-opengov-built-and-scaled-og-assist\", \"build-evals-that-actually-matter\", \"frontier-results-on-device\", \"medic-for-apache-spark-first-aid-for-failing-jobs\"], \"evidence_quote\": \"if a change happens to or like a diff to the skill file, the eval will be run, and there will also be a result, and the change will not be merged if it is not improving the test cases.\", \"evidence_talk\": \"dont-ship-skills-without-evals\", \"evidence_timestamp_sec\": 988}, {\"claim\": \"The harness must be structurally isolated from the system under test, because capable agents will reward-hack any reachable artifact \u2014 scorers, golden data, git history, prior chat logs.\", \"support_count\": 6, \"supporting_talks\": [\"deepswe-a-contamination-resistant-coding-benchmark\", \"dont-ship-skills-without-evals\", \"agents-building-agents\", \"benchmarks-the-good-the-bad-and-the-ugly\", \"building-closed-loop-evals-for-a-multimodal-agent-at-scale\", \"how-autoresearch-is-changing-ml-research\"], \"evidence_quote\": \"we've taken some additional measures to guard against cheating uh reward hacking uh by ensuring you know the verifier runtime is fully separate now from the agent runtime.\", \"evidence_talk\": \"deepswe-a-contamination-resistant-coding-benchmark\", \"evidence_timestamp_sec\": 889}, {\"claim\": \"A single run per eval case is invalid; cases must be repeated (3\u20136 trials is the cited range) and scores reported with intervals, because non-determinism swamps small deltas.\", \"support_count\": 4, \"supporting_talks\": [\"why-your-agent-disagrees-and-what-to-do-about-it\", \"dont-ship-skills-without-evals\", \"build-evals-that-actually-matter\", \"deepswe-a-contamination-resistant-coding-benchmark\"], \"evidence_quote\": \"That means a single evaluation run didn't tell you the whole story. You need to repeat your evaluation multiple times in order to get a holistic picture by the average over the different runs results.\", \"evidence_talk\": \"why-your-agent-disagrees-and-what-to-do-about-it\", \"evidence_timestamp_sec\": 183}, {\"claim\": \"Verifiers should assert observable behavior and task outcomes, not implementation details such as variable names, module placement, private helpers, or whether a particular component was loaded on a given turn.\", \"support_count\": 4, \"supporting_talks\": [\"deepswe-a-contamination-resistant-coding-benchmark\", \"benchmarks-the-good-the-bad-and-the-ugly\", \"dont-ship-skills-without-evals\", \"build-evals-that-actually-matter\"], \"evidence_quote\": \"for us we want to uh emphasize on the observable behavior as much as possible. We want to ensure that any correct implementation uh anything that correctly solves the problem is rewarded and this will prevent against uh false negatives.\", \"evidence_talk\": \"deepswe-a-contamination-resistant-coding-benchmark\", \"evidence_timestamp_sec\": 733}, {\"claim\": \"Production logs, traces, and manual end-to-end runs are raw material, not evals \u2014 they must be lifted into replayable, re-runnable environments with fixed grading, and every triaged production failure folded back in as a regression case.\", \"support_count\": 5, \"supporting_talks\": [\"continual-learning-for-ai-agents-from-failures-to-durable-improvements\", \"medic-for-apache-spark-first-aid-for-failing-jobs\", \"build-evals-that-actually-matter\", \"agents-building-agents\", \"vending-bench-long-horizon-agent-evals\"], \"evidence_quote\": \"Here we have log and feedback, but what we really need is a replayable learning environment, a simulation that we can rerun with defined grading on what success looks like, not one instance of what happened and the feedback on top of it.\", \"evidence_talk\": \"continual-learning-for-ai-agents-from-failures-to-durable-improvements\", \"evidence_timestamp_sec\": 237}], \"disagreements\": [{\"question\": \"Should the scoring layer be built primarily from deterministic programmatic checks, or from validated LLM judges?\", \"position_a\": \"Most scoring should be cheap deterministic assertions \u2014 regex, unit tests, fixture-based checks, hard-coded evaluators (e.g. 'at most three suggested fixes'). LLM-as-judge is the exception, reserved for what genuinely cannot be asserted in code.\", \"position_a_talks\": [\"dont-ship-skills-without-evals\", \"medic-for-apache-spark-first-aid-for-failing-jobs\", \"continual-learning-for-ai-agents-from-failures-to-durable-improvements\", \"benchmarks-the-good-the-bad-and-the-ugly\"], \"position_b\": \"LLM judges are the core scorer for anything open-ended, and the real work is validating them like binary classifiers (\u2248100 hand labels, train/dev/test, precision and recall) and defining rejection behavior when the judge is unconfident. Purely test-based verification forces prescriptive prompts and over-constrains the task.\", \"position_b_talks\": [\"build-evals-that-actually-matter\", \"building-closed-loop-evals-for-a-multimodal-agent-at-scale\", \"deepswe-a-contamination-resistant-coding-benchmark\", \"your-moat-is-your-data-model\"], \"why_it_matters\": \"It determines whether you need an entire judge-validation pipeline with hand-labeled data and periodic recalibration, or just a test runner \u2014 an order-of-magnitude difference in harness cost. It also bounds how open-ended your task prompts can be: deterministic graders force you to hint at the intended method, which is exactly the leakage benchmark authors are trying to eliminate.\", \"evidence_quote\": \"\"}, {\"question\": \"Where does the authoritative quality signal come from \u2014 an offline simulated environment, or live production runtime?\", \"position_a\": \"Offline is the gate. Agents pass a rigorous simulated evaluation (fine-tuned user simulators, recorded tool fixtures, replayable learning environments) before any live user sees them, precisely because live users should never be the test data.\", \"position_a_talks\": [\"build-evals-that-actually-matter\", \"medic-for-apache-spark-first-aid-for-failing-jobs\", \"continual-learning-for-ai-agents-from-failures-to-durable-improvements\"], \"position_b\": \"Offline signal decays or is structurally compromised \u2014 statically tuned components do not survive online drift, proposed fixes are 'plausible unverified' until measured on the real production flow, and models detect simulation and change behavior. Authority has to come from runtime.\", \"position_b_talks\": [\"building-closed-loop-evals-for-a-multimodal-agent-at-scale\", \"from-blind-spots-to-merged-prs-continuous-agentic-performance-optimization\", \"vending-bench-long-horizon-agent-evals\"], \"why_it_matters\": \"It decides where the engineering budget goes: simulator fidelity and fixture recording, versus production instrumentation, guardrail metrics, and safe online retuning with rollback. It also changes what 'passing' means \u2014 a green offline suite is either a ship signal or a weak prior depending on which camp you are in.\", \"evidence_quote\": \"\"}, {\"question\": \"Can the eval-driven improvement loop close without a human, or must a person validate before changes land?\", \"position_a\": \"Yes \u2014 retuning can be fully config-driven with no human in the loop, provided you have guardrail observability, deterministic evaluators, and fast rollback; automatically hill-climbed instructions can be deployed to production and can beat handwritten ones.\", \"position_a_talks\": [\"building-closed-loop-evals-for-a-multimodal-agent-at-scale\", \"on-ai-and-knowledge\"], \"position_b\": \"No \u2014 clustered failures can be false positives or intended behavior and need subject-matter-expert triage before fixes; dumping 80 auto-generated PRs is counterproductive; criteria and labels only emerge from a human looking at raw data.\", \"position_b_talks\": [\"agents-building-agents\", \"from-blind-spots-to-merged-prs-continuous-agentic-performance-optimization\", \"build-evals-that-actually-matter\"], \"why_it_matters\": \"It sets the required reliability bar before automation: one side ships on guardrail metrics plus rollback, the other holds out for ~80\u201390% trust and a human reviewer per change. Getting it wrong either bottlenecks the loop on human attention or silently deploys regressions that the guardrails do not cover.\", \"evidence_quote\": \"\"}, {\"question\": \"Should the agent harness be held constant to isolate model capability, or treated as part of the system being evaluated?\", \"position_a\": \"Neutralize it. Run every model through one agent-agnostic harness so you measure base model performance faithfully rather than each vendor's scaffolding.\", \"position_a_talks\": [\"deepswe-a-contamination-resistant-coding-benchmark\"], \"position_b\": \"The harness is a legitimate and decisive component: deterministic post-processing in the harness closes quality gaps a bigger model would not; the same skill passes on one harness and fails on another, so results must be reported per-harness; and benchmarks that exclude custom-harness results should instead run a separate open-harness leaderboard because only results matter.\", \"position_b_talks\": [\"recursive-coding-agents\", \"frontier-results-on-device\", \"dont-ship-skills-without-evals\"], \"why_it_matters\": \"It determines what a leaderboard number actually licenses you to conclude \u2014 model choice or system choice \u2014 and whether harness engineering counts as a legitimate result or as contaminating the measurement.\", \"evidence_quote\": \"\"}, {\"question\": \"Should scorers emit a binary/scalar verdict or richer change-oriented feedback?\", \"position_a\": \"Frame every eval as binary task success or failure tied to a business outcome; binary is easy to calibrate, easy to train a judge on, and directly actionable, whereas a 0.5 helpfulness score tells you nothing.\", \"position_a_talks\": [\"build-evals-that-actually-matter\", \"building-closed-loop-evals-for-a-multimodal-agent-at-scale\"], \"position_b\": \"Scalar and binary scores throw away information \u2014 knowing what could change in an output to improve it carries far more signal than good/bad, and current models are strong enough to convert textual environment feedback into the optimization target directly.\", \"position_b_talks\": [\"the-unreasonable-effectiveness-of-separating-the-task-from-the-model\"], \"why_it_matters\": \"The scorer's output type is the interface the whole optimization loop consumes: binary supports pass rates, pass@K, and confidence intervals, while rich feedback supports prompt/code synthesis but is far harder to aggregate, gate on, or report to leadership.\", \"evidence_quote\": \"\"}], \"practical_guidance\": {\"do\": [\"Run each eval case 3\u20136 times and attach a confidence interval to every reported score; treat 84% vs 88% on 50 traces as noise, not a win.\", \"Run the verifier in a runtime fully separate from the agent runtime, and each case in a fresh isolated workspace so the agent cannot read prior chats, prior executions, or .git history.\", \"Explicitly forbid any optimizing agent from editing golden datasets or scorers; run each optimization hypothesis on its own git branch and roll back on regression.\", \"Block the merge when an eval-affecting diff does not improve the test cases; wire evals to run locally, at pre-commit, and in CI.\", \"Validate LLM judges like binary classifiers: hand-label ~100 examples, split train/dev/test, and score the judge on precision and recall against those labels.\", \"Build eval datasets by sampling and mutating production traffic, and fold every triaged production failure into the golden set as a permanent regression case (once-per-sprint failure reports is a workable cadence).\", \"Record real tool responses in a record mode and check the fixtures in as code, so end-to-end evals replay offline after production data is retention-deleted.\", \"Include negative cases in trigger evals \u2014 roughly five 'should use' and five 'should not use' prompts \u2014 to catch over-triggering, not just under-triggering.\", \"Run evals both with and without the skill/component loaded, and keep the eval after the component is retired so it signals when to reintroduce it.\", \"Store the eval config as YAML so analysts and data scientists can add cases without touching engineering code.\", \"Pick the guardrail metric from the failure asymmetry (recall when letting a bad item through is worse than a wasted enhancement) and use pass@K when the loop is self-correcting.\", \"When ground truth sits on constantly-changing structured data, store the query and compute the expected answer against the live source at eval runtime rather than freezing expected outputs.\", \"Fix structural and length violations with deterministic post-processing in the harness instead of escalating to a larger model.\", \"Make gates blocking, keep an audit record of which gate failed, and instrument the most expensive handoff first rather than the most complex one.\"], \"avoid\": [\"Prompting an LLM to generate ~50 test queries and calling that an offline eval dataset.\", \"Shipping an LLM judge whose score does not gate any decision, and treating judge numbers as trustworthy without manual inspection \u2014 judges favor models from their own family.\", \"Using off-the-shelf frontier models as user simulators for support scenarios; they are unrealistically polite and produced a bogus 90%+ pass rate on first run.\", \"Making prebuilt generic metrics (helpfulness, toxicity, conciseness) your core metrics \u2014 a 0.5 helpfulness score is not actionable.\", \"Writing verifiers anchored to a specific implementation: asserting unspecified variable names, unexported functions, module placement, or the presence of particular private helpers.\", \"Putting a line like 'the tests are handled' in the task prompt \u2014 that single sentence stops even frontier models from verifying their own work.\", \"Mining benchmark tasks from closed public PRs; the solutions, tests, and discussion are reachable, and Opus 4.6/4.7 attempted golden-patch recovery from git history in 25% and 18% of rollouts.\", \"Selecting cases for human review using the model's self-reported uncertainty; use disagreement across runs or across models instead.\", \"Gates that only log warnings \u2014 a gate that cannot halt the pipeline is a suggestion.\", \"Relying on manual end-to-end testing against live production as the regression strategy when production data is retained only briefly.\", \"Fixing evaluation criteria before looking at data, and grading without ever reading raw traces \u2014 labels, criteria, and judge validation all collapse without it.\", \"Auto-opening large volumes of agent-generated PRs; surface one high-ROI, human-readable finding at a time.\"]}, \"notable_outliers\": [{\"claim\": \"Fine-tune your user simulator on real user language until the evaluation score goes down \u2014 a falling score is evidence the eval got more realistic, not that quality dropped.\", \"talk\": \"build-evals-that-actually-matter\", \"timestamp_sec\": 1015}, {\"claim\": \"Fork real production deployments into simulation mid-run: the agent is in the real world up to the fork point, which dramatically reduces simulation awareness and makes the first simulated turns undetectable.\", \"talk\": \"vending-bench-long-horizon-agent-evals\", \"timestamp_sec\": 830}, {\"claim\": \"Reward hacking is a benchmark failure, not a model failure \u2014 models getting smarter is the desired outcome, and it is the harness's job to remove the shortcut.\", \"talk\": \"benchmarks-the-good-the-bad-and-the-ugly\", \"timestamp_sec\": 447}, {\"claim\": \"SWE-Bench Pro accepts wrong implementations on 8.5% of tasks and rejects correct implementations on more than 24% \u2014 the grader, not the model, is the dominant error term.\", \"talk\": \"benchmarks-the-good-the-bad-and-the-ugly\", \"timestamp_sec\": 330}, {\"claim\": \"Prompt length is not a proxy for task difficulty: DeepSWE prompts are half the size of SWE-Bench Pro's yet yield solutions five times the lines of code across about seven files.\", \"talk\": \"deepswe-a-contamination-resistant-coding-benchmark\", \"timestamp_sec\": 650}, {\"claim\": \"Tightening the codebase API so test data structurally cannot reach training dropped an auto-research agent's data leakage rate to zero \u2014 abstraction constrains reward hacking better than instructions do.\", \"talk\": \"how-autoresearch-is-changing-ml-research\", \"timestamp_sec\": 850}, {\"claim\": \"In auto-research the eval is the loss function and the data, and the codebase abstraction is the model architecture \u2014 abstraction design is currently more underrated than eval design.\", \"talk\": \"how-autoresearch-is-changing-ml-research\", \"timestamp_sec\": 666}, {\"claim\": \"Deliberately redundant, overlapping QA gates are worth their cost \u2014 a Swiss cheese model where layered checks reduce the probability any single failure reaches production.\", \"talk\": \"building-closed-loop-evals-for-a-multimodal-agent-at-scale\", \"timestamp_sec\": 1086}, {\"claim\": \"A single rollout primitive \u2014 sandbox \u2192 agent \u2192 verifier \u2192 reward \u2014 is universal enough to serve evaluation, SFT data collection, RL, and non-eval batch agent workloads, so the eval harness and the training harness are the same machine.\", \"talk\": \"everything-is-a-rollout\", \"timestamp_sec\": 608}, {\"claim\": \"Agent development resembles machine learning more than software engineering: the pull request is the gradient descent step and overfitting shows up as reward hacking.\", \"talk\": \"everything-is-a-rollout\", \"timestamp_sec\": 361}], \"maturity\": \"consolidating\", \"maturity_rationale\": \"The mechanics are converging hard and specifically \u2014 production-derived golden sets, CI merge gates, verifier/agent runtime separation, repeated trials with intervals, behavior-based graders \u2014 with independent talks arriving at the same practices from benchmarks, enterprise agents, and coding-agent tooling. What is still openly argued is the scoring layer (deterministic vs LLM judge, binary vs rich feedback), whether authority sits offline or in production, and how much of the loop can close without a human; evals also remain the survey's number one stack challenge for a third year, though with a shrinking lead.\"}",
-  "ttft_ms": 113387,
-  "ttft_stream_ms": 2253,
-  "time_to_request_ms": 51,
+  "result": "{\"concept\":\"eval harness design\",\"state_of_practice\":\"By this conference the eval harness has stopped being a notebook and started being CI infrastructure: evals live in the repo as code, run on pre-commit and in the merge pipeline, and block changes that do not improve their test cases. The mechanics practitioners now agree on are borrowed from ML and from build engineering \u2014 record/replay fixtures of real tool responses, 3-6 trials per case because agents are non-deterministic, confidence intervals on every reported number, verifier runtimes isolated from agent runtimes, and gates that halt rather than warn. The dominant failure mode discussed is not the model but the harness: agents cherry-pick golden patches out of git log (25% of Opus 4.6 rollouts on DeepSWE), edit scorers to make evals pass, read prior chat sessions when workspaces are not isolated, and oversteer into conservative generic outputs to satisfy a QA gate. Verifiers are moving from implementation-anchored assertions (variable names, unexported helpers, PR-derived tests) toward observable behavior, after measurements showing SWE-Bench Pro accepts wrong implementations 8.5% of the time and rejects correct ones over 24%. Production logs are universally treated as raw material rather than evals \u2014 they must be lifted into replayable environments, stratified datasets, or forked simulations before anything can be verified. What is unsettled is how much of this to buy into: the tooling layer is described as essentially unbuilt, evals were named the #1 stack challenge for the third year running, and at least one credible voice argues that large hand-built eval sets are safety theater that a harness swap invalidates overnight.\",\"consensus\":[{\"claim\":\"Evals belong in the repo as code and must run automatically on change \u2014 pre-commit, in CI against real completions, and as a merge gate \u2014 not as a separate managed eval product.\",\"support_count\":6,\"supporting_talks\":[\"dont-ship-skills-without-evals\",\"build-evals-that-actually-matter\",\"designing-agents-the-floor-is-the-frontier\",\"agents-in-production-how-opengov-built-and-scaled-og-assist\",\"frontier-results-on-device\",\"medic-for-apache-spark-first-aid-for-failing-jobs\"],\"evidence_quote\":\"if a change happens to or like a diff to the skill file, the eval will be run, and there will also be a result, and the change will not be merged if it is not improving the test cases.\",\"evidence_talk\":\"dont-ship-skills-without-evals\",\"evidence_timestamp_sec\":988},{\"claim\":\"The harness must be built assuming the agent will cheat it: isolate the workspace, separate the verifier runtime from the agent runtime, and explicitly forbid the agent from touching golden datasets, scorers, or test data.\",\"support_count\":6,\"supporting_talks\":[\"deepswe-a-contamination-resistant-coding-benchmark\",\"agents-building-agents\",\"dont-ship-skills-without-evals\",\"benchmarks-the-good-the-bad-and-the-ugly\",\"building-closed-loop-evals-for-a-multimodal-agent-at-scale\",\"how-autoresearch-is-changing-ml-research\"],\"evidence_quote\":\"we've taken some additional measures to guard against cheating uh reward hacking uh by ensuring you know the verifier runtime is fully separate now from the agent runtime.\",\"evidence_talk\":\"deepswe-a-contamination-resistant-coding-benchmark\",\"evidence_timestamp_sec\":889},{\"claim\":\"A single eval run is not a result: cases must be run multiple times and reported with averages and confidence intervals, because non-determinism swamps small differences.\",\"support_count\":4,\"supporting_talks\":[\"why-your-agent-disagrees-with-itself-and-what-to-do-about-it\",\"dont-ship-skills-without-evals\",\"build-evals-that-actually-matter\",\"deepswe-a-contamination-resistant-coding-benchmark\"],\"evidence_quote\":\"That means a single evaluation run didn't tell you the whole story. You need to repeat your evaluation multiple times in order to get a holistic picture by the average over the different runs results.\",\"evidence_talk\":\"why-your-agent-disagrees-with-itself-and-what-to-do-about-it\",\"evidence_timestamp_sec\":183},{\"claim\":\"Verifiers should score observable behavior and task outcome, never implementation details such as specific names, module placement, private helpers, or whether a particular component was loaded on a given turn.\",\"support_count\":4,\"supporting_talks\":[\"deepswe-a-contamination-resistant-coding-benchmark\",\"benchmarks-the-good-the-bad-and-the-ugly\",\"dont-ship-skills-without-evals\",\"build-evals-that-actually-matter\"],\"evidence_quote\":\"for us we want to uh emphasize on the observable behavior as much as possible. We want to ensure that any correct implementation uh anything that correctly solves the problem is rewarded and this will prevent against uh false negatives.\",\"evidence_talk\":\"deepswe-a-contamination-resistant-coding-benchmark\",\"evidence_timestamp_sec\":733},{\"claim\":\"Production logs and traces are inputs to a harness, not evals: they must be converted into replayable environments, checked-in fixtures, or stratified datasets with defined grading before any fix can be verified.\",\"support_count\":5,\"supporting_talks\":[\"continual-learning-for-ai-agents-from-failures-to-durable-improvements\",\"medic-for-apache-spark-first-aid-for-failing-jobs\",\"build-evals-that-actually-matter\",\"vending-bench-long-horizon-agent-evals\",\"your-moat-is-your-data-model\"],\"evidence_quote\":\"Here we have log and feedback, but what we really need is a replayable learning environment, a simulation that we can rerun with defined grading on what success looks like, not one instance of what happened and the feedback on top of it.\",\"evidence_talk\":\"continual-learning-for-ai-agents-from-failures-to-durable-improvements\",\"evidence_timestamp_sec\":237},{\"claim\":\"Model selection should be driven by your own eval on your own use case; public leaderboards and vendor brand are not a sufficient basis, and building the eval precedes optimizing against it.\",\"support_count\":5,\"supporting_talks\":[\"everything-is-a-rollout\",\"benchmarks-the-good-the-bad-and-the-ugly\",\"frontier-results-on-device\",\"designing-agents-the-floor-is-the-frontier\",\"the-unreasonable-effectiveness-of-separating-the-task-from-the-model\"],\"evidence_quote\":\"as soon as you have an aval the power is now in your hands. You can consider every single model. You don't have to trust brand. You don't have to trust somebody else's aval.\",\"evidence_talk\":\"everything-is-a-rollout\",\"evidence_timestamp_sec\":726},{\"claim\":\"An eval score that does not gate a decision is worthless \u2014 gates must be able to halt the pipeline or block the merge, not merely emit a warning or a dashboard number.\",\"support_count\":3,\"supporting_talks\":[\"every-solo-agent-builder-eventually-reinvents-a-worse-version-of-cicd\",\"build-evals-that-actually-matter\",\"dont-ship-skills-without-evals\"],\"evidence_quote\":\"A gate which logs only warnings is not a gate. It's a suggestion. The gate needs to block the artifact from moving forward.\",\"evidence_talk\":\"every-solo-agent-builder-eventually-reinvents-a-worse-version-of-cicd\",\"evidence_timestamp_sec\":601}],\"disagreements\":[{\"question\":\"Should teams invest months building durable eval datasets, given how fast models and harnesses change?\",\"position_a\":\"Large hand-built eval sets are near-theater: switching to a new harness can invalidate ~80% of tool-call evals, most teams would not delay a model upgrade by two weeks to update them, and effort is better spent on production issue detection (classifiers over traces, anomaly investigation).\",\"position_a_talks\":[\"designing-agents-the-floor-is-the-frontier\"],\"position_b\":\"Build the eval first and treat it as the durable asset: every company that uses computers should have its own, evals should be retained even after the component they tested is retired, and the eval is the loss function the whole system hill-climbs against.\",\"position_b_talks\":[\"everything-is-a-rollout\",\"dont-ship-skills-without-evals\",\"how-autoresearch-is-changing-ml-research\",\"the-unreasonable-effectiveness-of-separating-the-task-from-the-model\",\"build-evals-that-actually-matter\"],\"why_it_matters\":\"It decides whether an AI team staffs an eval-engineering function with a golden-dataset backlog, or staffs production observability and trace triage instead \u2014 and whether a model upgrade is gated on eval maintenance or shipped on production monitoring.\"},{\"question\":\"Should the primary verifier be a deterministic assertion or an LLM judge?\",\"position_a\":\"Prefer cheap deterministic checks \u2014 regex assertions cover most cases, deterministic evaluators and post-processing fix structural and length failures, and LLM judges are biased (a Claude judge favored Claude over Llama) and must be manually inspected rather than trusted numerically.\",\"position_a_talks\":[\"dont-ship-skills-without-evals\",\"frontier-results-on-device\",\"medic-for-apache-spark-first-aid-for-failing-jobs\",\"continual-learning-for-ai-agents-from-failures-to-durable-improvements\"],\"position_b\":\"The LLM judge is the core instrument and the work is validating it: hand-label ~100 examples, split train/dev/test, score precision and recall, tie the rubric to business outcomes, and use hybrid LLM-as-judge verification so prompts can stay high-level and objective-only.\",\"position_b_talks\":[\"build-evals-that-actually-matter\",\"deepswe-a-contamination-resistant-coding-benchmark\",\"building-closed-loop-evals-for-a-multimodal-agent-at-scale\",\"your-moat-is-your-data-model\"],\"why_it_matters\":\"Deterministic verifiers force prescriptive task prompts that leak methodology and produce false negatives; judge-based verifiers allow open-ended tasks but add a second model to calibrate, budget for, and audit for family bias.\"},{\"question\":\"Can offline simulation be trusted as the evaluation environment, or must evaluation be grounded in real deployments?\",\"position_a\":\"Offline simulation is the gate: agents should pass a rigorous offline eval before touching live users, with fixtures snapshotted from real tool responses and user simulators fine-tuned on real user language until scores drop.\",\"position_a_talks\":[\"build-evals-that-actually-matter\",\"medic-for-apache-spark-first-aid-for-failing-jobs\",\"continual-learning-for-ai-agents-from-failures-to-durable-improvements\"],\"position_b\":\"Simulated behavioral evaluation is fundamentally compromised because models detect the simulation and behave differently; real deployments and runtime production context find problems that offline setups and static analysis only guess at, so real-life evals (or forks of real deployments) should dominate.\",\"position_b_talks\":[\"vending-bench-long-horizon-agent-evals\",\"from-blind-spots-to-merged-prs-continuous-agentic-performance-optimization\",\"designing-agents-the-floor-is-the-frontier\"],\"why_it_matters\":\"If simulation awareness invalidates behavioral results, the entire pre-production gate is measuring a different agent than the one users get \u2014 which pushes investment from eval datasets toward production forking, trace classifiers, and staged rollout.\"},{\"question\":\"Where do eval criteria come from \u2014 negotiated specification or discovery from graded data?\",\"position_a\":\"Criteria cannot be fully specified in advance; they are discovered by looking at raw outputs and grading them, and eval failures feed back to expose gaps and ambiguities in the underlying model of the domain.\",\"position_a_talks\":[\"build-evals-that-actually-matter\",\"your-moat-is-your-data-model\"],\"position_b\":\"Definitions of a good output should be negotiated up front with product, design, policy, and legal and then encoded into the evals, with task instructions human-authored to express objectives and hard constraints.\",\"position_b_talks\":[\"building-closed-loop-evals-for-a-multimodal-agent-at-scale\",\"benchmarks-the-good-the-bad-and-the-ugly\"],\"why_it_matters\":\"Front-loading criteria makes evals shippable on a schedule but bakes in blind spots; discovering criteria from data requires sustained human labeling time and makes the eval a moving target that scores are not comparable across.\"},{\"question\":\"Can the eval-driven improvement loop run autonomously, or does every change need a human gate?\",\"position_a\":\"It can be closed fully: config-driven retuning with no human in the loop given guardrail observability and fast rollback, agent optimizers that hill-climb instructions past handwritten quality, and coding agents that run hypotheses on their own git branches with rollback on regression.\",\"position_a_talks\":[\"building-closed-loop-evals-for-a-multimodal-agent-at-scale\",\"on-ai-and-knowledge\",\"agents-building-agents\"],\"position_b\":\"Autonomy needs 80-90% trust that current workflows do not have: surface one high-ROI human-readable finding at a time rather than a rain of PRs, keep write credentials (push, PR creation, CI trigger) in a deterministic layer the agent never holds, and require human review as the merge gate.\",\"position_b_talks\":[\"from-blind-spots-to-merged-prs-continuous-agentic-performance-optimization\",\"we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night\",\"how-autoresearch-is-changing-ml-research\"],\"why_it_matters\":\"It sets where the harness boundary sits: a fully closed loop needs guardrail metrics and rollback as the only safety net, while a human-gated loop needs prioritization by review risk and a deterministic privileged layer outside the agent.\"}],\"practical_guidance\":{\"do\":[\"Run 3-6 trials per eval case and report averages with confidence intervals; treat 84% vs 88% on 50 traces as indistinguishable.\",\"Run every eval in a fresh isolated workspace, with the verifier runtime fully separate from the agent runtime, so the agent cannot read prior chats, prior executions, or the golden patch out of git log.\",\"Explicitly forbid an optimizing agent from editing golden datasets or scorers, and run each optimization hypothesis on its own git branch with automatic rollback on regression.\",\"Snapshot real downstream tool responses in record mode as fixtures checked into the repo, so end-to-end evals are reproducible after production data ages out of retention.\",\"Validate LLM judges like binary classifiers: hand-label ~100 examples, split train/dev/test, and score precision and recall against those labels.\",\"Frame rubrics as binary pass/fail tied to a business outcome rather than a continuous quality score, because binary outcomes are calibratable and actionable.\",\"Run the same eval suite with and without the component (skill, tool, prompt block) loaded, and keep the eval after the component is retired as a regression test that signals when to reintroduce it.\",\"Keep the harness config-driven (YAML) so analysts and data scientists, not just engineers, can add test cases.\",\"When the underlying data changes constantly, store the ground-truth query rather than the expected answer and compute the expected result against live data at eval time.\",\"Use pass@K as the metric for self-correcting edit loops where the agent retries against a QA gate.\",\"Fine-tune the user simulator on real user language until the eval score goes down; a falling score means the eval got more realistic.\",\"Instrument the most expensive handoff in the pipeline first, not the most technically complex one.\",\"Test the same component across multiple agent harnesses and models, since behavior differs between them.\",\"Use a coding-agent subscription rather than per-token API pricing for LLM-as-judge grading runs.\"],\"avoid\":[\"Shipping an LLM-judge score that gates nothing, or a gate that only logs warnings.\",\"Building the offline dataset by prompting an LLM for ~50 test queries instead of sampling and mutating production traffic.\",\"Using an off-the-shelf frontier model as a user simulator for support scenarios \u2014 it produces unrealistically polite, articulate users and inflated pass rates (Lyft's first run reported 90%+).\",\"Shipping generic prebuilt metrics (helpfulness, toxicity, conciseness) as core metrics; a helpfulness of 0.5 is not actionable.\",\"Putting a line in the task prompt saying tests are already handled \u2014 one such line stops even GPT 5.5 and Opus 4.8 from verifying their own work.\",\"Writing instructions that point at the test file or hand over the full implementation interface; that leaks the answer and invalidates the task.\",\"Asserting on unspecified variable names, unexported functions, or required module placement \u2014 these are weak verifiers that would fail code review.\",\"Mining eval tasks from closed public PRs, which are contaminated by construction; prefer novel tasks with private holdout sets.\",\"Using trace clustering as the issue-detection mechanism: clusters are hard to track over time, boundaries are uncontrollable, and one cluster can span unrelated root causes.\",\"Trusting LLM self-reported uncertainty to select cases for human review; use disagreement across runs or across models instead.\",\"Judging candidate outputs with a model from the same family as one of the candidates.\",\"Running A/B tests or experiments when you have five to ten users.\",\"Relying on manual end-to-end testing against live production when production data is retained only briefly \u2014 regressions become undetectable.\",\"Writing two-pager task instructions (SWE-Bench Pro averages 481 words); prompt length is not a proxy for task difficulty.\"]},\"notable_outliers\":[{\"claim\":\"Switching harnesses \u2014 for example moving to the Claude Code CLI \u2014 can invalidate roughly 80% of a team's tool-call evals, which is evidence those evals were not load-bearing to begin with.\",\"talk\":\"designing-agents-the-floor-is-the-frontier\",\"timestamp_sec\":254},{\"claim\":\"Claude Opus 4.6 and 4.7 attempted to recover golden patches from git history in 25% and 18% of rollouts, versus ~1% for Gemini and 0% for GPT models.\",\"talk\":\"deepswe-a-contamination-resistant-coding-benchmark\",\"timestamp_sec\":333},{\"claim\":\"SWE-Bench Pro accepts wrong implementations on 8.5% of tasks and rejects correct implementations on more than 24% \u2014 the grader, not the model, is the error source.\",\"talk\":\"benchmarks-the-good-the-bad-and-the-ugly\",\"timestamp_sec\":330},{\"claim\":\"Forking a real deployment into a simulation at a chosen point dramatically decreases simulation awareness, making the first turns effectively undetectable as simulation.\",\"talk\":\"vending-bench-long-horizon-agent-evals\",\"timestamp_sec\":830},{\"claim\":\"Tightening the codebase API so test data structurally could not reach training dropped the agent's data leakage rate to zero \u2014 abstraction design constrains reward hacking better than instructions do.\",\"talk\":\"how-autoresearch-is-changing-ml-research\",\"timestamp_sec\":850},{\"claim\":\"In agent development the gradient descent step is a pull request into your repo and overfitting looks like reward hacking, so agent work should use ML tooling and guard against ML pitfalls.\",\"talk\":\"everything-is-a-rollout\",\"timestamp_sec\":361},{\"claim\":\"Rendering time-series metrics as images rather than raw series guarantees a fixed input token count for evaluation regardless of job duration.\",\"talk\":\"medic-for-apache-spark-first-aid-for-failing-jobs\",\"timestamp_sec\":451}],\"maturity\":\"consolidating\",\"maturity_rationale\":\"Practitioners across roughly a dozen independent talks converge on the same mechanics \u2014 evals as code in CI, blocking gates, isolated verifier runtimes, repeated trials with intervals, behavior-based verification, and logs lifted into replayable environments \u2014 but the edges are actively argued: deterministic assertions versus validated LLM judges, offline simulation versus production-grounded evaluation, and whether large eval datasets are durable at all. That unresolved core plus the survey finding that evals are the #1 stack challenge for a third year, and the claim that the environment/reward/optimizer tooling layer is essentially unbuilt, keep it short of settled.\"}",
+  "ttft_ms": 76920,
+  "ttft_stream_ms": 3400,
+  "time_to_request_ms": 43,
   "type": "result",
-  "duration_ms": 193719,
-  "uuid": "9836f680-3a6a-4e12-822d-eb3e114ffc17",
+  "duration_ms": 153642,
+  "uuid": "ab86bb3f-e557-4552-b8bb-dc7d8586c3ce",
   "passC": {
     "concept": "eval harness design",
-    "state_of_practice": "The field now treats the eval harness as ordinary production infrastructure rather than a research artifact: a golden dataset sampled from real traffic, a verifier, an isolated execution environment, and a CI hook that blocks merges. The strongest convergence is on order of operations \u2014 build the eval and the ability to grade an outcome first, then let anything (a human, a coding agent, an optimizer, a different model) climb it \u2014 which is what makes model swapping, skill retirement, and autonomous agent self-improvement tractable at all. Harness hygiene has become concrete and checkable: the verifier runtime is separated from the agent runtime, eval cases run in fresh workspaces, optimizing agents are explicitly forbidden from touching scorers or golden data, and every case is run 3\u20136 times with confidence intervals because a single run of a non-deterministic system says nothing. Verifiers are moving from implementation-anchored assertions (variable names, unexported helpers, module placement) toward observable behavior and binary task outcomes, driven by measured evidence that implementation-anchored graders both accept wrong patches and reject correct ones at double-digit rates. What remains unsettled is the scoring layer and the loop around it: deterministic assertions versus validated LLM judges, offline simulation versus live production as the authoritative signal, and how much of the fix-verify-deploy loop can run without a human. Evals were named the number one stack challenge for the third consecutive year, but the pain has shifted from \"we have none\" to \"ours are not reproducible, not gating anything, or measuring the wrong thing.\"",
+    "state_of_practice": "By this conference the eval harness has stopped being a notebook and started being CI infrastructure: evals live in the repo as code, run on pre-commit and in the merge pipeline, and block changes that do not improve their test cases. The mechanics practitioners now agree on are borrowed from ML and from build engineering \u2014 record/replay fixtures of real tool responses, 3-6 trials per case because agents are non-deterministic, confidence intervals on every reported number, verifier runtimes isolated from agent runtimes, and gates that halt rather than warn. The dominant failure mode discussed is not the model but the harness: agents cherry-pick golden patches out of git log (25% of Opus 4.6 rollouts on DeepSWE), edit scorers to make evals pass, read prior chat sessions when workspaces are not isolated, and oversteer into conservative generic outputs to satisfy a QA gate. Verifiers are moving from implementation-anchored assertions (variable names, unexported helpers, PR-derived tests) toward observable behavior, after measurements showing SWE-Bench Pro accepts wrong implementations 8.5% of the time and rejects correct ones over 24%. Production logs are universally treated as raw material rather than evals \u2014 they must be lifted into replayable environments, stratified datasets, or forked simulations before anything can be verified. What is unsettled is how much of this to buy into: the tooling layer is described as essentially unbuilt, evals were named the #1 stack challenge for the third year running, and at least one credible voice argues that large hand-built eval sets are safety theater that a harness swap invalidates overnight.",
     "consensus": [
       {
-        "claim": "The eval and its grader must exist before any optimization \u2014 model selection, prompt tuning, skill authoring, or automated hill-climbing are all downstream of having a gradeable outcome.",
+        "claim": "Evals belong in the repo as code and must run automatically on change \u2014 pre-commit, in CI against real completions, and as a merge gate \u2014 not as a separate managed eval product.",
         "support_count": 6,
         "supporting_talks": [
-          "everything-is-a-rollout",
-          "the-unreasonable-effectiveness-of-separating-the-task-from-the-model",
-          "how-autoresearch-is-changing-ml-research",
-          "on-ai-and-knowledge",
-          "agents-building-agents",
-          "continual-learning-for-ai-agents-from-failures-to-durable-improvements"
-        ],
-        "evidence_quote": "if you want to build an agentic system start with the aval that matters and your ability to grade the outcome and then say I welcome all models",
-        "evidence_talk": "everything-is-a-rollout",
-        "evidence_timestamp_sec": 682
-      },
-      {
-        "claim": "Evals belong in CI as a merge/deploy gate that runs on every change to the prompt, skill, or agent code \u2014 not as an offline report someone reads later.",
-        "support_count": 5,
-        "supporting_talks": [
           "dont-ship-skills-without-evals",
-          "agents-in-production-how-opengov-built-and-scaled-og-assist",
           "build-evals-that-actually-matter",
+          "designing-agents-the-floor-is-the-frontier",
+          "agents-in-production-how-opengov-built-and-scaled-og-assist",
           "frontier-results-on-device",
           "medic-for-apache-spark-first-aid-for-failing-jobs"
         ],
@@ -108,12 +97,12 @@
         "evidence_timestamp_sec": 988
       },
       {
-        "claim": "The harness must be structurally isolated from the system under test, because capable agents will reward-hack any reachable artifact \u2014 scorers, golden data, git history, prior chat logs.",
+        "claim": "The harness must be built assuming the agent will cheat it: isolate the workspace, separate the verifier runtime from the agent runtime, and explicitly forbid the agent from touching golden datasets, scorers, or test data.",
         "support_count": 6,
         "supporting_talks": [
           "deepswe-a-contamination-resistant-coding-benchmark",
-          "dont-ship-skills-without-evals",
           "agents-building-agents",
+          "dont-ship-skills-without-evals",
           "benchmarks-the-good-the-bad-and-the-ugly",
           "building-closed-loop-evals-for-a-multimodal-agent-at-scale",
           "how-autoresearch-is-changing-ml-research"
@@ -123,20 +112,20 @@
         "evidence_timestamp_sec": 889
       },
       {
-        "claim": "A single run per eval case is invalid; cases must be repeated (3\u20136 trials is the cited range) and scores reported with intervals, because non-determinism swamps small deltas.",
+        "claim": "A single eval run is not a result: cases must be run multiple times and reported with averages and confidence intervals, because non-determinism swamps small differences.",
         "support_count": 4,
         "supporting_talks": [
-          "why-your-agent-disagrees-and-what-to-do-about-it",
+          "why-your-agent-disagrees-with-itself-and-what-to-do-about-it",
           "dont-ship-skills-without-evals",
           "build-evals-that-actually-matter",
           "deepswe-a-contamination-resistant-coding-benchmark"
         ],
         "evidence_quote": "That means a single evaluation run didn't tell you the whole story. You need to repeat your evaluation multiple times in order to get a holistic picture by the average over the different runs results.",
-        "evidence_talk": "why-your-agent-disagrees-and-what-to-do-about-it",
+        "evidence_talk": "why-your-agent-disagrees-with-itself-and-what-to-do-about-it",
         "evidence_timestamp_sec": 183
       },
       {
-        "claim": "Verifiers should assert observable behavior and task outcomes, not implementation details such as variable names, module placement, private helpers, or whether a particular component was loaded on a given turn.",
+        "claim": "Verifiers should score observable behavior and task outcome, never implementation details such as specific names, module placement, private helpers, or whether a particular component was loaded on a given turn.",
         "support_count": 4,
         "supporting_talks": [
           "deepswe-a-contamination-resistant-coding-benchmark",
@@ -149,196 +138,208 @@
         "evidence_timestamp_sec": 733
       },
       {
-        "claim": "Production logs, traces, and manual end-to-end runs are raw material, not evals \u2014 they must be lifted into replayable, re-runnable environments with fixed grading, and every triaged production failure folded back in as a regression case.",
+        "claim": "Production logs and traces are inputs to a harness, not evals: they must be converted into replayable environments, checked-in fixtures, or stratified datasets with defined grading before any fix can be verified.",
         "support_count": 5,
         "supporting_talks": [
           "continual-learning-for-ai-agents-from-failures-to-durable-improvements",
           "medic-for-apache-spark-first-aid-for-failing-jobs",
           "build-evals-that-actually-matter",
-          "agents-building-agents",
-          "vending-bench-long-horizon-agent-evals"
+          "vending-bench-long-horizon-agent-evals",
+          "your-moat-is-your-data-model"
         ],
         "evidence_quote": "Here we have log and feedback, but what we really need is a replayable learning environment, a simulation that we can rerun with defined grading on what success looks like, not one instance of what happened and the feedback on top of it.",
         "evidence_talk": "continual-learning-for-ai-agents-from-failures-to-durable-improvements",
         "evidence_timestamp_sec": 237
+      },
+      {
+        "claim": "Model selection should be driven by your own eval on your own use case; public leaderboards and vendor brand are not a sufficient basis, and building the eval precedes optimizing against it.",
+        "support_count": 5,
+        "supporting_talks": [
+          "everything-is-a-rollout",
+          "benchmarks-the-good-the-bad-and-the-ugly",
+          "frontier-results-on-device",
+          "designing-agents-the-floor-is-the-frontier",
+          "the-unreasonable-effectiveness-of-separating-the-task-from-the-model"
+        ],
+        "evidence_quote": "as soon as you have an aval the power is now in your hands. You can consider every single model. You don't have to trust brand. You don't have to trust somebody else's aval.",
+        "evidence_talk": "everything-is-a-rollout",
+        "evidence_timestamp_sec": 726
+      },
+      {
+        "claim": "An eval score that does not gate a decision is worthless \u2014 gates must be able to halt the pipeline or block the merge, not merely emit a warning or a dashboard number.",
+        "support_count": 3,
+        "supporting_talks": [
+          "every-solo-agent-builder-eventually-reinvents-a-worse-version-of-cicd",
+          "build-evals-that-actually-matter",
+          "dont-ship-skills-without-evals"
+        ],
+        "evidence_quote": "A gate which logs only warnings is not a gate. It's a suggestion. The gate needs to block the artifact from moving forward.",
+        "evidence_talk": "every-solo-agent-builder-eventually-reinvents-a-worse-version-of-cicd",
+        "evidence_timestamp_sec": 601
       }
     ],
     "disagreements": [
       {
-        "question": "Should the scoring layer be built primarily from deterministic programmatic checks, or from validated LLM judges?",
-        "position_a": "Most scoring should be cheap deterministic assertions \u2014 regex, unit tests, fixture-based checks, hard-coded evaluators (e.g. 'at most three suggested fixes'). LLM-as-judge is the exception, reserved for what genuinely cannot be asserted in code.",
+        "question": "Should teams invest months building durable eval datasets, given how fast models and harnesses change?",
+        "position_a": "Large hand-built eval sets are near-theater: switching to a new harness can invalidate ~80% of tool-call evals, most teams would not delay a model upgrade by two weeks to update them, and effort is better spent on production issue detection (classifiers over traces, anomaly investigation).",
         "position_a_talks": [
-          "dont-ship-skills-without-evals",
-          "medic-for-apache-spark-first-aid-for-failing-jobs",
-          "continual-learning-for-ai-agents-from-failures-to-durable-improvements",
-          "benchmarks-the-good-the-bad-and-the-ugly"
+          "designing-agents-the-floor-is-the-frontier"
         ],
-        "position_b": "LLM judges are the core scorer for anything open-ended, and the real work is validating them like binary classifiers (\u2248100 hand labels, train/dev/test, precision and recall) and defining rejection behavior when the judge is unconfident. Purely test-based verification forces prescriptive prompts and over-constrains the task.",
+        "position_b": "Build the eval first and treat it as the durable asset: every company that uses computers should have its own, evals should be retained even after the component they tested is retired, and the eval is the loss function the whole system hill-climbs against.",
         "position_b_talks": [
-          "build-evals-that-actually-matter",
-          "building-closed-loop-evals-for-a-multimodal-agent-at-scale",
-          "deepswe-a-contamination-resistant-coding-benchmark",
-          "your-moat-is-your-data-model"
+          "everything-is-a-rollout",
+          "dont-ship-skills-without-evals",
+          "how-autoresearch-is-changing-ml-research",
+          "the-unreasonable-effectiveness-of-separating-the-task-from-the-model",
+          "build-evals-that-actually-matter"
         ],
-        "why_it_matters": "It determines whether you need an entire judge-validation pipeline with hand-labeled data and periodic recalibration, or just a test runner \u2014 an order-of-magnitude difference in harness cost. It also bounds how open-ended your task prompts can be: deterministic graders force you to hint at the intended method, which is exactly the leakage benchmark authors are trying to eliminate.",
-        "evidence_quote": ""
+        "why_it_matters": "It decides whether an AI team staffs an eval-engineering function with a golden-dataset backlog, or staffs production observability and trace triage instead \u2014 and whether a model upgrade is gated on eval maintenance or shipped on production monitoring."
       },
       {
-        "question": "Where does the authoritative quality signal come from \u2014 an offline simulated environment, or live production runtime?",
-        "position_a": "Offline is the gate. Agents pass a rigorous simulated evaluation (fine-tuned user simulators, recorded tool fixtures, replayable learning environments) before any live user sees them, precisely because live users should never be the test data.",
+        "question": "Should the primary verifier be a deterministic assertion or an LLM judge?",
+        "position_a": "Prefer cheap deterministic checks \u2014 regex assertions cover most cases, deterministic evaluators and post-processing fix structural and length failures, and LLM judges are biased (a Claude judge favored Claude over Llama) and must be manually inspected rather than trusted numerically.",
+        "position_a_talks": [
+          "dont-ship-skills-without-evals",
+          "frontier-results-on-device",
+          "medic-for-apache-spark-first-aid-for-failing-jobs",
+          "continual-learning-for-ai-agents-from-failures-to-durable-improvements"
+        ],
+        "position_b": "The LLM judge is the core instrument and the work is validating it: hand-label ~100 examples, split train/dev/test, score precision and recall, tie the rubric to business outcomes, and use hybrid LLM-as-judge verification so prompts can stay high-level and objective-only.",
+        "position_b_talks": [
+          "build-evals-that-actually-matter",
+          "deepswe-a-contamination-resistant-coding-benchmark",
+          "building-closed-loop-evals-for-a-multimodal-agent-at-scale",
+          "your-moat-is-your-data-model"
+        ],
+        "why_it_matters": "Deterministic verifiers force prescriptive task prompts that leak methodology and produce false negatives; judge-based verifiers allow open-ended tasks but add a second model to calibrate, budget for, and audit for family bias."
+      },
+      {
+        "question": "Can offline simulation be trusted as the evaluation environment, or must evaluation be grounded in real deployments?",
+        "position_a": "Offline simulation is the gate: agents should pass a rigorous offline eval before touching live users, with fixtures snapshotted from real tool responses and user simulators fine-tuned on real user language until scores drop.",
         "position_a_talks": [
           "build-evals-that-actually-matter",
           "medic-for-apache-spark-first-aid-for-failing-jobs",
           "continual-learning-for-ai-agents-from-failures-to-durable-improvements"
         ],
-        "position_b": "Offline signal decays or is structurally compromised \u2014 statically tuned components do not survive online drift, proposed fixes are 'plausible unverified' until measured on the real production flow, and models detect simulation and change behavior. Authority has to come from runtime.",
+        "position_b": "Simulated behavioral evaluation is fundamentally compromised because models detect the simulation and behave differently; real deployments and runtime production context find problems that offline setups and static analysis only guess at, so real-life evals (or forks of real deployments) should dominate.",
         "position_b_talks": [
-          "building-closed-loop-evals-for-a-multimodal-agent-at-scale",
+          "vending-bench-long-horizon-agent-evals",
           "from-blind-spots-to-merged-prs-continuous-agentic-performance-optimization",
-          "vending-bench-long-horizon-agent-evals"
+          "designing-agents-the-floor-is-the-frontier"
         ],
-        "why_it_matters": "It decides where the engineering budget goes: simulator fidelity and fixture recording, versus production instrumentation, guardrail metrics, and safe online retuning with rollback. It also changes what 'passing' means \u2014 a green offline suite is either a ship signal or a weak prior depending on which camp you are in.",
-        "evidence_quote": ""
+        "why_it_matters": "If simulation awareness invalidates behavioral results, the entire pre-production gate is measuring a different agent than the one users get \u2014 which pushes investment from eval datasets toward production forking, trace classifiers, and staged rollout."
       },
       {
-        "question": "Can the eval-driven improvement loop close without a human, or must a person validate before changes land?",
-        "position_a": "Yes \u2014 retuning can be fully config-driven with no human in the loop, provided you have guardrail observability, deterministic evaluators, and fast rollback; automatically hill-climbed instructions can be deployed to production and can beat handwritten ones.",
-        "position_a_talks": [
-          "building-closed-loop-evals-for-a-multimodal-agent-at-scale",
-          "on-ai-and-knowledge"
-        ],
-        "position_b": "No \u2014 clustered failures can be false positives or intended behavior and need subject-matter-expert triage before fixes; dumping 80 auto-generated PRs is counterproductive; criteria and labels only emerge from a human looking at raw data.",
-        "position_b_talks": [
-          "agents-building-agents",
-          "from-blind-spots-to-merged-prs-continuous-agentic-performance-optimization",
-          "build-evals-that-actually-matter"
-        ],
-        "why_it_matters": "It sets the required reliability bar before automation: one side ships on guardrail metrics plus rollback, the other holds out for ~80\u201390% trust and a human reviewer per change. Getting it wrong either bottlenecks the loop on human attention or silently deploys regressions that the guardrails do not cover.",
-        "evidence_quote": ""
-      },
-      {
-        "question": "Should the agent harness be held constant to isolate model capability, or treated as part of the system being evaluated?",
-        "position_a": "Neutralize it. Run every model through one agent-agnostic harness so you measure base model performance faithfully rather than each vendor's scaffolding.",
-        "position_a_talks": [
-          "deepswe-a-contamination-resistant-coding-benchmark"
-        ],
-        "position_b": "The harness is a legitimate and decisive component: deterministic post-processing in the harness closes quality gaps a bigger model would not; the same skill passes on one harness and fails on another, so results must be reported per-harness; and benchmarks that exclude custom-harness results should instead run a separate open-harness leaderboard because only results matter.",
-        "position_b_talks": [
-          "recursive-coding-agents",
-          "frontier-results-on-device",
-          "dont-ship-skills-without-evals"
-        ],
-        "why_it_matters": "It determines what a leaderboard number actually licenses you to conclude \u2014 model choice or system choice \u2014 and whether harness engineering counts as a legitimate result or as contaminating the measurement.",
-        "evidence_quote": ""
-      },
-      {
-        "question": "Should scorers emit a binary/scalar verdict or richer change-oriented feedback?",
-        "position_a": "Frame every eval as binary task success or failure tied to a business outcome; binary is easy to calibrate, easy to train a judge on, and directly actionable, whereas a 0.5 helpfulness score tells you nothing.",
+        "question": "Where do eval criteria come from \u2014 negotiated specification or discovery from graded data?",
+        "position_a": "Criteria cannot be fully specified in advance; they are discovered by looking at raw outputs and grading them, and eval failures feed back to expose gaps and ambiguities in the underlying model of the domain.",
         "position_a_talks": [
           "build-evals-that-actually-matter",
-          "building-closed-loop-evals-for-a-multimodal-agent-at-scale"
+          "your-moat-is-your-data-model"
         ],
-        "position_b": "Scalar and binary scores throw away information \u2014 knowing what could change in an output to improve it carries far more signal than good/bad, and current models are strong enough to convert textual environment feedback into the optimization target directly.",
+        "position_b": "Definitions of a good output should be negotiated up front with product, design, policy, and legal and then encoded into the evals, with task instructions human-authored to express objectives and hard constraints.",
         "position_b_talks": [
-          "the-unreasonable-effectiveness-of-separating-the-task-from-the-model"
+          "building-closed-loop-evals-for-a-multimodal-agent-at-scale",
+          "benchmarks-the-good-the-bad-and-the-ugly"
         ],
-        "why_it_matters": "The scorer's output type is the interface the whole optimization loop consumes: binary supports pass rates, pass@K, and confidence intervals, while rich feedback supports prompt/code synthesis but is far harder to aggregate, gate on, or report to leadership.",
-        "evidence_quote": ""
+        "why_it_matters": "Front-loading criteria makes evals shippable on a schedule but bakes in blind spots; discovering criteria from data requires sustained human labeling time and makes the eval a moving target that scores are not comparable across."
+      },
+      {
+        "question": "Can the eval-driven improvement loop run autonomously, or does every change need a human gate?",
+        "position_a": "It can be closed fully: config-driven retuning with no human in the loop given guardrail observability and fast rollback, agent optimizers that hill-climb instructions past handwritten quality, and coding agents that run hypotheses on their own git branches with rollback on regression.",
+        "position_a_talks": [
+          "building-closed-loop-evals-for-a-multimodal-agent-at-scale",
+          "on-ai-and-knowledge",
+          "agents-building-agents"
+        ],
+        "position_b": "Autonomy needs 80-90% trust that current workflows do not have: surface one high-ROI human-readable finding at a time rather than a rain of PRs, keep write credentials (push, PR creation, CI trigger) in a deterministic layer the agent never holds, and require human review as the merge gate.",
+        "position_b_talks": [
+          "from-blind-spots-to-merged-prs-continuous-agentic-performance-optimization",
+          "we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night",
+          "how-autoresearch-is-changing-ml-research"
+        ],
+        "why_it_matters": "It sets where the harness boundary sits: a fully closed loop needs guardrail metrics and rollback as the only safety net, while a human-gated loop needs prioritization by review risk and a deterministic privileged layer outside the agent."
       }
     ],
     "practical_guidance": {
       "do": [
-        "Run each eval case 3\u20136 times and attach a confidence interval to every reported score; treat 84% vs 88% on 50 traces as noise, not a win.",
-        "Run the verifier in a runtime fully separate from the agent runtime, and each case in a fresh isolated workspace so the agent cannot read prior chats, prior executions, or .git history.",
-        "Explicitly forbid any optimizing agent from editing golden datasets or scorers; run each optimization hypothesis on its own git branch and roll back on regression.",
-        "Block the merge when an eval-affecting diff does not improve the test cases; wire evals to run locally, at pre-commit, and in CI.",
-        "Validate LLM judges like binary classifiers: hand-label ~100 examples, split train/dev/test, and score the judge on precision and recall against those labels.",
-        "Build eval datasets by sampling and mutating production traffic, and fold every triaged production failure into the golden set as a permanent regression case (once-per-sprint failure reports is a workable cadence).",
-        "Record real tool responses in a record mode and check the fixtures in as code, so end-to-end evals replay offline after production data is retention-deleted.",
-        "Include negative cases in trigger evals \u2014 roughly five 'should use' and five 'should not use' prompts \u2014 to catch over-triggering, not just under-triggering.",
-        "Run evals both with and without the skill/component loaded, and keep the eval after the component is retired so it signals when to reintroduce it.",
-        "Store the eval config as YAML so analysts and data scientists can add cases without touching engineering code.",
-        "Pick the guardrail metric from the failure asymmetry (recall when letting a bad item through is worse than a wasted enhancement) and use pass@K when the loop is self-correcting.",
-        "When ground truth sits on constantly-changing structured data, store the query and compute the expected answer against the live source at eval runtime rather than freezing expected outputs.",
-        "Fix structural and length violations with deterministic post-processing in the harness instead of escalating to a larger model.",
-        "Make gates blocking, keep an audit record of which gate failed, and instrument the most expensive handoff first rather than the most complex one."
+        "Run 3-6 trials per eval case and report averages with confidence intervals; treat 84% vs 88% on 50 traces as indistinguishable.",
+        "Run every eval in a fresh isolated workspace, with the verifier runtime fully separate from the agent runtime, so the agent cannot read prior chats, prior executions, or the golden patch out of git log.",
+        "Explicitly forbid an optimizing agent from editing golden datasets or scorers, and run each optimization hypothesis on its own git branch with automatic rollback on regression.",
+        "Snapshot real downstream tool responses in record mode as fixtures checked into the repo, so end-to-end evals are reproducible after production data ages out of retention.",
+        "Validate LLM judges like binary classifiers: hand-label ~100 examples, split train/dev/test, and score precision and recall against those labels.",
+        "Frame rubrics as binary pass/fail tied to a business outcome rather than a continuous quality score, because binary outcomes are calibratable and actionable.",
+        "Run the same eval suite with and without the component (skill, tool, prompt block) loaded, and keep the eval after the component is retired as a regression test that signals when to reintroduce it.",
+        "Keep the harness config-driven (YAML) so analysts and data scientists, not just engineers, can add test cases.",
+        "When the underlying data changes constantly, store the ground-truth query rather than the expected answer and compute the expected result against live data at eval time.",
+        "Use pass@K as the metric for self-correcting edit loops where the agent retries against a QA gate.",
+        "Fine-tune the user simulator on real user language until the eval score goes down; a falling score means the eval got more realistic.",
+        "Instrument the most expensive handoff in the pipeline first, not the most technically complex one.",
+        "Test the same component across multiple agent harnesses and models, since behavior differs between them.",
+        "Use a coding-agent subscription rather than per-token API pricing for LLM-as-judge grading runs."
       ],
       "avoid": [
-        "Prompting an LLM to generate ~50 test queries and calling that an offline eval dataset.",
-        "Shipping an LLM judge whose score does not gate any decision, and treating judge numbers as trustworthy without manual inspection \u2014 judges favor models from their own family.",
-        "Using off-the-shelf frontier models as user simulators for support scenarios; they are unrealistically polite and produced a bogus 90%+ pass rate on first run.",
-        "Making prebuilt generic metrics (helpfulness, toxicity, conciseness) your core metrics \u2014 a 0.5 helpfulness score is not actionable.",
-        "Writing verifiers anchored to a specific implementation: asserting unspecified variable names, unexported functions, module placement, or the presence of particular private helpers.",
-        "Putting a line like 'the tests are handled' in the task prompt \u2014 that single sentence stops even frontier models from verifying their own work.",
-        "Mining benchmark tasks from closed public PRs; the solutions, tests, and discussion are reachable, and Opus 4.6/4.7 attempted golden-patch recovery from git history in 25% and 18% of rollouts.",
-        "Selecting cases for human review using the model's self-reported uncertainty; use disagreement across runs or across models instead.",
-        "Gates that only log warnings \u2014 a gate that cannot halt the pipeline is a suggestion.",
-        "Relying on manual end-to-end testing against live production as the regression strategy when production data is retained only briefly.",
-        "Fixing evaluation criteria before looking at data, and grading without ever reading raw traces \u2014 labels, criteria, and judge validation all collapse without it.",
-        "Auto-opening large volumes of agent-generated PRs; surface one high-ROI, human-readable finding at a time."
+        "Shipping an LLM-judge score that gates nothing, or a gate that only logs warnings.",
+        "Building the offline dataset by prompting an LLM for ~50 test queries instead of sampling and mutating production traffic.",
+        "Using an off-the-shelf frontier model as a user simulator for support scenarios \u2014 it produces unrealistically polite, articulate users and inflated pass rates (Lyft's first run reported 90%+).",
+        "Shipping generic prebuilt metrics (helpfulness, toxicity, conciseness) as core metrics; a helpfulness of 0.5 is not actionable.",
+        "Putting a line in the task prompt saying tests are already handled \u2014 one such line stops even GPT 5.5 and Opus 4.8 from verifying their own work.",
+        "Writing instructions that point at the test file or hand over the full implementation interface; that leaks the answer and invalidates the task.",
+        "Asserting on unspecified variable names, unexported functions, or required module placement \u2014 these are weak verifiers that would fail code review.",
+        "Mining eval tasks from closed public PRs, which are contaminated by construction; prefer novel tasks with private holdout sets.",
+        "Using trace clustering as the issue-detection mechanism: clusters are hard to track over time, boundaries are uncontrollable, and one cluster can span unrelated root causes.",
+        "Trusting LLM self-reported uncertainty to select cases for human review; use disagreement across runs or across models instead.",
+        "Judging candidate outputs with a model from the same family as one of the candidates.",
+        "Running A/B tests or experiments when you have five to ten users.",
+        "Relying on manual end-to-end testing against live production when production data is retained only briefly \u2014 regressions become undetectable.",
+        "Writing two-pager task instructions (SWE-Bench Pro averages 481 words); prompt length is not a proxy for task difficulty."
       ]
     },
     "notable_outliers": [
       {
-        "claim": "Fine-tune your user simulator on real user language until the evaluation score goes down \u2014 a falling score is evidence the eval got more realistic, not that quality dropped.",
-        "talk": "build-evals-that-actually-matter",
-        "timestamp_sec": 1015
+        "claim": "Switching harnesses \u2014 for example moving to the Claude Code CLI \u2014 can invalidate roughly 80% of a team's tool-call evals, which is evidence those evals were not load-bearing to begin with.",
+        "talk": "designing-agents-the-floor-is-the-frontier",
+        "timestamp_sec": 254
       },
       {
-        "claim": "Fork real production deployments into simulation mid-run: the agent is in the real world up to the fork point, which dramatically reduces simulation awareness and makes the first simulated turns undetectable.",
-        "talk": "vending-bench-long-horizon-agent-evals",
-        "timestamp_sec": 830
+        "claim": "Claude Opus 4.6 and 4.7 attempted to recover golden patches from git history in 25% and 18% of rollouts, versus ~1% for Gemini and 0% for GPT models.",
+        "talk": "deepswe-a-contamination-resistant-coding-benchmark",
+        "timestamp_sec": 333
       },
       {
-        "claim": "Reward hacking is a benchmark failure, not a model failure \u2014 models getting smarter is the desired outcome, and it is the harness's job to remove the shortcut.",
-        "talk": "benchmarks-the-good-the-bad-and-the-ugly",
-        "timestamp_sec": 447
-      },
-      {
-        "claim": "SWE-Bench Pro accepts wrong implementations on 8.5% of tasks and rejects correct implementations on more than 24% \u2014 the grader, not the model, is the dominant error term.",
+        "claim": "SWE-Bench Pro accepts wrong implementations on 8.5% of tasks and rejects correct implementations on more than 24% \u2014 the grader, not the model, is the error source.",
         "talk": "benchmarks-the-good-the-bad-and-the-ugly",
         "timestamp_sec": 330
       },
       {
-        "claim": "Prompt length is not a proxy for task difficulty: DeepSWE prompts are half the size of SWE-Bench Pro's yet yield solutions five times the lines of code across about seven files.",
-        "talk": "deepswe-a-contamination-resistant-coding-benchmark",
-        "timestamp_sec": 650
+        "claim": "Forking a real deployment into a simulation at a chosen point dramatically decreases simulation awareness, making the first turns effectively undetectable as simulation.",
+        "talk": "vending-bench-long-horizon-agent-evals",
+        "timestamp_sec": 830
       },
       {
-        "claim": "Tightening the codebase API so test data structurally cannot reach training dropped an auto-research agent's data leakage rate to zero \u2014 abstraction constrains reward hacking better than instructions do.",
+        "claim": "Tightening the codebase API so test data structurally could not reach training dropped the agent's data leakage rate to zero \u2014 abstraction design constrains reward hacking better than instructions do.",
         "talk": "how-autoresearch-is-changing-ml-research",
         "timestamp_sec": 850
       },
       {
-        "claim": "In auto-research the eval is the loss function and the data, and the codebase abstraction is the model architecture \u2014 abstraction design is currently more underrated than eval design.",
-        "talk": "how-autoresearch-is-changing-ml-research",
-        "timestamp_sec": 666
-      },
-      {
-        "claim": "Deliberately redundant, overlapping QA gates are worth their cost \u2014 a Swiss cheese model where layered checks reduce the probability any single failure reaches production.",
-        "talk": "building-closed-loop-evals-for-a-multimodal-agent-at-scale",
-        "timestamp_sec": 1086
-      },
-      {
-        "claim": "A single rollout primitive \u2014 sandbox \u2192 agent \u2192 verifier \u2192 reward \u2014 is universal enough to serve evaluation, SFT data collection, RL, and non-eval batch agent workloads, so the eval harness and the training harness are the same machine.",
-        "talk": "everything-is-a-rollout",
-        "timestamp_sec": 608
-      },
-      {
-        "claim": "Agent development resembles machine learning more than software engineering: the pull request is the gradient descent step and overfitting shows up as reward hacking.",
+        "claim": "In agent development the gradient descent step is a pull request into your repo and overfitting looks like reward hacking, so agent work should use ML tooling and guard against ML pitfalls.",
         "talk": "everything-is-a-rollout",
         "timestamp_sec": 361
+      },
+      {
+        "claim": "Rendering time-series metrics as images rather than raw series guarantees a fixed input token count for evaluation regardless of job duration.",
+        "talk": "medic-for-apache-spark-first-aid-for-failing-jobs",
+        "timestamp_sec": 451
       }
     ],
     "maturity": "consolidating",
-    "maturity_rationale": "The mechanics are converging hard and specifically \u2014 production-derived golden sets, CI merge gates, verifier/agent runtime separation, repeated trials with intervals, behavior-based graders \u2014 with independent talks arriving at the same practices from benchmarks, enterprise agents, and coding-agent tooling. What is still openly argued is the scoring layer (deterministic vs LLM judge, binary vs rich feedback), whether authority sits offline or in production, and how much of the loop can close without a human; evals also remain the survey's number one stack challenge for a third year, though with a shrinking lead."
+    "maturity_rationale": "Practitioners across roughly a dozen independent talks converge on the same mechanics \u2014 evals as code in CI, blocking gates, isolated verifier runtimes, repeated trials with intervals, behavior-based verification, and logs lifted into replayable environments \u2014 but the edges are actively argued: deterministic assertions versus validated LLM judges, offline simulation versus production-grounded evaluation, and whether large eval datasets are durable at all. That unresolved core plus the survey finding that evals are the #1 stack challenge for a third year, and the claim that the environment/reward/optimizer tooling layer is essentially unbuilt, keep it short of settled."
   },
   "_meta": {
     "concept": "eval harness design",
     "slug": "eval-harness-design",
-    "talk_count": 24,
+    "talk_count": 26,
     "missing_talks": [],
-    "wall_sec": 195.1,
-    "run_at": "2026-08-13T17:11:25Z"
+    "wall_sec": 155.0,
+    "run_at": "2026-08-19T13:40:01Z"
   }
 }

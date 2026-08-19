@@ -1,0 +1,295 @@
+{
+  "is_error": false,
+  "duration_api_ms": 89843,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "7dac79c5-d19b-4384-b6ff-0fd4af4b8ebd",
+  "total_cost_usd": 0.3372925,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 13007,
+    "cache_read_input_tokens": 8113,
+    "output_tokens": 7879,
+    "output_tokens_details": {
+      "thinking_tokens": 3290
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 13007,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 7879,
+        "cache_read_input_tokens": 8113,
+        "cache_creation_input_tokens": 13007,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 13007
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 6116,
+      "outputTokens": 13,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.006181,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 7879,
+      "cacheReadInputTokens": 8113,
+      "cacheCreationInputTokens": 13007,
+      "webSearchRequests": 0,
+      "costUSD": 0.3311115,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Shlok Khemani spent a year reverse-engineering how ChatGPT, Claude, Gemini, and Poke actually implement memory for consumer personalization, and this talk is a guided tour of that evolution plus the lessons he draws from it. Part one traces three years of divergence and eventual convergence: ChatGPT went from a user-managed fact list (2024) to a dense ~4,000-token 'running profile' updated every few days, while Claude launched with the opposite design \u2014 no profile at all, just tools to search past conversations \u2014 before adding a smaller, user-visible, 24-hour-refresh profile. Part two argues that there is no single correct memory architecture, that memory is a compute-budget tradeoff between update cost and serving cost, and that running profiles already constitute a form of continual learning happening outside the weights. His closing rant is that the real ceiling is not architecture or compute but context acquisition: products don't notice their own contradictions, don't reason over email or calendar, and don't share memory with each other. Worth watching if you are designing a memory layer and want concrete, observed implementation details from shipped consumer products rather than a vendor's framework pitch.\",\n  \"key_points\": [\n    \"ChatGPT's memory v1 (February 2024) extracted user-stated facts into a visible, deletable list injected into every conversation, but it pushed the burden of memory management onto the user and had no mechanism for handling facts that went stale.\",\n    \"ChatGPT's v2 (April 2025) introduced a 'running profile' \u2014 an asynchronous background process (sometimes called 'dreaming') that periodically re-reads recent conversations and rewrites a ~4,000-token, 16-section profile of extremely dense, keyword-like memories that frontier models can expand from limited clues.\",\n    \"Claude's first memory version (August 2025) was architecturally the opposite: no profile and no fact list, just two tools letting the model search prior conversations by keyword/topic or by time period, so every conversation starts cold and retrieval happens on demand.\",\n    \"The two systems have converged \u2014 both now have a running profile that is (somewhat) visible and editable plus tools to search past conversations \u2014 but the implementation details still differ sharply, and Gemini and coding agents like Claude Code use different approaches again (markdown files, heartbeats, knowledge bases, skills).\",\n    \"Because there is no single right architecture and memory must evolve with the product, Khemani argues memory cannot be outsourced; he notes that every top consumer AI product today has memory and none of them buy it from a vendor.\",\n    \"Memory is a function of compute: a running profile carries a maintenance cost (update frequency \u00d7 compute per update) and a serving cost (profile length, paid on every conversation), and ChatGPT and Claude sit at opposite corners of that tradeoff \u2014 4,000 tokens updated every few days versus ~1,000 tokens updated every 24 hours.\",\n    \"The running-profile loop \u2014 profile shapes conversations, conversations feed synthesis, synthesis updates profile \u2014 is already continual learning, just outside the weights; whether it moves into weights per-individual is open, since the economics amortize at enterprise scale but not for one person.\",\n    \"The binding constraint is context, not architecture: ChatGPT recorded that he visited both Thailand and Turkey on overlapping dates because it never reconciled the conversation against his email bookings, and the deeper failure is that it isn't curious enough to notice the conflict at all \u2014 a product problem, not a model limitation.\",\n    \"Personal AI is fragmented: each chatbot, assistant, vertical app, agent, and hardware device rebuilds its own model of the user, none share memory, and none reason over rich existing sources like email, calendar, and photos.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"The biggest one was that as a user, because you could see every time a memory was created, it felt like you were responsible for both creating memories while you were just trying to have a conversation.\",\n      \"timestamp_sec\": 168,\n      \"why\": \"Names the core UX failure of first-generation fact-list memory.\"\n    },\n    {\n      \"text\": \"So, staleness was another huge problem with this version of chat GPT's memory.\",\n      \"timestamp_sec\": 214,\n      \"why\": \"Identifies the second structural flaw \u2014 facts true at write time that decay silently.\"\n    },\n    {\n      \"text\": \"First, these are extremely dense memories. So ChatG tries to pack in as much context as it can within every single memory.\",\n      \"timestamp_sec\": 302,\n      \"why\": \"Concrete observed design choice: compression via keyword clues the model expands at read time.\"\n    },\n    {\n      \"text\": \"So in V1 of Claude, you had no user profile. You had no list of facts. Instead, the model was given two tools.\",\n      \"timestamp_sec\": 429,\n      \"why\": \"The cleanest statement of the retrieval-first architecture that opposed ChatGPT's profile-first one.\"\n    },\n    {\n      \"text\": \"on September 11 of last year, I released a blog post saying Claude's memory architecture is the opposite of chat GPTs. This hit the hacker news front page.\",\n      \"timestamp_sec\": 466,\n      \"why\": \"Establishes the speaker's basis for the comparison and dates the divergence.\"\n    },\n    {\n      \"text\": \"Claude's profile updates every 24 hours. For chat GPT, it's every few days.\",\n      \"timestamp_sec\": 511,\n      \"why\": \"A hard reported number that anchors the update-frequency tradeoff.\"\n    },\n    {\n      \"text\": \"I think the biggest lesson for me is that there is no single way to do memory.\",\n      \"timestamp_sec\": 594,\n      \"why\": \"The talk's thesis, stated plainly.\"\n    },\n    {\n      \"text\": \"The implications of this is that memory cannot be outsourced. If you're a serious team, you do not outsource memory. It is something that you build alongside your product.\",\n      \"timestamp_sec\": 670,\n      \"why\": \"The most contestable claim in the talk, aimed squarely at the memory-vendor category.\"\n    },\n    {\n      \"text\": \"So if you look at all of the top consumer products today across different categories, each of these has some form of memory. Yet none of them outsource it. All of them build memory inhouse.\",\n      \"timestamp_sec\": 708,\n      \"why\": \"The empirical support offered for the no-outsourcing position.\"\n    },\n    {\n      \"text\": \"Lesson two, memory is a function of compute. What does that mean? Let's look at the costs associated with a running profile.\",\n      \"timestamp_sec\": 708,\n      \"why\": \"Frames memory design as a budget problem rather than an algorithm problem.\"\n    },\n    {\n      \"text\": \"So they have a higher serving cost for a lower update cost and for claude it's a thousand tokens updates every 24 hours. So they make the exact opposite tradeoff\",\n      \"timestamp_sec\": 798,\n      \"why\": \"Names the specific axis on which two shipped systems made opposite calls.\"\n    },\n    {\n      \"text\": \"Third we had a bunch of talks about continual learning today. I'm not an expert here but what I would say is that continual learning is already here.\",\n      \"timestamp_sec\": 798,\n      \"why\": \"A deliberately provocative reframing of the running-profile loop as continual learning.\"\n    },\n    {\n      \"text\": \"And this loop keeps repeating itself again and again and again. And what you have is a continual learning process.\",\n      \"timestamp_sec\": 836,\n      \"why\": \"Completes the argument that in-context profile synthesis is a learning loop.\"\n    },\n    {\n      \"text\": \"continuous learning does make sense at an enterprise level because the costs of these models are amotized across different employees different customers but that's not the case and at an individual level\",\n      \"timestamp_sec\": 836,\n      \"why\": \"Draws the economic line between enterprise and consumer continual learning.\"\n    },\n    {\n      \"text\": \"Yet your memory system is capped by how much context it can gather about you.\",\n      \"timestamp_sec\": 908,\n      \"why\": \"The ceiling claim \u2014 architecture and compute are not the binding constraint.\"\n    },\n    {\n      \"text\": \"But what really bothers me is that chat GPD today doesn't realize that there is a conflict. It's not curious about trying to fill in gaps in the information it knows about me.\",\n      \"timestamp_sec\": 1006,\n      \"why\": \"Pinpoints a specific missing capability: conflict detection and active gap-filling.\"\n    },\n    {\n      \"text\": \"And this is particularly interesting and also infuriating because the tech it's not a technology problem. It's a product problem. There is no fundamental reason from an LLM level that these things can't be solved.\",\n      \"timestamp_sec\": 1006,\n      \"why\": \"Assigns blame to product design rather than model capability \u2014 a checkable, arguable position.\"\n    },\n    {\n      \"text\": \"Each of these products is trying to build its own memory of me. None of these memories are shared with each other. So I have to rebuild context within every single product from scratch.\",\n      \"timestamp_sec\": 1063,\n      \"why\": \"States the fragmentation problem that motivates portable or shared personal context.\"\n    },\n    {\n      \"text\": \"So for me, none of this feels like 2026. And what I keep asking myself every day is when will personal AI feel like personal AI?\",\n      \"timestamp_sec\": 1063,\n      \"why\": \"The rant's punchline and the talk's emotional center.\"\n    },\n    {\n      \"text\": \"Memory for AI is just a three-year-old field. Memory is also foundational to how humans interact with AI.\",\n      \"timestamp_sec\": 1116,\n      \"why\": \"Closing framing that sets expectations for how immature the field still is.\"\n    }\n  ],\n  \"concepts\": [\n    \"running user profile\",\n    \"memory extraction and synthesis\",\n    \"asynchronous profile updates\",\n    \"memory staleness\",\n    \"conversation search tools\",\n    \"context window budgeting\",\n    \"serving cost versus update cost\",\n    \"continual learning outside the weights\",\n    \"memory transparency and user editability\",\n    \"cross-application context portability\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"There is no single correct way to implement memory; ChatGPT, Claude, Gemini, and coding agents all evolved materially different architectures.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 594\n    },\n    {\n      \"claim\": \"RAG over chunked conversations with embeddings and semantic search is not how leading consumer memory systems actually work, despite being the assumed default.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 594\n    },\n    {\n      \"claim\": \"Serious teams should not outsource memory to a third-party provider; it must be built in-house and evolve with the product.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 670\n    },\n    {\n      \"claim\": \"Every top consumer AI product today has some form of memory and all of them build it in-house.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 708\n    },\n    {\n      \"claim\": \"Memory design is fundamentally a compute allocation problem, trading maintenance cost (update frequency and compute per update) against serving cost (profile length in every context window).\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 755\n    },\n    {\n      \"claim\": \"ChatGPT runs a ~4,000-token profile updated every few days while Claude runs a ~1,000-token profile updated every 24 hours, representing opposite ends of the same tradeoff.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 798\n    },\n    {\n      \"claim\": \"Continual learning is already deployed today, in the form of the running-profile loop operating outside the model weights.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 798\n    },\n    {\n      \"claim\": \"Weight-level continual learning is economically viable at enterprise scale because costs amortize across employees and customers, but not yet at the individual consumer level.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 836\n    },\n    {\n      \"claim\": \"The ceiling on any memory system is how much context it can gather about the user, not the quality of its architecture or the compute poured into it.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 908\n    },\n    {\n      \"claim\": \"Systems failing to detect and resolve contradictory memories is a product problem, not a technology problem \u2014 nothing at the LLM level prevents solving it.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1006\n    },\n    {\n      \"claim\": \"Memory systems should proactively notice conflicts and be curious about filling gaps, rather than passively accumulating whatever the user happens to say in chat.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 1006\n    },\n    {\n      \"claim\": \"Connecting an assistant to a data source like email is insufficient; unless it reasons over that source and updates the profile from it, existing rich context goes unused.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 961\n    },\n    {\n      \"claim\": \"The current landscape of siloed per-product memory forces users to rebuild and manually update context in every application, which is a state of affairs that should not be acceptable in 2026.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1063\n    },\n    {\n      \"claim\": \"Claude's V1 memory architecture \u2014 on-demand tool-based retrieval with no stored profile \u2014 was the direct opposite of ChatGPT's profile-injection approach.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 466\n    },\n    {\n      \"claim\": \"Making memory visible to the user without also removing the management burden, as in ChatGPT's v1 fact list, produces a worse experience than background extraction.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 168\n    }\n  ],\n  \"speaker_org\": \"Independent\"\n}",
+  "ttft_ms": 39474,
+  "ttft_stream_ms": 1130,
+  "time_to_request_ms": 38,
+  "type": "result",
+  "duration_ms": 90507,
+  "uuid": "25608a5e-1ca6-4994-abe2-8ff98491e3d2",
+  "passA": {
+    "summary": "Shlok Khemani spent a year reverse-engineering how ChatGPT, Claude, Gemini, and Poke actually implement memory for consumer personalization, and this talk is a guided tour of that evolution plus the lessons he draws from it. Part one traces three years of divergence and eventual convergence: ChatGPT went from a user-managed fact list (2024) to a dense ~4,000-token 'running profile' updated every few days, while Claude launched with the opposite design \u2014 no profile at all, just tools to search past conversations \u2014 before adding a smaller, user-visible, 24-hour-refresh profile. Part two argues that there is no single correct memory architecture, that memory is a compute-budget tradeoff between update cost and serving cost, and that running profiles already constitute a form of continual learning happening outside the weights. His closing rant is that the real ceiling is not architecture or compute but context acquisition: products don't notice their own contradictions, don't reason over email or calendar, and don't share memory with each other. Worth watching if you are designing a memory layer and want concrete, observed implementation details from shipped consumer products rather than a vendor's framework pitch.",
+    "key_points": [
+      "ChatGPT's memory v1 (February 2024) extracted user-stated facts into a visible, deletable list injected into every conversation, but it pushed the burden of memory management onto the user and had no mechanism for handling facts that went stale.",
+      "ChatGPT's v2 (April 2025) introduced a 'running profile' \u2014 an asynchronous background process (sometimes called 'dreaming') that periodically re-reads recent conversations and rewrites a ~4,000-token, 16-section profile of extremely dense, keyword-like memories that frontier models can expand from limited clues.",
+      "Claude's first memory version (August 2025) was architecturally the opposite: no profile and no fact list, just two tools letting the model search prior conversations by keyword/topic or by time period, so every conversation starts cold and retrieval happens on demand.",
+      "The two systems have converged \u2014 both now have a running profile that is (somewhat) visible and editable plus tools to search past conversations \u2014 but the implementation details still differ sharply, and Gemini and coding agents like Claude Code use different approaches again (markdown files, heartbeats, knowledge bases, skills).",
+      "Because there is no single right architecture and memory must evolve with the product, Khemani argues memory cannot be outsourced; he notes that every top consumer AI product today has memory and none of them buy it from a vendor.",
+      "Memory is a function of compute: a running profile carries a maintenance cost (update frequency \u00d7 compute per update) and a serving cost (profile length, paid on every conversation), and ChatGPT and Claude sit at opposite corners of that tradeoff \u2014 4,000 tokens updated every few days versus ~1,000 tokens updated every 24 hours.",
+      "The running-profile loop \u2014 profile shapes conversations, conversations feed synthesis, synthesis updates profile \u2014 is already continual learning, just outside the weights; whether it moves into weights per-individual is open, since the economics amortize at enterprise scale but not for one person.",
+      "The binding constraint is context, not architecture: ChatGPT recorded that he visited both Thailand and Turkey on overlapping dates because it never reconciled the conversation against his email bookings, and the deeper failure is that it isn't curious enough to notice the conflict at all \u2014 a product problem, not a model limitation.",
+      "Personal AI is fragmented: each chatbot, assistant, vertical app, agent, and hardware device rebuilds its own model of the user, none share memory, and none reason over rich existing sources like email, calendar, and photos."
+    ],
+    "notable_quotes": [
+      {
+        "text": "The biggest one was that as a user, because you could see every time a memory was created, it felt like you were responsible for both creating memories while you were just trying to have a conversation.",
+        "timestamp_sec": 168,
+        "why": "Names the core UX failure of first-generation fact-list memory."
+      },
+      {
+        "text": "So, staleness was another huge problem with this version of chat GPT's memory.",
+        "timestamp_sec": 214,
+        "why": "Identifies the second structural flaw \u2014 facts true at write time that decay silently."
+      },
+      {
+        "text": "First, these are extremely dense memories. So ChatG tries to pack in as much context as it can within every single memory.",
+        "timestamp_sec": 302,
+        "why": "Concrete observed design choice: compression via keyword clues the model expands at read time."
+      },
+      {
+        "text": "So in V1 of Claude, you had no user profile. You had no list of facts. Instead, the model was given two tools.",
+        "timestamp_sec": 429,
+        "why": "The cleanest statement of the retrieval-first architecture that opposed ChatGPT's profile-first one."
+      },
+      {
+        "text": "on September 11 of last year, I released a blog post saying Claude's memory architecture is the opposite of chat GPTs. This hit the hacker news front page.",
+        "timestamp_sec": 466,
+        "why": "Establishes the speaker's basis for the comparison and dates the divergence."
+      },
+      {
+        "text": "Claude's profile updates every 24 hours. For chat GPT, it's every few days.",
+        "timestamp_sec": 511,
+        "why": "A hard reported number that anchors the update-frequency tradeoff."
+      },
+      {
+        "text": "I think the biggest lesson for me is that there is no single way to do memory.",
+        "timestamp_sec": 594,
+        "why": "The talk's thesis, stated plainly."
+      },
+      {
+        "text": "The implications of this is that memory cannot be outsourced. If you're a serious team, you do not outsource memory. It is something that you build alongside your product.",
+        "timestamp_sec": 670,
+        "why": "The most contestable claim in the talk, aimed squarely at the memory-vendor category."
+      },
+      {
+        "text": "So if you look at all of the top consumer products today across different categories, each of these has some form of memory. Yet none of them outsource it. All of them build memory inhouse.",
+        "timestamp_sec": 708,
+        "why": "The empirical support offered for the no-outsourcing position."
+      },
+      {
+        "text": "Lesson two, memory is a function of compute. What does that mean? Let's look at the costs associated with a running profile.",
+        "timestamp_sec": 708,
+        "why": "Frames memory design as a budget problem rather than an algorithm problem."
+      },
+      {
+        "text": "So they have a higher serving cost for a lower update cost and for claude it's a thousand tokens updates every 24 hours. So they make the exact opposite tradeoff",
+        "timestamp_sec": 798,
+        "why": "Names the specific axis on which two shipped systems made opposite calls."
+      },
+      {
+        "text": "Third we had a bunch of talks about continual learning today. I'm not an expert here but what I would say is that continual learning is already here.",
+        "timestamp_sec": 798,
+        "why": "A deliberately provocative reframing of the running-profile loop as continual learning."
+      },
+      {
+        "text": "And this loop keeps repeating itself again and again and again. And what you have is a continual learning process.",
+        "timestamp_sec": 836,
+        "why": "Completes the argument that in-context profile synthesis is a learning loop."
+      },
+      {
+        "text": "continuous learning does make sense at an enterprise level because the costs of these models are amotized across different employees different customers but that's not the case and at an individual level",
+        "timestamp_sec": 836,
+        "why": "Draws the economic line between enterprise and consumer continual learning."
+      },
+      {
+        "text": "Yet your memory system is capped by how much context it can gather about you.",
+        "timestamp_sec": 908,
+        "why": "The ceiling claim \u2014 architecture and compute are not the binding constraint."
+      },
+      {
+        "text": "But what really bothers me is that chat GPD today doesn't realize that there is a conflict. It's not curious about trying to fill in gaps in the information it knows about me.",
+        "timestamp_sec": 1006,
+        "why": "Pinpoints a specific missing capability: conflict detection and active gap-filling."
+      },
+      {
+        "text": "And this is particularly interesting and also infuriating because the tech it's not a technology problem. It's a product problem. There is no fundamental reason from an LLM level that these things can't be solved.",
+        "timestamp_sec": 1006,
+        "why": "Assigns blame to product design rather than model capability \u2014 a checkable, arguable position."
+      },
+      {
+        "text": "Each of these products is trying to build its own memory of me. None of these memories are shared with each other. So I have to rebuild context within every single product from scratch.",
+        "timestamp_sec": 1063,
+        "why": "States the fragmentation problem that motivates portable or shared personal context."
+      },
+      {
+        "text": "So for me, none of this feels like 2026. And what I keep asking myself every day is when will personal AI feel like personal AI?",
+        "timestamp_sec": 1063,
+        "why": "The rant's punchline and the talk's emotional center."
+      },
+      {
+        "text": "Memory for AI is just a three-year-old field. Memory is also foundational to how humans interact with AI.",
+        "timestamp_sec": 1116,
+        "why": "Closing framing that sets expectations for how immature the field still is."
+      }
+    ],
+    "concepts": [
+      "running user profile",
+      "memory extraction and synthesis",
+      "asynchronous profile updates",
+      "memory staleness",
+      "conversation search tools",
+      "context window budgeting",
+      "serving cost versus update cost",
+      "continual learning outside the weights",
+      "memory transparency and user editability",
+      "cross-application context portability"
+    ],
+    "positions": [
+      {
+        "claim": "There is no single correct way to implement memory; ChatGPT, Claude, Gemini, and coding agents all evolved materially different architectures.",
+        "confidence": "stated",
+        "timestamp_sec": 594
+      },
+      {
+        "claim": "RAG over chunked conversations with embeddings and semantic search is not how leading consumer memory systems actually work, despite being the assumed default.",
+        "confidence": "stated",
+        "timestamp_sec": 594
+      },
+      {
+        "claim": "Serious teams should not outsource memory to a third-party provider; it must be built in-house and evolve with the product.",
+        "confidence": "stated",
+        "timestamp_sec": 670
+      },
+      {
+        "claim": "Every top consumer AI product today has some form of memory and all of them build it in-house.",
+        "confidence": "stated",
+        "timestamp_sec": 708
+      },
+      {
+        "claim": "Memory design is fundamentally a compute allocation problem, trading maintenance cost (update frequency and compute per update) against serving cost (profile length in every context window).",
+        "confidence": "stated",
+        "timestamp_sec": 755
+      },
+      {
+        "claim": "ChatGPT runs a ~4,000-token profile updated every few days while Claude runs a ~1,000-token profile updated every 24 hours, representing opposite ends of the same tradeoff.",
+        "confidence": "stated",
+        "timestamp_sec": 798
+      },
+      {
+        "claim": "Continual learning is already deployed today, in the form of the running-profile loop operating outside the model weights.",
+        "confidence": "stated",
+        "timestamp_sec": 798
+      },
+      {
+        "claim": "Weight-level continual learning is economically viable at enterprise scale because costs amortize across employees and customers, but not yet at the individual consumer level.",
+        "confidence": "stated",
+        "timestamp_sec": 836
+      },
+      {
+        "claim": "The ceiling on any memory system is how much context it can gather about the user, not the quality of its architecture or the compute poured into it.",
+        "confidence": "stated",
+        "timestamp_sec": 908
+      },
+      {
+        "claim": "Systems failing to detect and resolve contradictory memories is a product problem, not a technology problem \u2014 nothing at the LLM level prevents solving it.",
+        "confidence": "stated",
+        "timestamp_sec": 1006
+      },
+      {
+        "claim": "Memory systems should proactively notice conflicts and be curious about filling gaps, rather than passively accumulating whatever the user happens to say in chat.",
+        "confidence": "implied",
+        "timestamp_sec": 1006
+      },
+      {
+        "claim": "Connecting an assistant to a data source like email is insufficient; unless it reasons over that source and updates the profile from it, existing rich context goes unused.",
+        "confidence": "stated",
+        "timestamp_sec": 961
+      },
+      {
+        "claim": "The current landscape of siloed per-product memory forces users to rebuild and manually update context in every application, which is a state of affairs that should not be acceptable in 2026.",
+        "confidence": "stated",
+        "timestamp_sec": 1063
+      },
+      {
+        "claim": "Claude's V1 memory architecture \u2014 on-demand tool-based retrieval with no stored profile \u2014 was the direct opposite of ChatGPT's profile-injection approach.",
+        "confidence": "stated",
+        "timestamp_sec": 466
+      },
+      {
+        "claim": "Making memory visible to the user without also removing the management burden, as in ChatGPT's v1 fact list, produces a worse experience than background extraction.",
+        "confidence": "implied",
+        "timestamp_sec": 168
+      }
+    ],
+    "speaker_org": "Independent"
+  },
+  "_meta": {
+    "slug": "lessons-from-studying-every-memory-system",
+    "video_id": "5ZGyKWjQDr0",
+    "url": "https://www.youtube.com/watch?v=5ZGyKWjQDr0",
+    "word_count": 2994,
+    "wall_sec": 91.7,
+    "run_at": "2026-08-19T13:16:24Z",
+    "effort": "default"
+  }
+}

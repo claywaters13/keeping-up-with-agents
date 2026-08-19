@@ -2,6 +2,7 @@
 title: "Building an ACP-Compatible Agent Live"
 type: "talk"
 slug: "building-an-acp-compatible-agent-live"
+track: "Agent & Harness Engineering"
 org: "Zed"
 video_id: "HsxQICTLF84"
 duration_sec: 1099
@@ -15,7 +16,7 @@ speakers: ["Bennet Fenner"]
 
 **Org:** Zed
 
-**Duration:** 18m 19s
+**Track:** Agent & Harness Engineering &nbsp;|&nbsp; **Duration:** 18m 19s
 
 [Watch on YouTube](https://www.youtube.com/watch?v=HsxQICTLF84)
 

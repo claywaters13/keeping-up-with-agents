@@ -1,0 +1,305 @@
+{
+  "is_error": false,
+  "duration_api_ms": 84440,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "9248c66f-abeb-4d92-8482-bee0ad10e82c",
+  "total_cost_usd": 0.35632749999999996,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 14948,
+    "cache_read_input_tokens": 8113,
+    "output_tokens": 7798,
+    "output_tokens_details": {
+      "thinking_tokens": 3066
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 14948,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 7798,
+        "cache_read_input_tokens": 8113,
+        "cache_creation_input_tokens": 14948,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 14948
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 7731,
+      "outputTokens": 20,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.007831,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 7798,
+      "cacheReadInputTokens": 8113,
+      "cacheCreationInputTokens": 14948,
+      "webSearchRequests": 0,
+      "costUSD": 0.3484965,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Sangwu Lee of Krea walks through how the team trained Krea 2, their image foundation model, whose medium variant they open-sourced. His central argument is that once you lock in a diffusion-transformer architecture, essentially all remaining quality comes from data curation \u2014 and that the big labs' models (ChatGPT/GPT-image, Nano Banana Pro) buy their reliability by mode-collapsing toward boring, average outputs, so Krea deliberately optimized for fast, stylistically diverse generation that creatives can iterate against. Most of the talk is a concrete tour of the curation stack: OCR-plus-VLM captioning, hash then embedding deduplication over 2\u201310 billion images, distilling large-VLM filtering judgments into cheap SigLip classifiers, sparse autoencoders repurposed as an unsupervised tagging system, and Wikipedia PageRank to guarantee world-knowledge coverage \u2014 roughly 30\u201340 in-house classifiers and heuristics in total. He also lays out an LLM-shaped post-training pipeline (progressive 256\u21921K pre-training, mid-training, SFT, preference optimization, GRPO-style RL against reward servers, plus a trained prompt expander). Worth watching if you want a practitioner's view of what actually moves the needle in generative image training, especially the case against training on AI-generated data.\",\n  \"key_points\": [\n    \"Production models from the big labs achieve consistency by mode-collapsing \u2014 the reliable way to render a person is to render the most average person and center-frame them \u2014 so Krea traded some reliability for speed and stylistic diversity aimed at open-ended creative exploration.\",\n    \"Architecture is largely a settled choice (a diffusion transformer operating in a compressed latent space); the overwhelming majority of the work and of the resulting quality comes from data curation.\",\n    \"Krea deliberately avoided training on AI-generated images, because synthetic data is 'sticky' \u2014 it gets you a good model fast but locks in a recognizable ChatGPT/Nano Banana aesthetic.\",\n    \"Conventional aesthetic and image-quality scores actively cut stylistic diversity (e.g. low-res CRT looks get filtered out), so Krea designed filters that preserve coverage rather than oversampling conventionally 'good' images.\",\n    \"Images whose important attributes captioners consistently miss \u2014 like a painting that is framed on a white wall \u2014 are treated as bad data, because the omission becomes a systematic generation bias.\",\n    \"Filtering at 2\u201310 billion images requires a two-tier approach: cheap pHash/MD5 dedup first, then embedding-based semantic dedup (SSCD, SigLip), with large-VLM filtering decisions distilled down into SigLip-sized classifiers so they can run over the full corpus.\",\n    \"Sparse autoencoders trained on a vision model give an unsupervised tagging system whose sparse features (watermarks, signatures, blur, border artifacts) can be used directly as filtering or oversampling handles.\",\n    \"The post-training pipeline mirrors LLM practice: progressive 256\u21921K resolution pre-training, mid-training/SFT to mold the distribution toward illustration, graphic design, photography and cinematics, preference optimization on pairwise data, and GRPO-inspired RL against reward servers for text rendering and anatomy.\",\n    \"A separately trained small LLM prompt expander is now near-mandatory for production diffusion, because long detailed prompts sit closer to the training distribution; Krea is next pursuing multi-expert distillation, merging capability-specialized experts into one student.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"in order to get like good consistency, they have like kind of like significantly mode collapse their models\",\n      \"timestamp_sec\": 131,\n      \"why\": \"States the core diagnosis of frontier image models that motivates Krea's whole positioning.\"\n    },\n    {\n      \"text\": \"if you're trying to render a person, the easiest and most reliable way to like render a person is render the most boring average person that exists and then like put it in a center frame.\",\n      \"timestamp_sec\": 131,\n      \"why\": \"Vivid, concrete illustration of how reliability optimization produces blandness.\"\n    },\n    {\n      \"text\": \"if you type like burning skull, Chat GPT-2 like is very consistent. All the outputs are like fine, but you know, there's barely any diversity.\",\n      \"timestamp_sec\": 131,\n      \"why\": \"A named, checkable comparison against a specific competitor model.\"\n    },\n    {\n      \"text\": \"really like data is like quite everything that goes into the model. Like typically, you lock in your architecture and then you just a lot of work just goes into like just feeding the model like what it wants.\",\n      \"timestamp_sec\": 313,\n      \"why\": \"The talk's central thesis about where model quality actually comes from.\"\n    },\n    {\n      \"text\": \"some people like think I know like low-resolution CRT videos are like a bad image, but some people like that kind of like aesthetics, so making sure that we have like good coverage\",\n      \"timestamp_sec\": 348,\n      \"why\": \"Names the tradeoff between quality filtering and stylistic coverage.\"\n    },\n    {\n      \"text\": \"we tried very hard to like remove any AI images like at all because it does like provide you a shortcut to to get you like a good model, but synthetic data is like so sticky to the model that once you like start training on AI image data, sure your model's good, but you kind of lose the point\",\n      \"timestamp_sec\": 447,\n      \"why\": \"The strongest and most contestable position in the talk \u2014 a flat rejection of synthetic training data.\"\n    },\n    {\n      \"text\": \"as a researcher it always slightly hurts my ego if all I'm doing is distillation\",\n      \"timestamp_sec\": 482,\n      \"why\": \"Candidly admits the anti-distillation stance is partly a values judgment, not only a technical one.\"\n    },\n    {\n      \"text\": \"when you try to generate a painting of whatever, it'll be always hanged on a wall, on a white wall, which is pulling that what the user wants.\",\n      \"timestamp_sec\": 557,\n      \"why\": \"Shows exactly how a captioner's blind spot becomes a systematic generation bias.\"\n    },\n    {\n      \"text\": \"we need to use like like, I don't know, anywhere from like 2 to like 10 billion images. That's a lot of images to run like filters on.\",\n      \"timestamp_sec\": 591,\n      \"why\": \"Reports the dataset scale that forces the tiered filtering architecture.\"\n    },\n    {\n      \"text\": \"we can like distill this data, this kind of like decision and like to like a very small like SigLip classifier. And then, you can base you have like a very like cheap classifier that is somewhat like reliable.\",\n      \"timestamp_sec\": 634,\n      \"why\": \"The key cost-control technique for filtering billion-scale corpora.\"\n    },\n    {\n      \"text\": \"one thing that you can actually get out of SAE is a unsupervised tagging system\",\n      \"timestamp_sec\": 706,\n      \"why\": \"An unusual, practical repurposing of interpretability tooling for data curation.\"\n    },\n    {\n      \"text\": \"you can actually take the Wikipedia, the entire Wikipedia, and for each article or concept, you can compute the page rank of each of the concepts\",\n      \"timestamp_sec\": 797,\n      \"why\": \"Concrete, reproducible method for ensuring world-knowledge coverage in the dataset.\"\n    },\n    {\n      \"text\": \"I think we ended up having around like 30 to 40 like custom in-house classifier, like different heuristics and like filters that we've used.\",\n      \"timestamp_sec\": 849,\n      \"why\": \"Quantifies the actual engineering surface area of the curation pipeline.\"\n    },\n    {\n      \"text\": \"most people like train start training at low resolution because that's where the model actually learns like text-to-image capabilities\",\n      \"timestamp_sec\": 929,\n      \"why\": \"Explains the rationale behind progressive resolution scheduling.\"\n    },\n    {\n      \"text\": \"you actually need to train a small LLM that takes in like user prompt and then outputs like a very long detail prompt because typically longer detail prompt they're more in distribution with your models like training data that tends to like make better images\",\n      \"timestamp_sec\": 1053,\n      \"why\": \"Argues prompt expansion is now a required production component, with a distributional justification.\"\n    },\n    {\n      \"text\": \"we would like train experts that are like specialized in like photography text rendering and different capabilities and then kind of like merge all of these capabilities into a single student\",\n      \"timestamp_sec\": 1053,\n      \"why\": \"Previews Krea's next research direction: multi-expert distillation.\"\n    },\n    {\n      \"text\": \"data is like eternal like you can if you have that's going to be valuable no matter what the hot new training paradigm is\",\n      \"timestamp_sec\": 1106,\n      \"why\": \"Frames data as the durable asset relative to fast-churning modeling techniques.\"\n    },\n    {\n      \"text\": \"our thing that I like to do is steal a lot from LLM research so that I can just reuse their kernels and like research and like literature\",\n      \"timestamp_sec\": 1106,\n      \"why\": \"Explicit methodological stance that diffusion work should track LLM research.\"\n    },\n    {\n      \"text\": \"I really like to, you know, simplify the stack so that we can get rid of VAEs and then text encoders and then just train a single clean transformer.\",\n      \"timestamp_sec\": 1192,\n      \"why\": \"A clear architectural bet about where image generation is headed.\"\n    },\n    {\n      \"text\": \"image generation, I think it's really like a proxy for like BLM like progress\",\n      \"timestamp_sec\": 1226,\n      \"why\": \"Ties image model advances to vision-language model capability as the upstream driver.\"\n    }\n  ],\n  \"concepts\": [\n    \"latent diffusion models\",\n    \"mode collapse\",\n    \"training data curation\",\n    \"synthetic data contamination\",\n    \"image captioning pipelines\",\n    \"semantic deduplication\",\n    \"classifier distillation\",\n    \"sparse autoencoders\",\n    \"progressive resolution training\",\n    \"prompt expansion\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Frontier image models like GPT-image and Nano Banana Pro achieve their output reliability by significantly mode-collapsing, sacrificing stylistic diversity.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 131\n    },\n    {\n      \"claim\": \"Fast generation with knobs beats slow, highly reliable generation for creative users who don't yet know what they want.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 166\n    },\n    {\n      \"claim\": \"Once architecture is locked in, data curation is what actually determines model quality.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 313\n    },\n    {\n      \"claim\": \"Relying on standard aesthetic or image-quality scores to filter data unintentionally destroys stylistic diversity.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 348\n    },\n    {\n      \"claim\": \"Training on AI-generated images is a shortcut that permanently imprints a recognizable ChatGPT/Nano Banana aesthetic on the model, so it should be avoided entirely.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 447\n    },\n    {\n      \"claim\": \"A trained observer can tell when a model has been heavily distilled on ChatGPT or Nano Banana Pro outputs.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 482\n    },\n    {\n      \"claim\": \"Images whose key attributes captioning VLMs consistently fail to describe should be filtered out or undersampled, even when the image itself is fine.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 591\n    },\n    {\n      \"claim\": \"Running a large VLM directly over a billion-image corpus is an inefficient use of GPUs; the judgments must be distilled into a SigLip-sized classifier.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 706\n    },\n    {\n      \"claim\": \"Sparse autoencoders trained on vision models yield usable unsupervised tags for filtering artifacts like watermarks, signatures, and blur.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 753\n    },\n    {\n      \"claim\": \"Krea used roughly 30 to 40 custom in-house classifiers, heuristics, and filters over a 2\u201310 billion image corpus.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 849\n    },\n    {\n      \"claim\": \"Progressive resolution training from 256 to 1K works because semantics are learned at low resolution and structure and detail only later at high resolution.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 929\n    },\n    {\n      \"claim\": \"A trained prompt-expander LLM has become an almost essential component of production-grade diffusion systems.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1053\n    },\n    {\n      \"claim\": \"Methods with fewer hyperparameters to tune are preferable, because iteration speed matters more than squeezing out marginal quality.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1106\n    },\n    {\n      \"claim\": \"Diffusion research should deliberately borrow from LLM research to reuse its kernels and literature.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1106\n    },\n    {\n      \"claim\": \"The image generation stack should eventually shed VAEs and text encoders in favor of a single clean transformer.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1192\n    },\n    {\n      \"claim\": \"Now that VLMs can cheaply produce accurate bounding boxes and scene graphs, richer structured conditioning signals are a promising direction for image models.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1226\n    },\n    {\n      \"claim\": \"Progress in image generation is essentially a proxy for progress in vision-language models.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1226\n    }\n  ],\n  \"speaker_org\": \"Krea\"\n}",
+  "ttft_ms": 35666,
+  "ttft_stream_ms": 962,
+  "time_to_request_ms": 39,
+  "type": "result",
+  "duration_ms": 85002,
+  "uuid": "96f7f952-2701-4d56-9b25-9e241f871c70",
+  "passA": {
+    "summary": "Sangwu Lee of Krea walks through how the team trained Krea 2, their image foundation model, whose medium variant they open-sourced. His central argument is that once you lock in a diffusion-transformer architecture, essentially all remaining quality comes from data curation \u2014 and that the big labs' models (ChatGPT/GPT-image, Nano Banana Pro) buy their reliability by mode-collapsing toward boring, average outputs, so Krea deliberately optimized for fast, stylistically diverse generation that creatives can iterate against. Most of the talk is a concrete tour of the curation stack: OCR-plus-VLM captioning, hash then embedding deduplication over 2\u201310 billion images, distilling large-VLM filtering judgments into cheap SigLip classifiers, sparse autoencoders repurposed as an unsupervised tagging system, and Wikipedia PageRank to guarantee world-knowledge coverage \u2014 roughly 30\u201340 in-house classifiers and heuristics in total. He also lays out an LLM-shaped post-training pipeline (progressive 256\u21921K pre-training, mid-training, SFT, preference optimization, GRPO-style RL against reward servers, plus a trained prompt expander). Worth watching if you want a practitioner's view of what actually moves the needle in generative image training, especially the case against training on AI-generated data.",
+    "key_points": [
+      "Production models from the big labs achieve consistency by mode-collapsing \u2014 the reliable way to render a person is to render the most average person and center-frame them \u2014 so Krea traded some reliability for speed and stylistic diversity aimed at open-ended creative exploration.",
+      "Architecture is largely a settled choice (a diffusion transformer operating in a compressed latent space); the overwhelming majority of the work and of the resulting quality comes from data curation.",
+      "Krea deliberately avoided training on AI-generated images, because synthetic data is 'sticky' \u2014 it gets you a good model fast but locks in a recognizable ChatGPT/Nano Banana aesthetic.",
+      "Conventional aesthetic and image-quality scores actively cut stylistic diversity (e.g. low-res CRT looks get filtered out), so Krea designed filters that preserve coverage rather than oversampling conventionally 'good' images.",
+      "Images whose important attributes captioners consistently miss \u2014 like a painting that is framed on a white wall \u2014 are treated as bad data, because the omission becomes a systematic generation bias.",
+      "Filtering at 2\u201310 billion images requires a two-tier approach: cheap pHash/MD5 dedup first, then embedding-based semantic dedup (SSCD, SigLip), with large-VLM filtering decisions distilled down into SigLip-sized classifiers so they can run over the full corpus.",
+      "Sparse autoencoders trained on a vision model give an unsupervised tagging system whose sparse features (watermarks, signatures, blur, border artifacts) can be used directly as filtering or oversampling handles.",
+      "The post-training pipeline mirrors LLM practice: progressive 256\u21921K resolution pre-training, mid-training/SFT to mold the distribution toward illustration, graphic design, photography and cinematics, preference optimization on pairwise data, and GRPO-inspired RL against reward servers for text rendering and anatomy.",
+      "A separately trained small LLM prompt expander is now near-mandatory for production diffusion, because long detailed prompts sit closer to the training distribution; Krea is next pursuing multi-expert distillation, merging capability-specialized experts into one student."
+    ],
+    "notable_quotes": [
+      {
+        "text": "in order to get like good consistency, they have like kind of like significantly mode collapse their models",
+        "timestamp_sec": 131,
+        "why": "States the core diagnosis of frontier image models that motivates Krea's whole positioning."
+      },
+      {
+        "text": "if you're trying to render a person, the easiest and most reliable way to like render a person is render the most boring average person that exists and then like put it in a center frame.",
+        "timestamp_sec": 131,
+        "why": "Vivid, concrete illustration of how reliability optimization produces blandness."
+      },
+      {
+        "text": "if you type like burning skull, Chat GPT-2 like is very consistent. All the outputs are like fine, but you know, there's barely any diversity.",
+        "timestamp_sec": 131,
+        "why": "A named, checkable comparison against a specific competitor model."
+      },
+      {
+        "text": "really like data is like quite everything that goes into the model. Like typically, you lock in your architecture and then you just a lot of work just goes into like just feeding the model like what it wants.",
+        "timestamp_sec": 313,
+        "why": "The talk's central thesis about where model quality actually comes from."
+      },
+      {
+        "text": "some people like think I know like low-resolution CRT videos are like a bad image, but some people like that kind of like aesthetics, so making sure that we have like good coverage",
+        "timestamp_sec": 348,
+        "why": "Names the tradeoff between quality filtering and stylistic coverage."
+      },
+      {
+        "text": "we tried very hard to like remove any AI images like at all because it does like provide you a shortcut to to get you like a good model, but synthetic data is like so sticky to the model that once you like start training on AI image data, sure your model's good, but you kind of lose the point",
+        "timestamp_sec": 447,
+        "why": "The strongest and most contestable position in the talk \u2014 a flat rejection of synthetic training data."
+      },
+      {
+        "text": "as a researcher it always slightly hurts my ego if all I'm doing is distillation",
+        "timestamp_sec": 482,
+        "why": "Candidly admits the anti-distillation stance is partly a values judgment, not only a technical one."
+      },
+      {
+        "text": "when you try to generate a painting of whatever, it'll be always hanged on a wall, on a white wall, which is pulling that what the user wants.",
+        "timestamp_sec": 557,
+        "why": "Shows exactly how a captioner's blind spot becomes a systematic generation bias."
+      },
+      {
+        "text": "we need to use like like, I don't know, anywhere from like 2 to like 10 billion images. That's a lot of images to run like filters on.",
+        "timestamp_sec": 591,
+        "why": "Reports the dataset scale that forces the tiered filtering architecture."
+      },
+      {
+        "text": "we can like distill this data, this kind of like decision and like to like a very small like SigLip classifier. And then, you can base you have like a very like cheap classifier that is somewhat like reliable.",
+        "timestamp_sec": 634,
+        "why": "The key cost-control technique for filtering billion-scale corpora."
+      },
+      {
+        "text": "one thing that you can actually get out of SAE is a unsupervised tagging system",
+        "timestamp_sec": 706,
+        "why": "An unusual, practical repurposing of interpretability tooling for data curation."
+      },
+      {
+        "text": "you can actually take the Wikipedia, the entire Wikipedia, and for each article or concept, you can compute the page rank of each of the concepts",
+        "timestamp_sec": 797,
+        "why": "Concrete, reproducible method for ensuring world-knowledge coverage in the dataset."
+      },
+      {
+        "text": "I think we ended up having around like 30 to 40 like custom in-house classifier, like different heuristics and like filters that we've used.",
+        "timestamp_sec": 849,
+        "why": "Quantifies the actual engineering surface area of the curation pipeline."
+      },
+      {
+        "text": "most people like train start training at low resolution because that's where the model actually learns like text-to-image capabilities",
+        "timestamp_sec": 929,
+        "why": "Explains the rationale behind progressive resolution scheduling."
+      },
+      {
+        "text": "you actually need to train a small LLM that takes in like user prompt and then outputs like a very long detail prompt because typically longer detail prompt they're more in distribution with your models like training data that tends to like make better images",
+        "timestamp_sec": 1053,
+        "why": "Argues prompt expansion is now a required production component, with a distributional justification."
+      },
+      {
+        "text": "we would like train experts that are like specialized in like photography text rendering and different capabilities and then kind of like merge all of these capabilities into a single student",
+        "timestamp_sec": 1053,
+        "why": "Previews Krea's next research direction: multi-expert distillation."
+      },
+      {
+        "text": "data is like eternal like you can if you have that's going to be valuable no matter what the hot new training paradigm is",
+        "timestamp_sec": 1106,
+        "why": "Frames data as the durable asset relative to fast-churning modeling techniques."
+      },
+      {
+        "text": "our thing that I like to do is steal a lot from LLM research so that I can just reuse their kernels and like research and like literature",
+        "timestamp_sec": 1106,
+        "why": "Explicit methodological stance that diffusion work should track LLM research."
+      },
+      {
+        "text": "I really like to, you know, simplify the stack so that we can get rid of VAEs and then text encoders and then just train a single clean transformer.",
+        "timestamp_sec": 1192,
+        "why": "A clear architectural bet about where image generation is headed."
+      },
+      {
+        "text": "image generation, I think it's really like a proxy for like BLM like progress",
+        "timestamp_sec": 1226,
+        "why": "Ties image model advances to vision-language model capability as the upstream driver."
+      }
+    ],
+    "concepts": [
+      "latent diffusion models",
+      "mode collapse",
+      "training data curation",
+      "synthetic data contamination",
+      "image captioning pipelines",
+      "semantic deduplication",
+      "classifier distillation",
+      "sparse autoencoders",
+      "progressive resolution training",
+      "prompt expansion"
+    ],
+    "positions": [
+      {
+        "claim": "Frontier image models like GPT-image and Nano Banana Pro achieve their output reliability by significantly mode-collapsing, sacrificing stylistic diversity.",
+        "confidence": "stated",
+        "timestamp_sec": 131
+      },
+      {
+        "claim": "Fast generation with knobs beats slow, highly reliable generation for creative users who don't yet know what they want.",
+        "confidence": "stated",
+        "timestamp_sec": 166
+      },
+      {
+        "claim": "Once architecture is locked in, data curation is what actually determines model quality.",
+        "confidence": "stated",
+        "timestamp_sec": 313
+      },
+      {
+        "claim": "Relying on standard aesthetic or image-quality scores to filter data unintentionally destroys stylistic diversity.",
+        "confidence": "stated",
+        "timestamp_sec": 348
+      },
+      {
+        "claim": "Training on AI-generated images is a shortcut that permanently imprints a recognizable ChatGPT/Nano Banana aesthetic on the model, so it should be avoided entirely.",
+        "confidence": "stated",
+        "timestamp_sec": 447
+      },
+      {
+        "claim": "A trained observer can tell when a model has been heavily distilled on ChatGPT or Nano Banana Pro outputs.",
+        "confidence": "stated",
+        "timestamp_sec": 482
+      },
+      {
+        "claim": "Images whose key attributes captioning VLMs consistently fail to describe should be filtered out or undersampled, even when the image itself is fine.",
+        "confidence": "stated",
+        "timestamp_sec": 591
+      },
+      {
+        "claim": "Running a large VLM directly over a billion-image corpus is an inefficient use of GPUs; the judgments must be distilled into a SigLip-sized classifier.",
+        "confidence": "stated",
+        "timestamp_sec": 706
+      },
+      {
+        "claim": "Sparse autoencoders trained on vision models yield usable unsupervised tags for filtering artifacts like watermarks, signatures, and blur.",
+        "confidence": "stated",
+        "timestamp_sec": 753
+      },
+      {
+        "claim": "Krea used roughly 30 to 40 custom in-house classifiers, heuristics, and filters over a 2\u201310 billion image corpus.",
+        "confidence": "stated",
+        "timestamp_sec": 849
+      },
+      {
+        "claim": "Progressive resolution training from 256 to 1K works because semantics are learned at low resolution and structure and detail only later at high resolution.",
+        "confidence": "stated",
+        "timestamp_sec": 929
+      },
+      {
+        "claim": "A trained prompt-expander LLM has become an almost essential component of production-grade diffusion systems.",
+        "confidence": "stated",
+        "timestamp_sec": 1053
+      },
+      {
+        "claim": "Methods with fewer hyperparameters to tune are preferable, because iteration speed matters more than squeezing out marginal quality.",
+        "confidence": "stated",
+        "timestamp_sec": 1106
+      },
+      {
+        "claim": "Diffusion research should deliberately borrow from LLM research to reuse its kernels and literature.",
+        "confidence": "stated",
+        "timestamp_sec": 1106
+      },
+      {
+        "claim": "The image generation stack should eventually shed VAEs and text encoders in favor of a single clean transformer.",
+        "confidence": "stated",
+        "timestamp_sec": 1192
+      },
+      {
+        "claim": "Now that VLMs can cheaply produce accurate bounding boxes and scene graphs, richer structured conditioning signals are a promising direction for image models.",
+        "confidence": "stated",
+        "timestamp_sec": 1226
+      },
+      {
+        "claim": "Progress in image generation is essentially a proxy for progress in vision-language models.",
+        "confidence": "stated",
+        "timestamp_sec": 1226
+      }
+    ],
+    "speaker_org": "Krea"
+  },
+  "_meta": {
+    "slug": "training-krea-2-what-matters-in-generative-model-training",
+    "video_id": "-tviRdpmHvs",
+    "url": "https://www.youtube.com/watch?v=-tviRdpmHvs",
+    "word_count": 4054,
+    "wall_sec": 86.2,
+    "run_at": "2026-08-19T13:20:02Z",
+    "effort": "default"
+  }
+}

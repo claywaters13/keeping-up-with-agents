@@ -1,0 +1,285 @@
+{
+  "is_error": false,
+  "duration_api_ms": 76944,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "67d81f38-1ba9-4cd9-a3e9-df8010c7ab2b",
+  "total_cost_usd": 0.33484849999999994,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 14009,
+    "cache_read_input_tokens": 8113,
+    "output_tokens": 7343,
+    "output_tokens_details": {
+      "thinking_tokens": 3034
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 14009,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 7343,
+        "cache_read_input_tokens": 8113,
+        "cache_creation_input_tokens": 14009,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 14009
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 7037,
+      "outputTokens": 16,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.007117,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 7343,
+      "cacheReadInputTokens": 8113,
+      "cacheCreationInputTokens": 14009,
+      "webSearchRequests": 0,
+      "costUSD": 0.32773149999999995,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Samuel Denton of Applied Compute lays out a practical taxonomy for doing continual learning inside enterprises, organized as a 2x2 grid: production traces can be offline (a batch dump) or online (live rollouts), and the 'hint' that makes a teacher model smarter than the student can likewise be offline (a fixed prior about desired behavior) or online (constructed dynamically from what the on-policy model just did). He argues enterprises can get value on day one from quadrant one \u2014 offline traces plus offline hints, no replayable environment required \u2014 while quadrant four (online traces plus online hints) is the highest-ceiling flywheel where inference and training collapse into one system. Two concrete results anchor the talk: on SWE-bench, nudging a Qwen 3.5 thinking model to submit before turn 40 raised the task-complete call rate from ~22% to ~60% with no regression in test pass rate; and for a customer's out-of-distribution hyperlink format, online hinting drove correct formatting from ~15% to ~80% where offline hinting barely moved it. A recurring theme is doing all of this without a golden answer or rubric, which Denton says most distillation work wrongly assumes. Worth watching if you have production agent traces sitting unused and want a concrete mental model for turning them into model updates.\",\n  \"key_points\": [\n    \"Distillation for continual learning spans a spectrum from a one-time offline batch of production traces, through daily batches, to a fully unified engine where serving and training are the same loop.\",\n    \"A second, independent axis is hinting: the privileged information that makes the teacher smarter than the student can either be a static offline prior about desired behavior or a hint constructed dynamically from the specific online rollout.\",\n    \"Crossing those axes gives four quadrants; Applied Compute focuses on quadrant one (offline trace, offline hint) for immediate enterprise value and quadrant four (online trace, online hint) for the highest ceiling.\",\n    \"Quadrant one requires no replayable environment \u2014 you can improve an agent from a dump of production traces alone, which is where most enterprises actually are today.\",\n    \"In the SWE-bench experiment, a model taking up to 80 turns was pushed to call a submit tool before turn 40; the task-complete call rate rose from ~22% to ~60% while test pass rate stayed flat or rose slightly.\",\n    \"Surprisingly, in the fully offline setting the teacher never forces the tool-call tokens themselves \u2014 it reshapes the reasoning path toward the tool call, and the behavior follows.\",\n    \"Rolling out a single on-policy step from an offline trace ('a little bit of a cheat') gets more of the SWE-bench gain than the fully offline setup, showing that even minimal on-policyness helps.\",\n    \"For a very out-of-distribution hyperlink format, reward shaping and SFT both degraded general coding performance, while online hinting on on-policy rollouts took correct formatting from ~15% to ~80%; the same hint applied statically to every rollout climbed far less.\",\n    \"Two practical tricks: use a judge to pick where in the rollout to inject the hint and distill only on the next step or few steps, and use relevance-masked self-distillation to learn only from teacher tokens that matter, avoiding connector-word noise and catastrophic degradation.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"you get a single batch of traces from a production agent, and you're meant to just do something with it\",\n      \"timestamp_sec\": 80,\n      \"why\": \"Frames the offline end of the spectrum as the messy reality most enterprises hand over.\"\n    },\n    {\n      \"text\": \"this is sort of the holy grail of continual learning where I have a model that's serving production traffic, it does a rollout, it creates a trace, we figure out how to learn from that trace, we update the model, and then we serve the next production request\",\n      \"timestamp_sec\": 116,\n      \"why\": \"Crisp definition of the fully online flywheel the whole taxonomy points toward.\"\n    },\n    {\n      \"text\": \"our goal at Applied Compute is to meet enterprises where they are, right? So, they're across this spectrum and we want to provide value across both ends of the spectrum.\",\n      \"timestamp_sec\": 188,\n      \"why\": \"States the product thesis: serve the whole spectrum rather than insisting on full online training.\"\n    },\n    {\n      \"text\": \"in order to create a teacher that's smarter than this on-policy model, we need to create some kind of hint or have some kind of privileged information\",\n      \"timestamp_sec\": 226,\n      \"why\": \"The core mechanism of the talk \u2014 where teacher advantage actually comes from.\"\n    },\n    {\n      \"text\": \"we don't actually have to have replayability of a production environment\",\n      \"timestamp_sec\": 460,\n      \"why\": \"Names the practical barrier that quadrant one sidesteps, which is why it ships first.\"\n    },\n    {\n      \"text\": \"We can improve for free today by using offline production traces. Give us a dump of your production data. We'll find a way to make it valuable.\",\n      \"timestamp_sec\": 545,\n      \"why\": \"The value-accrual pitch in one line, and a checkable claim about what offline traces alone can do.\"\n    },\n    {\n      \"text\": \"a lot of distillation work is done assuming you have some kind of golden answer that you can distill into the model. And this is often not the case.\",\n      \"timestamp_sec\": 587,\n      \"why\": \"A direct critique of standard distillation practice and the talk's sharpest contrarian position.\"\n    },\n    {\n      \"text\": \"we want to think about how we can do continual learning and distillation without having some beautifully golden rubric to accompany every task\",\n      \"timestamp_sec\": 587,\n      \"why\": \"States the constraint the entire hinting approach is designed around.\"\n    },\n    {\n      \"text\": \"on SWE-bench, we found that this model was essentially taking like up to 80 turns to submit its answer. What we wanted to do was encourage it to call a tool to submit its task before turn 40.\",\n      \"timestamp_sec\": 656,\n      \"why\": \"Concrete setup with numbers for the first experiment.\"\n    },\n    {\n      \"text\": \"the task complete call rate increases dramatically from about 22% to 60%\",\n      \"timestamp_sec\": 759,\n      \"why\": \"Headline result of the offline-trace, offline-hint experiment.\"\n    },\n    {\n      \"text\": \"the teacher doesn't force the tool call. It just starts to force the the reasoning path towards the tool call without ever actually changing the tool call.\",\n      \"timestamp_sec\": 800,\n      \"why\": \"The mechanistically surprising finding: behavior change propagates through reasoning, not through the target tokens.\"\n    },\n    {\n      \"text\": \"you can roll out just one step from the on policy model given an offline production trace\",\n      \"timestamp_sec\": 800,\n      \"why\": \"Describes the cheap hybrid that recovers much of the benefit of online training.\"\n    },\n    {\n      \"text\": \"even doing SFT on traces where we knew the hyperlink was correctly formatted, we saw that there was this sort of degradation in overall coding agent performance\",\n      \"timestamp_sec\": 875,\n      \"why\": \"Reports the failure of two obvious baselines, motivating online hinting.\"\n    },\n    {\n      \"text\": \"the percentage of correct hyperlink formatting jumped drastically from about, I guess, 15% all the way up to around 80%\",\n      \"timestamp_sec\": 921,\n      \"why\": \"Headline number for the online-trace, online-hint case.\"\n    },\n    {\n      \"text\": \"you can see that we do climb the behavior a little bit, but far less than in this online hinting world\",\n      \"timestamp_sec\": 921,\n      \"why\": \"The head-to-head comparison that justifies dynamic hints over static ones.\"\n    },\n    {\n      \"text\": \"rather than injecting a hint to the beginning of a rollout, we use a judge to essentially decide where in the rollout we should be injecting hints\",\n      \"timestamp_sec\": 953,\n      \"why\": \"Concrete implementation detail the speaker calls essential to making distillation work.\"\n    },\n    {\n      \"text\": \"it's best to just do distillation on that next step that occurs or maybe a few steps forward rather than the entire rollout\",\n      \"timestamp_sec\": 991,\n      \"why\": \"A specific, transferable training recipe backed by the observed KL signal decay.\"\n    },\n    {\n      \"text\": \"often, we'll see that the teacher model has preferences of certain connector words that are not really relevant to actually what we're trying to teach the student\",\n      \"timestamp_sec\": 1025,\n      \"why\": \"Explains why token-level relevance masking is needed in self-distillation.\"\n    },\n    {\n      \"text\": \"we use offline hinting with offline production traces to provide value on day one to enterprise clients. Give us production traces and we can teach you a certain behavior.\",\n      \"timestamp_sec\": 1068,\n      \"why\": \"The talk's summary of what is deployable now versus aspirational.\"\n    },\n    {\n      \"text\": \"because that judge is able to adapt to whatever the online model does in production\",\n      \"timestamp_sec\": 1068,\n      \"why\": \"Names the reason online hinting generalizes across behaviors where static hints don't.\"\n    }\n  ],\n  \"concepts\": [\n    \"continual learning\",\n    \"model distillation\",\n    \"self-distillation\",\n    \"teacher-student hinting\",\n    \"on-policy versus off-policy training\",\n    \"production trace mining\",\n    \"per-step hint injection\",\n    \"llm-as-judge\",\n    \"relevance-masked distillation\",\n    \"catastrophic degradation\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Continual learning setups can be classified along two independent axes \u2014 offline vs. online traces and offline vs. online hints \u2014 yielding four distinct distillation regimes.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 302\n    },\n    {\n      \"claim\": \"Enterprises can get real agent improvement from a one-time batch of production traces without any replayable production environment.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 460\n    },\n    {\n      \"claim\": \"Most distillation work wrongly assumes access to a golden answer or rubric, and useful continual learning must work without one.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 587\n    },\n    {\n      \"claim\": \"Targeted behavior change via offline hints can be achieved without degrading base task performance \u2014 SWE-bench task complete rate rose from ~22% to ~60% while test pass rate held steady or improved slightly.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 759\n    },\n    {\n      \"claim\": \"A teacher can shift a student toward a tool call purely by reshaping the reasoning path, without ever modifying the tool-call tokens themselves.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 800\n    },\n    {\n      \"claim\": \"Adding a single on-policy rollout step to an otherwise offline trace yields a larger SWE-bench pass rate gain than the fully offline setup.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 838\n    },\n    {\n      \"claim\": \"Reward shaping for a specific output format and SFT on correctly formatted traces both cause degradation in general coding agent performance for out-of-distribution behaviors.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 875\n    },\n    {\n      \"claim\": \"Online hints constructed per-rollout substantially outperform a fixed offline hint applied uniformly \u2014 ~15% to ~80% correct hyperlink formatting versus a small climb.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 921\n    },\n    {\n      \"claim\": \"Per-step hinting, with a judge choosing the injection point, is critical to making distillation work rather than hinting at the start of a rollout.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 953\n    },\n    {\n      \"claim\": \"The KL learning signal decays the further a step is from the injected hint, so distillation should be restricted to the next step or a few steps after the hint.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 991\n    },\n    {\n      \"claim\": \"Using an LLM judge to mask which teacher tokens are learned from improves acquisition of out-of-distribution behavior while reducing catastrophic degradation.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1025\n    },\n    {\n      \"claim\": \"The online-trace, online-hint quadrant is the highest-ceiling and most scalable approach because a judge can adapt to whatever the production model does.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1068\n    },\n    {\n      \"claim\": \"As serving and training infrastructure converge into a single system, continual improvement of production models becomes automatic rather than a separate batch process.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 616\n    }\n  ],\n  \"speaker_org\": \"Applied Compute\"\n}",
+  "ttft_ms": 32353,
+  "ttft_stream_ms": 1017,
+  "time_to_request_ms": 53,
+  "type": "result",
+  "duration_ms": 77419,
+  "uuid": "e3336112-1388-4572-9468-d357dc73a43b",
+  "passA": {
+    "summary": "Samuel Denton of Applied Compute lays out a practical taxonomy for doing continual learning inside enterprises, organized as a 2x2 grid: production traces can be offline (a batch dump) or online (live rollouts), and the 'hint' that makes a teacher model smarter than the student can likewise be offline (a fixed prior about desired behavior) or online (constructed dynamically from what the on-policy model just did). He argues enterprises can get value on day one from quadrant one \u2014 offline traces plus offline hints, no replayable environment required \u2014 while quadrant four (online traces plus online hints) is the highest-ceiling flywheel where inference and training collapse into one system. Two concrete results anchor the talk: on SWE-bench, nudging a Qwen 3.5 thinking model to submit before turn 40 raised the task-complete call rate from ~22% to ~60% with no regression in test pass rate; and for a customer's out-of-distribution hyperlink format, online hinting drove correct formatting from ~15% to ~80% where offline hinting barely moved it. A recurring theme is doing all of this without a golden answer or rubric, which Denton says most distillation work wrongly assumes. Worth watching if you have production agent traces sitting unused and want a concrete mental model for turning them into model updates.",
+    "key_points": [
+      "Distillation for continual learning spans a spectrum from a one-time offline batch of production traces, through daily batches, to a fully unified engine where serving and training are the same loop.",
+      "A second, independent axis is hinting: the privileged information that makes the teacher smarter than the student can either be a static offline prior about desired behavior or a hint constructed dynamically from the specific online rollout.",
+      "Crossing those axes gives four quadrants; Applied Compute focuses on quadrant one (offline trace, offline hint) for immediate enterprise value and quadrant four (online trace, online hint) for the highest ceiling.",
+      "Quadrant one requires no replayable environment \u2014 you can improve an agent from a dump of production traces alone, which is where most enterprises actually are today.",
+      "In the SWE-bench experiment, a model taking up to 80 turns was pushed to call a submit tool before turn 40; the task-complete call rate rose from ~22% to ~60% while test pass rate stayed flat or rose slightly.",
+      "Surprisingly, in the fully offline setting the teacher never forces the tool-call tokens themselves \u2014 it reshapes the reasoning path toward the tool call, and the behavior follows.",
+      "Rolling out a single on-policy step from an offline trace ('a little bit of a cheat') gets more of the SWE-bench gain than the fully offline setup, showing that even minimal on-policyness helps.",
+      "For a very out-of-distribution hyperlink format, reward shaping and SFT both degraded general coding performance, while online hinting on on-policy rollouts took correct formatting from ~15% to ~80%; the same hint applied statically to every rollout climbed far less.",
+      "Two practical tricks: use a judge to pick where in the rollout to inject the hint and distill only on the next step or few steps, and use relevance-masked self-distillation to learn only from teacher tokens that matter, avoiding connector-word noise and catastrophic degradation."
+    ],
+    "notable_quotes": [
+      {
+        "text": "you get a single batch of traces from a production agent, and you're meant to just do something with it",
+        "timestamp_sec": 80,
+        "why": "Frames the offline end of the spectrum as the messy reality most enterprises hand over."
+      },
+      {
+        "text": "this is sort of the holy grail of continual learning where I have a model that's serving production traffic, it does a rollout, it creates a trace, we figure out how to learn from that trace, we update the model, and then we serve the next production request",
+        "timestamp_sec": 116,
+        "why": "Crisp definition of the fully online flywheel the whole taxonomy points toward."
+      },
+      {
+        "text": "our goal at Applied Compute is to meet enterprises where they are, right? So, they're across this spectrum and we want to provide value across both ends of the spectrum.",
+        "timestamp_sec": 188,
+        "why": "States the product thesis: serve the whole spectrum rather than insisting on full online training."
+      },
+      {
+        "text": "in order to create a teacher that's smarter than this on-policy model, we need to create some kind of hint or have some kind of privileged information",
+        "timestamp_sec": 226,
+        "why": "The core mechanism of the talk \u2014 where teacher advantage actually comes from."
+      },
+      {
+        "text": "we don't actually have to have replayability of a production environment",
+        "timestamp_sec": 460,
+        "why": "Names the practical barrier that quadrant one sidesteps, which is why it ships first."
+      },
+      {
+        "text": "We can improve for free today by using offline production traces. Give us a dump of your production data. We'll find a way to make it valuable.",
+        "timestamp_sec": 545,
+        "why": "The value-accrual pitch in one line, and a checkable claim about what offline traces alone can do."
+      },
+      {
+        "text": "a lot of distillation work is done assuming you have some kind of golden answer that you can distill into the model. And this is often not the case.",
+        "timestamp_sec": 587,
+        "why": "A direct critique of standard distillation practice and the talk's sharpest contrarian position."
+      },
+      {
+        "text": "we want to think about how we can do continual learning and distillation without having some beautifully golden rubric to accompany every task",
+        "timestamp_sec": 587,
+        "why": "States the constraint the entire hinting approach is designed around."
+      },
+      {
+        "text": "on SWE-bench, we found that this model was essentially taking like up to 80 turns to submit its answer. What we wanted to do was encourage it to call a tool to submit its task before turn 40.",
+        "timestamp_sec": 656,
+        "why": "Concrete setup with numbers for the first experiment."
+      },
+      {
+        "text": "the task complete call rate increases dramatically from about 22% to 60%",
+        "timestamp_sec": 759,
+        "why": "Headline result of the offline-trace, offline-hint experiment."
+      },
+      {
+        "text": "the teacher doesn't force the tool call. It just starts to force the the reasoning path towards the tool call without ever actually changing the tool call.",
+        "timestamp_sec": 800,
+        "why": "The mechanistically surprising finding: behavior change propagates through reasoning, not through the target tokens."
+      },
+      {
+        "text": "you can roll out just one step from the on policy model given an offline production trace",
+        "timestamp_sec": 800,
+        "why": "Describes the cheap hybrid that recovers much of the benefit of online training."
+      },
+      {
+        "text": "even doing SFT on traces where we knew the hyperlink was correctly formatted, we saw that there was this sort of degradation in overall coding agent performance",
+        "timestamp_sec": 875,
+        "why": "Reports the failure of two obvious baselines, motivating online hinting."
+      },
+      {
+        "text": "the percentage of correct hyperlink formatting jumped drastically from about, I guess, 15% all the way up to around 80%",
+        "timestamp_sec": 921,
+        "why": "Headline number for the online-trace, online-hint case."
+      },
+      {
+        "text": "you can see that we do climb the behavior a little bit, but far less than in this online hinting world",
+        "timestamp_sec": 921,
+        "why": "The head-to-head comparison that justifies dynamic hints over static ones."
+      },
+      {
+        "text": "rather than injecting a hint to the beginning of a rollout, we use a judge to essentially decide where in the rollout we should be injecting hints",
+        "timestamp_sec": 953,
+        "why": "Concrete implementation detail the speaker calls essential to making distillation work."
+      },
+      {
+        "text": "it's best to just do distillation on that next step that occurs or maybe a few steps forward rather than the entire rollout",
+        "timestamp_sec": 991,
+        "why": "A specific, transferable training recipe backed by the observed KL signal decay."
+      },
+      {
+        "text": "often, we'll see that the teacher model has preferences of certain connector words that are not really relevant to actually what we're trying to teach the student",
+        "timestamp_sec": 1025,
+        "why": "Explains why token-level relevance masking is needed in self-distillation."
+      },
+      {
+        "text": "we use offline hinting with offline production traces to provide value on day one to enterprise clients. Give us production traces and we can teach you a certain behavior.",
+        "timestamp_sec": 1068,
+        "why": "The talk's summary of what is deployable now versus aspirational."
+      },
+      {
+        "text": "because that judge is able to adapt to whatever the online model does in production",
+        "timestamp_sec": 1068,
+        "why": "Names the reason online hinting generalizes across behaviors where static hints don't."
+      }
+    ],
+    "concepts": [
+      "continual learning",
+      "model distillation",
+      "self-distillation",
+      "teacher-student hinting",
+      "on-policy versus off-policy training",
+      "production trace mining",
+      "per-step hint injection",
+      "llm-as-judge",
+      "relevance-masked distillation",
+      "catastrophic degradation"
+    ],
+    "positions": [
+      {
+        "claim": "Continual learning setups can be classified along two independent axes \u2014 offline vs. online traces and offline vs. online hints \u2014 yielding four distinct distillation regimes.",
+        "confidence": "stated",
+        "timestamp_sec": 302
+      },
+      {
+        "claim": "Enterprises can get real agent improvement from a one-time batch of production traces without any replayable production environment.",
+        "confidence": "stated",
+        "timestamp_sec": 460
+      },
+      {
+        "claim": "Most distillation work wrongly assumes access to a golden answer or rubric, and useful continual learning must work without one.",
+        "confidence": "stated",
+        "timestamp_sec": 587
+      },
+      {
+        "claim": "Targeted behavior change via offline hints can be achieved without degrading base task performance \u2014 SWE-bench task complete rate rose from ~22% to ~60% while test pass rate held steady or improved slightly.",
+        "confidence": "stated",
+        "timestamp_sec": 759
+      },
+      {
+        "claim": "A teacher can shift a student toward a tool call purely by reshaping the reasoning path, without ever modifying the tool-call tokens themselves.",
+        "confidence": "stated",
+        "timestamp_sec": 800
+      },
+      {
+        "claim": "Adding a single on-policy rollout step to an otherwise offline trace yields a larger SWE-bench pass rate gain than the fully offline setup.",
+        "confidence": "stated",
+        "timestamp_sec": 838
+      },
+      {
+        "claim": "Reward shaping for a specific output format and SFT on correctly formatted traces both cause degradation in general coding agent performance for out-of-distribution behaviors.",
+        "confidence": "stated",
+        "timestamp_sec": 875
+      },
+      {
+        "claim": "Online hints constructed per-rollout substantially outperform a fixed offline hint applied uniformly \u2014 ~15% to ~80% correct hyperlink formatting versus a small climb.",
+        "confidence": "stated",
+        "timestamp_sec": 921
+      },
+      {
+        "claim": "Per-step hinting, with a judge choosing the injection point, is critical to making distillation work rather than hinting at the start of a rollout.",
+        "confidence": "stated",
+        "timestamp_sec": 953
+      },
+      {
+        "claim": "The KL learning signal decays the further a step is from the injected hint, so distillation should be restricted to the next step or a few steps after the hint.",
+        "confidence": "stated",
+        "timestamp_sec": 991
+      },
+      {
+        "claim": "Using an LLM judge to mask which teacher tokens are learned from improves acquisition of out-of-distribution behavior while reducing catastrophic degradation.",
+        "confidence": "stated",
+        "timestamp_sec": 1025
+      },
+      {
+        "claim": "The online-trace, online-hint quadrant is the highest-ceiling and most scalable approach because a judge can adapt to whatever the production model does.",
+        "confidence": "stated",
+        "timestamp_sec": 1068
+      },
+      {
+        "claim": "As serving and training infrastructure converge into a single system, continual improvement of production models becomes automatic rather than a separate batch process.",
+        "confidence": "implied",
+        "timestamp_sec": 616
+      }
+    ],
+    "speaker_org": "Applied Compute"
+  },
+  "_meta": {
+    "slug": "bringing-continual-learning-into-enterprises",
+    "video_id": "ZTA0GwpAUak",
+    "url": "https://www.youtube.com/watch?v=ZTA0GwpAUak",
+    "word_count": 3596,
+    "wall_sec": 78.6,
+    "run_at": "2026-08-19T13:12:00Z",
+    "effort": "default"
+  }
+}

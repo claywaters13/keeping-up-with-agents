@@ -2,6 +2,7 @@
 title: "Local Agentic Theory For Mobile Games"
 type: "talk"
 slug: "local-agentic-theory-for-mobile-games"
+track: "Neo4j Graphs Track"
 org: "The New York Times"
 video_id: "418t26CVz-w"
 duration_sec: 1084
@@ -15,7 +16,7 @@ speakers: ["Joanne Song", "Shafik Quoraishee"]
 
 **Org:** The New York Times
 
-**Duration:** 18m 04s
+**Track:** Neo4j Graphs Track &nbsp;|&nbsp; **Duration:** 18m 04s
 
 [Watch on YouTube](https://www.youtube.com/watch?v=418t26CVz-w)
 
