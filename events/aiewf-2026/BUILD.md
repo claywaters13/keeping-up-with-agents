@@ -308,3 +308,15 @@ regexes that must each match exactly once, so a drifted file fails loudly instea
 being half-updated. If the maturity distribution ever produces a settled concept, the
 run fails and says the "zero settled" headline needs a human rewrite. A cron job should
 not be in the business of restating a finding.
+
+## Ingest 2026-08-19 (evening): the AI in Healthcare track
+
+The channel published the "AI in Healthcare" track (10 talks) on 2026-08-19 but filed it
+only under a cross-year topical playlist, so the refresh job correctly held it for human
+review rather than auto-ingesting. Clay approved it the same day, which exercised the
+refresh pipeline's human-approval path for the first time: approved video ids recorded in
+`raw/approved_track_only.json` substitute for official-playlist provenance (all 10 also
+fuzzy-match the official 561-session schedule's AI in Healthcare track), but still face
+every other gate. The run ingested all 10 — corpus 246 → 256 talks, 5,135 verified quotes
+(100% verbatim), 56 concept syntheses regenerated, maturity now 79 consolidating / 51
+contested / 4 frontier, still zero settled — with the 12-case eval suite passing.
