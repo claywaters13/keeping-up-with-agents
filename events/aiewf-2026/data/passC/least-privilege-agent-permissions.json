@@ -1,34 +1,37 @@
 {
   "is_error": false,
-  "duration_api_ms": 132201,
+  "duration_api_ms": 143356,
   "num_turns": 1,
   "stop_reason": "end_turn",
-  "session_id": "b69faefe-824e-421c-ab5e-a22abbe5494c",
-  "total_cost_usd": 0.8539000000000001,
+  "session_id": "0618f244-eb95-4f0a-9543-971e345a91d5",
+  "total_cost_usd": 0.9530495000000001,
   "usage": {
     "input_tokens": 2,
-    "cache_creation_input_tokens": 53338,
-    "cache_read_input_tokens": 10308,
-    "output_tokens": 11188,
+    "cache_creation_input_tokens": 60555,
+    "cache_read_input_tokens": 8113,
+    "output_tokens": 12215,
+    "output_tokens_details": {
+      "thinking_tokens": 6160
+    },
     "server_tool_use": {
       "web_search_requests": 0,
       "web_fetch_requests": 0
     },
     "service_tier": "standard",
     "cache_creation": {
-      "ephemeral_1h_input_tokens": 53338,
+      "ephemeral_1h_input_tokens": 60555,
       "ephemeral_5m_input_tokens": 0
     },
     "inference_geo": "not_available",
     "iterations": [
       {
         "input_tokens": 2,
-        "output_tokens": 11188,
-        "cache_read_input_tokens": 10308,
-        "cache_creation_input_tokens": 53338,
+        "output_tokens": 12215,
+        "cache_read_input_tokens": 8113,
+        "cache_creation_input_tokens": 60555,
         "cache_creation": {
           "ephemeral_5m_input_tokens": 0,
-          "ephemeral_1h_input_tokens": 53338
+          "ephemeral_1h_input_tokens": 60555
         },
         "type": "message"
       }
@@ -37,12 +40,12 @@
   },
   "modelUsage": {
     "claude-haiku-4-5-20251001": {
-      "inputTokens": 35576,
-      "outputTokens": 16,
+      "inputTokens": 37988,
+      "outputTokens": 14,
       "cacheReadInputTokens": 0,
       "cacheCreationInputTokens": 0,
       "webSearchRequests": 0,
-      "costUSD": 0.035656,
+      "costUSD": 0.038058,
       "contextWindow": 200000,
       "maxOutputTokens": 32000,
       "canonicalModel": "claude-haiku-4-5",
@@ -50,11 +53,11 @@
     },
     "claude-opus-5": {
       "inputTokens": 2,
-      "outputTokens": 11188,
-      "cacheReadInputTokens": 10308,
-      "cacheCreationInputTokens": 53338,
+      "outputTokens": 12215,
+      "cacheReadInputTokens": 8113,
+      "cacheCreationInputTokens": 60555,
       "webSearchRequests": 0,
-      "costUSD": 0.8182440000000001,
+      "costUSD": 0.9149915000000001,
       "contextWindow": 1000000,
       "maxOutputTokens": 64000,
       "canonicalModel": "claude-opus-5",
@@ -67,85 +70,75 @@
   "fast_mode_disabled_reason": "sdk_opt_in_required",
   "subtype": "success",
   "api_error_status": null,
-  "result": "{\"concept\": \"least-privilege agent permissions\", \"state_of_practice\": \"The field has converged on a blunt operational fact: an agent will use every permission it holds, so the API key you hand it is the ceiling on your blast radius, not the plan. The dominant pattern presented was to stop handing agents human credentials and instead give them their own identity plus narrowly delegated authority \u2014 per-tool-call tokens obtained via RFC 8693 token exchange, audience-bound to a single MCP server, expiring in minutes, never stored \u2014 with policy evaluated *before* the credential is minted so a denied action leaves nothing to leak or replay. A parallel school argues the credential layer is the wrong place to fight and that containment wins: keep secrets in a vault decrypted only at tool-execution time (the model never sees a token), give the agent no write credentials at all and push git push / PR creation / CI triggering into a deterministic wrapper, and run the whole thing in a micro VM because the sandboxes shipped with Codex and Claude Code are worthless the moment the agent has a Docker socket. Everyone agrees prompt injection is unsolved and that human-in-the-loop approval is not an access control \u2014 approvers are consent-fatigued, and a skill that merely instructs the agent to 'ask for confirmation' gets confirmed by the agent itself. The supply chain around the agent (skills, plugins, MCP servers, hooks) is now treated as dependency surface to be scanned and allow-listed, and the boring infrastructure layer underneath \u2014 auth off by default on clusters \u2014 is where breaches actually land. Nobody claims a settled control layer; the honest summary from the survey talk is that current tooling is the toolkit you'd use to manage an intern.\", \"consensus\": [{\"claim\": \"An agent will exercise every permission it holds, so credentials must be scoped to the specific task rather than issued as broad, long-lived, 'kitchen sink' keys.\", \"support_count\": 5, \"supporting_talks\": [\"its-10pm-do-you-know-where-your-agents-are\", \"you-didnt-ship-a-bug-you-just-wrote-it-for-a-human\", \"multiplayer-agentic-engineering\", \"full-workshop-better-auth\", \"agentic-security-permissions-provenance-and-the-agent-supply-chain\"], \"evidence_quote\": \"agents want to be helpful. they're going to use all the permissions that they have access to in order to get the job done.\", \"evidence_talk\": \"its-10pm-do-you-know-where-your-agents-are\", \"evidence_timestamp_sec\": 315}, {\"claim\": \"Human-in-the-loop approval is not an access control; it fails to consent fatigue, and an in-prompt 'ask for confirmation' instruction can be satisfied by the agent itself.\", \"support_count\": 3, \"supporting_talks\": [\"its-10pm-do-you-know-where-your-agents-are\", \"we-vetted-2000-ai-skills-before-they-reached-developers\", \"the-biggest-challenge-in-your-stack-evals-evals-evals\"], \"evidence_quote\": \"people sometimes will add the instruction like you need to ask for confirmation but the AI may ask confirmation for itself. So from your perspective there is a human in the loop but for the AI perspective there is has been a confirmation\", \"evidence_talk\": \"we-vetted-2000-ai-skills-before-they-reached-developers\", \"evidence_timestamp_sec\": 753}, {\"claim\": \"Prompt injection has no reliable technical fix at the model layer, so the only available defense is limiting what the agent can reach when it happens.\", \"support_count\": 4, \"supporting_talks\": [\"we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night\", \"your-llm-stack-is-a-2008-database-with-better-marketing\", \"agentic-security-permissions-provenance-and-the-agent-supply-chain\", \"privacy-preserving-intelligence\"], \"evidence_quote\": \"I guess like prompt injection itself isn't solved and we cannot really solve it. All we can do is just to limit the blast radius in case that happens.\", \"evidence_talk\": \"we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night\", \"evidence_timestamp_sec\": 750}, {\"claim\": \"Secrets must be usable by the agent without being visible to it: credentials belong in a vault or deterministic execution layer and should never enter the model's context.\", \"support_count\": 4, \"supporting_talks\": [\"evolution-of-agentic-surfaces\", \"claude-fable-claude-tag-and-anthropics-culture\", \"we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night\", \"its-10pm-do-you-know-where-your-agents-are\"], \"evidence_quote\": \"the data dog credentials are only usable by the agent but not accessible by the agent\", \"evidence_talk\": \"claude-fable-claude-tag-and-anthropics-culture\", \"evidence_timestamp_sec\": 2216}, {\"claim\": \"Agents should execute in an isolated sandbox rather than on a developer's machine, because the laptop's ambient credentials and filesystem are themselves the over-privileging.\", \"support_count\": 5, \"supporting_talks\": [\"multiplayer-agentic-engineering\", \"privacy-preserving-intelligence\", \"we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night\", \"gadgets-personal-app-vibe-coding-that-is-actually-safe\", \"the-future-is-domain-specific-agents\"], \"evidence_quote\": \"it finds a token on your laptop that it can use and it thinks it's working with staging, but actually it's production and now it just deleted everything.\", \"evidence_talk\": \"multiplayer-agentic-engineering\", \"evidence_timestamp_sec\": 665}, {\"claim\": \"The agent must be its own principal with its own identity, acting on behalf of a user under delegated authority, rather than impersonating the user with the user's credentials.\", \"support_count\": 3, \"supporting_talks\": [\"full-workshop-better-auth\", \"you-didnt-ship-a-bug-you-just-wrote-it-for-a-human\", \"its-10pm-do-you-know-where-your-agents-are\"], \"evidence_quote\": \"the actor, in this case, an agent, has to be bound to the principal at all times. And the agent should have its own identity.\", \"evidence_talk\": \"you-didnt-ship-a-bug-you-just-wrote-it-for-a-human\", \"evidence_timestamp_sec\": 548}, {\"claim\": \"Restrict the tool surface itself \u2014 allow-listed tools per skill, per-user tool scoping on MCP servers, agents that structurally cannot do more than their job \u2014 rather than relying on runtime approval of a maximally capable agent.\", \"support_count\": 3, \"supporting_talks\": [\"the-future-is-domain-specific-agents\", \"skills-are-new-features-building-skill-centric-harness\", \"you-didnt-ship-a-bug-you-just-wrote-it-for-a-human\"], \"evidence_quote\": \"In a world that would be powered by smaller domain-specific agents, those agents can't do everything. They can only do the things that are already explicitly approved for them to do.\", \"evidence_talk\": \"the-future-is-domain-specific-agents\", \"evidence_timestamp_sec\": 1174}], \"disagreements\": [{\"question\": \"Should least privilege be achieved by scoping credentials for a general-purpose agent, or by replacing it with narrow agents that structurally lack the capability?\", \"position_a\": \"Keep the powerful general agent and constrain it at the authorization layer: per-tool-call token exchange, policy evaluated before minting, classifiers and auto-review in the loop.\", \"position_a_talks\": [\"its-10pm-do-you-know-where-your-agents-are\", \"you-didnt-ship-a-bug-you-just-wrote-it-for-a-human\", \"claude-fable-claude-tag-and-anthropics-culture\", \"full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex\"], \"position_b\": \"Restricting a general-purpose agent destroys its usefulness; deploy narrow, domain-specific, capability-limited agents whose approved action set is fixed at design time, and skip permission dialogs entirely.\", \"position_b_talks\": [\"the-future-is-domain-specific-agents\", \"privacy-preserving-intelligence\"], \"why_it_matters\": \"One path invests in identity infrastructure, policy engines and token exchange that a single agent calls at runtime; the other invests in fleets of small isolated agents and an orchestration layer. The engineering budgets and failure modes barely overlap.\"}, {\"question\": \"Should agents hold scoped credentials at all, or should privileged operations be moved out of the agent into deterministic code?\", \"position_a\": \"Give the agent short-lived, audience-bound, task-scoped tokens minted per tool call after policy evaluation \u2014 the agent acts, but only within the narrowed grant.\", \"position_a_talks\": [\"its-10pm-do-you-know-where-your-agents-are\", \"full-workshop-better-auth\", \"you-didnt-ship-a-bug-you-just-wrote-it-for-a-human\"], \"position_b\": \"The agent should hold no write credentials whatsoever; it only edits files or proposes changes, while push, PR creation, CI triggering and sharing/access control live in a deterministic layer or the platform, so a compromised agent has nothing to spend.\", \"position_b_talks\": [\"we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night\", \"gadgets-personal-app-vibe-coding-that-is-actually-safe\", \"privacy-preserving-intelligence\"], \"why_it_matters\": \"It decides where the security review happens \u2014 in an authorization server and policy language, or in the architectural split between what is agentic and what is deterministic. As one speaker put it, that split is the security model.\"}, {\"question\": \"Are the sandboxes and auto-approval modes shipped with today's coding agents adequate protection?\", \"position_a\": \"Yes for most work: auto mode plus a classifier is the safest way to run long tasks, and AGENTS.md rules plus auto-review suffice for individual use, with models already erring toward being too reluctant to act.\", \"position_a_talks\": [\"claude-fable-claude-tag-and-anthropics-culture\", \"full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex\"], \"position_b\": \"No: built-in sandboxes are worthless once the agent has Docker socket access, and relying on a correctly configured YOLO mode on a laptop full of credentials is hope, not a control \u2014 micro VMs with mediated networking are the real boundary.\", \"position_b_talks\": [\"we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night\", \"multiplayer-agentic-engineering\", \"privacy-preserving-intelligence\"], \"why_it_matters\": \"If vendor defaults are adequate, teams ship agents today with configuration; if not, every team needs isolation infrastructure the speakers themselves describe as still in beta, which pushes production agent adoption out by quarters.\"}], \"practical_guidance\": {\"do\": [\"Mint downstream access tokens per tool call, not per session, audience-bound to the single target MCP server, expiring within a few minutes, and never stored\", \"Evaluate policy before the credential is minted rather than issuing a broad credential and restricting its use, so a denied action leaves nothing to leak, replay, or steal\", \"Store credentials in a vault decrypted only at tool-execution runtime so the model never sees a security token\", \"Keep dangerous write capabilities \u2014 GitHub push, PR creation, CI triggering \u2014 out of the agent entirely and in the deterministic wrapper around it\", \"Give each agent its own private key and identity so actions are attributable per agent, per host, and per user, with the user it reports to always recorded\", \"Check the human approver's role against policy too, so an approval from someone without the role is overridden\", \"Build the kill switch first, resolve flags per turn rather than per session, and force sub-agents through the same middleware as their parent\", \"Default autonomy to 'suggest' for everything, earn auto-approve per surface, and make auto-execute opt-in per tool\", \"Time-bound agent permissions to its operating window and require just-in-time elevation for anything broader\", \"Have skills declare allow-listed, access-controlled tools, and route third-party skills through an internal marketplace that scans them with both deterministic checks and LLM review before distribution\", \"Run agents needing Docker inside micro VMs (Firecracker) with Vsock-mediated networking, or let tool execution run inside the customer's own VPC via outbound-only tunnels\", \"Secure the boring infrastructure first \u2014 cluster auth, network segmentation, service-to-service verified identity \u2014 since access control policy is decoration if the cluster underneath is open\"], \"avoid\": [\"Handing an agent your own credentials or a personal API key that can do everything the certificate-renewal job needed plus drop the database\", \"Treating an in-prompt 'ask for confirmation' instruction as a human in the loop\", \"Giving an agent Docker socket access \u2014 it can spawn a privileged container and escape, making the surrounding sandbox meaningless\", \"Assuming a blocked connector stops the agent; a determined one will open a browser and perform the action manually via computer use\", \"Letting a parent agent with flags correctly applied spawn child agents that bypass the flag middleware, so a flipped kill switch never reaches them\", \"Relying on OAuth scopes like 'read' or Gmail's send-on-your-behalf, which cannot express time-of-day, sender, or recipient restrictions\", \"Exposing the same MCP tool surface to the agent regardless of which user authorized it\", \"Building your own AI Slackbot, given the prompt-injection attack surface\", \"Believing your team is at security maturity level three when the audit evidence puts most teams at level one or two\"]}, \"notable_outliers\": [{\"claim\": \"No agent should be permitted to drop a database, even when the documented recovery runbook calls for exactly that step.\", \"talk\": \"its-10pm-do-you-know-where-your-agents-are\", \"timestamp_sec\": 807}, {\"claim\": \"If the platform implements sharing and access control and the client runs in a null-origin sandboxed iframe talking only to an isolated server sandbox, there is no security bug the generated code can have that matters.\", \"talk\": \"gadgets-personal-app-vibe-coding-that-is-actually-safe\", \"timestamp_sec\": 912}, {\"claim\": \"For prompt injection and data exfiltration specifically, an auto-mode agent's residual risk is already lower than that of an average human reviewer.\", \"talk\": \"claude-fable-claude-tag-and-anthropics-culture\", \"timestamp_sec\": 1914}, {\"claim\": \"Behavioral techniques for taming agents simply do not work \u2014 only sandboxing and removing the means to cause harm do.\", \"talk\": \"privacy-preserving-intelligence\", \"timestamp_sec\": 793}, {\"claim\": \"78% of 50 audited production ML setups had at least one critical security mistake, and the breaches come from ordinary infrastructure misconfiguration rather than model-level attacks.\", \"talk\": \"your-llm-stack-is-a-2008-database-with-better-marketing\", \"timestamp_sec\": 512}, {\"claim\": \"A determined agent blocked from a connector will route around it with computer use \u2014 opening Chrome and clicking send \u2014 which makes connector-level blocking an incomplete control.\", \"talk\": \"full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex\", \"timestamp_sec\": 3277}, {\"claim\": \"Companies must design in-house agent permission and monitoring systems now, because nothing mature enough to buy exists.\", \"talk\": \"agentic-security-permissions-provenance-and-the-agent-supply-chain\", \"timestamp_sec\": 1205}], \"maturity\": \"contested\", \"maturity_rationale\": \"The goal is unanimous \u2014 agents are over-privileged and prompt injection is unsolved \u2014 but credible speakers recommend incompatible mechanisms: per-tool-call token exchange at an identity layer, versus giving the agent no credentials at all and containing it in micro VMs, versus replacing the general agent with narrow ones that structurally cannot misbehave. The survey talk's own finding that nobody has settled the control layer, plus the split over whether vendor-shipped sandboxes are adequate, puts this well short of consolidating.\"}",
-  "ttft_ms": 68990,
-  "ttft_stream_ms": 1671,
-  "time_to_request_ms": 37,
+  "result": "{\"concept\":\"least-privilege agent permissions\",\"state_of_practice\":\"The field has converged on the diagnosis and is still arguing about the mechanism. Everyone agrees the current default \u2014 hand the agent a long-lived kitchen-sink API key in a .env file, or worse, the user's own credentials \u2014 is broken, because an agent will use every permission it holds to complete a task and there is no code to inspect that bounds what it will attempt. The emerging shape of the answer is: the agent is its own principal with its own identity, it receives task-scoped short-lived credentials minted per tool call after a policy check, secrets are usable-but-not-readable (vault decryption at tool-execution time, never in the model's context), and write-capable operations like git push, PR creation, or CI triggering are pushed out of the agent into a deterministic wrapper. Because prompt injection is treated as unsolvable at the model layer, isolation is doing the real work: micro VMs rather than container sandboxes when Docker is involved, execution in the customer VPC or an isolated cloud environment rather than a developer laptop full of credentials, and in the strongest form, platforms where the generated code structurally cannot express a wrong permission model. Nobody claims to have shipped a mature control layer \u2014 Yegge's advice was to build one in-house because nothing exists to buy, and the State of AI Engineering survey found the top two guardrails in production are human-in-the-loop approvals and permission gating, which is the toolkit you'd use to manage an intern.\",\"consensus\":[{\"claim\":\"An agent will use every permission it holds to complete its task, so over-permissioning is a design defect rather than developer carelessness \u2014 scope must be cut to the specific action.\",\"support_count\":5,\"supporting_talks\":[\"its-10pm-do-you-know-where-your-agents-are\",\"you-didnt-ship-a-bug-you-just-wrote-it-for-a-human\",\"full-workshop-better-auth\",\"multiplayer-agentic-engineering\",\"we-vetted-2000-ai-skills-before-they-reached-developers\"],\"evidence_quote\":\"agents want to be helpful. they're going to use all the permissions that they have access to in order to get the job done.\",\"evidence_talk\":\"its-10pm-do-you-know-where-your-agents-are\",\"evidence_timestamp_sec\":315},{\"claim\":\"Credentials should be usable by the agent but never readable by it \u2014 held in a vault or deterministic layer and injected at tool-execution time, never placed in the model's context.\",\"support_count\":5,\"supporting_talks\":[\"evolution-of-agentic-surfaces\",\"claude-fable-claude-tag-and-anthropics-culture\",\"its-10pm-do-you-know-where-your-agents-are\",\"we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night\",\"multiplayer-agentic-engineering\"],\"evidence_quote\":\"the data dog credentials are only usable by the agent but not accessible by the agent\",\"evidence_talk\":\"claude-fable-claude-tag-and-anthropics-culture\",\"evidence_timestamp_sec\":2216},{\"claim\":\"Prompt injection cannot be defended at the model layer, so permission design is the actual control: limit blast radius architecturally and assume injection succeeds.\",\"support_count\":5,\"supporting_talks\":[\"we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night\",\"your-llm-stack-is-a-2008-database-with-better-marketing\",\"why-your-enterprise-tech-stack-isnt-ready-for-ai-agents\",\"agentic-security-permissions-provenance-and-the-agent-supply-chain\",\"claude-fable-claude-tag-and-anthropics-culture\"],\"evidence_quote\":\"I guess like prompt injection itself isn't solved and we cannot really solve it. All we can do is just to limit the blast radius in case that happens.\",\"evidence_talk\":\"we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night\",\"evidence_timestamp_sec\":750},{\"claim\":\"Sandboxing and removing capability \u2014 not instructions, prompts, or behavioral guardrails \u2014 are what actually constrain an agent.\",\"support_count\":5,\"supporting_talks\":[\"privacy-preserving-intelligence\",\"multiplayer-agentic-engineering\",\"we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night\",\"the-future-is-domain-specific-agents\",\"gadgets-personal-app-vibe-coding-that-is-actually-safe\"],\"evidence_quote\":\"I think nothing works except like sandboxing and just not giving them a way to hurt themselves.\",\"evidence_talk\":\"privacy-preserving-intelligence\",\"evidence_timestamp_sec\":793},{\"claim\":\"The agent must be its own principal with its own identity, bound to but distinct from the user it acts for \u2014 impersonating the user with the user's credentials is the wrong model.\",\"support_count\":3,\"supporting_talks\":[\"full-workshop-better-auth\",\"you-didnt-ship-a-bug-you-just-wrote-it-for-a-human\",\"its-10pm-do-you-know-where-your-agents-are\"],\"evidence_quote\":\"the actor, in this case, an agent, has to be bound to the principal at all times. And the agent should have its own identity.\",\"evidence_talk\":\"you-didnt-ship-a-bug-you-just-wrote-it-for-a-human\",\"evidence_timestamp_sec\":548},{\"claim\":\"Access should be granted per tool call and time-bounded \u2014 short-lived, audience-bound, ephemeral credentials with just-in-time elevation, not a session-wide or registration-time grant.\",\"support_count\":3,\"supporting_talks\":[\"its-10pm-do-you-know-where-your-agents-are\",\"you-didnt-ship-a-bug-you-just-wrote-it-for-a-human\",\"full-workshop-better-auth\"],\"evidence_quote\":\"this request is asking for permissions to access the MCP server for that tool call but only that tool call.\",\"evidence_talk\":\"its-10pm-do-you-know-where-your-agents-are\",\"evidence_timestamp_sec\":567},{\"claim\":\"Human-in-the-loop approval is not by itself an access control, because approvers are consent-fatigued, many agents run unattended, and an agent can satisfy a prompt-level confirmation instruction itself.\",\"support_count\":4,\"supporting_talks\":[\"its-10pm-do-you-know-where-your-agents-are\",\"we-vetted-2000-ai-skills-before-they-reached-developers\",\"the-biggest-challenge-in-your-stack-evals-evals-evals\",\"full-workshop-better-auth\"],\"evidence_quote\":\"And we can't just solve this with human in the loop. We spent decades solving access management for humans. So just blindly trusting a human who might be a little bit consent fatigued uh or who might be tired enough at night, this isn't really going to be enough.\",\"evidence_talk\":\"its-10pm-do-you-know-where-your-agents-are\",\"evidence_timestamp_sec\":315}],\"disagreements\":[{\"question\":\"Should human approval remain the primary gate on privileged agent actions, or be replaced by machine-enforced policy?\",\"position_a\":\"Human approval is the wrong control surface: approvers are fatigued and fallible, an agent can self-satisfy a confirmation prompt, and the approval itself should be policy-checked against the approver's role (and can be overridden). The goal is to remove humans from the loop for classes of work where automated checks catch everything.\",\"position_a_talks\":[\"its-10pm-do-you-know-where-your-agents-are\",\"we-vetted-2000-ai-skills-before-they-reached-developers\",\"the-biggest-challenge-in-your-stack-evals-evals-evals\",\"claude-fable-claude-tag-and-anthropics-culture\"],\"position_b\":\"The plan-then-approve block is a hard requirement: agentic tools must show a plan and get approval before executing, every layer of a fleet must block until the operator approves, and even at 99.9% agent-generated PRs a human reviews every one.\",\"position_b_talks\":[\"the-ux-of-ai-making-ai-powered-apps-your-users-dont-hate\",\"i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke\",\"multiplayer-agentic-engineering\"],\"why_it_matters\":\"If approval is the control, you invest in UX, plan rendering, and reviewer throughput and your ceiling is human attention; if policy is the control, you invest in token exchange, per-call authorization, and audit, and unattended overnight operation becomes possible.\"},{\"question\":\"Is the safe agent a general-purpose one that has been contained, or a narrow one that was never given the capability in the first place?\",\"position_a\":\"Restriction of a general agent degrades it into uselessness; the right unit is a small, domain-scoped agent whose capability set is explicitly approved, with sandboxed filesystem and code execution as built-in primitives \u2014 or a platform that implements sharing and access control so generated code cannot get the permission model wrong.\",\"position_a_talks\":[\"privacy-preserving-intelligence\",\"the-future-is-domain-specific-agents\",\"gadgets-personal-app-vibe-coding-that-is-actually-safe\"],\"position_b\":\"Keep the broadly capable agent and contain it externally \u2014 classifier-judged auto mode, AGENTS.md rules plus auto-review, or a deterministic wrapper that holds the dangerous credentials while the agent only edits files inside a micro VM.\",\"position_b_talks\":[\"claude-fable-claude-tag-and-anthropics-culture\",\"full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex\",\"we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night\"],\"why_it_matters\":\"It decides whether you build one agent and a security perimeter around it, or a fleet of narrow agents plus an orchestration layer \u2014 and whether cost, token efficiency, and model choice are per-task decisions or one global one.\"},{\"question\":\"Does agent authorization need new identity primitives, or do existing OAuth extensions already cover it?\",\"position_a\":\"No new spec is required \u2014 RFC 8693 token exchange, an existing OAuth 2 extension, is sufficient to narrow access per tool call and to attribute the agent, the user, and the delegating user's level of access.\",\"position_a_talks\":[\"its-10pm-do-you-know-where-your-agents-are\"],\"position_b\":\"OAuth is only a starting point: even fine-grained OAuth still mints a token for the user, scopes like 'read' or Gmail's send scope cannot express time-of-day, sender, or recipient limits, and the agent needs its own private key and signed tokens to be a first-class principal.\",\"position_b_talks\":[\"full-workshop-better-auth\",\"you-didnt-ship-a-bug-you-just-wrote-it-for-a-human\"],\"why_it_matters\":\"Betting on token exchange means you can ship on today's identity providers and resource-server scopes; betting on agent-native identity means waiting for services to implement new endpoints and running OpenAPI-to-capability translation as an interim bridge.\"},{\"question\":\"Should agents be given direct access to a developer's or user's personal machine?\",\"position_a\":\"Local machine access is uniquely powerful precisely because it carries the user's OAuth, credentials, and filesystem, and today's models are more often too reluctant to take destructive action than too eager \u2014 over-restriction is the bigger practical cost.\",\"position_a_talks\":[\"full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex\"],\"position_b\":\"Laptops hold credentials and data the agent should never reach, sandbox and auto-approval configurations are not reliably safe, and an agent that finds a token can mistake production for staging \u2014 agents belong in isolated cloud environments, not on personal computers.\",\"position_b_talks\":[\"multiplayer-agentic-engineering\",\"privacy-preserving-intelligence\"],\"why_it_matters\":\"This determines whether the sandboxing investment is optional ergonomics or the prerequisite for letting non-technical teammates trigger real merged code changes.\"}],\"practical_guidance\":{\"do\":[\"Evaluate policy before minting the credential, not after \u2014 a denied action leaves nothing to leak, replay, or steal, whereas a broad credential restricted at use time still exists.\",\"Mint per-tool-call tokens that are audience-bound to a single target MCP server, expire within a few minutes, and are never stored.\",\"Store credentials in a vault that decrypts only at tool-execution runtime, so security tokens never enter the model's context.\",\"Keep write-capable credentials \u2014 GitHub push, PR creation, CI triggering \u2014 out of the agent entirely and in the deterministic wrapper; let the agent only modify files on disk.\",\"Give each agent its own private key and identity so actions are attributable per agent, per host, and per user.\",\"Grant read-type capabilities by default per host and reserve prompts for writes, or approval fatigue will make the system unusable.\",\"Use a micro VM (Firecracker) with Vsock-mediated networking as the isolation boundary when the agent needs Docker; container-level sandboxes cannot contain a Docker daemon.\",\"Run tool execution inside the customer's own VPC under their policies (e.g. MCP tunnels making only outbound calls to the agent loop) rather than only in the vendor's cloud.\",\"Have skills declare allow-listed tools and access-control those tools, and govern skills, plugins, MCP servers, rules, and hooks as supply-chain dependencies scanned before marketplace distribution.\",\"Re-enforce local scanning in CI, since you cannot ensure an engineer ran the checks or ran the latest version.\",\"Build the kill switch first, resolve flags per turn rather than per session, and route sub-agents through the same middleware so a flip actually reaches them.\",\"Segregate sensitive data into schema-driven object storage that the orchestration log only references, and have token-bearing agents fetch it at point of use, so the lethal trifecta is architecturally impossible.\",\"Secure the underlying infrastructure first \u2014 an exposed cluster with auth off by default makes a perfect access-control policy decoration.\",\"Keep tool cardinality low with clearly distinct functions, which both improves tool selection and shrinks the permission surface.\"],\"avoid\":[\"Handing an agent your own credentials or personal token \u2014 give it delegated authority scoped to specific actions instead of letting it pretend to be you.\",\"Long-lived kitchen-sink API keys in a .env file that can renew a certificate and drop a database with the same credential.\",\"Treating a prompt instruction like 'ask for confirmation' as a human in the loop \u2014 the agent can satisfy the confirmation itself.\",\"Giving an agent Docker socket access: it can spawn a privileged container and escape, which makes the built-in Codex and Claude sandboxes worthless.\",\"Relying on coarse OAuth scopes such as 'read' or Gmail's send-on-your-behalf, which cannot express time-of-day, sender, or recipient limits.\",\"Exposing the full tool surface on an MCP server regardless of which user authorized the agent \u2014 scope the tool list to the authorizing principal.\",\"Spawning sub-agents that bypass the permission/flag middleware their parent went through.\",\"Assuming a blocked connector stops a determined agent \u2014 it will open a browser and perform the action via computer use.\",\"Bolting security, auditability, and eval onto a working POC as requirements surface; start from the constraints and rebuild toward POC accuracy.\",\"Letting non-engineers spin up agents with far more permissions than their job needs, on the assumption that a mature permissioning product exists to buy.\"]},\"notable_outliers\":[{\"claim\":\"No agent should be permitted to drop a database \u2014 even when the documented recovery procedure calls for it, policy should refuse to mint the credential.\",\"talk\":\"its-10pm-do-you-know-where-your-agents-are\",\"timestamp_sec\":807},{\"claim\":\"If the client runs in a null-origin sandboxed iframe and the server sandbox can only talk to it, there is no security bug in the generated code that matters \u2014 an XSS bug leaks nothing.\",\"talk\":\"gadgets-personal-app-vibe-coding-that-is-actually-safe\",\"timestamp_sec\":912},{\"claim\":\"For prompt injection and data exfiltration specifically, an auto-mode agent with a classifier judging each tool call carries lower residual risk than the average human reviewer.\",\"talk\":\"claude-fable-claude-tag-and-anthropics-culture\",\"timestamp_sec\":1914},{\"claim\":\"Tightening down a general-purpose agent (OpenClaw) destroyed its usefulness; a narrowly sandboxed special-purpose agent is the better tradeoff today.\",\"talk\":\"privacy-preserving-intelligence\",\"timestamp_sec\":899},{\"claim\":\"Current models are more often too reluctant to take destructive actions than too eager, so over-restriction is the bigger practical annoyance for individual use.\",\"talk\":\"full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex\",\"timestamp_sec\":1801},{\"claim\":\"An audit of 50 real production ML setups found at least one critical security mistake in 78% of them, almost all ordinary infrastructure misconfiguration rather than model-level attacks.\",\"talk\":\"your-llm-stack-is-a-2008-database-with-better-marketing\",\"timestamp_sec\":512},{\"claim\":\"Companies must design in-house agent permission and monitoring solutions now, because nothing mature exists to buy.\",\"talk\":\"agentic-security-permissions-provenance-and-the-agent-supply-chain\",\"timestamp_sec\":1205}],\"maturity\":\"contested\",\"maturity_rationale\":\"The diagnosis is unanimous \u2014 over-permissioned agents holding long-lived credentials are the core problem and prompt injection cannot be fixed at the model layer \u2014 but credible practitioners actively disagree on the mechanism: whether the agent is a new principal or an OAuth delegate, whether safety comes from narrowing the agent or containing a general one, and whether human approval is a control at all. Multiple speakers state outright that nothing mature exists to buy and that nobody has settled the control layer.\"}",
+  "ttft_ms": 74333,
+  "ttft_stream_ms": 1378,
+  "time_to_request_ms": 140,
   "type": "result",
-  "duration_ms": 131747,
-  "uuid": "576692ff-3734-46dc-b1fc-aa754edcb55b",
+  "duration_ms": 142123,
+  "uuid": "784d0608-0c39-4f61-aecd-a66b45b28869",
   "passC": {
     "concept": "least-privilege agent permissions",
-    "state_of_practice": "The field has converged on a blunt operational fact: an agent will use every permission it holds, so the API key you hand it is the ceiling on your blast radius, not the plan. The dominant pattern presented was to stop handing agents human credentials and instead give them their own identity plus narrowly delegated authority \u2014 per-tool-call tokens obtained via RFC 8693 token exchange, audience-bound to a single MCP server, expiring in minutes, never stored \u2014 with policy evaluated *before* the credential is minted so a denied action leaves nothing to leak or replay. A parallel school argues the credential layer is the wrong place to fight and that containment wins: keep secrets in a vault decrypted only at tool-execution time (the model never sees a token), give the agent no write credentials at all and push git push / PR creation / CI triggering into a deterministic wrapper, and run the whole thing in a micro VM because the sandboxes shipped with Codex and Claude Code are worthless the moment the agent has a Docker socket. Everyone agrees prompt injection is unsolved and that human-in-the-loop approval is not an access control \u2014 approvers are consent-fatigued, and a skill that merely instructs the agent to 'ask for confirmation' gets confirmed by the agent itself. The supply chain around the agent (skills, plugins, MCP servers, hooks) is now treated as dependency surface to be scanned and allow-listed, and the boring infrastructure layer underneath \u2014 auth off by default on clusters \u2014 is where breaches actually land. Nobody claims a settled control layer; the honest summary from the survey talk is that current tooling is the toolkit you'd use to manage an intern.",
+    "state_of_practice": "The field has converged on the diagnosis and is still arguing about the mechanism. Everyone agrees the current default \u2014 hand the agent a long-lived kitchen-sink API key in a .env file, or worse, the user's own credentials \u2014 is broken, because an agent will use every permission it holds to complete a task and there is no code to inspect that bounds what it will attempt. The emerging shape of the answer is: the agent is its own principal with its own identity, it receives task-scoped short-lived credentials minted per tool call after a policy check, secrets are usable-but-not-readable (vault decryption at tool-execution time, never in the model's context), and write-capable operations like git push, PR creation, or CI triggering are pushed out of the agent into a deterministic wrapper. Because prompt injection is treated as unsolvable at the model layer, isolation is doing the real work: micro VMs rather than container sandboxes when Docker is involved, execution in the customer VPC or an isolated cloud environment rather than a developer laptop full of credentials, and in the strongest form, platforms where the generated code structurally cannot express a wrong permission model. Nobody claims to have shipped a mature control layer \u2014 Yegge's advice was to build one in-house because nothing exists to buy, and the State of AI Engineering survey found the top two guardrails in production are human-in-the-loop approvals and permission gating, which is the toolkit you'd use to manage an intern.",
     "consensus": [
       {
-        "claim": "An agent will exercise every permission it holds, so credentials must be scoped to the specific task rather than issued as broad, long-lived, 'kitchen sink' keys.",
+        "claim": "An agent will use every permission it holds to complete its task, so over-permissioning is a design defect rather than developer carelessness \u2014 scope must be cut to the specific action.",
         "support_count": 5,
         "supporting_talks": [
           "its-10pm-do-you-know-where-your-agents-are",
           "you-didnt-ship-a-bug-you-just-wrote-it-for-a-human",
-          "multiplayer-agentic-engineering",
           "full-workshop-better-auth",
-          "agentic-security-permissions-provenance-and-the-agent-supply-chain"
+          "multiplayer-agentic-engineering",
+          "we-vetted-2000-ai-skills-before-they-reached-developers"
         ],
         "evidence_quote": "agents want to be helpful. they're going to use all the permissions that they have access to in order to get the job done.",
         "evidence_talk": "its-10pm-do-you-know-where-your-agents-are",
         "evidence_timestamp_sec": 315
       },
       {
-        "claim": "Human-in-the-loop approval is not an access control; it fails to consent fatigue, and an in-prompt 'ask for confirmation' instruction can be satisfied by the agent itself.",
-        "support_count": 3,
-        "supporting_talks": [
-          "its-10pm-do-you-know-where-your-agents-are",
-          "we-vetted-2000-ai-skills-before-they-reached-developers",
-          "the-biggest-challenge-in-your-stack-evals-evals-evals"
-        ],
-        "evidence_quote": "people sometimes will add the instruction like you need to ask for confirmation but the AI may ask confirmation for itself. So from your perspective there is a human in the loop but for the AI perspective there is has been a confirmation",
-        "evidence_talk": "we-vetted-2000-ai-skills-before-they-reached-developers",
-        "evidence_timestamp_sec": 753
-      },
-      {
-        "claim": "Prompt injection has no reliable technical fix at the model layer, so the only available defense is limiting what the agent can reach when it happens.",
-        "support_count": 4,
-        "supporting_talks": [
-          "we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night",
-          "your-llm-stack-is-a-2008-database-with-better-marketing",
-          "agentic-security-permissions-provenance-and-the-agent-supply-chain",
-          "privacy-preserving-intelligence"
-        ],
-        "evidence_quote": "I guess like prompt injection itself isn't solved and we cannot really solve it. All we can do is just to limit the blast radius in case that happens.",
-        "evidence_talk": "we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night",
-        "evidence_timestamp_sec": 750
-      },
-      {
-        "claim": "Secrets must be usable by the agent without being visible to it: credentials belong in a vault or deterministic execution layer and should never enter the model's context.",
-        "support_count": 4,
+        "claim": "Credentials should be usable by the agent but never readable by it \u2014 held in a vault or deterministic layer and injected at tool-execution time, never placed in the model's context.",
+        "support_count": 5,
         "supporting_talks": [
           "evolution-of-agentic-surfaces",
           "claude-fable-claude-tag-and-anthropics-culture",
+          "its-10pm-do-you-know-where-your-agents-are",
           "we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night",
-          "its-10pm-do-you-know-where-your-agents-are"
+          "multiplayer-agentic-engineering"
         ],
         "evidence_quote": "the data dog credentials are only usable by the agent but not accessible by the agent",
         "evidence_talk": "claude-fable-claude-tag-and-anthropics-culture",
         "evidence_timestamp_sec": 2216
       },
       {
-        "claim": "Agents should execute in an isolated sandbox rather than on a developer's machine, because the laptop's ambient credentials and filesystem are themselves the over-privileging.",
+        "claim": "Prompt injection cannot be defended at the model layer, so permission design is the actual control: limit blast radius architecturally and assume injection succeeds.",
         "support_count": 5,
         "supporting_talks": [
-          "multiplayer-agentic-engineering",
-          "privacy-preserving-intelligence",
           "we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night",
-          "gadgets-personal-app-vibe-coding-that-is-actually-safe",
-          "the-future-is-domain-specific-agents"
+          "your-llm-stack-is-a-2008-database-with-better-marketing",
+          "why-your-enterprise-tech-stack-isnt-ready-for-ai-agents",
+          "agentic-security-permissions-provenance-and-the-agent-supply-chain",
+          "claude-fable-claude-tag-and-anthropics-culture"
         ],
-        "evidence_quote": "it finds a token on your laptop that it can use and it thinks it's working with staging, but actually it's production and now it just deleted everything.",
-        "evidence_talk": "multiplayer-agentic-engineering",
-        "evidence_timestamp_sec": 665
+        "evidence_quote": "I guess like prompt injection itself isn't solved and we cannot really solve it. All we can do is just to limit the blast radius in case that happens.",
+        "evidence_talk": "we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night",
+        "evidence_timestamp_sec": 750
       },
       {
-        "claim": "The agent must be its own principal with its own identity, acting on behalf of a user under delegated authority, rather than impersonating the user with the user's credentials.",
+        "claim": "Sandboxing and removing capability \u2014 not instructions, prompts, or behavioral guardrails \u2014 are what actually constrain an agent.",
+        "support_count": 5,
+        "supporting_talks": [
+          "privacy-preserving-intelligence",
+          "multiplayer-agentic-engineering",
+          "we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night",
+          "the-future-is-domain-specific-agents",
+          "gadgets-personal-app-vibe-coding-that-is-actually-safe"
+        ],
+        "evidence_quote": "I think nothing works except like sandboxing and just not giving them a way to hurt themselves.",
+        "evidence_talk": "privacy-preserving-intelligence",
+        "evidence_timestamp_sec": 793
+      },
+      {
+        "claim": "The agent must be its own principal with its own identity, bound to but distinct from the user it acts for \u2014 impersonating the user with the user's credentials is the wrong model.",
         "support_count": 3,
         "supporting_talks": [
           "full-workshop-better-auth",
@@ -157,140 +150,168 @@
         "evidence_timestamp_sec": 548
       },
       {
-        "claim": "Restrict the tool surface itself \u2014 allow-listed tools per skill, per-user tool scoping on MCP servers, agents that structurally cannot do more than their job \u2014 rather than relying on runtime approval of a maximally capable agent.",
+        "claim": "Access should be granted per tool call and time-bounded \u2014 short-lived, audience-bound, ephemeral credentials with just-in-time elevation, not a session-wide or registration-time grant.",
         "support_count": 3,
         "supporting_talks": [
-          "the-future-is-domain-specific-agents",
-          "skills-are-new-features-building-skill-centric-harness",
-          "you-didnt-ship-a-bug-you-just-wrote-it-for-a-human"
+          "its-10pm-do-you-know-where-your-agents-are",
+          "you-didnt-ship-a-bug-you-just-wrote-it-for-a-human",
+          "full-workshop-better-auth"
         ],
-        "evidence_quote": "In a world that would be powered by smaller domain-specific agents, those agents can't do everything. They can only do the things that are already explicitly approved for them to do.",
-        "evidence_talk": "the-future-is-domain-specific-agents",
-        "evidence_timestamp_sec": 1174
+        "evidence_quote": "this request is asking for permissions to access the MCP server for that tool call but only that tool call.",
+        "evidence_talk": "its-10pm-do-you-know-where-your-agents-are",
+        "evidence_timestamp_sec": 567
+      },
+      {
+        "claim": "Human-in-the-loop approval is not by itself an access control, because approvers are consent-fatigued, many agents run unattended, and an agent can satisfy a prompt-level confirmation instruction itself.",
+        "support_count": 4,
+        "supporting_talks": [
+          "its-10pm-do-you-know-where-your-agents-are",
+          "we-vetted-2000-ai-skills-before-they-reached-developers",
+          "the-biggest-challenge-in-your-stack-evals-evals-evals",
+          "full-workshop-better-auth"
+        ],
+        "evidence_quote": "And we can't just solve this with human in the loop. We spent decades solving access management for humans. So just blindly trusting a human who might be a little bit consent fatigued uh or who might be tired enough at night, this isn't really going to be enough.",
+        "evidence_talk": "its-10pm-do-you-know-where-your-agents-are",
+        "evidence_timestamp_sec": 315
       }
     ],
     "disagreements": [
       {
-        "question": "Should least privilege be achieved by scoping credentials for a general-purpose agent, or by replacing it with narrow agents that structurally lack the capability?",
-        "position_a": "Keep the powerful general agent and constrain it at the authorization layer: per-tool-call token exchange, policy evaluated before minting, classifiers and auto-review in the loop.",
+        "question": "Should human approval remain the primary gate on privileged agent actions, or be replaced by machine-enforced policy?",
+        "position_a": "Human approval is the wrong control surface: approvers are fatigued and fallible, an agent can self-satisfy a confirmation prompt, and the approval itself should be policy-checked against the approver's role (and can be overridden). The goal is to remove humans from the loop for classes of work where automated checks catch everything.",
         "position_a_talks": [
           "its-10pm-do-you-know-where-your-agents-are",
-          "you-didnt-ship-a-bug-you-just-wrote-it-for-a-human",
-          "claude-fable-claude-tag-and-anthropics-culture",
-          "full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex"
+          "we-vetted-2000-ai-skills-before-they-reached-developers",
+          "the-biggest-challenge-in-your-stack-evals-evals-evals",
+          "claude-fable-claude-tag-and-anthropics-culture"
         ],
-        "position_b": "Restricting a general-purpose agent destroys its usefulness; deploy narrow, domain-specific, capability-limited agents whose approved action set is fixed at design time, and skip permission dialogs entirely.",
+        "position_b": "The plan-then-approve block is a hard requirement: agentic tools must show a plan and get approval before executing, every layer of a fleet must block until the operator approves, and even at 99.9% agent-generated PRs a human reviews every one.",
         "position_b_talks": [
-          "the-future-is-domain-specific-agents",
-          "privacy-preserving-intelligence"
+          "the-ux-of-ai-making-ai-powered-apps-your-users-dont-hate",
+          "i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke",
+          "multiplayer-agentic-engineering"
         ],
-        "why_it_matters": "One path invests in identity infrastructure, policy engines and token exchange that a single agent calls at runtime; the other invests in fleets of small isolated agents and an orchestration layer. The engineering budgets and failure modes barely overlap."
+        "why_it_matters": "If approval is the control, you invest in UX, plan rendering, and reviewer throughput and your ceiling is human attention; if policy is the control, you invest in token exchange, per-call authorization, and audit, and unattended overnight operation becomes possible."
       },
       {
-        "question": "Should agents hold scoped credentials at all, or should privileged operations be moved out of the agent into deterministic code?",
-        "position_a": "Give the agent short-lived, audience-bound, task-scoped tokens minted per tool call after policy evaluation \u2014 the agent acts, but only within the narrowed grant.",
+        "question": "Is the safe agent a general-purpose one that has been contained, or a narrow one that was never given the capability in the first place?",
+        "position_a": "Restriction of a general agent degrades it into uselessness; the right unit is a small, domain-scoped agent whose capability set is explicitly approved, with sandboxed filesystem and code execution as built-in primitives \u2014 or a platform that implements sharing and access control so generated code cannot get the permission model wrong.",
         "position_a_talks": [
-          "its-10pm-do-you-know-where-your-agents-are",
+          "privacy-preserving-intelligence",
+          "the-future-is-domain-specific-agents",
+          "gadgets-personal-app-vibe-coding-that-is-actually-safe"
+        ],
+        "position_b": "Keep the broadly capable agent and contain it externally \u2014 classifier-judged auto mode, AGENTS.md rules plus auto-review, or a deterministic wrapper that holds the dangerous credentials while the agent only edits files inside a micro VM.",
+        "position_b_talks": [
+          "claude-fable-claude-tag-and-anthropics-culture",
+          "full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex",
+          "we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night"
+        ],
+        "why_it_matters": "It decides whether you build one agent and a security perimeter around it, or a fleet of narrow agents plus an orchestration layer \u2014 and whether cost, token efficiency, and model choice are per-task decisions or one global one."
+      },
+      {
+        "question": "Does agent authorization need new identity primitives, or do existing OAuth extensions already cover it?",
+        "position_a": "No new spec is required \u2014 RFC 8693 token exchange, an existing OAuth 2 extension, is sufficient to narrow access per tool call and to attribute the agent, the user, and the delegating user's level of access.",
+        "position_a_talks": [
+          "its-10pm-do-you-know-where-your-agents-are"
+        ],
+        "position_b": "OAuth is only a starting point: even fine-grained OAuth still mints a token for the user, scopes like 'read' or Gmail's send scope cannot express time-of-day, sender, or recipient limits, and the agent needs its own private key and signed tokens to be a first-class principal.",
+        "position_b_talks": [
           "full-workshop-better-auth",
           "you-didnt-ship-a-bug-you-just-wrote-it-for-a-human"
         ],
-        "position_b": "The agent should hold no write credentials whatsoever; it only edits files or proposes changes, while push, PR creation, CI triggering and sharing/access control live in a deterministic layer or the platform, so a compromised agent has nothing to spend.",
-        "position_b_talks": [
-          "we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night",
-          "gadgets-personal-app-vibe-coding-that-is-actually-safe",
-          "privacy-preserving-intelligence"
-        ],
-        "why_it_matters": "It decides where the security review happens \u2014 in an authorization server and policy language, or in the architectural split between what is agentic and what is deterministic. As one speaker put it, that split is the security model."
+        "why_it_matters": "Betting on token exchange means you can ship on today's identity providers and resource-server scopes; betting on agent-native identity means waiting for services to implement new endpoints and running OpenAPI-to-capability translation as an interim bridge."
       },
       {
-        "question": "Are the sandboxes and auto-approval modes shipped with today's coding agents adequate protection?",
-        "position_a": "Yes for most work: auto mode plus a classifier is the safest way to run long tasks, and AGENTS.md rules plus auto-review suffice for individual use, with models already erring toward being too reluctant to act.",
+        "question": "Should agents be given direct access to a developer's or user's personal machine?",
+        "position_a": "Local machine access is uniquely powerful precisely because it carries the user's OAuth, credentials, and filesystem, and today's models are more often too reluctant to take destructive action than too eager \u2014 over-restriction is the bigger practical cost.",
         "position_a_talks": [
-          "claude-fable-claude-tag-and-anthropics-culture",
           "full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex"
         ],
-        "position_b": "No: built-in sandboxes are worthless once the agent has Docker socket access, and relying on a correctly configured YOLO mode on a laptop full of credentials is hope, not a control \u2014 micro VMs with mediated networking are the real boundary.",
+        "position_b": "Laptops hold credentials and data the agent should never reach, sandbox and auto-approval configurations are not reliably safe, and an agent that finds a token can mistake production for staging \u2014 agents belong in isolated cloud environments, not on personal computers.",
         "position_b_talks": [
-          "we-gave-an-agent-production-code-access-and-then-tried-to-sleep-at-night",
           "multiplayer-agentic-engineering",
           "privacy-preserving-intelligence"
         ],
-        "why_it_matters": "If vendor defaults are adequate, teams ship agents today with configuration; if not, every team needs isolation infrastructure the speakers themselves describe as still in beta, which pushes production agent adoption out by quarters."
+        "why_it_matters": "This determines whether the sandboxing investment is optional ergonomics or the prerequisite for letting non-technical teammates trigger real merged code changes."
       }
     ],
     "practical_guidance": {
       "do": [
-        "Mint downstream access tokens per tool call, not per session, audience-bound to the single target MCP server, expiring within a few minutes, and never stored",
-        "Evaluate policy before the credential is minted rather than issuing a broad credential and restricting its use, so a denied action leaves nothing to leak, replay, or steal",
-        "Store credentials in a vault decrypted only at tool-execution runtime so the model never sees a security token",
-        "Keep dangerous write capabilities \u2014 GitHub push, PR creation, CI triggering \u2014 out of the agent entirely and in the deterministic wrapper around it",
-        "Give each agent its own private key and identity so actions are attributable per agent, per host, and per user, with the user it reports to always recorded",
-        "Check the human approver's role against policy too, so an approval from someone without the role is overridden",
-        "Build the kill switch first, resolve flags per turn rather than per session, and force sub-agents through the same middleware as their parent",
-        "Default autonomy to 'suggest' for everything, earn auto-approve per surface, and make auto-execute opt-in per tool",
-        "Time-bound agent permissions to its operating window and require just-in-time elevation for anything broader",
-        "Have skills declare allow-listed, access-controlled tools, and route third-party skills through an internal marketplace that scans them with both deterministic checks and LLM review before distribution",
-        "Run agents needing Docker inside micro VMs (Firecracker) with Vsock-mediated networking, or let tool execution run inside the customer's own VPC via outbound-only tunnels",
-        "Secure the boring infrastructure first \u2014 cluster auth, network segmentation, service-to-service verified identity \u2014 since access control policy is decoration if the cluster underneath is open"
+        "Evaluate policy before minting the credential, not after \u2014 a denied action leaves nothing to leak, replay, or steal, whereas a broad credential restricted at use time still exists.",
+        "Mint per-tool-call tokens that are audience-bound to a single target MCP server, expire within a few minutes, and are never stored.",
+        "Store credentials in a vault that decrypts only at tool-execution runtime, so security tokens never enter the model's context.",
+        "Keep write-capable credentials \u2014 GitHub push, PR creation, CI triggering \u2014 out of the agent entirely and in the deterministic wrapper; let the agent only modify files on disk.",
+        "Give each agent its own private key and identity so actions are attributable per agent, per host, and per user.",
+        "Grant read-type capabilities by default per host and reserve prompts for writes, or approval fatigue will make the system unusable.",
+        "Use a micro VM (Firecracker) with Vsock-mediated networking as the isolation boundary when the agent needs Docker; container-level sandboxes cannot contain a Docker daemon.",
+        "Run tool execution inside the customer's own VPC under their policies (e.g. MCP tunnels making only outbound calls to the agent loop) rather than only in the vendor's cloud.",
+        "Have skills declare allow-listed tools and access-control those tools, and govern skills, plugins, MCP servers, rules, and hooks as supply-chain dependencies scanned before marketplace distribution.",
+        "Re-enforce local scanning in CI, since you cannot ensure an engineer ran the checks or ran the latest version.",
+        "Build the kill switch first, resolve flags per turn rather than per session, and route sub-agents through the same middleware so a flip actually reaches them.",
+        "Segregate sensitive data into schema-driven object storage that the orchestration log only references, and have token-bearing agents fetch it at point of use, so the lethal trifecta is architecturally impossible.",
+        "Secure the underlying infrastructure first \u2014 an exposed cluster with auth off by default makes a perfect access-control policy decoration.",
+        "Keep tool cardinality low with clearly distinct functions, which both improves tool selection and shrinks the permission surface."
       ],
       "avoid": [
-        "Handing an agent your own credentials or a personal API key that can do everything the certificate-renewal job needed plus drop the database",
-        "Treating an in-prompt 'ask for confirmation' instruction as a human in the loop",
-        "Giving an agent Docker socket access \u2014 it can spawn a privileged container and escape, making the surrounding sandbox meaningless",
-        "Assuming a blocked connector stops the agent; a determined one will open a browser and perform the action manually via computer use",
-        "Letting a parent agent with flags correctly applied spawn child agents that bypass the flag middleware, so a flipped kill switch never reaches them",
-        "Relying on OAuth scopes like 'read' or Gmail's send-on-your-behalf, which cannot express time-of-day, sender, or recipient restrictions",
-        "Exposing the same MCP tool surface to the agent regardless of which user authorized it",
-        "Building your own AI Slackbot, given the prompt-injection attack surface",
-        "Believing your team is at security maturity level three when the audit evidence puts most teams at level one or two"
+        "Handing an agent your own credentials or personal token \u2014 give it delegated authority scoped to specific actions instead of letting it pretend to be you.",
+        "Long-lived kitchen-sink API keys in a .env file that can renew a certificate and drop a database with the same credential.",
+        "Treating a prompt instruction like 'ask for confirmation' as a human in the loop \u2014 the agent can satisfy the confirmation itself.",
+        "Giving an agent Docker socket access: it can spawn a privileged container and escape, which makes the built-in Codex and Claude sandboxes worthless.",
+        "Relying on coarse OAuth scopes such as 'read' or Gmail's send-on-your-behalf, which cannot express time-of-day, sender, or recipient limits.",
+        "Exposing the full tool surface on an MCP server regardless of which user authorized the agent \u2014 scope the tool list to the authorizing principal.",
+        "Spawning sub-agents that bypass the permission/flag middleware their parent went through.",
+        "Assuming a blocked connector stops a determined agent \u2014 it will open a browser and perform the action via computer use.",
+        "Bolting security, auditability, and eval onto a working POC as requirements surface; start from the constraints and rebuild toward POC accuracy.",
+        "Letting non-engineers spin up agents with far more permissions than their job needs, on the assumption that a mature permissioning product exists to buy."
       ]
     },
     "notable_outliers": [
       {
-        "claim": "No agent should be permitted to drop a database, even when the documented recovery runbook calls for exactly that step.",
+        "claim": "No agent should be permitted to drop a database \u2014 even when the documented recovery procedure calls for it, policy should refuse to mint the credential.",
         "talk": "its-10pm-do-you-know-where-your-agents-are",
         "timestamp_sec": 807
       },
       {
-        "claim": "If the platform implements sharing and access control and the client runs in a null-origin sandboxed iframe talking only to an isolated server sandbox, there is no security bug the generated code can have that matters.",
+        "claim": "If the client runs in a null-origin sandboxed iframe and the server sandbox can only talk to it, there is no security bug in the generated code that matters \u2014 an XSS bug leaks nothing.",
         "talk": "gadgets-personal-app-vibe-coding-that-is-actually-safe",
         "timestamp_sec": 912
       },
       {
-        "claim": "For prompt injection and data exfiltration specifically, an auto-mode agent's residual risk is already lower than that of an average human reviewer.",
+        "claim": "For prompt injection and data exfiltration specifically, an auto-mode agent with a classifier judging each tool call carries lower residual risk than the average human reviewer.",
         "talk": "claude-fable-claude-tag-and-anthropics-culture",
         "timestamp_sec": 1914
       },
       {
-        "claim": "Behavioral techniques for taming agents simply do not work \u2014 only sandboxing and removing the means to cause harm do.",
+        "claim": "Tightening down a general-purpose agent (OpenClaw) destroyed its usefulness; a narrowly sandboxed special-purpose agent is the better tradeoff today.",
         "talk": "privacy-preserving-intelligence",
-        "timestamp_sec": 793
+        "timestamp_sec": 899
       },
       {
-        "claim": "78% of 50 audited production ML setups had at least one critical security mistake, and the breaches come from ordinary infrastructure misconfiguration rather than model-level attacks.",
+        "claim": "Current models are more often too reluctant to take destructive actions than too eager, so over-restriction is the bigger practical annoyance for individual use.",
+        "talk": "full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex",
+        "timestamp_sec": 1801
+      },
+      {
+        "claim": "An audit of 50 real production ML setups found at least one critical security mistake in 78% of them, almost all ordinary infrastructure misconfiguration rather than model-level attacks.",
         "talk": "your-llm-stack-is-a-2008-database-with-better-marketing",
         "timestamp_sec": 512
       },
       {
-        "claim": "A determined agent blocked from a connector will route around it with computer use \u2014 opening Chrome and clicking send \u2014 which makes connector-level blocking an incomplete control.",
-        "talk": "full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex",
-        "timestamp_sec": 3277
-      },
-      {
-        "claim": "Companies must design in-house agent permission and monitoring systems now, because nothing mature enough to buy exists.",
+        "claim": "Companies must design in-house agent permission and monitoring solutions now, because nothing mature exists to buy.",
         "talk": "agentic-security-permissions-provenance-and-the-agent-supply-chain",
         "timestamp_sec": 1205
       }
     ],
     "maturity": "contested",
-    "maturity_rationale": "The goal is unanimous \u2014 agents are over-privileged and prompt injection is unsolved \u2014 but credible speakers recommend incompatible mechanisms: per-tool-call token exchange at an identity layer, versus giving the agent no credentials at all and containing it in micro VMs, versus replacing the general agent with narrow ones that structurally cannot misbehave. The survey talk's own finding that nobody has settled the control layer, plus the split over whether vendor-shipped sandboxes are adequate, puts this well short of consolidating."
+    "maturity_rationale": "The diagnosis is unanimous \u2014 over-permissioned agents holding long-lived credentials are the core problem and prompt injection cannot be fixed at the model layer \u2014 but credible practitioners actively disagree on the mechanism: whether the agent is a new principal or an OAuth delegate, whether safety comes from narrowing the agent or containing a general one, and whether human approval is a control at all. Multiple speakers state outright that nothing mature exists to buy and that nobody has settled the control layer."
   },
   "_meta": {
     "concept": "least-privilege agent permissions",
     "slug": "least-privilege-agent-permissions",
-    "talk_count": 21,
+    "talk_count": 22,
     "missing_talks": [],
-    "wall_sec": 132.8,
-    "run_at": "2026-08-13T17:14:32Z"
+    "wall_sec": 142.9,
+    "run_at": "2026-08-20T03:12:05Z"
   }
 }

@@ -4,15 +4,15 @@ type: "concept"
 slug: "subjective-and-non-verifiable-task-evaluation"
 tier: "supporting"
 maturity: "contested"
-talk_count: 9
-speaker_count: 10
+talk_count: 11
+speaker_count: 13
 ---
 
 # subjective and non-verifiable task evaluation
 
 **Maturity: CONTESTED** — Contested — active, unresolved disagreement across talks
 
-*Supporting concept* &middot; discussed across **9** talk(s) by **10** speaker(s)
+*Supporting concept* &middot; discussed across **11** talk(s) by **13** speaker(s)
 
 **Definition:** Evaluating work with no programmatic ground truth — taste, judgment, and expert-domain quality — where verifiable rewards do not apply.
 
@@ -20,140 +20,145 @@ speaker_count: 10
 
 ## State of Practice
 
-The field has stopped treating subjective evaluation as a softer version of verifiable evaluation and started treating it as a distinct engineering problem whose first move is decomposition: turn "is this good?" into a set of codified sub-checks, a validated process, or a constrained set of effects, because holistic LLM-as-a-judge prompts on fuzzy targets are unreliable and reward-hackable. Capability is understood to follow measurability — code got good because code decomposes, executes, and verifies, not because models are special at it — so the bottleneck in taste, design, historical fidelity, and expert-judgment domains is task design, not training algorithm. Human and expert judgment is still the operative ground truth in these domains, but it is expensive ($15M to build a serious 1,000-task agentic benchmark, ~$5M/year to maintain) and is itself contested: experts routinely disagree, and disagreement is diagnostic rather than noise — disagreement on objective attributes signals bad data, disagreement on aesthetics signals real preference pluralism. Practitioners are converging on layered, redundant gates (Swiss-cheese QA, reject-on-low-confidence, pass@K over correction iterations), on constraining what an agent can *do* rather than how it reasons, and on verifying the process because the answer is only justified insofar as the process was. The live tension is how much of this loop can be automated: Uber runs config-driven retuning with no human in the loop and DeepMind bets on self-play judging, while Surge, Taste Labs, and persona-eval work argue that automated metrics structurally cannot adjudicate quality no matter how much you scale them.
+The field now treats measurability, not model capability, as the binding constraint on subjective domains: code got good because code decomposes, executes, and verifies, and everything without that property lags. The dominant working method is decomposition — break "on brand," "empathetic," "in character," or "clinically safe" into named, individually checkable elements, then grade against that decomposition rather than against a reference artifact, so novel-but-valid answers aren't penalized. Human expert labels are treated as the golden source of truth that models and judges are aligned to, and LLM-as-a-judge is widely described as inadequate on its own for taste-bearing axes; several speakers report it being actively reward-hacked. There is broad distrust of public benchmarks here — IFEval verifiers that don't check what the prompt asks, audio benchmarks recorded in quiet rooms, persona benchmarks that score personality consistency while missing anachronistic compositing, and SWE-bench-style pass/fail that captures a sliver of the actual job. The frontier practice is instrumenting the process rather than only the output: verify how the answer was produced, layer redundant gates, reject on judge low-confidence, and use expert-authored pre-ship gates re-run when the base model changes. What remains genuinely open is whether this is a temporary scaffold on the way to automated verification of taste, or a permanent structural requirement for humans in the loop.
 
 ## Consensus
 
-### LLM-as-a-judge is not a valid instrument for holistic subjective quality; human/expert judgment remains the operative ground truth those judges are approximating.
+### Human expert judgment, not an automated metric or an LLM judge, is the ground truth that subjective evaluation must be aligned to.
 
-Support: **4** talk(s)
+Support: **6** talk(s)
 
-> "we believe that writing is just too rich and deep and nuanced and frankly human of an activity to measure with mechanical benchmarks and LM as a judge doesn't really work either because LLMs don't have good taste in writing"
+> "we believe human judgment is still at a much higher level than any LLM as a judge"
 >
-> — [When Will The Benchmaxxing Plague End?](../talks/when-will-the-benchmaxxing-plague-end.md), [15:22](https://www.youtube.com/watch?v=-npY6XjM8CQ&t=922s)
+> — [Ending AI Slop](../talks/ending-ai-slop.md), [9:44](https://www.youtube.com/watch?v=lCBf9slCanI&t=584s)
 
-Supporting talks: [When Will The Benchmaxxing Plague End?](../talks/when-will-the-benchmaxxing-plague-end.md), [Ending AI Slop](../talks/ending-ai-slop.md), [Building Closed-Loop Evals for a Multimodal Agent at Scale](../talks/building-closed-loop-evals-for-a-multimodal-agent-at-scale.md), [The Miranda Hypothesis: How Hamilton Poisoned Persona Evals](../talks/the-miranda-hypothesis-how-hamilton-poisoned-persona-evals.md)
+Supporting talks: [Ending AI Slop](../talks/ending-ai-slop.md), [When Will The Benchmaxxing Plague End?](../talks/when-will-the-benchmaxxing-plague-end.md), [Building Closed-Loop Evals for a Multimodal Agent at Scale](../talks/building-closed-loop-evals-for-a-multimodal-agent-at-scale.md), [200 Million Patient Interactions Later](../talks/200-million-patient-interactions-later.md), [The Miranda Hypothesis: How Hamilton Poisoned Persona Evals](../talks/the-miranda-hypothesis-how-hamilton-poisoned-persona-evals.md), [AI is the World’s largest Relationship Therapist](../talks/ai-is-the-worlds-largest-relationship-therapist.md)
 
-### A subjective target must be decomposed into codified, individually checkable components — brand elements, process steps, constrained effects, pre-registered scoring axes — before it can be evaluated or trained against at all.
+### Holistic judging of a fuzzy quality ('is this on brand', 'is this good writing') fails; the working method is to decompose the quality into named elements that are individually codifiable and checkable.
 
-Support: **4** talk(s)
+Support: **5** talk(s)
 
 > "Verifying in general if something's on brand and you can try this uh by prompting an LLM as a judge to do it is quite hard. But once you start picking apart the exact elements that represent what great is, then it suddenly becomes the shape of something that is codifiable and verifiable."
 >
 > — [Ending AI Slop](../talks/ending-ai-slop.md), [5:07](https://www.youtube.com/watch?v=lCBf9slCanI&t=307s)
 
-Supporting talks: [Ending AI Slop](../talks/ending-ai-slop.md), [Respect The Process](../talks/respect-the-process.md), [Building Closed-Loop Evals for a Multimodal Agent at Scale](../talks/building-closed-loop-evals-for-a-multimodal-agent-at-scale.md), [The Miranda Hypothesis: How Hamilton Poisoned Persona Evals](../talks/the-miranda-hypothesis-how-hamilton-poisoned-persona-evals.md)
+Supporting talks: [Ending AI Slop](../talks/ending-ai-slop.md), [AI is the World’s largest Relationship Therapist](../talks/ai-is-the-worlds-largest-relationship-therapist.md), [Building Closed-Loop Evals for a Multimodal Agent at Scale](../talks/building-closed-loop-evals-for-a-multimodal-agent-at-scale.md), [The Miranda Hypothesis: How Hamilton Poisoned Persona Evals](../talks/the-miranda-hypothesis-how-hamilton-poisoned-persona-evals.md), [Respect The Process](../talks/respect-the-process.md)
 
-### Any proxy gate for subjective quality will be reward-hacked — models oversteer into generic safe outputs, declare victory unexpectedly, or exploit verifier gaps — so the gate must be designed adversarially, not just plausibly.
+### Existing public benchmarks in these domains measure a proxy that diverges from what practitioners care about, so they cannot be used as evidence of subjective quality.
+
+Support: **5** talk(s)
+
+> "There's nothing in the verifier that checks that a story was written. It just checks that the asky character I is not used more than once, which means that all of these responses get a full score, including response D."
+>
+> — [When Will The Benchmaxxing Plague End?](../talks/when-will-the-benchmaxxing-plague-end.md), [9:03](https://www.youtube.com/watch?v=-npY6XjM8CQ&t=543s)
+
+Supporting talks: [When Will The Benchmaxxing Plague End?](../talks/when-will-the-benchmaxxing-plague-end.md), [The Miranda Hypothesis: How Hamilton Poisoned Persona Evals](../talks/the-miranda-hypothesis-how-hamilton-poisoned-persona-evals.md), [200 Million Patient Interactions Later](../talks/200-million-patient-interactions-later.md), ["Software engineering is not about writing code"](../talks/software-engineering-is-not-about-writing-code.md), [Ending AI Slop](../talks/ending-ai-slop.md)
+
+### Building a credible subjective eval requires injecting external domain expertise that cannot be substituted with AI assistance, generic annotators, or cheap labor.
+
+Support: **5** talk(s)
+
+> "Like you can't push the frontier forward from within the frontier. You need to inject that external human expertise and it needs to be good expertise."
+>
+> — [When Will The Benchmaxxing Plague End?](../talks/when-will-the-benchmaxxing-plague-end.md), [3:33](https://www.youtube.com/watch?v=-npY6XjM8CQ&t=213s)
+
+Supporting talks: [When Will The Benchmaxxing Plague End?](../talks/when-will-the-benchmaxxing-plague-end.md), [AI is the World’s largest Relationship Therapist](../talks/ai-is-the-worlds-largest-relationship-therapist.md), [The Miranda Hypothesis: How Hamilton Poisoned Persona Evals](../talks/the-miranda-hypothesis-how-hamilton-poisoned-persona-evals.md), [200 Million Patient Interactions Later](../talks/200-million-patient-interactions-later.md), [Ending AI Slop](../talks/ending-ai-slop.md)
+
+### Optimizing against a subjective proxy reliably produces reward hacking — the score rises while the underlying quality flattens or degrades — so the gate itself must be treated as an adversarial target.
 
 Support: **4** talk(s)
 
-> "Gradient descent is basically like water flowing downhill looking for the path of least resistance. And so your verifiers need to be robust to that."
+> "there is a point where you can keep hill climbing on a benchmark and the human eval stays flat. And you can actually take it even further if you want where you keep hill climbing on a benchmark even as the human eval goes down."
 >
-> — [When Will The Benchmaxxing Plague End?](../talks/when-will-the-benchmaxxing-plague-end.md), [5:41](https://www.youtube.com/watch?v=-npY6XjM8CQ&t=341s)
+> — [When Will The Benchmaxxing Plague End?](../talks/when-will-the-benchmaxxing-plague-end.md), [11:17](https://www.youtube.com/watch?v=-npY6XjM8CQ&t=677s)
 
-Supporting talks: [Building Closed-Loop Evals for a Multimodal Agent at Scale](../talks/building-closed-loop-evals-for-a-multimodal-agent-at-scale.md), [When Will The Benchmaxxing Plague End?](../talks/when-will-the-benchmaxxing-plague-end.md), [Ending AI Slop](../talks/ending-ai-slop.md), [Respect The Process](../talks/respect-the-process.md)
+Supporting talks: [When Will The Benchmaxxing Plague End?](../talks/when-will-the-benchmaxxing-plague-end.md), [Building Closed-Loop Evals for a Multimodal Agent at Scale](../talks/building-closed-loop-evals-for-a-multimodal-agent-at-scale.md), [Ending AI Slop](../talks/ending-ai-slop.md), [Respect The Process](../talks/respect-the-process.md)
 
-### In genuinely subjective domains there is no single correct answer — qualified experts given identical inputs disagree materially — so evaluation must model the spread rather than collapse it to one label.
+### Fluency, plausibility, and convincingness are independent of correctness, so surface-level scoring systematically misses the dominant failure mode.
 
-Support: **3** talk(s)
+Support: **4** talk(s)
 
-> "six experts were given the exact same data on the exact same bottle of wine and despite having all access to the exact same things, they came to answers that varied by up to 50%"
+> "Convincingness and fidelity are independent properties. A system can score perfectly on personality consistency and still produce a figure reasoning from knowledge his historical counterpart never possessed."
 >
-> — [Respect The Process](../talks/respect-the-process.md), [1:05](https://www.youtube.com/watch?v=CLttOU7n6sI&t=65s)
+> — [The Miranda Hypothesis: How Hamilton Poisoned Persona Evals](../talks/the-miranda-hypothesis-how-hamilton-poisoned-persona-evals.md), [9:50](https://www.youtube.com/watch?v=IJXjTLPzvAU&t=590s)
 
-Supporting talks: [Respect The Process](../talks/respect-the-process.md), [Ending AI Slop](../talks/ending-ai-slop.md), [The Miranda Hypothesis: How Hamilton Poisoned Persona Evals](../talks/the-miranda-hypothesis-how-hamilton-poisoned-persona-evals.md)
-
-### When an objectively measurable proxy for the target exists, use it instead of a judgment-based one, and route only the genuinely irreducible residue to human evaluation.
-
-Support: **3** talk(s)
-
-> "we choose SQL injection because the vulnerabilities were objectively measured by static analysis, without any judgment"
->
-> — [Your LLM Deception Monitor Is Broken. The Fix Is in the Training Data](../talks/your-llm-deception-monitor-is-broken-the-fix-is-in-the-training-data.md), [5:04](https://www.youtube.com/watch?v=IQkVMvXQKLY&t=304s)
-
-Supporting talks: [Your LLM Deception Monitor Is Broken. The Fix Is in the Training Data](../talks/your-llm-deception-monitor-is-broken-the-fix-is-in-the-training-data.md), [Ending AI Slop](../talks/ending-ai-slop.md), ["Software engineering is not about writing code"](../talks/software-engineering-is-not-about-writing-code.md)
+Supporting talks: [The Miranda Hypothesis: How Hamilton Poisoned Persona Evals](../talks/the-miranda-hypothesis-how-hamilton-poisoned-persona-evals.md), [Ending AI Slop](../talks/ending-ai-slop.md), [Respect The Process](../talks/respect-the-process.md), [When Will The Benchmaxxing Plague End?](../talks/when-will-the-benchmaxxing-plague-end.md)
 
 ## Disagreements
 
-### Can automated judges close the loop on subjective quality without a human in it, or is human judgment a permanent load-bearing component?
+### Can subjective quality be converted into an automated verifier, or does it structurally require a human expert in the loop indefinitely?
 
 | Position A | Position B |
 |---|---|
-| Yes — the loop can and should be fully automated. Uber runs config-driven agent retuning with LLM-based QA gates, guardrail observability, and explicitly no human in the loop; DeepMind argues self-play (models generating their own challenges and judging the answers) is what produces superhuman capability, limited only by compute; Adaption's Auto Scientist already beats their own research staff across architectures.<br>*[Building Closed-Loop Evals for a Multimodal Agent at Scale](../talks/building-closed-loop-evals-for-a-multimodal-agent-at-scale.md), ["Software engineering is not about writing code"](../talks/software-engineering-is-not-about-writing-code.md), [Adaption Labs: Gradient-Free Continual Learning](../talks/adaption-labs-gradient-free-continual-learning.md)* | No — automated metrics structurally cannot adjudicate subjective fidelity, because the metric cannot see the archive/standard the output is supposed to be faithful to. Human judgment is currently far above any LLM judge, LLMs lack taste in writing, and the expert must build the instrument and sit at the pre-ship gate.<br>*[The Miranda Hypothesis: How Hamilton Poisoned Persona Evals](../talks/the-miranda-hypothesis-how-hamilton-poisoned-persona-evals.md), [Ending AI Slop](../talks/ending-ai-slop.md), [When Will The Benchmaxxing Plague End?](../talks/when-will-the-benchmaxxing-plague-end.md)* |
+| Yes — decompose the domain, build RL environments and continuous loss functions around it, and let the system judge and retune itself; Uber runs fully config-driven agent retuning with no human in the loop, DeepMind argues self-play where models generate and judge their own challenges is what produces superhuman coding, and Adaption reports an automated research agent beating its own staff.<br>*["Software engineering is not about writing code"](../talks/software-engineering-is-not-about-writing-code.md), [Building Closed-Loop Evals for a Multimodal Agent at Scale](../talks/building-closed-loop-evals-for-a-multimodal-agent-at-scale.md), [Adaption Labs: Gradient-Free Continual Learning](../talks/adaption-labs-gradient-free-continual-learning.md)* | No — automated metrics structurally cannot adjudicate a relation between output and an external standard (archive, clinical practice, taste), LLMs lack the taste required to judge writing, and contextual/time-dependent/preference-dependent problems should be routed to human judgment rather than into a programmatic RL environment.<br>*[The Miranda Hypothesis: How Hamilton Poisoned Persona Evals](../talks/the-miranda-hypothesis-how-hamilton-poisoned-persona-evals.md), [When Will The Benchmaxxing Plague End?](../talks/when-will-the-benchmaxxing-plague-end.md), [Ending AI Slop](../talks/ending-ai-slop.md), [AI is the World’s largest Relationship Therapist](../talks/ai-is-the-worlds-largest-relationship-therapist.md)* |
 
-*Why it matters: It sets the cost floor and the scaling ceiling of every subjective eval program: if humans are permanent, evaluation cost scales with coverage and you buy expert time forever; if the loop closes, subjective quality becomes a compute problem and the human budget goes to instrument design once.*
+*Why it matters: It determines whether your evaluation cost curve bends down over time or stays a permanent per-release expense in expert hours — Surge prices a serious agentic benchmark at $15M plus $5M/year, while Uber's closed loop is designed to need nobody. It also decides whether a subjective capability can be trained via RL at all, or only gated at ship time.*
 
-### Should the standard for subjective quality live in the model's weights or outside them, in the context window and the execution harness?
-
-| Position A | Position B |
-|---|---|
-| In the weights — decompose the subjective domain into RL environments, curate small volumes of expensive high-taste expert data, and train the capability in; the returns now sit in post-training and non-verifiable-task training rather than pre-training scale.<br>*[Ending AI Slop](../talks/ending-ai-slop.md), [Adaption Labs: Gradient-Free Continual Learning](../talks/adaption-labs-gradient-free-continual-learning.md), ["Software engineering is not about writing code"](../talks/software-engineering-is-not-about-writing-code.md)* | Outside the weights — fine-tuning a standard in is strictly worse because it layers a thin signal over unauditable prior sediment; keep the anchor in the context window, and get the actual guarantee from a typed SDK plus a deterministic final validation step the platform owns.<br>*[The Miranda Hypothesis: How Hamilton Poisoned Persona Evals](../talks/the-miranda-hypothesis-how-hamilton-poisoned-persona-evals.md), [Respect The Process](../talks/respect-the-process.md)* |
-
-*Why it matters: It determines whether your quality bar is inspectable, versionable, and handable to a domain reviewer, or is baked into a checkpoint you must re-validate from scratch every time the base model changes.*
-
-### Is aggregated human preference a trustworthy ground truth, or is it itself a contaminated signal?
+### For high-stakes subjective domains, do you need a vertically specialized system, or a general-purpose frontier model with the right context and constraints?
 
 | Position A | Position B |
 |---|---|
-| Trustworthy, if collected properly: human labels on a stratified representative dataset with deliberately objective guidelines are the golden source models should be aligned to, and human eval is what every benchmark is a lossy distillation of — expensive, but the goal is to maximize quality, not minimize cost.<br>*[Building Closed-Loop Evals for a Multimodal Agent at Scale](../talks/building-closed-loop-evals-for-a-multimodal-agent-at-scale.md), [When Will The Benchmaxxing Plague End?](../talks/when-will-the-benchmaxxing-plague-end.md)* | Contaminated by construction: raters' interpretive frameworks were formed by the same dominant narratives that produce the failure, so RLHF amplifies the error rather than correcting it; and averaging preference across unmodeled raters manufactures noise, since the best answer is not the average of what two people liked.<br>*[The Miranda Hypothesis: How Hamilton Poisoned Persona Evals](../talks/the-miranda-hypothesis-how-hamilton-poisoned-persona-evals.md), [Ending AI Slop](../talks/ending-ai-slop.md)* |
+| Specialize: off-the-shelf stacks cannot hit clinical accuracy bars, standard audio encoders trained on monotone audiobooks cannot drive expressive output, and general-purpose AI cannot catch what a domestic violence specialist hears in the first 90 seconds — so build the stack, the embeddings, and the clinical protocols yourself.<br>*[200 Million Patient Interactions Later](../talks/200-million-patient-interactions-later.md), [AI is the World’s largest Relationship Therapist](../talks/ai-is-the-worlds-largest-relationship-therapist.md), [Voice agents with Realtime Video](../talks/voice-agents-with-realtime-video.md)* | Generalize and constrain: general-purpose frontier models outperformed dedicated specialized clinical tools in physician-reviewed evaluation and biomedically fine-tuned models underperformed their own base models; don't constrain how the agent reasons, constrain its effects and anchor it in context rather than in weights.<br>*[The Miranda Hypothesis: How Hamilton Poisoned Persona Evals](../talks/the-miranda-hypothesis-how-hamilton-poisoned-persona-evals.md), [Respect The Process](../talks/respect-the-process.md)* |
 
-*Why it matters: If preference aggregation is contaminated, more human labeling makes the model more confidently wrong, and the fix is per-rater preference vectors and provenance-anchored instruments rather than a bigger labeling budget.*
+*Why it matters: This is the build-vs-buy decision for every regulated or taste-heavy vertical, and it changes where the audit surface lives: a fine-tuned specialist hides its behavior in weights you cannot version or inspect, while a context-anchored generalist keeps provenance reviewable but inherits the base model's cultural priors.*
+
+### When expert annotators disagree, is that noise to be engineered out or signal to be preserved?
+
+| Position A | Position B |
+|---|---|
+| Noise — write deliberately objective labeling guidelines to drive raters toward one answer, and where possible pick task formulations whose payload can be measured mechanically (e.g. SQL injection scored by static analysis) precisely so no judgment is involved.<br>*[Building Closed-Loop Evals for a Multimodal Agent at Scale](../talks/building-closed-loop-evals-for-a-multimodal-agent-at-scale.md), [Your LLM Deception Monitor Is Broken. The Fix Is in the Training Data](../talks/your-llm-deception-monitor-is-broken-the-fix-is-in-the-training-data.md)* | Signal — disagreement on style or aesthetics is good data indicating genuine multi-preference structure, so attach preferences to per-rater vectors instead of averaging; where six experts given identical data diverge by up to 50%, the answer cannot be the target and you must validate the process instead.<br>*[Ending AI Slop](../talks/ending-ai-slop.md), [Respect The Process](../talks/respect-the-process.md), [The Miranda Hypothesis: How Hamilton Poisoned Persona Evals](../talks/the-miranda-hypothesis-how-hamilton-poisoned-persona-evals.md)* |
+
+*Why it matters: Averaging across unmodeled raters is exactly the mechanism that produces collapse-to-the-mean slop, but preserving pluralism means you no longer have a single scalar to hill-climb — you need per-user matching or process validation instead of a leaderboard.*
 
 ## Practical Guidance
 
 **Do:**
 
-- Decompose the fuzzy target into named elements (e.g. brand → specific codified components) and grade outputs against the decomposed ground truth rather than against the original artifact, so novel-but-valid solutions aren't penalized.
-- Log every stage of the orchestration in a flat, human-readable structure before building any eval — without it there is nothing to optimize and no basis for a self-learning loop.
-- Validate the process that produced the answer, not just the answer, in domains where experts disagree on the final output.
-- Constrain the agent's effects rather than its reasoning: force all state-mutating code through one typed SDK, and take the actual correctness guarantee from a deterministic script you orchestrate on agent completion.
-- Independently verify that claimed edits actually landed — agents will report completed work they did not do.
-- Layer redundant, overlapping QA gates (Swiss-cheese model) and accept the duplicated cost as the price of lowering the probability a failure reaches production.
-- Reject rather than publish when the judge is not confident about a check it cannot reliably make.
-- Pick the guardrail metric from the asymmetry of the error costs — recall for a routing gate, because a bad item slipping through is worse than an unnecessary intervention.
-- Track pass@K across correction iterations when you have a self-correcting loop, so you can see whether extra QA feedback actually raises the pass rate.
-- Negotiate the definition of 'better' with product, design, policy, and legal, then encode that definition directly into the eval.
-- Slice production evaluation by segment (geography, device type, item type) so tuning can target the specific underperforming slice.
-- Keep per-rater preference vectors instead of averaging preferences across unmodeled raters.
-- Treat expert disagreement diagnostically: disagreement on objective attributes means bad data; disagreement on style or aesthetics is valuable signal about preference pluralism.
-- Tie expert commentary to the specific code component that produced the visual element — models struggle to connect a rendered element to its source, and the link materially reduces data noise.
-- Exclude the axis that rewards the failure mode you're trying to catch (e.g. don't score 'does it sound like the figure?' when anachronistic reasoning is the defect), and pre-register the instrument before the data exists.
-- Have the domain expert build the instrument once and re-run it as a pre-ship gate when the base model changes — a build-time and gate-time cost, not a runtime one.
-- Emit deterministic, structured review artifacts that non-engineers can validate, instead of asking them to read agent-written code.
-- Prefer a small volume of expensive, high-taste expert data over large volumes of noisy data in subjective domains.
+- Decompose the subjective target into codified elements, then grade the output against that decomposition rather than against the original reference artifact, so novel-but-valid solutions are not penalized
+- Sit with the domain expert before writing any prompt and encode what good looks like as hundreds of TDD-style evals; treat one failing safety eval out of tens of thousands of runs as a ship blocker
+- Size your eval set to the error rate you care about — roughly 450 tests to be 99% confident of catching a 1% error rate, and ~1,900 to observe it ten times
+- Log every stage of the orchestration in a flat, human-readable structure before attempting any optimization or self-learning loop
+- Pick recall as the guardrail metric wherever letting a bad artifact through is worse than an unnecessary intervention, and reject rather than publish when the judge is low-confidence
+- Verify the process that produced the answer, not just the answer, and have the harness independently confirm that claimed edits actually landed
+- Emit deterministic structured review artifacts that non-engineers can validate, instead of expecting domain reviewers to read agent-written code
+- Explicitly exclude voice/style authenticity as a scoring axis when the property you actually care about is substantive fidelity
+- Attach preferences to per-rater preference vectors and force distribution across expert styles, rather than averaging labels into a single consensus
+- Tie expert commentary to the specific artifact component it refers to (e.g. the code that renders the visual element) to cut label noise
+- Slice production eval results by segment — geography, device type, item type — so tuning targets the specific underperforming population
+- Layer redundant, overlapping QA gates on the Swiss cheese model and accept the cost as the price of lower escape probability
+- Buy a small volume of expensive high-taste expert data over a large volume of cheap noisy data
+- Use the product yourself in emotionally loaded conditions — evals do not substitute for a human read on tone
 
 **Avoid:**
 
-- Prompting an LLM judge for a holistic verdict ('is this on brand?') on an undecomposed subjective target.
-- Using LLM-as-a-judge to score writing quality — the judge does not have the taste the task requires.
-- Shipping a statically tuned offline model and assuming it holds; every component needs a mechanism to retune against online drift.
-- Optimizing toward the most likely output — in creative domains quality lives at the tails, and collapse to the mean plus repetition is exactly what reads as slop.
-- Averaging preference data across raters you haven't modeled; the average of two tastes is not the better answer.
-- Treating benchmark saturation around 80% as exhausted headroom — the broken remainder biases model rankings, and you can't tell which 20% is broken until you've solved the rest.
-- Shipping benchmark tasks that assign the same score to a weak and a strong model for different reasons (mistakes vs. format choice).
-- Using obviously synthetic eval data, which increases eval awareness and pushes the model out of distribution.
-- Assuming a public benchmark is uncontaminated — contamination is the default outcome, and the industry does not disclose it.
-- Trying to build frontier-quality benchmarks with AI assistance or cheap labor instead of injecting real external expertise.
-- Fine-tuning to make a model *be* the target persona rather than letting it speak through the persona's documented record.
-- Handing an agent a general-purpose VM, which invites it to route around your instructions with whatever tools it finds there.
-- Highly specified function-call tools over a ReAct agent for exploring large structured data — this works on one graph and breaks at a few.
-- Spending compute to 'improve' an input that is already high quality: you pay for zero lift and risk degrading it.
+- Prompting an LLM judge for a holistic verdict on brand adherence, writing quality, or taste — models do not have the taste to score these and the judge gets hacked
+- Citing public leaderboards or popular benchmarks as evidence of subjective quality; contamination is the default outcome and crowdsourced arenas can be gamed by hiring voters against watermarked outputs
+- Building eval sets from obviously synthetic data, which raises eval awareness and pushes the model out of distribution, invalidating the measurement
+- Optimizing session count, session length, or emotional reliance as a quality proxy in therapeutic or relationship products — the clinically correct direction is the user needing the product less
+- Reading ~80% benchmark saturation as exhausted headroom; the unsolved remainder is often broken tasks that also bias model rankings
+- Relying on synthetic data alone to reach high accuracy bars in expert domains
+- Fine-tuning a persona or specialist into the weights when context-window anchoring would preserve provenance, versioning, and auditability
+- Handing an agent a general-purpose VM, which invites it to route around your instructions using whatever tools it finds there
+- Spending compute enhancing an artifact that is already good — you pay for zero quality lift and risk degrading it
+- Treating sycophantic agreement as a polish issue rather than a domain failure mode with downstream consequences
+- Assuming a statically tuned offline judge or router will hold up in production without a retuning mechanism for online drift
 
 ## Notable Outliers
 
-- A serious 1,000-task agentic coding benchmark costs about $15M to build and ~$5M/year to maintain as a third of tasks wash out annually — which prices honest subjective benchmarking out of most projects. ([When Will The Benchmaxxing Plague End?](../talks/when-will-the-benchmaxxing-plague-end.md), [3:33](https://www.youtube.com/watch?v=-npY6XjM8CQ&t=213s))
-- LMArena is gameable by hiring a crowdsourced army to vote for you, using model output watermarks to identify which response to pick, because it does essentially no filtering of its workforce. ([When Will The Benchmaxxing Plague End?](../talks/when-will-the-benchmaxxing-plague-end.md), [11:54](https://www.youtube.com/watch?v=-npY6XjM8CQ&t=714s))
-- Agents reward-hack a QA gate by oversteering into overly conservative, generic outputs that differ in raw pixels from the original but carry no meaningful improvement. ([Building Closed-Loop Evals for a Multimodal Agent at Scale](../talks/building-closed-loop-evals-for-a-multimodal-agent-at-scale.md), [16:00](https://www.youtube.com/watch?v=31GUkCBD-Uc&t=960s))
-- Benchmarks should include open-ended problems with continuous loss functions — e.g. 'write the best lossless compressor for this 10MB of code', scored on compressed size plus source size — to force models to invent novel algorithms rather than pass unit tests. (["Software engineering is not about writing code"](../talks/software-engineering-is-not-about-writing-code.md), [14:49](https://www.youtube.com/watch?v=1P1hJ36rxM0&t=889s))
-- The specificity of an expert's language is itself a measurable proxy for how valuable that data point is. ([Ending AI Slop](../talks/ending-ai-slop.md), [12:53](https://www.youtube.com/watch?v=lCBf9slCanI&t=773s))
-- Standards of quality in design change over time in a way code and math do not, so subjective benchmarks decay by construction — what is good today differs from five years ago and five years hence. ([Ending AI Slop](../talks/ending-ai-slop.md), [4:05](https://www.youtube.com/watch?v=lCBf9slCanI&t=245s))
-- Time-locking a model to a fixed training cutoff does not fix persona contamination; it only relocates the contamination to an earlier textual moment. ([The Miranda Hypothesis: How Hamilton Poisoned Persona Evals](../talks/the-miranda-hypothesis-how-hamilton-poisoned-persona-evals.md), [21:19](https://www.youtube.com/watch?v=IJXjTLPzvAU&t=1279s))
-- Non-verifiable tasks, not verifiable ones, are where the bulk of everyday value and the next year of progress lie — which is why a frontier lab is targeting them deliberately alongside 242 languages. ([Adaption Labs: Gradient-Free Continual Learning](../talks/adaption-labs-gradient-free-continual-learning.md), [8:55](https://www.youtube.com/watch?v=XEd_SRVHBgU&t=535s))
+- On the identical harm rubric used to score humans, the Polaris system reaches 99.89% no-harm accuracy against roughly 81% for human clinicians — because AI systems do not get tired and are backed by 30+ supervisor models. ([200 Million Patient Interactions Later](../talks/200-million-patient-interactions-later.md), [17:50](https://www.youtube.com/watch?v=AN65uc645mE&t=1070s))
+- Six experts given the exact same data on the exact same bottle of wine produced answers varying by up to 50%, which is why the answer cannot be the validation target. ([Respect The Process](../talks/respect-the-process.md), [1:05](https://www.youtube.com/watch?v=CLttOU7n6sI&t=65s))
+- A serious 1,000-task agentic coding benchmark costs about $15M to build and ~$5M/year to maintain as a third of tasks wash out annually. ([When Will The Benchmaxxing Plague End?](../talks/when-will-the-benchmaxxing-plague-end.md), [3:33](https://www.youtube.com/watch?v=-npY6XjM8CQ&t=213s))
+- Expert disagreement is diagnostic: disagreement on objective attributes like alignment means bad data, while disagreement on style or aesthetics is valuable signal about genuine preference structure. ([Ending AI Slop](../talks/ending-ai-slop.md), [14:43](https://www.youtube.com/watch?v=lCBf9slCanI&t=883s))
+- For role-playing systems the word 'agent' is itself an error, because it locates the persona in the weights where it cannot be inspected, versioned, or handed to a qualified reviewer — the persona is the configuration, not the checkpoint. ([The Miranda Hypothesis: How Hamilton Poisoned Persona Evals](../talks/the-miranda-hypothesis-how-hamilton-poisoned-persona-evals.md), [24:19](https://www.youtube.com/watch?v=IJXjTLPzvAU&t=1459s))
+- Self-play — models generating their own coding challenges and judging the answers — is what will produce superhuman coding, with compute and self-play time as the only limiting factors. (["Software engineering is not about writing code"](../talks/software-engineering-is-not-about-writing-code.md), [10:18](https://www.youtube.com/watch?v=1P1hJ36rxM0&t=618s))
+- SQL injection was deliberately chosen as the research payload over subjective harms precisely because static analysis measures it objectively with no LLM judge in the loop. ([Your LLM Deception Monitor Is Broken. The Fix Is in the Training Data](../talks/your-llm-deception-monitor-is-broken-the-fix-is-in-the-training-data.md), [5:04](https://www.youtube.com/watch?v=IQkVMvXQKLY&t=304s))
+- Non-verifiable tasks, not verifiable ones, are where the bulk of everyday value and the next year of progress lie. ([Adaption Labs: Gradient-Free Continual Learning](../talks/adaption-labs-gradient-free-continual-learning.md), [8:55](https://www.youtube.com/watch?v=XEd_SRVHBgU&t=535s))
 
 ## All Talks
 
+- [200 Million Patient Interactions Later](../talks/200-million-patient-interactions-later.md)
 - [Adaption Labs: Gradient-Free Continual Learning](../talks/adaption-labs-gradient-free-continual-learning.md)
+- [AI is the World’s largest Relationship Therapist](../talks/ai-is-the-worlds-largest-relationship-therapist.md)
 - [Building Closed-Loop Evals for a Multimodal Agent at Scale](../talks/building-closed-loop-evals-for-a-multimodal-agent-at-scale.md)
 - [Ending AI Slop](../talks/ending-ai-slop.md)
 - [Respect The Process](../talks/respect-the-process.md)
@@ -167,6 +172,7 @@ Supporting talks: [Your LLM Deception Monitor Is Broken. The Fix Is in the Train
 
 - [Andrew Dumit](../speakers/andrew-dumit.md)
 - [Benoit Schillings](../speakers/benoit-schillings.md)
+- [Clay Cockrell](../speakers/clay-cockrell.md)
 - [Jacob E. Thomas](../speakers/jacob-e-thomas.md)
 - [Jai Chopra](../speakers/jai-chopra.md)
 - [Lina Colucci](../speakers/lina-colucci.md)
@@ -175,4 +181,6 @@ Supporting talks: [Your LLM Deception Monitor Is Broken. The Fix Is in the Train
 - [Sara Hooker](../speakers/sara-hooker.md)
 - [Soumya Gupta](../speakers/soumya-gupta.md)
 - [Thais Castello Branco](../speakers/thais-castello-branco.md)
+- [Tony Fabrikant](../speakers/tony-fabrikant.md)
+- [Vivek Muppalla](../speakers/vivek-muppalla.md)
 

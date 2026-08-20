@@ -4,15 +4,15 @@ type: "concept"
 slug: "hallucination-mitigation"
 tier: "supporting"
 maturity: "consolidating"
-talk_count: 9
-speaker_count: 12
+talk_count: 11
+speaker_count: 15
 ---
 
 # hallucination mitigation
 
 **Maturity: CONSOLIDATING** — Consolidating — converging practice, some open edges
 
-*Supporting concept* &middot; discussed across **9** talk(s) by **12** speaker(s)
+*Supporting concept* &middot; discussed across **11** talk(s) by **15** speaker(s)
 
 **Definition:** Reducing confident fabrication and sycophancy, and calibrating how much trust an output's confidence deserves.
 
@@ -20,51 +20,61 @@ speaker_count: 12
 
 ## State of Practice
 
-The center of gravity at this conference moved off the model entirely: hallucination is treated as a property of the system surrounding the model, and the mitigations presented were code, schemas, and escalation paths rather than better prompts. Three ideas recurred independently across tracks — a model's expressed confidence is not evidence (Datadog found LLM uncertainty scores unusable for triage and used cross-run disagreement instead; Programma Labs showed rollout-only confidence intervals hit 17-20% empirical coverage against a nominal 95%); enforcement must live where the model cannot rewrite it (AWS moved rules from prompts into pre-tool-call Python hooks, Isadora & Co made layer four a deterministic regex veto, UC Berkeley used OWL reasoners over agent output, all with the same argument that prompts are suggestions and only code executes); and fluency is an aggravating factor, because a warm, well-formed sentence increases belief in a false claim and silently converts estimates into apparent facts across document revisions. The practical pattern is deterministic-first: rules and graph/SQL queries decide what they can decide, the model handles the residue, corroboration across independent sources raises confidence, and anything under-evidenced or contradictory escalates to a named human. What remains open is the root cause. TypeSafe AI argues overconfidence is by construction in RLHF and needs a new post-training objective optimized for calibrated decision-making; Datadog argues inconsistency is a label-ambiguity and missing-information problem, not a model problem; the guardrail camp argues it is plumbing and a smarter model will not help. All three prescribe different places to spend the reliability budget.
+The field has largely stopped treating hallucination as a model defect to be prompted away and started treating it as a systems problem to be contained outside the model. The dominant architecture is: deterministic checks first, agents only for what rules cannot decide, a verifier structurally separate from the generator, and provenance attached to every claim so a human can land on the source paragraph in one click. Two specific beliefs hardened at this conference — that a model's self-reported confidence is not evidence (RLHF optimizes apparent confidence, so overconfidence is by construction), and that disagreement across independent runs, models, or sources is the usable trust signal instead. Measurement is under the same suspicion: single-pass evals and static deterministic benchmarks are considered misleading, with one talk demonstrating a blind replay agent matching frontier models on OSWorld and confidence intervals from rollouts alone achieving ~17-20% coverage against a nominal 95%. What remains open is where the last gate lives — a second LLM critic versus regex, OWL reasoners, and SQL/graph queries — and whether corroboration between independent checks ever licenses removing the human signature entirely.
 
 ## Consensus
 
-### A model's own expressed confidence is not evidence about correctness; trust signals must come from outside the model — corroborating sources, disagreement across runs or models, or statistically honest uncertainty.
-
-Support: **5** talk(s)
-
-> "At least from what we have tried so far the uncertainty score from LM is not very reliable. It's kind of a LM model doesn't know what it doesn't know."
->
-> — [Why Your Agent Disagrees With Itself (And What To Do About It)](../talks/why-your-agent-disagrees-with-itself-and-what-to-do-about-it.md), [14:45](https://www.youtube.com/watch?v=wEc9aG7cRQc&t=885s)
-
-Supporting talks: [Why Your Agent Disagrees With Itself (And What To Do About It)](../talks/why-your-agent-disagrees-with-itself-and-what-to-do-about-it.md), [Build for the Memo, Not the Demo](../talks/build-for-the-memo-not-the-demo.md), [Computer Use at the Edge of the Statistical Precipice](../talks/computer-use-at-the-edge-of-the-statistical-precipice.md), [What's Next After RLHF?](../talks/whats-next-after-rlhf.md), [Stop Writing Tone Instructions. Layer Them.](../talks/stop-writing-tone-instructions-layer-them.md)
-
-### Rules expressed in natural language inside a prompt are suggestions, not constraints; hard guarantees must be enforced in deterministic code outside the model's control — hooks, ontology reasoners, regex vetoes, or a separate validator process.
+### A model cannot serve as its own verifier; the check must be structurally separate from the generator, because an agent that acts and validates in the same loop rationalizes its own errors into confident success.
 
 Support: **4** talk(s)
+
+> "Before filing, the lawyer got suspicious, so he asked the chatbot, "Are these cases real?" And the chatbot said, "Yes." That is like asking the guy who sold you the watch whether the watch is real."
+>
+> — [Build for the Memo, Not the Demo](../talks/build-for-the-memo-not-the-demo.md), [17:06](https://www.youtube.com/watch?v=tJFjeMBKbIY&t=1026s)
+
+Supporting talks: [Build for the Memo, Not the Demo](../talks/build-for-the-memo-not-the-demo.md), [Stop AI Agent Hallucinations: 5 Techniques + Production Patterns](../talks/stop-ai-agent-hallucinations-5-techniques-production-patterns.md), [Why Agentic Systems Need Ontologies](../talks/why-agentic-systems-need-ontologies.md), [Stop Writing Tone Instructions. Layer Them.](../talks/stop-writing-tone-instructions-layer-them.md)
+
+### Rules written into prompts are probabilistic suggestions; constraints that must hold have to be enforced in code, hooks, schemas, or ontologies that execute outside the model.
+
+Support: **5** talk(s)
 
 > "Because prompts probably are suggestions, not constraints. The model process them as a text. Not as a logic it has to execute. It's probabilistic. Only code execute logic."
 >
 > — [Stop AI Agent Hallucinations: 5 Techniques + Production Patterns](../talks/stop-ai-agent-hallucinations-5-techniques-production-patterns.md), [35:51](https://www.youtube.com/watch?v=vJukHCIv7Ck&t=2151s)
 
-Supporting talks: [Stop AI Agent Hallucinations: 5 Techniques + Production Patterns](../talks/stop-ai-agent-hallucinations-5-techniques-production-patterns.md), [Stop Writing Tone Instructions. Layer Them.](../talks/stop-writing-tone-instructions-layer-them.md), [Why Agentic Systems Need Ontologies](../talks/why-agentic-systems-need-ontologies.md), [Build for the Memo, Not the Demo](../talks/build-for-the-memo-not-the-demo.md)
+Supporting talks: [Stop AI Agent Hallucinations: 5 Techniques + Production Patterns](../talks/stop-ai-agent-hallucinations-5-techniques-production-patterns.md), [Stop Writing Tone Instructions. Layer Them.](../talks/stop-writing-tone-instructions-layer-them.md), [Why Agentic Systems Need Ontologies](../talks/why-agentic-systems-need-ontologies.md), [Can Oncology Workflows Run Without Human Touch?](../talks/can-oncology-workflows-run-without-human-touch.md), [Build for the Memo, Not the Demo](../talks/build-for-the-memo-not-the-demo.md)
 
-### Deterministic computation should run first and the model should only handle the residue rules cannot decide — graph or SQL queries for counting, aggregation and relationship traversal; rule engines for eligibility; the LLM for genuinely ambiguous reasoning.
-
-Support: **4** talk(s)
-
-> "the no touch is growing on the share of every order. So, we started with deterministic checks. Agents only for the rules that where what rules can't decide."
->
-> — [Can Oncology Workflows Run Without Human Touch?](../talks/can-oncology-workflows-run-without-human-touch.md), [16:01](https://www.youtube.com/watch?v=_cVfz88_j7A&t=961s)
-
-Supporting talks: [Can Oncology Workflows Run Without Human Touch?](../talks/can-oncology-workflows-run-without-human-touch.md), [Stop AI Agent Hallucinations: 5 Techniques + Production Patterns](../talks/stop-ai-agent-hallucinations-5-techniques-production-patterns.md), [Why Agentic Systems Need Ontologies](../talks/why-agentic-systems-need-ontologies.md), [Stop Writing Tone Instructions. Layer Them.](../talks/stop-writing-tone-instructions-layer-them.md)
-
-### Under-evidenced, contradictory, or boundary cases should be routed to a human rather than resolved silently by the system; the engineering problem is selecting which cases those are, not eliminating them.
+### A model's own expressed confidence is not a calibrated trust signal; corroboration across independent sources, runs, or models is what should gate action.
 
 Support: **4** talk(s)
 
-> "for the cases we do not have this enough information, we move keep that for human escalation."
+> "At least from what we have tried so far the uncertainty score from LM is not very reliable. It's kind of a LM model doesn't know what it doesn't know."
 >
-> — [Can Oncology Workflows Run Without Human Touch?](../talks/can-oncology-workflows-run-without-human-touch.md), [13:13](https://www.youtube.com/watch?v=_cVfz88_j7A&t=793s)
+> — [Why Your Agent Disagrees With Itself (And What To Do About It)](../talks/why-your-agent-disagrees-with-itself-and-what-to-do-about-it.md), [14:45](https://www.youtube.com/watch?v=wEc9aG7cRQc&t=885s)
 
-Supporting talks: [Can Oncology Workflows Run Without Human Touch?](../talks/can-oncology-workflows-run-without-human-touch.md), [Build for the Memo, Not the Demo](../talks/build-for-the-memo-not-the-demo.md), [Why Your Agent Disagrees With Itself (And What To Do About It)](../talks/why-your-agent-disagrees-with-itself-and-what-to-do-about-it.md), [Computer Use at the Edge of the Statistical Precipice](../talks/computer-use-at-the-edge-of-the-statistical-precipice.md)
+Supporting talks: [Why Your Agent Disagrees With Itself (And What To Do About It)](../talks/why-your-agent-disagrees-with-itself-and-what-to-do-about-it.md), [What's Next After RLHF?](../talks/whats-next-after-rlhf.md), [How to build an AI-Native Health Company](../talks/how-to-build-an-ai-native-health-company.md), [Build for the Memo, Not the Demo](../talks/build-for-the-memo-not-the-demo.md)
 
-### Fluency amplifies the damage of a wrong output, so systems must preserve epistemic status in the artifact — facts separated from estimates, contradictory evidence shown next to supporting evidence — instead of letting the model smooth everything into one confident sentence.
+### A single passing run is not evidence; LLM systems must be evaluated repeatedly against a sustained pass-rate bar, with uncertainty reported honestly.
+
+Support: **4** talk(s)
+
+> "That means a single evaluation run didn't tell you the whole story. You need to repeat your evaluation multiple times in order to get a holistic picture by the average over the different runs results."
+>
+> — [Why Your Agent Disagrees With Itself (And What To Do About It)](../talks/why-your-agent-disagrees-with-itself-and-what-to-do-about-it.md), [3:03](https://www.youtube.com/watch?v=wEc9aG7cRQc&t=183s)
+
+Supporting talks: [Why Your Agent Disagrees With Itself (And What To Do About It)](../talks/why-your-agent-disagrees-with-itself-and-what-to-do-about-it.md), [How to build an AI-Native Health Company](../talks/how-to-build-an-ai-native-health-company.md), [Computer Use at the Edge of the Statistical Precipice](../talks/computer-use-at-the-edge-of-the-statistical-precipice.md), [AI is the World’s largest Relationship Therapist](../talks/ai-is-the-worlds-largest-relationship-therapist.md)
+
+### Contradictions between sources and cases with insufficient evidence must be surfaced to a human rather than silently reconciled by the model.
+
+Support: **4** talk(s)
+
+> "Your job as a builder isn't resolve the argument. It's to make sure that the argument happens in front of a human instead of quietly along inside box."
+>
+> — [Build for the Memo, Not the Demo](../talks/build-for-the-memo-not-the-demo.md), [13:43](https://www.youtube.com/watch?v=tJFjeMBKbIY&t=823s)
+
+Supporting talks: [Build for the Memo, Not the Demo](../talks/build-for-the-memo-not-the-demo.md), [Can Oncology Workflows Run Without Human Touch?](../talks/can-oncology-workflows-run-without-human-touch.md), [Why Your Agent Disagrees With Itself (And What To Do About It)](../talks/why-your-agent-disagrees-with-itself-and-what-to-do-about-it.md), [How to build an AI-Native Health Company](../talks/how-to-build-an-ai-native-health-company.md)
+
+### Fluency and warmth amplify the damage of a wrong output rather than softening it, so epistemic status must be carried in the artifact — guesses labeled, sources cited — instead of left to prose.
 
 Support: **4** talk(s)
 
@@ -72,79 +82,94 @@ Support: **4** talk(s)
 >
 > — [Stop Writing Tone Instructions. Layer Them.](../talks/stop-writing-tone-instructions-layer-them.md), [15:10](https://www.youtube.com/watch?v=ij-AU9dpJjc&t=910s)
 
-Supporting talks: [Build for the Memo, Not the Demo](../talks/build-for-the-memo-not-the-demo.md), [Stop Writing Tone Instructions. Layer Them.](../talks/stop-writing-tone-instructions-layer-them.md), [Can Oncology Workflows Run Without Human Touch?](../talks/can-oncology-workflows-run-without-human-touch.md), [What's Next After RLHF?](../talks/whats-next-after-rlhf.md)
+Supporting talks: [Stop Writing Tone Instructions. Layer Them.](../talks/stop-writing-tone-instructions-layer-them.md), [Build for the Memo, Not the Demo](../talks/build-for-the-memo-not-the-demo.md), [What's Next After RLHF?](../talks/whats-next-after-rlhf.md), [AI is the World’s largest Relationship Therapist](../talks/ai-is-the-worlds-largest-relationship-therapist.md)
+
+### Embedding-proximity retrieval is a fabrication source in its own right: it always returns something, cannot rank by source authority, and cannot count or aggregate — so structured queries over graphs or databases must handle those cases.
+
+Support: **3** talk(s)
+
+> "If your system can can't tell an accountant under oath from a rumor in a group chat, it it is not ready for real money."
+>
+> — [Build for the Memo, Not the Demo](../talks/build-for-the-memo-not-the-demo.md), [10:16](https://www.youtube.com/watch?v=tJFjeMBKbIY&t=616s)
+
+Supporting talks: [Stop AI Agent Hallucinations: 5 Techniques + Production Patterns](../talks/stop-ai-agent-hallucinations-5-techniques-production-patterns.md), [Build for the Memo, Not the Demo](../talks/build-for-the-memo-not-the-demo.md), [Why Agentic Systems Need Ontologies](../talks/why-agentic-systems-need-ontologies.md)
 
 ## Disagreements
 
-### Is confident fabrication a training-objective defect that must be fixed in post-training, or a system-design problem to be contained around a model you take as given?
+### Does agreement between independent checks license removing the human from the loop, or must a named human sign every consequential decision regardless?
 
 | Position A | Position B |
 |---|---|
-| It is architecture and plumbing: hallucination control is a code change — deterministic hooks, ontology validators, separate critic agents, provenance links — and a smarter model does not solve any of it.<br>*[Build for the Memo, Not the Demo](../talks/build-for-the-memo-not-the-demo.md), [Stop AI Agent Hallucinations: 5 Techniques + Production Patterns](../talks/stop-ai-agent-hallucinations-5-techniques-production-patterns.md), [Why Agentic Systems Need Ontologies](../talks/why-agentic-systems-need-ontologies.md), [Stop Writing Tone Instructions. Layer Them.](../talks/stop-writing-tone-instructions-layer-them.md)* | It is by construction in RLHF: the reward model rewards apparent confidence and drops modes, so every RLHF-trained model will overclaim no matter what you wrap around it; the real fix is a new post-training paradigm that optimizes calibrated decision-making rather than human preference.<br>*[What's Next After RLHF?](../talks/whats-next-after-rlhf.md)* |
+| Corroboration is a sufficient autonomy gate: when two independent sources or two different models return the same answer, proceed with no human verification and reserve people for the disagreements and low-evidence cases.<br>*[Can Oncology Workflows Run Without Human Touch?](../talks/can-oncology-workflows-run-without-human-touch.md), [How to build an AI-Native Health Company](../talks/how-to-build-an-ai-native-health-company.md), [Why Your Agent Disagrees With Itself (And What To Do About It)](../talks/why-your-agent-disagrees-with-itself-and-what-to-do-about-it.md)* | Accountability cannot be delegated to software no matter how many checks agree; a named human must sign at the bottom of every real decision, and in safety-critical domains even a single failure across tens of thousands of runs is disqualifying.<br>*[Build for the Memo, Not the Demo](../talks/build-for-the-memo-not-the-demo.md), [AI is the World’s largest Relationship Therapist](../talks/ai-is-the-worlds-largest-relationship-therapist.md)* |
 
-*Why it matters: If containment is sufficient, reliability budget goes to validators, provenance UI, and escalation queues on top of frontier APIs. If the objective is the defect, all of that is a permanent tax and the leverage is in training or buying differently-post-trained models.*
+*Why it matters: This sets the ceiling on automation economics — whether the human-review budget shrinks toward zero as corroboration improves, or stays fixed as a permanent per-decision cost regardless of model quality.*
 
-### Can automated corroboration substitute for human sign-off on a consequential decision, or must a named human always sign?
-
-| Position A | Position B |
-|---|---|
-| Yes, with enough independent evidence: two independent sources agreeing on the same fact is sufficient grounds to proceed with no human touch, and the no-touch share of decisions should grow over time.<br>*[Can Oncology Workflows Run Without Human Touch?](../talks/can-oncology-workflows-run-without-human-touch.md)* | No: accountability cannot be transferred to software, a named human must sign every real decision, and businesses should not put AI on decisions with stakes at all — the unsupervised-model failure mode is what produced the half-billion-dollar writeoff.<br>*[Build for the Memo, Not the Demo](../talks/build-for-the-memo-not-the-demo.md), [What's Next After RLHF?](../talks/whats-next-after-rlhf.md)* |
-
-*Why it matters: This decides whether the target metric is throughput of fully automated cases or quality of the human escalation queue, and it determines whether your system architecture needs a signature and audit trail at the bottom of every output path.*
-
-### What signal should gate escalation — the model's own confidence score, or something computed outside it?
+### When a constraint cannot be expressed as a deterministic rule, is a second LLM an acceptable verification layer?
 
 | Position A | Position B |
 |---|---|
-| A self-reported confidence score attached to each answer works well enough to gate: escalate only the low-confidence answers to a clinician.<br>*[Can Oncology Workflows Run Without Human Touch?](../talks/can-oncology-workflows-run-without-human-touch.md)* | Self-reported confidence is unreliable and must be replaced by external signals: disagreement across repeated runs or across different models, model internals such as hallucination and linear probes or perplexity over prefill, or confidence intervals corrected for the hierarchical structure of the eval.<br>*[Why Your Agent Disagrees With Itself (And What To Do About It)](../talks/why-your-agent-disagrees-with-itself-and-what-to-do-about-it.md), [The State of Model Routing](../talks/the-state-of-model-routing.md), [Computer Use at the Edge of the Statistical Precipice](../talks/computer-use-at-the-edge-of-the-statistical-precipice.md)* |
+| Yes — a separate critic or executor/validator/critic chain, a second model reviewing the same input, or a frontier model kept watching in the system catches fabricated confirmations that rules cannot express.<br>*[Stop AI Agent Hallucinations: 5 Techniques + Production Patterns](../talks/stop-ai-agent-hallucinations-5-techniques-production-patterns.md), [How to build an AI-Native Health Company](../talks/how-to-build-an-ai-native-health-company.md), [The State of Model Routing](../talks/the-state-of-model-routing.md), [Why Your Agent Disagrees With Itself (And What To Do About It)](../talks/why-your-agent-disagrees-with-itself-and-what-to-do-about-it.md)* | No — the final gate must be deterministic (regex vetoes, OWL reasoners, arithmetic reconciliation, rule engines run before agents), explicitly trading coverage for reliability, because any probabilistic checker eventually loses.<br>*[Stop Writing Tone Instructions. Layer Them.](../talks/stop-writing-tone-instructions-layer-them.md), [Why Agentic Systems Need Ontologies](../talks/why-agentic-systems-need-ontologies.md), [Can Oncology Workflows Run Without Human Touch?](../talks/can-oncology-workflows-run-without-human-touch.md), [Build for the Memo, Not the Demo](../talks/build-for-the-memo-not-the-demo.md)* |
 
-*Why it matters: Cross-run disagreement and probe-based signals cost 3x inference or model-internals access, while a self-reported score is free — picking wrong either burns budget or ships an escalation queue that misses exactly the cases where the model is confidently wrong.*
+*Why it matters: It decides whether verification cost scales with inference spend and inherits the generator's failure modes, or is capped and auditable but blind to everything the rule language cannot state.*
+
+### Is miscalibration a property of the post-training objective that only a new training paradigm can fix, or a plumbing problem that surrounding system design solves?
+
+| Position A | Position B |
+|---|---|
+| It is intrinsic to RLHF: optimizing human preference creates a mode-dropping asymmetry so models look right no matter how wrong they are, and the fix is a different post-training target optimized for calibrated decision-making.<br>*[What's Next After RLHF?](../talks/whats-next-after-rlhf.md)* | Model capability is not the bottleneck; the required fixes are provenance, source ranking, reconciliation, escalation, and code-enforced rules, so a smarter model changes nothing about them.<br>*[Build for the Memo, Not the Demo](../talks/build-for-the-memo-not-the-demo.md), [Stop AI Agent Hallucinations: 5 Techniques + Production Patterns](../talks/stop-ai-agent-hallucinations-5-techniques-production-patterns.md), [Why Agentic Systems Need Ontologies](../talks/why-agentic-systems-need-ontologies.md), [Stop Writing Tone Instructions. Layer Them.](../talks/stop-writing-tone-instructions-layer-them.md)* |
+
+*Why it matters: It determines whether teams should invest in scaffolding that outlives model upgrades, or expect the next generation of post-training to obsolete much of that scaffolding.*
 
 ## Practical Guidance
 
 **Do:**
 
-- Give every generated claim a one-click path to the exact source paragraph; if a reviewer cannot verify provenance in about 30 seconds, treat the claim as unshippable regardless of whether it is correct.
-- Require two independent sources to agree on a fact before allowing a case to proceed without human verification, and reconcile evidence into a normalized store before extraction.
-- Run evals at least three times and use verdict flips across runs — not the model's uncertainty score — as the selection signal for human review; in a 93-alert cybersecurity test, 25% flip-flopped across three runs.
-- Move rules out of the prompt into a pre-tool-call hook in code: same model, same tools, same prompt, wrong-to-correct outcome change. Use hooks for hard constraints and runtime steering for soft rules, since hooks block unconditionally and force a retry.
-- Separate the actor from the checker — an executor/validator/critic chain catches fabricated success responses that a single agent, acting and validating in the same loop, reports as success.
-- Replace vector top-k retrieval with a graph or SQL query for any counting, aggregation, or relationship-traversal question, so the model receives a computed verified result instead of estimating over three chunks.
-- Validate agent output against a formal ontology after Pydantic type checks, and keep agents side-effect-free so database writes happen only once validation passes — Pydantic at the door, ontology at the ledger.
-- Tag estimates distinctly from facts with a marker that survives being copy-pasted into someone else's slides three weeks later, and escalate source contradictions to a human rather than resolving them silently.
-- Compute confidence intervals that account for the hierarchical structure of the benchmark; rollout-only intervals achieve ~17-20% empirical coverage against a nominal 95%, and at one million tasks a 4% true performance gap misjudged this way costs hundreds of thousands of dollars a month.
-- Tune output guards for false positives over false negatives and prefer deterministic regex checks to a probabilistic classifier — a false positive means someone double-checked a response, a false negative ships a hallucinated number.
-- Make the output veto a shared service every surface passes through by default, and make a missing tenant identity field throw rather than silently default.
-- Filter the tool registry by semantic search to the top three tools per query and clear it between turns; 29 tool schemas add ~3,000 tokens per call and visible generic tools cause wrong-tool selection.
-- Disclose that the agent is AI in its first response, unprompted, rather than letting the user discover it on turn seven.
+- Run deterministic rule checks first and invoke agents only for cases the rules cannot decide, growing the no-touch share of traffic incrementally.
+- Gate irreversible actions on two independent sources — or two different models reviewing the same artifact — agreeing, and hand off to a human when they disagree.
+- Select human-review cases by cross-run or cross-model disagreement rather than by the model's self-reported uncertainty score.
+- Make every claim click through to its exact source paragraph in about 30 seconds; treat the click-through as the product.
+- Keep facts and estimates in separate boxes with a label that survives being copy-pasted into someone else's slides three weeks later.
+- Use graph or SQL queries for counting, aggregation, and relationship traversal instead of letting the model compute over top-k retrieved chunks.
+- Enforce hard constraints in a pre-tool-call hook and keep agents side-effect-free until validation passes; use runtime steering, not blocking hooks, for soft rules.
+- Run each eval case many times against a sustained pass-rate bar (e.g. 90%), and for safety-critical behavior treat one failure in tens of thousands of runs as unacceptable.
+- Compute confidence intervals that account for the hierarchical structure of the benchmark, and vary data, appearance, and initial state across eval runs.
+- Route every output surface through one shared deterministic veto service by default so no surface can accidentally opt out.
+- Tune output guards toward false positives — a false positive costs a double-check, a false negative ships a hallucinated number.
+- Make a missing identity or tenant field throw rather than silently default.
+- Return contradictory facts alongside supportive ones so the downstream reviewer sees the conflict.
+- Set the acceptable error rate per action class: a 1-in-1000 failure is fine where the user can retry, zero where money or safety moves.
+- Feed resolved gray-zone cases into semantic and episodic memory as an alternative to fine-tuning; it also sharpens human labeler consistency.
 
 **Avoid:**
 
-- Asking the model whether its own output is real — self-verification is not a hallucination control, and the lawyer who asked the chatbot 'are these cases real?' got 'yes'.
-- Using an LLM's self-reported uncertainty score as the trigger for human review; the model does not know what it does not know.
-- Trusting a single LLM extraction over source documents as sufficient to eliminate human review.
-- Reporting pass@k on static deterministic environments for computer-use agents — a blind replay agent that replays recorded action sequences matches or beats the frontier model it was extracted from on OSWorld and Mobile World.
-- Letting fluent generation merge estimates and facts into one smooth sentence; it converts guesses into apparent facts across successive document revisions.
-- Retrieval that ranks by proximity to the query rather than source authority — a system that cannot distinguish an audited filing from an informal note is not ready for consequential use.
-- Shipping a single eval run as evidence of behavior, or treating semantic tool filtering alone as bounding context in a multi-turn conversation without clearing the registry.
-- Silent defaults for identity in multi-tenant systems — a default caused every white-label venue to ship as sage@hawthornemanner.com.
-- Running current models past ~200K tokens of context, and ideally staying under 100K, regardless of advertised context windows.
-- Routing purely on task type in agentic workloads; complexity changes mid-session and small models out of distribution can increase total cost through tool-call loops.
+- Asking the model whether its own output is real and treating the answer as a control.
+- Writing safety-critical or identity rules as instructions inside a prompt where the voice or task layer can override them.
+- Optimizing advice products for engagement and agreeableness — repeated one-sided validation makes users more certain, not more self-aware.
+- Reading pass@k on a static deterministic benchmark as capability: a blind replay agent scores the same or better than the frontier model it was extracted from.
+- Publishing or deciding on confidence intervals computed from rollouts alone, which cover ~17-20% of the time against a nominal 95%.
+- Letting retrieval pick text by proximity to the query when source authority differs — an audited filing and a group-chat rumor rank the same.
+- Depending on luck as a control, such as one reviewer happening to have both contradictory documents open at once.
+- Rubber-stamp approvals and thousand-line PRs, which produce false confidence rather than review.
+- Assuming a smarter model resolves provenance, reconciliation, and supervision gaps.
+- Deploying an unsupervised model on consequential decisions — the algorithmic homebuying write-off was a supervision failure, not a modeling failure.
 
 ## Notable Outliers
 
-- Hallucination is a feature of large language models rather than a defect to eliminate — it is imagination, and the job is guardrails, not removal. ([Why Agentic Systems Need Ontologies](../talks/why-agentic-systems-need-ontologies.md), [4:04](https://www.youtube.com/watch?v=Sir59K8ZDPU&t=244s))
-- Overconfidence is by design, not a bug: because RLHF optimizes human preference, no matter how wrong the models are they will look right, owing to a mode-dropping asymmetry in the reward model analogous to GANs. ([What's Next After RLHF?](../talks/whats-next-after-rlhf.md), [8:07](https://www.youtube.com/watch?v=cJ0EOzey--o&t=487s))
-- A benchmark is only adequately de-gamed if a replay agent extracted from it scores near zero on it; by that standard no existing computer-use benchmark qualifies. ([Computer Use at the Edge of the Statistical Precipice](../talks/computer-use-at-the-edge-of-the-statistical-precipice.md), [9:16](https://www.youtube.com/watch?v=CTLa_p6iOiY&t=556s))
-- Model internals — hallucination probes, linear probes, perplexity over prefill vectors — can serve as a proxy for how lost a model is, and therefore as a live routing trigger. ([The State of Model Routing](../talks/the-state-of-model-routing.md), [38:03](https://www.youtube.com/watch?v=QHBjufYK8TA&t=2283s))
-- One unchecked sentence in a promotional AI demo coincided with roughly an 8% stock drop, about $100 billion of value — there is no such thing as a low-stakes demo anymore. ([Build for the Memo, Not the Demo](../talks/build-for-the-memo-not-the-demo.md), [8:02](https://www.youtube.com/watch?v=tJFjeMBKbIY&t=482s))
-- Agent inconsistency is usually not a model problem at all but label ambiguity and missing information, and semantic plus episodic memory fixes it more cheaply than fine-tuning — 15 of the 25 percentage points of flip-flopping resolved, with 10% still inconsistent. ([Why Your Agent Disagrees With Itself (And What To Do About It)](../talks/why-your-agent-disagrees-with-itself-and-what-to-do-about-it.md), [22:10](https://www.youtube.com/watch?v=wEc9aG7cRQc&t=1330s))
+- A blind replay agent that just replays recorded action sequences matches or beats the frontier model it was extracted from on OSWorld and Mobile World, which means pass@k on deterministic environments measures replayability, not capability. ([Computer Use at the Edge of the Statistical Precipice](../talks/computer-use-at-the-edge-of-the-statistical-precipice.md), [0:59](https://www.youtube.com/watch?v=CTLa_p6iOiY&t=59s))
+- Overconfidence is not a correctable defect but a design consequence: every RLHF model has a structural gap between human preference and results, so models look right no matter how wrong they are. ([What's Next After RLHF?](../talks/whats-next-after-rlhf.md), [6:44](https://www.youtube.com/watch?v=cJ0EOzey--o&t=404s))
+- Hallucination is the feature, not the bug — the right response is to fence probabilistic generation with formal ontologies rather than to try to eliminate it. ([Why Agentic Systems Need Ontologies](../talks/why-agentic-systems-need-ontologies.md), [4:04](https://www.youtube.com/watch?v=Sir59K8ZDPU&t=244s))
+- Of 93 cybersecurity alerts run three times, about 25% flip-flopped verdicts; episodic memory made 15% consistent and 10% remained inconsistent, because the ambiguity is in the labels, not the model. ([Why Your Agent Disagrees With Itself (And What To Do About It)](../talks/why-your-agent-disagrees-with-itself-and-what-to-do-about-it.md), [22:10](https://www.youtube.com/watch?v=wEc9aG7cRQc&t=1330s))
+- Deterministic regex vetoes were chosen over a probabilistic classifier as the last gate — explicitly trading coverage for reliability, and named as a real trade-off rather than an obvious win. ([Stop Writing Tone Instructions. Layer Them.](../talks/stop-writing-tone-instructions-layer-them.md), [20:38](https://www.youtube.com/watch?v=ij-AU9dpJjc&t=1238s))
+- The default assistant traits of helpfulness, agreeableness, and speed are actively harmful in couples therapy: sycophancy is a clinical failure mode, not a polish issue. ([AI is the World’s largest Relationship Therapist](../talks/ai-is-the-worlds-largest-relationship-therapist.md), [7:04](https://www.youtube.com/watch?v=yoONZwV2smc&t=424s))
+- Filtering the visible tool set by semantic search to the top three both cuts per-call tool context from ~3,000 tokens to under 300 and improves accuracy, because with all 29 tools visible the model picks the wrong generic tool. ([Stop AI Agent Hallucinations: 5 Techniques + Production Patterns](../talks/stop-ai-agent-hallucinations-5-techniques-production-patterns.md), [16:00](https://www.youtube.com/watch?v=vJukHCIv7Ck&t=960s))
 
 ## All Talks
 
+- [AI is the World’s largest Relationship Therapist](../talks/ai-is-the-worlds-largest-relationship-therapist.md)
 - [Build for the Memo, Not the Demo](../talks/build-for-the-memo-not-the-demo.md)
 - [Can Oncology Workflows Run Without Human Touch?](../talks/can-oncology-workflows-run-without-human-touch.md)
 - [Computer Use at the Edge of the Statistical Precipice](../talks/computer-use-at-the-edge-of-the-statistical-precipice.md)
+- [How to build an AI-Native Health Company](../talks/how-to-build-an-ai-native-health-company.md)
 - [Stop AI Agent Hallucinations: 5 Techniques + Production Patterns](../talks/stop-ai-agent-hallucinations-5-techniques-production-patterns.md)
 - [Stop Writing Tone Instructions. Layer Them.](../talks/stop-writing-tone-instructions-layer-them.md)
 - [The State of Model Routing](../talks/the-state-of-model-routing.md)
@@ -156,6 +181,8 @@ Supporting talks: [Build for the Memo, Not the Demo](../talks/build-for-the-memo
 
 - [Alex Atallah](../speakers/alex-atallah.md)
 - [Anant Shankhdhar](../speakers/anant-shankhdhar.md)
+- [Clay Cockrell](../speakers/clay-cockrell.md)
+- [Dan Feng](../speakers/dan-feng.md)
 - [Diane Lin](../speakers/diane-lin.md)
 - [Diogo Almeida](../speakers/diogo-almeida.md)
 - [Elizabeth Fuentes Leone](../speakers/elizabeth-fuentes-leone.md)
@@ -165,5 +192,6 @@ Supporting talks: [Build for the Memo, Not the Demo](../talks/build-for-the-memo
 - [Pierluca D'Oro](../speakers/pierluca-d-oro.md)
 - [Shawn Chan](../speakers/shawn-chan.md)
 - [Tanay Varshney](../speakers/tanay-varshney.md)
+- [Tony Fabrikant](../speakers/tony-fabrikant.md)
 - [Walden Yan](../speakers/walden-yan.md)
 

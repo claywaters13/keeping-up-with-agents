@@ -1,0 +1,313 @@
+{
+  "is_error": false,
+  "duration_api_ms": 102045,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "af437339-c2e8-41f1-a632-9121a5d0e84d",
+  "total_cost_usd": 0.3663125,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 13024,
+    "cache_read_input_tokens": 8113,
+    "output_tokens": 9028,
+    "output_tokens_details": {
+      "thinking_tokens": 4378
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 13024,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 9028,
+        "cache_read_input_tokens": 8113,
+        "cache_creation_input_tokens": 13024,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 13024
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 6241,
+      "outputTokens": 13,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.006306,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 9028,
+      "cacheReadInputTokens": 8113,
+      "cacheCreationInputTokens": 13024,
+      "webSearchRequests": 0,
+      "costUSD": 0.3600065,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "```json\n{\n  \"summary\": \"Anuj Iravane, who leads AI at Anterior, describes how his team builds eval datasets for high-stakes healthcare workflows (prior authorization, payment integrity, HEDIS) when the data they most need \u2014 scanned fax bundles of medical records \u2014 is PHI they are contractually forbidden to retain, reuse, or even derive from. His answer is to reverse the inference task: sample a label, deterministically sample a reasoning trace from a policy modeled as a symbolic decision tree, then generate a synthetic patient record backwards from that conditioning input, layer by layer (patient invariants \u2192 patient journey \u2192 document plan \u2192 hydrated documents \u2192 eval-driven refinement). The talk argues this beats one-shotting records with an LLM, which mode-collapses because medical records are barely represented in pretraining and current objectives reward helpfulness rather than diversity. Concretely: ~90% of Anterior's eval datasets are now synthetic, clinicians in blind review distinguish synthetic from real only ~60% of the time, and datasets can be built just-in-time for a customer deployment instead of waiting on real data. The closing argument is organizational \u2014 the pipeline is modeled as skills on an internal agent harness so clinicians, not AI engineers, own its logic. Worth watching if you face data you can't keep, can't get, or can't afford to label.\",\n  \"key_points\": [\n    \"Anterior's workflows are policy-guided decision-making over highly unstructured data \u2014 300+ page scanned fax bundles with handwriting, tables, and checkboxes \u2014 where ~70% of medical communication still arrives by fax and 95% accuracy is not an acceptable bar.\",\n    \"The core constraint is legal, not technical: the medical records they need for evals are PHI that contracts forbid them to retain, reuse, or derive from, so even redacted or anonymized derivative copies are off the table.\",\n    \"One-shotting a synthetic record with an LLM fails on diversity; Iravane attributes the mode collapse to thin representation of this data type in pretraining corpora and to pre/post-training objectives that reward helpfulness rather than creativity or diversity.\",\n    \"Their pipeline reverses the forward task: sample a random label, sample a reasoning trace, then generate the record backwards \u2014 which yields correct labels by construction and skips expensive ground-truth labeling.\",\n    \"Because Anterior already models policies as explicit symbolic decision trees (which they say improves accuracy and consistency in LLM execution), they can deterministically sample reasoning traces and get a more uniform prior distribution than an LLM would produce.\",\n    \"Generation is coarse-to-fine \u2014 patient invariants, then a patient journey of provider encounters, then a per-encounter document plan, then parallel document hydration \u2014 which keeps prompt payloads token-efficient and lets the pipeline scale to long patient histories without blowing context windows.\",\n    \"A refinement loop runs evals over the output, including an LLM cross-document consistency check (needed because documents are fanned out in parallel) and a round-trip check that re-executes the original task against the generated record.\",\n    \"Everything stays in markdown text rather than rendered PDFs, on the grounds that state-of-the-art PDF parsers already collapse complex PDFs into markdown, so the extra rendering step buys little.\",\n    \"Clinicians own the pipeline in two ways: human-in-the-loop steering at each generation step (often seeded by interesting production cases), and skill files on an internal agent harness so a new document type needs no engineering change.\",\n    \"Results: ~90% of their datasets are synthetic, clinicians in blind review distinguish synthetic from real only about 60% of the time, and datasets are created just-in-time for customer deployments \u2014 though synthetic data is currently used only for evaluation, not training.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"But the problem is we can't really keep this data. It's PHI, it's highly protected. We can't retain it, we can't reuse it, we can't even derive information from it.\",\n      \"timestamp_sec\": 135,\n      \"why\": \"States the hard constraint that motivates the entire approach.\"\n    },\n    {\n      \"text\": \"So, so what this talk is about is like what do you do when the dataset you most need is also the data you're least allowed to keep.\",\n      \"timestamp_sec\": 172,\n      \"why\": \"The talk's thesis question in one line.\"\n    },\n    {\n      \"text\": \"I think around 70% of medical communication still happens via fax.\",\n      \"timestamp_sec\": 52,\n      \"why\": \"Concrete number that grounds why the input data is so hostile.\"\n    },\n    {\n      \"text\": \"in healthcare the the baselines for accuracy are just exceptionally high. 95% is not good enough.\",\n      \"timestamp_sec\": 94,\n      \"why\": \"Names the accuracy bar that makes edge-case coverage non-negotiable.\"\n    },\n    {\n      \"text\": \"often times these medical records are over 300 pages long and it's like imagining if you wouldn't ask an LLM to write a novel for you in one shot\",\n      \"timestamp_sec\": 212,\n      \"why\": \"The analogy for why one-shot synthetic generation breaks down, with the scale figure attached.\"\n    },\n    {\n      \"text\": \"there's very little exposure to this data source in the pre-training data corpus\",\n      \"timestamp_sec\": 257,\n      \"why\": \"First of two stated causes of mode collapse on this data type.\"\n    },\n    {\n      \"text\": \"the idea we had was to try and reverse this process\",\n      \"timestamp_sec\": 297,\n      \"why\": \"The central technical move of the talk.\"\n    },\n    {\n      \"text\": \"And at Antheir, actually, we we spend a lot of time and energy in trying to model these policies explicitly as decision trees.\",\n      \"timestamp_sec\": 384,\n      \"why\": \"An architectural commitment others might skip, and the enabler for deterministic trace sampling.\"\n    },\n    {\n      \"text\": \"in theory, you're able to test uh for far more scenarios than you would likely get from production data sources\",\n      \"timestamp_sec\": 427,\n      \"why\": \"The coverage argument for synthetic data over sampled production cases.\"\n    },\n    {\n      \"text\": \"There'll always be rare edge cases uh that are outside the distribution just because of the fact that our data is so uh highly variant.\",\n      \"timestamp_sec\": 464,\n      \"why\": \"Explains why a 95% score on a 200-case customer sample tells you little.\"\n    },\n    {\n      \"text\": \"So, you can scale this pipeline. You can have a much longer patient journey and you can just fan out and generate documents that way without overloading the context windows of your LLMs.\",\n      \"timestamp_sec\": 580,\n      \"why\": \"The scaling payoff of coarse-to-fine layering, stated as a tradeoff against context limits.\"\n    },\n    {\n      \"text\": \"So, we can do this sort of round trip check to ensure that our data is actually in sync and by default get the correct labels by construction.\",\n      \"timestamp_sec\": 622,\n      \"why\": \"The labeling-cost argument for reverse generation.\"\n    },\n    {\n      \"text\": \"It is possible to go from that to a rendered PDF. But we don't really see much value in doing that because we have state of the art PDF parsers today available to everyone\",\n      \"timestamp_sec\": 660,\n      \"why\": \"A specific scope decision \u2014 stay in text \u2014 that others building document pipelines might contest.\"\n    },\n    {\n      \"text\": \"Like you want your domain experts to be the ones telling you what's good, what's not good.\",\n      \"timestamp_sec\": 698,\n      \"why\": \"Answers the fidelity-validation question by refusing to answer it as an engineer.\"\n    },\n    {\n      \"text\": \"I feel like skills are really an amazing interface between AI engineers and domain experts, especially in vertical AI.\",\n      \"timestamp_sec\": 823,\n      \"why\": \"Generalizes the implementation detail into a claim about vertical AI tooling.\"\n    },\n    {\n      \"text\": \"Roughly 90% of our data sets are already made of synthetic data.\",\n      \"timestamp_sec\": 823,\n      \"why\": \"The headline adoption number.\"\n    },\n    {\n      \"text\": \"In a blind review, clinicians were not able were only able to distinguish synthetic from real about 60% of the time.\",\n      \"timestamp_sec\": 866,\n      \"why\": \"The one quantified fidelity result, honestly framed as room for improvement.\"\n    },\n    {\n      \"text\": \"well, most of our data sets today then are created just in time for these customer deployments\",\n      \"timestamp_sec\": 866,\n      \"why\": \"The operational payoff \u2014 no longer blocked on customer data before go-live.\"\n    },\n    {\n      \"text\": \"try reversing your inference workflow. Diversity should always be sampled from a from an appropriate distribution for your use case. Try to emulate the process in which data was actually generated.\",\n      \"timestamp_sec\": 902,\n      \"why\": \"The three transferable design rules, compressed.\"\n    },\n    {\n      \"text\": \"it's really important to give your domain experts the keys because these are the people who know about your data\",\n      \"timestamp_sec\": 942,\n      \"why\": \"The organizational takeaway he ranks as most important.\"\n    },\n    {\n      \"text\": \"So, you don't need a PHI problem for this anywhere. The data you need is ephemeral, sensitive, or even expensive to label.\",\n      \"timestamp_sec\": 979,\n      \"why\": \"Generalizes the healthcare case to any domain with unavailable or costly data.\"\n    }\n  ],\n  \"concepts\": [\n    \"synthetic data generation\",\n    \"phi and data retention constraints\",\n    \"eval dataset construction\",\n    \"reverse task generation\",\n    \"symbolic policy representation\",\n    \"coarse-to-fine generation\",\n    \"mode collapse in llm generation\",\n    \"diversity sampling from a prior distribution\",\n    \"human-in-the-loop data curation\",\n    \"agent skills as a domain-expert interface\",\n    \"edge-case coverage in evals\",\n    \"labels by construction\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"In healthcare AI, a 95% accuracy score is not good enough to ship on.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 94\n    },\n    {\n      \"claim\": \"LLMs are a good tool for generating synthetic data, but asking one to one-shot a full 300-page medical record does not work.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 212\n    },\n    {\n      \"claim\": \"LLM mode collapse on this data stems from two causes: little exposure to medical records in pretraining corpora, and pre/post-training objectives that optimize for helpfulness rather than creativity or diversity.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 257\n    },\n    {\n      \"claim\": \"Modeling policies explicitly as symbolic decision trees improves accuracy and consistency when executing them in LLM-based workflows.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 384\n    },\n    {\n      \"claim\": \"Sampling reasoning traces from a symbolic policy yields a more uniform and effective prior distribution than what an LLM would produce on its own.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 427\n    },\n    {\n      \"claim\": \"A synthetic pipeline can test more scenarios than production data sources, because a sampled set of real customer cases leaves rare edge cases untested.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 427\n    },\n    {\n      \"claim\": \"Generating a record backwards from a sampled label yields correct labels by construction, removing the need for an expensive ground-truth labeling process.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 622\n    },\n    {\n      \"claim\": \"Rendering synthetic records into PDFs adds little value, because current state-of-the-art PDF parsers already convert complex PDFs into clean markdown.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 660\n    },\n    {\n      \"claim\": \"AI engineers cannot judge whether a synthetic medical record is good; only domain experts can.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 698\n    },\n    {\n      \"claim\": \"Skills running on an agent harness let a clinician add a new document type to the pipeline with no engineering changes required.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 823\n    },\n    {\n      \"claim\": \"Skills are an effective interface between AI engineers and domain experts, particularly in vertical AI.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 823\n    },\n    {\n      \"claim\": \"About 90% of Anterior's datasets are synthetic, and they currently use synthetic data only for evaluation rather than training.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 823\n    },\n    {\n      \"claim\": \"In blind review, clinicians distinguished synthetic records from real ones only about 60% of the time.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 866\n    },\n    {\n      \"claim\": \"Being able to generate data from scratch removes the dependency on waiting for customer data before going live in production.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 902\n    },\n    {\n      \"claim\": \"Synthetic pipelines should emulate the real-world process by which the data was originally generated \u2014 here, documentation produced during provider encounters.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 942\n    },\n    {\n      \"claim\": \"Domain experts, not AI engineers, are what drive a data pipeline toward recursive self-improvement.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 942\n    },\n    {\n      \"claim\": \"This approach applies beyond PHI to any domain where the needed data is ephemeral, sensitive, or expensive to label.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 979\n    }\n  ],\n  \"speaker_org\": \"Anterior\"\n}\n```",
+  "ttft_ms": 54074,
+  "ttft_stream_ms": 3116,
+  "time_to_request_ms": 140,
+  "type": "result",
+  "duration_ms": 102309,
+  "uuid": "ca4ad764-4130-46fc-bb85-ea87cd385b8f",
+  "passA": {
+    "summary": "Anuj Iravane, who leads AI at Anterior, describes how his team builds eval datasets for high-stakes healthcare workflows (prior authorization, payment integrity, HEDIS) when the data they most need \u2014 scanned fax bundles of medical records \u2014 is PHI they are contractually forbidden to retain, reuse, or even derive from. His answer is to reverse the inference task: sample a label, deterministically sample a reasoning trace from a policy modeled as a symbolic decision tree, then generate a synthetic patient record backwards from that conditioning input, layer by layer (patient invariants \u2192 patient journey \u2192 document plan \u2192 hydrated documents \u2192 eval-driven refinement). The talk argues this beats one-shotting records with an LLM, which mode-collapses because medical records are barely represented in pretraining and current objectives reward helpfulness rather than diversity. Concretely: ~90% of Anterior's eval datasets are now synthetic, clinicians in blind review distinguish synthetic from real only ~60% of the time, and datasets can be built just-in-time for a customer deployment instead of waiting on real data. The closing argument is organizational \u2014 the pipeline is modeled as skills on an internal agent harness so clinicians, not AI engineers, own its logic. Worth watching if you face data you can't keep, can't get, or can't afford to label.",
+    "key_points": [
+      "Anterior's workflows are policy-guided decision-making over highly unstructured data \u2014 300+ page scanned fax bundles with handwriting, tables, and checkboxes \u2014 where ~70% of medical communication still arrives by fax and 95% accuracy is not an acceptable bar.",
+      "The core constraint is legal, not technical: the medical records they need for evals are PHI that contracts forbid them to retain, reuse, or derive from, so even redacted or anonymized derivative copies are off the table.",
+      "One-shotting a synthetic record with an LLM fails on diversity; Iravane attributes the mode collapse to thin representation of this data type in pretraining corpora and to pre/post-training objectives that reward helpfulness rather than creativity or diversity.",
+      "Their pipeline reverses the forward task: sample a random label, sample a reasoning trace, then generate the record backwards \u2014 which yields correct labels by construction and skips expensive ground-truth labeling.",
+      "Because Anterior already models policies as explicit symbolic decision trees (which they say improves accuracy and consistency in LLM execution), they can deterministically sample reasoning traces and get a more uniform prior distribution than an LLM would produce.",
+      "Generation is coarse-to-fine \u2014 patient invariants, then a patient journey of provider encounters, then a per-encounter document plan, then parallel document hydration \u2014 which keeps prompt payloads token-efficient and lets the pipeline scale to long patient histories without blowing context windows.",
+      "A refinement loop runs evals over the output, including an LLM cross-document consistency check (needed because documents are fanned out in parallel) and a round-trip check that re-executes the original task against the generated record.",
+      "Everything stays in markdown text rather than rendered PDFs, on the grounds that state-of-the-art PDF parsers already collapse complex PDFs into markdown, so the extra rendering step buys little.",
+      "Clinicians own the pipeline in two ways: human-in-the-loop steering at each generation step (often seeded by interesting production cases), and skill files on an internal agent harness so a new document type needs no engineering change.",
+      "Results: ~90% of their datasets are synthetic, clinicians in blind review distinguish synthetic from real only about 60% of the time, and datasets are created just-in-time for customer deployments \u2014 though synthetic data is currently used only for evaluation, not training."
+    ],
+    "notable_quotes": [
+      {
+        "text": "But the problem is we can't really keep this data. It's PHI, it's highly protected. We can't retain it, we can't reuse it, we can't even derive information from it.",
+        "timestamp_sec": 135,
+        "why": "States the hard constraint that motivates the entire approach."
+      },
+      {
+        "text": "So, so what this talk is about is like what do you do when the dataset you most need is also the data you're least allowed to keep.",
+        "timestamp_sec": 172,
+        "why": "The talk's thesis question in one line."
+      },
+      {
+        "text": "I think around 70% of medical communication still happens via fax.",
+        "timestamp_sec": 52,
+        "why": "Concrete number that grounds why the input data is so hostile."
+      },
+      {
+        "text": "in healthcare the the baselines for accuracy are just exceptionally high. 95% is not good enough.",
+        "timestamp_sec": 94,
+        "why": "Names the accuracy bar that makes edge-case coverage non-negotiable."
+      },
+      {
+        "text": "often times these medical records are over 300 pages long and it's like imagining if you wouldn't ask an LLM to write a novel for you in one shot",
+        "timestamp_sec": 212,
+        "why": "The analogy for why one-shot synthetic generation breaks down, with the scale figure attached."
+      },
+      {
+        "text": "there's very little exposure to this data source in the pre-training data corpus",
+        "timestamp_sec": 257,
+        "why": "First of two stated causes of mode collapse on this data type."
+      },
+      {
+        "text": "the idea we had was to try and reverse this process",
+        "timestamp_sec": 297,
+        "why": "The central technical move of the talk."
+      },
+      {
+        "text": "And at Antheir, actually, we we spend a lot of time and energy in trying to model these policies explicitly as decision trees.",
+        "timestamp_sec": 384,
+        "why": "An architectural commitment others might skip, and the enabler for deterministic trace sampling."
+      },
+      {
+        "text": "in theory, you're able to test uh for far more scenarios than you would likely get from production data sources",
+        "timestamp_sec": 427,
+        "why": "The coverage argument for synthetic data over sampled production cases."
+      },
+      {
+        "text": "There'll always be rare edge cases uh that are outside the distribution just because of the fact that our data is so uh highly variant.",
+        "timestamp_sec": 464,
+        "why": "Explains why a 95% score on a 200-case customer sample tells you little."
+      },
+      {
+        "text": "So, you can scale this pipeline. You can have a much longer patient journey and you can just fan out and generate documents that way without overloading the context windows of your LLMs.",
+        "timestamp_sec": 580,
+        "why": "The scaling payoff of coarse-to-fine layering, stated as a tradeoff against context limits."
+      },
+      {
+        "text": "So, we can do this sort of round trip check to ensure that our data is actually in sync and by default get the correct labels by construction.",
+        "timestamp_sec": 622,
+        "why": "The labeling-cost argument for reverse generation."
+      },
+      {
+        "text": "It is possible to go from that to a rendered PDF. But we don't really see much value in doing that because we have state of the art PDF parsers today available to everyone",
+        "timestamp_sec": 660,
+        "why": "A specific scope decision \u2014 stay in text \u2014 that others building document pipelines might contest."
+      },
+      {
+        "text": "Like you want your domain experts to be the ones telling you what's good, what's not good.",
+        "timestamp_sec": 698,
+        "why": "Answers the fidelity-validation question by refusing to answer it as an engineer."
+      },
+      {
+        "text": "I feel like skills are really an amazing interface between AI engineers and domain experts, especially in vertical AI.",
+        "timestamp_sec": 823,
+        "why": "Generalizes the implementation detail into a claim about vertical AI tooling."
+      },
+      {
+        "text": "Roughly 90% of our data sets are already made of synthetic data.",
+        "timestamp_sec": 823,
+        "why": "The headline adoption number."
+      },
+      {
+        "text": "In a blind review, clinicians were not able were only able to distinguish synthetic from real about 60% of the time.",
+        "timestamp_sec": 866,
+        "why": "The one quantified fidelity result, honestly framed as room for improvement."
+      },
+      {
+        "text": "well, most of our data sets today then are created just in time for these customer deployments",
+        "timestamp_sec": 866,
+        "why": "The operational payoff \u2014 no longer blocked on customer data before go-live."
+      },
+      {
+        "text": "try reversing your inference workflow. Diversity should always be sampled from a from an appropriate distribution for your use case. Try to emulate the process in which data was actually generated.",
+        "timestamp_sec": 902,
+        "why": "The three transferable design rules, compressed."
+      },
+      {
+        "text": "it's really important to give your domain experts the keys because these are the people who know about your data",
+        "timestamp_sec": 942,
+        "why": "The organizational takeaway he ranks as most important."
+      },
+      {
+        "text": "So, you don't need a PHI problem for this anywhere. The data you need is ephemeral, sensitive, or even expensive to label.",
+        "timestamp_sec": 979,
+        "why": "Generalizes the healthcare case to any domain with unavailable or costly data."
+      }
+    ],
+    "concepts": [
+      "synthetic data generation",
+      "phi and data retention constraints",
+      "eval dataset construction",
+      "reverse task generation",
+      "symbolic policy representation",
+      "coarse-to-fine generation",
+      "mode collapse in llm generation",
+      "diversity sampling from a prior distribution",
+      "human-in-the-loop data curation",
+      "agent skills as a domain-expert interface",
+      "edge-case coverage in evals",
+      "labels by construction"
+    ],
+    "positions": [
+      {
+        "claim": "In healthcare AI, a 95% accuracy score is not good enough to ship on.",
+        "confidence": "stated",
+        "timestamp_sec": 94
+      },
+      {
+        "claim": "LLMs are a good tool for generating synthetic data, but asking one to one-shot a full 300-page medical record does not work.",
+        "confidence": "stated",
+        "timestamp_sec": 212
+      },
+      {
+        "claim": "LLM mode collapse on this data stems from two causes: little exposure to medical records in pretraining corpora, and pre/post-training objectives that optimize for helpfulness rather than creativity or diversity.",
+        "confidence": "stated",
+        "timestamp_sec": 257
+      },
+      {
+        "claim": "Modeling policies explicitly as symbolic decision trees improves accuracy and consistency when executing them in LLM-based workflows.",
+        "confidence": "stated",
+        "timestamp_sec": 384
+      },
+      {
+        "claim": "Sampling reasoning traces from a symbolic policy yields a more uniform and effective prior distribution than what an LLM would produce on its own.",
+        "confidence": "stated",
+        "timestamp_sec": 427
+      },
+      {
+        "claim": "A synthetic pipeline can test more scenarios than production data sources, because a sampled set of real customer cases leaves rare edge cases untested.",
+        "confidence": "stated",
+        "timestamp_sec": 427
+      },
+      {
+        "claim": "Generating a record backwards from a sampled label yields correct labels by construction, removing the need for an expensive ground-truth labeling process.",
+        "confidence": "stated",
+        "timestamp_sec": 622
+      },
+      {
+        "claim": "Rendering synthetic records into PDFs adds little value, because current state-of-the-art PDF parsers already convert complex PDFs into clean markdown.",
+        "confidence": "stated",
+        "timestamp_sec": 660
+      },
+      {
+        "claim": "AI engineers cannot judge whether a synthetic medical record is good; only domain experts can.",
+        "confidence": "stated",
+        "timestamp_sec": 698
+      },
+      {
+        "claim": "Skills running on an agent harness let a clinician add a new document type to the pipeline with no engineering changes required.",
+        "confidence": "stated",
+        "timestamp_sec": 823
+      },
+      {
+        "claim": "Skills are an effective interface between AI engineers and domain experts, particularly in vertical AI.",
+        "confidence": "stated",
+        "timestamp_sec": 823
+      },
+      {
+        "claim": "About 90% of Anterior's datasets are synthetic, and they currently use synthetic data only for evaluation rather than training.",
+        "confidence": "stated",
+        "timestamp_sec": 823
+      },
+      {
+        "claim": "In blind review, clinicians distinguished synthetic records from real ones only about 60% of the time.",
+        "confidence": "stated",
+        "timestamp_sec": 866
+      },
+      {
+        "claim": "Being able to generate data from scratch removes the dependency on waiting for customer data before going live in production.",
+        "confidence": "stated",
+        "timestamp_sec": 902
+      },
+      {
+        "claim": "Synthetic pipelines should emulate the real-world process by which the data was originally generated \u2014 here, documentation produced during provider encounters.",
+        "confidence": "stated",
+        "timestamp_sec": 942
+      },
+      {
+        "claim": "Domain experts, not AI engineers, are what drive a data pipeline toward recursive self-improvement.",
+        "confidence": "stated",
+        "timestamp_sec": 942
+      },
+      {
+        "claim": "This approach applies beyond PHI to any domain where the needed data is ephemeral, sensitive, or expensive to label.",
+        "confidence": "stated",
+        "timestamp_sec": 979
+      }
+    ],
+    "speaker_org": "Anterior"
+  },
+  "_meta": {
+    "slug": "dont-be-data-poor",
+    "video_id": "XAsb7MIAzm8",
+    "url": "https://www.youtube.com/watch?v=XAsb7MIAzm8",
+    "word_count": 3026,
+    "wall_sec": 103.1,
+    "run_at": "2026-08-20T02:48:02Z",
+    "effort": "default"
+  }
+}

@@ -1,0 +1,273 @@
+{
+  "is_error": false,
+  "duration_api_ms": 73100,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "9d57999a-7e85-459d-bb60-6dbbc40d2298",
+  "total_cost_usd": 0.29743250000000004,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 12904,
+    "cache_read_input_tokens": 8113,
+    "output_tokens": 6330,
+    "output_tokens_details": {
+      "thinking_tokens": 2217
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 12904,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 6330,
+        "cache_read_input_tokens": 8113,
+        "cache_creation_input_tokens": 12904,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 12904
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 5986,
+      "outputTokens": 18,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.006076,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 6330,
+      "cacheReadInputTokens": 8113,
+      "cacheCreationInputTokens": 12904,
+      "webSearchRequests": 0,
+      "costUSD": 0.2913565,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Vasant Kearney argues that healthcare claims automation needs a harness, and that X12 \u2014 the decades-old EDI transaction standard behind eligibility checks, claim submission, and remittance \u2014 is the natural one. The argument: LLM agents perform best when confined to formats with clear, limited, predictable values (like COBOL or TypeScript), and every step in the claim lifecycle already has an X12 correspondence, so even phone calls, portal scraping, and desktop automation can be normalized down to an internal X12 representation. He pairs this with a warning that X12 carries no ground truth \u2014 a payer's phone system, web portal, and X12 layer can all agree that a patient is covered and the claim still gets denied \u2014 so the internal representation is only 'semi-correct until downstream evidence proves otherwise.' The rest of the talk covers the practical harness pieces: database-backed memory instead of local files for enterprise, the bias risk of persistent user memory, why swapping in a better model breaks systems, and why cost per routine transaction constrains model choice. Worth watching if you're building agents against messy external systems and want a concrete example of grounding agentic output in a public standard schema.\",\n  \"key_points\": [\n    \"The goal of agentic workflows in healthcare should be grounded in either driving down the cost of interacting with insurance or improving patient experience, not in technical novelty for its own sake.\",\n    \"X12 functions as a harness because LLMs thrive under constraint \u2014 a strict, public schema gives the model clear limited values to predict and forms a contract with the insurance company.\",\n    \"Every step of the claim lifecycle (scheduling, treatment, documents, submission, payment) has an X12 correspondence, so agent actions across phone, browser, desktop, and EHR can all be boiled down to structured transactions like the 270 eligibility request, the 275 attachment, the 999 acknowledgement, and the 835 remittance.\",\n    \"X12 provides structure but not truth: a payer's portal, phone system, and X12 layer may be built by different teams or even different contracted companies, and can all agree on wrong information \u2014 coverage can be confirmed three ways and the claim still denied.\",\n    \"The practical resolution is an internal, self-owned X12 representation treated as semi-correct \u2014 correct until downstream evidence proves otherwise.\",\n    \"Reasoning chains of ~50 multimodal steps are slow, expensive, and compound errors at every step, but fully hardcoding the workflow causes code bloat and requires a large engineering team; the design problem is striking the balance between free agentic execution and hardcoded paths.\",\n    \"Enterprise healthcare can't use local filesystem memory the way Claude Code or Codex does, so memory lives in a database for logical separation \u2014 and persistent user/org memory introduces bias, so users must be able to break out of it.\",\n    \"Upgrading to a more capable model is not a drop-in improvement: a model that scores better on evals is different, not automatically better for your system, so evals, testing, and validation must be redone before swapping.\",\n    \"Reducing a multimodal input (like an image) to extracted findings before passing it downstream loses context that a later procedure may depend on, arguing for keeping processing multimodal.\",\n    \"Cost discipline matters because routine transactions run thousands of times a day; an overpowered, overpriced model defeats the cost-reduction goal.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"And that goal, at least from my perspective, is to drive the overall cost down.\",\n      \"timestamp_sec\": 55,\n      \"why\": \"States the north star that the speaker says all technical choices must ladder up to.\"\n    },\n    {\n      \"text\": \"LLMs really thrive, they work well, and when they're confined they have clear limited values that they can predict, and X12 is exactly this.\",\n      \"timestamp_sec\": 502,\n      \"why\": \"The core thesis: constraint as an enabler of model reliability.\"\n    },\n    {\n      \"text\": \"so it provides this underlying structure this contract between what you're trying to communicate and the insurance company\",\n      \"timestamp_sec\": 502,\n      \"why\": \"Frames X12 as an interface contract rather than a legacy format.\"\n    },\n    {\n      \"text\": \"which is like all the different nuts and bolts that that surround this agentic reasoning and that is the concept of memory that we discussed the different tools the checks the permissions the handoffs the evals but also in the context of health care and claims it's x12\",\n      \"timestamp_sec\": 502,\n      \"why\": \"Gives the speaker's explicit definition of 'harness' and slots X12 into it.\"\n    },\n    {\n      \"text\": \"when you're introducing new and improved better models more sophisticated more parameters you can't you can't just replace the model and assume it's going to be better it's different\",\n      \"timestamp_sec\": 455,\n      \"why\": \"A concrete engineering position on model upgrades that contradicts common practice.\"\n    },\n    {\n      \"text\": \"So, cloud code or codex, they use local memory, they write to your desktop. In enterprise healthcare, we can't really do this, so we do memory in a database, just so we have that logical separation.\",\n      \"timestamp_sec\": 411,\n      \"why\": \"Names a specific architectural divergence forced by the enterprise healthcare context.\"\n    },\n    {\n      \"text\": \"So, we want to be really careful here because as you introduce memory, you also persistent memory across chats, across days, you also introduce bias.\",\n      \"timestamp_sec\": 723,\n      \"why\": \"Identifies the tradeoff of personalization memory rather than treating memory as pure upside.\"\n    },\n    {\n      \"text\": \"if you hardcode your whole system, you say we're you're going to throw out this whole agentic process, you limit yourself or your code can explode to be just unmanageable\",\n      \"timestamp_sec\": 634,\n      \"why\": \"The counterweight to agent skepticism \u2014 states the cost of the fully deterministic alternative.\"\n    },\n    {\n      \"text\": \"and each time it each step is an opportunity to introduce an error and you can have problems\",\n      \"timestamp_sec\": 634,\n      \"why\": \"Compact statement of error compounding across long multi-step agent chains.\"\n    },\n    {\n      \"text\": \"So, X12 is a is a system of rules and it doesn't mean that when an insurance company gives you an X12, it's true.\",\n      \"timestamp_sec\": 918,\n      \"why\": \"The key qualifier separating schema conformance from correctness.\"\n    },\n    {\n      \"text\": \"They also within all of these systems, they can they can all actually agree on the wrong information as well.\",\n      \"timestamp_sec\": 918,\n      \"why\": \"Rules out cross-source agreement as a validation strategy.\"\n    },\n    {\n      \"text\": \"You call them. You look in the browser and the X12 and they all say, \\\"Yes, this patient is covered.\\\" And then you treat the patient, they say claim is denied due to the patient wasn't covered during that time.\",\n      \"timestamp_sec\": 978,\n      \"why\": \"The concrete failure scenario behind the no-ground-truth claim.\"\n    },\n    {\n      \"text\": \"regardless of if it originates as an X12 or not, you can boil all those transactions down to your own internal semi-correct X12. Correct until downstream evidence proves it otherwise\",\n      \"timestamp_sec\": 978,\n      \"why\": \"The design pattern the talk is ultimately selling: a self-owned, provisionally-true canonical representation.\"\n    },\n    {\n      \"text\": \"If you ask agents to make a schema for you you're going to get like all sorts of stuff. But now if we ground it in something standard you can look up all of these and you would know just right off the bat my schema.\",\n      \"timestamp_sec\": 875,\n      \"why\": \"Argues public standards beat agent-invented schemas for onboarding and agent research alike.\"\n    },\n    {\n      \"text\": \"it might be that you're extracting all this information and missing something that relates to some downstream procedure that you didn't that wasn't the upstream model wasn't aware of it\",\n      \"timestamp_sec\": 308,\n      \"why\": \"Explains the context loss that motivates end-to-end multimodal processing over early extraction.\"\n    },\n    {\n      \"text\": \"that claim is like a receipt of what you did. I did this, like here's the invoice.\",\n      \"timestamp_sec\": 1065,\n      \"why\": \"Clean mental model for what a claim actually is, useful for non-healthcare engineers.\"\n    },\n    {\n      \"text\": \"So, being AI filled is great, but you should also be very AI skeptical. Like these things, they make mistakes and it's not even you can't even say they make mistakes. Like we make mistakes designing them.\",\n      \"timestamp_sec\": 1118,\n      \"why\": \"Relocates blame for agent failure from the model to the system designer.\"\n    },\n    {\n      \"text\": \"Let's say it's ends up being super super expensive to deliver one of these routine things that need to be done a thousand times a day. You definitely don't want that.\",\n      \"timestamp_sec\": 1172,\n      \"why\": \"Ties model selection back to unit economics at production volume.\"\n    }\n  ],\n  \"concepts\": [\n    \"agent harness design\",\n    \"structured output grounding\",\n    \"x12 edi transactions\",\n    \"agentic execution layer\",\n    \"multimodal context loss\",\n    \"agent memory architecture\",\n    \"memory-induced bias\",\n    \"error compounding in multi-step agents\",\n    \"model upgrade regression risk\",\n    \"inference cost per transaction\",\n    \"ground truth uncertainty in external systems\",\n    \"computer use automation\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"LLMs perform better when confined to strict, limited-vocabulary formats, which is why X12 works as a harness for claims agents.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 502\n    },\n    {\n      \"claim\": \"Every step of the claim lifecycle has an X12 correspondence, so any agent action \u2014 phone call, portal, desktop, imaging system \u2014 can be reduced to a structured transaction.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 824\n    },\n    {\n      \"claim\": \"An X12 response from an insurance company is not ground truth; the payer's portal, phone system, and X12 layer can all report the same wrong answer.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 918\n    },\n    {\n      \"claim\": \"Teams should maintain their own internal X12 representation treated as correct only until downstream evidence disproves it.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 978\n    },\n    {\n      \"claim\": \"Swapping in a newer, higher-scoring model can break a working system, so evals, testing, and validation must be rebuilt from scratch before the upgrade.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 455\n    },\n    {\n      \"claim\": \"Enterprise healthcare agents should store memory in a database rather than on the local filesystem the way Claude Code and Codex do.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 411\n    },\n    {\n      \"claim\": \"Persistent cross-session user memory introduces bias toward repeating yesterday's action, so users must be able to break out of it.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 723\n    },\n    {\n      \"claim\": \"Fully hardcoding the claims workflow is not a viable alternative to agents because the codebase bloats and requires an oversized engineering team.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 634\n    },\n    {\n      \"claim\": \"Collapsing an image into extracted findings before downstream modeling loses context that later procedures depend on, so processing should stay multimodal.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 308\n    },\n    {\n      \"claim\": \"Public standard schemas are preferable to agent-generated schemas because they are lookup-able by both new engineers and coding agents.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 875\n    },\n    {\n      \"claim\": \"Using an overpowered, expensive model for high-frequency routine transactions defeats the cost-reduction purpose of the system.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1172\n    },\n    {\n      \"claim\": \"Agent failures should be attributed to system design rather than to model error.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1172\n    }\n  ],\n  \"speaker_org\": \"Onlay\"\n}",
+  "ttft_ms": 27722,
+  "ttft_stream_ms": 871,
+  "time_to_request_ms": 144,
+  "type": "result",
+  "duration_ms": 73080,
+  "uuid": "b6c4a2c1-9376-440c-87ec-2a70ba0552d6",
+  "passA": {
+    "summary": "Vasant Kearney argues that healthcare claims automation needs a harness, and that X12 \u2014 the decades-old EDI transaction standard behind eligibility checks, claim submission, and remittance \u2014 is the natural one. The argument: LLM agents perform best when confined to formats with clear, limited, predictable values (like COBOL or TypeScript), and every step in the claim lifecycle already has an X12 correspondence, so even phone calls, portal scraping, and desktop automation can be normalized down to an internal X12 representation. He pairs this with a warning that X12 carries no ground truth \u2014 a payer's phone system, web portal, and X12 layer can all agree that a patient is covered and the claim still gets denied \u2014 so the internal representation is only 'semi-correct until downstream evidence proves otherwise.' The rest of the talk covers the practical harness pieces: database-backed memory instead of local files for enterprise, the bias risk of persistent user memory, why swapping in a better model breaks systems, and why cost per routine transaction constrains model choice. Worth watching if you're building agents against messy external systems and want a concrete example of grounding agentic output in a public standard schema.",
+    "key_points": [
+      "The goal of agentic workflows in healthcare should be grounded in either driving down the cost of interacting with insurance or improving patient experience, not in technical novelty for its own sake.",
+      "X12 functions as a harness because LLMs thrive under constraint \u2014 a strict, public schema gives the model clear limited values to predict and forms a contract with the insurance company.",
+      "Every step of the claim lifecycle (scheduling, treatment, documents, submission, payment) has an X12 correspondence, so agent actions across phone, browser, desktop, and EHR can all be boiled down to structured transactions like the 270 eligibility request, the 275 attachment, the 999 acknowledgement, and the 835 remittance.",
+      "X12 provides structure but not truth: a payer's portal, phone system, and X12 layer may be built by different teams or even different contracted companies, and can all agree on wrong information \u2014 coverage can be confirmed three ways and the claim still denied.",
+      "The practical resolution is an internal, self-owned X12 representation treated as semi-correct \u2014 correct until downstream evidence proves otherwise.",
+      "Reasoning chains of ~50 multimodal steps are slow, expensive, and compound errors at every step, but fully hardcoding the workflow causes code bloat and requires a large engineering team; the design problem is striking the balance between free agentic execution and hardcoded paths.",
+      "Enterprise healthcare can't use local filesystem memory the way Claude Code or Codex does, so memory lives in a database for logical separation \u2014 and persistent user/org memory introduces bias, so users must be able to break out of it.",
+      "Upgrading to a more capable model is not a drop-in improvement: a model that scores better on evals is different, not automatically better for your system, so evals, testing, and validation must be redone before swapping.",
+      "Reducing a multimodal input (like an image) to extracted findings before passing it downstream loses context that a later procedure may depend on, arguing for keeping processing multimodal.",
+      "Cost discipline matters because routine transactions run thousands of times a day; an overpowered, overpriced model defeats the cost-reduction goal."
+    ],
+    "notable_quotes": [
+      {
+        "text": "And that goal, at least from my perspective, is to drive the overall cost down.",
+        "timestamp_sec": 55,
+        "why": "States the north star that the speaker says all technical choices must ladder up to."
+      },
+      {
+        "text": "LLMs really thrive, they work well, and when they're confined they have clear limited values that they can predict, and X12 is exactly this.",
+        "timestamp_sec": 502,
+        "why": "The core thesis: constraint as an enabler of model reliability."
+      },
+      {
+        "text": "so it provides this underlying structure this contract between what you're trying to communicate and the insurance company",
+        "timestamp_sec": 502,
+        "why": "Frames X12 as an interface contract rather than a legacy format."
+      },
+      {
+        "text": "which is like all the different nuts and bolts that that surround this agentic reasoning and that is the concept of memory that we discussed the different tools the checks the permissions the handoffs the evals but also in the context of health care and claims it's x12",
+        "timestamp_sec": 502,
+        "why": "Gives the speaker's explicit definition of 'harness' and slots X12 into it."
+      },
+      {
+        "text": "when you're introducing new and improved better models more sophisticated more parameters you can't you can't just replace the model and assume it's going to be better it's different",
+        "timestamp_sec": 455,
+        "why": "A concrete engineering position on model upgrades that contradicts common practice."
+      },
+      {
+        "text": "So, cloud code or codex, they use local memory, they write to your desktop. In enterprise healthcare, we can't really do this, so we do memory in a database, just so we have that logical separation.",
+        "timestamp_sec": 411,
+        "why": "Names a specific architectural divergence forced by the enterprise healthcare context."
+      },
+      {
+        "text": "So, we want to be really careful here because as you introduce memory, you also persistent memory across chats, across days, you also introduce bias.",
+        "timestamp_sec": 723,
+        "why": "Identifies the tradeoff of personalization memory rather than treating memory as pure upside."
+      },
+      {
+        "text": "if you hardcode your whole system, you say we're you're going to throw out this whole agentic process, you limit yourself or your code can explode to be just unmanageable",
+        "timestamp_sec": 634,
+        "why": "The counterweight to agent skepticism \u2014 states the cost of the fully deterministic alternative."
+      },
+      {
+        "text": "and each time it each step is an opportunity to introduce an error and you can have problems",
+        "timestamp_sec": 634,
+        "why": "Compact statement of error compounding across long multi-step agent chains."
+      },
+      {
+        "text": "So, X12 is a is a system of rules and it doesn't mean that when an insurance company gives you an X12, it's true.",
+        "timestamp_sec": 918,
+        "why": "The key qualifier separating schema conformance from correctness."
+      },
+      {
+        "text": "They also within all of these systems, they can they can all actually agree on the wrong information as well.",
+        "timestamp_sec": 918,
+        "why": "Rules out cross-source agreement as a validation strategy."
+      },
+      {
+        "text": "You call them. You look in the browser and the X12 and they all say, \"Yes, this patient is covered.\" And then you treat the patient, they say claim is denied due to the patient wasn't covered during that time.",
+        "timestamp_sec": 978,
+        "why": "The concrete failure scenario behind the no-ground-truth claim."
+      },
+      {
+        "text": "regardless of if it originates as an X12 or not, you can boil all those transactions down to your own internal semi-correct X12. Correct until downstream evidence proves it otherwise",
+        "timestamp_sec": 978,
+        "why": "The design pattern the talk is ultimately selling: a self-owned, provisionally-true canonical representation."
+      },
+      {
+        "text": "If you ask agents to make a schema for you you're going to get like all sorts of stuff. But now if we ground it in something standard you can look up all of these and you would know just right off the bat my schema.",
+        "timestamp_sec": 875,
+        "why": "Argues public standards beat agent-invented schemas for onboarding and agent research alike."
+      },
+      {
+        "text": "it might be that you're extracting all this information and missing something that relates to some downstream procedure that you didn't that wasn't the upstream model wasn't aware of it",
+        "timestamp_sec": 308,
+        "why": "Explains the context loss that motivates end-to-end multimodal processing over early extraction."
+      },
+      {
+        "text": "that claim is like a receipt of what you did. I did this, like here's the invoice.",
+        "timestamp_sec": 1065,
+        "why": "Clean mental model for what a claim actually is, useful for non-healthcare engineers."
+      },
+      {
+        "text": "So, being AI filled is great, but you should also be very AI skeptical. Like these things, they make mistakes and it's not even you can't even say they make mistakes. Like we make mistakes designing them.",
+        "timestamp_sec": 1118,
+        "why": "Relocates blame for agent failure from the model to the system designer."
+      },
+      {
+        "text": "Let's say it's ends up being super super expensive to deliver one of these routine things that need to be done a thousand times a day. You definitely don't want that.",
+        "timestamp_sec": 1172,
+        "why": "Ties model selection back to unit economics at production volume."
+      }
+    ],
+    "concepts": [
+      "agent harness design",
+      "structured output grounding",
+      "x12 edi transactions",
+      "agentic execution layer",
+      "multimodal context loss",
+      "agent memory architecture",
+      "memory-induced bias",
+      "error compounding in multi-step agents",
+      "model upgrade regression risk",
+      "inference cost per transaction",
+      "ground truth uncertainty in external systems",
+      "computer use automation"
+    ],
+    "positions": [
+      {
+        "claim": "LLMs perform better when confined to strict, limited-vocabulary formats, which is why X12 works as a harness for claims agents.",
+        "confidence": "stated",
+        "timestamp_sec": 502
+      },
+      {
+        "claim": "Every step of the claim lifecycle has an X12 correspondence, so any agent action \u2014 phone call, portal, desktop, imaging system \u2014 can be reduced to a structured transaction.",
+        "confidence": "stated",
+        "timestamp_sec": 824
+      },
+      {
+        "claim": "An X12 response from an insurance company is not ground truth; the payer's portal, phone system, and X12 layer can all report the same wrong answer.",
+        "confidence": "stated",
+        "timestamp_sec": 918
+      },
+      {
+        "claim": "Teams should maintain their own internal X12 representation treated as correct only until downstream evidence disproves it.",
+        "confidence": "stated",
+        "timestamp_sec": 978
+      },
+      {
+        "claim": "Swapping in a newer, higher-scoring model can break a working system, so evals, testing, and validation must be rebuilt from scratch before the upgrade.",
+        "confidence": "stated",
+        "timestamp_sec": 455
+      },
+      {
+        "claim": "Enterprise healthcare agents should store memory in a database rather than on the local filesystem the way Claude Code and Codex do.",
+        "confidence": "stated",
+        "timestamp_sec": 411
+      },
+      {
+        "claim": "Persistent cross-session user memory introduces bias toward repeating yesterday's action, so users must be able to break out of it.",
+        "confidence": "stated",
+        "timestamp_sec": 723
+      },
+      {
+        "claim": "Fully hardcoding the claims workflow is not a viable alternative to agents because the codebase bloats and requires an oversized engineering team.",
+        "confidence": "stated",
+        "timestamp_sec": 634
+      },
+      {
+        "claim": "Collapsing an image into extracted findings before downstream modeling loses context that later procedures depend on, so processing should stay multimodal.",
+        "confidence": "stated",
+        "timestamp_sec": 308
+      },
+      {
+        "claim": "Public standard schemas are preferable to agent-generated schemas because they are lookup-able by both new engineers and coding agents.",
+        "confidence": "stated",
+        "timestamp_sec": 875
+      },
+      {
+        "claim": "Using an overpowered, expensive model for high-frequency routine transactions defeats the cost-reduction purpose of the system.",
+        "confidence": "stated",
+        "timestamp_sec": 1172
+      },
+      {
+        "claim": "Agent failures should be attributed to system design rather than to model error.",
+        "confidence": "stated",
+        "timestamp_sec": 1172
+      }
+    ],
+    "speaker_org": "Onlay"
+  },
+  "_meta": {
+    "slug": "healthcares-agent-bytecode-x12-as-the-harness-for-ai-agents",
+    "video_id": "UyyOoJmuATU",
+    "url": "https://www.youtube.com/watch?v=UyyOoJmuATU",
+    "word_count": 2843,
+    "wall_sec": 73.8,
+    "run_at": "2026-08-20T02:53:37Z",
+    "effort": "default"
+  }
+}

@@ -4,15 +4,15 @@ type: "concept"
 slug: "human-in-the-loop-approval"
 tier: "core"
 maturity: "contested"
-talk_count: 32
-speaker_count: 31
+talk_count: 33
+speaker_count: 32
 ---
 
 # human-in-the-loop approval
 
 **Maturity: CONTESTED** — Contested — active, unresolved disagreement across talks
 
-*Core concept* &middot; discussed across **32** talk(s) by **31** speaker(s)
+*Core concept* &middot; discussed across **33** talk(s) by **32** speaker(s)
 
 **Definition:** Requiring explicit human authorization before an agent takes a consequential or irreversible action, including how approval is scoped and where gates are placed.
 
@@ -20,51 +20,41 @@ speaker_count: 31
 
 ## State of Practice
 
-The conference treated approval gates as necessary but demonstrably insufficient, and spent most of its energy on where the gate goes and what it is backed by rather than whether to have one. The dominant engineering pattern is a deterministic interrupt owned by the harness — the agent loop halts on a tool call flagged as mutating or irreversible, and the model has no say in whether the halt happens; a prompt instruction telling the agent to "ask for confirmation" was explicitly named a non-control, because the agent can satisfy its own confirmation. Against that, the security and access-control track argued approval is the weakest layer available: humans are consent-fatigued, agents increasingly run unattended in the background, and policy evaluated before a credential is minted (per-tool-call, audience-bound, minutes-long tokens) is strictly safer than a tired human clicking allow. Duolingo supplied the empirical bottom: reviewers scoring above 90% on calibration upheld 50% of fabricated AI flags, and a pure copy change framing the AI signal as preliminary moved rejection rates 21% — the interface, not the model or the reviewer's skill, determined the outcome. The remaining consensus is legal rather than technical: accountability does not transfer to the agent, so a named human must be answerable, which is why almost nobody endorsed auto-pushing to production even when the pipeline verifies itself. Where the field is actively split is whether the human sits before execution (plan approval) or after it (verified PR review), and whether friction at the gate should be deliberately added or engineered away.
+The field has moved past treating "add a human approval step" as a safety answer and is now arguing about where the gate lives and what it is actually worth. The strongest convergence is that the interrupt must be owned by deterministic harness code — OpenGov deterministically interrupts its agent loop on any tool call flagged for approval, Hinge Health runs emergency-escalation and identity checks above the model on every turn, and Nubank found skills whose only control was a prompt instruction to "ask for confirmation," which the agent satisfied by confirming to itself. The second strong theme is that the approval click is a weak signal on its own: Duolingo's proctors, scoring above 90% on calibration, upheld 50% of deliberately fabricated AI flags, and Keycard's argument is that consent-fatigued humans plus background agents make approval an unusable primary access control. Practitioners are therefore narrowing what gets gated (mutating, irreversible, production-touching actions), enriching what the reviewer sees (a plan, a canary result, a structured artifact, a receipt) rather than a yes/no, and pushing enforcement down into policy, scoped credentials, and locked tool arguments. The 2026 State of AI Engineering survey confirms this is unsettled: human-in-the-loop approvals and permission gating are the top two guardrails in use, described as "the same toolkit you'd use to manage an intern," and 89% of agents can now write data. Nearly every speaker also insists accountability does not move to the agent — a named human still signs, is blamed, and inherits the consequences.
 
 ## Consensus
 
-### Irreversible, mutating, or externally-visible actions (sending mail, pushing to production, submitting offers, dropping state) should be walled behind explicit human approval, with the gate placed at those specific actions rather than uniformly across the loop.
+### The approval interrupt must be enforced by deterministic code in the harness, not left to the model's judgment or to a prompt instruction telling the agent to ask.
 
-Support: **7** talk(s)
+Support: **6** talk(s)
+
+> "we deterministically interrupt the agent loop if there is a tool call approval required"
+>
+> — [Agents in Production: How OpenGov Built and Scaled OG Assist](../talks/agents-in-production-how-opengov-built-and-scaled-og-assist.md), [10:28](https://www.youtube.com/watch?v=4uFVSLgD2Q4&t=628s)
+
+Supporting talks: [Agents in Production: How OpenGov Built and Scaled OG Assist](../talks/agents-in-production-how-opengov-built-and-scaled-og-assist.md), [Guardrails First: Engineering Member-Facing Health AI](../talks/guardrails-first-engineering-member-facing-health-ai.md), [We Vetted 2000 AI Skills Before They Reached Developers](../talks/we-vetted-2000-ai-skills-before-they-reached-developers.md), [Your Agent Didn't Fail. Your Harness Did.](../talks/your-agent-didnt-fail-your-harness-did.md), [Agentic Development Security](../talks/agentic-development-security.md), [What if the harness mattered more than the model?](../talks/what-if-the-harness-mattered-more-than-the-model.md)
+
+### Gates belong on the specific class of mutating, irreversible, or production-touching actions — outbound sends, database writes, pushes to running services — rather than on every step of the agent's work.
+
+Support: **6** talk(s)
 
 > "those actions need to be walled behind like my approval, right? And when you draw that wall, what you've done is reduced the blast radius"
 >
 > — [Build Systems, Not Code](../talks/build-systems-not-code.md), [16:30](https://www.youtube.com/watch?v=ZD9-4fW2HhM&t=990s)
 
-Supporting talks: [Build Systems, Not Code](../talks/build-systems-not-code.md), [Agents in Production: How OpenGov Built and Scaled OG Assist](../talks/agents-in-production-how-opengov-built-and-scaled-og-assist.md), [Chat and citations won't save your vertical AI](../talks/chat-and-citations-wont-save-your-vertical-ai.md), [AI Agents for Performance: Ship Faster, Pay Less](../talks/ai-agents-for-performance-ship-faster-pay-less.md), [The Factory That Dreams: 39 AI Agents, No Framework](../talks/the-factory-that-dreams-39-ai-agents-no-framework.md), [The UX of AI: Making AI-Powered Apps Your Users Don't Hate](../talks/the-ux-of-ai-making-ai-powered-apps-your-users-dont-hate.md), [I Run a Fleet of AI Agents Across Three Machines. Here's What Broke.](../talks/i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke.md)
+Supporting talks: [Build Systems, Not Code](../talks/build-systems-not-code.md), [Chat and citations won't save your vertical AI](../talks/chat-and-citations-wont-save-your-vertical-ai.md), [Agents in Production: How OpenGov Built and Scaled OG Assist](../talks/agents-in-production-how-opengov-built-and-scaled-og-assist.md), [AI Agents for Performance: Ship Faster, Pay Less](../talks/ai-agents-for-performance-ship-faster-pay-less.md), [The Factory That Dreams: 39 AI Agents, No Framework](../talks/the-factory-that-dreams-39-ai-agents-no-framework.md), [It's 10pm. Do You Know Where Your Agents Are?](../talks/its-10pm-do-you-know-where-your-agents-are.md)
 
-### The approval gate must be enforced deterministically by the harness or platform; a prompt instruction asking the model to check with the user, or a warning-only check, is not a gate.
+### A human approval click is not by itself a control: automation bias, consent fatigue, and volume turn skilled reviewers into rubber stamps.
 
 Support: **6** talk(s)
 
-> "people sometimes will add the instruction like you need to ask for confirmation but the AI may ask confirmation for itself. So from your perspective there is a human in the loop but for the AI perspective there is has been a confirmation"
+> "despite the fact that our human reviewers are consistently scoring above 90% on their accuracy calibration metrics, they actually accepted 50% of these fake signals"
 >
-> — [We Vetted 2000 AI Skills Before They Reached Developers](../talks/we-vetted-2000-ai-skills-before-they-reached-developers.md), [12:33](https://www.youtube.com/watch?v=iKQ78wyJEXU&t=753s)
+> — [Build AI Systems for Discernment, Not Approval](../talks/build-ai-systems-for-discernment-not-approval.md), [6:15](https://www.youtube.com/watch?v=CDqzWpwkSls&t=375s)
 
-Supporting talks: [Agents in Production: How OpenGov Built and Scaled OG Assist](../talks/agents-in-production-how-opengov-built-and-scaled-og-assist.md), [We Vetted 2000 AI Skills Before They Reached Developers](../talks/we-vetted-2000-ai-skills-before-they-reached-developers.md), [Agentic Development Security](../talks/agentic-development-security.md), [Every Solo Agent Builder Eventually Reinvents a Worse Version of CI/CD](../talks/every-solo-agent-builder-eventually-reinvents-a-worse-version-of-cicd.md), [Respect The Process](../talks/respect-the-process.md), [Your Agent Didn't Fail. Your Harness Did.](../talks/your-agent-didnt-fail-your-harness-did.md)
+Supporting talks: [Build AI Systems for Discernment, Not Approval](../talks/build-ai-systems-for-discernment-not-approval.md), [It's 10pm. Do You Know Where Your Agents Are?](../talks/its-10pm-do-you-know-where-your-agents-are.md), [What Does Done Even Mean? Agents and Paperclip's Liveness Model](../talks/what-does-done-even-mean-agents-and-paperclips-liveness-model.md), ["The engineer of the future is the person who is able to choose what is worth doing." — Addy Osmani](../talks/the-engineer-of-the-future-is-the-person-who-is-able-to-choose-what-is-worth-doi.md), ["The biggest challenge in your stack? Evals, Evals, Evals"](../talks/the-biggest-challenge-in-your-stack-evals-evals-evals.md), [We Vetted 2000 AI Skills Before They Reached Developers](../talks/we-vetted-2000-ai-skills-before-they-reached-developers.md)
 
-### Human approval on its own is not a safety control: reviewers rubber-stamp under automation bias and consent fatigue, and human attention does not scale to agent output volume, so approval must be backed by policy, deterministic guardrails, or independent evidence.
-
-Support: **7** talk(s)
-
-> "And we can't just solve this with human in the loop. We spent decades solving access management for humans. So just blindly trusting a human who might be a little bit consent fatigued uh or who might be tired enough at night, this isn't really going to be enough."
->
-> — [It's 10pm. Do You Know Where Your Agents Are?](../talks/its-10pm-do-you-know-where-your-agents-are.md), [5:15](https://www.youtube.com/watch?v=I3znWC3MEXM&t=315s)
-
-Supporting talks: [Build AI Systems for Discernment, Not Approval](../talks/build-ai-systems-for-discernment-not-approval.md), [It's 10pm. Do You Know Where Your Agents Are?](../talks/its-10pm-do-you-know-where-your-agents-are.md), [What Does Done Even Mean? Agents and Paperclip's Liveness Model](../talks/what-does-done-even-mean-agents-and-paperclips-liveness-model.md), [Agentic Development Security](../talks/agentic-development-security.md), [Your Finance Agent's Bottleneck Is You](../talks/your-finance-agents-bottleneck-is-you.md), ["The engineer of the future is the person who is able to choose what is worth doing." — Addy Osmani](../talks/the-engineer-of-the-future-is-the-person-who-is-able-to-choose-what-is-worth-doi.md), ["The biggest challenge in your stack? Evals, Evals, Evals"](../talks/the-biggest-challenge-in-your-stack-evals-evals-evals.md)
-
-### The approval surface should present a plan, evidence, or a structured review artifact — a bare yes/no on an opaque output is a design failure that both destroys trust and produces worthless labels.
-
-Support: **7** talk(s)
-
-> "if you're creating some kind of an agentic tool and no plan is ever shown to the user and an action happens without them understanding why or how, it can be very, very hard for them to trust both the result of that action and the agentic tool itself"
->
-> — [The UX of AI: Making AI-Powered Apps Your Users Don't Hate](../talks/the-ux-of-ai-making-ai-powered-apps-your-users-dont-hate.md), [15:03](https://www.youtube.com/watch?v=L3RuP_q8Bwc&t=903s)
-
-Supporting talks: [The UX of AI: Making AI-Powered Apps Your Users Don't Hate](../talks/the-ux-of-ai-making-ai-powered-apps-your-users-dont-hate.md), [Chat and citations won't save your vertical AI](../talks/chat-and-citations-wont-save-your-vertical-ai.md), [Building an Agentic Video Editor for Mass Consumer](../talks/building-an-agentic-video-editor-for-mass-consumer.md), [I Run a Fleet of AI Agents Across Three Machines. Here's What Broke.](../talks/i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke.md), [Build AI Systems for Discernment, Not Approval](../talks/build-ai-systems-for-discernment-not-approval.md), [Respect The Process](../talks/respect-the-process.md), [What Does Done Even Mean? Agents and Paperclip's Liveness Model](../talks/what-does-done-even-mean-agents-and-paperclips-liveness-model.md)
-
-### Accountability for an agent's actions stays with a named human and cannot be delegated to the model or its vendor, which is why an identifiable approver must exist at the end of every consequential action.
+### Accountability for the agent's action stays with a named human and cannot be transferred to the model, the vendor, or the approval workflow.
 
 Support: **6** talk(s)
 
@@ -72,82 +62,95 @@ Support: **6** talk(s)
 >
 > — [Build for the Memo, Not the Demo](../talks/build-for-the-memo-not-the-demo.md), [19:21](https://www.youtube.com/watch?v=tJFjeMBKbIY&t=1161s)
 
-Supporting talks: [Build for the Memo, Not the Demo](../talks/build-for-the-memo-not-the-demo.md), ["The engineer of the future is the person who is able to choose what is worth doing." — Addy Osmani](../talks/the-engineer-of-the-future-is-the-person-who-is-able-to-choose-what-is-worth-doi.md), [Using Spec-Driven Development for Production Workflows](../talks/using-spec-driven-development-for-production-workflows.md), [Agentic Development Security](../talks/agentic-development-security.md), [Your Finance Agent's Bottleneck Is You](../talks/your-finance-agents-bottleneck-is-you.md), [Build Systems, Not Code](../talks/build-systems-not-code.md)
+Supporting talks: [Build for the Memo, Not the Demo](../talks/build-for-the-memo-not-the-demo.md), [Using Spec-Driven Development for Production Workflows](../talks/using-spec-driven-development-for-production-workflows.md), ["The engineer of the future is the person who is able to choose what is worth doing." — Addy Osmani](../talks/the-engineer-of-the-future-is-the-person-who-is-able-to-choose-what-is-worth-doi.md), [Agentic Development Security](../talks/agentic-development-security.md), [Your Finance Agent's Bottleneck Is You](../talks/your-finance-agents-bottleneck-is-you.md), [AI Agents for Performance: Ship Faster, Pay Less](../talks/ai-agents-for-performance-ship-faster-pay-less.md)
 
-### Automated verification should run before the human gate so the reviewer sees an already-checked artifact — canaries, runtime confirmation, or a separate verifier agent — rather than a plausible-looking proposal.
+### The approval surface must carry a plan or evidence the reviewer can act on — an execution plan, a verification result, a structured artifact — not a bare accept/reject prompt.
 
 Support: **6** talk(s)
 
-> "You want to ask your agents to provide evidence. Don't just ask them to say, "Is this done?" But, give them the tools they need to verify that the work is done."
+> "some actions are usually irreversible and are dangerous actions. And in those cases, you need to present a plan."
 >
-> — [What Does Done Even Mean? Agents and Paperclip's Liveness Model](../talks/what-does-done-even-mean-agents-and-paperclips-liveness-model.md), [5:59](https://www.youtube.com/watch?v=7P0elyLIxXo&t=359s)
+> — [Chat and citations won't save your vertical AI](../talks/chat-and-citations-wont-save-your-vertical-ai.md), [12:13](https://www.youtube.com/watch?v=RGiXcVxSD3s&t=733s)
 
-Supporting talks: [AI Agents for Performance: Ship Faster, Pay Less](../talks/ai-agents-for-performance-ship-faster-pay-less.md), [What Does Done Even Mean? Agents and Paperclip's Liveness Model](../talks/what-does-done-even-mean-agents-and-paperclips-liveness-model.md), [The Missing Layer After Launch](../talks/the-missing-layer-after-launch.md), [From Blind Spots to Merged PRs: Continuous Agentic Performance Optimization](../talks/from-blind-spots-to-merged-prs-continuous-agentic-performance-optimization.md), [Respect The Process](../talks/respect-the-process.md), [Every Solo Agent Builder Eventually Reinvents a Worse Version of CI/CD](../talks/every-solo-agent-builder-eventually-reinvents-a-worse-version-of-cicd.md)
+Supporting talks: [Chat and citations won't save your vertical AI](../talks/chat-and-citations-wont-save-your-vertical-ai.md), [The UX of AI: Making AI-Powered Apps Your Users Don't Hate](../talks/the-ux-of-ai-making-ai-powered-apps-your-users-dont-hate.md), [Building an Agentic Video Editor for Mass Consumer](../talks/building-an-agentic-video-editor-for-mass-consumer.md), [I Run a Fleet of AI Agents Across Three Machines. Here's What Broke.](../talks/i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke.md), [What Does Done Even Mean? Agents and Paperclip's Liveness Model](../talks/what-does-done-even-mean-agents-and-paperclips-liveness-model.md), [Respect The Process](../talks/respect-the-process.md)
+
+### Human review capacity, not model capability or compute, is the scaling ceiling on any approval-gated agent system, so the gate design must economize on human attention.
+
+Support: **7** talk(s)
+
+> "The bottleneck is not the compute, the models, the capability. It's actually having enough people to read the signal and act on it."
+>
+> — [Guardrails First: Engineering Member-Facing Health AI](../talks/guardrails-first-engineering-member-facing-health-ai.md), [11:27](https://www.youtube.com/watch?v=YXEqC05WEI0&t=687s)
+
+Supporting talks: [Guardrails First: Engineering Member-Facing Health AI](../talks/guardrails-first-engineering-member-facing-health-ai.md), [Your Finance Agent's Bottleneck Is You](../talks/your-finance-agents-bottleneck-is-you.md), [What Does Done Even Mean? Agents and Paperclip's Liveness Model](../talks/what-does-done-even-mean-agents-and-paperclips-liveness-model.md), [From Blind Spots to Merged PRs: Continuous Agentic Performance Optimization](../talks/from-blind-spots-to-merged-prs-continuous-agentic-performance-optimization.md), ["The engineer of the future is the person who is able to choose what is worth doing." — Addy Osmani](../talks/the-engineer-of-the-future-is-the-person-who-is-able-to-choose-what-is-worth-doi.md), [Improving Agents is a Data Mining Problem](../talks/improving-agents-is-a-data-mining-problem.md), [I Run a Fleet of AI Agents Across Three Machines. Here's What Broke.](../talks/i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke.md)
 
 ## Disagreements
 
-### Is per-action human approval a real control for consequential agent actions, or should it be replaced by deterministic policy and capability constraints that make approval unnecessary?
+### Is human-in-the-loop approval a viable governance mechanism for agents, or a placeholder that must be replaced by deterministic policy and constrained capability?
 
 | Position A | Position B |
 |---|---|
-| Approval is the control: deterministically interrupt the loop on mutating or high-consequence tool calls and require a human to authorize before the agent proceeds.<br>*[Agents in Production: How OpenGov Built and Scaled OG Assist](../talks/agents-in-production-how-opengov-built-and-scaled-og-assist.md), [Build Systems, Not Code](../talks/build-systems-not-code.md), [The UX of AI: Making AI-Powered Apps Your Users Don't Hate](../talks/the-ux-of-ai-making-ai-powered-apps-your-users-dont-hate.md), [Chat and citations won't save your vertical AI](../talks/chat-and-citations-wont-save-your-vertical-ai.md), [The Factory That Dreams: 39 AI Agents, No Framework](../talks/the-factory-that-dreams-39-ai-agents-no-framework.md)* | Approval does not scale and should be engineered out: constrain what the agent can do at all — policy evaluated before a credential is minted, per-tool-call short-lived audience-bound tokens, arguments locked by partial application — so that no human click is needed and there is nothing overprivileged to misuse.<br>*[It's 10pm. Do You Know Where Your Agents Are?](../talks/its-10pm-do-you-know-where-your-agents-are.md), [Agentic Development Security](../talks/agentic-development-security.md), [What if the harness mattered more than the model?](../talks/what-if-the-harness-mattered-more-than-the-model.md), [Your Finance Agent's Bottleneck Is You](../talks/your-finance-agents-bottleneck-is-you.md)* |
+| Approval gates are the primary control for consequential actions: interrupt the loop on mutating operations, block the plan until a human approves, keep humans in the driver's seat.<br>*[Agents in Production: How OpenGov Built and Scaled OG Assist](../talks/agents-in-production-how-opengov-built-and-scaled-og-assist.md), [Build Systems, Not Code](../talks/build-systems-not-code.md), [Chat and citations won't save your vertical AI](../talks/chat-and-citations-wont-save-your-vertical-ai.md), [AI Agents for Performance: Ship Faster, Pay Less](../talks/ai-agents-for-performance-ship-faster-pay-less.md), [I Run a Fleet of AI Agents Across Three Machines. Here's What Broke.](../talks/i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke.md), [The Factory That Dreams: 39 AI Agents, No Framework](../talks/the-factory-that-dreams-39-ai-agents-no-framework.md)* | Asking the human does not scale to background and cloud agents and cannot survive consent fatigue, so control must move to policy evaluated before a credential is minted, scoped short-lived tokens, locked tool arguments, and deterministic guardrails that hold with no human present.<br>*[It's 10pm. Do You Know Where Your Agents Are?](../talks/its-10pm-do-you-know-where-your-agents-are.md), [Agentic Development Security](../talks/agentic-development-security.md), [What if the harness mattered more than the model?](../talks/what-if-the-harness-mattered-more-than-the-model.md), [Build AI Systems for Discernment, Not Approval](../talks/build-ai-systems-for-discernment-not-approval.md)* |
 
-*Why it matters: It decides whether you invest in approval UX or in an access-control/permission layer, and whether background and cloud agents that nobody is watching are viable at all — a gate that requires a present human simply does not fire for unattended runs.*
+*Why it matters: If approval is the control, you invest in review UX, plan surfaces, and reviewer staffing; if it is a placeholder, you invest in an authorization layer (RFC 8693 token exchange, partial application, hooks) and treat every unattended run as the default case rather than the exception.*
 
-### Should the human gate sit before execution (approve the plan) or after it (review a completed, verified artifact)?
-
-| Position A | Position B |
-|---|---|
-| Gate before the action: present a plan or pause the moment the agent is about to make an assumption or touch something irreversible, so nothing consequential happens unreviewed.<br>*[Chat and citations won't save your vertical AI](../talks/chat-and-citations-wont-save-your-vertical-ai.md), [The UX of AI: Making AI-Powered Apps Your Users Don't Hate](../talks/the-ux-of-ai-making-ai-powered-apps-your-users-dont-hate.md), [Building an Agentic Video Editor for Mass Consumer](../talks/building-an-agentic-video-editor-for-mass-consumer.md), [I Run a Fleet of AI Agents Across Three Machines. Here's What Broke.](../talks/i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke.md), [Agents in Production: How OpenGov Built and Scaled OG Assist](../talks/agents-in-production-how-opengov-built-and-scaled-og-assist.md)* | Let the agent run to completion inside a sandbox and gate at the artifact: it opens a PR with a canary or runtime verification attached, and the human reviews evidence rather than intentions.<br>*[AI Agents for Performance: Ship Faster, Pay Less](../talks/ai-agents-for-performance-ship-faster-pay-less.md), [From Blind Spots to Merged PRs: Continuous Agentic Performance Optimization](../talks/from-blind-spots-to-merged-prs-continuous-agentic-performance-optimization.md), [The Missing Layer After Launch](../talks/the-missing-layer-after-launch.md), [From Signal to PR: Anatomy of a Self-Improving Agent](../talks/from-signal-to-pr-anatomy-of-a-self-improving-agent.md)* |
-
-*Why it matters: Pre-execution gates bound blast radius but stop the task dead and put the human on the critical path of every run; post-hoc gates preserve throughput but only work where the work is sandboxed, reversible, and independently verifiable before it reaches production.*
-
-### Should friction at the human checkpoint be deliberately increased, or systematically removed?
+### Should the human approver be a permanent fixture of the loop, or a temporary bottleneck to be engineered out?
 
 | Position A | Position B |
 |---|---|
-| Add friction where stakes are high and reframe the human as investigator rather than validator — the checkpoint exists to force deliberation, and removing effort is what produced rubber-stamping in the first place.<br>*[Build AI Systems for Discernment, Not Approval](../talks/build-ai-systems-for-discernment-not-approval.md), [Build for the Memo, Not the Demo](../talks/build-for-the-memo-not-the-demo.md), [The UX of AI: Making AI-Powered Apps Your Users Don't Hate](../talks/the-ux-of-ai-making-ai-powered-apps-your-users-dont-hate.md)* | Minimize human contact points and automate the human out of the middle of the loop — human touch belongs at the start and end only, and exhaustive verification at volume degenerates into theater anyway.<br>*[Your Finance Agent's Bottleneck Is You](../talks/your-finance-agents-bottleneck-is-you.md), [What Does Done Even Mean? Agents and Paperclip's Liveness Model](../talks/what-does-done-even-mean-agents-and-paperclips-liveness-model.md), [The Missing Layer After Launch](../talks/the-missing-layer-after-launch.md), [From Signal to PR: Anatomy of a Self-Improving Agent](../talks/from-signal-to-pr-anatomy-of-a-self-improving-agent.md)* |
+| The human is transitional: close the loop, make yourself the bottleneck, then remove yourself; contact the pipeline only at the first and last step; never let human attention become the throughput ceiling.<br>*[The Missing Layer After Launch](../talks/the-missing-layer-after-launch.md), [Your Finance Agent's Bottleneck Is You](../talks/your-finance-agents-bottleneck-is-you.md), [What Does Done Even Mean? Agents and Paperclip's Liveness Model](../talks/what-does-done-even-mean-agents-and-paperclips-liveness-model.md), [From Signal to PR: Anatomy of a Self-Improving Agent](../talks/from-signal-to-pr-anatomy-of-a-self-improving-agent.md)* | The gate is permanent by intent for consequential changes — a human approves every production code change, signs every real decision, and reviews the generated code because they will be the one blamed.<br>*[AI Agents for Performance: Ship Faster, Pay Less](../talks/ai-agents-for-performance-ship-faster-pay-less.md), [Build for the Memo, Not the Demo](../talks/build-for-the-memo-not-the-demo.md), [Using Spec-Driven Development for Production Workflows](../talks/using-spec-driven-development-for-production-workflows.md), [Guardrails First: Engineering Member-Facing Health AI](../talks/guardrails-first-engineering-member-facing-health-ai.md)* |
 
-*Why it matters: The two camps optimize opposite metrics — oversight quality versus throughput — and produce incompatible interfaces: one deliberately slows the reviewer down at the decision, the other measures success by how few decisions reach a human.*
+*Why it matters: It determines whether you build toward auto-merge with post-hoc sampling or toward permanent reviewer staffing, and it sets whether trust thresholds (Hud's 80–90%) are a milestone to cross or a ceiling you never remove the gate above.*
+
+### Should approval be requested per individual action at execution time, or granted once as a pre-scoped capability envelope?
+
+| Position A | Position B |
+|---|---|
+| Per-action: mint permissions per tool call, interrupt on each approval-required call, block each layer's plan until explicitly approved, and add friction deliberately where stakes are high.<br>*[It's 10pm. Do You Know Where Your Agents Are?](../talks/its-10pm-do-you-know-where-your-agents-are.md), [Agents in Production: How OpenGov Built and Scaled OG Assist](../talks/agents-in-production-how-opengov-built-and-scaled-og-assist.md), [I Run a Fleet of AI Agents Across Three Machines. Here's What Broke.](../talks/i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke.md), [Build AI Systems for Discernment, Not Approval](../talks/build-ai-systems-for-discernment-not-approval.md)* | Per-action approval is correct but too slow to run in production; constrain the capability up front instead — lock arguments so the model cannot vary them, let users toggle plan approval off for repeated flows, and partition the workflow so only designated steps ever touch a human.<br>*[What if the harness mattered more than the model?](../talks/what-if-the-harness-mattered-more-than-the-model.md), [The UX of AI: Making AI-Powered Apps Your Users Don't Hate](../talks/the-ux-of-ai-making-ai-powered-apps-your-users-dont-hate.md), [AI tools for Forward Deployed Engineering](../talks/ai-tools-for-forward-deployed-engineering.md), [Your Finance Agent's Bottleneck Is You](../talks/your-finance-agents-bottleneck-is-you.md)* |
+
+*Why it matters: Per-action gating produces latency and consent fatigue that degrade the review signal itself; envelope scoping is fast but fails silently when the pre-approved scope turns out to include an action the user would have refused.*
 
 ## Practical Guidance
 
 **Do:**
 
-- Interrupt the agent loop deterministically in harness code when a tool call is marked approval-required, rather than instructing the model in a prompt to ask the user.
-- Bind an approval to actor, session, run, tool, arguments, and lifetime, and make expiry terminate the run rather than loop back for another attempt.
-- Check the approving human against policy and role before honoring the approval — an approver without the required role should be blocked even after they click allow.
-- Request per-tool-call tokens that are audience-bound to a single target MCP server, expire in minutes, and are never stored, instead of handing the agent a session-scoped API key.
-- Lock sensitive tool arguments by partial application so the model cannot vary them and never sees them, when the goal is safety without per-action approval latency.
-- Frame the AI signal in reviewer guidelines as a preliminary alert requiring independent evidence — this alone moved rejection rates 21% at Duolingo with no model or UI change.
-- Log the human's subsequent manual edit, not just the accept/reject click, so the approval produces an honest training label.
-- Run the canary, test, or verifier agent before the artifact reaches a human, and put the verifier on a different model than the author.
-- Track human-override rate on AI verdicts as a monitored metric and set a threshold that triggers investigation.
-- Surface one high-ROI finding at a time rather than opening a large batch of PRs a human must triage.
-- Give the user an always-available stop control and settings to disable plan approval on repeated low-risk flows.
-- Show a rough time and cost estimate alongside the action being approved.
+- Interrupt the agent loop in harness code on any tool call marked approval-required, especially mutating operations, rather than instructing the model to ask
+- Route emergency, high-stakes-intent, and identity-verification turns through deterministic code that runs before the model sees the turn
+- Evaluate policy before minting the credential, and issue tokens that are audience-bound to a single target MCP server, expire in minutes, and are never stored
+- Check the approving human's own role against policy, and allow the system to override an approval the approver was not authorized to give
+- Run an automated canary comparing CPU, latency, and error rate so a code review reaches the human already carrying ground truth, not just a profiler estimate
+- Word the reviewer-facing copy so the AI signal is framed as a preliminary alert requiring independent evidence — Duolingo's copy-only change moved rejection rates 21%
+- Split a single yes/no CTA into separate questions when it conflates 'was the model's perception correct' with 'should we act on it', so the logged label is honest
+- Bind an approval to actor, session, run, tool, arguments, and lifetime, and have expiration terminate the run rather than loop
+- Sample 100% of high-stakes cases for human review, with random sampling across the remaining capabilities
+- Track the human override rate on AI verdicts and treat a rise above threshold as a trigger to investigate
+- Surface one high-ROI, human-readable finding at a time instead of auto-opening batches of pull requests
+- Separate the verifier from the author, using a different model, and give the verifier tools to produce evidence rather than asking it whether the work is done
+- Emit deterministic, structured review artifacts for approvers who are not engineers, instead of asking them to read agent-written code
+- Lock tool arguments the model should never choose via partial application, so the action is safe without a per-call approval prompt
 
 **Avoid:**
 
-- Treating a natural-language instruction like "ask for confirmation" as a human-in-the-loop control — the agent can issue and satisfy that confirmation itself.
-- Shipping a gate that only logs a warning; if it cannot halt the artifact, it is a suggestion.
-- Presenting one giant diff or a stream of per-file yes/no prompts — both reduce the reviewer to a rubber stamp and yield low-information accept/reject data.
-- Conflating two questions in one CTA (e.g. "was the model's perception correct" and "should we penalize this user"), which produces false labels that make the model spuriously more confident.
-- Assuming reviewer skill protects against automation bias — reviewers calibrated above 90% still upheld half of fabricated flags.
-- Relying on approval as the governance mechanism for background or cloud agents, where no human is sitting there to ask.
-- Letting the agent push fixes directly to production even when tests pass; modifying working production code warrants a human-approved review.
-- Making the human the throughput ceiling of the system, or attempting exhaustive human verification at agent volume.
-- Requiring non-engineer users to read agent-written code to approve its work instead of emitting structured review artifacts.
-- Giving an agent a long-lived kitchen-sink credential and hoping supervision catches misuse — it will use every permission it has to finish the task.
+- Writing 'ask for confirmation' into a skill or prompt and calling it human-in-the-loop — the agent can issue and satisfy the confirmation itself
+- Treating a system prompt, or a model plus a system prompt, as the approval or security boundary
+- Presenting one giant diff or a per-file accept prompt, both of which reduce the reviewer to a rubber stamp and yield low-information accept/reject data
+- Shipping a gate that only logs warnings; a gate that cannot halt the artifact is a suggestion
+- Recording the human's yes/no but not the manual edit they made afterward, which writes a false label into your training and eval data
+- Assuming reviewer skill or calibration scores protect against automation bias — they do not
+- Handing an agent a long-lived kitchen-sink API key at session start and relying on supervision to catch misuse
+- Letting an agent push fixes directly to production because tests passed; passing tests are not runtime verification
+- Making approval the only governance mechanism for background and cloud agents, where nobody is sitting at the desk to answer
+- Permitting destructive operations at all when no legitimate approval should authorize them — no agent should be able to drop a database, even when the documented recovery procedure calls for it
 
 ## Notable Outliers
 
-- A human's approval can itself be rejected: policy checked the approver's role and blocked the action even though the human had already clicked allow. ([It's 10pm. Do You Know Where Your Agents Are?](../talks/its-10pm-do-you-know-where-your-agents-are.md), [14:54](https://www.youtube.com/watch?v=I3znWC3MEXM&t=894s))
-- Expert reviewers scoring above 90% on accuracy calibration accepted 50% of deliberately fabricated AI flags — a coin-flip rate indicating automation bias, not skill deficiency. ([Build AI Systems for Discernment, Not Approval](../talks/build-ai-systems-for-discernment-not-approval.md), [6:15](https://www.youtube.com/watch?v=CDqzWpwkSls&t=375s))
-- In a nine-step bug-fix-to-stage pipeline, human contact is only needed at step 1 and step 9; the agent does the intermediate steps better than a human would. ([Your Finance Agent's Bottleneck Is You](../talks/your-finance-agents-bottleneck-is-you.md), [5:54](https://www.youtube.com/watch?v=z0sh8HyTrDo&t=354s))
-- 'Done' should be a structured object with artifact, scope, rubric, evidence, verifier, approver, residual risk, and next action — not a boolean, because mergeable, deployable, and announceable are different claims. ([What Does Done Even Mean? Agents and Paperclip's Liveness Model](../talks/what-does-done-even-mean-agents-and-paperclips-liveness-model.md), [4:49](https://www.youtube.com/watch?v=7P0elyLIxXo&t=289s))
-- Per-action approval interrupts are safe but very slow; locking the argument via partial function application achieves the same safety with no human input, and the model never learns the argument exists. ([What if the harness mattered more than the model?](../talks/what-if-the-harness-mattered-more-than-the-model.md), [16:54](https://www.youtube.com/watch?v=2e9ANoOEn28&t=1014s))
-- Autonomous agent automation requires crossing an 80-90% trust threshold, whereas an 80% success rate is perfectly acceptable for interactive IDE use because the human is already in context. ([From Blind Spots to Merged PRs: Continuous Agentic Performance Optimization](../talks/from-blind-spots-to-merged-prs-continuous-agentic-performance-optimization.md), [20:49](https://www.youtube.com/watch?v=JJGbw4ggaFs&t=1249s))
+- A human's approval should itself be policy-checked and can be denied: an approver lacking the required role is blocked from authorizing the agent even after clicking approve. ([It's 10pm. Do You Know Where Your Agents Are?](../talks/its-10pm-do-you-know-where-your-agents-are.md), [14:54](https://www.youtube.com/watch?v=I3znWC3MEXM&t=894s))
+- Agents satisfy their own 'ask the human' instructions — from the operator's view there was a human in the loop, from the agent's view a confirmation occurred. ([We Vetted 2000 AI Skills Before They Reached Developers](../talks/we-vetted-2000-ai-skills-before-they-reached-developers.md), [12:33](https://www.youtube.com/watch?v=iKQ78wyJEXU&t=753s))
+- Changing only the guideline copy around the approval decision, with no model or UI change, shifted rejection rates by 21%. ([Build AI Systems for Discernment, Not Approval](../talks/build-ai-systems-for-discernment-not-approval.md), [7:41](https://www.youtube.com/watch?v=CDqzWpwkSls&t=461s))
+- Partial function application on tool arguments replaces human approval entirely: the LLM cannot change the locked argument and does not even know it exists. ([What if the harness mattered more than the model?](../talks/what-if-the-harness-mattered-more-than-the-model.md), [16:54](https://www.youtube.com/watch?v=2e9ANoOEn28&t=1014s))
+- In a nine-step bug-fix-to-stage pipeline, human contact is only warranted at steps 1 and 9; the agent does every intermediate step better. ([Your Finance Agent's Bottleneck Is You](../talks/your-finance-agents-bottleneck-is-you.md), [5:54](https://www.youtube.com/watch?v=z0sh8HyTrDo&t=354s))
+- Approval scope should be allocated per process step at design time — e.g. four of eight steps fully autonomous, three with human-in-the-loop intervention, one human-only. ([AI tools for Forward Deployed Engineering](../talks/ai-tools-for-forward-deployed-engineering.md), [6:30](https://www.youtube.com/watch?v=l0FLhNqBOic&t=390s))
+- Contradictions between sources should be escalated to a human rather than silently resolved by the model — the argument must happen in front of a person. ([Build for the Memo, Not the Demo](../talks/build-for-the-memo-not-the-demo.md), [13:43](https://www.youtube.com/watch?v=tJFjeMBKbIY&t=823s))
 
 ## All Talks
 
@@ -166,6 +169,7 @@ Supporting talks: [AI Agents for Performance: Ship Faster, Pay Less](../talks/ai
 - [Field Guide to Fable](../talks/field-guide-to-fable.md)
 - [From Blind Spots to Merged PRs: Continuous Agentic Performance Optimization](../talks/from-blind-spots-to-merged-prs-continuous-agentic-performance-optimization.md)
 - [From Signal to PR: Anatomy of a Self-Improving Agent](../talks/from-signal-to-pr-anatomy-of-a-self-improving-agent.md)
+- [Guardrails First: Engineering Member-Facing Health AI](../talks/guardrails-first-engineering-member-facing-health-ai.md)
 - [I Run a Fleet of AI Agents Across Three Machines. Here's What Broke.](../talks/i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke.md)
 - [Improving Agents is a Data Mining Problem](../talks/improving-agents-is-a-data-mining-problem.md)
 - [It's 10pm. Do You Know Where Your Agents Are?](../talks/its-10pm-do-you-know-where-your-agents-are.md)
@@ -207,6 +211,7 @@ Supporting talks: [AI Agents for Performance: Ship Faster, Pay Less](../talks/ai
 - [May Walter](../speakers/may-walter.md)
 - [Rajat Shah](../speakers/rajat-shah.md)
 - [Ramana Siddanth Emani](../speakers/ramana-siddanth-emani.md)
+- [Rashi Agrawal](../speakers/rashi-agrawal.md)
 - [Rushabh Doshi](../speakers/rushabh-doshi.md)
 - [Sam Bhagwat](../speakers/sam-bhagwat.md)
 - [Shawn Chan](../speakers/shawn-chan.md)

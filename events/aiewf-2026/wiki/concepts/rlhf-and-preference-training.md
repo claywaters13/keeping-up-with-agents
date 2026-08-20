@@ -4,15 +4,15 @@ type: "concept"
 slug: "rlhf-and-preference-training"
 tier: "supporting"
 maturity: "contested"
-talk_count: 7
-speaker_count: 8
+talk_count: 8
+speaker_count: 9
 ---
 
 # rlhf and preference training
 
 **Maturity: CONTESTED** — Contested — active, unresolved disagreement across talks
 
-*Supporting concept* &middot; discussed across **7** talk(s) by **8** speaker(s)
+*Supporting concept* &middot; discussed across **8** talk(s) by **9** speaker(s)
 
 **Definition:** Training on human preference signals — pairwise comparisons, reward models, and the asymmetries they introduce.
 
@@ -20,126 +20,137 @@ speaker_count: 8
 
 ## State of Practice
 
-Nobody at this conference disputes that preference optimization is what turned base models into products — one speaker puts deployed-LLM coverage at roughly 100% RLHF, and another credits RLHF with a 1B model beating 175B — but the attention has moved entirely to the asymmetries it introduces. The shared diagnosis is that a reward model fit to aggregated human comparisons drops modes: output collapses toward the mean of raters, confident-looking wrong answers score well by construction, and judges grade surface plausibility rather than the axis you meant to measure (9.2 on camera work for a video where the camera never moved; 'physics look great' on hovering ghosts). The remedies converge on decomposition and relative elicitation — break a subjective target into named, codified sub-axes and score each one; train judges on A-vs-B pairs rather than 1–10 scales because humans agree on comparisons and not on absolute scales; keep rater identity attached to the label instead of averaging across unmodeled raters; and set the ceiling empirically by splitting human ground truth in half and correlating human against human (~80% self-consistency). Where the field splits is on the objective itself: one camp is building richer preference-and-RL environments so subjective domains become trainable, another argues preference is structurally the wrong target and the next post-training paradigm is calibrated decision-making, and enterprise practitioners report that per-user preference conflict is simply unsolved — neither semantic layers nor agent memory routes a request to the right team's metric definition. The practical center of gravity is that task and data design, not model scale or algorithm choice, is where the remaining leverage lives.
+Preference training is universal in deployment and simultaneously under indictment. Essentially every shipped LLM is RLHF-tuned, but multiple speakers argued the objective itself — maximize a human rater's approval — is what produces overconfidence, hallucination, and collapse-to-the-mean 'slop', via a mode-dropping asymmetry in the reward model that makes wrong answers look right. The practical consequence is that reward specification, not model capability, is the binding constraint: capability follows measurability, so code and math (decomposable, executable, answer-keyed) advanced while design, video quality, finance, and pharma stalled — not because models are weak there but because nobody has decomposed those domains into gradeable ground truth. Teams that tried to shortcut this with prompted LLM-as-judge report reward hacking and 'vibe' scoring (a judge rating camera work 9.2 on a static shot, praising the physics of hovering ghosts); the working alternatives are pairwise-comparison judges trained on manufactured-bad data, or expert humans kept in the loop as the actual grader. The other live realization is that preference is plural: two designers, two analytics teams, or two survey respondents can hold incompatible-but-correct preferences, and averaging them into one reward signal reliably yields noise rather than a better target. Task and data design now dominate algorithm choice in practice — data beats compute and picking the right task beats data.
 
 ## Consensus
 
-### Preference optimization collapses outputs toward the mean of the rater distribution; the resulting sameness ('slop', muddled variation, mode dropping) is a property of the training objective, not a capability gap that a bigger model fixes.
+### Optimizing a preference proxy reliably teaches the model the proxy's surface (apparent confidence, gloss, 'the vibe') rather than the underlying quality you intended to reward.
 
-Support: **3** talk(s)
+Support: **6** talk(s)
 
-> "the reason why this feels like slop and that we have this feeling that we're surrounded by by slop is exactly because of this collapse to the mean and this repetition."
+> "no matter how wrong the models are, they will look right because of the asymmetry within the reward model in RLHF"
 >
-> — [Ending AI Slop](../talks/ending-ai-slop.md), [8:03](https://www.youtube.com/watch?v=lCBf9slCanI&t=483s)
+> — [What's Next After RLHF?](../talks/whats-next-after-rlhf.md), [8:07](https://www.youtube.com/watch?v=cJ0EOzey--o&t=487s)
 
-Supporting talks: [Ending AI Slop](../talks/ending-ai-slop.md), [What's Next After RLHF?](../talks/whats-next-after-rlhf.md), [Persona Engineering: A Field Guide to AI Synthetic Personas](../talks/persona-engineering-a-field-guide-to-ai-synthetic-personas.md)
+Supporting talks: [What's Next After RLHF?](../talks/whats-next-after-rlhf.md), [Evaling Video Slop](../talks/evaling-video-slop.md), [Ending AI Slop](../talks/ending-ai-slop.md), [Trading Desks to Clinical Trials: Parallels in Applied Vertical AI](../talks/trading-desks-to-clinical-trials-parallels-in-applied-vertical-ai.md), [From RL to IRL](../talks/from-rl-to-irl.md), [Scaling to Long Horizons](../talks/scaling-to-long-horizons.md)
 
-### Holistic reward signals get gamed: a judge asked for an overall verdict scores surface gloss instead of the intended property, so quality must be decomposed into named axes and each scored explicitly.
+### What a domain can be trained on is set by what can be decomposed and verified in it, not by model capability — so the bottleneck in subjective domains is the measurement problem.
 
 Support: **4** talk(s)
 
-> "The reason it was wrong is because how we generated that data, right? It It um it scored the vibe as opposed to the the the axes."
+> "One is that capability follows measurability. So if we can solve the measurability problem or at least part of it, then we can solve a big portion of these domains."
 >
-> — [Evaling Video Slop](../talks/evaling-video-slop.md), [11:14](https://www.youtube.com/watch?v=b_PmGocP4rc&t=674s)
+> — [Ending AI Slop](../talks/ending-ai-slop.md), [2:43](https://www.youtube.com/watch?v=lCBf9slCanI&t=163s)
 
-Supporting talks: [Evaling Video Slop](../talks/evaling-video-slop.md), [Ending AI Slop](../talks/ending-ai-slop.md), [From RL to IRL](../talks/from-rl-to-irl.md), [What's Next After RLHF?](../talks/whats-next-after-rlhf.md)
+Supporting talks: [Ending AI Slop](../talks/ending-ai-slop.md), [Trading Desks to Clinical Trials: Parallels in Applied Vertical AI](../talks/trading-desks-to-clinical-trials-parallels-in-applied-vertical-ai.md), [From RL to IRL](../talks/from-rl-to-irl.md), [Scaling to Long Horizons](../talks/scaling-to-long-horizons.md)
 
-### Preference is genuinely plural — two raters or two teams can hold incompatible, equally valid preferences — so averaging labels across unmodeled raters destroys signal; preference must be attached to a rater, team, or group identity.
+### Task design and data curation dominate the choice of training algorithm; the algorithmic machinery is the easy, commoditized part.
 
-Support: **3** talk(s)
-
-> "while both of these are correct metrics or the correct way to calculate the metric. They both will give you very different answers and it's just about preference."
->
-> — [Enterprise Agents Have a Structure Problem](../talks/enterprise-agents-have-a-structure-problem.md), [9:33](https://www.youtube.com/watch?v=B8l81jhvHbI&t=573s)
-
-Supporting talks: [Ending AI Slop](../talks/ending-ai-slop.md), [Enterprise Agents Have a Structure Problem](../talks/enterprise-agents-have-a-structure-problem.md), [Persona Engineering: A Field Guide to AI Synthetic Personas](../talks/persona-engineering-a-field-guide-to-ai-synthetic-personas.md)
-
-### The binding constraint on preference training is task, environment, and data design — not model scale, context length, or the choice of RL algorithm.
-
-Support: **5** talk(s)
+Support: **4** talk(s)
 
 > "I actually think that the full stack is that data matters more than compute and doing the right task matters way more than data."
 >
 > — [What's Next After RLHF?](../talks/whats-next-after-rlhf.md), [15:17](https://www.youtube.com/watch?v=cJ0EOzey--o&t=917s)
 
-Supporting talks: [What's Next After RLHF?](../talks/whats-next-after-rlhf.md), [Ending AI Slop](../talks/ending-ai-slop.md), [Scaling to Long Horizons](../talks/scaling-to-long-horizons.md), [Enterprise Agents Have a Structure Problem](../talks/enterprise-agents-have-a-structure-problem.md), [From RL to IRL](../talks/from-rl-to-irl.md)
+Supporting talks: [What's Next After RLHF?](../talks/whats-next-after-rlhf.md), [Ending AI Slop](../talks/ending-ai-slop.md), [Scaling to Long Horizons](../talks/scaling-to-long-horizons.md), [Trading Desks to Clinical Trials: Parallels in Applied Vertical AI](../talks/trading-desks-to-clinical-trials-parallels-in-applied-vertical-ai.md)
 
-### Human judgment remains the calibration anchor for subjective quality: LLM-as-judge cannot be trusted standalone, and human labeling has to be a continuous, resampled process rather than a one-time pass.
+### Preference is genuinely multi-valued — averaging labels across unmodeled raters or teams destroys signal instead of resolving it.
 
 Support: **3** talk(s)
 
-> "we believe human judgment is still at a much higher level than any LLM as a judge"
+> "And that doesn't mean either of those things are wrong or it doesn't mean that the best answer is the average of what two people might like."
 >
-> — [Ending AI Slop](../talks/ending-ai-slop.md), [9:44](https://www.youtube.com/watch?v=lCBf9slCanI&t=584s)
+> — [Ending AI Slop](../talks/ending-ai-slop.md), [10:45](https://www.youtube.com/watch?v=lCBf9slCanI&t=645s)
 
-Supporting talks: [Ending AI Slop](../talks/ending-ai-slop.md), [Evaling Video Slop](../talks/evaling-video-slop.md), [Persona Engineering: A Field Guide to AI Synthetic Personas](../talks/persona-engineering-a-field-guide-to-ai-synthetic-personas.md)
+Supporting talks: [Ending AI Slop](../talks/ending-ai-slop.md), [Enterprise Agents Have a Structure Problem](../talks/enterprise-agents-have-a-structure-problem.md), [Persona Engineering: A Field Guide to AI Synthetic Personas](../talks/persona-engineering-a-field-guide-to-ai-synthetic-personas.md)
+
+### A prompted frontier LLM-as-judge is not adequate as the primary evaluator of subjective quality — it is prompt-sensitive, slow, and hackable.
+
+Support: **3** talk(s)
+
+> "The problem with them is that A, they're slow. B, they're only as good as your prompt and multiple people will prompt multiple ways and the same model may respond in a very very different way."
+>
+> — [Evaling Video Slop](../talks/evaling-video-slop.md), [3:43](https://www.youtube.com/watch?v=b_PmGocP4rc&t=223s)
+
+Supporting talks: [Evaling Video Slop](../talks/evaling-video-slop.md), [Ending AI Slop](../talks/ending-ai-slop.md), [Trading Desks to Clinical Trials: Parallels in Applied Vertical AI](../talks/trading-desks-to-clinical-trials-parallels-in-applied-vertical-ai.md)
 
 ## Disagreements
 
-### Is preference optimization the substrate to keep building on, or a detour whose objective must be replaced?
+### Is RLHF the foundation to keep building on, or a detour whose objective must be replaced?
 
 | Position A | Position B |
 |---|---|
-| RLHF/RL post-training is the decisive ingredient that made models useful, and the path forward is scaling it into harder settings — realistic computer-use sandboxes, long-horizon value-model RL, compaction trained with RL, subjective domains turned into RL environments.<br>*[Scaling to Long Horizons](../talks/scaling-to-long-horizons.md), [From RL to IRL](../talks/from-rl-to-irl.md), [Ending AI Slop](../talks/ending-ai-slop.md)* | Optimizing for human preference structurally produces overconfidence and hallucination via reward-model asymmetry, so it is unfixable from inside; the next paradigm is neither RLHF nor RLVR but optimization for calibrated decision-making, with a different API shape.<br>*[What's Next After RLHF?](../talks/whats-next-after-rlhf.md)* |
+| Preference post-training is what turned base models into products and remains the highest-leverage lever available today — a good base model is not enough, and RLHF fine-tuning on expert preference is the current gold standard for domain edge (accepting that each new base model forces a redo).<br>*[Scaling to Long Horizons](../talks/scaling-to-long-horizons.md), [Trading Desks to Clinical Trials: Parallels in Applied Vertical AI](../talks/trading-desks-to-clinical-trials-parallels-in-applied-vertical-ai.md)* | RLHF is an unexpected detour that is excellent at pleasing a human in the loop and structurally bad at automation; its overconfidence and hallucination are by construction, so the next paradigm is neither RLHF nor RLVR but optimization for calibrated decision-making with a different API shape.<br>*[What's Next After RLHF?](../talks/whats-next-after-rlhf.md)* |
 
-*Why it matters: It decides whether the money goes into better environments, reward decomposition, and RL infrastructure, or into a different training objective entirely — and whether today's preference-trained models can ever be trusted for unattended, stakes-bearing automation.*
+*Why it matters: It decides whether a team's post-training budget goes into collecting more preference data against the existing objective, or into building calibration/decision-quality targets that the current reward-model tooling does not express.*
 
-### Can subjective quality be decomposed into something verifiable enough to train against, or does the field's push toward verifiability define away the tasks that matter?
-
-| Position A | Position B |
-|---|---|
-| Capability follows measurability: decompose the fuzzy target (brand into codified elements; video into narrative, pacing, physics, character consistency; computer tasks into code) until it becomes gradeable, and most of the domain is solved.<br>*[Ending AI Slop](../talks/ending-ai-slop.md), [Evaling Video Slop](../talks/evaling-video-slop.md), [From RL to IRL](../talks/from-rl-to-irl.md)* | The industry is already over-indexed on procedural, one-or-two-valid-answer tasks; the real gap is open-ended work under uncertainty with multiple players and differing goals, which current benchmarks and decomposition do not capture — all frontier models lost money on a one-year real-world betting benchmark.<br>*[Scaling to Long Horizons](../talks/scaling-to-long-horizons.md), [What's Next After RLHF?](../talks/whats-next-after-rlhf.md)* |
-
-*Why it matters: If decomposition works, preference data is an engineering problem and taste vendors win; if not, the field is optimizing a proxy that gets more polished while the economically valuable open-ended tasks stay untouched.*
-
-### At scale, should the preference judge be a distilled model in the generation loop, or expensive human experts on a small high-taste dataset?
+### When prompted LLM judges fail on subjective quality, do you replace them with a trained judge or with human experts?
 
 | Position A | Position B |
 |---|---|
-| Distill the committee of frontier judges into one small fast VLM (~3s per 15-second video), accept that the bigger model is more accurate but too slow to be worth it, and put eval inside the generation loop; the model already contains the latent preferences, you just have to elicit them.<br>*[Evaling Video Slop](../talks/evaling-video-slop.md), [Persona Engineering: A Field Guide to AI Synthetic Personas](../talks/persona-engineering-a-field-guide-to-ai-synthetic-personas.md)* | In subjective domains a small volume of expensive expert data beats large volumes of noisy data, human judgment substantially outperforms any LLM judge, and contextual/time-dependent/preference-dependent problems should be routed to humans rather than into a programmatic reward — preference remains an open research problem no lab has solved.<br>*[Ending AI Slop](../talks/ending-ai-slop.md), [Enterprise Agents Have a Structure Problem](../talks/enterprise-agents-have-a-structure-problem.md)* |
+| Train the judge: collect human pairwise comparisons across randomized axes and distill a committee of experts into one small fast model, or fine-tune on human survey data — alignment then generalizes even to groups never seen in training.<br>*[Evaling Video Slop](../talks/evaling-video-slop.md), [Persona Engineering: A Field Guide to AI Synthetic Personas](../talks/persona-engineering-a-field-guide-to-ai-synthetic-personas.md)* | Keep the human as the grader: human judgment is still at a much higher level than any LLM judge for subjective work, models cannot verify themselves where there are no answer keys, and rubrics-as-rewards degenerates into an echo chamber where the AI grades itself into agreement.<br>*[Ending AI Slop](../talks/ending-ai-slop.md), [Trading Desks to Clinical Trials: Parallels in Applied Vertical AI](../talks/trading-desks-to-clinical-trials-parallels-in-applied-vertical-ai.md)* |
 
-*Why it matters: This is a direct budget fork: train and serve a judge model, or fund a standing panel of domain experts. The video team's own answer is unit economics — below thousands of items per day the expensive human/committee path is the correct one.*
+*Why it matters: One path amortizes expert cost into a model that can run inside the generation loop; the other treats expert time as a permanent recurring cost and the proprietary dataset it produces as the moat.*
+
+### Should conflicting human preferences be aggregated into one reward signal or preserved as a distribution?
+
+| Position A | Position B |
+|---|---|
+| Preserve pluralism: attach preferences to per-rater vectors, route requests to the metric definition the specific team or individual uses, and measure distribution shape rather than only correlation to the average — models that match the mean routinely muddle the variation.<br>*[Ending AI Slop](../talks/ending-ai-slop.md), [Enterprise Agents Have a Structure Problem](../talks/enterprise-agents-have-a-structure-problem.md), [Persona Engineering: A Field Guide to AI Synthetic Personas](../talks/persona-engineering-a-field-guide-to-ai-synthetic-personas.md)* | Aggregate: on well-posed relative comparisons the grand majority of humans do agree, so a committee of expert annotators can be collapsed into a single distilled scalar judge that scores every user's output.<br>*[Evaling Video Slop](../talks/evaling-video-slop.md)* |
+
+*Why it matters: Aggregation is what makes a single cheap judge (and a single reward model) possible; preserving the distribution requires identity-conditioned routing and per-rater modeling that essentially no production stack has today.*
+
+### Is keeping a human in the loop a temporary scaffold or the correct end state for high-stakes domains?
+
+| Position A | Position B |
+|---|---|
+| Temporary: guardrails and harness scaffolding should get progressively thinner as model capability improves, and the stack should be redesigned for reliability and full automation rather than for assisting a human.<br>*[From RL to IRL](../talks/from-rl-to-irl.md), [What's Next After RLHF?](../talks/whats-next-after-rlhf.md)* | Not yet reachable: in finance and pharma the right model is AI-in-the-loop, where the expert makes every decision and AI only compresses their time, because current models are text statistics rather than world models and cannot do the causal reasoning these decisions require.<br>*[Trading Desks to Clinical Trials: Parallels in Applied Vertical AI](../talks/trading-desks-to-clinical-trials-parallels-in-applied-vertical-ai.md)* |
+
+*Why it matters: It determines whether preference data is collected to eventually remove the expert or to permanently accelerate them — which changes what you reward (task outcome vs. expert-time saved) and what the product is allowed to decide.*
 
 ## Practical Guidance
 
 **Do:**
 
-- Train preference judges on A-vs-B pairs rather than absolute 1–10 scores, because raters agree on comparisons and do not agree on absolute scales
-- Score the specific axes you care about (narrative, pacing, physics, character consistency; codified brand elements) instead of asking a judge for a holistic verdict and expecting the axes to emerge
-- Grade outputs against the decomposed ground truth rather than against the original reference artifact, so novel-but-valid solutions are not penalized
-- Keep rater identity attached to each label as a per-rater preference vector instead of averaging across unmodeled raters
-- Tie expert commentary to the specific code component or element that produced the visual, since models struggle to connect a rendered element to its source
-- Estimate the accuracy ceiling empirically: split human ground truth in half, treat one half as 'synthetic', correlate, and repeat thousands of times — human self-consistency was measured at ~80%
-- Evaluate with both a correlation metric and a distribution-shape metric, because a model can match the average while flattening the variance
-- Elicit free-text responses and map them to a scale via semantic similarity to human-written anchors instead of prompting for a naive 1–5 rating
-- Distill the judge committee into a small fast model and run it inside the generation loop — but only once volume reaches thousands to tens of thousands of items per day
-- Log correction events (when a user overrides or fixes an agent answer) and feed them back into the agent's context as a standing feedback loop
-- Treat rater disagreement diagnostically: disagreement on objective attributes means bad data, disagreement on style or aesthetics is the signal you are trying to capture
-- Penalize dangerous intermediate actions, not just wrong outcomes — a trajectory can reach 'done' having done something unintended
-- Reward handing control back to the user when confidence about risk, reversibility, or authorization is low, rather than treating full autonomy as the objective
-- Surface infrastructure errors to the model so recovery becomes a native learned action, instead of resetting the environment
-- Keep RL tasks inside a difficulty window — too easy or too hard produces almost no training signal
+- Train preference judges on pairwise A-vs-B comparisons rather than absolute 1-10 scores, since humans do not agree on absolute scales but do agree on comparisons.
+- Score the specific axes you care about (narrative, pacing, physics, character consistency) explicitly — do not expect them to emerge from a holistic quality score.
+- Manufacture 'bad' examples inside your own generation pipeline so the judge learns quality rather than becoming an AI-vs-human detector; match encoding and annotation methodology on both sides of every pair.
+- Decompose a subjective target (e.g. 'on brand') into codified elements first, then grade outputs against that decomposed ground truth rather than against the original reference artifact, so novel-but-valid solutions are not penalized.
+- Keep per-rater preference vectors instead of one averaged label, and route requests to the metric or definition belonging to the requesting individual or team.
+- Treat human annotation as continuous recalibration — recurring sessions sampled across randomized axes — not a one-time labeling pass.
+- For synthetic-persona work, elicit free text and map it to the scale via semantic similarity to human-written anchors, and validate with both a correlation metric and a distribution-shape metric against known human ground truth.
+- Run error analysis over observability logs before any weight-touching technique; it is the cheapest and highest-ROI improvement available.
+- Hire the domain expert before you start iterating, and involve them across query scoping, source curation, decomposition, and final judgment.
+- Keep RL tasks inside a difficulty window — too easy or too hard yields no training signal.
+- Surface infrastructure errors to the model instead of resetting the environment, so recovery becomes a native learned action.
+- Penalize dangerous or unintended intermediate actions, not just the final outcome — a trajectory can reach 'done' having sent a resignation letter to the CEO.
+- For long-horizon RL, prefer value models over GRPO (lower variance, trajectory-level with compaction, bootstrapping), and cap off-policy staleness at roughly eight steps in pipeline RL.
+- Log every user correction event and feed it back into the agent's context as a first-class loop.
+- Distill a judge committee into a small model only when volume justifies it — at one or two videos a day the expensive committee is fine; at thousands per day the unit economics flip.
 
 **Avoid:**
 
-- Averaging preference labels across raters whose identities you have not modeled — opposing valid preferences wash out to 50/50 noise
-- Building pairs where human-made is labeled good and AI-made is labeled bad; without matched encoding and annotation you train an AI detector, not a quality detector
-- Prompting an LLM as a judge for a holistic property like 'is this on brand' — it reward-hacks; codify the constituent elements first
-- Reaching for a bigger model, a longer context window, or more knowledge bases when the actual failure is unresolved preference and unranked sources of truth
-- Running more synthetic samples on unchanged inputs to boost statistical significance — it sharpens your estimate of the model, not the accuracy of the forecast
-- Piling on demographic detail assuming richer conditioning is closer to reality; past a point it amplifies model bias and moves results further from the humans
-- Relying on hand-maintained .md files, skills, or agent memory to hold preference — memory stores the preference but cannot tell which definition applies when
-- Giving agents tools that can search prior trajectories or archives, which teaches retrieval of previous answers in place of reasoning
-- Using preference-trained models for decisions with stakes to the business where the human has been removed from the loop — the overconfidence is by design
-- Treating human annotation as a one-time labeling pass rather than a recurring session that recalibrates the judges
+- Averaging preference labels across raters you have not modeled — it washes out into noise, and in LLM personas averaging two orderings collapsed to 50/50.
+- Prompting an LLM judge to assess holistic quality or brand adherence directly; it invites reward hacking and 'vibe' scoring.
+- Rubrics-as-rewards without human grounding — it becomes an echo chamber where the AI grades itself into agreement.
+- Reaching for a bigger model, a longer context window, or more knowledge bases when the real defect is that no source of truth is ranked.
+- Adding demographic detail to a persona on the assumption that more detail is more accurate — it can amplify model bias and move results further from reality.
+- Re-running synthetic samples on unchanged inputs to boost statistical significance; it sharpens your estimate of the model, not the forecast.
+- Outcome-only reward on computer-use trajectories.
+- Giving agents tools that search prior trajectories or archives — it teaches retrieval of previous answers instead of reasoning.
+- Hand-maintained .md files and skills as the context substrate; enterprise definitions and KPIs change faster than they can be updated.
+- Assuming large volumes of cheap labels beat a small volume of expensive high-taste data in subjective domains.
+- Using RLHF-trained models for decisions with real stakes to your business, on the assumption that confident output means correct output.
 
 ## Notable Outliers
 
-- Hallucination is not a bug to be patched but an intrinsic consequence of optimizing human preference — a mode-dropping asymmetry in the reward model directly analogous to GANs, which is why wrong models still look right. ([What's Next After RLHF?](../talks/whats-next-after-rlhf.md), [14:35](https://www.youtube.com/watch?v=cJ0EOzey--o&t=875s))
-- There is a hard ceiling on preference prediction set by human self-inconsistency: one study found humans were only about 80% consistent with themselves. ([Persona Engineering: A Field Guide to AI Synthetic Personas](../talks/persona-engineering-a-field-guide-to-ai-synthetic-personas.md), [17:03](https://www.youtube.com/watch?v=YnNF55QV0zs&t=1023s))
-- Adding more demographic detail to a persona construction amplified the model's bias and pushed results further from real human data, inverting the usual 'more grounding is better' intuition. ([Persona Engineering: A Field Guide to AI Synthetic Personas](../talks/persona-engineering-a-field-guide-to-ai-synthetic-personas.md), [11:17](https://www.youtube.com/watch?v=YnNF55QV0zs&t=677s))
-- Constructing preference pairs as human-generated=good versus AI-generated=bad overfits the judge into an AI detector rather than a quality detector. ([Evaling Video Slop](../talks/evaling-video-slop.md), [11:58](https://www.youtube.com/watch?v=b_PmGocP4rc&t=718s))
-- For long-horizon RL, value models beat GRPO despite the added complexity and bias — they cut gradient variance, work at trajectory level with compaction, and permit bootstrapping; off-policy staleness up to about eight steps is tolerable. ([Scaling to Long Horizons](../talks/scaling-to-long-horizons.md), [11:31](https://www.youtube.com/watch?v=2bvtay8wGYI&t=691s))
+- Expert disagreement is diagnostic, not uniformly bad: disagreement on objective attributes like alignment signals bad data, while disagreement on style or aesthetics is valuable signal about genuine preference variation. ([Ending AI Slop](../talks/ending-ai-slop.md), [14:43](https://www.youtube.com/watch?v=lCBf9slCanI&t=883s))
+- There is a hard ceiling on preference-alignment accuracy set by human self-inconsistency — one study measured humans as only about 80% consistent with themselves. ([Persona Engineering: A Field Guide to AI Synthetic Personas](../talks/persona-engineering-a-field-guide-to-ai-synthetic-personas.md), [17:03](https://www.youtube.com/watch?v=YnNF55QV0zs&t=1023s))
+- Roughly 100% of LLMs in usage today are RLHF-trained, and Claude Code is not a new era — it is still part of the same RLHF assistance era. ([What's Next After RLHF?](../talks/whats-next-after-rlhf.md), [8:51](https://www.youtube.com/watch?v=cJ0EOzey--o&t=531s))
+- The specificity of an expert's language is a measurable proxy for the value of that data point, and tying expert commentary to the exact code component producing a visual materially reduces label noise. ([Ending AI Slop](../talks/ending-ai-slop.md), [12:53](https://www.youtube.com/watch?v=lCBf9slCanI&t=773s))
+- Given $100K each to trade Premier League matches over a one-year horizon, every frontier model lost money. ([Scaling to Long Horizons](../talks/scaling-to-long-horizons.md), [13:05](https://www.youtube.com/watch?v=2bvtay8wGYI&t=785s))
+- Sutton's bitter lesson holds in games but not in reality — in reality data beats compute and choosing the right task beats data. ([What's Next After RLHF?](../talks/whats-next-after-rlhf.md), [15:17](https://www.youtube.com/watch?v=cJ0EOzey--o&t=917s))
+- In creative and design domains the most likely output is by definition not the optimal one, so a reward that pulls toward the mode is producing slop by construction. ([Ending AI Slop](../talks/ending-ai-slop.md), [8:03](https://www.youtube.com/watch?v=lCBf9slCanI&t=483s))
 
 ## All Talks
 
@@ -149,10 +160,12 @@ Supporting talks: [Ending AI Slop](../talks/ending-ai-slop.md), [Evaling Video S
 - [From RL to IRL](../talks/from-rl-to-irl.md)
 - [Persona Engineering: A Field Guide to AI Synthetic Personas](../talks/persona-engineering-a-field-guide-to-ai-synthetic-personas.md)
 - [Scaling to Long Horizons](../talks/scaling-to-long-horizons.md)
+- [Trading Desks to Clinical Trials: Parallels in Applied Vertical AI](../talks/trading-desks-to-clinical-trials-parallels-in-applied-vertical-ai.md)
 - [What's Next After RLHF?](../talks/whats-next-after-rlhf.md)
 
 ## Speakers
 
+- [Ayush Bhardwaj](../speakers/ayush-bhardwaj.md)
 - [Chengxi Taylor](../speakers/chengxi-taylor.md)
 - [Diogo Almeida](../speakers/diogo-almeida.md)
 - [Gaurav Mishra](../speakers/gaurav-mishra.md)

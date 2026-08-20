@@ -1,6 +1,6 @@
 ---
 name: event-wiki
-description: Answer questions about AI conference/event talks, sessions, speakers, companies, and concepts from this repo's event-indexed wikis — "what did practitioners say/disagree about on X", "what does <event> say about Y", "show me quotes from <speaker>", "which concepts are contested/settled/frontier", "who talked about Z", "what's the state of practice on...". Currently indexed events: AI Engineer World's Fair 2026 (AIEWF 2026, 246 talks) and Y Combinator Startup School 2026 (14 talks). Use whenever a question is about content from an indexed event. Do not use for general AI/ML knowledge with no event tie, or for an event/year not in the indexed list (say so rather than answering from general knowledge) — list events/ at runtime to check what's actually indexed rather than trusting this description as the corpus ages.
+description: Answer questions about AI conference/event talks, sessions, speakers, companies, and concepts from this repo's event-indexed wikis — "what did practitioners say/disagree about on X", "what does <event> say about Y", "show me quotes from <speaker>", "which concepts are contested/settled/frontier", "who talked about Z", "what's the state of practice on...". Currently indexed events: AI Engineer World's Fair 2026 (AIEWF 2026, 256 talks) and Y Combinator Startup School 2026 (14 talks). Use whenever a question is about content from an indexed event. Do not use for general AI/ML knowledge with no event tie, or for an event/year not in the indexed list (say so rather than answering from general knowledge) — list events/ at runtime to check what's actually indexed rather than trusting this description as the corpus ages.
 ---
 
 # Event Wiki
@@ -13,7 +13,7 @@ rather than assuming only the event named in this file exists.
 
 Currently indexed:
 
-- **AI Engineer World's Fair 2026** (`events/aiewf-2026/`) — 246 published talks
+- **AI Engineer World's Fair 2026** (`events/aiewf-2026/`) — 256 published talks
   (June 29 - July 2, 2026, Moscone West, SF).
 - **Y Combinator Startup School 2026** (`events/yc-startup-school-2026/`) — 14 published
   talks and firesides (July 25-26, 2026, Chase Center, SF). A snapshot: YC was still
@@ -43,7 +43,7 @@ Per event (substitute the event's own slug, e.g. `aiewf-2026`):
 
 - `events/<event-slug>/wiki/talks/<slug>.md` — one per talk: summary, key points,
   notable quotes (timestamped source-video links), concepts, speakers,
-  track/org/day/room/duration. (246 for aiewf-2026, 14 for yc-startup-school-2026.)
+  track/org/day/room/duration. (256 for aiewf-2026, 14 for yc-startup-school-2026.)
 - `events/<event-slug>/wiki/concepts/<slug>.md` — one per concept: definition,
   **state of practice**, **consensus** claims (with talk-support counts + quotes),
   **disagreements** (Position A vs B, each with its own supporting talks), **do/avoid
@@ -51,7 +51,7 @@ Per event (substitute the event's own slug, e.g. `aiewf-2026`):
   yc-startup-school-2026 — of which 18 carry a synthesis; the rest are definition +
   talk list only, which the page states explicitly.)
 - `events/<event-slug>/wiki/speakers/<slug>.md` — one per speaker: role, company, bio,
-  talks, concepts, quotes. (264 for aiewf-2026, 14 for yc-startup-school-2026.)
+  talks, concepts, quotes. (276 for aiewf-2026, 14 for yc-startup-school-2026.)
 - `events/<event-slug>/data/index.json` — one record per talk with `slug`, `title`,
   `speakers`, `org`, `track`, `day`, `room`, `duration_sec`, `word_count`, `url`,
   `video_id`, `topics`, `playlists` — use for metadata lookups/filters that don't need

@@ -1,17 +1,17 @@
 {
   "is_error": false,
-  "duration_api_ms": 82161,
+  "duration_api_ms": 131470,
   "num_turns": 1,
   "stop_reason": "end_turn",
-  "session_id": "1ba12100-872a-4b84-88e3-43d26d7ea0b9",
-  "total_cost_usd": 0.45825950000000004,
+  "session_id": "82b235c3-f55d-4507-a4bc-ed0347d43fc6",
+  "total_cost_usd": 0.6572395,
   "usage": {
     "input_tokens": 2,
-    "cache_creation_input_tokens": 26610,
-    "cache_read_input_tokens": 12099,
-    "output_tokens": 6742,
+    "cache_creation_input_tokens": 35725,
+    "cache_read_input_tokens": 8113,
+    "output_tokens": 10995,
     "output_tokens_details": {
-      "thinking_tokens": 2262
+      "thinking_tokens": 6073
     },
     "server_tool_use": {
       "web_search_requests": 0,
@@ -19,19 +19,19 @@
     },
     "service_tier": "standard",
     "cache_creation": {
-      "ephemeral_1h_input_tokens": 26610,
+      "ephemeral_1h_input_tokens": 35725,
       "ephemeral_5m_input_tokens": 0
     },
     "inference_geo": "not_available",
     "iterations": [
       {
         "input_tokens": 2,
-        "output_tokens": 6742,
-        "cache_read_input_tokens": 12099,
-        "cache_creation_input_tokens": 26610,
+        "output_tokens": 10995,
+        "cache_read_input_tokens": 8113,
+        "cache_creation_input_tokens": 35725,
         "cache_creation": {
           "ephemeral_5m_input_tokens": 0,
-          "ephemeral_1h_input_tokens": 26610
+          "ephemeral_1h_input_tokens": 35725
         },
         "type": "message"
       }
@@ -40,12 +40,12 @@
   },
   "modelUsage": {
     "claude-haiku-4-5-20251001": {
-      "inputTokens": 17490,
-      "outputTokens": 12,
+      "inputTokens": 20998,
+      "outputTokens": 10,
       "cacheReadInputTokens": 0,
       "cacheCreationInputTokens": 0,
       "webSearchRequests": 0,
-      "costUSD": 0.01755,
+      "costUSD": 0.021048,
       "contextWindow": 200000,
       "maxOutputTokens": 32000,
       "canonicalModel": "claude-haiku-4-5",
@@ -53,11 +53,11 @@
     },
     "claude-opus-5": {
       "inputTokens": 2,
-      "outputTokens": 6742,
-      "cacheReadInputTokens": 12099,
-      "cacheCreationInputTokens": 26610,
+      "outputTokens": 10995,
+      "cacheReadInputTokens": 8113,
+      "cacheCreationInputTokens": 35725,
       "webSearchRequests": 0,
-      "costUSD": 0.44070950000000003,
+      "costUSD": 0.6361915,
       "contextWindow": 1000000,
       "maxOutputTokens": 64000,
       "canonicalModel": "claude-opus-5",
@@ -70,31 +70,32 @@
   "fast_mode_disabled_reason": "sdk_opt_in_required",
   "subtype": "success",
   "api_error_status": null,
-  "result": "{\"concept\":\"voice agents\",\"state_of_practice\":\"Voice agent work at this conference was framed almost entirely as a latency-engineering and control-flow problem rather than a model-quality problem. The shared numbers are concrete: humans swap turns in ~200ms, the experience degrades around 800ms, users abandon at 1.5s, and the practical target for first audio is ~950ms \u2014 while a standard cloud cascaded pipeline (VAD \u2192 STT \u2192 LLM \u2192 TTS) lands at 1,100\u20131,300ms with LLM time-to-first-byte (500\u2013650ms) as the dominant term and STT+LLM eating roughly two-thirds of the budget. That budget rules out frontier reasoning models, so teams converged on Haiku-class or fine-tuned tiny models with the state machine, step advancement, and completion judgments lifted out of the model and into application code; scaffolding is treated as a one-time cost in code versus reasoning as a per-turn cost. Turn detection is the least settled layer: pure VAD cannot distinguish a breath from a finished thought, STT-provider endpointing decides better but destroys observability, and the best deployable open model (Smart Turn v3.2) runs at 58.9% recall / 68.4% precision with a VAD timer underneath as a safety net. P95 matters more than P50 because one slow turn kills a conversation, and instruction following visibly decays after 15\u201320 turns. A separate faction argues the whole turn-based submit-and-wait protocol is the actual defect \u2014 that transcribed speech is still batch, and the fix is either routing output to visuals (a ~1s forgiving envelope) or building systems that follow a conversation continuously and choose their own moment to speak.\",\"consensus\":[{\"claim\":\"Voice agents live inside a sub-second latency budget measured against human turn-taking (~200ms), with perceptible degradation around 800ms and user abandonment by ~1.5s.\",\"support_count\":3,\"supporting_talks\":[\"voice-agents-that-handle-interrupts\",\"your-voice-agent-doesnt-need-a-frontier-model\",\"voice-in-visuals-out-the-agony-and-the-ecstasy\"],\"evidence_quote\":\"because 200 milliseconds is how fast humans switch turns with each other in a conversation. And the implications are pretty brutal because at 800 milliseconds, things start to feel off. While at 1.5 seconds, your user just hang up on you\",\"evidence_talk\":\"voice-agents-that-handle-interrupts\",\"evidence_timestamp_sec\":138},{\"claim\":\"Frontier reasoning models are the wrong choice for the real-time speaking layer; a small fast model (Haiku-class or a fine-tuned tiny model) is correct because reasoning latency costs more than answer quality gains.\",\"support_count\":4,\"supporting_talks\":[\"your-voice-agent-doesnt-need-a-frontier-model\",\"dont-let-the-llm-drive\",\"voice-in-visuals-out-the-agony-and-the-ecstasy\",\"why-large-tiny-lms-agents-on-edgerobotics\"],\"evidence_quote\":\"A frontier model that think for a full second has already lost the room, no matter how good the answer is.\",\"evidence_talk\":\"your-voice-agent-doesnt-need-a-frontier-model\",\"evidence_timestamp_sec\":51},{\"claim\":\"Voice agent quality is determined by the system around the model \u2014 audio pipeline, harness, state machine \u2014 not by the model itself; a perfect model in a bad pipeline still feels broken.\",\"support_count\":3,\"supporting_talks\":[\"voice-agents-that-handle-interrupts\",\"dont-let-the-llm-drive\",\"your-voice-agent-doesnt-need-a-frontier-model\"],\"evidence_quote\":\"These are all audio engineering problems. They are not LLM problems because you can have the perfect model, perfect track but the experience still might feel broken if the turn taking is off.\",\"evidence_talk\":\"voice-agents-that-handle-interrupts\",\"evidence_timestamp_sec\":3},{\"claim\":\"Speech is the highest-bandwidth human input channel \u2014 roughly 3x faster than typing (~200 wpm) \u2014 and should be the default way to get thoughts into an AI system.\",\"support_count\":3,\"supporting_talks\":[\"llm-knowledge-bases-a-practical-guide\",\"full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex\",\"voice-in-visuals-out-the-agony-and-the-ecstasy\"],\"evidence_quote\":\"because you may not be aware, but voice dictation, even though it is pretty awkward to talk into your computer with a bunch of co-workers around, it is the fastest way to get your thoughts onto paper.\",\"evidence_talk\":\"llm-knowledge-bases-a-practical-guide\",\"evidence_timestamp_sec\":166}],\"disagreements\":[{\"question\":\"Should the agent wait for the user's turn to end before running inference, or respond continuously while the user is still speaking?\",\"position_a\":\"Detect end of turn properly and then respond: combine a semantic turn-detection model with a VAD silence timer, tune minimum-silence per domain (~200ms for sales, 1000-1200ms where users need thinking time), and treat endpointing accuracy as the core engineering problem.\",\"position_a_talks\":[\"voice-agents-that-handle-interrupts\"],\"position_b\":\"Endpointing is the wrong frame \u2014 fire inference every 1-2 seconds while the user is still talking, or build a system that continuously follows the conversation and picks its own moment to act, because waiting for silence spends the entire latency budget and the single-slot submit protocol is itself the defect.\",\"position_b_talks\":[\"voice-in-visuals-out-the-agony-and-the-ecstasy\",\"the-prompt-is-still-a-punch-card\",\"perception-agents\"],\"why_it_matters\":\"It decides whether the engineering effort goes into turn-detection models and VAD tuning or into speculative/streaming inference and prefix-cache architecture, and whether P95 latency is a budget to shave or a constraint you design around entirely.\"},{\"question\":\"Is voice-in/voice-out the target experience, or should the response come back as visuals?\",\"position_a\":\"Keep optimizing the voice-to-voice cascaded pipeline; ~755ms is the best measured today, ~500ms is achievable by co-locating models in one GPU cluster, and holding the LLM to sub-700ms TTFT plus a ~950ms first-audio target makes it work.\",\"position_a_talks\":[\"voice-agents-that-handle-interrupts\",\"your-voice-agent-doesnt-need-a-frontier-model\"],\"position_b\":\"Fully conversational voice-out needs 200ms or less end-to-end, which is not attainable; switch to voice-in/visuals-out and inherit the roughly one-second forgiving envelope people grant visual responses, no novel architecture needed.\",\"position_b_talks\":[\"voice-in-visuals-out-the-agony-and-the-ecstasy\",\"the-prompt-is-still-a-punch-card\"],\"why_it_matters\":\"It changes the entire stack: a TTS-terminated audio pipeline with tail-latency engineering versus a rendering surface with a slower budget, and it changes which latency number counts as failure.\"},{\"question\":\"Does using voice as the input channel actually change the interaction model?\",\"position_a\":\"Yes \u2014 dictation is the productivity unlock; speak the messy version of your thinking, capture scrappy unformatted raw material, and let downstream agents structure it.\",\"position_a_talks\":[\"full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex\",\"llm-knowledge-bases-a-practical-guide\",\"voice-in-visuals-out-the-agony-and-the-ecstasy\"],\"position_b\":\"No \u2014 speech gets transcribed into the same one-slot text box and submitted, so voice inherits the batch punch-card protocol unchanged; even speech-to-speech models cannot tell whether words were addressed to them.\",\"position_b_talks\":[\"the-prompt-is-still-a-punch-card\"],\"why_it_matters\":\"If voice is just faster typing, the win is throughput and you ship dictation; if the protocol is the bottleneck, you have to build floor-holding and addressee modeling, which no dictation improvement will give you.\"}],\"practical_guidance\":{\"do\":[\"Budget for first audio within ~950ms and hold the LLM to a sub-700ms time-to-first-token target for voice.\",\"Measure and gate on P95, not P50 \u2014 GPT-4.1 looked fine at P50 but spiked to 1.7s at P95, and Claude 3 exceeded 4 seconds.\",\"Run a semantic turn-detection model (Smart Turn v3.2, BSD-2, 8MB, pip-installable) with a VAD silence timer underneath as a safety net, rather than either alone.\",\"Tune minimum-silence-milliseconds per domain: ~200ms for a sales agent, 1000-1200ms where users need thinking time.\",\"Move state tracking, step advancement, completion judgments, and answer selection into an explicit state machine in application code; let the model only propose and speak.\",\"Pick the fastest model your latency budget allows and spend the remaining engineering effort on scaffolding, since scaffolding is paid once in code and reasoning is paid every turn.\",\"Keep the first ~90% of the context prefix stable across requests to get prefix caching (up to 90% cheaper and faster inference).\",\"Prune context or reset the session after 15-20 turns, when instruction following starts to decay and the model gets verbose or drifts off-script.\",\"Distinguish interruption types \u2014 stop for corrections, keep talking through backchannels like 'yeah' and background noise.\",\"For edge and IoT, fine-tune a tiny (50M-500M) model for voice-to-function-calling on 10k-10M synthetic samples rather than shipping a 2-4B model.\"],\"avoid\":[\"Don't put a frontier reasoning model in the response path \u2014 a full second of thinking has already lost the room.\",\"Don't fix step-skipping and looping with more prompt rules; when reliability approaches a coin flip, take control flow out of the model entirely.\",\"Don't rely on VAD silence alone for endpointing \u2014 a 300-400ms pause looks identical whether the speaker finished, took a breath, or is thinking.\",\"Don't adopt STT-provider turn detection without accepting that you lose all observability into why it fired or why it cut someone off.\",\"Don't assume a small parameter count means low latency \u2014 GPT-5 mini measured 5,000ms typical, 7,000ms P95, sometimes 10,000ms; the serving platform's latency prioritization matters as much as size.\",\"Don't burn the latency budget waiting for a full second of silence before starting inference.\",\"Don't chase unreleased research numbers \u2014 Meta's 87.7% recall turn detector has no released code and cannot be deployed.\",\"Don't trust demos: step-skipping, premature completion, and looping only show up once real users are in the loop.\"]},\"notable_outliers\":[{\"claim\":\"58.9% recall in turn detection is acceptable in production precisely because a VAD timer runs underneath \u2014 a miss costs latency, not correctness.\",\"talk\":\"voice-agents-that-handle-interrupts\",\"timestamp_sec\":632},{\"claim\":\"False interruptions have a measurable business cost: cutting users off incorrectly raises the rate at which they escalate to a human agent.\",\"talk\":\"voice-agents-that-handle-interrupts\",\"timestamp_sec\":1203},{\"claim\":\"The three levels of turn-taking sophistication are configuration choices, not architectural ones \u2014 the Pipecat pipeline code is essentially identical across all three.\",\"talk\":\"voice-agents-that-handle-interrupts\",\"timestamp_sec\":819},{\"claim\":\"Speech-to-speech models today have no concept of who is speaking or whether words were even meant for them; backchanneling is not the same as knowing who holds the floor.\",\"talk\":\"the-prompt-is-still-a-punch-card\",\"timestamp_sec\":711},{\"claim\":\"A tiny model fine-tuned on synthetic data can call 10 different output functions at over 86% reliability from arbitrary text, enough to replace a subscription-gated server-side voice feature with an offline one.\",\"talk\":\"why-large-tiny-lms-agents-on-edgerobotics\",\"timestamp_sec\":884},{\"claim\":\"A strong enough harness lets Haiku 4.5 replace Opus 4.7 at expected performance for live voice tutoring, while saving money, time, and latency.\",\"talk\":\"dont-let-the-llm-drive\",\"timestamp_sec\":147},{\"claim\":\"Sample-based singing synthesis with World pitch shifting is too heavy to run live and must be pre-baked before performance \u2014 real-time audio generation has a much harder compute floor than speech.\",\"talk\":\"while-my-guitar-gently-speaks\",\"timestamp_sec\":963}],\"maturity\":\"consolidating\",\"maturity_rationale\":\"The latency budget, the small-model-plus-scaffolding architecture, and the 'turn taking is audio engineering, not LLM work' framing are stated with matching numbers across independent talks, and the tooling (Pipecat, Silero VAD, Smart Turn) is shared. What remains actively argued is the endpointing layer itself \u2014 whether to wait for a turn to end at all, and whether voice-out is the right output modality \u2014 which several speakers claim is a protocol-level problem no amount of pipeline tuning will fix.\"}",
-  "ttft_ms": 27192,
-  "ttft_stream_ms": 1011,
-  "time_to_request_ms": 42,
+  "result": "{\"concept\":\"voice agents\",\"state_of_practice\":\"Voice is the one agent domain where the budget is measured in milliseconds rather than IQ, and the field has converged on hard numbers: humans switch turns in ~200ms, an agent feels off at 800ms, and users hang up at 1.5s, while the best measured cascaded voice-to-voice pipeline sits at 755ms and a typical cloud-API stack runs 1,100-1,300ms with LLM time-to-first-byte (500-650ms) as the dominant term. The dominant architectural answer is to shrink the model in the hot path and move control flow, state tracking, and answer selection into a state machine or harness \u2014 Haiku-class models with scaffolding are reported to hit ~900ms on questions that take an unscaffolded reasoning model several seconds \u2014 with heavier work handed off asynchronously. Turn taking is treated as an audio-engineering problem rather than an LLM problem: VAD alone cannot distinguish a finished thought from a breath, the best deployable turn-detection model (Smart Turn v3.2) gets only 58.9% recall, and production practice is to stack a turn model over a VAD silence timer so misses cost latency instead of correctness. Failure attribution has shifted off the model generally: Hippocratic reports that most apparent reasoning failures are transcription errors, and feeding conversation context and a constrained domain vocabulary into a decoder-only audio LLM cut medical WER by over 50%. Tail latency, not median, is the operative metric \u2014 one 4-second P95 response destroys a conversation and false interruptions measurably raise human-escalation rates \u2014 and long sessions degrade separately, with instruction following slipping after 15-20 turns. In high-stakes deployments (healthcare voice at 200M interactions and 200K clinical calls), the release process is simulation-plus-evidence rather than A/B tests or canaries, because a spoken utterance cannot be rolled back.\",\"consensus\":[{\"claim\":\"Voice agents must hit a sub-second response budget anchored on human turn-taking (~200ms), with ~800ms as the point the experience degrades and ~1-1.5s as the point users disengage.\",\"support_count\":4,\"supporting_talks\":[\"voice-agents-that-handle-interrupts\",\"your-voice-agent-doesnt-need-a-frontier-model\",\"voice-in-visuals-out-the-agony-and-the-ecstasy\",\"200-million-patient-interactions-later\"],\"evidence_quote\":\"because 200 milliseconds is how fast humans switch turns with each other in a conversation. And the implications are pretty brutal because at 800 milliseconds, things start to feel off. While at 1.5 seconds, your user just hang up on you\",\"evidence_talk\":\"voice-agents-that-handle-interrupts\",\"evidence_timestamp_sec\":138},{\"claim\":\"The model in the real-time speaking path should be the smallest and fastest one the latency budget allows; the thinking, control flow, and state belong in surrounding code, not in a frontier reasoning model.\",\"support_count\":4,\"supporting_talks\":[\"your-voice-agent-doesnt-need-a-frontier-model\",\"dont-let-the-llm-drive\",\"voice-in-visuals-out-the-agony-and-the-ecstasy\",\"why-large-tiny-lms-agents-on-edgerobotics\"],\"evidence_quote\":\"Pick the fastest model that your latency budget allows and then spend the rest of your time actually building the scaffolding.\",\"evidence_talk\":\"your-voice-agent-doesnt-need-a-frontier-model\",\"evidence_timestamp_sec\":241},{\"claim\":\"What breaks a voice agent usually is not the LLM \u2014 it is the audio pipeline, the transcription, or the interaction protocol around the model.\",\"support_count\":3,\"supporting_talks\":[\"voice-agents-that-handle-interrupts\",\"200-million-patient-interactions-later\",\"the-prompt-is-still-a-punch-card\"],\"evidence_quote\":\"These are all audio engineering problems. They are not LLM problems because you can have the perfect model, perfect track but the experience still might feel broken if the turn taking is off.\",\"evidence_talk\":\"voice-agents-that-handle-interrupts\",\"evidence_timestamp_sec\":3},{\"claim\":\"Silence is not a reliable end-of-turn signal, and barge-in handling is a separate engineering problem: VAD sees an identical signal for a breath, a thinking pause, a backchannel, and a completed sentence.\",\"support_count\":4,\"supporting_talks\":[\"voice-agents-that-handle-interrupts\",\"voice-in-visuals-out-the-agony-and-the-ecstasy\",\"the-prompt-is-still-a-punch-card\",\"shipping-ai-to-a-million-patients-without-an-ab-test\"],\"evidence_quote\":\"If someone is pausing for 300 milliseconds or 400 milliseconds, VAD is seeing the same exact thing. It has no idea like whether the person is catching up their breath or whether they've completely finished their thought.\",\"evidence_talk\":\"voice-agents-that-handle-interrupts\",\"evidence_timestamp_sec\":444},{\"claim\":\"Tail latency (P95/P99) is the governing metric for voice, because a single slow turn destroys the conversation and cannot be averaged away by a good median.\",\"support_count\":3,\"supporting_talks\":[\"voice-agents-that-handle-interrupts\",\"voice-in-visuals-out-the-agony-and-the-ecstasy\",\"200-million-patient-interactions-later\"],\"evidence_quote\":\"But what matters more in voice than maybe anywhere else is that the P95 tail. Because GPT-4.1 was great at P50, but it spikes to 1.7 at P95.\",\"evidence_talk\":\"voice-agents-that-handle-interrupts\",\"evidence_timestamp_sec\":1078}],\"disagreements\":[{\"question\":\"When latency engineering buys you headroom, should you spend it on more intelligence or on doing less model work?\",\"position_a\":\"Reinvest recovered latency into more intelligence: never bank the savings, run many specialist models in parallel (31 per conversation) with short-circuiting, treat output quality as a hard constraint and require every speed optimization to be lossless.\",\"position_a_talks\":[\"200-million-patient-interactions-later\"],\"position_b\":\"Spend the headroom on removing model work: strip reasoning, state, and control flow out of the model entirely, then downgrade to a small model (Haiku 4.5 replacing Opus 4.7) because reasoning is a per-turn cost while scaffolding is paid once in code.\",\"position_b_talks\":[\"your-voice-agent-doesnt-need-a-frontier-model\",\"dont-let-the-llm-drive\",\"voice-in-visuals-out-the-agony-and-the-ecstasy\"],\"why_it_matters\":\"It determines whether your engineering budget goes into inference optimization and model redundancy or into harness code and state machines \u2014 and whether a small model is a compromise or the correct default.\"},{\"question\":\"Is fully conversational voice-in/voice-out achievable with today's stacks, or should the output modality change?\",\"position_a\":\"Yes, with engineering: co-locating all models in one GPU cluster reaches ~500ms voice-to-voice, scaffolded small models start speaking in ~900ms, and clinical deployments already run two-way phone conversations at scale.\",\"position_a_talks\":[\"voice-agents-that-handle-interrupts\",\"your-voice-agent-doesnt-need-a-frontier-model\",\"200-million-patient-interactions-later\"],\"position_b\":\"No: true conversational voice-out needs 200ms or less, which nobody hits, so route the response to visuals and exploit the far more forgiving ~1-second visual envelope instead of waiting for novel architectures.\",\"position_b_talks\":[\"voice-in-visuals-out-the-agony-and-the-ecstasy\"],\"why_it_matters\":\"It decides whether you invest in TTS/turn-taking infrastructure and co-located serving, or design a fundamentally different product surface where speech is input-only.\"},{\"question\":\"Does voice input actually change how humans interact with AI, or is it just a faster keyboard?\",\"position_a\":\"Dictation is the correct default input: ~200 words per minute, roughly 3x faster than typing, good enough that you should send the AI a rambling 15-minute voice memo and let it sort out the mess.\",\"position_a_talks\":[\"full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex\",\"llm-knowledge-bases-a-practical-guide\"],\"position_b\":\"Speaking changes nothing structurally: the voice is transcribed into the same single-slot batch submission, the machine still only engages after the human packages a complete turn, and today's speech-to-speech models cannot even tell whether words were addressed to them.\",\"position_b_talks\":[\"the-prompt-is-still-a-punch-card\"],\"why_it_matters\":\"If dictation is sufficient, the work is throughput and transcription quality; if the protocol is the bottleneck, the work is building systems that model who is in the room, who holds the floor, and when to speak.\"}],\"practical_guidance\":{\"do\":[\"Budget voice-to-voice end-to-end and measure P95, not P50; hold the LLM to sub-700ms time-to-first-token and expect STT+LLM to consume about two-thirds of the total budget\",\"Tune minimum-silence per domain rather than using a default: ~200ms for a sales agent, 1000-1200ms where users need thinking time\",\"Run a turn-detection model (Smart Turn v3.2, 8MB, BSD-2, pip-installable) with a VAD silence timer underneath as a safety net, so a missed endpoint costs latency instead of correctness\",\"Discriminate interruption types: stop for corrections, keep speaking through backchannels and background noise, since false interruptions raise human-escalation rates\",\"Fire inference every 1-2 seconds while the user is still speaking instead of blowing the budget waiting for a full second of silence\",\"Keep the first ~90% of the context identical request-to-request to exploit prefix caching (up to 90% cheaper and faster; 96%+ KV cache hit rate and 18x faster prefill in one production stack)\",\"Move step tracking and 'are we done' judgments into a harness or state machine \u2014 the model proposes, the harness validates, advances state, and decides what comes next\",\"Feed conversation context and a constrained domain vocabulary into the ASR (a finite medication list rather than an open one) \u2014 this cut medical word error rate by over 50%\",\"Prune context or reset the session after 15-20 turns, when instruction following starts to drift\",\"Validate the serving platform's latency, not just the model size \u2014 a small model on a non-latency-prioritized platform measured 5,000ms typical and 7,000ms P95\",\"For high-stakes voice, manufacture rare hazard cases in simulation with diverse personas (verbose vs. terse), grade with a validated LLM judge, and deliberately over-call hazards\",\"Size your test set to your error target: ~450 tests to be 99% sure of catching a 1% error rate, ~1,900 to see it ten times\"],\"avoid\":[\"Fixing multi-step unreliability by prompting harder or adding more rules \u2014 when reliability approaches a coin flip, take the control flow out of the model instead\",\"Putting a reasoning frontier model in the real-time path: a model that thinks for a full second has already lost the room regardless of answer quality\",\"Relying on VAD alone for endpointing, or on an STT provider's built-in turn detection without accepting that you lose observability into why it fired\",\"Trusting public audio benchmarks recorded in quiet rooms, or a vendor's model-card score, as evidence your deployment will work\",\"A/B testing or canary-rolling voice agents on patients \u2014 a spoken utterance cannot be rolled back, and randomizing people into a worse variant is unethical and often illegal\",\"Assuming a single model is enough in a safety-critical conversation, and assuming synthetic data alone will get you to the required accuracy\",\"Validating only in demo conditions, which never surface the step-skipping and looping that real users trigger\",\"Treating 80-90% agentic accuracy as adequate for high-stakes voice: at 10,000 calls a day, even 1% error means 100 people get the wrong outcome\"]},\"notable_outliers\":[{\"claim\":\"58.9% recall is a perfectly deployable turn-detection number in production, because the VAD timer underneath means a miss costs only latency; the higher-recall 87.7% research result is useless since no code was released.\",\"talk\":\"voice-agents-that-handle-interrupts\",\"timestamp_sec\":632},{\"claim\":\"On the same harm rubric, the Polaris voice system scores 99.89% no-harm versus about 81% for human clinicians \u2014 not because humans are bad, but because AI systems don't get tired and it runs 30+ supervisor models.\",\"talk\":\"200-million-patient-interactions-later\",\"timestamp_sec\":1070},{\"claim\":\"Speech-to-speech models have no concept of who is speaking or whether the words were even meant for them \u2014 that is a protocol limitation, not a dumb model, and backchanneling noises are not the same as knowing who is in the room.\",\"talk\":\"the-prompt-is-still-a-punch-card\",\"timestamp_sec\":711},{\"claim\":\"The best measured voice-to-voice response for a cascaded pipeline is 755ms, roughly 4x slower than human turn taking, and the three levels of turn-taking sophistication are configuration choices \u2014 the Pipecat pipeline code is essentially identical across all of them.\",\"talk\":\"voice-agents-that-handle-interrupts\",\"timestamp_sec\":187},{\"claim\":\"Voice-to-function-calling is the key interaction pattern for IoT and edge devices because settings menus are unusable for many people, and a fine-tuned tiny model calls 10 functions at over 86% reliability from arbitrary text.\",\"talk\":\"why-large-tiny-lms-agents-on-edgerobotics\",\"timestamp_sec\":929},{\"claim\":\"Energy-gap segmentation cannot slice speech into words because real speech often has no silence between words; even adding sonority-peak syllabification still required manual segment editing.\",\"talk\":\"while-my-guitar-gently-speaks\",\"timestamp_sec\":483}],\"maturity\":\"consolidating\",\"maturity_rationale\":\"The latency numbers (200ms human turn, 800ms degradation, 1.5s abandonment, sub-700ms TTFT) and the architecture (small fast model plus external state machine, turn model stacked over VAD) are converging across independent talks with specific shared figures. What remains argued is the frontier: whether voice-out is the right output modality at all, whether recovered latency should buy intelligence or simplicity, and end-of-turn detection, where the best deployable model still misses four in ten sentence endings.\"}",
+  "ttft_ms": 75989,
+  "ttft_stream_ms": 1592,
+  "time_to_request_ms": 143,
   "type": "result",
-  "duration_ms": 80543,
-  "uuid": "6d62c1ec-f1b9-4001-9c78-0732a8d5b109",
+  "duration_ms": 132415,
+  "uuid": "a663198c-a166-46e9-8b15-17b20a31c1d7",
   "passC": {
     "concept": "voice agents",
-    "state_of_practice": "Voice agent work at this conference was framed almost entirely as a latency-engineering and control-flow problem rather than a model-quality problem. The shared numbers are concrete: humans swap turns in ~200ms, the experience degrades around 800ms, users abandon at 1.5s, and the practical target for first audio is ~950ms \u2014 while a standard cloud cascaded pipeline (VAD \u2192 STT \u2192 LLM \u2192 TTS) lands at 1,100\u20131,300ms with LLM time-to-first-byte (500\u2013650ms) as the dominant term and STT+LLM eating roughly two-thirds of the budget. That budget rules out frontier reasoning models, so teams converged on Haiku-class or fine-tuned tiny models with the state machine, step advancement, and completion judgments lifted out of the model and into application code; scaffolding is treated as a one-time cost in code versus reasoning as a per-turn cost. Turn detection is the least settled layer: pure VAD cannot distinguish a breath from a finished thought, STT-provider endpointing decides better but destroys observability, and the best deployable open model (Smart Turn v3.2) runs at 58.9% recall / 68.4% precision with a VAD timer underneath as a safety net. P95 matters more than P50 because one slow turn kills a conversation, and instruction following visibly decays after 15\u201320 turns. A separate faction argues the whole turn-based submit-and-wait protocol is the actual defect \u2014 that transcribed speech is still batch, and the fix is either routing output to visuals (a ~1s forgiving envelope) or building systems that follow a conversation continuously and choose their own moment to speak.",
+    "state_of_practice": "Voice is the one agent domain where the budget is measured in milliseconds rather than IQ, and the field has converged on hard numbers: humans switch turns in ~200ms, an agent feels off at 800ms, and users hang up at 1.5s, while the best measured cascaded voice-to-voice pipeline sits at 755ms and a typical cloud-API stack runs 1,100-1,300ms with LLM time-to-first-byte (500-650ms) as the dominant term. The dominant architectural answer is to shrink the model in the hot path and move control flow, state tracking, and answer selection into a state machine or harness \u2014 Haiku-class models with scaffolding are reported to hit ~900ms on questions that take an unscaffolded reasoning model several seconds \u2014 with heavier work handed off asynchronously. Turn taking is treated as an audio-engineering problem rather than an LLM problem: VAD alone cannot distinguish a finished thought from a breath, the best deployable turn-detection model (Smart Turn v3.2) gets only 58.9% recall, and production practice is to stack a turn model over a VAD silence timer so misses cost latency instead of correctness. Failure attribution has shifted off the model generally: Hippocratic reports that most apparent reasoning failures are transcription errors, and feeding conversation context and a constrained domain vocabulary into a decoder-only audio LLM cut medical WER by over 50%. Tail latency, not median, is the operative metric \u2014 one 4-second P95 response destroys a conversation and false interruptions measurably raise human-escalation rates \u2014 and long sessions degrade separately, with instruction following slipping after 15-20 turns. In high-stakes deployments (healthcare voice at 200M interactions and 200K clinical calls), the release process is simulation-plus-evidence rather than A/B tests or canaries, because a spoken utterance cannot be rolled back.",
     "consensus": [
       {
-        "claim": "Voice agents live inside a sub-second latency budget measured against human turn-taking (~200ms), with perceptible degradation around 800ms and user abandonment by ~1.5s.",
-        "support_count": 3,
+        "claim": "Voice agents must hit a sub-second response budget anchored on human turn-taking (~200ms), with ~800ms as the point the experience degrades and ~1-1.5s as the point users disengage.",
+        "support_count": 4,
         "supporting_talks": [
           "voice-agents-that-handle-interrupts",
           "your-voice-agent-doesnt-need-a-frontier-model",
-          "voice-in-visuals-out-the-agony-and-the-ecstasy"
+          "voice-in-visuals-out-the-agony-and-the-ecstasy",
+          "200-million-patient-interactions-later"
         ],
         "evidence_quote": "because 200 milliseconds is how fast humans switch turns with each other in a conversation. And the implications are pretty brutal because at 800 milliseconds, things start to feel off. While at 1.5 seconds, your user just hang up on you",
         "evidence_talk": "voice-agents-that-handle-interrupts",
         "evidence_timestamp_sec": 138
       },
       {
-        "claim": "Frontier reasoning models are the wrong choice for the real-time speaking layer; a small fast model (Haiku-class or a fine-tuned tiny model) is correct because reasoning latency costs more than answer quality gains.",
+        "claim": "The model in the real-time speaking path should be the smallest and fastest one the latency budget allows; the thinking, control flow, and state belong in surrounding code, not in a frontier reasoning model.",
         "support_count": 4,
         "supporting_talks": [
           "your-voice-agent-doesnt-need-a-frontier-model",
@@ -102,149 +103,158 @@
           "voice-in-visuals-out-the-agony-and-the-ecstasy",
           "why-large-tiny-lms-agents-on-edgerobotics"
         ],
-        "evidence_quote": "A frontier model that think for a full second has already lost the room, no matter how good the answer is.",
+        "evidence_quote": "Pick the fastest model that your latency budget allows and then spend the rest of your time actually building the scaffolding.",
         "evidence_talk": "your-voice-agent-doesnt-need-a-frontier-model",
-        "evidence_timestamp_sec": 51
+        "evidence_timestamp_sec": 241
       },
       {
-        "claim": "Voice agent quality is determined by the system around the model \u2014 audio pipeline, harness, state machine \u2014 not by the model itself; a perfect model in a bad pipeline still feels broken.",
+        "claim": "What breaks a voice agent usually is not the LLM \u2014 it is the audio pipeline, the transcription, or the interaction protocol around the model.",
         "support_count": 3,
         "supporting_talks": [
           "voice-agents-that-handle-interrupts",
-          "dont-let-the-llm-drive",
-          "your-voice-agent-doesnt-need-a-frontier-model"
+          "200-million-patient-interactions-later",
+          "the-prompt-is-still-a-punch-card"
         ],
         "evidence_quote": "These are all audio engineering problems. They are not LLM problems because you can have the perfect model, perfect track but the experience still might feel broken if the turn taking is off.",
         "evidence_talk": "voice-agents-that-handle-interrupts",
         "evidence_timestamp_sec": 3
       },
       {
-        "claim": "Speech is the highest-bandwidth human input channel \u2014 roughly 3x faster than typing (~200 wpm) \u2014 and should be the default way to get thoughts into an AI system.",
+        "claim": "Silence is not a reliable end-of-turn signal, and barge-in handling is a separate engineering problem: VAD sees an identical signal for a breath, a thinking pause, a backchannel, and a completed sentence.",
+        "support_count": 4,
+        "supporting_talks": [
+          "voice-agents-that-handle-interrupts",
+          "voice-in-visuals-out-the-agony-and-the-ecstasy",
+          "the-prompt-is-still-a-punch-card",
+          "shipping-ai-to-a-million-patients-without-an-ab-test"
+        ],
+        "evidence_quote": "If someone is pausing for 300 milliseconds or 400 milliseconds, VAD is seeing the same exact thing. It has no idea like whether the person is catching up their breath or whether they've completely finished their thought.",
+        "evidence_talk": "voice-agents-that-handle-interrupts",
+        "evidence_timestamp_sec": 444
+      },
+      {
+        "claim": "Tail latency (P95/P99) is the governing metric for voice, because a single slow turn destroys the conversation and cannot be averaged away by a good median.",
         "support_count": 3,
         "supporting_talks": [
-          "llm-knowledge-bases-a-practical-guide",
-          "full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex",
-          "voice-in-visuals-out-the-agony-and-the-ecstasy"
+          "voice-agents-that-handle-interrupts",
+          "voice-in-visuals-out-the-agony-and-the-ecstasy",
+          "200-million-patient-interactions-later"
         ],
-        "evidence_quote": "because you may not be aware, but voice dictation, even though it is pretty awkward to talk into your computer with a bunch of co-workers around, it is the fastest way to get your thoughts onto paper.",
-        "evidence_talk": "llm-knowledge-bases-a-practical-guide",
-        "evidence_timestamp_sec": 166
+        "evidence_quote": "But what matters more in voice than maybe anywhere else is that the P95 tail. Because GPT-4.1 was great at P50, but it spikes to 1.7 at P95.",
+        "evidence_talk": "voice-agents-that-handle-interrupts",
+        "evidence_timestamp_sec": 1078
       }
     ],
     "disagreements": [
       {
-        "question": "Should the agent wait for the user's turn to end before running inference, or respond continuously while the user is still speaking?",
-        "position_a": "Detect end of turn properly and then respond: combine a semantic turn-detection model with a VAD silence timer, tune minimum-silence per domain (~200ms for sales, 1000-1200ms where users need thinking time), and treat endpointing accuracy as the core engineering problem.",
+        "question": "When latency engineering buys you headroom, should you spend it on more intelligence or on doing less model work?",
+        "position_a": "Reinvest recovered latency into more intelligence: never bank the savings, run many specialist models in parallel (31 per conversation) with short-circuiting, treat output quality as a hard constraint and require every speed optimization to be lossless.",
         "position_a_talks": [
-          "voice-agents-that-handle-interrupts"
+          "200-million-patient-interactions-later"
         ],
-        "position_b": "Endpointing is the wrong frame \u2014 fire inference every 1-2 seconds while the user is still talking, or build a system that continuously follows the conversation and picks its own moment to act, because waiting for silence spends the entire latency budget and the single-slot submit protocol is itself the defect.",
+        "position_b": "Spend the headroom on removing model work: strip reasoning, state, and control flow out of the model entirely, then downgrade to a small model (Haiku 4.5 replacing Opus 4.7) because reasoning is a per-turn cost while scaffolding is paid once in code.",
         "position_b_talks": [
-          "voice-in-visuals-out-the-agony-and-the-ecstasy",
-          "the-prompt-is-still-a-punch-card",
-          "perception-agents"
-        ],
-        "why_it_matters": "It decides whether the engineering effort goes into turn-detection models and VAD tuning or into speculative/streaming inference and prefix-cache architecture, and whether P95 latency is a budget to shave or a constraint you design around entirely."
-      },
-      {
-        "question": "Is voice-in/voice-out the target experience, or should the response come back as visuals?",
-        "position_a": "Keep optimizing the voice-to-voice cascaded pipeline; ~755ms is the best measured today, ~500ms is achievable by co-locating models in one GPU cluster, and holding the LLM to sub-700ms TTFT plus a ~950ms first-audio target makes it work.",
-        "position_a_talks": [
-          "voice-agents-that-handle-interrupts",
-          "your-voice-agent-doesnt-need-a-frontier-model"
-        ],
-        "position_b": "Fully conversational voice-out needs 200ms or less end-to-end, which is not attainable; switch to voice-in/visuals-out and inherit the roughly one-second forgiving envelope people grant visual responses, no novel architecture needed.",
-        "position_b_talks": [
-          "voice-in-visuals-out-the-agony-and-the-ecstasy",
-          "the-prompt-is-still-a-punch-card"
-        ],
-        "why_it_matters": "It changes the entire stack: a TTS-terminated audio pipeline with tail-latency engineering versus a rendering surface with a slower budget, and it changes which latency number counts as failure."
-      },
-      {
-        "question": "Does using voice as the input channel actually change the interaction model?",
-        "position_a": "Yes \u2014 dictation is the productivity unlock; speak the messy version of your thinking, capture scrappy unformatted raw material, and let downstream agents structure it.",
-        "position_a_talks": [
-          "full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex",
-          "llm-knowledge-bases-a-practical-guide",
+          "your-voice-agent-doesnt-need-a-frontier-model",
+          "dont-let-the-llm-drive",
           "voice-in-visuals-out-the-agony-and-the-ecstasy"
         ],
-        "position_b": "No \u2014 speech gets transcribed into the same one-slot text box and submitted, so voice inherits the batch punch-card protocol unchanged; even speech-to-speech models cannot tell whether words were addressed to them.",
+        "why_it_matters": "It determines whether your engineering budget goes into inference optimization and model redundancy or into harness code and state machines \u2014 and whether a small model is a compromise or the correct default."
+      },
+      {
+        "question": "Is fully conversational voice-in/voice-out achievable with today's stacks, or should the output modality change?",
+        "position_a": "Yes, with engineering: co-locating all models in one GPU cluster reaches ~500ms voice-to-voice, scaffolded small models start speaking in ~900ms, and clinical deployments already run two-way phone conversations at scale.",
+        "position_a_talks": [
+          "voice-agents-that-handle-interrupts",
+          "your-voice-agent-doesnt-need-a-frontier-model",
+          "200-million-patient-interactions-later"
+        ],
+        "position_b": "No: true conversational voice-out needs 200ms or less, which nobody hits, so route the response to visuals and exploit the far more forgiving ~1-second visual envelope instead of waiting for novel architectures.",
+        "position_b_talks": [
+          "voice-in-visuals-out-the-agony-and-the-ecstasy"
+        ],
+        "why_it_matters": "It decides whether you invest in TTS/turn-taking infrastructure and co-located serving, or design a fundamentally different product surface where speech is input-only."
+      },
+      {
+        "question": "Does voice input actually change how humans interact with AI, or is it just a faster keyboard?",
+        "position_a": "Dictation is the correct default input: ~200 words per minute, roughly 3x faster than typing, good enough that you should send the AI a rambling 15-minute voice memo and let it sort out the mess.",
+        "position_a_talks": [
+          "full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex",
+          "llm-knowledge-bases-a-practical-guide"
+        ],
+        "position_b": "Speaking changes nothing structurally: the voice is transcribed into the same single-slot batch submission, the machine still only engages after the human packages a complete turn, and today's speech-to-speech models cannot even tell whether words were addressed to them.",
         "position_b_talks": [
           "the-prompt-is-still-a-punch-card"
         ],
-        "why_it_matters": "If voice is just faster typing, the win is throughput and you ship dictation; if the protocol is the bottleneck, you have to build floor-holding and addressee modeling, which no dictation improvement will give you."
+        "why_it_matters": "If dictation is sufficient, the work is throughput and transcription quality; if the protocol is the bottleneck, the work is building systems that model who is in the room, who holds the floor, and when to speak."
       }
     ],
     "practical_guidance": {
       "do": [
-        "Budget for first audio within ~950ms and hold the LLM to a sub-700ms time-to-first-token target for voice.",
-        "Measure and gate on P95, not P50 \u2014 GPT-4.1 looked fine at P50 but spiked to 1.7s at P95, and Claude 3 exceeded 4 seconds.",
-        "Run a semantic turn-detection model (Smart Turn v3.2, BSD-2, 8MB, pip-installable) with a VAD silence timer underneath as a safety net, rather than either alone.",
-        "Tune minimum-silence-milliseconds per domain: ~200ms for a sales agent, 1000-1200ms where users need thinking time.",
-        "Move state tracking, step advancement, completion judgments, and answer selection into an explicit state machine in application code; let the model only propose and speak.",
-        "Pick the fastest model your latency budget allows and spend the remaining engineering effort on scaffolding, since scaffolding is paid once in code and reasoning is paid every turn.",
-        "Keep the first ~90% of the context prefix stable across requests to get prefix caching (up to 90% cheaper and faster inference).",
-        "Prune context or reset the session after 15-20 turns, when instruction following starts to decay and the model gets verbose or drifts off-script.",
-        "Distinguish interruption types \u2014 stop for corrections, keep talking through backchannels like 'yeah' and background noise.",
-        "For edge and IoT, fine-tune a tiny (50M-500M) model for voice-to-function-calling on 10k-10M synthetic samples rather than shipping a 2-4B model."
+        "Budget voice-to-voice end-to-end and measure P95, not P50; hold the LLM to sub-700ms time-to-first-token and expect STT+LLM to consume about two-thirds of the total budget",
+        "Tune minimum-silence per domain rather than using a default: ~200ms for a sales agent, 1000-1200ms where users need thinking time",
+        "Run a turn-detection model (Smart Turn v3.2, 8MB, BSD-2, pip-installable) with a VAD silence timer underneath as a safety net, so a missed endpoint costs latency instead of correctness",
+        "Discriminate interruption types: stop for corrections, keep speaking through backchannels and background noise, since false interruptions raise human-escalation rates",
+        "Fire inference every 1-2 seconds while the user is still speaking instead of blowing the budget waiting for a full second of silence",
+        "Keep the first ~90% of the context identical request-to-request to exploit prefix caching (up to 90% cheaper and faster; 96%+ KV cache hit rate and 18x faster prefill in one production stack)",
+        "Move step tracking and 'are we done' judgments into a harness or state machine \u2014 the model proposes, the harness validates, advances state, and decides what comes next",
+        "Feed conversation context and a constrained domain vocabulary into the ASR (a finite medication list rather than an open one) \u2014 this cut medical word error rate by over 50%",
+        "Prune context or reset the session after 15-20 turns, when instruction following starts to drift",
+        "Validate the serving platform's latency, not just the model size \u2014 a small model on a non-latency-prioritized platform measured 5,000ms typical and 7,000ms P95",
+        "For high-stakes voice, manufacture rare hazard cases in simulation with diverse personas (verbose vs. terse), grade with a validated LLM judge, and deliberately over-call hazards",
+        "Size your test set to your error target: ~450 tests to be 99% sure of catching a 1% error rate, ~1,900 to see it ten times"
       ],
       "avoid": [
-        "Don't put a frontier reasoning model in the response path \u2014 a full second of thinking has already lost the room.",
-        "Don't fix step-skipping and looping with more prompt rules; when reliability approaches a coin flip, take control flow out of the model entirely.",
-        "Don't rely on VAD silence alone for endpointing \u2014 a 300-400ms pause looks identical whether the speaker finished, took a breath, or is thinking.",
-        "Don't adopt STT-provider turn detection without accepting that you lose all observability into why it fired or why it cut someone off.",
-        "Don't assume a small parameter count means low latency \u2014 GPT-5 mini measured 5,000ms typical, 7,000ms P95, sometimes 10,000ms; the serving platform's latency prioritization matters as much as size.",
-        "Don't burn the latency budget waiting for a full second of silence before starting inference.",
-        "Don't chase unreleased research numbers \u2014 Meta's 87.7% recall turn detector has no released code and cannot be deployed.",
-        "Don't trust demos: step-skipping, premature completion, and looping only show up once real users are in the loop."
+        "Fixing multi-step unreliability by prompting harder or adding more rules \u2014 when reliability approaches a coin flip, take the control flow out of the model instead",
+        "Putting a reasoning frontier model in the real-time path: a model that thinks for a full second has already lost the room regardless of answer quality",
+        "Relying on VAD alone for endpointing, or on an STT provider's built-in turn detection without accepting that you lose observability into why it fired",
+        "Trusting public audio benchmarks recorded in quiet rooms, or a vendor's model-card score, as evidence your deployment will work",
+        "A/B testing or canary-rolling voice agents on patients \u2014 a spoken utterance cannot be rolled back, and randomizing people into a worse variant is unethical and often illegal",
+        "Assuming a single model is enough in a safety-critical conversation, and assuming synthetic data alone will get you to the required accuracy",
+        "Validating only in demo conditions, which never surface the step-skipping and looping that real users trigger",
+        "Treating 80-90% agentic accuracy as adequate for high-stakes voice: at 10,000 calls a day, even 1% error means 100 people get the wrong outcome"
       ]
     },
     "notable_outliers": [
       {
-        "claim": "58.9% recall in turn detection is acceptable in production precisely because a VAD timer runs underneath \u2014 a miss costs latency, not correctness.",
+        "claim": "58.9% recall is a perfectly deployable turn-detection number in production, because the VAD timer underneath means a miss costs only latency; the higher-recall 87.7% research result is useless since no code was released.",
         "talk": "voice-agents-that-handle-interrupts",
         "timestamp_sec": 632
       },
       {
-        "claim": "False interruptions have a measurable business cost: cutting users off incorrectly raises the rate at which they escalate to a human agent.",
-        "talk": "voice-agents-that-handle-interrupts",
-        "timestamp_sec": 1203
+        "claim": "On the same harm rubric, the Polaris voice system scores 99.89% no-harm versus about 81% for human clinicians \u2014 not because humans are bad, but because AI systems don't get tired and it runs 30+ supervisor models.",
+        "talk": "200-million-patient-interactions-later",
+        "timestamp_sec": 1070
       },
       {
-        "claim": "The three levels of turn-taking sophistication are configuration choices, not architectural ones \u2014 the Pipecat pipeline code is essentially identical across all three.",
-        "talk": "voice-agents-that-handle-interrupts",
-        "timestamp_sec": 819
-      },
-      {
-        "claim": "Speech-to-speech models today have no concept of who is speaking or whether words were even meant for them; backchanneling is not the same as knowing who holds the floor.",
+        "claim": "Speech-to-speech models have no concept of who is speaking or whether the words were even meant for them \u2014 that is a protocol limitation, not a dumb model, and backchanneling noises are not the same as knowing who is in the room.",
         "talk": "the-prompt-is-still-a-punch-card",
         "timestamp_sec": 711
       },
       {
-        "claim": "A tiny model fine-tuned on synthetic data can call 10 different output functions at over 86% reliability from arbitrary text, enough to replace a subscription-gated server-side voice feature with an offline one.",
+        "claim": "The best measured voice-to-voice response for a cascaded pipeline is 755ms, roughly 4x slower than human turn taking, and the three levels of turn-taking sophistication are configuration choices \u2014 the Pipecat pipeline code is essentially identical across all of them.",
+        "talk": "voice-agents-that-handle-interrupts",
+        "timestamp_sec": 187
+      },
+      {
+        "claim": "Voice-to-function-calling is the key interaction pattern for IoT and edge devices because settings menus are unusable for many people, and a fine-tuned tiny model calls 10 functions at over 86% reliability from arbitrary text.",
         "talk": "why-large-tiny-lms-agents-on-edgerobotics",
-        "timestamp_sec": 884
+        "timestamp_sec": 929
       },
       {
-        "claim": "A strong enough harness lets Haiku 4.5 replace Opus 4.7 at expected performance for live voice tutoring, while saving money, time, and latency.",
-        "talk": "dont-let-the-llm-drive",
-        "timestamp_sec": 147
-      },
-      {
-        "claim": "Sample-based singing synthesis with World pitch shifting is too heavy to run live and must be pre-baked before performance \u2014 real-time audio generation has a much harder compute floor than speech.",
+        "claim": "Energy-gap segmentation cannot slice speech into words because real speech often has no silence between words; even adding sonority-peak syllabification still required manual segment editing.",
         "talk": "while-my-guitar-gently-speaks",
-        "timestamp_sec": 963
+        "timestamp_sec": 483
       }
     ],
     "maturity": "consolidating",
-    "maturity_rationale": "The latency budget, the small-model-plus-scaffolding architecture, and the 'turn taking is audio engineering, not LLM work' framing are stated with matching numbers across independent talks, and the tooling (Pipecat, Silero VAD, Smart Turn) is shared. What remains actively argued is the endpointing layer itself \u2014 whether to wait for a turn to end at all, and whether voice-out is the right output modality \u2014 which several speakers claim is a protocol-level problem no amount of pipeline tuning will fix."
+    "maturity_rationale": "The latency numbers (200ms human turn, 800ms degradation, 1.5s abandonment, sub-700ms TTFT) and the architecture (small fast model plus external state machine, turn model stacked over VAD) are converging across independent talks with specific shared figures. What remains argued is the frontier: whether voice-out is the right output modality at all, whether recovered latency should buy intelligence or simplicity, and end-of-turn detection, where the best deployable model still misses four in ten sentence endings."
   },
   "_meta": {
     "concept": "voice agents",
     "slug": "voice-agents",
-    "talk_count": 10,
+    "talk_count": 12,
     "missing_talks": [],
-    "wall_sec": 81.7,
-    "run_at": "2026-08-19T14:30:34Z"
+    "wall_sec": 133.2,
+    "run_at": "2026-08-20T03:45:19Z"
   }
 }

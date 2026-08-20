@@ -4,15 +4,15 @@ type: "concept"
 slug: "latency-budgets"
 tier: "supporting"
 maturity: "consolidating"
-talk_count: 15
-speaker_count: 17
+talk_count: 17
+speaker_count: 20
 ---
 
 # latency budgets
 
 **Maturity: CONSOLIDATING** — Consolidating — converging practice, some open edges
 
-*Supporting concept* &middot; discussed across **15** talk(s) by **17** speaker(s)
+*Supporting concept* &middot; discussed across **17** talk(s) by **20** speaker(s)
 
 **Definition:** Allocating an end-to-end response-time budget across model calls and system hops, including tail latency and time-to-first-token targets.
 
@@ -20,11 +20,21 @@ speaker_count: 17
 
 ## State of Practice
 
-Latency has been promoted from a performance metric to a product constraint: speakers repeatedly framed it as determining which products can exist at all, and they now quote hard human thresholds rather than vague targets — ~200ms for human conversational turn-taking, ~950ms before a voice agent feels dead, ~1s for a visual response, ~4s as the outer limit of believability in chat, and 16ms per frame for an on-device game agent. The budget is decomposed and attributed: a cloud-API voice pipeline totals ~1,100–1,300ms with LLM time-to-first-byte at 500–650ms as the dominant term, STT+LLM eating two-thirds of the budget, and co-locating every model in one GPU cluster is the demonstrated floor at ~500ms voice-to-voice. Everyone who measured argues from the tail rather than the median — P95 for voice, P99 for user-facing search, P99/P999 for anything issuing many S3 round trips — because a single spike is not averageable in an interactive session. Time to first token/first chunk has largely displaced total latency as the headline metric, and the levers people actually pulled were architectural: decoupling the agent loop from the tool-execution container (60% faster TTFT at P50, >90% at P95), retrieving tool schemas just-in-time instead of shipping a 127k-token catalog, prefix caching, and picking the smallest model the budget allows while moving control flow into code. The open arguments are about where the budget is really spent — several teams report inference is no longer the bottleneck at all, with the network, container startup, or the rendering layer dominating — and whether you should engineer latency down or redesign the interaction so users tolerate more of it.
+Latency has stopped being a performance metric and become a product constraint: speakers repeatedly derived their budget from a perceptual threshold (200ms human turn-taking, ~950ms before a voice agent feels dead, ~1s for a visual response, 4s as the outer limit of believability in chat) and then worked backwards to an architecture. The unit of budgeting is the tail, not the mean — P95 for voice, P99 for search, P999 for systems layered on S3 where one logical operation fans out into many ~200ms object reads. Concrete decompositions are now public: a cloud-API voice pipeline runs ~1,100–1,300ms with LLM time-to-first-byte at 500–650ms as the dominant term, and co-locating every model in one GPU cluster takes voice-to-voice to ~500ms. The dominant tactics are subtractive rather than additive — strip reasoning out of the model into a state machine, retrieve 3–5 tool schemas instead of shipping 127k tokens of catalog, decouple the agent loop from container startup (60% faster TTFT at P50, >90% at P95), cache a stable prefix, and short-circuit specialists that decide they have nothing to say. What is still argued is whether the budget is spent on intelligence or bought back from it, and whether time-to-first-chunk plus a legible 'thinking' UI can substitute for actually being fast.
 
 ## Consensus
 
-### Latency is a product constraint that decides what can be built, not a performance metric to optimize later; teams argue from concrete human-perception thresholds (200ms turn-taking, ~1s visual response, ~4s believability, 16ms frame).
+### Budget against the tail (P95/P99, sometimes P999), not the median — a single slow response destroys an interaction and cannot be averaged away.
+
+Support: **6** talk(s)
+
+> "With 14 million users, even 1% is a not small number. It is 140,000 of people hitting slow search at scale. P99 is much more important than P50"
+>
+> — [Serving 2 Million Models Without Melting: Scaling the Hugging Face Hub](../talks/serving-2-million-models-without-melting-scaling-the-hugging-face-hub.md), [4:17](https://www.youtube.com/watch?v=lyL5QhgIOxc&t=257s)
+
+Supporting talks: [Voice Agents That Handle Interrupts](../talks/voice-agents-that-handle-interrupts.md), [Serving 2 Million Models Without Melting: Scaling the Hugging Face Hub](../talks/serving-2-million-models-without-melting-scaling-the-hugging-face-hub.md), [Building Turbopuffer: Gergely Orosz (@pragmaticengineer ) × Simon Eskildsen (CEO)](../talks/building-turbopuffer-gergely-orosz-pragmaticengineer-simon-eskildsen-ceo.md), [Voice In, Visuals Out: The Agony and the Ecstasy](../talks/voice-in-visuals-out-the-agony-and-the-ecstasy.md), [200 Million Patient Interactions Later](../talks/200-million-patient-interactions-later.md), [Evolution of agentic surfaces](../talks/evolution-of-agentic-surfaces.md)
+
+### The latency budget is set by a human perceptual threshold, and it determines which products are buildable at all rather than merely how good an existing product feels.
 
 Support: **6** talk(s)
 
@@ -32,29 +42,9 @@ Support: **6** talk(s)
 >
 > — [How Web Data Infrastructure Powers the Next Generation of AI](../talks/how-web-data-infrastructure-powers-the-next-generation-of-ai.md), [11:16](https://www.youtube.com/watch?v=1UmZHb_E_SM&t=676s)
 
-Supporting talks: [How Web Data Infrastructure Powers the Next Generation of AI](../talks/how-web-data-infrastructure-powers-the-next-generation-of-ai.md), [Voice Agents That Handle Interrupts](../talks/voice-agents-that-handle-interrupts.md), [Voice In, Visuals Out: The Agony and the Ecstasy](../talks/voice-in-visuals-out-the-agony-and-the-ecstasy.md), [Your Voice Agent Doesn't Need a Frontier Model](../talks/your-voice-agent-doesnt-need-a-frontier-model.md), [Frontier results, on device](../talks/frontier-results-on-device.md), [The Next Medium: Why Real-Time Interactive Video Changes Everything](../talks/the-next-medium-why-real-time-interactive-video-changes-everything.md)
+Supporting talks: [Voice Agents That Handle Interrupts](../talks/voice-agents-that-handle-interrupts.md), [Your Voice Agent Doesn't Need a Frontier Model](../talks/your-voice-agent-doesnt-need-a-frontier-model.md), [Voice In, Visuals Out: The Agony and the Ecstasy](../talks/voice-in-visuals-out-the-agony-and-the-ecstasy.md), [Frontier results, on device](../talks/frontier-results-on-device.md), [How Web Data Infrastructure Powers the Next Generation of AI](../talks/how-web-data-infrastructure-powers-the-next-generation-of-ai.md), [Agent Output Is Not UX: Rendering Layer Your LLM Pipeline Is Missing](../talks/agent-output-is-not-ux-rendering-layer-your-llm-pipeline-is-missing.md)
 
-### Design and report against the tail (P95/P99/P999), not the median, because one slow response in an interactive session cannot be averaged away.
-
-Support: **4** talk(s)
-
-> "With 14 million users, even 1% is a not small number. It is 140,000 of people hitting slow search at scale. P99 is much more important than P50"
->
-> — [Serving 2 Million Models Without Melting: Scaling the Hugging Face Hub](../talks/serving-2-million-models-without-melting-scaling-the-hugging-face-hub.md), [4:17](https://www.youtube.com/watch?v=lyL5QhgIOxc&t=257s)
-
-Supporting talks: [Voice Agents That Handle Interrupts](../talks/voice-agents-that-handle-interrupts.md), [Serving 2 Million Models Without Melting: Scaling the Hugging Face Hub](../talks/serving-2-million-models-without-melting-scaling-the-hugging-face-hub.md), [Building Turbopuffer: Gergely Orosz (@pragmaticengineer ) × Simon Eskildsen (CEO)](../talks/building-turbopuffer-gergely-orosz-pragmaticengineer-simon-eskildsen-ceo.md), [Voice In, Visuals Out: The Agony and the Ecstasy](../talks/voice-in-visuals-out-the-agony-and-the-ecstasy.md)
-
-### Time to first token / first chunk, not total response time, is the metric to budget against for AI features.
-
-Support: **4** talk(s)
-
-> "you stop chasing the total latency, which we have done for over a decade. You start chasing time to first chunk."
->
-> — [Agent Output Is Not UX: Rendering Layer Your LLM Pipeline Is Missing](../talks/agent-output-is-not-ux-rendering-layer-your-llm-pipeline-is-missing.md), [9:40](https://www.youtube.com/watch?v=maTp79FD9gI&t=580s)
-
-Supporting talks: [Agent Output Is Not UX: Rendering Layer Your LLM Pipeline Is Missing](../talks/agent-output-is-not-ux-rendering-layer-your-llm-pipeline-is-missing.md), [Evolution of agentic surfaces](../talks/evolution-of-agentic-surfaces.md), [The 100-Tool Agent Is a Trap](../talks/the-100-tool-agent-is-a-trap.md), [Voice Agents That Handle Interrupts](../talks/voice-agents-that-handle-interrupts.md)
-
-### Select the fastest/smallest model the latency budget permits and buy back quality with scaffolding, evals, and post-processing — frontier reasoning models are the wrong default on an interactive path.
+### For real-time surfaces, select the fastest model that clears your quality bar and move control flow, state, and reasoning into code — model reasoning is a per-turn cost, scaffolding is paid once.
 
 Support: **4** talk(s)
 
@@ -62,108 +52,110 @@ Support: **4** talk(s)
 >
 > — [Your Voice Agent Doesn't Need a Frontier Model](../talks/your-voice-agent-doesnt-need-a-frontier-model.md), [4:01](https://www.youtube.com/watch?v=fnLBmfsI_Fg&t=241s)
 
-Supporting talks: [Your Voice Agent Doesn't Need a Frontier Model](../talks/your-voice-agent-doesnt-need-a-frontier-model.md), [Frontier results, on device](../talks/frontier-results-on-device.md), [Voice In, Visuals Out: The Agony and the Ecstasy](../talks/voice-in-visuals-out-the-agony-and-the-ecstasy.md), [Voice Agents That Handle Interrupts](../talks/voice-agents-that-handle-interrupts.md)
+Supporting talks: [Your Voice Agent Doesn't Need a Frontier Model](../talks/your-voice-agent-doesnt-need-a-frontier-model.md), [Frontier results, on device](../talks/frontier-results-on-device.md), [Voice In, Visuals Out: The Agony and the Ecstasy](../talks/voice-in-visuals-out-the-agony-and-the-ecstasy.md), [Local Agentic Theory For Mobile Games](../talks/local-agentic-theory-for-mobile-games.md)
 
-### Prompt payload size is a latency line item, not only a cost line item: loading everything up front (tool schemas, skill descriptions, oversized context) directly inflates time to first token.
+### Everything loaded into context is charged to time-to-first-token, so the per-request working set must stay small even as the catalog of tools, skills, and history grows.
 
-Support: **3** talk(s)
+Support: **4** talk(s)
 
 > "So, say for example, if you have 500 tools in your agent, the fat agent path can push first token latency past 5 seconds."
 >
 > — [The 100-Tool Agent Is a Trap](../talks/the-100-tool-agent-is-a-trap.md), [6:38](https://www.youtube.com/watch?v=vh2VGuQ3zhY&t=398s)
 
-Supporting talks: [The 100-Tool Agent Is a Trap](../talks/the-100-tool-agent-is-a-trap.md), [Codex, Behind the Harness](../talks/codex-behind-the-harness.md), [Evolution of agentic surfaces](../talks/evolution-of-agentic-surfaces.md)
+Supporting talks: [The 100-Tool Agent Is a Trap](../talks/the-100-tool-agent-is-a-trap.md), [Codex, Behind the Harness](../talks/codex-behind-the-harness.md), [Evolution of agentic surfaces](../talks/evolution-of-agentic-surfaces.md), [Voice Agents That Handle Interrupts](../talks/voice-agents-that-handle-interrupts.md)
 
-### Order-of-magnitude latency wins come from architectural redesign — decoupling, co-location, ground-up rebuilds — not from incremental tuning or adding hardware to the existing design.
+### Aggressive budgets are met by architectural change — removing round trips, decoupling blocking setup from first-token reasoning, co-locating or geo-distributing compute — not by incremental tuning or adding hardware.
 
-Support: **4** talk(s)
+Support: **5** talk(s)
 
 > "when your baseline is at 4 seconds, we are not talking about optimization. We are talking about redesign."
 >
 > — [How Web Data Infrastructure Powers the Next Generation of AI](../talks/how-web-data-infrastructure-powers-the-next-generation-of-ai.md), [8:42](https://www.youtube.com/watch?v=1UmZHb_E_SM&t=522s)
 
-Supporting talks: [How Web Data Infrastructure Powers the Next Generation of AI](../talks/how-web-data-infrastructure-powers-the-next-generation-of-ai.md), [Evolution of agentic surfaces](../talks/evolution-of-agentic-surfaces.md), [The Next Medium: Why Real-Time Interactive Video Changes Everything](../talks/the-next-medium-why-real-time-interactive-video-changes-everything.md), [Voice Agents That Handle Interrupts](../talks/voice-agents-that-handle-interrupts.md)
+Supporting talks: [How Web Data Infrastructure Powers the Next Generation of AI](../talks/how-web-data-infrastructure-powers-the-next-generation-of-ai.md), [Evolution of agentic surfaces](../talks/evolution-of-agentic-surfaces.md), [Voice Agents That Handle Interrupts](../talks/voice-agents-that-handle-interrupts.md), [The Next Medium: Why Real-Time Interactive Video Changes Everything](../talks/the-next-medium-why-real-time-interactive-video-changes-everything.md), [Building Turbopuffer: Gergely Orosz (@pragmaticengineer ) × Simon Eskildsen (CEO)](../talks/building-turbopuffer-gergely-orosz-pragmaticengineer-simon-eskildsen-ceo.md)
+
+### Cache behavior sits on the critical path of the budget: a stable context prefix buys large latency and cost wins, and anything that silently invalidates the cache is a latency regression.
+
+Support: **3** talk(s)
+
+> "if the beginning of the context you send to the model is the same each time, then you can get up to 90% cheaper, faster inference um depending on the conditions."
+>
+> — [Voice In, Visuals Out: The Agony and the Ecstasy](../talks/voice-in-visuals-out-the-agony-and-the-ecstasy.md), [11:22](https://www.youtube.com/watch?v=65X0pQ6Lmbg&t=682s)
+
+Supporting talks: [Voice In, Visuals Out: The Agony and the Ecstasy](../talks/voice-in-visuals-out-the-agony-and-the-ecstasy.md), [200 Million Patient Interactions Later](../talks/200-million-patient-interactions-later.md), [Evolution of agentic surfaces](../talks/evolution-of-agentic-surfaces.md)
 
 ## Disagreements
 
-### When the model cannot meet the interaction's latency budget, should you engineer the pipeline down to the budget or change the interaction so users tolerate a longer wait?
+### When latency and intelligence conflict, which one is the hard constraint?
 
 | Position A | Position B |
 |---|---|
-| Drive the number down: co-locate STT/LLM/TTS in one GPU cluster for ~500ms voice-to-voice, hold the LLM to sub-700ms TTFT, distribute GPUs regionally for sub-100ms interactive video, rebuild the pipeline from scratch to go from 4s to 550ms.<br>*[Voice Agents That Handle Interrupts](../talks/voice-agents-that-handle-interrupts.md), [Your Voice Agent Doesn't Need a Frontier Model](../talks/your-voice-agent-doesnt-need-a-frontier-model.md), [The Next Medium: Why Real-Time Interactive Video Changes Everything](../talks/the-next-medium-why-real-time-interactive-video-changes-everything.md), [How Web Data Infrastructure Powers the Next Generation of AI](../talks/how-web-data-infrastructure-powers-the-next-generation-of-ai.md)* | Move to a more forgiving envelope instead: swap voice-out for visuals-out to trade a 200ms budget for a ~1s one, and use streaming first chunks plus a visible 'thinking' state so a 10-second total wait is acceptable.<br>*[Voice In, Visuals Out: The Agony and the Ecstasy](../talks/voice-in-visuals-out-the-agony-and-the-ecstasy.md), [Agent Output Is Not UX: Rendering Layer Your LLM Pipeline Is Missing](../talks/agent-output-is-not-ux-rendering-layer-your-llm-pipeline-is-missing.md)* |
+| Latency is the binding constraint and intelligence is what gets cut to fit: take reasoning out of the model, pick the smallest model that is good enough (Haiku-class, Llama 3.2 3B, on-device SLMs), and accept the quality delta because a frontier model that thinks for a second has already lost the user.<br>*[Your Voice Agent Doesn't Need a Frontier Model](../talks/your-voice-agent-doesnt-need-a-frontier-model.md), [Frontier results, on device](../talks/frontier-results-on-device.md), [Local Agentic Theory For Mobile Games](../talks/local-agentic-theory-for-mobile-games.md), [Voice In, Visuals Out: The Agony and the Ecstasy](../talks/voice-in-visuals-out-the-agony-and-the-ecstasy.md)* | Quality is the hard constraint and speed is the engineering work: every optimization must be lossless, and latency won back through quantization, speculative decoding, and KV cache compression is immediately reinvested into more intelligence (31 parallel models per conversation) rather than banked.<br>*[200 Million Patient Interactions Later](../talks/200-million-patient-interactions-later.md)* |
 
-*Why it matters: One path spends the engineering budget on inference infrastructure and model serving; the other spends it on the rendering and UX layer and accepts today's model latencies. Choosing wrong means either building a GPU footprint you did not need or shipping an interaction whose budget you can never meet.*
+*Why it matters: It decides whether your latency budget is a ceiling you design the model choice under, or a resource you spend down on redundancy and supervisor models. In regulated or safety-critical domains the first framing caps achievable accuracy; in consumer real-time products the second framing prices you out of the interaction entirely.*
 
-### Is model inference still the dominant term in the end-to-end latency budget?
-
-| Position A | Position B |
-|---|---|
-| Yes — LLM time-to-first-byte at 500–650ms is the dominant component of a voice pipeline, STT+LLM eat two-thirds of the budget, and model choice alone is the difference between an 8-second and a usable response.<br>*[Voice Agents That Handle Interrupts](../talks/voice-agents-that-handle-interrupts.md), [Frontier results, on device](../talks/frontier-results-on-device.md), [Voice In, Visuals Out: The Agony and the Ecstasy](../talks/voice-in-visuals-out-the-agony-and-the-ecstasy.md)* | No — at ~1,000 tokens/sec the network, not inference, is the bottleneck; container startup blocks first-token reasoning; and the delivery/rendering layer between model output and screen is where the product actually stalls.<br>*[Codex, Behind the Harness](../talks/codex-behind-the-harness.md), [Evolution of agentic surfaces](../talks/evolution-of-agentic-surfaces.md), [Agent Output Is Not UX: Rendering Layer Your LLM Pipeline Is Missing](../talks/agent-output-is-not-ux-rendering-layer-your-llm-pipeline-is-missing.md), [How Web Data Infrastructure Powers the Next Generation of AI](../talks/how-web-data-infrastructure-powers-the-next-generation-of-ai.md)* |
-
-*Why it matters: It determines whether you profile and optimize the model call (smaller model, faster provider, fewer tokens) or the transport and orchestration around it (WebSockets over SSE, pre-warmed sandboxes, streaming render). Optimizing the wrong term yields nothing at P95.*
-
-### Should the first tokens of the prompt be shrunk per request, or held identical across requests?
+### Should teams chase total latency, or make the wait legible and stop chasing it?
 
 | Position A | Position B |
 |---|---|
-| Shrink it: retrieve only the ~3–5 relevant tool schemas just-in-time (127k tokens down to ~1,000, ~99% reduction) and mark tools as deferred so they load through tool search rather than into the context window.<br>*[The 100-Tool Agent Is a Trap](../talks/the-100-tool-agent-is-a-trap.md), [Codex, Behind the Harness](../talks/codex-behind-the-harness.md)* | Stabilize it: keep the first ~90% of the context window byte-identical from request to request so prefix caching yields up to 90% cheaper and faster inference, and treat that as the architecture most LLM apps are converging on.<br>*[Voice In, Visuals Out: The Agony and the Ecstasy](../talks/voice-in-visuals-out-the-agony-and-the-ecstasy.md)* |
+| Replace total latency with time to first chunk as the primary UX metric; a 10-second operation is acceptable if the user can see what is happening, and the loading spinner is what actually fails. Equivalently, change the output modality — visuals buy a ~1s envelope where voice demands 200ms.<br>*[Agent Output Is Not UX: Rendering Layer Your LLM Pipeline Is Missing](../talks/agent-output-is-not-ux-rendering-layer-your-llm-pipeline-is-missing.md), [Voice In, Visuals Out: The Agony and the Ecstasy](../talks/voice-in-visuals-out-the-agony-and-the-ecstasy.md)* | The budget is wall-clock and unmaskable: users perceive the conversation as broken at ~800ms, hang up at 1.5s, and false interruptions measurably raise escalation to human agents — no progressive rendering recovers that.<br>*[Voice Agents That Handle Interrupts](../talks/voice-agents-that-handle-interrupts.md), [Your Voice Agent Doesn't Need a Frontier Model](../talks/your-voice-agent-doesnt-need-a-frontier-model.md), [Frontier results, on device](../talks/frontier-results-on-device.md)* |
 
-*Why it matters: Per-request tool retrieval mutates the prompt prefix, which is exactly what prefix caching requires to stay stable — so the two techniques compete for the same region of the context window, and a team that adopts both without care pays the cache miss on every turn.*
+*Why it matters: If perceived latency is the real metric, the investment goes into streaming protocols and rendering layers; if wall-clock is, it goes into co-located GPUs, smaller models, and stripping the model out of the loop. The two roadmaps share almost no work.*
 
-### Should latency-critical inference be moved onto the user's device or onto latency-optimized remote infrastructure?
+### To hit a sub-second budget, should you own the whole stack or outsource the infrastructure?
 
 | Position A | Position B |
 |---|---|
-| On-device: cloud round trips make mobile gameplay AI expensive and slow, an SLM uses ~25% of the energy, inference cost shifts to the consumer, and the future is billions of small per-device models.<br>*[Local Agentic Theory For Mobile Games](../talks/local-agentic-theory-for-mobile-games.md), [Frontier results, on device](../talks/frontier-results-on-device.md)* | Remote but engineered: real-time experiences need co-located model clusters and globally distributed GPUs that route a user in India or Japan to nearby capacity, and the choice of a latency-prioritizing inference platform matters more than model size.<br>*[The Next Medium: Why Real-Time Interactive Video Changes Everything](../talks/the-next-medium-why-real-time-interactive-video-changes-everything.md), [Voice Agents That Handle Interrupts](../talks/voice-agents-that-handle-interrupts.md), [Voice In, Visuals Out: The Agony and the Ecstasy](../talks/voice-in-visuals-out-the-agony-and-the-ecstasy.md)* |
+| Vertical integration is required: generic stacks cannot hit the numbers, so build the audio model, the inference optimizations, and the turn-detection stack yourself, and co-locate every model in one GPU cluster.<br>*[200 Million Patient Interactions Later](../talks/200-million-patient-interactions-later.md), [Voice Agents That Handle Interrupts](../talks/voice-agents-that-handle-interrupts.md)* | Hosting, session management, sandboxing, and serving are undifferentiated work; a managed harness or platform delivers better tail latency than in-house builds (60% faster P50 TTFT, >90% at P95) and teams should own only prompts, skills, tools, and domain context.<br>*[Evolution of agentic surfaces](../talks/evolution-of-agentic-surfaces.md), [Generative Video at the Speed of Light](../talks/generative-video-at-the-speed-of-light.md), [The Next Medium: Why Real-Time Interactive Video Changes Everything](../talks/the-next-medium-why-real-time-interactive-video-changes-everything.md), [How Web Data Infrastructure Powers the Next Generation of AI](../talks/how-web-data-infrastructure-powers-the-next-generation-of-ai.md)* |
 
-*Why it matters: Local execution eliminates the round trip but caps model capability, drains battery, and — for distilled models — forces a 1–2 GB redownload on every capability change; remote execution keeps capability and shipping velocity but makes geography and provider queueing part of your budget.*
+*Why it matters: Whether the last few hundred milliseconds are reachable by a small team without building serving infrastructure determines who can compete in real-time AI at all, and whether latency-critical products are startup-addressable or capital-intensive.*
 
 ## Practical Guidance
 
 **Do:**
 
-- Instrument and report time to first token / first chunk as the primary latency metric, and stream partial output rather than showing a spinner
-- Set SLOs at P95 (voice) or P99/P999 (search, S3-backed systems), not P50 — GPT-4.1 looked fine at P50 and spiked to 1.7s at P95
-- Hold the LLM to a sub-700ms time-to-first-token target for voice, and budget the whole cascaded pipeline against ~1,100–1,300ms of typical cloud-API cost
-- Extract control flow, state tracking, and answer selection into a state machine so a Haiku-class model can answer in ~900ms instead of a reasoning model taking several seconds
-- Decouple the agent loop from tool execution so container setup does not block first-token reasoning (measured: 60% faster TTFT at P50, >90% at P95)
-- Above ~50 tools, retrieve schemas just-in-time via embedding search; start at K=5 and test K=3/5/10, picking the smallest K that hits your accuracy target
-- Cap always-resident context blocks as a fraction of the window (Codex caps the skills list at 2%) and mark the rest as deferred/lazily discoverable
-- Tune minimum-silence per domain — ~200ms for a sales agent, 1000–1200ms where users need thinking time — and run a VAD timer under a turn-detection model so misses cost latency rather than correctness
-- Fire inference every 1–2 seconds while the user is still speaking instead of waiting for a full second of silence
-- Keep the leading ~90% of the context prefix identical across requests to exploit prefix caching
-- Benchmark candidate models on your own golden set rather than peer recommendation — the socially recommended model came in around 8 seconds
-- Fix structural and length failures with deterministic post-processing in the harness; chain-of-thought bought compliance at +600ms while few-shot cost only +200ms
-- Route interactive video users to GPUs in their own region; sub-100ms everywhere is a capacity-placement problem, not a model problem
-- Budget object-storage designs against ~200ms P99 per 256–512KB read and minimize round trips, since tree traversal compounds them
-- Keep on-device agent planning inside the 16ms frame at 60Hz, or accept visible jank
+- Set the budget from the interaction's perceptual threshold before choosing components: ~200ms for full voice-to-voice conversation, ~950ms to start speaking, ~1s for a visual response, 4s as the outer limit of believability in chat.
+- Hold the LLM to a sub-700ms time-to-first-token target for voice, and measure candidate models at P95, not P50 — a model that is fine at P50 can spike to 1.7s or over 4s at P95.
+- Decompose the budget by hop before optimizing: in a cloud-API voice pipeline STT plus LLM eat roughly two-thirds of the total, so they are the only two levers worth pulling.
+- Decouple the agent loop from tool-execution container setup so first-token reasoning is not blocked on sandbox startup.
+- Retrieve tool schemas just-in-time (K=5 is a strong default; test K=3/5/10 and take the smallest that meets your accuracy target) once you pass ~50 tools; below 20 tools static loading is fine.
+- Cap the always-loaded skill/tool description block as a fraction of the context window — Codex caps available skills at 2% and truncates beyond it — and mark the rest as deferred behind tool search.
+- Keep the first ~90% of the context identical request-to-request to get prefix caching, and treat cache hit rate as a budget line item (Hippocratic reports 96%+ hit rate and 18x faster prefill).
+- Design against P99/P999 when building on object storage: a 256–512KB S3 read is ~200ms at P99 and a tree traversal compounds it, so minimize round trips per logical operation.
+- Add a short-circuit to multi-model pipelines — have each specialist first decide whether it needs to speak at all — so parallel breadth does not consume the budget.
+- Fire inference every 1–2 seconds while the user is still speaking rather than waiting for a silence window you have already paid for.
+- Fix structural and length failures with deterministic post-processing in the harness instead of upgrading to a bigger, slower model.
+- Prune context or reset the session after ~15–20 voice turns, where instruction following degrades.
+- Re-audit harness workarounds on every model upgrade — fixes written for an older model's limitations become pure latency overhead and can cause incorrect cache discards.
 
 **Avoid:**
 
-- Loading the full tool catalog on every request — 741 tools is ~127k tokens per call and pushes TTFT past 5 seconds at ~500 tools
-- Putting a reasoning frontier model on the interactive path; a model that thinks for a full second has already lost a voice conversation
-- Chasing average or total latency as the headline number, or using a traditional loading spinner as the wait affordance
-- Assuming batch inference infrastructure transfers to real-time serving — streaming, live-session memory, and global compute are new requirements
-- Trying to buy your way out of a scaling wall with hardware; 2,000 extra servers did not close a 10k→60k RPS gap without an architecture change
-- Leaving harness workarounds for old model limitations in place after a model upgrade — they become pure overhead, adding latency and discarding the cache incorrectly
-- Trusting third-party benchmarks over first-principles napkin math, since a benchmark can hide something like a distributed query inflating P99
-- Relying on VAD silence thresholds alone: a 300–400ms pause looks identical whether the speaker finished, is thinking, or is taking a breath — and false interruptions measurably raise escalation to human agents
-- Shipping distilled on-device models for mobile when every capability change means retraining and pushing a 1–2 GB download over users' data plans
-- Sizing a real-time budget by parameter count alone — GPT-5 mini is small and cheap yet showed 5,000ms typical and 7,000ms P95 in practice
+- Choosing a model on peer recommendation or benchmark reputation instead of measuring latency on your own workload — the recommended small model came in at ~8 seconds in one evaluation.
+- Assuming a small model is a fast model: GPT-5 mini was measured at ~5,000ms typical, 7,000ms P95, sometimes 10,000ms, because the serving platform did not prioritize latency.
+- Loading the whole tool catalog on every request: 741 tools costs ~127,000 tokens per call and drops tool-selection accuracy to 13.6%.
+- Adding chain-of-thought to a latency-critical small-model call for formatting gains — it added 600ms where few-shot examples added 200ms and worked better.
+- Trying to buy your way out of an architectural limit with hardware — an additional 2,000 servers did not close the gap from 10k to 60k requests per second.
+- Reusing batch-inference infrastructure for real-time workloads, or serving real-time video from a single region when the requirement is sub-100ms everywhere.
+- Tuning a single global minimum-silence threshold: the right value is domain-specific, ~200ms for a sales agent versus 1,000–1,200ms where users need thinking time.
+- Relying on turn-detection or VAD alone — combine a turn-detection model with a silence timer so a miss costs latency rather than correctness.
+- Running the agent loop and tool execution in the same container, which couples their failure domains as well as their startup cost.
+- Making infrastructure decisions from published benchmarks rather than first-principles napkin math — benchmarks routinely hide things like an unnoticed distributed query inflating P99.
+- Shipping a traditional loading spinner for a multi-second AI operation; users have left the forgiving phase and expect to see progress.
 
 ## Notable Outliers
 
-- The best measured voice-to-voice response time for a cascaded pipeline is 755ms — still roughly 4x slower than the ~200ms at which humans switch conversational turns. ([Voice Agents That Handle Interrupts](../talks/voice-agents-that-handle-interrupts.md), [3:07](https://www.youtube.com/watch?v=hMlLw1LeIK8&t=187s))
-- At 1,000 tokens/sec inference (GPT-5.3 Codex Spark on Cerebras), inference stopped being the bottleneck and the network became it — motivating a persistent WebSocket that transmits only changed items instead of SSE over HTTP. ([Codex, Behind the Harness](../talks/codex-behind-the-harness.md), [15:33](https://www.youtube.com/watch?v=shRR1e2HXMk&t=933s))
-- Four seconds is the upper limit of believability for users in LLM chat, and many frontier-model calls exceed it. ([Frontier results, on device](../talks/frontier-results-on-device.md), [1:28](https://www.youtube.com/watch?v=fWXJM-J0ZB8&t=88s))
-- An on-device game agent must produce a plan inside a 16ms frame at 60Hz, and time overruns should be penalized harder than space overruns because they break the user experience directly. ([Local Agentic Theory For Mobile Games](../talks/local-agentic-theory-for-mobile-games.md), [8:44](https://www.youtube.com/watch?v=418t26CVz-w&t=524s))
-- Real-time generative video is not a quality compromise — the real-time sample had better motion than the batch one at about 1/100th the cost, ending the $10-per-minute 'slot machine' workflow. ([Generative Video at the Speed of Light](../talks/generative-video-at-the-speed-of-light.md), [1:46](https://www.youtube.com/watch?v=Xln-On3syJk&t=106s))
-- A search pipeline was taken from a 4-second average to 550ms while scaling from 400 million to nearly 6 billion daily requests — and hitting 60k RPS immediately produced a 150k RPS target. ([How Web Data Infrastructure Powers the Next Generation of AI](../talks/how-web-data-infrastructure-powers-the-next-generation-of-ai.md), [11:16](https://www.youtube.com/watch?v=1UmZHb_E_SM&t=676s))
-- Users will accept a 10-second wait if the agent shows what it is doing — the tolerable-wait question is about legibility, not duration. ([Agent Output Is Not UX: Rendering Layer Your LLM Pipeline Is Missing](../talks/agent-output-is-not-ux-rendering-layer-your-llm-pipeline-is-missing.md), [11:15](https://www.youtube.com/watch?v=maTp79FD9gI&t=675s))
+- Running 31 models in parallel for every patient conversation stays inside a real-time budget because each specialist first decides whether it needs to speak at all, short-circuiting most of them. ([200 Million Patient Interactions Later](../talks/200-million-patient-interactions-later.md), [13:00](https://www.youtube.com/watch?v=AN65uc645mE&t=780s))
+- An on-device game agent must finish planning inside a 16ms frame at 60Hz or the player sees jank, and time overruns should be penalized harder than space overruns. ([Local Agentic Theory For Mobile Games](../talks/local-agentic-theory-for-mobile-games.md), [8:44](https://www.youtube.com/watch?v=418t26CVz-w&t=524s))
+- A turn-detection model with only 58.9% recall is the right production choice, because a VAD timer running underneath means a miss costs latency rather than correctness. ([Voice Agents That Handle Interrupts](../talks/voice-agents-that-handle-interrupts.md), [10:32](https://www.youtube.com/watch?v=hMlLw1LeIK8&t=632s))
+- Sub-100ms interactive video forces geographically distributed GPU capacity — a user in India or Japan must be routed to a GPU there, or the medium breaks. ([The Next Medium: Why Real-Time Interactive Video Changes Everything](../talks/the-next-medium-why-real-time-interactive-video-changes-everything.md), [13:02](https://www.youtube.com/watch?v=5dCAmSDOAjI&t=782s))
+- At 1,000 tokens/sec inference, the network — not the model — becomes the dominant bottleneck in the agent loop, which is why the Responses API moved to a persistent WebSocket that ships only changed items. ([Codex, Behind the Harness](../talks/codex-behind-the-harness.md), [15:33](https://www.youtube.com/watch?v=shRR1e2HXMk&t=933s))
+- Harness workarounds written for an older model's context anxiety became pure overhead on Opus 4.5, adding latency and causing the cache to be discarded incorrectly. ([Evolution of agentic surfaces](../talks/evolution-of-agentic-surfaces.md), [8:08](https://www.youtube.com/watch?v=K0X9QDRkIdg&t=488s))
 
 ## All Talks
 
+- [200 Million Patient Interactions Later](../talks/200-million-patient-interactions-later.md)
 - [Agent Output Is Not UX: Rendering Layer Your LLM Pipeline Is Missing](../talks/agent-output-is-not-ux-rendering-layer-your-llm-pipeline-is-missing.md)
+- [AI is the World’s largest Relationship Therapist](../talks/ai-is-the-worlds-largest-relationship-therapist.md)
 - [Building Turbopuffer: Gergely Orosz (@pragmaticengineer ) × Simon Eskildsen (CEO)](../talks/building-turbopuffer-gergely-orosz-pragmaticengineer-simon-eskildsen-ceo.md)
 - [Codex, Behind the Harness](../talks/codex-behind-the-harness.md)
 - [Evolution of agentic surfaces](../talks/evolution-of-agentic-surfaces.md)
@@ -186,6 +178,7 @@ Supporting talks: [How Web Data Infrastructure Powers the Next Generation of AI]
 - [Ankush Rastogi](../speakers/ankush-rastogi.md)
 - [Arek Borucki](../speakers/arek-borucki.md)
 - [Bala Ramdoss](../speakers/bala-ramdoss.md)
+- [Clay Cockrell](../speakers/clay-cockrell.md)
 - [Dominik Kundel](../speakers/dominik-kundel.md)
 - [Gagan Bhat](../speakers/gagan-bhat.md)
 - [Isabella Kai He](../speakers/isabella-kai-he.md)
@@ -198,4 +191,6 @@ Supporting talks: [How Web Data Infrastructure Powers the Next Generation of AI]
 - [Shafik Quoraishee](../speakers/shafik-quoraishee.md)
 - [Sohail Shaikh](../speakers/sohail-shaikh.md)
 - [Todd Fisher](../speakers/todd-fisher.md)
+- [Tony Fabrikant](../speakers/tony-fabrikant.md)
+- [Vivek Muppalla](../speakers/vivek-muppalla.md)
 

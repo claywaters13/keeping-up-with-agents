@@ -1,34 +1,37 @@
 {
   "is_error": false,
-  "duration_api_ms": 173879,
+  "duration_api_ms": 138530,
   "num_turns": 1,
   "stop_reason": "end_turn",
-  "session_id": "4cec9f37-64f1-46e5-8150-08e882b4b931",
-  "total_cost_usd": 1.049372,
+  "session_id": "1da3f824-70e3-4070-9ab6-1bd8cbff2e41",
+  "total_cost_usd": 1.0527405,
   "usage": {
     "input_tokens": 2,
-    "cache_creation_input_tokens": 62291,
-    "cache_read_input_tokens": 10308,
-    "output_tokens": 15190,
+    "cache_creation_input_tokens": 69562,
+    "cache_read_input_tokens": 8113,
+    "output_tokens": 12366,
+    "output_tokens_details": {
+      "thinking_tokens": 4891
+    },
     "server_tool_use": {
       "web_search_requests": 0,
       "web_fetch_requests": 0
     },
     "service_tier": "standard",
     "cache_creation": {
-      "ephemeral_1h_input_tokens": 62291,
+      "ephemeral_1h_input_tokens": 69562,
       "ephemeral_5m_input_tokens": 0
     },
     "inference_geo": "not_available",
     "iterations": [
       {
         "input_tokens": 2,
-        "output_tokens": 15190,
-        "cache_read_input_tokens": 10308,
-        "cache_creation_input_tokens": 62291,
+        "output_tokens": 12366,
+        "cache_read_input_tokens": 8113,
+        "cache_creation_input_tokens": 69562,
         "cache_creation": {
           "ephemeral_5m_input_tokens": 0,
-          "ephemeral_1h_input_tokens": 62291
+          "ephemeral_1h_input_tokens": 69562
         },
         "type": "message"
       }
@@ -37,12 +40,12 @@
   },
   "modelUsage": {
     "claude-haiku-4-5-20251001": {
-      "inputTokens": 41458,
-      "outputTokens": 18,
+      "inputTokens": 43844,
+      "outputTokens": 12,
       "cacheReadInputTokens": 0,
       "cacheCreationInputTokens": 0,
       "webSearchRequests": 0,
-      "costUSD": 0.041548,
+      "costUSD": 0.043904,
       "contextWindow": 200000,
       "maxOutputTokens": 32000,
       "canonicalModel": "claude-haiku-4-5",
@@ -50,11 +53,11 @@
     },
     "claude-opus-5": {
       "inputTokens": 2,
-      "outputTokens": 15190,
-      "cacheReadInputTokens": 10308,
-      "cacheCreationInputTokens": 62291,
+      "outputTokens": 12366,
+      "cacheReadInputTokens": 8113,
+      "cacheCreationInputTokens": 69562,
       "webSearchRequests": 0,
-      "costUSD": 1.007824,
+      "costUSD": 1.0088365000000001,
       "contextWindow": 1000000,
       "maxOutputTokens": 64000,
       "canonicalModel": "claude-opus-5",
@@ -67,278 +70,302 @@
   "fast_mode_disabled_reason": "sdk_opt_in_required",
   "subtype": "success",
   "api_error_status": null,
-  "result": "{\"concept\": \"multi-agent orchestration\", \"state_of_practice\": \"The field has moved from \\\"more agents\\\" to \\\"fewer agents with harder boundaries.\\\" The dominant lesson reported this year is that decomposition modeled on human workflow steps loses context at every handoff and produces systems where each agent is locally right and the whole is incoherent \u2014 so judgment is being re-consolidated into a single owning agent while sub-agents are demoted to investigators that return findings, never reasoning. Around that, practitioners converged on a small set of load-bearing mechanics: per-agent scoped context (one job, one or two tools, its own slice), durable state in files or an immutable event log rather than in a context window, deterministic work lifted out of the agentic system entirely and run before the agent is invoked, and blocking gates at the most expensive handoff. Infrastructure people report that most \\\"reasoning failures\\\" in multi-agent systems are actually distributed-state consistency failures, and that the model should emit proposals a policy layer approves rather than act directly. The unresolved center of gravity is where orchestration lives: in an explicit engineered control plane, in emergent agent-to-agent coordination, or increasingly inside the model itself \u2014 with Mythos-class self-orchestration used as evidence that the scaffolding is temporary and control-plane advocates arguing the opposite.\", \"consensus\": [{\"claim\": \"Sub-agents should return compressed results or findings to the parent, never their full output or the reasoning that produced it.\", \"support_count\": 3, \"supporting_talks\": [\"why-we-killed-our-multi-agent-pipeline\", \"anthropics-cca-exam-as-a-field-guide-for-agentic-engineering\", \"medic-for-apache-spark-first-aid-for-failing-jobs\"], \"evidence_quote\": \"That you can still delegate to a sub-agent. You can get back the uh results back, not the reasoning or the judgment.\", \"evidence_talk\": \"why-we-killed-our-multi-agent-pipeline\", \"evidence_timestamp_sec\": 510}, {\"claim\": \"Each agent must have its own scoped context slice; sub-agent context must not spill into the parent thread.\", \"support_count\": 5, \"supporting_talks\": [\"i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke\", \"anthropics-cca-exam-as-a-field-guide-for-agentic-engineering\", \"develop-at-idea-velocity\", \"the-future-is-domain-specific-agents\", \"medic-for-apache-spark-first-aid-for-failing-jobs\"], \"evidence_quote\": \"These are real entity types in the system. It is not a cute metaphor. Each one is its own agent with its own scoped context and its own approval boundary.\", \"evidence_talk\": \"i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke\", \"evidence_timestamp_sec\": 111}, {\"claim\": \"One agent, one job: a single monolithic prompt or a tool-heavy generalist agent degrades as scope grows, so narrow agents with few tools outperform it.\", \"support_count\": 4, \"supporting_talks\": [\"the-factory-that-dreams-39-ai-agents-no-framework\", \"medic-for-apache-spark-first-aid-for-failing-jobs\", \"anthropics-cca-exam-as-a-field-guide-for-agentic-engineering\", \"the-future-is-domain-specific-agents\"], \"evidence_quote\": \"one prompt that's supposed to do everything ends up doing everything badly\", \"evidence_talk\": \"the-factory-that-dreams-39-ai-agents-no-framework\", \"evidence_timestamp_sec\": 205}, {\"claim\": \"Deterministic steps (signal detection, SQL, file conversion, rule checks) should be partitioned out of the agentic system and run before the agent is invoked.\", \"support_count\": 4, \"supporting_talks\": [\"why-we-killed-our-multi-agent-pipeline\", \"can-oncology-workflows-run-without-human-touch\", \"deterministic-infra-for-non-deterministic-ai-agents\", \"notions-token-town\"], \"evidence_quote\": \"any complex workflows will have deterministic parts and agentic parts. Don't let agents actually run the deterministic part, right?\", \"evidence_talk\": \"why-we-killed-our-multi-agent-pipeline\", \"evidence_timestamp_sec\": 831}, {\"claim\": \"Handoffs between steps \u2014 not prompts, models, or reasoning \u2014 are where multi-agent systems actually corrupt data, so boundaries need explicit validation.\", \"support_count\": 3, \"supporting_talks\": [\"every-solo-agent-builder-eventually-reinvents-a-worse-version-of-cicd\", \"why-we-killed-our-multi-agent-pipeline\", \"deterministic-infra-for-non-deterministic-ai-agents\"], \"evidence_quote\": \"Every single handoff is the place where the system can lie to you. And if you're building the system alone, nobody catches the lies except you, usually after the damage is done.\", \"evidence_talk\": \"every-solo-agent-builder-eventually-reinvents-a-worse-version-of-cicd\", \"evidence_timestamp_sec\": 99}, {\"claim\": \"A human approval boundary is a permanent structural component of agent fleets, not scaffolding that better models will remove.\", \"support_count\": 5, \"supporting_talks\": [\"deterministic-infra-for-non-deterministic-ai-agents\", \"the-factory-that-dreams-39-ai-agents-no-framework\", \"i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke\", \"can-oncology-workflows-run-without-human-touch\", \"the-engineer-of-the-future-is-the-person-who-is-able-to-choose-what-is-worth-doi\"], \"evidence_quote\": \"Many people frame human involvement as temporarily temporary necessity. I don't think that's correct. The most successful systems are likely to remain human supervised.\", \"evidence_talk\": \"deterministic-infra-for-non-deterministic-ai-agents\", \"evidence_timestamp_sec\": 290}, {\"claim\": \"Without a real orchestration layer the human silently becomes the scheduler, router, and memory of the fleet, and their attention \u2014 not tokens or compute \u2014 becomes the binding constraint.\", \"support_count\": 4, \"supporting_talks\": [\"the-golden-age-of-ai-engineering\", \"i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke\", \"the-engineer-of-the-future-is-the-person-who-is-able-to-choose-what-is-worth-doi\", \"building-an-autonomous-engineering-org\"], \"evidence_quote\": \"I thought I was orchestrating. Really, I was polling. I was the scheduler, the router, and the memory.\", \"evidence_talk\": \"the-golden-age-of-ai-engineering\", \"evidence_timestamp_sec\": 1159}, {\"claim\": \"Fleet state belongs in durable external artifacts (files on disk, an immutable event log) rather than inside any model's context window, so context wipes and crashes are recoverable.\", \"support_count\": 3, \"supporting_talks\": [\"i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke\", \"active-graph-agent-runtime-babyagi-4\", \"the-factory-that-dreams-39-ai-agents-no-framework\"], \"evidence_quote\": \"The state lives in files. It is not trapped inside one model. And this is the single most practical thing I learned all year.\", \"evidence_talk\": \"i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke\", \"evidence_timestamp_sec\": 145}], \"disagreements\": [{\"question\": \"Does splitting work across multiple reasoning agents improve results, or degrade them relative to one agent that owns the whole problem?\", \"position_a\": \"Decompose: many narrowly scoped agents (or a jury of independent analysts) beat one agent, because a single prompt cannot be tuned for everything and independent perspectives catch what one agent misses.\", \"position_a_talks\": [\"medic-for-apache-spark-first-aid-for-failing-jobs\", \"the-factory-that-dreams-39-ai-agents-no-framework\", \"design-patterns-for-ai-trust-juries-libraries-and-agent-tiers\", \"the-future-is-domain-specific-agents\"], \"position_b\": \"Consolidate: exactly one agent should hold end-to-end judgment, because context is lost at every handoff and each agent can derive a locally correct fact while nobody understands the whole picture; add a boundary, not another agent.\", \"position_b_talks\": [\"why-we-killed-our-multi-agent-pipeline\", \"every-solo-agent-builder-eventually-reinvents-a-worse-version-of-cicd\", \"everything-we-knew-about-software-has-changed\"], \"why_it_matters\": \"This decides whether your engineering budget goes into orchestration, handoff contracts, and consensus machinery, or into giving one agent better tools, a knowledge graph, and a longer leash. Teams that guessed wrong report rewriting the whole system.\"}, {\"question\": \"Should the topology of a multi-agent system be specified by the engineer up front, or allowed to emerge from agent interaction at runtime?\", \"position_a\": \"Engineer it explicitly: hierarchies as real entity types with approval boundaries, a knowledge graph acting as a control plane that dictates which paths and hypotheses the agent may pursue, and a policy layer that validates every proposed action.\", \"position_a_talks\": [\"i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke\", \"why-we-killed-our-multi-agent-pipeline\", \"deterministic-infra-for-non-deterministic-ai-agents\", \"can-oncology-workflows-run-without-human-touch\"], \"position_b\": \"Let it emerge: the harness should be the output of the process rather than its input, with agent roles arising from position relative to other agents; a fixed harness buys reliability by suppressing the variance novelty requires and can be obsolete within a month.\", \"position_b_talks\": [\"beyond-the-harness-a-journey-towards-adaptative-engineering\", \"everything-we-knew-about-software-has-changed\", \"full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex\"], \"why_it_matters\": \"Explicit topology gives you replay, audit, and a debuggable chain of decisions; emergent topology gives adaptability but, as its own advocates concede, legibility degrades as adaptability rises. You cannot have both, and the choice is made at architecture time.\"}, {\"question\": \"How should agents coordinate \u2014 by messaging each other, or only through shared state?\", \"position_a\": \"Never let LLM components message each other; all coordination goes through shared state (an event log, files, a blackboard), which is what yields replays, rollbacks, and forks.\", \"position_a_talks\": [\"active-graph-agent-runtime-babyagi-4\", \"i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke\", \"why-we-killed-our-multi-agent-pipeline\"], \"position_b\": \"Agents should talk to each other directly \u2014 sub-agents conversing with their coordinator in plain English, threads sending messages to other threads, and cross-organization agents discovering, delegating to, and paying each other via signed identity records.\", \"position_b_talks\": [\"the-future-is-domain-specific-agents\", \"full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex\", \"the-agentic-web-and-the-bazaar-era-of-ai\"], \"why_it_matters\": \"Shared-state coordination is auditable and recoverable but cannot cross organizational boundaries; direct messaging composes across vendors and the open web but reintroduces the untraceable handoffs that multiple teams identified as their primary failure source.\"}, {\"question\": \"Does multi-agent work need a dedicated orchestration/control-plane layer, or is a frontier model plus good thread management already sufficient?\", \"position_a\": \"A distinct layer is required and is the next locus of competitive advantage \u2014 an agentic control plane analogous to Kubernetes for containers, plus registry, identity, and trust layers for anything beyond a single machine.\", \"position_a_talks\": [\"deterministic-infra-for-non-deterministic-ai-agents\", \"the-agentic-web-and-the-bazaar-era-of-ai\", \"i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke\", \"the-future-is-domain-specific-agents\"], \"position_b\": \"No framework or software factory is needed \u2014 tell a self-orchestrating model to spawn workers, split the work, and verify it, or keep one long-lived pinned thread whose compaction now holds hundreds of sub-agents' worth of state.\", \"position_b_talks\": [\"everything-we-knew-about-software-has-changed\", \"full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex\", \"the-factory-that-dreams-39-ai-agents-no-framework\"], \"why_it_matters\": \"If orchestration is absorbed by the model, control-plane investment is written off at the next release; if it is not, teams relying on the model will hit the multi-machine, identity, and scheduling walls that the infrastructure camp is already reporting.\"}, {\"question\": \"When a long-running agent's context fills, should you compact it or reset and re-read written state?\", \"position_a\": \"Compact. Compaction now works well enough that the old advice to start fresh threads is obsolete, and a compact at roughly 150,000 tokens is the standard move.\", \"position_a_talks\": [\"full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex\", \"anthropics-cca-exam-as-a-field-guide-for-agentic-engineering\"], \"position_b\": \"Never compact. It is slow, you get no control over what survives, and what it drops is permanently gone; clear the context entirely and have the agent re-read its own handoff and history files.\", \"position_b_talks\": [\"i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke\"], \"why_it_matters\": \"The answer determines whether an orchestrator needs to continuously write recovery artifacts to disk, or can treat its own conversation as durable memory \u2014 which in turn decides whether a crashed machine costs you a run or a boot command.\"}], \"practical_guidance\": {\"do\": [\"Consolidate end-to-end judgment in exactly one agent; parallelize investigation via sub-agents but have them return results only\", \"Give each agent one job and one or two tools rather than a large tool inventory\", \"Lift deterministic components (statistical signal detection, SQL, CSV-to-PDF, rule checks) out of the agentic system and run them before the agent wakes up\", \"Put a blocking gate at the highest-cost handoff first \u2014 not the most technically complex one \u2014 and make it halt the pipeline rather than log a warning\", \"Keep fleet state in files on disk (handoff docs, history, per-machine dirs) so a context wipe or machine crash is recoverable via a single boot command\", \"Force delegation structurally: expose only CLI-dispatch skills so the orchestrator cannot do the work itself\", \"Run each parallel agent in an isolated cloud workspace or git worktree; local machines cannot support real parallelism\", \"Have a manager agent with different context judge worker output, since a coding agent evaluating its own PR is biased toward declaring success\", \"Require two independent sources to agree before proceeding unsupervised, and route low-confidence cases to human escalation by default\", \"For questions with no empirically correct answer, run independent analysts plus a consensus judge that weighs reasoning quality, and expand the jury when consensus is insufficient\", \"Have the model emit proposals that infrastructure validates, policy approves, and an execution gateway enforces \u2014 never let it touch production directly\", \"Trace the chain of decisions and state transitions, not just final outputs, because that is what you need to debug an autonomous workflow\", \"Keep shared fleet state changing only through pull requests, with machine-specific state in per-machine directories\", \"Run the control point on an always-on machine, not a laptop that sleeps\", \"Snapshot real tool responses as checked-in fixtures and run offline evals so you can quantify agent quality instead of relying on intuition\"], \"avoid\": [\"Deriving your agent architecture by mimicking a human analyst's workflow steps \u2014 human process constraints are not system constraints\", \"Letting every subtask dump its full output into the primary thread, crowding out the context\", \"Sharing agents' reasoning across a collaborating group; pass the claim and evidence only, or they converge into groupthink\", \"Uncontrolled retries, which turn a minor API error into exponential resource growth and a compute incident\", \"Gates that only log warnings \u2014 a gate that cannot block the artifact is a suggestion\", \"Adding another agent when the actual missing piece is a boundary\", \"Installing many skills and MCP servers into one agent; the research shows it makes the agent substantially worse\", \"Filling a million-token context window because you can \u2014 accuracy degrades well before the hard limit\", \"Stacking many agent and MCP processes on one machine (memory exhaustion, swap, credentials binding to the wrong workspaces)\", \"Pointing two machines at the same shared context directory without separating machine-specific state \u2014 they diverge silently\", \"Assuming more parallel agents equals more capacity; human cognitive bandwidth does not parallelize and each loop adds routing, merging, and verification decisions\", \"Forcing a diagnostic agent into a deterministic graph workflow, which proved more brittle than the reasoning-and-acting paradigm\", \"Having agents infer entity and KPI relationships from raw tables \u2014 it does not scale and invents relationships that do not exist in the data\"]}, \"notable_outliers\": [{\"claim\": \"AI writes shared-state/blackboard-style agent code better than LLM-agent-style code, because decades of blackboard-architecture discussion sit in the training data while LLM agent patterns are only three years old.\", \"talk\": \"active-graph-agent-runtime-babyagi-4\", \"timestamp_sec\": 894}, {\"claim\": \"Kubernetes already answers compute, secrets, tools, and scheduling for agent fleets, so the only layer worth building is orchestration, review flow, and context management.\", \"talk\": \"i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke\", \"timestamp_sec\": 503}, {\"claim\": \"Frontier models now self-orchestrate \u2014 tell one to spawn additional models, split the work, and verify it afterward, and it just does, with no custom tooling or software factory.\", \"talk\": \"everything-we-knew-about-software-has-changed\", \"timestamp_sec\": 148}, {\"claim\": \"Domain-specific agents do not meaningfully exist in public today, and 2027 will be the year of multi-agent orchestration.\", \"talk\": \"the-future-is-domain-specific-agents\", \"timestamp_sec\": 1315}, {\"claim\": \"Many multi-agent failures blamed on reasoning are actually distributed-state consistency failures.\", \"talk\": \"deterministic-infra-for-non-deterministic-ai-agents\", \"timestamp_sec\": 238}, {\"claim\": \"A 39-agent production system was built with no framework, no fine-tuning, and no data scientists for roughly $30,000 against a $230,000 agency quote.\", \"talk\": \"the-factory-that-dreams-39-ai-agents-no-framework\", \"timestamp_sec\": 508}], \"maturity\": \"contested\", \"maturity_rationale\": \"Speakers agree on the mechanics \u2014 scoped context, results-not-reasoning handoffs, deterministic partitioning, human approval gates \u2014 but split hard on fundamentals: whether to decompose at all, whether topology should be designed or emergent, whether agents may message each other, and whether an orchestration layer survives the next model release. Multiple teams reported tearing down and rebuilding systems in opposite directions during the same year.\"}",
-  "ttft_ms": 101276,
-  "ttft_stream_ms": 3019,
-  "time_to_request_ms": 38,
+  "result": "{\"concept\":\"multi-agent orchestration\",\"state_of_practice\":\"The field arrived at this conference having actually run multi-agent systems in production, and the mood is corrective rather than expansionist. The dominant finding is that failures blamed on reasoning are usually structural: context lost at handoffs, distributed-state inconsistency, and orchestrator agents that quietly do the work themselves instead of dispatching. The converged design pattern is narrow single-job agents with scoped context, coordinating through durable external state (files, event logs, knowledge graphs, blackboards) rather than through chatty agent-to-agent reasoning exchange; sub-agents return compressed results and evidence, never their reasoning traces, both to protect the parent's context window and to prevent convergent groupthink. Deterministic components \u2014 signal detection, statistical checks, SQL, emergency routing, permission enforcement \u2014 are being pulled out of the agentic system entirely and run before or above the model, with agents reserved for what rules cannot decide. Parallelism is now understood to require real isolation (git worktrees, per-agent sandboxed filesystems, dedicated cloud workspaces) and, more importantly, to be capped not by tokens or compute but by human attention: several speakers independently described discovering that they had become the scheduler, router, and memory for their own fleet. The live fights are whether to decompose reasoning across agents at all, whether the orchestration harness should be hand-engineered or allowed to emerge (or vanish as models self-orchestrate), and whether coordination needs a new infrastructure layer or a reuse of Kubernetes and CI/CD.\",\"consensus\":[{\"claim\":\"Deterministic logic belongs outside or above the agentic system \u2014 run rules, statistics, and policy checks first, and invoke agents only for what rules cannot decide.\",\"support_count\":5,\"supporting_talks\":[\"why-we-killed-our-multi-agent-pipeline\",\"can-oncology-workflows-run-without-human-touch\",\"deterministic-infra-for-non-deterministic-ai-agents\",\"guardrails-first-engineering-member-facing-health-ai\",\"notions-token-town\"],\"evidence_quote\":\"Two, deterministic rules belong above the model, not inside it. What can never be wrong cannot be left to probability.\",\"evidence_talk\":\"guardrails-first-engineering-member-facing-health-ai\",\"evidence_timestamp_sec\":154},{\"claim\":\"Without explicit orchestration structure, the human collapses into being the scheduler, router, and memory of the fleet, and their attention \u2014 not tokens or compute \u2014 becomes the binding constraint.\",\"support_count\":5,\"supporting_talks\":[\"i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke\",\"the-golden-age-of-ai-engineering\",\"the-engineer-of-the-future-is-the-person-who-is-able-to-choose-what-is-worth-doi\",\"building-an-autonomous-engineering-org\",\"understanding-is-the-new-bottleneck\"],\"evidence_quote\":\"I thought I was orchestrating. Really, I was polling. I was the scheduler, the router, and the memory.\",\"evidence_talk\":\"the-golden-age-of-ai-engineering\",\"evidence_timestamp_sec\":1159},{\"claim\":\"Human approval and supervision are permanent architectural components of agent systems, not scaffolding that better models will remove.\",\"support_count\":5,\"supporting_talks\":[\"deterministic-infra-for-non-deterministic-ai-agents\",\"the-factory-that-dreams-39-ai-agents-no-framework\",\"i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke\",\"guardrails-first-engineering-member-facing-health-ai\",\"can-oncology-workflows-run-without-human-touch\"],\"evidence_quote\":\"Many people frame human involvement as temporarily temporary necessity. I don't think that's correct. The most successful systems are likely to remain human supervised.\",\"evidence_talk\":\"deterministic-infra-for-non-deterministic-ai-agents\",\"evidence_timestamp_sec\":290},{\"claim\":\"Give each agent one job and a minimal tool/skill inventory; a single agent carrying every tool, skill, or prompt responsibility performs measurably worse.\",\"support_count\":4,\"supporting_talks\":[\"anthropics-cca-exam-as-a-field-guide-for-agentic-engineering\",\"the-factory-that-dreams-39-ai-agents-no-framework\",\"medic-for-apache-spark-first-aid-for-failing-jobs\",\"the-future-is-domain-specific-agents\"],\"evidence_quote\":\"So, specialize, don't overload.\",\"evidence_talk\":\"anthropics-cca-exam-as-a-field-guide-for-agentic-engineering\",\"evidence_timestamp_sec\":782},{\"claim\":\"Handoffs between agents \u2014 not prompts, models, or reasoning quality \u2014 are where multi-agent systems actually break, because context is silently lost or corrupted at each boundary.\",\"support_count\":4,\"supporting_talks\":[\"why-we-killed-our-multi-agent-pipeline\",\"every-solo-agent-builder-eventually-reinvents-a-worse-version-of-cicd\",\"deterministic-infra-for-non-deterministic-ai-agents\",\"i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke\"],\"evidence_quote\":\"Every single handoff is the place where the system can lie to you. And if you're building the system alone, nobody catches the lies except you, usually after the damage is done.\",\"evidence_talk\":\"every-solo-agent-builder-eventually-reinvents-a-worse-version-of-cicd\",\"evidence_timestamp_sec\":99},{\"claim\":\"Sub-agents should return compressed findings, results, or claim-plus-evidence to the parent \u2014 never their full reasoning traces or raw tool output.\",\"support_count\":3,\"supporting_talks\":[\"why-we-killed-our-multi-agent-pipeline\",\"medic-for-apache-spark-first-aid-for-failing-jobs\",\"anthropics-cca-exam-as-a-field-guide-for-agentic-engineering\"],\"evidence_quote\":\"That you can still delegate to a sub-agent. You can get back the uh results back, not the reasoning or the judgment.\",\"evidence_talk\":\"why-we-killed-our-multi-agent-pipeline\",\"evidence_timestamp_sec\":510},{\"claim\":\"Real parallelism requires isolated execution environments per agent \u2014 worktrees, sandboxed filesystems, or dedicated cloud workspaces \u2014 because shared local machines collide on resources, credentials, and state.\",\"support_count\":4,\"supporting_talks\":[\"building-an-autonomous-engineering-org\",\"develop-at-idea-velocity\",\"the-future-is-domain-specific-agents\",\"i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke\"],\"evidence_quote\":\"So, we invested in dedicated cloud workspaces where each agent ran in its own isolated environment. And this allowed us to easily run them in parallel and from anywhere.\",\"evidence_talk\":\"building-an-autonomous-engineering-org\",\"evidence_timestamp_sec\":856},{\"claim\":\"Durable coordination state must live outside the model \u2014 in files, an event log, or a shared store \u2014 so it survives context wipes, compaction, and crashes.\",\"support_count\":4,\"supporting_talks\":[\"i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke\",\"active-graph-agent-runtime-babyagi-4\",\"the-factory-that-dreams-39-ai-agents-no-framework\",\"why-we-killed-our-multi-agent-pipeline\"],\"evidence_quote\":\"The state lives in files. It is not trapped inside one model. And this is the single most practical thing I learned all year.\",\"evidence_talk\":\"i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke\",\"evidence_timestamp_sec\":145},{\"claim\":\"Verification should come from an agent with different context than the one that produced the work; a producer evaluating its own output is systematically biased toward approval.\",\"support_count\":4,\"supporting_talks\":[\"develop-at-idea-velocity\",\"design-patterns-for-ai-trust-juries-libraries-and-agent-tiers\",\"can-oncology-workflows-run-without-human-touch\",\"anthropics-cca-exam-as-a-field-guide-for-agentic-engineering\"],\"evidence_quote\":\"that's kind of the benefit you get, where the manager has a different context um than the workers\",\"evidence_talk\":\"develop-at-idea-velocity\",\"evidence_timestamp_sec\":607}],\"disagreements\":[{\"question\":\"Should reasoning and judgment be distributed across multiple agents, or consolidated into exactly one agent that owns the end-to-end picture?\",\"position_a\":\"Consolidate: exactly one agent must own end-to-end reasoning. Splitting judgment across specialized agents produces locally-correct, globally-incoherent output, and the right move before adding another agent is adding a boundary to the one you have. Frontier models increasingly self-orchestrate without any custom decomposition.\",\"position_a_talks\":[\"why-we-killed-our-multi-agent-pipeline\",\"every-solo-agent-builder-eventually-reinvents-a-worse-version-of-cicd\",\"everything-we-knew-about-software-has-changed\"],\"position_b\":\"Decompose: many narrowly-scoped agents outperform one general agent, because a single prompt that must do everything does everything badly and multi-agent structure gives finer control over system behavior. Expanding scope should mean adding an agent, not lengthening a prompt.\",\"position_b_talks\":[\"the-factory-that-dreams-39-ai-agents-no-framework\",\"medic-for-apache-spark-first-aid-for-failing-jobs\",\"the-future-is-domain-specific-agents\",\"anthropics-cca-exam-as-a-field-guide-for-agentic-engineering\"],\"why_it_matters\":\"This determines whether your engineering effort goes into topology and handoff contracts or into context engineering and tooling for a single deep agent \u2014 and whether observed incoherence is read as a decomposition bug to fix or as evidence the decomposition itself was the mistake.\"},{\"question\":\"Should the orchestration harness be explicitly engineered and maintained, or allowed to emerge from agent interaction (or disappear as models improve)?\",\"position_a\":\"Engineer it deliberately and expect it to persist: hierarchies as real entity types with scoped context and approval boundaries, an event-sourced runtime, an agentic control plane. The harness will not dissolve as models improve, and harness design is the current bottleneck.\",\"position_a_talks\":[\"i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke\",\"active-graph-agent-runtime-babyagi-4\",\"deterministic-infra-for-non-deterministic-ai-agents\",\"the-golden-age-of-ai-engineering\"],\"position_b\":\"Don't hand-build it: a carefully built harness can be irrelevant within a month, so the harness should be the output of the process \u2014 emerging from agent interaction with roles and governance forming locally \u2014 or simply unnecessary, since a sufficiently capable model will spawn, split, and verify work when told to.\",\"position_b_talks\":[\"beyond-the-harness-a-journey-towards-adaptative-engineering\",\"everything-we-knew-about-software-has-changed\"],\"why_it_matters\":\"If the harness is durable infrastructure, investment in control planes, entity hierarchies, and event logs compounds; if it is a temporary crutch around model weakness, that investment is written off at every model release.\"},{\"question\":\"Should agents coordinate exclusively through shared state, or communicate directly with each other?\",\"position_a\":\"Never let agents message each other. All coordination goes through shared state \u2014 an immutable event log, a blackboard, a knowledge-graph control plane \u2014 which is what yields replay, rollback, forks, and auditable consistency; sub-agents hand back results into that state rather than conversing.\",\"position_a_talks\":[\"active-graph-agent-runtime-babyagi-4\",\"why-we-killed-our-multi-agent-pipeline\"],\"position_b\":\"Direct agent-to-agent messaging is the right primitive: full sub-agents with their own loops and histories talking to their coordinator in plain English, threads that can send messages to each other, and eventually a cross-organizational agent web with signed identity records, message boxes, negotiation, and payments.\",\"position_b_talks\":[\"the-future-is-domain-specific-agents\",\"full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex\",\"the-agentic-web-and-the-bazaar-era-of-ai\"],\"why_it_matters\":\"Shared-state-only coordination makes the system auditable and replayable but confines it to one trust domain; direct messaging scales across organizational boundaries but forces you to solve identity, spam, trust, and consistency yourself \u2014 and several speakers attribute multi-agent failures to exactly that consistency gap.\"},{\"question\":\"Does running more agents in parallel actually increase throughput?\",\"position_a\":\"Yes, and it is the core unlock: agents in git worktrees, isolated cloud workspaces, five or six parallel approaches with the best selected, thousands of small agents across regions. Once delegation infrastructure exists, adding parallelism costs almost nothing.\",\"position_a_talks\":[\"develop-at-idea-velocity\",\"building-an-autonomous-engineering-org\",\"the-golden-age-of-ai-engineering\",\"the-future-is-domain-specific-agents\"],\"position_b\":\"No \u2014 a flat pile of parallel agents does not scale, because human cognitive bandwidth does not parallelize and each additional loop adds routing, merging, and verification decisions. Throughput just relocates the bottleneck to review, and PRs pile up unreviewed.\",\"position_b_talks\":[\"the-engineer-of-the-future-is-the-person-who-is-able-to-choose-what-is-worth-doi\",\"i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke\",\"understanding-is-the-new-bottleneck\"],\"why_it_matters\":\"If parallelism is the unlock, you invest in sandboxes and dispatch infrastructure; if human attention is the ceiling, you invest instead in hierarchy, scoped context, and automated review gates \u2014 and note that the strongest pro-parallelism talk also reports code review becoming the unsolved binding constraint.\"},{\"question\":\"Does agent orchestration need a new infrastructure layer, or should it reuse existing distributed-systems and CI/CD infrastructure?\",\"position_a\":\"A new layer is emerging and is where the advantage lies: an agentic control plane analogous to Kubernetes for containers, and a full agentic-web stack of identity, registry, trust, payments, coordination, and negotiation layers that DNS-era infrastructure cannot serve.\",\"position_a_talks\":[\"deterministic-infra-for-non-deterministic-ai-agents\",\"the-agentic-web-and-the-bazaar-era-of-ai\"],\"position_b\":\"Reuse what exists: Kubernetes already solves compute, secrets, tools, and scheduling, so build only orchestration, review flow, and context management on top \u2014 and the operational guarantees you keep rediscovering are just contract testing, staging, gates, and audit trails you are rebuilding badly. No framework required.\",\"position_b_talks\":[\"i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke\",\"every-solo-agent-builder-eventually-reinvents-a-worse-version-of-cicd\",\"the-factory-that-dreams-39-ai-agents-no-framework\"],\"why_it_matters\":\"It decides whether teams spend the next year building or buying an agent control plane, or spend it wiring agents into the CI/CD and cluster infrastructure they already operate.\"}],\"practical_guidance\":{\"do\":[\"Route sub-agent output back to the parent as a summarized finding or claim-plus-evidence, and deliberately withhold the sub-agent's reasoning so peer agents don't converge into groupthink\",\"Partition workflows so deterministic parts (signal detection, statistical checks, SQL, emergency routing, identity verification) execute outside the agentic system, before the agent is invoked\",\"Force delegation structurally \u2014 expose dispatch as CLI-backed skills so the orchestrator's only available path is to dispatch, since it will otherwise do the work itself\",\"Keep fleet state in files on disk and recover by clearing context and re-reading self-written handoff/history files, rather than relying on compaction you cannot control\",\"Separate per-machine state into per-machine directories and require shared state to change only via pull request when running agents across multiple machines\",\"Run the fleet's single control point on an always-on machine \u2014 a laptop that sleeps cannot be a control plane\",\"Instrument the most expensive handoff first (measured by cost of bad data), not the most technically complex one\",\"Make gates blocking: a gate that only logs a warning is a suggestion, not a guarantee\",\"Use a jury of independent agents plus a consensus judge that weighs reasoning quality for questions with no empirically correct answer, and expand the jury when consensus is insufficient\",\"Require two independent sources to agree before proceeding without human verification, and escalate to a human whenever evidence or confidence is insufficient\",\"Give each agent its own sandboxed filesystem and sandboxed code execution environment, and run parallel work in git worktrees or dedicated cloud workspaces\",\"Treat the knowledge graph as a control plane that constrains which paths and hypotheses the agent may pursue, not as a data lookup layer\",\"Have agents declare their resource requirements and let the system place them, rather than choosing which machine each runs on by hand\",\"Snapshot real tool responses as checked-in fixtures and run offline evals so multi-agent quality is quantified rather than intuited\"],\"avoid\":[\"Letting sub-agent output spill into the primary thread's context \u2014 it burns tokens and degrades answer accuracy even far below the context limit\",\"Handing one agent a large tool, skill, or MCP inventory; installing many skills into a single agent measurably degrades it\",\"Distributing judgment across a chain of specialized agents that each derive locally correct facts while no agent owns the end-to-end picture\",\"Designing agent topology by mimicking the steps a human analyst takes \u2014 human process constraints are not architectural constraints\",\"Uncontrolled retries, which turn a minor API error into exponential resource growth and a compute incident\",\"Letting the model directly control production systems instead of emitting proposals that infrastructure validates, policy approves, and a gateway enforces\",\"Running a flat pile of parallel agents, which forces the human into scheduler, memory, and reviewer simultaneously\",\"Stacking agent and MCP processes on one machine until memory is exhausted and swap fills, or pointing two machines at the same shared context directory\",\"Treating agent hierarchy as a descriptive metaphor rather than implementing it as real entity types with scoped context and approval boundaries\",\"Adding another agent when the actual missing thing is one boundary check on the system you already have\",\"Allowing autonomous outbound communication \u2014 keep a human on every send\",\"Shipping because the artifacts look complete; a polished, plausible artifact is more dangerous than a visibly bad output\"]},\"notable_outliers\":[{\"claim\":\"AI models write shared-state/blackboard-style agent code better than LLM-agent-style code, because decades of blackboard-architecture discussion exist in the training data while LLM agent patterns are only about three years old.\",\"talk\":\"active-graph-agent-runtime-babyagi-4\",\"timestamp_sec\":894},{\"claim\":\"Agent identity, roles, and specialization should not be assigned by the engineer at all \u2014 they should arise from an agent's position relative to other agents and environmental pressure, with governance emerging from local coordination and no central authority.\",\"talk\":\"beyond-the-harness-a-journey-towards-adaptative-engineering\",\"timestamp_sec\":1437},{\"claim\":\"The orchestration infrastructure itself can be built by the agents: an infra team inside the fleet built the review gateway that gates the fleet's own actions.\",\"talk\":\"i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke\",\"timestamp_sec\":228},{\"claim\":\"Consolidating a failed multi-agent pipeline into a single agent produced root-cause analyses in 20-30 minutes and 50+ turns for work that previously took an analyst three to four weeks \u2014 accepting very high token and turn counts as the price of coherent end-to-end reasoning.\",\"talk\":\"why-we-killed-our-multi-agent-pipeline\",\"timestamp_sec\":790},{\"claim\":\"2027 will be the year of multi-agent orchestration; domain-specific agents that make it viable do not meaningfully exist in public today.\",\"talk\":\"the-future-is-domain-specific-agents\",\"timestamp_sec\":1315},{\"claim\":\"Pinned persistent threads that can list, rename, and message each other are superior to sub-agents for ongoing work, because sidebar visibility lets you notice state changes.\",\"talk\":\"full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex\",\"timestamp_sec\":3497},{\"claim\":\"Distributing documents across parallel context caches by domain hurts recall, because the supervisor skips domains that look irrelevant at first glance \u2014 documents should be distributed in no particular order.\",\"talk\":\"when-all-context-matters-extended-cache-augmented-generation\",\"timestamp_sec\":230},{\"claim\":\"High model throughput matters mainly because it lets you run five or six parallel approaches and pick the best, not because a single answer arrives faster.\",\"talk\":\"the-golden-age-of-ai-engineering\",\"timestamp_sec\":967}],\"maturity\":\"contested\",\"maturity_rationale\":\"Practitioners have converged tightly on tactics \u2014 narrow agents, scoped context, results-not-reasoning handoffs, deterministic pre-filters, isolated sandboxes, human approval gates \u2014 but disagree on fundamentals: one talk killed its multi-agent pipeline to consolidate judgment in a single agent while another runs 39, and the field splits on whether the orchestration harness should be hand-engineered, allowed to emerge, or expected to disappear as models self-orchestrate. Multiple speakers describe cross-machine and cross-organizational orchestration as explicitly unsolved.\"}",
+  "ttft_ms": 57093,
+  "ttft_stream_ms": 1783,
+  "time_to_request_ms": 401,
   "type": "result",
-  "duration_ms": 173278,
-  "uuid": "09c4f826-b649-461f-9191-f7948635df95",
+  "duration_ms": 138575,
+  "uuid": "1cbd0151-cc93-4e4f-9d53-32a39ffcf194",
   "passC": {
     "concept": "multi-agent orchestration",
-    "state_of_practice": "The field has moved from \"more agents\" to \"fewer agents with harder boundaries.\" The dominant lesson reported this year is that decomposition modeled on human workflow steps loses context at every handoff and produces systems where each agent is locally right and the whole is incoherent \u2014 so judgment is being re-consolidated into a single owning agent while sub-agents are demoted to investigators that return findings, never reasoning. Around that, practitioners converged on a small set of load-bearing mechanics: per-agent scoped context (one job, one or two tools, its own slice), durable state in files or an immutable event log rather than in a context window, deterministic work lifted out of the agentic system entirely and run before the agent is invoked, and blocking gates at the most expensive handoff. Infrastructure people report that most \"reasoning failures\" in multi-agent systems are actually distributed-state consistency failures, and that the model should emit proposals a policy layer approves rather than act directly. The unresolved center of gravity is where orchestration lives: in an explicit engineered control plane, in emergent agent-to-agent coordination, or increasingly inside the model itself \u2014 with Mythos-class self-orchestration used as evidence that the scaffolding is temporary and control-plane advocates arguing the opposite.",
+    "state_of_practice": "The field arrived at this conference having actually run multi-agent systems in production, and the mood is corrective rather than expansionist. The dominant finding is that failures blamed on reasoning are usually structural: context lost at handoffs, distributed-state inconsistency, and orchestrator agents that quietly do the work themselves instead of dispatching. The converged design pattern is narrow single-job agents with scoped context, coordinating through durable external state (files, event logs, knowledge graphs, blackboards) rather than through chatty agent-to-agent reasoning exchange; sub-agents return compressed results and evidence, never their reasoning traces, both to protect the parent's context window and to prevent convergent groupthink. Deterministic components \u2014 signal detection, statistical checks, SQL, emergency routing, permission enforcement \u2014 are being pulled out of the agentic system entirely and run before or above the model, with agents reserved for what rules cannot decide. Parallelism is now understood to require real isolation (git worktrees, per-agent sandboxed filesystems, dedicated cloud workspaces) and, more importantly, to be capped not by tokens or compute but by human attention: several speakers independently described discovering that they had become the scheduler, router, and memory for their own fleet. The live fights are whether to decompose reasoning across agents at all, whether the orchestration harness should be hand-engineered or allowed to emerge (or vanish as models self-orchestrate), and whether coordination needs a new infrastructure layer or a reuse of Kubernetes and CI/CD.",
     "consensus": [
       {
-        "claim": "Sub-agents should return compressed results or findings to the parent, never their full output or the reasoning that produced it.",
-        "support_count": 3,
-        "supporting_talks": [
-          "why-we-killed-our-multi-agent-pipeline",
-          "anthropics-cca-exam-as-a-field-guide-for-agentic-engineering",
-          "medic-for-apache-spark-first-aid-for-failing-jobs"
-        ],
-        "evidence_quote": "That you can still delegate to a sub-agent. You can get back the uh results back, not the reasoning or the judgment.",
-        "evidence_talk": "why-we-killed-our-multi-agent-pipeline",
-        "evidence_timestamp_sec": 510
-      },
-      {
-        "claim": "Each agent must have its own scoped context slice; sub-agent context must not spill into the parent thread.",
+        "claim": "Deterministic logic belongs outside or above the agentic system \u2014 run rules, statistics, and policy checks first, and invoke agents only for what rules cannot decide.",
         "support_count": 5,
-        "supporting_talks": [
-          "i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke",
-          "anthropics-cca-exam-as-a-field-guide-for-agentic-engineering",
-          "develop-at-idea-velocity",
-          "the-future-is-domain-specific-agents",
-          "medic-for-apache-spark-first-aid-for-failing-jobs"
-        ],
-        "evidence_quote": "These are real entity types in the system. It is not a cute metaphor. Each one is its own agent with its own scoped context and its own approval boundary.",
-        "evidence_talk": "i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke",
-        "evidence_timestamp_sec": 111
-      },
-      {
-        "claim": "One agent, one job: a single monolithic prompt or a tool-heavy generalist agent degrades as scope grows, so narrow agents with few tools outperform it.",
-        "support_count": 4,
-        "supporting_talks": [
-          "the-factory-that-dreams-39-ai-agents-no-framework",
-          "medic-for-apache-spark-first-aid-for-failing-jobs",
-          "anthropics-cca-exam-as-a-field-guide-for-agentic-engineering",
-          "the-future-is-domain-specific-agents"
-        ],
-        "evidence_quote": "one prompt that's supposed to do everything ends up doing everything badly",
-        "evidence_talk": "the-factory-that-dreams-39-ai-agents-no-framework",
-        "evidence_timestamp_sec": 205
-      },
-      {
-        "claim": "Deterministic steps (signal detection, SQL, file conversion, rule checks) should be partitioned out of the agentic system and run before the agent is invoked.",
-        "support_count": 4,
         "supporting_talks": [
           "why-we-killed-our-multi-agent-pipeline",
           "can-oncology-workflows-run-without-human-touch",
           "deterministic-infra-for-non-deterministic-ai-agents",
+          "guardrails-first-engineering-member-facing-health-ai",
           "notions-token-town"
         ],
-        "evidence_quote": "any complex workflows will have deterministic parts and agentic parts. Don't let agents actually run the deterministic part, right?",
-        "evidence_talk": "why-we-killed-our-multi-agent-pipeline",
-        "evidence_timestamp_sec": 831
+        "evidence_quote": "Two, deterministic rules belong above the model, not inside it. What can never be wrong cannot be left to probability.",
+        "evidence_talk": "guardrails-first-engineering-member-facing-health-ai",
+        "evidence_timestamp_sec": 154
       },
       {
-        "claim": "Handoffs between steps \u2014 not prompts, models, or reasoning \u2014 are where multi-agent systems actually corrupt data, so boundaries need explicit validation.",
-        "support_count": 3,
-        "supporting_talks": [
-          "every-solo-agent-builder-eventually-reinvents-a-worse-version-of-cicd",
-          "why-we-killed-our-multi-agent-pipeline",
-          "deterministic-infra-for-non-deterministic-ai-agents"
-        ],
-        "evidence_quote": "Every single handoff is the place where the system can lie to you. And if you're building the system alone, nobody catches the lies except you, usually after the damage is done.",
-        "evidence_talk": "every-solo-agent-builder-eventually-reinvents-a-worse-version-of-cicd",
-        "evidence_timestamp_sec": 99
-      },
-      {
-        "claim": "A human approval boundary is a permanent structural component of agent fleets, not scaffolding that better models will remove.",
+        "claim": "Without explicit orchestration structure, the human collapses into being the scheduler, router, and memory of the fleet, and their attention \u2014 not tokens or compute \u2014 becomes the binding constraint.",
         "support_count": 5,
         "supporting_talks": [
-          "deterministic-infra-for-non-deterministic-ai-agents",
-          "the-factory-that-dreams-39-ai-agents-no-framework",
           "i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke",
-          "can-oncology-workflows-run-without-human-touch",
-          "the-engineer-of-the-future-is-the-person-who-is-able-to-choose-what-is-worth-doi"
-        ],
-        "evidence_quote": "Many people frame human involvement as temporarily temporary necessity. I don't think that's correct. The most successful systems are likely to remain human supervised.",
-        "evidence_talk": "deterministic-infra-for-non-deterministic-ai-agents",
-        "evidence_timestamp_sec": 290
-      },
-      {
-        "claim": "Without a real orchestration layer the human silently becomes the scheduler, router, and memory of the fleet, and their attention \u2014 not tokens or compute \u2014 becomes the binding constraint.",
-        "support_count": 4,
-        "supporting_talks": [
           "the-golden-age-of-ai-engineering",
-          "i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke",
           "the-engineer-of-the-future-is-the-person-who-is-able-to-choose-what-is-worth-doi",
-          "building-an-autonomous-engineering-org"
+          "building-an-autonomous-engineering-org",
+          "understanding-is-the-new-bottleneck"
         ],
         "evidence_quote": "I thought I was orchestrating. Really, I was polling. I was the scheduler, the router, and the memory.",
         "evidence_talk": "the-golden-age-of-ai-engineering",
         "evidence_timestamp_sec": 1159
       },
       {
-        "claim": "Fleet state belongs in durable external artifacts (files on disk, an immutable event log) rather than inside any model's context window, so context wipes and crashes are recoverable.",
+        "claim": "Human approval and supervision are permanent architectural components of agent systems, not scaffolding that better models will remove.",
+        "support_count": 5,
+        "supporting_talks": [
+          "deterministic-infra-for-non-deterministic-ai-agents",
+          "the-factory-that-dreams-39-ai-agents-no-framework",
+          "i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke",
+          "guardrails-first-engineering-member-facing-health-ai",
+          "can-oncology-workflows-run-without-human-touch"
+        ],
+        "evidence_quote": "Many people frame human involvement as temporarily temporary necessity. I don't think that's correct. The most successful systems are likely to remain human supervised.",
+        "evidence_talk": "deterministic-infra-for-non-deterministic-ai-agents",
+        "evidence_timestamp_sec": 290
+      },
+      {
+        "claim": "Give each agent one job and a minimal tool/skill inventory; a single agent carrying every tool, skill, or prompt responsibility performs measurably worse.",
+        "support_count": 4,
+        "supporting_talks": [
+          "anthropics-cca-exam-as-a-field-guide-for-agentic-engineering",
+          "the-factory-that-dreams-39-ai-agents-no-framework",
+          "medic-for-apache-spark-first-aid-for-failing-jobs",
+          "the-future-is-domain-specific-agents"
+        ],
+        "evidence_quote": "So, specialize, don't overload.",
+        "evidence_talk": "anthropics-cca-exam-as-a-field-guide-for-agentic-engineering",
+        "evidence_timestamp_sec": 782
+      },
+      {
+        "claim": "Handoffs between agents \u2014 not prompts, models, or reasoning quality \u2014 are where multi-agent systems actually break, because context is silently lost or corrupted at each boundary.",
+        "support_count": 4,
+        "supporting_talks": [
+          "why-we-killed-our-multi-agent-pipeline",
+          "every-solo-agent-builder-eventually-reinvents-a-worse-version-of-cicd",
+          "deterministic-infra-for-non-deterministic-ai-agents",
+          "i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke"
+        ],
+        "evidence_quote": "Every single handoff is the place where the system can lie to you. And if you're building the system alone, nobody catches the lies except you, usually after the damage is done.",
+        "evidence_talk": "every-solo-agent-builder-eventually-reinvents-a-worse-version-of-cicd",
+        "evidence_timestamp_sec": 99
+      },
+      {
+        "claim": "Sub-agents should return compressed findings, results, or claim-plus-evidence to the parent \u2014 never their full reasoning traces or raw tool output.",
         "support_count": 3,
+        "supporting_talks": [
+          "why-we-killed-our-multi-agent-pipeline",
+          "medic-for-apache-spark-first-aid-for-failing-jobs",
+          "anthropics-cca-exam-as-a-field-guide-for-agentic-engineering"
+        ],
+        "evidence_quote": "That you can still delegate to a sub-agent. You can get back the uh results back, not the reasoning or the judgment.",
+        "evidence_talk": "why-we-killed-our-multi-agent-pipeline",
+        "evidence_timestamp_sec": 510
+      },
+      {
+        "claim": "Real parallelism requires isolated execution environments per agent \u2014 worktrees, sandboxed filesystems, or dedicated cloud workspaces \u2014 because shared local machines collide on resources, credentials, and state.",
+        "support_count": 4,
+        "supporting_talks": [
+          "building-an-autonomous-engineering-org",
+          "develop-at-idea-velocity",
+          "the-future-is-domain-specific-agents",
+          "i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke"
+        ],
+        "evidence_quote": "So, we invested in dedicated cloud workspaces where each agent ran in its own isolated environment. And this allowed us to easily run them in parallel and from anywhere.",
+        "evidence_talk": "building-an-autonomous-engineering-org",
+        "evidence_timestamp_sec": 856
+      },
+      {
+        "claim": "Durable coordination state must live outside the model \u2014 in files, an event log, or a shared store \u2014 so it survives context wipes, compaction, and crashes.",
+        "support_count": 4,
         "supporting_talks": [
           "i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke",
           "active-graph-agent-runtime-babyagi-4",
-          "the-factory-that-dreams-39-ai-agents-no-framework"
+          "the-factory-that-dreams-39-ai-agents-no-framework",
+          "why-we-killed-our-multi-agent-pipeline"
         ],
         "evidence_quote": "The state lives in files. It is not trapped inside one model. And this is the single most practical thing I learned all year.",
         "evidence_talk": "i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke",
         "evidence_timestamp_sec": 145
+      },
+      {
+        "claim": "Verification should come from an agent with different context than the one that produced the work; a producer evaluating its own output is systematically biased toward approval.",
+        "support_count": 4,
+        "supporting_talks": [
+          "develop-at-idea-velocity",
+          "design-patterns-for-ai-trust-juries-libraries-and-agent-tiers",
+          "can-oncology-workflows-run-without-human-touch",
+          "anthropics-cca-exam-as-a-field-guide-for-agentic-engineering"
+        ],
+        "evidence_quote": "that's kind of the benefit you get, where the manager has a different context um than the workers",
+        "evidence_talk": "develop-at-idea-velocity",
+        "evidence_timestamp_sec": 607
       }
     ],
     "disagreements": [
       {
-        "question": "Does splitting work across multiple reasoning agents improve results, or degrade them relative to one agent that owns the whole problem?",
-        "position_a": "Decompose: many narrowly scoped agents (or a jury of independent analysts) beat one agent, because a single prompt cannot be tuned for everything and independent perspectives catch what one agent misses.",
+        "question": "Should reasoning and judgment be distributed across multiple agents, or consolidated into exactly one agent that owns the end-to-end picture?",
+        "position_a": "Consolidate: exactly one agent must own end-to-end reasoning. Splitting judgment across specialized agents produces locally-correct, globally-incoherent output, and the right move before adding another agent is adding a boundary to the one you have. Frontier models increasingly self-orchestrate without any custom decomposition.",
         "position_a_talks": [
-          "medic-for-apache-spark-first-aid-for-failing-jobs",
-          "the-factory-that-dreams-39-ai-agents-no-framework",
-          "design-patterns-for-ai-trust-juries-libraries-and-agent-tiers",
-          "the-future-is-domain-specific-agents"
-        ],
-        "position_b": "Consolidate: exactly one agent should hold end-to-end judgment, because context is lost at every handoff and each agent can derive a locally correct fact while nobody understands the whole picture; add a boundary, not another agent.",
-        "position_b_talks": [
           "why-we-killed-our-multi-agent-pipeline",
           "every-solo-agent-builder-eventually-reinvents-a-worse-version-of-cicd",
           "everything-we-knew-about-software-has-changed"
         ],
-        "why_it_matters": "This decides whether your engineering budget goes into orchestration, handoff contracts, and consensus machinery, or into giving one agent better tools, a knowledge graph, and a longer leash. Teams that guessed wrong report rewriting the whole system."
+        "position_b": "Decompose: many narrowly-scoped agents outperform one general agent, because a single prompt that must do everything does everything badly and multi-agent structure gives finer control over system behavior. Expanding scope should mean adding an agent, not lengthening a prompt.",
+        "position_b_talks": [
+          "the-factory-that-dreams-39-ai-agents-no-framework",
+          "medic-for-apache-spark-first-aid-for-failing-jobs",
+          "the-future-is-domain-specific-agents",
+          "anthropics-cca-exam-as-a-field-guide-for-agentic-engineering"
+        ],
+        "why_it_matters": "This determines whether your engineering effort goes into topology and handoff contracts or into context engineering and tooling for a single deep agent \u2014 and whether observed incoherence is read as a decomposition bug to fix or as evidence the decomposition itself was the mistake."
       },
       {
-        "question": "Should the topology of a multi-agent system be specified by the engineer up front, or allowed to emerge from agent interaction at runtime?",
-        "position_a": "Engineer it explicitly: hierarchies as real entity types with approval boundaries, a knowledge graph acting as a control plane that dictates which paths and hypotheses the agent may pursue, and a policy layer that validates every proposed action.",
+        "question": "Should the orchestration harness be explicitly engineered and maintained, or allowed to emerge from agent interaction (or disappear as models improve)?",
+        "position_a": "Engineer it deliberately and expect it to persist: hierarchies as real entity types with scoped context and approval boundaries, an event-sourced runtime, an agentic control plane. The harness will not dissolve as models improve, and harness design is the current bottleneck.",
         "position_a_talks": [
           "i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke",
-          "why-we-killed-our-multi-agent-pipeline",
+          "active-graph-agent-runtime-babyagi-4",
           "deterministic-infra-for-non-deterministic-ai-agents",
-          "can-oncology-workflows-run-without-human-touch"
+          "the-golden-age-of-ai-engineering"
         ],
-        "position_b": "Let it emerge: the harness should be the output of the process rather than its input, with agent roles arising from position relative to other agents; a fixed harness buys reliability by suppressing the variance novelty requires and can be obsolete within a month.",
+        "position_b": "Don't hand-build it: a carefully built harness can be irrelevant within a month, so the harness should be the output of the process \u2014 emerging from agent interaction with roles and governance forming locally \u2014 or simply unnecessary, since a sufficiently capable model will spawn, split, and verify work when told to.",
         "position_b_talks": [
           "beyond-the-harness-a-journey-towards-adaptative-engineering",
-          "everything-we-knew-about-software-has-changed",
-          "full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex"
+          "everything-we-knew-about-software-has-changed"
         ],
-        "why_it_matters": "Explicit topology gives you replay, audit, and a debuggable chain of decisions; emergent topology gives adaptability but, as its own advocates concede, legibility degrades as adaptability rises. You cannot have both, and the choice is made at architecture time."
+        "why_it_matters": "If the harness is durable infrastructure, investment in control planes, entity hierarchies, and event logs compounds; if it is a temporary crutch around model weakness, that investment is written off at every model release."
       },
       {
-        "question": "How should agents coordinate \u2014 by messaging each other, or only through shared state?",
-        "position_a": "Never let LLM components message each other; all coordination goes through shared state (an event log, files, a blackboard), which is what yields replays, rollbacks, and forks.",
+        "question": "Should agents coordinate exclusively through shared state, or communicate directly with each other?",
+        "position_a": "Never let agents message each other. All coordination goes through shared state \u2014 an immutable event log, a blackboard, a knowledge-graph control plane \u2014 which is what yields replay, rollback, forks, and auditable consistency; sub-agents hand back results into that state rather than conversing.",
         "position_a_talks": [
           "active-graph-agent-runtime-babyagi-4",
-          "i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke",
           "why-we-killed-our-multi-agent-pipeline"
         ],
-        "position_b": "Agents should talk to each other directly \u2014 sub-agents conversing with their coordinator in plain English, threads sending messages to other threads, and cross-organization agents discovering, delegating to, and paying each other via signed identity records.",
+        "position_b": "Direct agent-to-agent messaging is the right primitive: full sub-agents with their own loops and histories talking to their coordinator in plain English, threads that can send messages to each other, and eventually a cross-organizational agent web with signed identity records, message boxes, negotiation, and payments.",
         "position_b_talks": [
           "the-future-is-domain-specific-agents",
           "full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex",
           "the-agentic-web-and-the-bazaar-era-of-ai"
         ],
-        "why_it_matters": "Shared-state coordination is auditable and recoverable but cannot cross organizational boundaries; direct messaging composes across vendors and the open web but reintroduces the untraceable handoffs that multiple teams identified as their primary failure source."
+        "why_it_matters": "Shared-state-only coordination makes the system auditable and replayable but confines it to one trust domain; direct messaging scales across organizational boundaries but forces you to solve identity, spam, trust, and consistency yourself \u2014 and several speakers attribute multi-agent failures to exactly that consistency gap."
       },
       {
-        "question": "Does multi-agent work need a dedicated orchestration/control-plane layer, or is a frontier model plus good thread management already sufficient?",
-        "position_a": "A distinct layer is required and is the next locus of competitive advantage \u2014 an agentic control plane analogous to Kubernetes for containers, plus registry, identity, and trust layers for anything beyond a single machine.",
+        "question": "Does running more agents in parallel actually increase throughput?",
+        "position_a": "Yes, and it is the core unlock: agents in git worktrees, isolated cloud workspaces, five or six parallel approaches with the best selected, thousands of small agents across regions. Once delegation infrastructure exists, adding parallelism costs almost nothing.",
         "position_a_talks": [
-          "deterministic-infra-for-non-deterministic-ai-agents",
-          "the-agentic-web-and-the-bazaar-era-of-ai",
-          "i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke",
+          "develop-at-idea-velocity",
+          "building-an-autonomous-engineering-org",
+          "the-golden-age-of-ai-engineering",
           "the-future-is-domain-specific-agents"
         ],
-        "position_b": "No framework or software factory is needed \u2014 tell a self-orchestrating model to spawn workers, split the work, and verify it, or keep one long-lived pinned thread whose compaction now holds hundreds of sub-agents' worth of state.",
+        "position_b": "No \u2014 a flat pile of parallel agents does not scale, because human cognitive bandwidth does not parallelize and each additional loop adds routing, merging, and verification decisions. Throughput just relocates the bottleneck to review, and PRs pile up unreviewed.",
         "position_b_talks": [
-          "everything-we-knew-about-software-has-changed",
-          "full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex",
-          "the-factory-that-dreams-39-ai-agents-no-framework"
+          "the-engineer-of-the-future-is-the-person-who-is-able-to-choose-what-is-worth-doi",
+          "i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke",
+          "understanding-is-the-new-bottleneck"
         ],
-        "why_it_matters": "If orchestration is absorbed by the model, control-plane investment is written off at the next release; if it is not, teams relying on the model will hit the multi-machine, identity, and scheduling walls that the infrastructure camp is already reporting."
+        "why_it_matters": "If parallelism is the unlock, you invest in sandboxes and dispatch infrastructure; if human attention is the ceiling, you invest instead in hierarchy, scoped context, and automated review gates \u2014 and note that the strongest pro-parallelism talk also reports code review becoming the unsolved binding constraint."
       },
       {
-        "question": "When a long-running agent's context fills, should you compact it or reset and re-read written state?",
-        "position_a": "Compact. Compaction now works well enough that the old advice to start fresh threads is obsolete, and a compact at roughly 150,000 tokens is the standard move.",
+        "question": "Does agent orchestration need a new infrastructure layer, or should it reuse existing distributed-systems and CI/CD infrastructure?",
+        "position_a": "A new layer is emerging and is where the advantage lies: an agentic control plane analogous to Kubernetes for containers, and a full agentic-web stack of identity, registry, trust, payments, coordination, and negotiation layers that DNS-era infrastructure cannot serve.",
         "position_a_talks": [
-          "full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex",
-          "anthropics-cca-exam-as-a-field-guide-for-agentic-engineering"
+          "deterministic-infra-for-non-deterministic-ai-agents",
+          "the-agentic-web-and-the-bazaar-era-of-ai"
         ],
-        "position_b": "Never compact. It is slow, you get no control over what survives, and what it drops is permanently gone; clear the context entirely and have the agent re-read its own handoff and history files.",
+        "position_b": "Reuse what exists: Kubernetes already solves compute, secrets, tools, and scheduling, so build only orchestration, review flow, and context management on top \u2014 and the operational guarantees you keep rediscovering are just contract testing, staging, gates, and audit trails you are rebuilding badly. No framework required.",
         "position_b_talks": [
-          "i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke"
+          "i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke",
+          "every-solo-agent-builder-eventually-reinvents-a-worse-version-of-cicd",
+          "the-factory-that-dreams-39-ai-agents-no-framework"
         ],
-        "why_it_matters": "The answer determines whether an orchestrator needs to continuously write recovery artifacts to disk, or can treat its own conversation as durable memory \u2014 which in turn decides whether a crashed machine costs you a run or a boot command."
+        "why_it_matters": "It decides whether teams spend the next year building or buying an agent control plane, or spend it wiring agents into the CI/CD and cluster infrastructure they already operate."
       }
     ],
     "practical_guidance": {
       "do": [
-        "Consolidate end-to-end judgment in exactly one agent; parallelize investigation via sub-agents but have them return results only",
-        "Give each agent one job and one or two tools rather than a large tool inventory",
-        "Lift deterministic components (statistical signal detection, SQL, CSV-to-PDF, rule checks) out of the agentic system and run them before the agent wakes up",
-        "Put a blocking gate at the highest-cost handoff first \u2014 not the most technically complex one \u2014 and make it halt the pipeline rather than log a warning",
-        "Keep fleet state in files on disk (handoff docs, history, per-machine dirs) so a context wipe or machine crash is recoverable via a single boot command",
-        "Force delegation structurally: expose only CLI-dispatch skills so the orchestrator cannot do the work itself",
-        "Run each parallel agent in an isolated cloud workspace or git worktree; local machines cannot support real parallelism",
-        "Have a manager agent with different context judge worker output, since a coding agent evaluating its own PR is biased toward declaring success",
-        "Require two independent sources to agree before proceeding unsupervised, and route low-confidence cases to human escalation by default",
-        "For questions with no empirically correct answer, run independent analysts plus a consensus judge that weighs reasoning quality, and expand the jury when consensus is insufficient",
-        "Have the model emit proposals that infrastructure validates, policy approves, and an execution gateway enforces \u2014 never let it touch production directly",
-        "Trace the chain of decisions and state transitions, not just final outputs, because that is what you need to debug an autonomous workflow",
-        "Keep shared fleet state changing only through pull requests, with machine-specific state in per-machine directories",
-        "Run the control point on an always-on machine, not a laptop that sleeps",
-        "Snapshot real tool responses as checked-in fixtures and run offline evals so you can quantify agent quality instead of relying on intuition"
+        "Route sub-agent output back to the parent as a summarized finding or claim-plus-evidence, and deliberately withhold the sub-agent's reasoning so peer agents don't converge into groupthink",
+        "Partition workflows so deterministic parts (signal detection, statistical checks, SQL, emergency routing, identity verification) execute outside the agentic system, before the agent is invoked",
+        "Force delegation structurally \u2014 expose dispatch as CLI-backed skills so the orchestrator's only available path is to dispatch, since it will otherwise do the work itself",
+        "Keep fleet state in files on disk and recover by clearing context and re-reading self-written handoff/history files, rather than relying on compaction you cannot control",
+        "Separate per-machine state into per-machine directories and require shared state to change only via pull request when running agents across multiple machines",
+        "Run the fleet's single control point on an always-on machine \u2014 a laptop that sleeps cannot be a control plane",
+        "Instrument the most expensive handoff first (measured by cost of bad data), not the most technically complex one",
+        "Make gates blocking: a gate that only logs a warning is a suggestion, not a guarantee",
+        "Use a jury of independent agents plus a consensus judge that weighs reasoning quality for questions with no empirically correct answer, and expand the jury when consensus is insufficient",
+        "Require two independent sources to agree before proceeding without human verification, and escalate to a human whenever evidence or confidence is insufficient",
+        "Give each agent its own sandboxed filesystem and sandboxed code execution environment, and run parallel work in git worktrees or dedicated cloud workspaces",
+        "Treat the knowledge graph as a control plane that constrains which paths and hypotheses the agent may pursue, not as a data lookup layer",
+        "Have agents declare their resource requirements and let the system place them, rather than choosing which machine each runs on by hand",
+        "Snapshot real tool responses as checked-in fixtures and run offline evals so multi-agent quality is quantified rather than intuited"
       ],
       "avoid": [
-        "Deriving your agent architecture by mimicking a human analyst's workflow steps \u2014 human process constraints are not system constraints",
-        "Letting every subtask dump its full output into the primary thread, crowding out the context",
-        "Sharing agents' reasoning across a collaborating group; pass the claim and evidence only, or they converge into groupthink",
+        "Letting sub-agent output spill into the primary thread's context \u2014 it burns tokens and degrades answer accuracy even far below the context limit",
+        "Handing one agent a large tool, skill, or MCP inventory; installing many skills into a single agent measurably degrades it",
+        "Distributing judgment across a chain of specialized agents that each derive locally correct facts while no agent owns the end-to-end picture",
+        "Designing agent topology by mimicking the steps a human analyst takes \u2014 human process constraints are not architectural constraints",
         "Uncontrolled retries, which turn a minor API error into exponential resource growth and a compute incident",
-        "Gates that only log warnings \u2014 a gate that cannot block the artifact is a suggestion",
-        "Adding another agent when the actual missing piece is a boundary",
-        "Installing many skills and MCP servers into one agent; the research shows it makes the agent substantially worse",
-        "Filling a million-token context window because you can \u2014 accuracy degrades well before the hard limit",
-        "Stacking many agent and MCP processes on one machine (memory exhaustion, swap, credentials binding to the wrong workspaces)",
-        "Pointing two machines at the same shared context directory without separating machine-specific state \u2014 they diverge silently",
-        "Assuming more parallel agents equals more capacity; human cognitive bandwidth does not parallelize and each loop adds routing, merging, and verification decisions",
-        "Forcing a diagnostic agent into a deterministic graph workflow, which proved more brittle than the reasoning-and-acting paradigm",
-        "Having agents infer entity and KPI relationships from raw tables \u2014 it does not scale and invents relationships that do not exist in the data"
+        "Letting the model directly control production systems instead of emitting proposals that infrastructure validates, policy approves, and a gateway enforces",
+        "Running a flat pile of parallel agents, which forces the human into scheduler, memory, and reviewer simultaneously",
+        "Stacking agent and MCP processes on one machine until memory is exhausted and swap fills, or pointing two machines at the same shared context directory",
+        "Treating agent hierarchy as a descriptive metaphor rather than implementing it as real entity types with scoped context and approval boundaries",
+        "Adding another agent when the actual missing thing is one boundary check on the system you already have",
+        "Allowing autonomous outbound communication \u2014 keep a human on every send",
+        "Shipping because the artifacts look complete; a polished, plausible artifact is more dangerous than a visibly bad output"
       ]
     },
     "notable_outliers": [
       {
-        "claim": "AI writes shared-state/blackboard-style agent code better than LLM-agent-style code, because decades of blackboard-architecture discussion sit in the training data while LLM agent patterns are only three years old.",
+        "claim": "AI models write shared-state/blackboard-style agent code better than LLM-agent-style code, because decades of blackboard-architecture discussion exist in the training data while LLM agent patterns are only about three years old.",
         "talk": "active-graph-agent-runtime-babyagi-4",
         "timestamp_sec": 894
       },
       {
-        "claim": "Kubernetes already answers compute, secrets, tools, and scheduling for agent fleets, so the only layer worth building is orchestration, review flow, and context management.",
+        "claim": "Agent identity, roles, and specialization should not be assigned by the engineer at all \u2014 they should arise from an agent's position relative to other agents and environmental pressure, with governance emerging from local coordination and no central authority.",
+        "talk": "beyond-the-harness-a-journey-towards-adaptative-engineering",
+        "timestamp_sec": 1437
+      },
+      {
+        "claim": "The orchestration infrastructure itself can be built by the agents: an infra team inside the fleet built the review gateway that gates the fleet's own actions.",
         "talk": "i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke",
-        "timestamp_sec": 503
+        "timestamp_sec": 228
       },
       {
-        "claim": "Frontier models now self-orchestrate \u2014 tell one to spawn additional models, split the work, and verify it afterward, and it just does, with no custom tooling or software factory.",
-        "talk": "everything-we-knew-about-software-has-changed",
-        "timestamp_sec": 148
+        "claim": "Consolidating a failed multi-agent pipeline into a single agent produced root-cause analyses in 20-30 minutes and 50+ turns for work that previously took an analyst three to four weeks \u2014 accepting very high token and turn counts as the price of coherent end-to-end reasoning.",
+        "talk": "why-we-killed-our-multi-agent-pipeline",
+        "timestamp_sec": 790
       },
       {
-        "claim": "Domain-specific agents do not meaningfully exist in public today, and 2027 will be the year of multi-agent orchestration.",
+        "claim": "2027 will be the year of multi-agent orchestration; domain-specific agents that make it viable do not meaningfully exist in public today.",
         "talk": "the-future-is-domain-specific-agents",
         "timestamp_sec": 1315
       },
       {
-        "claim": "Many multi-agent failures blamed on reasoning are actually distributed-state consistency failures.",
-        "talk": "deterministic-infra-for-non-deterministic-ai-agents",
-        "timestamp_sec": 238
+        "claim": "Pinned persistent threads that can list, rename, and message each other are superior to sub-agents for ongoing work, because sidebar visibility lets you notice state changes.",
+        "talk": "full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex",
+        "timestamp_sec": 3497
       },
       {
-        "claim": "A 39-agent production system was built with no framework, no fine-tuning, and no data scientists for roughly $30,000 against a $230,000 agency quote.",
-        "talk": "the-factory-that-dreams-39-ai-agents-no-framework",
-        "timestamp_sec": 508
+        "claim": "Distributing documents across parallel context caches by domain hurts recall, because the supervisor skips domains that look irrelevant at first glance \u2014 documents should be distributed in no particular order.",
+        "talk": "when-all-context-matters-extended-cache-augmented-generation",
+        "timestamp_sec": 230
+      },
+      {
+        "claim": "High model throughput matters mainly because it lets you run five or six parallel approaches and pick the best, not because a single answer arrives faster.",
+        "talk": "the-golden-age-of-ai-engineering",
+        "timestamp_sec": 967
       }
     ],
     "maturity": "contested",
-    "maturity_rationale": "Speakers agree on the mechanics \u2014 scoped context, results-not-reasoning handoffs, deterministic partitioning, human approval gates \u2014 but split hard on fundamentals: whether to decompose at all, whether topology should be designed or emergent, whether agents may message each other, and whether an orchestration layer survives the next model release. Multiple teams reported tearing down and rebuilding systems in opposite directions during the same year."
+    "maturity_rationale": "Practitioners have converged tightly on tactics \u2014 narrow agents, scoped context, results-not-reasoning handoffs, deterministic pre-filters, isolated sandboxes, human approval gates \u2014 but disagree on fundamentals: one talk killed its multi-agent pipeline to consolidate judgment in a single agent while another runs 39, and the field splits on whether the orchestration harness should be hand-engineered, allowed to emerge, or expected to disappear as models self-orchestrate. Multiple speakers describe cross-machine and cross-organizational orchestration as explicitly unsolved."
   },
   "_meta": {
     "concept": "multi-agent orchestration",
     "slug": "multi-agent-orchestration",
-    "talk_count": 25,
+    "talk_count": 26,
     "missing_talks": [],
-    "wall_sec": 174.4,
-    "run_at": "2026-08-13T17:07:38Z"
+    "wall_sec": 139.4,
+    "run_at": "2026-08-20T03:08:40Z"
   }
 }

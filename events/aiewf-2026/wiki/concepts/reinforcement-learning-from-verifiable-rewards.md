@@ -3,16 +3,16 @@ title: "reinforcement learning from verifiable rewards"
 type: "concept"
 slug: "reinforcement-learning-from-verifiable-rewards"
 tier: "core"
-maturity: "consolidating"
-talk_count: 9
-speaker_count: 11
+maturity: "contested"
+talk_count: 10
+speaker_count: 12
 ---
 
 # reinforcement learning from verifiable rewards
 
-**Maturity: CONSOLIDATING** — Consolidating — converging practice, some open edges
+**Maturity: CONTESTED** — Contested — active, unresolved disagreement across talks
 
-*Core concept* &middot; discussed across **9** talk(s) by **11** speaker(s)
+*Core concept* &middot; discussed across **10** talk(s) by **12** speaker(s)
 
 **Definition:** Post-training on tasks whose success can be checked programmatically (tests, compilers, solvers) rather than by a learned preference model.
 
@@ -20,11 +20,11 @@ speaker_count: 11
 
 ## State of Practice
 
-The field has stopped treating verifiability as a property of models and started treating it as a property of domains: code was easy to RL on because code decomposes, executes, and checks itself, and the open work is manufacturing that structure elsewhere — data-analysis code as the substrate for biology, observed business outcomes as the substrate for finance, retrieval-ranking plus trajectory rubrics as the substrate for search. Practitioners agree that RLVR as classically construed (math answers, unit tests, database state) is the easy special case and covers a small fraction of real agent work, so most 2026 effort goes into environment and task construction rather than algorithm choice: mining deployed production traces for tasks, working backwards from a known-reachable end state to guarantee solvability, gating generated tasks on pass rate to hold them in the intermediate-difficulty band where advantage signal exists, and decomposing end-to-end outcomes into intermediate checkpoints because sparse terminal reward gives models that are 'pretty bad' nothing to climb. Outcome-only reward is now considered actively unsafe as well as weak — a trajectory can reach 'done' having sent a resignation letter or blocked an account — so dangerous intermediate actions and trajectory quality get their own reward terms. Reward hacking is understood mechanistically as loose proxies that are undefined at the boundaries, and the practical countermeasure that people report working is hindsight review of full trajectories rather than instructing a judge in advance. The live fault lines are whether LLM judges and rubrics are trustworthy enough to carry reward in unverifiable domains, whether to train against controllable learned simulators or against real messy systems, and whether code-centric training is a good prior for non-code work or a source of harmful transfer.
+The conference treated RLVR as proven in the places where a checker already exists — math answers, unit tests, database state, compilers — and treated everything else as the actual research problem. The dominant framing was that verifiability is a property of the domain rather than of the model: code is decomposable, executable and checkable, which is why models are good at it, so extending RLVR to design, biology, finance or computer use means manufacturing a checkable substrate rather than picking a better algorithm. Practitioners reported that task and environment design, not GRPO-vs-PPO, is where the difficulty lives: tasks must sit in a difficulty window where rollouts separate, graders must be durable across multiple valid solution paths, and end-to-end outcome reward is usually too sparse, so people decompose into intermediate nodes (analysis-DAG choke points in biology, codified brand elements in design, retrieval-plus-trajectory rewards in search). The stopgap for unverifiable domains — LLM-as-judge and rubrics-as-rewards — was openly distrusted: rubric scores were reported as only loosely correlated with verifiable outcomes, judges as reward-hackable, and human expert judgment as still substantially better. The other consistent claim was economic: environments and evals are the same artifact, and the scarce input is not model access but proprietary deployment traces and verified real-world outcomes that frontier labs cannot buy. Dissent came from speakers arguing the field is over-indexed on procedural single-answer tasks and that the next post-training objective is calibrated decision-making rather than either RLHF or RLVR.
 
 ## Consensus
 
-### Models are good at code because code is verifiable, decomposable, and executable — verifiability is a property of the domain, not of the model — so extending RL to a new domain means first engineering a verifiable substrate for it.
+### Verifiability is a property of the task domain, not of the model; RLVR works in code and math because answer keys exist there, so extending it to other fields requires first constructing a programmatically checkable substrate.
 
 Support: **4** talk(s)
 
@@ -32,19 +32,9 @@ Support: **4** talk(s)
 >
 > — [Ending AI Slop](../talks/ending-ai-slop.md), [1:57](https://www.youtube.com/watch?v=lCBf9slCanI&t=117s)
 
-Supporting talks: [Ending AI Slop](../talks/ending-ai-slop.md), [Verifiable Environments for AI in Biology](../talks/verifiable-environments-for-ai-in-biology.md), [Why Off-the-Shelf AI Doesn't Understand Money](../talks/why-off-the-shelf-ai-doesnt-understand-money.md), [The Base Model Is Dead](../talks/the-base-model-is-dead.md)
+Supporting talks: [Ending AI Slop](../talks/ending-ai-slop.md), [Verifiable Environments for AI in Biology](../talks/verifiable-environments-for-ai-in-biology.md), [Trading Desks to Clinical Trials: Parallels in Applied Vertical AI](../talks/trading-desks-to-clinical-trials-parallels-in-applied-vertical-ai.md), [Why Off-the-Shelf AI Doesn't Understand Money](../talks/why-off-the-shelf-ai-doesnt-understand-money.md)
 
-### Verifiable rewards cover only the easy special case; most economically relevant tasks are not programmatically checkable, and the industry is over-indexed on code and math because those are the tasks that happen to check themselves.
-
-Support: **5** talk(s)
-
-> "often we don't actually have verifiable rewards. And so messy real world tasks often we're kind of figuring out as we go."
->
-> — [Reinforcement Learning without Verifiable Rewards](../talks/reinforcement-learning-without-verifiable-rewards.md), [0:13](https://www.youtube.com/watch?v=AQv3qRCG6Gw&t=13s)
-
-Supporting talks: [Reinforcement Learning without Verifiable Rewards](../talks/reinforcement-learning-without-verifiable-rewards.md), [Scaling to Long Horizons](../talks/scaling-to-long-horizons.md), [What's Next After RLHF?](../talks/whats-next-after-rlhf.md), [Ending AI Slop](../talks/ending-ai-slop.md), [Why Off-the-Shelf AI Doesn't Understand Money](../talks/why-off-the-shelf-ai-doesnt-understand-money.md)
-
-### Task and environment design — not the RL algorithm — is the hard part of turning a fuzzy capability into something trainable.
+### Task and environment design — turning a fuzzy capability into a gradeable task at the right difficulty — is the hard part of RLVR, not the choice of training algorithm.
 
 Support: **4** talk(s)
 
@@ -52,9 +42,9 @@ Support: **4** talk(s)
 >
 > — [Ending AI Slop](../talks/ending-ai-slop.md), [5:44](https://www.youtube.com/watch?v=lCBf9slCanI&t=344s)
 
-Supporting talks: [Ending AI Slop](../talks/ending-ai-slop.md), [Reinforcement Learning without Verifiable Rewards](../talks/reinforcement-learning-without-verifiable-rewards.md), [From RL to IRL](../talks/from-rl-to-irl.md), [What's Next After RLHF?](../talks/whats-next-after-rlhf.md)
+Supporting talks: [Ending AI Slop](../talks/ending-ai-slop.md), [Reinforcement Learning without Verifiable Rewards](../talks/reinforcement-learning-without-verifiable-rewards.md), [Verifiable Environments for AI in Biology](../talks/verifiable-environments-for-ai-in-biology.md), [The Base Model Is Dead](../talks/the-base-model-is-dead.md)
 
-### End-to-end outcome grading is inadequate — too sparse to train on and blind to harmful intermediate actions — so tasks must be decomposed into intermediate checkpoints and trajectory-level rewards.
+### End-to-end outcome-only reward is too sparse and too permissive; tasks must be decomposed into intermediate checkpoints and the trajectory itself scored, not just the final state.
 
 Support: **4** talk(s)
 
@@ -62,102 +52,109 @@ Support: **4** talk(s)
 >
 > — [Verifiable Environments for AI in Biology](../talks/verifiable-environments-for-ai-in-biology.md), [7:50](https://www.youtube.com/watch?v=3ZMUiFaQ3qg&t=470s)
 
-Supporting talks: [Verifiable Environments for AI in Biology](../talks/verifiable-environments-for-ai-in-biology.md), [From RL to IRL](../talks/from-rl-to-irl.md), [Ending AI Slop](../talks/ending-ai-slop.md), [How we taught agents to use good retrieval](../talks/how-we-taught-agents-to-use-good-retrieval.md)
+Supporting talks: [Verifiable Environments for AI in Biology](../talks/verifiable-environments-for-ai-in-biology.md), [From RL to IRL](../talks/from-rl-to-irl.md), [How we taught agents to use good retrieval](../talks/how-we-taught-agents-to-use-good-retrieval.md), [Ending AI Slop](../talks/ending-ai-slop.md)
 
-### Handcrafted expert task sets do not scale; the realistic training distribution has to be discovered by deploying the system and mining its traces and observed outcomes.
+### LLM-as-judge and rubric scores are not yet trustworthy as reward signal for subjective or expert domains — they are reward-hackable, only loosely correlated with verified outcomes, and behind human expert judgment.
+
+Support: **3** talk(s)
+
+> "LLM LLM as a judge might not necessarily always be the best method. We know that there's a lot of reward hacking."
+>
+> — [Ending AI Slop](../talks/ending-ai-slop.md), [5:44](https://www.youtube.com/watch?v=lCBf9slCanI&t=344s)
+
+Supporting talks: [Ending AI Slop](../talks/ending-ai-slop.md), [Trading Desks to Clinical Trials: Parallels in Applied Vertical AI](../talks/trading-desks-to-clinical-trials-parallels-in-applied-vertical-ai.md), [Verifiable Environments for AI in Biology](../talks/verifiable-environments-for-ai-in-biology.md)
+
+### The scarce input for outcome-verified training is proprietary data from real deployment — production traces, failed experiments, verified business outcomes — not model access or scale.
 
 Support: **4** talk(s)
 
-> "what we found is super helpful is taking existing traces from a deployed agent and treating these as the source material"
+> "the moat here is that it's not about the model access, it's about the data itself that you have."
 >
-> — [Reinforcement Learning without Verifiable Rewards](../talks/reinforcement-learning-without-verifiable-rewards.md), [9:41](https://www.youtube.com/watch?v=AQv3qRCG6Gw&t=581s)
+> — [Why Off-the-Shelf AI Doesn't Understand Money](../talks/why-off-the-shelf-ai-doesnt-understand-money.md), [15:21](https://www.youtube.com/watch?v=Owb8g3yDyzo&t=921s)
 
-Supporting talks: [Reinforcement Learning without Verifiable Rewards](../talks/reinforcement-learning-without-verifiable-rewards.md), [From RL to IRL](../talks/from-rl-to-irl.md), [Why Off-the-Shelf AI Doesn't Understand Money](../talks/why-off-the-shelf-ai-doesnt-understand-money.md), [Verifiable Environments for AI in Biology](../talks/verifiable-environments-for-ai-in-biology.md)
+Supporting talks: [Why Off-the-Shelf AI Doesn't Understand Money](../talks/why-off-the-shelf-ai-doesnt-understand-money.md), [Trading Desks to Clinical Trials: Parallels in Applied Vertical AI](../talks/trading-desks-to-clinical-trials-parallels-in-applied-vertical-ai.md), [Reinforcement Learning without Verifiable Rewards](../talks/reinforcement-learning-without-verifiable-rewards.md), [From RL to IRL](../talks/from-rl-to-irl.md)
 
-### RL tasks must be held in a deliberate difficulty band — too easy or too hard produces no learning signal, because advantage depends on separation across rollouts.
+### RL post-training, not pre-training, is now the decisive stage: a state-of-the-art base model alone does not produce a useful product, and supervised learning's role is increasingly to build representations RL will later compose.
 
 Support: **3** talk(s)
 
-> "you want tasks that are not too easy, not too hard and you want to be searching for these and iterating on generating more of them"
+> "A good base model is not enough. So I took that lesson quite early on. So like I said, RLHF made LLMs products."
 >
-> — [Reinforcement Learning without Verifiable Rewards](../talks/reinforcement-learning-without-verifiable-rewards.md), [14:08](https://www.youtube.com/watch?v=AQv3qRCG6Gw&t=848s)
+> — [Scaling to Long Horizons](../talks/scaling-to-long-horizons.md), [3:03](https://www.youtube.com/watch?v=2bvtay8wGYI&t=183s)
 
-Supporting talks: [Reinforcement Learning without Verifiable Rewards](../talks/reinforcement-learning-without-verifiable-rewards.md), [From RL to IRL](../talks/from-rl-to-irl.md), [The Base Model Is Dead](../talks/the-base-model-is-dead.md)
-
-### Reward hacking is the expected consequence of any proxy reward that is undefined at its boundaries, and RL-trained models will reliably find those boundaries.
-
-Support: **3** talk(s)
-
-> "reward hacking is when you have a kind of loose proxy for your objective that is undefined at the boundaries"
->
-> — [Reinforcement Learning without Verifiable Rewards](../talks/reinforcement-learning-without-verifiable-rewards.md), [6:20](https://www.youtube.com/watch?v=AQv3qRCG6Gw&t=380s)
-
-Supporting talks: [Reinforcement Learning without Verifiable Rewards](../talks/reinforcement-learning-without-verifiable-rewards.md), [Ending AI Slop](../talks/ending-ai-slop.md), [Scaling to Long Horizons](../talks/scaling-to-long-horizons.md)
+Supporting talks: [Scaling to Long Horizons](../talks/scaling-to-long-horizons.md), [The Base Model Is Dead](../talks/the-base-model-is-dead.md), [What's Next After RLHF?](../talks/whats-next-after-rlhf.md)
 
 ## Disagreements
 
-### Are LLM judges and rubric scores reliable enough to serve as the reward signal where programmatic verification is unavailable?
+### Can LLM judges and rubrics serve as a legitimate reward signal where programmatic verification is unavailable?
 
 | Position A | Position B |
 |---|---|
-| No — human judgment remains materially better than any LLM judge for subjective quality, and rubric scores that only loosely correlate with verifiable outcomes should not be used for RL or benchmarking; use expert humans (including scientists grading each other) and decompose until the check is programmatic.<br>*[Ending AI Slop](../talks/ending-ai-slop.md), [Verifiable Environments for AI in Biology](../talks/verifiable-environments-for-ai-in-biology.md)* | Yes — LLMs are already strong general reasoners, and judges work well enough in practice provided they judge in hindsight over the full trajectory (or by polling several models) and score concrete rubric items like whether a query is a natural sentence and whether exploration volume was appropriate.<br>*[Reinforcement Learning without Verifiable Rewards](../talks/reinforcement-learning-without-verifiable-rewards.md), [How we taught agents to use good retrieval](../talks/how-we-taught-agents-to-use-good-retrieval.md)* |
+| Yes — judges are already powerful general reasoners and are usable as reward if applied correctly: judge in hindsight after seeing the full trajectory or poll several models, and use rubric-based trajectory rewards alongside retrieval metrics. Simple hindsight review catches most reward hacks in practice.<br>*[Reinforcement Learning without Verifiable Rewards](../talks/reinforcement-learning-without-verifiable-rewards.md), [How we taught agents to use good retrieval](../talks/how-we-taught-agents-to-use-good-retrieval.md)* | No — judges produce plausible jargon without understanding the concepts, rubrics-as-rewards create an echo chamber where the model grades itself into agreement, and measured rubric scores correlate only loosely with verifiable outcomes, so they should not yet be used for RL. Human expert judgment remains substantially better.<br>*[Ending AI Slop](../talks/ending-ai-slop.md), [Trading Desks to Clinical Trials: Parallels in Applied Vertical AI](../talks/trading-desks-to-clinical-trials-parallels-in-applied-vertical-ai.md), [Verifiable Environments for AI in Biology](../talks/verifiable-environments-for-ai-in-biology.md)* |
 
-*Why it matters: If judges are trustworthy, the addressable set of RL domains expands immediately and environment construction can be largely automated; if they are not, every new domain needs expensive expert data collection and a hand-built deterministic grader, which is a week of three people's time per task.*
+*Why it matters: If judges are admissible reward, RLVR generalizes to almost any domain via automated environment generation; if they are not, every new domain is gated on expensive expert-built graders and human grading throughput.*
 
-### Should agents be trained against controllable simulated environments or against the real, messy production system?
-
-| Position A | Position B |
-|---|---|
-| Learned simulators are the better environment: full back-end controllability lets you plant the answer, guarantee the task is solvable, and reverse-engineer supervision for free — including for tools and websites that cannot yet be programmed.<br>*[Reinforcement Learning without Verifiable Rewards](../talks/reinforcement-learning-without-verifiable-rewards.md), [The Base Model Is Dead](../talks/the-base-model-is-dead.md)* | Only reality generates the distribution that matters: you need high-fidelity sandboxes reproducing layout shift, slow loads, pop-ups, stale tabs and random account states, and ultimately you have to ship the product to design partners and let it fail — and in domains like finance the signal is real observed outcomes across many entities, which no simulation supplies.<br>*[From RL to IRL](../talks/from-rl-to-irl.md), [Why Off-the-Shelf AI Doesn't Understand Money](../talks/why-off-the-shelf-ai-doesnt-understand-money.md), [Verifiable Environments for AI in Biology](../talks/verifiable-environments-for-ai-in-biology.md)* |
-
-*Why it matters: It determines whether an RL team's core investment is a simulator/synthetic-task pipeline or a deployed product plus a proprietary outcome dataset — and whether solvability guarantees or failure realism is the property you optimize the environment for.*
-
-### Is code-centric training a good prior for non-code agentic work, or does it induce harmful transfer?
+### When a domain has no programmatic answer key, should you engineer a verifiable environment for it or fall back to expert-in-the-loop data and outcome grounding?
 
 | Position A | Position B |
 |---|---|
-| Code is the right universal substrate — most real computer tasks are reachable through MCP, APIs, Playwright and JavaScript and can be expressed as coding tasks, code is now the dominating pre-training subset supplying the atomic skills RL composes, and data-analysis code can do for biology what code did for software.<br>*[The Base Model Is Dead](../talks/the-base-model-is-dead.md), [Verifiable Environments for AI in Biology](../talks/verifiable-environments-for-ai-in-biology.md)* | Coding ability is not sufficient and its habits actively misfire elsewhere: computer use needs visual grounding and screen semantics baked in, coding-trained agents write keyword-stuffed grep-style queries that defeat semantic search, and the industry's coding bias pushes it toward procedural tasks with one or two valid solutions.<br>*[From RL to IRL](../talks/from-rl-to-irl.md), [How we taught agents to use good retrieval](../talks/how-we-taught-agents-to-use-good-retrieval.md), [Scaling to Long Horizons](../talks/scaling-to-long-horizons.md)* |
+| Engineer verifiability: decompose the fuzzy goal into codified elements and deterministic graders, mine deployed traces into tasks, learn simulators of systems you cannot program, and work backwards from known-reachable end states so supervision comes for free.<br>*[Reinforcement Learning without Verifiable Rewards](../talks/reinforcement-learning-without-verifiable-rewards.md), [Verifiable Environments for AI in Biology](../talks/verifiable-environments-for-ai-in-biology.md), [Ending AI Slop](../talks/ending-ai-slop.md)* | Do not try to RL it. Models cannot verify themselves where there are no answer keys; hire the domain expert, run error analysis over observability logs before touching weights, and ground the model in observed real-world outcomes with selection-bias adjustment rather than in a constructed environment.<br>*[Trading Desks to Clinical Trials: Parallels in Applied Vertical AI](../talks/trading-desks-to-clinical-trials-parallels-in-applied-vertical-ai.md), [Why Off-the-Shelf AI Doesn't Understand Money](../talks/why-off-the-shelf-ai-doesnt-understand-money.md)* |
 
-*Why it matters: If code transfers, the cheapest path to a new agentic domain is to encode it as a coding task and reuse the existing RLVR stack; if it does not, each domain needs its own perception, tooling, and reward design, and code-heavy pre-training mixes have to be counterbalanced.*
+*Why it matters: This decides whether a vertical AI team invests in environment/grader infrastructure and a training loop, or in expert headcount and an outcome-labelled data asset — very different cost structures and time-to-value.*
+
+### Does the verifiable-coding paradigm generalize to the rest of real work?
+
+| Position A | Position B |
+|---|---|
+| Yes — code is the template: data analysis can be the verifiable substrate for biology exactly as code was for software, most real computer tasks are reachable through MCP/APIs/Playwright and can be represented as coding tasks, and code has become the dominant subset of pre-training data precisely because it carries this structure.<br>*[Verifiable Environments for AI in Biology](../talks/verifiable-environments-for-ai-in-biology.md), [The Base Model Is Dead](../talks/the-base-model-is-dead.md), [From RL to IRL](../talks/from-rl-to-irl.md)* | No — the industry is over-indexed on coding and procedural tasks with one or two valid solutions, which leaves no room for creativity, ignores multi-agent environments with conflicting goals, and misses that in creative and open-ended domains the most likely output is not the optimal one. Benchmark success on verifiable tasks coexists with real-world failure on the tasks that matter.<br>*[Scaling to Long Horizons](../talks/scaling-to-long-horizons.md), [Ending AI Slop](../talks/ending-ai-slop.md), [What's Next After RLHF?](../talks/whats-next-after-rlhf.md)* |
+
+*Why it matters: It determines whether the next capability jump comes from scaling verifiable-task RL into new domains, or from a different objective entirely — e.g. calibrated decision-making or preference-pluralism data — which implies a different API shape and different training investment.*
 
 ## Practical Guidance
 
 **Do:**
 
-- Generate tasks in an online loop and gate them on pass rate so they stay in the intermediate-difficulty band where advantage signal exists
-- Work backwards from a known-reachable end state — plant the answer, throw away the solution, then train the model to find it again — so solvability is guaranteed before you spend rollouts
-- Judge trajectories in hindsight after seeing the full chain of events, or by polling several models; simple hindsight review catches most reward hacks, while telling a judge in advance not to allow a behavior does not stop it
-- Grade against a decomposed ground truth built from path-invariant choke points, not against the original reference artifact, so novel-but-valid solutions are not failed
-- Surface infrastructure errors to the model instead of resetting the environment, so recovery becomes a native model action
-- Detect and penalize dangerous intermediate actions explicitly — reaching 'done' is not sufficient evidence of a good trajectory
-- Combine an outcome/retrieval reward with a trajectory reward (e.g. rubric checks that the query is a natural sentence and that exploration volume was neither too much nor too little)
-- Run small RL runs as part of environment design, because some environment defects only appear once RL is actually running
-- Adjust for selection bias when deriving reward from observational outcome data — firms that took an action are systematically different from those that did not (a $4,200 vs $2,800 gap shrinks to ~$1,150 after adjustment)
-- Route contextual, time-dependent, and preference-dependent problems to human data collection rather than into a programmatic RL environment
-- For long-horizon RL, prefer value models over GRPO to cut gradient variance and enable bootstrapping, and apply RL to the compaction step as well as the task
+- Decompose the fuzzy target into codified elements and grade outputs against that decomposed ground truth rather than against the original reference artifact, so novel-but-valid solutions are not penalized
+- Ship tasks as a prompt + grader config + deterministic Python grader (SWE-bench-shaped), and make the grader durable — path-invariant across the multiple valid analysis routes an expert could take
+- Keep task difficulty inside the window where rollouts separate; too-easy and too-hard tasks give no advantage signal, so search for and iterate on mid-difficulty tasks
+- Score the trajectory as well as the outcome: reward query quality and exploration volume in search, penalize dangerous or unauthorized intermediate actions in computer use
+- Mine traces from a deployed agent as the source material for new tasks when no labels exist, and run the loop online — generate, solve, synthesize, gate on pass rate
+- Work backwards from an end state you know is reachable: plant the answer, throw away the solution, and train the model to re-find it
+- Judge in hindsight after the full chain of events (or by polling several models) rather than instructing a judge up front not to allow a behavior
+- Pass infrastructure errors to the model instead of resetting the environment, so recovery becomes a native model action and handoff to the user becomes an available optimal action
+- Run small training runs as part of environment design — some failure modes only appear once RL is actually running
+- Adjust for selection bias when deriving reward from observational outcome data; firms that took an action differ systematically from those that did not
+- In subjective domains, attach preferences to per-rater preference vectors instead of averaging across unmodeled raters, and tie expert commentary to the specific code component that produced the visual
+- Reserve RL for refining existing skills and use supervised data for dense new knowledge; ensure the base model has seen the atomic skills RL will compose
+- Hire the domain expert before iterating, and do error analysis over observability logs before any weight-touching technique
 
 **Avoid:**
 
-- Outcome-only reward on agentic trajectories — it certifies the resignation letter that was sent 'successfully'
-- Prompting an LLM as a judge to assess holistic quality (e.g. 'is this on brand') without first decomposing the property into codified elements
-- Trusting rubric scores that are only loosely correlated with verifiable outcomes for RL or benchmarking
-- Averaging preference labels across unmodeled raters; attach preferences to per-rater vectors instead, since disagreement on style is signal, not noise
-- Optimizing agent search against benchmarks like BEIR/NanoBEIR whose entity-based 'caveman style' queries structurally favor BM25 and mis-train query behavior
-- Giving agents tools that can search prior trajectories or archives — they learn to retrieve previous answers instead of reasoning
-- Treating a few hundred handcrafted expert tasks as a scalable training basis for open-ended work
-- Expecting RL to install dense new knowledge; it refines existing skills
-- Fixing MoE expert load imbalance by cranking the load-balancing coefficient during SFT rather than fixing the pre/post-training distribution mismatch upstream
-- Assuming full autonomy is the objective — handing control back to the user can be the optimal action, given calibrated confidence about risk, reversibility, and authorization
+- Prompting an LLM as a judge for a holistic verdict (e.g. 'is this on brand?') — decompose first or the signal is reward-hackable noise
+- Outcome-only reward: a trajectory can reach 'done' having taken dangerous, irreversible, or unintended actions along the way
+- Treating rubric scores as ready for RL or benchmarking when they are only loosely correlated numerically with verifiable outcomes
+- Rubrics-as-rewards where the AI grades itself into agreement — an echo chamber, not a signal
+- Building the training basis from a few hundred handcrafted expert tasks and expecting it to cover open-ended real-world work
+- Giving agents tools that can search prior trajectories or archives — this teaches retrieval of previous answers instead of reasoning
+- Resetting the environment on infrastructure errors, and assuming failure resets rather than persists
+- Assuming more context substitutes for outcome grounding — a company's full financial data is still one group of data points
+- Averaging preference data across raters you have not modeled, and treating expert disagreement on style or aesthetics as bad data
+- Cranking up the MoE load-balancing coefficient during SFT to paper over pre/post-training distribution mismatch instead of fixing the early data mix
+- Treating full autonomy as the objective by default; handoff to the user is sometimes the optimal action given calibrated confidence about risk and reversibility
+- Treating adversarial or red-team tasks as a byproduct instead of mainstream training data
 
 ## Notable Outliers
 
-- Sutton's bitter lesson holds in games but not reality: data matters more than compute, and choosing the right task matters far more than data — and the next paradigm is neither RLHF nor RLVR but optimization for calibrated decision-making. ([What's Next After RLHF?](../talks/whats-next-after-rlhf.md), [15:17](https://www.youtube.com/watch?v=cJ0EOzey--o&t=917s))
-- In creative and design domains the most likely output is not the optimal one — quality lives at the tails, so slop is collapse to the mean rather than a capability deficit, which puts likelihood-maximizing training in direct tension with quality. ([Ending AI Slop](../talks/ending-ai-slop.md), [8:03](https://www.youtube.com/watch?v=lCBf9slCanI&t=483s))
-- Given $1M and a 500-day business simulation, most frontier models drove the company bankrupt, and a simple rules-based system beat almost all of them; on Kelly Bench, every frontier model given $100K to trade lost money. ([Why Off-the-Shelf AI Doesn't Understand Money](../talks/why-off-the-shelf-ai-doesnt-understand-money.md), [7:04](https://www.youtube.com/watch?v=Owb8g3yDyzo&t=424s))
-- Supervised learning from the environment gives the model a likelihood model of environment tokens — a native world model — that RL alone would not produce. ([Reinforcement Learning without Verifiable Rewards](../talks/reinforcement-learning-without-verifiable-rewards.md), [17:35](https://www.youtube.com/watch?v=AQv3qRCG6Gw&t=1055s))
-- Building evals forces more rigorous reasoning than doing the analysis yourself, and doing so revealed that many canonical numerical QC thresholds in bioinformatics are arbitrary. ([Verifiable Environments for AI in Biology](../talks/verifiable-environments-for-ai-in-biology.md), [10:54](https://www.youtube.com/watch?v=3ZMUiFaQ3qg&t=654s))
-- Off-policy staleness of up to about eight steps is acceptable in pipeline RL before quality degrades — the explicit trade against GPU utilization. ([Scaling to Long Horizons](../talks/scaling-to-long-horizons.md), [15:17](https://www.youtube.com/watch?v=2bvtay8wGYI&t=917s))
-- Instructing a model to write 'one concise sentence describing what it wants to find' rather than 'write a search query' is enough to break the BM25 keyword-stuffing pattern learned from code training. ([How we taught agents to use good retrieval](../talks/how-we-taught-agents-to-use-good-retrieval.md), [9:05](https://www.youtube.com/watch?v=1IdzkRVmWAA&t=545s))
+- Environments and evals are the same object — one environment can serve RL, SFT data generation, on-policy distillation, and prompt optimization — and verifiable rewards are the easy special case, not the norm. ([Reinforcement Learning without Verifiable Rewards](../talks/reinforcement-learning-without-verifiable-rewards.md), [4:38](https://www.youtube.com/watch?v=AQv3qRCG6Gw&t=278s))
+- Learned simulators make better RL environments than real production systems, because full back-end controllability lets you plant the answer and guarantee solvability. ([Reinforcement Learning without Verifiable Rewards](../talks/reinforcement-learning-without-verifiable-rewards.md), [12:24](https://www.youtube.com/watch?v=AQv3qRCG6Gw&t=744s))
+- The next post-training paradigm is neither RLHF nor RLVR: RLHF optimizes human preference and RLVR optimizes log error rates of pure correctness, while the target should be calibrated decision-making with a different API shape. ([What's Next After RLHF?](../talks/whats-next-after-rlhf.md), [17:04](https://www.youtube.com/watch?v=cJ0EOzey--o&t=1024s))
+- Given $100K to trade Premier League football matches over a one-year horizon, every frontier model lost money; in the Princeton 500-day business simulation a simple rules-based system outperformed almost all of them. ([Scaling to Long Horizons](../talks/scaling-to-long-horizons.md), [13:05](https://www.youtube.com/watch?v=2bvtay8wGYI&t=785s))
+- Value models beat GRPO for long-horizon RL — lower gradient variance, trajectory-level operation compatible with compaction, and bootstrapping — accepting the added bias and complexity; off-policy staleness up to about eight steps is tolerable in pipeline RL. ([Scaling to Long Horizons](../talks/scaling-to-long-horizons.md), [11:31](https://www.youtube.com/watch?v=2bvtay8wGYI&t=691s))
+- The base model only needs exposure to the atomic skills RL will later compose; RL extrapolates from there provided the environment is hard enough. ([The Base Model Is Dead](../talks/the-base-model-is-dead.md), [14:48](https://www.youtube.com/watch?v=xbPriQWXtWM&t=888s))
+- Building evals exposed that many canonical numerical QC thresholds in bioinformatics are arbitrary — writing the grader forces more rigorous reasoning than doing the analysis yourself. ([Verifiable Environments for AI in Biology](../talks/verifiable-environments-for-ai-in-biology.md), [10:54](https://www.youtube.com/watch?v=3ZMUiFaQ3qg&t=654s))
+- In creative domains quality lives at the tails of the distribution, so optimizing toward the most likely output is what produces slop; expert disagreement on style is signal, not noise. ([Ending AI Slop](../talks/ending-ai-slop.md), [8:03](https://www.youtube.com/watch?v=lCBf9slCanI&t=483s))
+- Agents write keyword-stuffed 'caveman' queries because RL and benchmarks (BEIR/NanoBEIR) structurally favor BM25; instructing the model to write 'one concise sentence describing what it wants to find' bypasses the trained pattern. ([How we taught agents to use good retrieval](../talks/how-we-taught-agents-to-use-good-retrieval.md), [9:05](https://www.youtube.com/watch?v=1IdzkRVmWAA&t=545s))
+- Harness guardrails are a transitional scaffold — strong early, progressively thinner as model capability improves — and realistic training data only comes from deploying the product and letting it fail. ([From RL to IRL](../talks/from-rl-to-irl.md), [17:12](https://www.youtube.com/watch?v=Cc0_nyxROBA&t=1032s))
 
 ## All Talks
 
@@ -167,12 +164,14 @@ Supporting talks: [Reinforcement Learning without Verifiable Rewards](../talks/r
 - [Reinforcement Learning without Verifiable Rewards](../talks/reinforcement-learning-without-verifiable-rewards.md)
 - [Scaling to Long Horizons](../talks/scaling-to-long-horizons.md)
 - [The Base Model Is Dead](../talks/the-base-model-is-dead.md)
+- [Trading Desks to Clinical Trials: Parallels in Applied Vertical AI](../talks/trading-desks-to-clinical-trials-parallels-in-applied-vertical-ai.md)
 - [Verifiable Environments for AI in Biology](../talks/verifiable-environments-for-ai-in-biology.md)
 - [What's Next After RLHF?](../talks/whats-next-after-rlhf.md)
 - [Why Off-the-Shelf AI Doesn't Understand Money](../talks/why-off-the-shelf-ai-doesnt-understand-money.md)
 
 ## Speakers
 
+- [Ayush Bhardwaj](../speakers/ayush-bhardwaj.md)
 - [Chengxi Taylor](../speakers/chengxi-taylor.md)
 - [Diogo Almeida](../speakers/diogo-almeida.md)
 - [Gaurav Mishra](../speakers/gaurav-mishra.md)

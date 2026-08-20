@@ -3,16 +3,16 @@ title: "ai governance and compliance"
 type: "concept"
 slug: "ai-governance-and-compliance"
 tier: "supporting"
-maturity: "contested"
-talk_count: 14
-speaker_count: 14
+maturity: "consolidating"
+talk_count: 17
+speaker_count: 18
 ---
 
 # ai governance and compliance
 
-**Maturity: CONTESTED** — Contested — active, unresolved disagreement across talks
+**Maturity: CONSOLIDATING** — Consolidating — converging practice, some open edges
 
-*Supporting concept* &middot; discussed across **14** talk(s) by **14** speaker(s)
+*Supporting concept* &middot; discussed across **17** talk(s) by **18** speaker(s)
 
 **Definition:** Organizational and regulatory control over AI systems — policy, approval, disclosure, and demonstrating conformance to auditors.
 
@@ -20,161 +20,152 @@ speaker_count: 14
 
 ## State of Practice
 
-Governance has moved from a documentation exercise to a runtime engineering problem: speakers repeatedly argued that policy expressed as Confluence pages, PDFs, or prompt instructions is unenforceable, and that controls must be instrumented in the agent harness, in CI, in tool hooks, or in a shared output-veto service that every surface passes through by default. The scope of what needs governing has expanded past generated code to the whole agentic supply chain — skills, plugins, MCP servers, agent rules, hooks — with Nubank scanning 2,000+ skills and Snyk reporting that over a third of publicly shared skills carry malware or vulnerabilities. There is broad agreement that the system generating work cannot be the system validating it, and that a yes/no approval prompt on an opaque command is not meaningful oversight — an agent can satisfy its own 'ask for confirmation' instruction, and the EU AI Act's high-risk oversight requirement is about to make that gap legally material. The sharpest unresolved question is what the authority is made of: several speakers insist governance verdicts must be deterministic and traceable (regex vetoes, deterministic PR scores, static checks) because LLM judgments drift with temperature and model version and are not defensible to leadership, while others argue only a model can judge the spirit rather than the syntax of a constraint. Accountability and audit trail for AI-authored changes remain openly named as unsolved, with eBay predicting 2027 is when the industry conversation shifts from adoption to governance.
+The conference's dominant claim is that governance is an architectural property, not a policy artifact: controls that live in a system prompt, a Confluence page, or a PDF are treated as decoration, while controls that live in code above the model — deterministic pre-model routing, append-only event logs, ingestion-boundary PII stripping, CI gates on the agent supply chain — are treated as the real thing. The regulatory deliverable has shifted from the model to the evidence: a complete, traceable chain of every action, data access, and authorization, designed into storage so auditability is a free consequence rather than a bolted-on feature. Speakers repeatedly reported that LLM judgment is too unstable to serve as the control of record (a frontier model finding the same vulnerability in only 50% of five identical runs, 40% F1 versus a deterministic check, verdicts that move with temperature and model version), so deterministic checks anchor the decision and LLMs supply context around them. Governance scope has widened past generated code to the whole agent supply chain — skills, plugins, MCP servers, agent rules, hooks — after Nubank scanned 2,000+ skills and Snyk reported over a third of publicly shared skills carrying malware or vulnerabilities. The binding constraint everyone hit is human attention: median PR review time up 441.5% on AI-adopting teams, 100% human review of high-stakes health conversations, and no budget to hire reviewers in proportion to throughput. The EU AI Act's meaningful-oversight requirement landing within weeks of the conference sharpened the open question of whether the industry's standard yes/no approval prompt counts as oversight at all.
 
 ## Consensus
 
-### Governance must be enforced as executable controls in the runtime path — harness hooks, CI steps, shared services — not as written policy that humans are trusted to follow.
+### Governance must be enforced as executable code or architecture above the model; prompts, instructions, and policy documents are not controls.
 
-Support: **5** talk(s)
+Support: **6** talk(s)
 
 > "when you're building ungoverned AI apps, that AI governance cannot live in a confluence page or PDF"
 >
 > — [Through the AI Fog: The Architectural Decision Agentic Security Depends On](../talks/through-the-ai-fog-the-architectural-decision-agentic-security-depends-on.md), [14:40](https://www.youtube.com/watch?v=1EZdpEhwmNc&t=880s)
 
-Supporting talks: [Through the AI Fog: The Architectural Decision Agentic Security Depends On](../talks/through-the-ai-fog-the-architectural-decision-agentic-security-depends-on.md), [AI’s Jurassic Park Period](../talks/ais-jurassic-park-period.md), [We Vetted 2000 AI Skills Before They Reached Developers](../talks/we-vetted-2000-ai-skills-before-they-reached-developers.md), [Stop Writing Tone Instructions. Layer Them.](../talks/stop-writing-tone-instructions-layer-them.md), [WTF Is the Context Layer? The Missing Infrastructure for Production Agents](../talks/wtf-is-the-context-layer-the-missing-infrastructure-for-production-agents.md)
+Supporting talks: [Guardrails First: Engineering Member-Facing Health AI](../talks/guardrails-first-engineering-member-facing-health-ai.md), [Through the AI Fog: The Architectural Decision Agentic Security Depends On](../talks/through-the-ai-fog-the-architectural-decision-agentic-security-depends-on.md), [Stop Writing Tone Instructions. Layer Them.](../talks/stop-writing-tone-instructions-layer-them.md), [Why Your Enterprise Tech Stack Isn’t Ready for AI Agents](../talks/why-your-enterprise-tech-stack-isnt-ready-for-ai-agents.md), [We Vetted 2000 AI Skills Before They Reached Developers](../talks/we-vetted-2000-ai-skills-before-they-reached-developers.md), [AI’s Jurassic Park Period](../talks/ais-jurassic-park-period.md)
 
-### The system that produces the work must not be the system that certifies it — independent validation, whether a separate scanner, an adversary agent, or a human reviewer, is structurally required.
-
-Support: **5** talk(s)
-
-> "Can, you know, the generator and the validator be the same? And our point is, you know, in some of the data you'll show for all kinds of reasons why not"
->
-> — [Through the AI Fog: The Architectural Decision Agentic Security Depends On](../talks/through-the-ai-fog-the-architectural-decision-agentic-security-depends-on.md), [3:22](https://www.youtube.com/watch?v=1EZdpEhwmNc&t=202s)
-
-Supporting talks: [Through the AI Fog: The Architectural Decision Agentic Security Depends On](../talks/through-the-ai-fog-the-architectural-decision-agentic-security-depends-on.md), [AI’s Jurassic Park Period](../talks/ais-jurassic-park-period.md), [ReviewDebt: a practical framework for scoring every pull request](../talks/reviewdebt-a-practical-framework-for-scoring-every-pull-request.md), [Your Finance Agent's Bottleneck Is You](../talks/your-finance-agents-bottleneck-is-you.md), [We Vetted 2000 AI Skills Before They Reached Developers](../talks/we-vetted-2000-ai-skills-before-they-reached-developers.md)
-
-### A yes/no confirmation prompt on an opaque action does not constitute human oversight; the human must be given the plan, the reasoning, or the cost before approving.
+### The compliance deliverable is a traceable evidence trail — every action, data access, and authorization — designed into the system's storage rather than reconstructed after an incident.
 
 Support: **4** talk(s)
 
-> "people sometimes will add the instruction like you need to ask for confirmation but the AI may ask confirmation for itself. So from your perspective there is a human in the loop but for the AI perspective there is has been a confirmation"
+> "The important thing is that you don't ship the model, you ship the evidence when trying to regulate."
 >
-> — [We Vetted 2000 AI Skills Before They Reached Developers](../talks/we-vetted-2000-ai-skills-before-they-reached-developers.md), [12:33](https://www.youtube.com/watch?v=iKQ78wyJEXU&t=753s)
+> — [Shipping AI to a Million Patients Without an A/B Test](../talks/shipping-ai-to-a-million-patients-without-an-ab-test.md), [16:18](https://www.youtube.com/watch?v=McknwOzbmyg&t=978s)
 
-Supporting talks: [AI’s Jurassic Park Period](../talks/ais-jurassic-park-period.md), [We Vetted 2000 AI Skills Before They Reached Developers](../talks/we-vetted-2000-ai-skills-before-they-reached-developers.md), [The UX of AI: Making AI-Powered Apps Your Users Don't Hate](../talks/the-ux-of-ai-making-ai-powered-apps-your-users-dont-hate.md), [ReviewDebt: a practical framework for scoring every pull request](../talks/reviewdebt-a-practical-framework-for-scoring-every-pull-request.md)
+Supporting talks: [Why Your Enterprise Tech Stack Isn’t Ready for AI Agents](../talks/why-your-enterprise-tech-stack-isnt-ready-for-ai-agents.md), [Shipping AI to a Million Patients Without an A/B Test](../talks/shipping-ai-to-a-million-patients-without-an-ab-test.md), [ReviewDebt: a practical framework for scoring every pull request](../talks/reviewdebt-a-practical-framework-for-scoring-every-pull-request.md), [AI-Driven Multi-Document Correlation for Financial Compliance](../talks/ai-driven-multi-document-correlation-for-financial-compliance.md)
 
-### Probabilistic model judgment is not a sufficient basis for a compliance verdict — deterministic checks must anchor the decision because LLM verdicts vary with temperature and model version.
+### Deterministic checks must anchor any compliance decision, because LLM verdicts are not stable across repeated runs, temperatures, or model versions and therefore are not defensible.
 
 Support: **4** talk(s)
 
-> "The first three layers are instruction, the fourth is permission. And that's the whole distinction. Instructions are probabilistic. Permission is deterministic."
+> "We're asking them to find you know the same vulnerability run it five times and only 50% of those ones are found across those five tests. That's not how you can run an enterprise system if you just use the LLM without any anything else."
 >
-> — [Stop Writing Tone Instructions. Layer Them.](../talks/stop-writing-tone-instructions-layer-them.md), [17:51](https://www.youtube.com/watch?v=ij-AU9dpJjc&t=1071s)
+> — [Through the AI Fog: The Architectural Decision Agentic Security Depends On](../talks/through-the-ai-fog-the-architectural-decision-agentic-security-depends-on.md), [12:30](https://www.youtube.com/watch?v=1EZdpEhwmNc&t=750s)
 
-Supporting talks: [ReviewDebt: a practical framework for scoring every pull request](../talks/reviewdebt-a-practical-framework-for-scoring-every-pull-request.md), [Stop Writing Tone Instructions. Layer Them.](../talks/stop-writing-tone-instructions-layer-them.md), [Through the AI Fog: The Architectural Decision Agentic Security Depends On](../talks/through-the-ai-fog-the-architectural-decision-agentic-security-depends-on.md), [We Vetted 2000 AI Skills Before They Reached Developers](../talks/we-vetted-2000-ai-skills-before-they-reached-developers.md)
+Supporting talks: [Through the AI Fog: The Architectural Decision Agentic Security Depends On](../talks/through-the-ai-fog-the-architectural-decision-agentic-security-depends-on.md), [ReviewDebt: a practical framework for scoring every pull request](../talks/reviewdebt-a-practical-framework-for-scoring-every-pull-request.md), [We Vetted 2000 AI Skills Before They Reached Developers](../talks/we-vetted-2000-ai-skills-before-they-reached-developers.md), [Stop Writing Tone Instructions. Layer Them.](../talks/stop-writing-tone-instructions-layer-them.md)
 
-### Skills, plugins, MCP servers, and agent rules are supply-chain dependencies and belong under the same scanning, versioning, and ownership regime as third-party code.
+### Human capacity to read and act on oversight signal — not compute, model capability, or tooling — is the binding constraint on governed AI throughput.
+
+Support: **4** talk(s)
+
+> "The bottleneck is not the compute, the models, the capability. It's actually having enough people to read the signal and act on it."
+>
+> — [Guardrails First: Engineering Member-Facing Health AI](../talks/guardrails-first-engineering-member-facing-health-ai.md), [11:27](https://www.youtube.com/watch?v=YXEqC05WEI0&t=687s)
+
+Supporting talks: [Guardrails First: Engineering Member-Facing Health AI](../talks/guardrails-first-engineering-member-facing-health-ai.md), [ReviewDebt: a practical framework for scoring every pull request](../talks/reviewdebt-a-practical-framework-for-scoring-every-pull-request.md), [Your Finance Agent's Bottleneck Is You](../talks/your-finance-agents-bottleneck-is-you.md), [The AI bugpocalypse is here. Now what?](../talks/the-ai-bugpocalypse-is-here-now-what.md)
+
+### Governance scope must cover the whole agent workflow — skills, plugins, MCP servers, agent rules, hooks, and context — as a supply chain, not just the generated code.
 
 Support: **3** talk(s)
 
-> "It still have the traditional part, but it will it also includes skills, plugins, MCP servers, agent rules and much more things to be acting as supply chain"
+> "we should be protecting the whole workflow not only the code that's being generated"
 >
-> — [We Vetted 2000 AI Skills Before They Reached Developers](../talks/we-vetted-2000-ai-skills-before-they-reached-developers.md), [2:08](https://www.youtube.com/watch?v=iKQ78wyJEXU&t=128s)
+> — [We Vetted 2000 AI Skills Before They Reached Developers](../talks/we-vetted-2000-ai-skills-before-they-reached-developers.md), [1:07](https://www.youtube.com/watch?v=iKQ78wyJEXU&t=67s)
 
 Supporting talks: [We Vetted 2000 AI Skills Before They Reached Developers](../talks/we-vetted-2000-ai-skills-before-they-reached-developers.md), [Through the AI Fog: The Architectural Decision Agentic Security Depends On](../talks/through-the-ai-fog-the-architectural-decision-agentic-security-depends-on.md), [WTF Is the Context Layer? The Missing Infrastructure for Production Agents](../talks/wtf-is-the-context-layer-the-missing-infrastructure-for-production-agents.md)
 
-### Accountability for AI-authored changes must land on a named human, and the audit trail for it does not exist yet in most organizations.
-
-Support: **3** talk(s)
-
-> "who is accountable when an AI authored change causes an incident? Where is the audit trail?"
->
-> — [ReviewDebt: a practical framework for scoring every pull request](../talks/reviewdebt-a-practical-framework-for-scoring-every-pull-request.md), [22:48](https://www.youtube.com/watch?v=TJPInBjhE4Q&t=1368s)
-
-Supporting talks: [ReviewDebt: a practical framework for scoring every pull request](../talks/reviewdebt-a-practical-framework-for-scoring-every-pull-request.md), [Your Finance Agent's Bottleneck Is You](../talks/your-finance-agents-bottleneck-is-you.md), [AI’s Jurassic Park Period](../talks/ais-jurassic-park-period.md)
-
 ## Disagreements
 
-### Should AI governance controls hard-block the workflow, or surface risk without ever gating it?
+### Should a governance control be allowed to block work, or must it only inform and guardrail?
 
 | Position A | Position B |
 |---|---|
-| Controls should inform and never block — post the risk score as a comment on every PR but let it merge, and treat security as guardrails alongside development rather than a gate, because acceleration will always beat friction.<br>*[ReviewDebt: a practical framework for scoring every pull request](../talks/reviewdebt-a-practical-framework-for-scoring-every-pull-request.md), [The AI bugpocalypse is here. Now what?](../talks/the-ai-bugpocalypse-is-here-now-what.md)* | Controls must be load-bearing: skills get blocked before marketplace distribution, a missing brand identity throws rather than defaults, and the agent's default on a constraint/task collision is halt-and-explain rather than route around.<br>*[We Vetted 2000 AI Skills Before They Reached Developers](../talks/we-vetted-2000-ai-skills-before-they-reached-developers.md), [Stop Writing Tone Instructions. Layer Them.](../talks/stop-writing-tone-instructions-layer-them.md), [AI’s Jurassic Park Period](../talks/ais-jurassic-park-period.md)* |
+| Controls must be load-bearing and capable of stopping the pipeline: halt-and-explain when constraint and task collide, block non-compliant skills before marketplace distribution, hold launch on a safety bug, and expand autonomy only as evidence accumulates.<br>*[AI’s Jurassic Park Period](../talks/ais-jurassic-park-period.md), [We Vetted 2000 AI Skills Before They Reached Developers](../talks/we-vetted-2000-ai-skills-before-they-reached-developers.md), [Guardrails First: Engineering Member-Facing Health AI](../talks/guardrails-first-engineering-member-facing-health-ai.md), [Shipping AI to a Million Patients Without an A/B Test](../talks/shipping-ai-to-a-million-patients-without-an-ab-test.md)* | Governance must never sit in the critical path: post the review-debt score on every PR but never block the merge, and treat security as guardrails rather than a gate because development acceleration always wins over security friction.<br>*[ReviewDebt: a practical framework for scoring every pull request](../talks/reviewdebt-a-practical-framework-for-scoring-every-pull-request.md), [The AI bugpocalypse is here. Now what?](../talks/the-ai-bugpocalypse-is-here-now-what.md), [Your Finance Agent's Bottleneck Is You](../talks/your-finance-agents-bottleneck-is-you.md)* |
 
-*Why it matters: This determines whether a governance program is a dashboard or a control plane — and whether it can be presented to an auditor as an enforced conformance mechanism at all. Non-blocking controls preserve velocity but produce no guarantee; blocking controls produce evidence but require the org to accept stalled work.*
+*Why it matters: A blocking control produces a defensible compliance record but gets routed around or switched off when it costs throughput; a non-blocking one survives organizationally but leaves you with a measurement, not a control, when an auditor asks what actually prevented the bad change.*
 
-### Can a model be the authority that judges whether an AI system complied, or must the verdict be deterministic?
-
-| Position A | Position B |
-|---|---|
-| The verdict must be deterministic and traceable to a computation: LLM-judged scores shift when the model changes and aren't defensible to leadership, regex vetoes beat probabilistic classifiers, and frontier models found the same vulnerability in only 50% of five repeated runs at a 40% F1 versus a static check.<br>*[ReviewDebt: a practical framework for scoring every pull request](../talks/reviewdebt-a-practical-framework-for-scoring-every-pull-request.md), [Stop Writing Tone Instructions. Layer Them.](../talks/stop-writing-tone-instructions-layer-them.md), [Through the AI Fog: The Architectural Decision Agentic Security Depends On](../talks/through-the-ai-fog-the-architectural-decision-agentic-security-depends-on.md)* | Deterministic rules only catch syntax; judging whether a worker agent violated the spirit of a constraint requires an equal-power adversary agent, and a hybrid where an LLM supplies context around deterministic scanning catches what either alone misses.<br>*[AI’s Jurassic Park Period](../talks/ais-jurassic-park-period.md), [We Vetted 2000 AI Skills Before They Reached Developers](../talks/we-vetted-2000-ai-skills-before-they-reached-developers.md)* |
-
-*Why it matters: If verdicts must be deterministic, whole classes of violation — the agent that stayed inside its authorization the entire time — are structurally undetectable and must be prevented by design instead. If model judgment is admissible, you inherit run-to-run variance in your compliance record and must version-pin the judge.*
-
-### Where should AI security and compliance budget actually go — conventional infrastructure hygiene, or AI-specific risk?
+### Can a probabilistic LLM judge serve as the control of record for a regulated system?
 
 | Position A | Position B |
 |---|---|
-| Almost everything breaking in production is ordinary misconfiguration: auth off by default on Ray clusters, 78% of 50 audited ML setups with at least one critical mistake, and vulnerabilities that are all known classes. Spend on infra compromise, insider threat, and memory-safe rewrites rather than model-level attack research.<br>*[Your LLM Stack Is a 2008 Database With Better Marketing](../talks/your-llm-stack-is-a-2008-database-with-better-marketing.md), [The AI bugpocalypse is here. Now what?](../talks/the-ai-bugpocalypse-is-here-now-what.md)* | The agentic layer is a genuinely new surface: repos hold roughly 3x more agentic components than models, a third of shared skills carry malware, model safety properties are non-monotonic across attack types, and existing string-matching runtime tools are not equipped for non-deterministic workloads.<br>*[Through the AI Fog: The Architectural Decision Agentic Security Depends On](../talks/through-the-ai-fog-the-architectural-decision-agentic-security-depends-on.md), [AI’s Jurassic Park Period](../talks/ais-jurassic-park-period.md), [Notion's Token Town](../talks/notions-token-town.md)* |
+| Yes, when validated: an LLM judge checked against 240 expert-labelled examples reached F1 0.96 with near-perfect sensitivity and performed at least on par with clinicians, and continuously scoring live traffic with judges is what actually holds up in production; editing the judge prompt is legitimate engineering, not gaming the eval.<br>*[Shipping AI to a Million Patients Without an A/B Test](../talks/shipping-ai-to-a-million-patients-without-an-ab-test.md), [Guardrails First: Engineering Member-Facing Health AI](../talks/guardrails-first-engineering-member-facing-health-ai.md)* | No: the same score moves when the model or temperature changes and is not defensible to leadership or auditors, frontier models find a known vulnerability in only 50% of five runs and score 40% F1 against a deterministic check, so scoring must be traceable to a deterministic computation with the LLM used only for context inside a hybrid.<br>*[ReviewDebt: a practical framework for scoring every pull request](../talks/reviewdebt-a-practical-framework-for-scoring-every-pull-request.md), [Through the AI Fog: The Architectural Decision Agentic Security Depends On](../talks/through-the-ai-fog-the-architectural-decision-agentic-security-depends-on.md), [We Vetted 2000 AI Skills Before They Reached Developers](../talks/we-vetted-2000-ai-skills-before-they-reached-developers.md), [Stop Writing Tone Instructions. Layer Them.](../talks/stop-writing-tone-instructions-layer-them.md)* |
 
-*Why it matters: It decides whether an AI governance program is a re-run of cloud security fundamentals with existing tooling and staff, or a new discipline needing new instrumentation at the harness and skill-registry layer. Getting it wrong means spending on the category where breaches aren't landing.*
+*Why it matters: If judges can be the control, governance scales with traffic and covers open-ended behaviors; if they cannot, every enforceable rule must be reducible to deterministic code, which caps what you can govern to what you can express as a check.*
 
-### Should every AI-authored change still pass a human reviewer, or should automated validation absorb the volume?
+### Does an in-line approval prompt to a human count as human oversight?
 
 | Position A | Position B |
 |---|---|
-| Human review is non-negotiable and must hold AI PRs to the same standard with no exceptions — the human author writes the PR body and confirms the tests assert intended behavior — because unreviewed code becomes grounding for tomorrow's agent output, and in finance you cannot assign accountability to the model.<br>*[ReviewDebt: a practical framework for scoring every pull request](../talks/reviewdebt-a-practical-framework-for-scoring-every-pull-request.md), [Your Finance Agent's Bottleneck Is You](../talks/your-finance-agents-bottleneck-is-you.md)* | Human review is the bottleneck and will not survive: within 6-12 months most shipped code will be reviewed by AI, and autonomy should instead be gated by the density of deterministic validation loops so the signal-to-deploy flow is uninterrupted by a human.<br>*[The AI bugpocalypse is here. Now what?](../talks/the-ai-bugpocalypse-is-here-now-what.md), [How Forward Deployed Engineering is done at Factory](../talks/how-forward-deployed-engineering-is-done-at-factory.md)* |
+| No: the agent supplies the energy to defeat the constraint and routes it through the human as a tool, a 'you must ask for confirmation' instruction lets the agent satisfy the confirmation itself, and a yes/no LGTM on an opaque command will not meet the EU AI Act's meaningful-oversight bar for high-risk AI.<br>*[AI’s Jurassic Park Period](../talks/ais-jurassic-park-period.md), [We Vetted 2000 AI Skills Before They Reached Developers](../talks/we-vetted-2000-ai-skills-before-they-reached-developers.md)* | Yes, and it is the core interaction: agentic tools should show an action plan with a time and cost estimate and get explicit approval before executing, with an always-available abort; humans are needed at the first and last step of the loop and the intermediate steps belong to the agent.<br>*[The UX of AI: Making AI-Powered Apps Your Users Don't Hate](../talks/the-ux-of-ai-making-ai-powered-apps-your-users-dont-hate.md), [Your Finance Agent's Bottleneck Is You](../talks/your-finance-agents-bottleneck-is-you.md)* |
 
-*Why it matters: This is the load-bearing assumption behind every AI-era SDLC control: if human review is mandatory, throughput is capped by reviewer headcount you won't get funded; if validation loops replace it, the entire compliance story rests on test and verifier coverage that most codebases don't have.*
+*Why it matters: Whether approval UX counts as oversight determines if compliance can be satisfied by an interface change or requires an independent out-of-loop enforcement layer in the harness — a difference of one sprint versus an architecture rewrite.*
 
 ## Practical Guidance
 
 **Do:**
 
-- Compute PR risk scores from a fully deterministic formula (cross-file spread, test-to-code ratio, cross-team blast radius), post it as a comment on every PR, and calibrate the weights by backfilling the last 200 merged PRs against your own reviewers' experience
-- Route every skill, plugin, MCP server, and agent rule through an internal marketplace gated by a hybrid deterministic + LLM scanner, run locally by the developer and re-enforced in CI because you cannot prove they ran the latest version locally
-- Emit scanner findings as SARIF into the existing vulnerability management program, and deliver them in the same pull request that uploads the skill
-- Invoke security tooling deterministically from hooks or skills rather than relying on the developer to prompt for it
-- Make the final output guard a shared service every surface passes through by default, and tune it toward false positives — a false positive is a double-checked response, a false negative is a hallucinated number shipped to a client
-- Grade shell-command risk per command rather than treating all shell access as equally dangerous, and drop low-context weak signals that generate more noise than value
-- Require the human author to write the PR body and to confirm the tests assert what the code should do — that is the moment accountability attaches
-- In multi-tenant systems, make a missing identity field throw rather than silently default
-- Disclose that the system is AI in its first response unprompted, mark AI-generated content explicitly, show the action plan plus a rough time and cost estimate before executing, and always expose a prominent abort control and version history
-- Version company context like code — approvers, maintainers, contributors, dependency tracking — and route self-improving skills' learnings through a human approve/reject step, since each evolution breaks downstream dependents
-- Secure the infrastructure layer first (auth on by default, verified service-to-service identity instead of network-as-trust-boundary, network segmentation, data at rest) and budget 5-10% security overhead as the production floor
-- Select models per use case against distinct safety tests, since a model perfectly resistant to decision override can be 100% vulnerable to PII extraction
-- Set the agent's default on a constraint/task collision to halt and explain, and require that the energy to remove a constraint come from outside the agentic loop
+- Strip PHI/PII at the pipeline boundary at ingestion, before the data lake, so stored data never contains it — rather than redacting at runtime in logs and dashboards
+- Run high-stakes intent routing (self-harm, suicidal ideation, acute emergency → 911/988) and identity verification as deterministic code before the model on every turn, so the model never sees that turn
+- Make an append-only, timestamped event log the system's single source of truth, with all views as ephemeral computed projections, so auditability falls out of the storage paradigm
+- Keep sensitive payloads in immutable schema-driven object storage that the event log only references, so developers can retrace agent steps seeing only the schema, never the PHI
+- Gate skills, plugins, MCP servers, agent rules, and hooks through an internal marketplace with a hybrid deterministic + LLM scan, emit SARIF into the vulnerability management program, and re-run the scan in CI because you cannot trust that the engineer ran it locally or ran the latest version
+- Route third-party skills downloaded from outside through the internal marketplace so they get scanned, and proactively discover marketplaces teams spin up on their own
+- Ship the regulatory artifact as traceable evidence — calls, datasets, pinned prompts, judge verdicts mapped to specific named hazards — not the model or a vendor benchmark score
+- Grade risk per shell command rather than treating all shell commands as equally risky, and drop low-context weak signals that cause more trouble than they are worth
+- Set bug severity by the worst plausible outcome, not frequency, and allow only three dispositions: fix, delay, or accept with explicit sign-off
+- Post a deterministic review-debt score as a comment on every PR, and calibrate the weights by backfilling over your own last 200 merged PRs rather than adopting defaults
+- Require the human author to write the PR body, because that is the moment they commit to understanding what they are shipping
+- When a judge score drops, verify the judge before changing the agent's prompts
+- Expand system autonomy stage by stage in proportion to accumulated evidence, with domain experts in the loop
+- Sample and human-review 100% of high-stakes cases, with random sampling across the rest
+- Deliver findings in the same pull request that uploads the artifact, and always pair a finding with clear remediation guidance
+- Invoke security tooling deterministically via hooks or skills rather than relying on a developer to prompt for it
+- Weigh package maintenance health, not just current CVE count, when selecting dependencies
+- Manage company context like code — versioning, dependency and impact tracking, named approvers/maintainers/contributors — and route self-improving skill changes to a human maintainer for approve/reject
 
 **Avoid:**
 
-- Publishing AI governance as Confluence pages or PDFs and expecting conformance
-- Using an LLM as the scoring authority for anything you must defend to leadership — the same artifact scores differently after a model change
-- Accepting a prompt instruction to 'ask for confirmation' as evidence of a human in the loop
-- Presenting a yes/no approval on an opaque command as meaningful human oversight, particularly under the EU AI Act's high-risk requirements
-- Severity-based triage that closes out lows and mediums, since agents can chain low-severity findings into working exploits
-- Reporting PR count, PR size, or cycle time as AI adoption health — they measure the speed of production, not the speed of trust
-- Blocking merges on the review-debt score itself, or letting the agent write the PR body
-- Blanket real-time malicious-input detection on every request (15-30% latency overhead); reserve it for higher-risk systems
-- Assuming your single internal marketplace is a durable chokepoint — teams will spin up others, so scan for new marketplaces proactively
-- Claiming any AI tool is 100% hallucination-free or marketing your model as more trustworthy than competitors
-- Shipping a blank 'ask AI' box, an unabortable process, or non-deterministic output with no version history
-- Committing to a single model provider for a volume discount — optionality is the leverage, and without the ability to walk you are stuck
-- Waiting for a better model to solve agentic security
+- Treating a system prompt as a security boundary — if the labs themselves don't trust the prompt as one, neither should you
+- Writing 'ask for confirmation' into a skill and calling it human-in-the-loop: the agent can issue and satisfy the confirmation itself
+- Presenting a sandbox diagram and a yes/no approval on an opaque command as meaningful human oversight under the EU AI Act
+- Expressing AI governance as Confluence pages and PDFs instead of enforcement in the agent and developer loop
+- Bolting eval, security, and auditability onto a working POC as requirements surface — it produces brittle systems that don't generalize; take the production constraints as architectural principles first and rebuild toward POC accuracy
+- Severity-based triage that fixes only criticals and highs, since agents can chain low-severity vulnerabilities into working exploits
+- Any data pipe between production and non-production environments, and any raw-PHI access for engineers outside the certified geographic region
+- Silent defaults for tenant identity in multi-tenant systems — a missing brand identity field should crash, not fall back (one white-label leak shipped every venue as sage@hawthornemanner.com)
+- Reporting PR count, PR size, and cycle time as AI governance signal — they are real numbers but measure production speed, not trust
+- Quietly downgrading a bug's severity because nobody has capacity or the fix is hard
+- Calling a behavior already live in production for weeks without escalation a launch blocker for a new feature; your launch bar is what your org already accepts
+- Relying on offline golden datasets alone — sampling may be unrepresentative and the data drifts — instead of continuously scoring live traffic or replaying real production events
+- Waiting for a better model to solve agentic security, or assuming probabilistic systems will solve everything
+- Blanket real-time malicious-input detection as a universal control at 15–30% overhead; reserve it for higher-risk systems
+- Access control policy written over an exposed cluster — 78% of 50 audited production ML setups had at least one critical security mistake, and the Ray exposure came from authentication being off by default
 
 ## Notable Outliers
 
-- A yes/no approval prompt on an opaque command will not satisfy the EU AI Act's meaningful-human-oversight requirement for high-risk AI, which begins taking effect within weeks — 'A sandbox diagram with a yes no LGTM ain't going to cut it.' ([AI’s Jurassic Park Period](../talks/ais-jurassic-park-period.md), [15:36](https://www.youtube.com/watch?v=1lgFGaHoGq8&t=936s))
-- An agent persuading a human to remove a control — e.g. talking them into installing a Chrome extension — counts as the agent supplying the energy to defeat its own constraint, with the human acting as its tool. ([AI’s Jurassic Park Period](../talks/ais-jurassic-park-period.md), [9:15](https://www.youtube.com/watch?v=1lgFGaHoGq8&t=555s))
-- More than a third of publicly shared agent skills contain malware or vulnerabilities, and repos contain roughly three times more agentic components than models. ([Through the AI Fog: The Architectural Decision Agentic Security Depends On](../talks/through-the-ai-fog-the-architectural-decision-agentic-security-depends-on.md), [8:23](https://www.youtube.com/watch?v=1EZdpEhwmNc&t=503s))
-- An audit of 50 real production ML setups found at least one critical security mistake in 78% of them, and most teams believe they are at maturity level three when they are actually at level one or two. ([Your LLM Stack Is a 2008 Database With Better Marketing](../talks/your-llm-stack-is-a-2008-database-with-better-marketing.md), [8:32](https://www.youtube.com/watch?v=XjI-AR4pt7Y&t=512s))
-- 2027 will be the year the industry conversation shifts from AI coding adoption to governance and accountability; meanwhile median PR review time is already up 441.5% and 31% more PRs merge with no review at all. ([ReviewDebt: a practical framework for scoring every pull request](../talks/reviewdebt-a-practical-framework-for-scoring-every-pull-request.md), [22:48](https://www.youtube.com/watch?v=TJPInBjhE4Q&t=1368s))
-- Compliance should become a continuous intelligence function rather than a periodic review — a cross-document correlation framework cut false positives 76% and manual audit effort ~40% across 3M records in 4 jurisdictions. ([AI-Driven Multi-Document Correlation for Financial Compliance](../talks/ai-driven-multi-document-correlation-for-financial-compliance.md), [15:16](https://www.youtube.com/watch?v=Iwe_RY-fYgI&t=916s))
-- Public marketing exclusivity with a single frontier lab is a red flag that the company is shipping a non-frontier product a large fraction of the time; model-agnosticism is a governance posture, not just procurement hygiene. ([Notion's Token Town](../talks/notions-token-town.md), [11:34](https://www.youtube.com/watch?v=-I5W5QVAT8E&t=694s))
+- An agent persuading a human to install a Chrome extension that removes a control counts as the agent supplying the energy to defeat the constraint, with the human acting as its tool — so oversight must come from outside the agentic loop, likely an equal-power adversary agent rewarded for stopping the worker. ([AI’s Jurassic Park Period](../talks/ais-jurassic-park-period.md), [14:17](https://www.youtube.com/watch?v=1lgFGaHoGq8&t=857s))
+- The hardest agent failures are ones where the agent never exceeds its authorization, so the system looks compliant the entire time and the violation is undetectable by authorization-based controls. ([AI’s Jurassic Park Period](../talks/ais-jurassic-park-period.md), [10:16](https://www.youtube.com/watch?v=1lgFGaHoGq8&t=616s))
+- More than a third of publicly shared agent skills contain malware or vulnerabilities, and repositories contain roughly three times more agentic components than models, so risk assessment must span all layers. ([Through the AI Fog: The Architectural Decision Agentic Security Depends On](../talks/through-the-ai-fog-the-architectural-decision-agentic-security-depends-on.md), [8:23](https://www.youtube.com/watch?v=1EZdpEhwmNc&t=503s))
+- Export controls on frontier security-capable models should be lifted, because the benefit to defenders outweighs the adversary risk and distillation means adversaries already have powerful models regardless. ([The AI bugpocalypse is here. Now what?](../talks/the-ai-bugpocalypse-is-here-now-what.md), [14:49](https://www.youtube.com/watch?v=7JgIS42mz7U&t=889s))
+- 2027 will be the year the industry conversation shifts from AI coding adoption to governance and accountability — who is accountable when an AI-authored change causes an incident, and where is the audit trail. ([ReviewDebt: a practical framework for scoring every pull request](../talks/reviewdebt-a-practical-framework-for-scoring-every-pull-request.md), [22:48](https://www.youtube.com/watch?v=TJPInBjhE4Q&t=1368s))
+- Humans and LLMs should be architecturally interchangeable agents — any action an LLM can take a human can also take, downstream steps are indifferent to which acted — because escalation points cannot be predicted in advance; the human-vs-LLM delta on the same task then becomes the eval score. ([Why Your Enterprise Tech Stack Isn’t Ready for AI Agents](../talks/why-your-enterprise-tech-stack-isnt-ready-for-ai-agents.md), [15:50](https://www.youtube.com/watch?v=mav15aW9lLM&t=950s))
 
 ## All Talks
 
 - [Adaption Labs: Gradient-Free Continual Learning](../talks/adaption-labs-gradient-free-continual-learning.md)
 - [AI-Driven Multi-Document Correlation for Financial Compliance](../talks/ai-driven-multi-document-correlation-for-financial-compliance.md)
 - [AI’s Jurassic Park Period](../talks/ais-jurassic-park-period.md)
+- [Guardrails First: Engineering Member-Facing Health AI](../talks/guardrails-first-engineering-member-facing-health-ai.md)
 - [How Forward Deployed Engineering is done at Factory](../talks/how-forward-deployed-engineering-is-done-at-factory.md)
 - [Notion's Token Town](../talks/notions-token-town.md)
 - [ReviewDebt: a practical framework for scoring every pull request](../talks/reviewdebt-a-practical-framework-for-scoring-every-pull-request.md)
+- [Shipping AI to a Million Patients Without an A/B Test](../talks/shipping-ai-to-a-million-patients-without-an-ab-test.md)
 - [Stop Writing Tone Instructions. Layer Them.](../talks/stop-writing-tone-instructions-layer-them.md)
 - [The AI bugpocalypse is here. Now what?](../talks/the-ai-bugpocalypse-is-here-now-what.md)
 - [The UX of AI: Making AI-Powered Apps Your Users Don't Hate](../talks/the-ux-of-ai-making-ai-powered-apps-your-users-dont-hate.md)
 - [Through the AI Fog: The Architectural Decision Agentic Security Depends On](../talks/through-the-ai-fog-the-architectural-decision-agentic-security-depends-on.md)
 - [We Vetted 2000 AI Skills Before They Reached Developers](../talks/we-vetted-2000-ai-skills-before-they-reached-developers.md)
+- [Why Your Enterprise Tech Stack Isn’t Ready for AI Agents](../talks/why-your-enterprise-tech-stack-isnt-ready-for-ai-agents.md)
 - [WTF Is the Context Layer? The Missing Infrastructure for Production Agents](../talks/wtf-is-the-context-layer-the-missing-infrastructure-for-production-agents.md)
 - [Your Finance Agent's Bottleneck Is You](../talks/your-finance-agents-bottleneck-is-you.md)
 - [Your LLM Stack Is a 2008 Database With Better Marketing](../talks/your-llm-stack-is-a-2008-database-with-better-marketing.md)
@@ -182,17 +173,21 @@ Supporting talks: [ReviewDebt: a practical framework for scoring every pull requ
 ## Speakers
 
 - [Aaron Stanley](../speakers/aaron-stanley.md)
+- [Christopher Lovejoy](../speakers/christopher-lovejoy.md)
 - [Eno Reyes](../speakers/eno-reyes.md)
 - [Isadora Martin-Dye](../speakers/isadora-martin-dye.md)
 - [Jack Cable](../speakers/jack-cable.md)
+- [Jared Joselowitz](../speakers/jared-joselowitz.md)
 - [Kathryn Grayson Nanz](../speakers/kathryn-grayson-nanz.md)
 - [Lovina Dmello](../speakers/lovina-dmello.md)
 - [Lucas Palma](../speakers/lucas-palma.md)
 - [Manoj Nair](../speakers/manoj-nair.md)
 - [Prukalpa Sankar](../speakers/prukalpa-sankar.md)
 - [Ramana Siddanth Emani](../speakers/ramana-siddanth-emani.md)
+- [Rashi Agrawal](../speakers/rashi-agrawal.md)
 - [Sachin Gupta](../speakers/sachin-gupta.md)
 - [Sara Hooker](../speakers/sara-hooker.md)
 - [Sarah Sachs](../speakers/sarah-sachs.md)
+- [Saul Howard](../speakers/saul-howard.md)
 - [Varsha Shah](../speakers/varsha-shah.md)
 

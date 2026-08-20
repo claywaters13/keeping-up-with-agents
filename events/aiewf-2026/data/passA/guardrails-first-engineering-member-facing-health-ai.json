@@ -1,0 +1,349 @@
+{
+  "is_error": false,
+  "duration_api_ms": 75535,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "8ba08e85-3de2-4857-94aa-a92510abbb69",
+  "total_cost_usd": 0.3196065,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 13221,
+    "cache_read_input_tokens": 8113,
+    "output_tokens": 7080,
+    "output_tokens_details": {
+      "thinking_tokens": 1880
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 13221,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 7080,
+        "cache_read_input_tokens": 8113,
+        "cache_creation_input_tokens": 13221,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 13221
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 6235,
+      "outputTokens": 19,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.00633,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 7080,
+      "cacheReadInputTokens": 8113,
+      "cacheCreationInputTokens": 13221,
+      "webSearchRequests": 0,
+      "costUSD": 0.3132765,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Rashi Agrawal, who leads AI/ML at Hinge Health, argues that safety in member-facing healthcare AI is an architecture problem, not a prompting problem. She opens with real-world failures \u2014 a man hospitalized after an LLM told him to replace salt with sodium bromide, a Mount Sinai study finding a consumer health AI under-triaged life-threatening emergencies half the time, and ECRI naming AI chatbot misuse the #1 health technology hazard of 2026 \u2014 and treats these as the current production baseline rather than edge cases. The first half lays out three foundations: strip PHI at the pipeline boundary rather than redacting at runtime, put must-not-fail behavior in a deterministic code layer that runs above the model on every turn, and treat evaluation as continuous live-traffic scoring rather than a pre-launch gate. The second half is a five-rule decisioning framework for when architecture runs out and humans have to choose what ships \u2014 including scoring by worst plausible outcome, calibrating to revealed rather than stated risk tolerance, and verifying the judge before changing the agent. Worth watching if you ship LLM features in a regulated or high-stakes domain and need concrete structure for both the system design and the launch-day arguments.\",\n  \"key_points\": [\n    \"Most AI safety failures in healthcare are architectural decisions made before any token is generated, so guardrails have to be designed in rather than bolted on \u2014 HIPAA, FDA good machine learning practice, and state laws are grounding inputs to the design, not afterthoughts.\",\n    \"PHI should be stripped at the pipeline boundary at ingestion, before data reaches the data lake, so that dashboards have nothing to redact; production and non-production environments stay fully separate with no pipes between them, and PHI access is gated on both role and geographic region.\",\n    \"Behavior that can never be wrong belongs in a deterministic code layer that runs above the model on every turn: emergency escalation to 911/988, high-stakes intent routing, and identity verification are irreversible decisions the model should not get a vote on.\",\n    \"A model is not a guardrail and neither is a model with a system prompt \u2014 the frontier labs' own authority hierarchy (root, system, developer, user, guideline) shows every layer above user is one prompt injection away from being overridden, so prompts are not a security boundary.\",\n    \"Continuous evaluation should combine three signals: dozens of automated judges scoring live traffic across dimensions like clinical accuracy, escalation, drift and refusal; per-message thumbs up/down member feedback as the ground-truth signal; and random trace sampling with 100% sampling on high-stakes cases.\",\n    \"Some failure classes never get prompted away to a zero rate \u2014 each fix buys less than the last \u2014 so monitoring is the first resort, and every new production failure becomes a new judge the system must be able to absorb.\",\n    \"The five decisioning rules are: severity is set by the worst plausible outcome, severity is independent of who has capacity to fix it, default to the safer mistake (hold for safety bugs, ship for polish bugs), calibrate the launch bar to revealed rather than stated risk tolerance, and design for humans in the loop because interpretation doesn't scale.\",\n    \"In a non-deterministic system the judge is also non-deterministic, so a score drop should first trigger the question 'is the judge right?' \u2014 fixing a judge prompt is legitimate, and judges are software that must keep evolving.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"We do have a lot of frontier models which are running and believe it or not, 40 million people actually use these models for triaging their health care issues.\",\n      \"timestamp_sec\": 1,\n      \"why\": \"Sizes the exposure that makes the rest of the talk urgent.\"\n    },\n    {\n      \"text\": \"The first independent safety test of a consumer health AI out of Mount Sinai found that this health AI is under triaging life-threatening emergency 50% of the times.\",\n      \"timestamp_sec\": 50,\n      \"why\": \"Hard number from an outside evaluation, not a vendor claim.\"\n    },\n    {\n      \"text\": \"In February, ECRI the patient safety group that hospitals trust to rank their top risks named AI chatbot misuse as the number one health technology hazard of 2026.\",\n      \"timestamp_sec\": 104,\n      \"why\": \"Anchors the risk framing in an institutional ranking rather than anecdote.\"\n    },\n    {\n      \"text\": \"Most AI safety failures in health care are not model failures. They are architectural decisions that were made before even a single token was generated.\",\n      \"timestamp_sec\": 154,\n      \"why\": \"The thesis of the entire talk in two sentences.\"\n    },\n    {\n      \"text\": \"Two, deterministic rules belong above the model, not inside it. What can never be wrong cannot be left to probability.\",\n      \"timestamp_sec\": 154,\n      \"why\": \"States the code-above-model principle as a design rule.\"\n    },\n    {\n      \"text\": \"Launch of your product is where the real risk starts, not where it ends.\",\n      \"timestamp_sec\": 154,\n      \"why\": \"Compact argument against treating evals as a pre-launch gate.\"\n    },\n    {\n      \"text\": \"The architecture version strips PHI at the pipeline boundary. At ingestion before it ever reaches the data lake. By the time the data is stored, the PHI is gone.\",\n      \"timestamp_sec\": 210,\n      \"why\": \"The concrete mechanism behind 'don't policy what you can architect'.\"\n    },\n    {\n      \"text\": \"You cannot slap on HIPAA on top of, you know, an underlying system or an architecture. You start with it and let the architecture grow around it.\",\n      \"timestamp_sec\": 309,\n      \"why\": \"Names compliance as a design input rather than a review step.\"\n    },\n    {\n      \"text\": \"A model is not a guardrail. A model with a system prompt is also not a guardrail. Code that runs above the model is closer.\",\n      \"timestamp_sec\": 408,\n      \"why\": \"Directly contradicts the common practice of encoding safety rules in system prompts.\"\n    },\n    {\n      \"text\": \"If the labs themselves don't trust the prompt as a security boundary, neither should you.\",\n      \"timestamp_sec\": 408,\n      \"why\": \"Turns the labs' published authority hierarchy into an argument against prompt-based safety.\"\n    },\n    {\n      \"text\": \"If a member mentions self-harm, suicidal ideation, or an acute medical emergency, the system must route to 911 or 988. The model should not even see this turn.\",\n      \"timestamp_sec\": 469,\n      \"why\": \"The sharpest concrete instance of code running before the model.\"\n    },\n    {\n      \"text\": \"Anything that touches member data has to check that the right member is at the other end. That's an authentication check. And authentication is a security bound boundary. Prompts are not.\",\n      \"timestamp_sec\": 520,\n      \"why\": \"Applies the security-boundary argument to identity verification specifically.\"\n    },\n    {\n      \"text\": \"What actually holds up in production is judges that continuously keep scoring real conversations as they happen. Not a saved golden data set. Live traffic.\",\n      \"timestamp_sec\": 581,\n      \"why\": \"Takes a side against static golden datasets as the primary eval mechanism.\"\n    },\n    {\n      \"text\": \"The bottleneck is not the compute, the models, the capability. It's actually having enough people to read the signal and act on it.\",\n      \"timestamp_sec\": 687,\n      \"why\": \"Names the real scaling constraint, against the usual compute-bound framing.\"\n    },\n    {\n      \"text\": \"A new failure that you see in production simply means you now have a new judge.\",\n      \"timestamp_sec\": 734,\n      \"why\": \"A reusable operating rule for turning incidents into monitoring.\"\n    },\n    {\n      \"text\": \"A bug that lightly annoys 100% of users is way less severe than one that could cause serious harm in 0.1% of cases.\",\n      \"timestamp_sec\": 836,\n      \"why\": \"Makes the worst-case-over-average severity rule concrete and checkable.\"\n    },\n    {\n      \"text\": \"You never quietly downgrade a bug just because you can't get to it.\",\n      \"timestamp_sec\": 894,\n      \"why\": \"Names the specific organizational failure mode the severity rule exists to prevent.\"\n    },\n    {\n      \"text\": \"Shipping a real safety bug is much worse than delaying for a false alarm.\",\n      \"timestamp_sec\": 944,\n      \"why\": \"The asymmetry that justifies defaulting to hold on safety issues.\"\n    },\n    {\n      \"text\": \"Your launch bar is what your org already accepts in production, not what it says it will accept.\",\n      \"timestamp_sec\": 992,\n      \"why\": \"Revealed vs. stated risk tolerance \u2014 the most contestable rule in the framework.\"\n    },\n    {\n      \"text\": \"Fast follows are committed debt, not an optional backlog.\",\n      \"timestamp_sec\": 1052,\n      \"why\": \"Reframes a near-universal shipping compromise as an obligation.\"\n    },\n    {\n      \"text\": \"In a non-deterministic system, the judge is also non-deterministic. Before you trust the score, verify the scorer.\",\n      \"timestamp_sec\": 1052,\n      \"why\": \"The core discipline of the LLM-judge section, stated as a rule.\"\n    },\n    {\n      \"text\": \"The rule is always ask, is the judge right before changing the agent's response? Fixing a judge prompt is not cheating. Judges are software, too.\",\n      \"timestamp_sec\": 1159,\n      \"why\": \"Pushes back on the instinct that editing a judge is gaming the eval.\"\n    },\n    {\n      \"text\": \"Don't policy what you can architect. Don't prompt what you can code. Don't gate what you can monitor.\",\n      \"timestamp_sec\": 1214,\n      \"why\": \"The talk's three architecture takeaways compressed into one memorable pattern.\"\n    },\n    {\n      \"text\": \"We are not building a generic low-stakes chatbot. We are building a system that has to be worthy of someone's health.\",\n      \"timestamp_sec\": 1267,\n      \"why\": \"The closing justification for accepting slower guardrails-first development.\"\n    }\n  ],\n  \"concepts\": [\n    \"deterministic guardrails\",\n    \"llm-as-judge evaluation\",\n    \"phi handling and hipaa compliance\",\n    \"emergency escalation routing\",\n    \"prompt injection and security boundaries\",\n    \"continuous production monitoring\",\n    \"intent routing in multi-agent systems\",\n    \"human-in-the-loop review capacity\",\n    \"launch risk triage\",\n    \"judge calibration\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Most AI safety failures in healthcare are architectural decisions made before generation, not model failures.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 154\n    },\n    {\n      \"claim\": \"Consumer health AI under-triages life-threatening emergencies 50% of the time, per the first independent safety test out of Mount Sinai.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 50\n    },\n    {\n      \"claim\": \"ECRI named AI chatbot misuse the number one health technology hazard of 2026.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 104\n    },\n    {\n      \"claim\": \"PHI should be stripped at ingestion, at the pipeline boundary, rather than redacted at runtime when logs or dashboards are written.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 210\n    },\n    {\n      \"claim\": \"Production and non-production environments must have no data pipes between them, because a single pipe is enough to leak member data into dev.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 266\n    },\n    {\n      \"claim\": \"Engineers outside the certified geographic region should have no access to raw PHI at all.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 266\n    },\n    {\n      \"claim\": \"A system prompt is not a guardrail, because every authority layer above user is one prompt injection away from being overridden.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 408\n    },\n    {\n      \"claim\": \"Emergency escalation, high-stakes intent routing, and identity verification must be handled by deterministic code that runs before the model on every turn.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 469\n    },\n    {\n      \"claim\": \"Pre-launch eval checklists on saved golden datasets are necessary but insufficient; continuous scoring of live traffic is what holds up in production.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 581\n    },\n    {\n      \"claim\": \"Per-message thumbs up/down member feedback is the truth signal and catches tone problems that automated judges miss.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 635\n    },\n    {\n      \"claim\": \"High-stakes cases should be sampled and human-reviewed 100% of the time, with random sampling across other capabilities.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 635\n    },\n    {\n      \"claim\": \"The scaling bottleneck for safe AI is human capacity to read and act on signal, not compute or model capability.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 687\n    },\n    {\n      \"claim\": \"Some failure classes cannot be prompted away \u2014 each fix buys less, and the failure rate never reaches zero.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 734\n    },\n    {\n      \"claim\": \"Severity must be set by the worst plausible outcome rather than by frequency or average impact.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 836\n    },\n    {\n      \"claim\": \"A bug's severity is independent of who owns it, whether the team has capacity, and how hard the fix is; the only options are fix, delay, or accept with explicit sign-off.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 894\n    },\n    {\n      \"claim\": \"Under uncertainty, hold and fix safety bugs but ship polish bugs, because the cost asymmetry runs in opposite directions.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 944\n    },\n    {\n      \"claim\": \"A behavior already live in production for weeks or months without escalation or complaints cannot be called a launch blocker for a new feature.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 992\n    },\n    {\n      \"claim\": \"Fast follows are committed debt rather than optional backlog items.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1052\n    },\n    {\n      \"claim\": \"When a judge score drops, the first action should be verifying the judge, not changing the agent's prompts.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1108\n    },\n    {\n      \"claim\": \"Editing a judge prompt is legitimate engineering, not gaming the eval, because judges are software that must evolve.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1159\n    },\n    {\n      \"claim\": \"Building guardrails first is slower than bolting them on later, and that cost is an accepted design tradeoff for health-stakes products.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1214\n    },\n    {\n      \"claim\": \"The bar for safety architecture should scale with stakes \u2014 generic low-stakes chatbots do not need this apparatus.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 1267\n    }\n  ],\n  \"speaker_org\": \"Hinge Health\"\n}",
+  "ttft_ms": 23216,
+  "ttft_stream_ms": 1152,
+  "time_to_request_ms": 143,
+  "type": "result",
+  "duration_ms": 76421,
+  "uuid": "99ba953b-f3d6-4bf6-83e9-eace2859a4f4",
+  "passA": {
+    "summary": "Rashi Agrawal, who leads AI/ML at Hinge Health, argues that safety in member-facing healthcare AI is an architecture problem, not a prompting problem. She opens with real-world failures \u2014 a man hospitalized after an LLM told him to replace salt with sodium bromide, a Mount Sinai study finding a consumer health AI under-triaged life-threatening emergencies half the time, and ECRI naming AI chatbot misuse the #1 health technology hazard of 2026 \u2014 and treats these as the current production baseline rather than edge cases. The first half lays out three foundations: strip PHI at the pipeline boundary rather than redacting at runtime, put must-not-fail behavior in a deterministic code layer that runs above the model on every turn, and treat evaluation as continuous live-traffic scoring rather than a pre-launch gate. The second half is a five-rule decisioning framework for when architecture runs out and humans have to choose what ships \u2014 including scoring by worst plausible outcome, calibrating to revealed rather than stated risk tolerance, and verifying the judge before changing the agent. Worth watching if you ship LLM features in a regulated or high-stakes domain and need concrete structure for both the system design and the launch-day arguments.",
+    "key_points": [
+      "Most AI safety failures in healthcare are architectural decisions made before any token is generated, so guardrails have to be designed in rather than bolted on \u2014 HIPAA, FDA good machine learning practice, and state laws are grounding inputs to the design, not afterthoughts.",
+      "PHI should be stripped at the pipeline boundary at ingestion, before data reaches the data lake, so that dashboards have nothing to redact; production and non-production environments stay fully separate with no pipes between them, and PHI access is gated on both role and geographic region.",
+      "Behavior that can never be wrong belongs in a deterministic code layer that runs above the model on every turn: emergency escalation to 911/988, high-stakes intent routing, and identity verification are irreversible decisions the model should not get a vote on.",
+      "A model is not a guardrail and neither is a model with a system prompt \u2014 the frontier labs' own authority hierarchy (root, system, developer, user, guideline) shows every layer above user is one prompt injection away from being overridden, so prompts are not a security boundary.",
+      "Continuous evaluation should combine three signals: dozens of automated judges scoring live traffic across dimensions like clinical accuracy, escalation, drift and refusal; per-message thumbs up/down member feedback as the ground-truth signal; and random trace sampling with 100% sampling on high-stakes cases.",
+      "Some failure classes never get prompted away to a zero rate \u2014 each fix buys less than the last \u2014 so monitoring is the first resort, and every new production failure becomes a new judge the system must be able to absorb.",
+      "The five decisioning rules are: severity is set by the worst plausible outcome, severity is independent of who has capacity to fix it, default to the safer mistake (hold for safety bugs, ship for polish bugs), calibrate the launch bar to revealed rather than stated risk tolerance, and design for humans in the loop because interpretation doesn't scale.",
+      "In a non-deterministic system the judge is also non-deterministic, so a score drop should first trigger the question 'is the judge right?' \u2014 fixing a judge prompt is legitimate, and judges are software that must keep evolving."
+    ],
+    "notable_quotes": [
+      {
+        "text": "We do have a lot of frontier models which are running and believe it or not, 40 million people actually use these models for triaging their health care issues.",
+        "timestamp_sec": 1,
+        "why": "Sizes the exposure that makes the rest of the talk urgent."
+      },
+      {
+        "text": "The first independent safety test of a consumer health AI out of Mount Sinai found that this health AI is under triaging life-threatening emergency 50% of the times.",
+        "timestamp_sec": 50,
+        "why": "Hard number from an outside evaluation, not a vendor claim."
+      },
+      {
+        "text": "In February, ECRI the patient safety group that hospitals trust to rank their top risks named AI chatbot misuse as the number one health technology hazard of 2026.",
+        "timestamp_sec": 104,
+        "why": "Anchors the risk framing in an institutional ranking rather than anecdote."
+      },
+      {
+        "text": "Most AI safety failures in health care are not model failures. They are architectural decisions that were made before even a single token was generated.",
+        "timestamp_sec": 154,
+        "why": "The thesis of the entire talk in two sentences."
+      },
+      {
+        "text": "Two, deterministic rules belong above the model, not inside it. What can never be wrong cannot be left to probability.",
+        "timestamp_sec": 154,
+        "why": "States the code-above-model principle as a design rule."
+      },
+      {
+        "text": "Launch of your product is where the real risk starts, not where it ends.",
+        "timestamp_sec": 154,
+        "why": "Compact argument against treating evals as a pre-launch gate."
+      },
+      {
+        "text": "The architecture version strips PHI at the pipeline boundary. At ingestion before it ever reaches the data lake. By the time the data is stored, the PHI is gone.",
+        "timestamp_sec": 210,
+        "why": "The concrete mechanism behind 'don't policy what you can architect'."
+      },
+      {
+        "text": "You cannot slap on HIPAA on top of, you know, an underlying system or an architecture. You start with it and let the architecture grow around it.",
+        "timestamp_sec": 309,
+        "why": "Names compliance as a design input rather than a review step."
+      },
+      {
+        "text": "A model is not a guardrail. A model with a system prompt is also not a guardrail. Code that runs above the model is closer.",
+        "timestamp_sec": 408,
+        "why": "Directly contradicts the common practice of encoding safety rules in system prompts."
+      },
+      {
+        "text": "If the labs themselves don't trust the prompt as a security boundary, neither should you.",
+        "timestamp_sec": 408,
+        "why": "Turns the labs' published authority hierarchy into an argument against prompt-based safety."
+      },
+      {
+        "text": "If a member mentions self-harm, suicidal ideation, or an acute medical emergency, the system must route to 911 or 988. The model should not even see this turn.",
+        "timestamp_sec": 469,
+        "why": "The sharpest concrete instance of code running before the model."
+      },
+      {
+        "text": "Anything that touches member data has to check that the right member is at the other end. That's an authentication check. And authentication is a security bound boundary. Prompts are not.",
+        "timestamp_sec": 520,
+        "why": "Applies the security-boundary argument to identity verification specifically."
+      },
+      {
+        "text": "What actually holds up in production is judges that continuously keep scoring real conversations as they happen. Not a saved golden data set. Live traffic.",
+        "timestamp_sec": 581,
+        "why": "Takes a side against static golden datasets as the primary eval mechanism."
+      },
+      {
+        "text": "The bottleneck is not the compute, the models, the capability. It's actually having enough people to read the signal and act on it.",
+        "timestamp_sec": 687,
+        "why": "Names the real scaling constraint, against the usual compute-bound framing."
+      },
+      {
+        "text": "A new failure that you see in production simply means you now have a new judge.",
+        "timestamp_sec": 734,
+        "why": "A reusable operating rule for turning incidents into monitoring."
+      },
+      {
+        "text": "A bug that lightly annoys 100% of users is way less severe than one that could cause serious harm in 0.1% of cases.",
+        "timestamp_sec": 836,
+        "why": "Makes the worst-case-over-average severity rule concrete and checkable."
+      },
+      {
+        "text": "You never quietly downgrade a bug just because you can't get to it.",
+        "timestamp_sec": 894,
+        "why": "Names the specific organizational failure mode the severity rule exists to prevent."
+      },
+      {
+        "text": "Shipping a real safety bug is much worse than delaying for a false alarm.",
+        "timestamp_sec": 944,
+        "why": "The asymmetry that justifies defaulting to hold on safety issues."
+      },
+      {
+        "text": "Your launch bar is what your org already accepts in production, not what it says it will accept.",
+        "timestamp_sec": 992,
+        "why": "Revealed vs. stated risk tolerance \u2014 the most contestable rule in the framework."
+      },
+      {
+        "text": "Fast follows are committed debt, not an optional backlog.",
+        "timestamp_sec": 1052,
+        "why": "Reframes a near-universal shipping compromise as an obligation."
+      },
+      {
+        "text": "In a non-deterministic system, the judge is also non-deterministic. Before you trust the score, verify the scorer.",
+        "timestamp_sec": 1052,
+        "why": "The core discipline of the LLM-judge section, stated as a rule."
+      },
+      {
+        "text": "The rule is always ask, is the judge right before changing the agent's response? Fixing a judge prompt is not cheating. Judges are software, too.",
+        "timestamp_sec": 1159,
+        "why": "Pushes back on the instinct that editing a judge is gaming the eval."
+      },
+      {
+        "text": "Don't policy what you can architect. Don't prompt what you can code. Don't gate what you can monitor.",
+        "timestamp_sec": 1214,
+        "why": "The talk's three architecture takeaways compressed into one memorable pattern."
+      },
+      {
+        "text": "We are not building a generic low-stakes chatbot. We are building a system that has to be worthy of someone's health.",
+        "timestamp_sec": 1267,
+        "why": "The closing justification for accepting slower guardrails-first development."
+      }
+    ],
+    "concepts": [
+      "deterministic guardrails",
+      "llm-as-judge evaluation",
+      "phi handling and hipaa compliance",
+      "emergency escalation routing",
+      "prompt injection and security boundaries",
+      "continuous production monitoring",
+      "intent routing in multi-agent systems",
+      "human-in-the-loop review capacity",
+      "launch risk triage",
+      "judge calibration"
+    ],
+    "positions": [
+      {
+        "claim": "Most AI safety failures in healthcare are architectural decisions made before generation, not model failures.",
+        "confidence": "stated",
+        "timestamp_sec": 154
+      },
+      {
+        "claim": "Consumer health AI under-triages life-threatening emergencies 50% of the time, per the first independent safety test out of Mount Sinai.",
+        "confidence": "stated",
+        "timestamp_sec": 50
+      },
+      {
+        "claim": "ECRI named AI chatbot misuse the number one health technology hazard of 2026.",
+        "confidence": "stated",
+        "timestamp_sec": 104
+      },
+      {
+        "claim": "PHI should be stripped at ingestion, at the pipeline boundary, rather than redacted at runtime when logs or dashboards are written.",
+        "confidence": "stated",
+        "timestamp_sec": 210
+      },
+      {
+        "claim": "Production and non-production environments must have no data pipes between them, because a single pipe is enough to leak member data into dev.",
+        "confidence": "stated",
+        "timestamp_sec": 266
+      },
+      {
+        "claim": "Engineers outside the certified geographic region should have no access to raw PHI at all.",
+        "confidence": "stated",
+        "timestamp_sec": 266
+      },
+      {
+        "claim": "A system prompt is not a guardrail, because every authority layer above user is one prompt injection away from being overridden.",
+        "confidence": "stated",
+        "timestamp_sec": 408
+      },
+      {
+        "claim": "Emergency escalation, high-stakes intent routing, and identity verification must be handled by deterministic code that runs before the model on every turn.",
+        "confidence": "stated",
+        "timestamp_sec": 469
+      },
+      {
+        "claim": "Pre-launch eval checklists on saved golden datasets are necessary but insufficient; continuous scoring of live traffic is what holds up in production.",
+        "confidence": "stated",
+        "timestamp_sec": 581
+      },
+      {
+        "claim": "Per-message thumbs up/down member feedback is the truth signal and catches tone problems that automated judges miss.",
+        "confidence": "stated",
+        "timestamp_sec": 635
+      },
+      {
+        "claim": "High-stakes cases should be sampled and human-reviewed 100% of the time, with random sampling across other capabilities.",
+        "confidence": "stated",
+        "timestamp_sec": 635
+      },
+      {
+        "claim": "The scaling bottleneck for safe AI is human capacity to read and act on signal, not compute or model capability.",
+        "confidence": "stated",
+        "timestamp_sec": 687
+      },
+      {
+        "claim": "Some failure classes cannot be prompted away \u2014 each fix buys less, and the failure rate never reaches zero.",
+        "confidence": "stated",
+        "timestamp_sec": 734
+      },
+      {
+        "claim": "Severity must be set by the worst plausible outcome rather than by frequency or average impact.",
+        "confidence": "stated",
+        "timestamp_sec": 836
+      },
+      {
+        "claim": "A bug's severity is independent of who owns it, whether the team has capacity, and how hard the fix is; the only options are fix, delay, or accept with explicit sign-off.",
+        "confidence": "stated",
+        "timestamp_sec": 894
+      },
+      {
+        "claim": "Under uncertainty, hold and fix safety bugs but ship polish bugs, because the cost asymmetry runs in opposite directions.",
+        "confidence": "stated",
+        "timestamp_sec": 944
+      },
+      {
+        "claim": "A behavior already live in production for weeks or months without escalation or complaints cannot be called a launch blocker for a new feature.",
+        "confidence": "stated",
+        "timestamp_sec": 992
+      },
+      {
+        "claim": "Fast follows are committed debt rather than optional backlog items.",
+        "confidence": "stated",
+        "timestamp_sec": 1052
+      },
+      {
+        "claim": "When a judge score drops, the first action should be verifying the judge, not changing the agent's prompts.",
+        "confidence": "stated",
+        "timestamp_sec": 1108
+      },
+      {
+        "claim": "Editing a judge prompt is legitimate engineering, not gaming the eval, because judges are software that must evolve.",
+        "confidence": "stated",
+        "timestamp_sec": 1159
+      },
+      {
+        "claim": "Building guardrails first is slower than bolting them on later, and that cost is an accepted design tradeoff for health-stakes products.",
+        "confidence": "stated",
+        "timestamp_sec": 1214
+      },
+      {
+        "claim": "The bar for safety architecture should scale with stakes \u2014 generic low-stakes chatbots do not need this apparatus.",
+        "confidence": "implied",
+        "timestamp_sec": 1267
+      }
+    ],
+    "speaker_org": "Hinge Health"
+  },
+  "_meta": {
+    "slug": "guardrails-first-engineering-member-facing-health-ai",
+    "video_id": "YXEqC05WEI0",
+    "url": "https://www.youtube.com/watch?v=YXEqC05WEI0",
+    "word_count": 2847,
+    "wall_sec": 77.2,
+    "run_at": "2026-08-20T02:49:15Z",
+    "effort": "default"
+  }
+}

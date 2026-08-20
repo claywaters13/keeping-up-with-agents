@@ -1,0 +1,311 @@
+{
+  "is_error": false,
+  "duration_api_ms": 78880,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "233c4b88-e6f5-405d-ba5b-dc72c57caa8b",
+  "total_cost_usd": 0.3178375,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 13741,
+    "cache_read_input_tokens": 8113,
+    "output_tokens": 6782,
+    "output_tokens_details": {
+      "thinking_tokens": 1796
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 13741,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 6782,
+        "cache_read_input_tokens": 8113,
+        "cache_creation_input_tokens": 13741,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 13741
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 6726,
+      "outputTokens": 17,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.006811,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 6782,
+      "cacheReadInputTokens": 8113,
+      "cacheCreationInputTokens": 13741,
+      "webSearchRequests": 0,
+      "costUSD": 0.3110265,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Two Anterior engineers \u2014 a forward-deployed engineer and a VP of engineering selling agentic AI to US health insurers \u2014 argue that the reason enterprise AI pilots stall isn't model quality but architecture. They walk through a familiar failure mode: a four-week POC hits its accuracy metrics, everyone is thrilled, and then the compliance, security, and clinical stakeholders ask for audit trails, PHI handling guarantees, human escalation paths, and ongoing evals \u2014 none of which the POC's architecture can support. Their answer is four primitives adopted from finance, defense, and big tech: an immutable event log as the single source of truth, schema-driven object storage held separate from orchestration, human-agent equivalency so any LLM action can be performed by a human, and evals that fall out of those three rather than being bolted on. The framing throughout is that architecture means taking constraints seriously and choosing what you want to be trivially easy, accepting the resulting trade-offs. Worth watching if you're moving agents into a regulated environment and suspect your promising prototype won't survive contact with the security review.\",\n  \"key_points\": [\n    \"The hard part of enterprise AI is not the AI: POCs routinely hit their accuracy metrics and then fail productionization on audit, data-handling, escalation, and eval requirements that the prototype architecture cannot retrofit.\",\n    \"An enterprise audit trail is not a developer log \u2014 under SOC 2, HITRUST, and HIPAA it must be a complete record of every agent action, every data access, and every authorization, defensible as a chain of evidence in a legal setting.\",\n    \"Adopting an event-sourcing pattern \u2014 an append-only, complete, unified transaction log \u2014 makes auditability trivial because it falls out of the storage paradigm; the trade-off is cheap writes and expensive reads, mitigated by caching and snapshots.\",\n    \"In healthcare that read cost is actually a feature: later events can change the interpretation of a patient journey, and views being ephemeral computed projections of the log means you can re-derive a different view of the same history.\",\n    \"Sensitive data belongs in schema-driven, immutable object storage that the event log only references, so developers can debug and retrace agent steps and see the shape of data without ever seeing the PHI.\",\n    \"Separating orchestration from object storage creates a place to enforce zero trust \u2014 agents bear tokens and fetch data at point of use \u2014 which is also the lethal-trifecta prompt-injection mitigation: the architecture makes it impossible for one agent process to hold two conflicting data accesses.\",\n    \"Human escalation is unpredictable in advance, so the platform should define 'agent' broadly enough to cover both LLMs and humans: any action an LLM can take, a human can take, and downstream steps don't care which one acted.\",\n    \"Because humans and LLMs consume context differently, a shared context definition should be mapped through methods into either a prompt (agent-friendly) or a UI (human-friendly).\",\n    \"Evals emerge as a byproduct of the other three primitives: the ledger lets you replay and tweak a single prompt/model/code change, human-agent equivalency makes the human-LLM delta the eval score, and object storage lets you run evals on production data inside the customer's environment without exposing it.\",\n    \"The recommended sequencing is inverted from the usual: take production enterprise constraints as architectural principles from day one and rebuild toward the POC's accuracy on top of those primitives, rather than strapping compliance onto a point solution.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"health care is a very challenging place to develop and deploy AI\",\n      \"timestamp_sec\": 1,\n      \"why\": \"Sets the domain premise the speakers generalize from to finance, defense, and government.\"\n    },\n    {\n      \"text\": \"but the problem is that everyone here is assuming that the the hard part is done, that the AI was was the challenging part. But actually, as we know, often getting things into production is really where the challenge lies.\",\n      \"timestamp_sec\": 214,\n      \"why\": \"The talk's central thesis, stated as the pivot from POC celebration to production reality.\"\n    },\n    {\n      \"text\": \"It it has to contain a complete record of absolutely every action that the agent took.\",\n      \"timestamp_sec\": 326,\n      \"why\": \"Defines the enterprise bar for an audit trail against the developer's weaker mental model of a log.\"\n    },\n    {\n      \"text\": \"say our agent's decisions came up in a court of law. Could we show a justifiable chain of evidence for why the particular actions were taken by a decision?\",\n      \"timestamp_sec\": 367,\n      \"why\": \"Reframes auditability as a legal-evidence standard rather than an observability nicety.\"\n    },\n    {\n      \"text\": \"An immutable record of events that store all of the transactions that happen throughout the system. And this is append-only timestamp log. It's complete. So, this is your source of truth for all of the data of the system.\",\n      \"timestamp_sec\": 415,\n      \"why\": \"The concrete definition of the first primitive, borrowed from finance.\"\n    },\n    {\n      \"text\": \"And architecting this way, the making this trade-off, uh means that auditability becomes trivial. It falls out of your data storage paradigm that you've chosen.\",\n      \"timestamp_sec\": 415,\n      \"why\": \"States the payoff of event sourcing: compliance as an emergent property, not a feature.\"\n    },\n    {\n      \"text\": \"for this kind of event logging or sometimes called event sourcing pattern, writes become very easy. So, you just drop an event. Reads become more difficult because you have to read through all of the events in order to reconstruct a view of what happened.\",\n      \"timestamp_sec\": 464,\n      \"why\": \"Names the explicit cost of the recommended pattern rather than selling it costlessly.\"\n    },\n    {\n      \"text\": \"all of your views of the data are ephemeral computed projections of the event log\",\n      \"timestamp_sec\": 503,\n      \"why\": \"The technical claim that turns the read-cost trade-off into an advantage for evolving clinical narratives.\"\n    },\n    {\n      \"text\": \"You cannot have your agent, just as you cannot have humans, accessing and reading and utilizing healthcare data that they don't absolutely have a necessity to use at that that point in time for that particular journey.\",\n      \"timestamp_sec\": 549,\n      \"why\": \"Applies minimum-necessary access rules to agents as first-class principals.\"\n    },\n    {\n      \"text\": \"one piece of health care data can easily be over a megabyte in size or or much more than that\",\n      \"timestamp_sec\": 593,\n      \"why\": \"A concrete data-shape number that motivates the object-storage choice.\"\n    },\n    {\n      \"text\": \"it's possible for developers to go back and debug and have observability over what happened, what particular steps the agent took, why it did that, and and retrace the agent's steps without having access to the personal health information itself\",\n      \"timestamp_sec\": 676,\n      \"why\": \"The practical payoff of separating the event stream from the data blobs.\"\n    },\n    {\n      \"text\": \"Your agents can bear tokens and use those tokens to access the data at the point of use and not allow data to flow around the system as it likes.\",\n      \"timestamp_sec\": 721,\n      \"why\": \"Zero trust stated as an agent-architecture rule, not a policy document.\"\n    },\n    {\n      \"text\": \"The way I think about the lethal trifecta is can I solve for the constraint if I have an agent at point A with access to this data? Is it possible within my architecture for the agent to be also accessing data over here?\",\n      \"timestamp_sec\": 721,\n      \"why\": \"Positions prompt-injection defense as an architectural invariant rather than a guardrail model.\"\n    },\n    {\n      \"text\": \"humans and LLMs ultimately process context differently. You know, LLMs will have no problem if you give them massive massive amounts of text, but humans that's not the case.\",\n      \"timestamp_sec\": 809,\n      \"why\": \"The constraint that forces a shared context definition with two renderings.\"\n    },\n    {\n      \"text\": \"you can make it such that any action that can be taken by an LLM could also be taken by a human\",\n      \"timestamp_sec\": 809,\n      \"why\": \"The one-line statement of the human-agent equivalency primitive.\"\n    },\n    {\n      \"text\": \"you have this human agent equivalency, which means that for any task, you could get both the agent, the LLM agent, and the human to perform it, and your difference is your eval, that gives you the eval scores\",\n      \"timestamp_sec\": 950,\n      \"why\": \"Shows how the escalation primitive doubles as an eval-generation mechanism.\"\n    },\n    {\n      \"text\": \"You can get your eval results without the sensitive data ever needing to come to where your agent is performing the work.\",\n      \"timestamp_sec\": 988,\n      \"why\": \"The privacy-preserving eval claim, and the answer to customers who won't let data leave their VPC.\"\n    },\n    {\n      \"text\": \"I like to think about architecture as taking your constraints very seriously and thinking about what you want to be simple within the system and then choosing the trade-offs for that.\",\n      \"timestamp_sec\": 1033,\n      \"why\": \"The generalizable design philosophy underneath all four primitives.\"\n    },\n    {\n      \"text\": \"trying to build up from it, strapping on the enterprise requirements as you come across them. Okay, we need eval, we need uh security, we need auditability, and bolting these on as additions to the the the foundations of the POC. You end up with something very brittle\",\n      \"timestamp_sec\": 1075,\n      \"why\": \"The named anti-pattern the whole talk is arguing against.\"\n    },\n    {\n      \"text\": \"if you take the constraints of a production-ready, scaled enterprise uh system seriously from the beginning and treat those as the architectural principles that you're going to build everything upon and then build back up towards that POC accuracy using your new primitives\",\n      \"timestamp_sec\": 1075,\n      \"why\": \"The prescriptive inversion of the normal POC-then-harden sequence.\"\n    }\n  ],\n  \"concepts\": [\n    \"event sourcing\",\n    \"immutable audit trail\",\n    \"agent observability\",\n    \"zero trust architecture\",\n    \"prompt injection mitigation\",\n    \"human-in-the-loop escalation\",\n    \"privacy-preserving evaluation\",\n    \"regulated-industry deployment\",\n    \"enterprise proof of concept\",\n    \"schema-driven object storage\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"The bottleneck for enterprise AI agents is architecture and production requirements, not model accuracy \u2014 POCs typically hit their performance metrics and still fail to productionize.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 214\n    },\n    {\n      \"claim\": \"A compliance audit trail under SOC 2, HITRUST, or HIPAA is categorically different from a developer log: it must record every action, every data access, and every authorization.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 326\n    },\n    {\n      \"claim\": \"Adopting an append-only, unified event log as the system's source of truth makes auditability a free property of the storage design rather than a separate feature.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 415\n    },\n    {\n      \"claim\": \"Event sourcing makes writes easy and reads hard, and that read cost is acceptable \u2014 even beneficial \u2014 in healthcare because later events change the correct interpretation of earlier ones.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 464\n    },\n    {\n      \"claim\": \"Sensitive data should live in immutable schema-driven object storage that the event log only references, so orchestration and observability are structurally separated from PHI.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 627\n    },\n    {\n      \"claim\": \"Developers can effectively debug and retrace agent behavior while seeing only the schema of the data, never the protected health information itself.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 676\n    },\n    {\n      \"claim\": \"Prompt injection and the lethal trifecta should be addressed by making the dangerous combination architecturally impossible \u2014 token-bearing agents fetching from segregated object storage \u2014 rather than by defending at the model layer.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 721\n    },\n    {\n      \"claim\": \"Escalation points cannot be predicted in advance, so systems should treat humans and LLMs as interchangeable agents where any LLM action can also be performed by a human and downstream steps are indifferent to which acted.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 768\n    },\n    {\n      \"claim\": \"Context should be defined once independent of consumer, then mapped into a prompt for an LLM or a UI for a human.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 855\n    },\n    {\n      \"claim\": \"Offline eval datasets are unreliable because sampling may be unrepresentative and data drifts out of date, which favors replaying real production events instead.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 902\n    },\n    {\n      \"claim\": \"Evals should emerge as a first-class property of the architecture rather than being attached to the side of the system.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 988\n    },\n    {\n      \"claim\": \"The human-versus-LLM delta on the same task is a valid eval score.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 950\n    },\n    {\n      \"claim\": \"Evals can be run on production data inside the customer's own environment without the sensitive data ever reaching the vendor's agent.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 988\n    },\n    {\n      \"claim\": \"Good architecture means choosing which properties must be simple, accepting that other things become hard as a deliberate consequence.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1033\n    },\n    {\n      \"claim\": \"The patterns needed for agentic enterprise systems already exist in finance, defense, and big tech; AI requires recombining them, not inventing them from scratch.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1033\n    },\n    {\n      \"claim\": \"Building up from a successful POC and bolting on enterprise requirements as they surface produces brittle systems that don't generalize across use cases; the correct order is constraints first, then rebuild toward POC accuracy.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1075\n    },\n    {\n      \"claim\": \"Lessons from building AI in healthcare transfer to other regulated, process-driven industries such as finance, defense, and government.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 70\n    },\n    {\n      \"claim\": \"Some enterprise customers will not permit healthcare data to leave their on-prem VPC at all, forcing vendors into tangential rather than direct data access.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 593\n    }\n  ],\n  \"speaker_org\": \"Anterior\"\n}",
+  "ttft_ms": 24206,
+  "ttft_stream_ms": 2226,
+  "time_to_request_ms": 142,
+  "type": "result",
+  "duration_ms": 79076,
+  "uuid": "17e1d738-fb37-45c6-a374-d00b0ce24d55",
+  "passA": {
+    "summary": "Two Anterior engineers \u2014 a forward-deployed engineer and a VP of engineering selling agentic AI to US health insurers \u2014 argue that the reason enterprise AI pilots stall isn't model quality but architecture. They walk through a familiar failure mode: a four-week POC hits its accuracy metrics, everyone is thrilled, and then the compliance, security, and clinical stakeholders ask for audit trails, PHI handling guarantees, human escalation paths, and ongoing evals \u2014 none of which the POC's architecture can support. Their answer is four primitives adopted from finance, defense, and big tech: an immutable event log as the single source of truth, schema-driven object storage held separate from orchestration, human-agent equivalency so any LLM action can be performed by a human, and evals that fall out of those three rather than being bolted on. The framing throughout is that architecture means taking constraints seriously and choosing what you want to be trivially easy, accepting the resulting trade-offs. Worth watching if you're moving agents into a regulated environment and suspect your promising prototype won't survive contact with the security review.",
+    "key_points": [
+      "The hard part of enterprise AI is not the AI: POCs routinely hit their accuracy metrics and then fail productionization on audit, data-handling, escalation, and eval requirements that the prototype architecture cannot retrofit.",
+      "An enterprise audit trail is not a developer log \u2014 under SOC 2, HITRUST, and HIPAA it must be a complete record of every agent action, every data access, and every authorization, defensible as a chain of evidence in a legal setting.",
+      "Adopting an event-sourcing pattern \u2014 an append-only, complete, unified transaction log \u2014 makes auditability trivial because it falls out of the storage paradigm; the trade-off is cheap writes and expensive reads, mitigated by caching and snapshots.",
+      "In healthcare that read cost is actually a feature: later events can change the interpretation of a patient journey, and views being ephemeral computed projections of the log means you can re-derive a different view of the same history.",
+      "Sensitive data belongs in schema-driven, immutable object storage that the event log only references, so developers can debug and retrace agent steps and see the shape of data without ever seeing the PHI.",
+      "Separating orchestration from object storage creates a place to enforce zero trust \u2014 agents bear tokens and fetch data at point of use \u2014 which is also the lethal-trifecta prompt-injection mitigation: the architecture makes it impossible for one agent process to hold two conflicting data accesses.",
+      "Human escalation is unpredictable in advance, so the platform should define 'agent' broadly enough to cover both LLMs and humans: any action an LLM can take, a human can take, and downstream steps don't care which one acted.",
+      "Because humans and LLMs consume context differently, a shared context definition should be mapped through methods into either a prompt (agent-friendly) or a UI (human-friendly).",
+      "Evals emerge as a byproduct of the other three primitives: the ledger lets you replay and tweak a single prompt/model/code change, human-agent equivalency makes the human-LLM delta the eval score, and object storage lets you run evals on production data inside the customer's environment without exposing it.",
+      "The recommended sequencing is inverted from the usual: take production enterprise constraints as architectural principles from day one and rebuild toward the POC's accuracy on top of those primitives, rather than strapping compliance onto a point solution."
+    ],
+    "notable_quotes": [
+      {
+        "text": "health care is a very challenging place to develop and deploy AI",
+        "timestamp_sec": 1,
+        "why": "Sets the domain premise the speakers generalize from to finance, defense, and government."
+      },
+      {
+        "text": "but the problem is that everyone here is assuming that the the hard part is done, that the AI was was the challenging part. But actually, as we know, often getting things into production is really where the challenge lies.",
+        "timestamp_sec": 214,
+        "why": "The talk's central thesis, stated as the pivot from POC celebration to production reality."
+      },
+      {
+        "text": "It it has to contain a complete record of absolutely every action that the agent took.",
+        "timestamp_sec": 326,
+        "why": "Defines the enterprise bar for an audit trail against the developer's weaker mental model of a log."
+      },
+      {
+        "text": "say our agent's decisions came up in a court of law. Could we show a justifiable chain of evidence for why the particular actions were taken by a decision?",
+        "timestamp_sec": 367,
+        "why": "Reframes auditability as a legal-evidence standard rather than an observability nicety."
+      },
+      {
+        "text": "An immutable record of events that store all of the transactions that happen throughout the system. And this is append-only timestamp log. It's complete. So, this is your source of truth for all of the data of the system.",
+        "timestamp_sec": 415,
+        "why": "The concrete definition of the first primitive, borrowed from finance."
+      },
+      {
+        "text": "And architecting this way, the making this trade-off, uh means that auditability becomes trivial. It falls out of your data storage paradigm that you've chosen.",
+        "timestamp_sec": 415,
+        "why": "States the payoff of event sourcing: compliance as an emergent property, not a feature."
+      },
+      {
+        "text": "for this kind of event logging or sometimes called event sourcing pattern, writes become very easy. So, you just drop an event. Reads become more difficult because you have to read through all of the events in order to reconstruct a view of what happened.",
+        "timestamp_sec": 464,
+        "why": "Names the explicit cost of the recommended pattern rather than selling it costlessly."
+      },
+      {
+        "text": "all of your views of the data are ephemeral computed projections of the event log",
+        "timestamp_sec": 503,
+        "why": "The technical claim that turns the read-cost trade-off into an advantage for evolving clinical narratives."
+      },
+      {
+        "text": "You cannot have your agent, just as you cannot have humans, accessing and reading and utilizing healthcare data that they don't absolutely have a necessity to use at that that point in time for that particular journey.",
+        "timestamp_sec": 549,
+        "why": "Applies minimum-necessary access rules to agents as first-class principals."
+      },
+      {
+        "text": "one piece of health care data can easily be over a megabyte in size or or much more than that",
+        "timestamp_sec": 593,
+        "why": "A concrete data-shape number that motivates the object-storage choice."
+      },
+      {
+        "text": "it's possible for developers to go back and debug and have observability over what happened, what particular steps the agent took, why it did that, and and retrace the agent's steps without having access to the personal health information itself",
+        "timestamp_sec": 676,
+        "why": "The practical payoff of separating the event stream from the data blobs."
+      },
+      {
+        "text": "Your agents can bear tokens and use those tokens to access the data at the point of use and not allow data to flow around the system as it likes.",
+        "timestamp_sec": 721,
+        "why": "Zero trust stated as an agent-architecture rule, not a policy document."
+      },
+      {
+        "text": "The way I think about the lethal trifecta is can I solve for the constraint if I have an agent at point A with access to this data? Is it possible within my architecture for the agent to be also accessing data over here?",
+        "timestamp_sec": 721,
+        "why": "Positions prompt-injection defense as an architectural invariant rather than a guardrail model."
+      },
+      {
+        "text": "humans and LLMs ultimately process context differently. You know, LLMs will have no problem if you give them massive massive amounts of text, but humans that's not the case.",
+        "timestamp_sec": 809,
+        "why": "The constraint that forces a shared context definition with two renderings."
+      },
+      {
+        "text": "you can make it such that any action that can be taken by an LLM could also be taken by a human",
+        "timestamp_sec": 809,
+        "why": "The one-line statement of the human-agent equivalency primitive."
+      },
+      {
+        "text": "you have this human agent equivalency, which means that for any task, you could get both the agent, the LLM agent, and the human to perform it, and your difference is your eval, that gives you the eval scores",
+        "timestamp_sec": 950,
+        "why": "Shows how the escalation primitive doubles as an eval-generation mechanism."
+      },
+      {
+        "text": "You can get your eval results without the sensitive data ever needing to come to where your agent is performing the work.",
+        "timestamp_sec": 988,
+        "why": "The privacy-preserving eval claim, and the answer to customers who won't let data leave their VPC."
+      },
+      {
+        "text": "I like to think about architecture as taking your constraints very seriously and thinking about what you want to be simple within the system and then choosing the trade-offs for that.",
+        "timestamp_sec": 1033,
+        "why": "The generalizable design philosophy underneath all four primitives."
+      },
+      {
+        "text": "trying to build up from it, strapping on the enterprise requirements as you come across them. Okay, we need eval, we need uh security, we need auditability, and bolting these on as additions to the the the foundations of the POC. You end up with something very brittle",
+        "timestamp_sec": 1075,
+        "why": "The named anti-pattern the whole talk is arguing against."
+      },
+      {
+        "text": "if you take the constraints of a production-ready, scaled enterprise uh system seriously from the beginning and treat those as the architectural principles that you're going to build everything upon and then build back up towards that POC accuracy using your new primitives",
+        "timestamp_sec": 1075,
+        "why": "The prescriptive inversion of the normal POC-then-harden sequence."
+      }
+    ],
+    "concepts": [
+      "event sourcing",
+      "immutable audit trail",
+      "agent observability",
+      "zero trust architecture",
+      "prompt injection mitigation",
+      "human-in-the-loop escalation",
+      "privacy-preserving evaluation",
+      "regulated-industry deployment",
+      "enterprise proof of concept",
+      "schema-driven object storage"
+    ],
+    "positions": [
+      {
+        "claim": "The bottleneck for enterprise AI agents is architecture and production requirements, not model accuracy \u2014 POCs typically hit their performance metrics and still fail to productionize.",
+        "confidence": "stated",
+        "timestamp_sec": 214
+      },
+      {
+        "claim": "A compliance audit trail under SOC 2, HITRUST, or HIPAA is categorically different from a developer log: it must record every action, every data access, and every authorization.",
+        "confidence": "stated",
+        "timestamp_sec": 326
+      },
+      {
+        "claim": "Adopting an append-only, unified event log as the system's source of truth makes auditability a free property of the storage design rather than a separate feature.",
+        "confidence": "stated",
+        "timestamp_sec": 415
+      },
+      {
+        "claim": "Event sourcing makes writes easy and reads hard, and that read cost is acceptable \u2014 even beneficial \u2014 in healthcare because later events change the correct interpretation of earlier ones.",
+        "confidence": "stated",
+        "timestamp_sec": 464
+      },
+      {
+        "claim": "Sensitive data should live in immutable schema-driven object storage that the event log only references, so orchestration and observability are structurally separated from PHI.",
+        "confidence": "stated",
+        "timestamp_sec": 627
+      },
+      {
+        "claim": "Developers can effectively debug and retrace agent behavior while seeing only the schema of the data, never the protected health information itself.",
+        "confidence": "stated",
+        "timestamp_sec": 676
+      },
+      {
+        "claim": "Prompt injection and the lethal trifecta should be addressed by making the dangerous combination architecturally impossible \u2014 token-bearing agents fetching from segregated object storage \u2014 rather than by defending at the model layer.",
+        "confidence": "stated",
+        "timestamp_sec": 721
+      },
+      {
+        "claim": "Escalation points cannot be predicted in advance, so systems should treat humans and LLMs as interchangeable agents where any LLM action can also be performed by a human and downstream steps are indifferent to which acted.",
+        "confidence": "stated",
+        "timestamp_sec": 768
+      },
+      {
+        "claim": "Context should be defined once independent of consumer, then mapped into a prompt for an LLM or a UI for a human.",
+        "confidence": "stated",
+        "timestamp_sec": 855
+      },
+      {
+        "claim": "Offline eval datasets are unreliable because sampling may be unrepresentative and data drifts out of date, which favors replaying real production events instead.",
+        "confidence": "stated",
+        "timestamp_sec": 902
+      },
+      {
+        "claim": "Evals should emerge as a first-class property of the architecture rather than being attached to the side of the system.",
+        "confidence": "stated",
+        "timestamp_sec": 988
+      },
+      {
+        "claim": "The human-versus-LLM delta on the same task is a valid eval score.",
+        "confidence": "stated",
+        "timestamp_sec": 950
+      },
+      {
+        "claim": "Evals can be run on production data inside the customer's own environment without the sensitive data ever reaching the vendor's agent.",
+        "confidence": "stated",
+        "timestamp_sec": 988
+      },
+      {
+        "claim": "Good architecture means choosing which properties must be simple, accepting that other things become hard as a deliberate consequence.",
+        "confidence": "stated",
+        "timestamp_sec": 1033
+      },
+      {
+        "claim": "The patterns needed for agentic enterprise systems already exist in finance, defense, and big tech; AI requires recombining them, not inventing them from scratch.",
+        "confidence": "stated",
+        "timestamp_sec": 1033
+      },
+      {
+        "claim": "Building up from a successful POC and bolting on enterprise requirements as they surface produces brittle systems that don't generalize across use cases; the correct order is constraints first, then rebuild toward POC accuracy.",
+        "confidence": "stated",
+        "timestamp_sec": 1075
+      },
+      {
+        "claim": "Lessons from building AI in healthcare transfer to other regulated, process-driven industries such as finance, defense, and government.",
+        "confidence": "stated",
+        "timestamp_sec": 70
+      },
+      {
+        "claim": "Some enterprise customers will not permit healthcare data to leave their on-prem VPC at all, forcing vendors into tangential rather than direct data access.",
+        "confidence": "stated",
+        "timestamp_sec": 593
+      }
+    ],
+    "speaker_org": "Anterior"
+  },
+  "_meta": {
+    "slug": "why-your-enterprise-tech-stack-isnt-ready-for-ai-agents",
+    "video_id": "mav15aW9lLM",
+    "url": "https://www.youtube.com/watch?v=mav15aW9lLM",
+    "word_count": 3399,
+    "wall_sec": 79.8,
+    "run_at": "2026-08-20T02:52:22Z",
+    "effort": "default"
+  }
+}

@@ -4,15 +4,15 @@ type: "concept"
 slug: "online-evaluation"
 tier: "supporting"
 maturity: "consolidating"
-talk_count: 17
-speaker_count: 20
+talk_count: 18
+speaker_count: 21
 ---
 
 # online evaluation
 
 **Maturity: CONSOLIDATING** — Consolidating — converging practice, some open edges
 
-*Supporting concept* &middot; discussed across **17** talk(s) by **20** speaker(s)
+*Supporting concept* &middot; discussed across **18** talk(s) by **21** speaker(s)
 
 **Definition:** Measuring quality against live production traffic — monitoring, experiments, and implicit user signals — rather than a static dataset.
 
@@ -20,31 +20,21 @@ speaker_count: 20
 
 ## State of Practice
 
-The conference treated production traffic, not a held-out dataset, as the largest and most representative evaluation corpus any team will ever have, and treated evaluation as a service that keeps running after deploy rather than a gate that closes at ship. The prerequisite everyone named is instrumentation: flat, human-readable traces of every orchestration step — reasoning, tool calls, memory access, state transitions — logged at roughly an order of magnitude more volume than teams logged when humans were the only readers, because agents can now consume that volume. Aggregate pass rates were repeatedly described as inadequate on their own (Uber's routing guardrail is recall, not accuracy; YouTube Ads found a legally-required-disclaimer deletion that no categorical pass-rate view surfaced; Wandero found runs that complete 'successfully' while failing the user), so online eval is built from segment-sliced metrics, per-trace inspection, and implicit human signals — human-override rate, human-vs-judge agreement rate, edits made after an approval — treated as first-class labels. The metrics that count are tied to business or SRE outcomes (conversion, reliability, latency, cost, MTTR) rather than generic helpfulness scores, and drift is assumed: statically tuned components are expected to decay, so retuning against live signal is designed in. The live disputes are about how much of the detect-diagnose-fix loop can run without a human, and whether production issue detection should be agentic or deterministic with agents used only to investigate.
+The field now treats pre-launch evaluation as a gate, not as evidence: a passing offline suite tells you the system did not fail on cases you already imagined, and essentially nothing about live behavior. What practitioners actually run in production is continuous LLM-judge scoring of real conversations, guardrail-rate telemetry (claim rejection rate, missing-citation rate, human-override rate), stratified human review weighted 100% toward high-stakes cases, and per-segment slicing by geography, device, and content type. The prerequisite everyone converges on is trace-level logging — flat, human-readable, one record per orchestration stage — because aggregate pass rates demonstrably hide categorical failures (YouTube Ads found the agent detecting a legally required disclaimer and then deleting it, invisible in the pass-rate metric). Production traffic is also the dataset: teams sample and mutate real traffic rather than prompting a model for fifty synthetic test cases, and refresh held-out sets from prod. Judges are treated as software under test — validated like binary classifiers on ~100 hand-labeled examples with precision/recall, and re-verified before the agent is blamed for a score drop. The live argument is about autonomy: whether the detect-diagnose-retune loop closes without a human, and whether an agent or a deterministic statistical signal is what should notice the problem in the first place.
 
 ## Consensus
 
-### Live production traffic is the highest-value evaluation data; offline datasets should be sampled from and refreshed with it rather than authored from imagination.
+### Offline/pre-launch evaluation is necessary but insufficient; a statically tuned system does not hold up, so judges must continuously score live production traffic after launch.
 
-Support: **5** talk(s)
+Support: **6** talk(s)
 
-> "Production is the largest and the most representative evaluation data any organization will ever have."
+> "What actually holds up in production is judges that continuously keep scoring real conversations as they happen. Not a saved golden data set. Live traffic."
 >
-> — [Production Evals For Agentic AI Systems](../talks/production-evals-for-agentic-ai-systems.md), [3:58](https://www.youtube.com/watch?v=vljxQZfJ9wY&t=238s)
+> — [Guardrails First: Engineering Member-Facing Health AI](../talks/guardrails-first-engineering-member-facing-health-ai.md), [9:41](https://www.youtube.com/watch?v=YXEqC05WEI0&t=581s)
 
-Supporting talks: [Production Evals For Agentic AI Systems](../talks/production-evals-for-agentic-ai-systems.md), [Build Evals That Actually Matter](../talks/build-evals-that-actually-matter.md), [How Evals and Prompts Shape Agent Behavior](../talks/how-evals-and-prompts-shape-agent-behavior.md), [The Missing Layer After Launch](../talks/the-missing-layer-after-launch.md), [The Future of Evals: From LLM as a Judge to Agent as a Judge](../talks/the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge.md)
+Supporting talks: [Guardrails First: Engineering Member-Facing Health AI](../talks/guardrails-first-engineering-member-facing-health-ai.md), [Production Evals For Agentic AI Systems](../talks/production-evals-for-agentic-ai-systems.md), [AI System Design: From Idea to Production](../talks/ai-system-design-from-idea-to-production.md), [Building Closed-Loop Evals for a Multimodal Agent at Scale](../talks/building-closed-loop-evals-for-a-multimodal-agent-at-scale.md), [The Missing Layer After Launch](../talks/the-missing-layer-after-launch.md), [The Future of Evals: From LLM as a Judge to Agent as a Judge](../talks/the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge.md)
 
-### Evaluation must run continuously after deployment as a standing loop, because reliability degrades by drift rather than by a single catastrophic change.
-
-Support: **5** talk(s)
-
-> "Without continuous evaluation, teams often don't discover drift until users complain."
->
-> — [Production Evals For Agentic AI Systems](../talks/production-evals-for-agentic-ai-systems.md), [4:48](https://www.youtube.com/watch?v=vljxQZfJ9wY&t=288s)
-
-Supporting talks: [Production Evals For Agentic AI Systems](../talks/production-evals-for-agentic-ai-systems.md), [Build Evals That Actually Matter](../talks/build-evals-that-actually-matter.md), [Building Closed-Loop Evals for a Multimodal Agent at Scale](../talks/building-closed-loop-evals-for-a-multimodal-agent-at-scale.md), [AI System Design: From Idea to Production](../talks/ai-system-design-from-idea-to-production.md), [The Missing Layer After Launch](../talks/the-missing-layer-after-launch.md)
-
-### Step-level trace logging is the precondition for online evaluation — without traces of reasoning paths, tool calls, and state transitions there is nothing to measure or optimize against.
+### Trace-level logging of every reasoning step, tool call, and state transition is the precondition for online evaluation — conventional logs and aggregate pass rates are not enough.
 
 Support: **6** talk(s)
 
@@ -54,120 +44,124 @@ Support: **6** talk(s)
 
 Supporting talks: [Building Closed-Loop Evals for a Multimodal Agent at Scale](../talks/building-closed-loop-evals-for-a-multimodal-agent-at-scale.md), [Production Evals For Agentic AI Systems](../talks/production-evals-for-agentic-ai-systems.md), [From Signal to PR: Anatomy of a Self-Improving Agent](../talks/from-signal-to-pr-anatomy-of-a-self-improving-agent.md), [How Evals and Prompts Shape Agent Behavior](../talks/how-evals-and-prompts-shape-agent-behavior.md), [The Missing Layer After Launch](../talks/the-missing-layer-after-launch.md), [Designing Agents (The Floor Is the Frontier)](../talks/designing-agents-the-floor-is-the-frontier.md)
 
-### Aggregate pass-rate metrics hide the failures that matter most; individual production traces must be read directly.
+### Production traffic, not synthetic or hand-authored prompts, is the highest-value evaluation dataset; offline test sets should be sampled from and refreshed with prod data.
 
 Support: **4** talk(s)
 
-> "And we could not find that if we were just doing a categorical like the this x% pass rate or not. So we really had to look at the traces to see what was going on."
+> "Production is the largest and the most representative evaluation data any organization will ever have."
 >
-> — [How Evals and Prompts Shape Agent Behavior](../talks/how-evals-and-prompts-shape-agent-behavior.md), [11:34](https://www.youtube.com/watch?v=xyL2Ltkh-SA&t=694s)
+> — [Production Evals For Agentic AI Systems](../talks/production-evals-for-agentic-ai-systems.md), [3:58](https://www.youtube.com/watch?v=vljxQZfJ9wY&t=238s)
 
-Supporting talks: [How Evals and Prompts Shape Agent Behavior](../talks/how-evals-and-prompts-shape-agent-behavior.md), [Build Evals That Actually Matter](../talks/build-evals-that-actually-matter.md), [The Missing Layer After Launch](../talks/the-missing-layer-after-launch.md), [Designing Agents (The Floor Is the Frontier)](../talks/designing-agents-the-floor-is-the-frontier.md)
+Supporting talks: [Production Evals For Agentic AI Systems](../talks/production-evals-for-agentic-ai-systems.md), [Build Evals That Actually Matter](../talks/build-evals-that-actually-matter.md), [How Evals and Prompts Shape Agent Behavior](../talks/how-evals-and-prompts-shape-agent-behavior.md), [The Missing Layer After Launch](../talks/the-missing-layer-after-launch.md)
 
-### Human interactions in production are already evaluation labels — override rates, human-vs-judge agreement, post-approval edits — and must be instrumented deliberately rather than harvested as thumbs up/down.
+### The online judge must itself be validated against human labels before its scores are trusted or acted on, with ongoing human-vs-LLM agreement monitoring.
 
 Support: **4** talk(s)
 
-> "Next principle is every interaction is already a label."
+> "In a non-deterministic system, the judge is also non-deterministic. Before you trust the score, verify the scorer."
 >
-> — [Build AI Systems for Discernment, Not Approval](../talks/build-ai-systems-for-discernment-not-approval.md), [21:10](https://www.youtube.com/watch?v=CDqzWpwkSls&t=1270s)
+> — [Guardrails First: Engineering Member-Facing Health AI](../talks/guardrails-first-engineering-member-facing-health-ai.md), [17:32](https://www.youtube.com/watch?v=YXEqC05WEI0&t=1052s)
 
-Supporting talks: [Build AI Systems for Discernment, Not Approval](../talks/build-ai-systems-for-discernment-not-approval.md), [AI System Design: From Idea to Production](../talks/ai-system-design-from-idea-to-production.md), [How Evals and Prompts Shape Agent Behavior](../talks/how-evals-and-prompts-shape-agent-behavior.md), [Building Closed-Loop Evals for a Multimodal Agent at Scale](../talks/building-closed-loop-evals-for-a-multimodal-agent-at-scale.md)
+Supporting talks: [Guardrails First: Engineering Member-Facing Health AI](../talks/guardrails-first-engineering-member-facing-health-ai.md), [Build Evals That Actually Matter](../talks/build-evals-that-actually-matter.md), [How Evals and Prompts Shape Agent Behavior](../talks/how-evals-and-prompts-shape-agent-behavior.md), [Building Closed-Loop Evals for a Multimodal Agent at Scale](../talks/building-closed-loop-evals-for-a-multimodal-agent-at-scale.md)
 
-### Online metrics should be reliability- and business-outcome-bound (conversion, override rate, recall guardrails, latency, cost), not generic model-quality scores like helpfulness or accuracy.
+### The production signal should terminate in an automated fix loop — an agent investigates the trace evidence and produces a diagnosis or PR before a human is paged.
 
 Support: **4** talk(s)
 
-> "we can use these pre-built eval metrics as a baseline, but we shouldn't use them as our core eval metrics because we want eval metrics to be actionable and tied to the business outcome"
+> "shipping is the easiest part today. If you want to if you want to build a production agent, you need to close the loop first"
 >
-> — [Build Evals That Actually Matter](../talks/build-evals-that-actually-matter.md), [18:47](https://www.youtube.com/watch?v=3z2uT5aDx_Y&t=1127s)
+> — [The Missing Layer After Launch](../talks/the-missing-layer-after-launch.md), [18:30](https://www.youtube.com/watch?v=kZsf_Sfm7RU&t=1110s)
 
-Supporting talks: [Build Evals That Actually Matter](../talks/build-evals-that-actually-matter.md), [Production Evals For Agentic AI Systems](../talks/production-evals-for-agentic-ai-systems.md), [Building Closed-Loop Evals for a Multimodal Agent at Scale](../talks/building-closed-loop-evals-for-a-multimodal-agent-at-scale.md), ["The biggest challenge in your stack? Evals, Evals, Evals"](../talks/the-biggest-challenge-in-your-stack-evals-evals-evals.md)
+Supporting talks: [From Signal to PR: Anatomy of a Self-Improving Agent](../talks/from-signal-to-pr-anatomy-of-a-self-improving-agent.md), [The Missing Layer After Launch](../talks/the-missing-layer-after-launch.md), [The Future of Evals: From LLM as a Judge to Agent as a Judge](../talks/the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge.md), [Always-on agents run production without the on-call tax](../talks/always-on-agents-run-production-without-the-on-call-tax.md)
+
+### Online evaluation belongs in your own repo and infrastructure — as code, tests, and self-built monitors — rather than in a separate managed eval or black-box SRE product.
+
+Support: **3** talk(s)
+
+> "we built it ourselves, so there are a lot of other companies and tools that provide the same kind of system, but I prefer to build it myself because I know what I'm interested in for, what I'm looking for."
+>
+> — [The Missing Layer After Launch](../talks/the-missing-layer-after-launch.md), [13:59](https://www.youtube.com/watch?v=kZsf_Sfm7RU&t=839s)
+
+Supporting talks: [Designing Agents (The Floor Is the Frontier)](../talks/designing-agents-the-floor-is-the-frontier.md), [The Missing Layer After Launch](../talks/the-missing-layer-after-launch.md), [From Signal to PR: Anatomy of a Self-Improving Agent](../talks/from-signal-to-pr-anatomy-of-a-self-improving-agent.md)
 
 ## Disagreements
 
-### Should agents be gated by a rigorous offline evaluation before touching live users, or is the offline gate largely theater that production monitoring must replace?
+### How much should a team invest in a curated offline eval suite before relying on production monitoring?
 
 | Position A | Position B |
 |---|---|
-| Build a hard offline gate — simulated users, judge-scored pass/fail, launch criteria decided in advance — and do not let live users serve as your test data; monitoring comes after, not instead.<br>*[Build Evals That Actually Matter](../talks/build-evals-that-actually-matter.md), [AI System Design: From Idea to Production](../talks/ai-system-design-from-idea-to-production.md), [How Evals and Prompts Shape Agent Behavior](../talks/how-evals-and-prompts-shape-agent-behavior.md)* | Offline eval sets are low-leverage and perishable — they break on every model or harness swap, cover only one slice of non-deterministic trajectories, and teams won't delay upgrades to maintain them — so invest the effort in the post-launch loop instead.<br>*[Designing Agents (The Floor Is the Frontier)](../talks/designing-agents-the-floor-is-the-frontier.md), [The Missing Layer After Launch](../talks/the-missing-layer-after-launch.md), [Production Evals For Agentic AI Systems](../talks/production-evals-for-agentic-ai-systems.md)* |
+| Build a rigorous offline evaluation gate first — a fine-tuned user simulator, calibrated binary rubrics, launch gatekeeping criteria decided in advance — and do not expose live users to an unvalidated agent.<br>*[Build Evals That Actually Matter](../talks/build-evals-that-actually-matter.md), [AI System Design: From Idea to Production](../talks/ai-system-design-from-idea-to-production.md), [How Evals and Prompts Shape Agent Behavior](../talks/how-evals-and-prompts-shape-agent-behavior.md)* | Do not spend months on hand-built eval sets; they break on every model or harness swap and are not load-bearing. Ship, then learn what to test from production, where trajectories are non-deterministic and coverage is unbounded anyway.<br>*[Designing Agents (The Floor Is the Frontier)](../talks/designing-agents-the-floor-is-the-frontier.md), [The Missing Layer After Launch](../talks/the-missing-layer-after-launch.md), [Production Evals For Agentic AI Systems](../talks/production-evals-for-agentic-ai-systems.md)* |
 
-*Why it matters: It decides where an eval team's months go: building simulators and golden sets versus building trace classification, issue tracking, and automated fix pipelines. It also decides whether a model upgrade is blocked on re-validating a corpus that may be 80% invalidated by the swap.*
+*Why it matters: It determines whether an eval team's budget goes into simulators and golden datasets or into trace infrastructure and live judges, and whether a model upgrade is blocked for two weeks of eval maintenance or shipped behind production monitoring.*
 
-### Should production issue detection be driven by LLM/agentic analysis of traces, or by deterministic and statistical signals with agents used only to investigate what those signals surface?
-
-| Position A | Position B |
-|---|---|
-| Use agents as the detector: agent-as-a-judge with full trace analysis, LLM judges as QA gates on live output, and agentic log analysis, because reasoning about agent logs is itself an agent-scale problem.<br>*[The Future of Evals: From LLM as a Judge to Agent as a Judge](../talks/the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge.md), [The Missing Layer After Launch](../talks/the-missing-layer-after-launch.md), [Building Closed-Loop Evals for a Multimodal Agent at Scale](../talks/building-closed-loop-evals-for-a-multimodal-agent-at-scale.md)* | Agents are unreliable detectors; surface candidates with deterministic or statistical machinery — code-mode classifiers over traces, keyword-frequency anomalies, per-client baselines with MMD/KL divergence — and only hand the agent an already-found anomaly to investigate.<br>*[Designing Agents (The Floor Is the Frontier)](../talks/designing-agents-the-floor-is-the-frontier.md), [Learned Execution Graphs for Anomaly Detection & Drift in APIs](../talks/learned-execution-graphs-for-anomaly-detection-drift-in-apis.md), [Using RL Agent to Detect and Remediate ETL Pipeline Failures](../talks/using-rl-agent-to-detect-and-remediate-etl-pipeline-failures.md)* |
-
-*Why it matters: Detection method sets both the false-alarm rate and the token bill of always-on evaluation; an agentic detector that hallucinates anomalies burns on-call attention, while a purely statistical one misses semantic failures like removing a required disclaimer.*
-
-### Can the online detect-to-fix loop run fully closed with no human in it?
+### Should the loop from online signal to system change run without a human in it?
 
 | Position A | Position B |
 |---|---|
-| Yes for bounded, observable components: retuning and remediation can be entirely config-driven with no human in the loop, provided you have guardrail observability, staged rollout, and fast rollback.<br>*[Building Closed-Loop Evals for a Multimodal Agent at Scale](../talks/building-closed-loop-evals-for-a-multimodal-agent-at-scale.md), [Learned Execution Graphs for Anomaly Detection & Drift in APIs](../talks/learned-execution-graphs-for-anomaly-detection-drift-in-apis.md)* | No — keep a human as reviewer: close the loop to a review-ready PR, separate the fixing agent from the reviewing agent, keep escalation as an explicit action, and hold safety constraints outside the learned policy; larger fixes still need a human to spearhead them.<br>*[The Missing Layer After Launch](../talks/the-missing-layer-after-launch.md), [From Signal to PR: Anatomy of a Self-Improving Agent](../talks/from-signal-to-pr-anatomy-of-a-self-improving-agent.md), [Using RL Agent to Detect and Remediate ETL Pipeline Failures](../talks/using-rl-agent-to-detect-and-remediate-etl-pipeline-failures.md), [Build AI Systems for Discernment, Not Approval](../talks/build-ai-systems-for-discernment-not-approval.md)* |
+| Fully closed and config-driven: retune prompts and thresholds automatically against online drift, with guardrail observability and fast rollback as the safety net, and stage automated remediation to 5-10% of nodes before 100%.<br>*[Building Closed-Loop Evals for a Multimodal Agent at Scale](../talks/building-closed-loop-evals-for-a-multimodal-agent-at-scale.md), [Learned Execution Graphs for Anomaly Detection & Drift in APIs](../talks/learned-execution-graphs-for-anomaly-detection-drift-in-apis.md)* | Keep a human as reviewer and authority holder: agents produce evidence-backed issues and PRs, but humans approve; high-stakes cases get 100% review, escalation is an explicit action, and shadow-mode should precede any execution authority.<br>*[The Missing Layer After Launch](../talks/the-missing-layer-after-launch.md), [From Signal to PR: Anatomy of a Self-Improving Agent](../talks/from-signal-to-pr-anatomy-of-a-self-improving-agent.md), [Guardrails First: Engineering Member-Facing Health AI](../talks/guardrails-first-engineering-member-facing-health-ai.md), [Using RL Agent to Detect and Remediate ETL Pipeline Failures](../talks/using-rl-agent-to-detect-and-remediate-etl-pipeline-failures.md), [Production Evals For Agentic AI Systems](../talks/production-evals-for-agentic-ai-systems.md)* |
 
-*Why it matters: Full automation compounds: an unsupervised retune loop can reward-hack its own gate, and rubber-stamped or absent human review gets logged as ground truth, making the next model spuriously more confident in exactly the wrong direction.*
+*Why it matters: Full closure removes the human-capacity ceiling that several speakers call the real scaling bottleneck, but it also means a reward-hacked judge or a miscalibrated guardrail propagates to production with only rollback as recourse.*
 
-### Do you need statistically valid production experiments to claim an online improvement, or is that rigor mostly wasted?
+### What should detect anomalies in production data — an agent, or a deterministic/statistical signal?
 
 | Position A | Position B |
 |---|---|
-| Report confidence intervals on every score and treat small deltas on small trace samples as noise; A/B experiments on a free-tier sample are highly valuable at scale.<br>*[Build Evals That Actually Matter](../talks/build-evals-that-actually-matter.md), [Designing Agents (The Floor Is the Frontier)](../talks/designing-agents-the-floor-is-the-frontier.md)* | Reserve expensive statistical rigor for shipping decisions and leadership reporting, and skip experiments entirely at small user counts — early on, non-scalable intuition-driven checking beats a comprehensive eval.<br>*[Build Evals That Actually Matter](../talks/build-evals-that-actually-matter.md), [How Evals and Prompts Shape Agent Behavior](../talks/how-evals-and-prompts-shape-agent-behavior.md), [Designing Agents (The Floor Is the Frontier)](../talks/designing-agents-the-floor-is-the-frontier.md)* |
+| Agents are bad at anomaly detection. Use deterministic signals (keyword frequency, statistical divergence like MMD or KL against per-client baselines) to surface candidates, and only let the agent investigate what has already been found.<br>*[Designing Agents (The Floor Is the Frontier)](../talks/designing-agents-the-floor-is-the-frontier.md), [Learned Execution Graphs for Anomaly Detection & Drift in APIs](../talks/learned-execution-graphs-for-anomaly-detection-drift-in-apis.md)* | Log and trace analysis requires enough reasoning that it must be done by an agent; agent-as-a-judge searching across enormous trace volume finds subtle failures (e.g. silent loops) that scripts, filters, and fixed rubrics never surface.<br>*[The Missing Layer After Launch](../talks/the-missing-layer-after-launch.md), [The Future of Evals: From LLM as a Judge to Agent as a Judge](../talks/the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge.md)* |
 
-*Why it matters: Applying A/B discipline uniformly stalls iteration at low traffic; applying none of it means shipping on differences like 84% vs 88% on 50 traces that do not survive a confidence interval.*
+*Why it matters: It decides whether the expensive token spend goes into scanning all traffic or only into investigating flagged candidates, and whether novel failure classes you never anticipated can be discovered at all.*
+
+### Are human decisions captured in production trustworthy enough to serve as ground-truth labels for online evaluation?
+
+| Position A | Position B |
+|---|---|
+| Human labels are the golden source of truth that models and judges should be aligned to, and per-message member feedback is the truth signal that catches what automated judges miss.<br>*[Building Closed-Loop Evals for a Multimodal Agent at Scale](../talks/building-closed-loop-evals-for-a-multimodal-agent-at-scale.md), [Guardrails First: Engineering Member-Facing Health AI](../talks/guardrails-first-engineering-member-facing-health-ai.md)* | Automation bias contaminates them: reviewers scoring above 90% on calibration still upheld 50% of fabricated AI flags, and rubber-stamped approvals get logged as truth, making the model spuriously more confident over time.<br>*[Build AI Systems for Discernment, Not Approval](../talks/build-ai-systems-for-discernment-not-approval.md)* |
+
+*Why it matters: If production approvals are contaminated, every downstream online metric and retraining set inherits the bias, and the fix is interaction design rather than more oversight or a better judge.*
 
 ## Practical Guidance
 
 **Do:**
 
-- Log every orchestration stage in a flat, human-readable structure before building any eval on top of it, and plan to trace and log roughly 10x more than you would for human readers
-- Track human-override rate on AI verdicts and set a threshold above which it triggers an investigation
-- Run a sampling pipeline that compares expert human ratings against LLM-judge ratings on live traffic to watch judge-human agreement trend over time
-- Slice production evaluation by segment — geography, device type, dish type, client, payment type — so tuning can target the underperforming slice instead of the global average
-- Build offline eval datasets by sampling real production traffic and mutating it for golden paths and edge cases, and refresh held-out test sets with prod data
-- Fine-tune your user simulator on real user verbatims until the eval score goes down — a falling score means the eval got more realistic
-- Validate LLM judges like binary classifiers: ~100 hand-labeled pass/fail examples split train/dev/test, scored on precision and recall
-- Use recall as the guardrail metric where letting a bad output through is worse than an unnecessary intervention, and set per-client (not global) baselines so legitimate variation doesn't generate alert noise
-- Give a new endpoint or component its own fresh baseline rather than a generic inherited one, to avoid cold-start false positives
-- Stage automated remediation to 5–10% of machines, verify, then roll to 100%, and make the monitoring system deployment-aware so it can make correct rollback decisions
-- Attach confidence intervals to reported scores, and reserve the expensive statistical rigor for shipping decisions and leadership reporting
-- Layer redundant, overlapping QA gates (Swiss cheese) and reject rather than publish when the judge is not confident
-- Instrument guardrail behavior itself with rates — claim rejection rate, missing citation rate — so there is something to investigate when things go wrong
-- Define success metrics and the data you need to compute them before the system is built, not after
-- Give the monitoring agent access to trajectories, metrics, database, and UI, or its diagnosis is guesswork
-- Separate the fix-generating agent from the reviewing agent, since the fixer is biased toward its own diagnosis and eager to ship PRs
-- Feed telemetry asynchronously (OpenTelemetry → Kafka → stream processing) so observability never slows the request path, and use tail-based sampling when per-node start/end times are what matter
+- Log every stage of the orchestration into one flat, human-readable JSON record before attempting any optimization or self-learning loop.
+- Run judges continuously over live conversations; sample high-stakes cases for human review 100% of the time and sample randomly across the rest.
+- Instrument guardrail behavior itself as production rates — claim rejection rate, missing-citation rate — and track human-override rate on AI verdicts with a threshold that triggers investigation.
+- Validate each judge like a binary classifier: ~100 hand-labeled pass/fail examples split into train/dev/test, scored on precision and recall.
+- Attach a confidence interval to every reported score — 84% vs 88% on 50 traces is not a demonstrated gain.
+- Build offline datasets by sampling and mutating production traffic; refresh held-out test sets with prod data and use them sparingly.
+- Fine-tune the user simulator on real user verbatims until the eval score goes down, and treat the drop as evidence of realism, not regression.
+- Slice production metrics by geography, device type, and content type so tuning can target the specific underperforming segment.
+- Use per-client baselines and give every new endpoint its own baseline to avoid cold-start false positives.
+- When a judge score drops, verify the judge before changing the agent's prompt; editing a judge prompt is legitimate engineering.
+- Track, for each production issue, when it started and what percent of users it affects — both are needed to prioritize.
+- Write trace classifiers as code and run them in a sandbox over production traces.
+- Separate the fix-generating agent from the review agent, since the fixer is biased toward its own diagnosis and eager to open PRs.
+- Stage automated remediation to 5-10% of machines, verify, then roll to 100%; make the monitor deployment-aware so it can decide on rollback.
+- Strip PHI at the ingestion boundary rather than redacting at runtime, so production traces and dashboards are safe to evaluate against.
 
 **Avoid:**
 
-- Treating an offline pass rate as production readiness — a 90%+ pass rate is a signal your simulated user is unrealistically polite, not that the agent is good
-- Shipping an LLM-as-a-judge whose score gates no decision; an ungated judge score is worthless
-- Using generic pre-built metrics (helpfulness, toxicity, conciseness) as core online metrics — a 0.5 helpfulness score is not actionable
-- Clustering production traces as your issue-detection method: clusters are hard to track over time, their boundaries are uncontrollable, and one cluster can span unrelated root causes
-- Asking an agent to find anomalies — agents are bad at anomaly detection; have them investigate anomalies already surfaced deterministically
-- Judging only whether the agent completed the task; a technically successful run can still fail the user, and an agent that recovers by luck with no alert is a hidden defect
-- Recording a yes/no approval without capturing the human's subsequent manual edit — that logs a false label that pollutes the next training and eval set
-- Conflating two questions in one CTA (was the perception correct vs. should we act on it), which manufactures false labels at scale
-- Rewriting the prompt in response to a single failing production run; drive fixes from failure patterns measured across many examples
-- Running A/B tests or experiments with five to ten users
-- Assuming a statically tuned offline model will hold in production, or that a shift in traffic mix is a bug — covariate drift can require rebaselining when nothing has broken
-- Defining thresholds at too coarse a grain (all POST requests, one global latency baseline)
-- Leaving feature flags and infra changes outside the monitored path just because they bypass CI/CD
-- Adding more human oversight as the fix for a quality problem when the actual lever is the interaction design
+- Using live users as the test data for an unvalidated agent.
+- Trusting a 90%+ production-simulation pass rate — it usually means the simulated user is unrealistically polite and articulate.
+- Shipping generic prebuilt metrics (helpfulness, toxicity, conciseness scores) as core online metrics; a helpfulness of 0.5 is not actionable.
+- Running an LLM-as-a-judge whose score gates no decision.
+- Relying on aggregate pass rates alone — categorical failures like stripping a legally required disclaimer only show up in the traces.
+- Clustering traces as your issue-detection method: clusters are hard to track over time, boundaries are uncontrollable, and one cluster spans unrelated root causes.
+- Asking an agent to find anomalies rather than to investigate ones you already surfaced deterministically.
+- Running A/B tests or experiments on a base of five to ten users.
+- Assuming an offline-tuned component will stay tuned — every component needs a mechanism to retune against online drift.
+- Logging a rubber-stamped human approval as a true label, or recording a yes/no decision while discarding the human's subsequent manual edit.
+- Waiting for user complaints as your drift detector.
+- Rewriting the prompt in response to a single failing production run instead of a failure pattern measured across examples.
+- Setting baselines at HTTP-method granularity (all POSTs) rather than at the specific transaction type.
 
 ## Notable Outliers
 
-- Reviewers scoring above 90% on accuracy calibration still accepted 50% of deliberately fabricated AI flags — a coin-flip rate that indicates automation bias, meaning skilled human reviewers are not a valid online quality signal by default. ([Build AI Systems for Discernment, Not Approval](../talks/build-ai-systems-for-discernment-not-approval.md), [6:15](https://www.youtube.com/watch?v=CDqzWpwkSls&t=375s))
-- Changing only the guideline copy — framing the AI signal as a preliminary alert and naming the human as final decision-maker — moved rejection rates 21% with no model or UI change. ([Build AI Systems for Discernment, Not Approval](../talks/build-ai-systems-for-discernment-not-approval.md), [7:41](https://www.youtube.com/watch?v=CDqzWpwkSls&t=461s))
-- Switching harnesses (e.g. to the Claude Code CLI) can invalidate roughly 80% of hand-built tool-call evals, and most teams would not delay a model upgrade two weeks to update them — evidence those evals were never load-bearing. ([Designing Agents (The Floor Is the Frontier)](../talks/designing-agents-the-floor-is-the-frontier.md), [4:14](https://www.youtube.com/watch?v=jHMiYtjoJfA&t=254s))
-- An agent gamed a QA gate by oversteering into overly conservative, generic outputs that differed in raw pixels but carried no meaningful improvement — reward hacking of an automated online quality gate. ([Building Closed-Loop Evals for a Multimodal Agent at Scale](../talks/building-closed-loop-evals-for-a-multimodal-agent-at-scale.md), [16:00](https://www.youtube.com/watch?v=31GUkCBD-Uc&t=960s))
-- The RL policy beat an equivalent hand-written deterministic policy by only 0.19 percentage points; reliability came from state design, decision logic, and externalized safety constraints, not from learning. ([Using RL Agent to Detect and Remediate ETL Pipeline Failures](../talks/using-rl-agent-to-detect-and-remediate-etl-pipeline-failures.md), [10:11](https://www.youtube.com/watch?v=LrGCT7G_rU8&t=611s))
-- On Continual Learning Bench 1.0, vanilla in-context learning topped the leaderboard and held across both the reward-vs-cost and gain-vs-cost Pareto frontiers, beating more expensive context-management systems. ([Beyond Static Intelligence: Evaluating Continual Learning](../talks/beyond-static-intelligence-evaluating-continual-learning.md), [14:16](https://www.youtube.com/watch?v=iqloyWCGYQQ&t=856s))
-- Cumulative reward confounds learning with base model strength, so online learning must be scored on gain — stateful reward minus stateless reward — reported on a Pareto frontier alongside cost. ([Beyond Static Intelligence: Evaluating Continual Learning](../talks/beyond-static-intelligence-evaluating-continual-learning.md), [8:55](https://www.youtube.com/watch?v=iqloyWCGYQQ&t=535s))
-- LLM-as-a-judge evals are structurally backward-looking — you build them for failures you have already seen — which is why they cannot be the only production detection layer. ([From Signal to PR: Anatomy of a Self-Improving Agent](../talks/from-signal-to-pr-anatomy-of-a-self-improving-agent.md), [18:54](https://www.youtube.com/watch?v=9HbzAWnKbo4&t=1134s))
-- Evals have been the number one stack challenge three years running, but the lead margin is shrinking as pain points fragment across the stack. (["The biggest challenge in your stack? Evals, Evals, Evals"](../talks/the-biggest-challenge-in-your-stack-evals-evals-evals.md), [12:12](https://www.youtube.com/watch?v=RGe6EjucbzI&t=732s))
+- The QA gate itself gets reward hacked: the editing agent oversteers into overly conservative, generic outputs that differ in raw pixels but carry no meaningful quality improvement. ([Building Closed-Loop Evals for a Multimodal Agent at Scale](../talks/building-closed-loop-evals-for-a-multimodal-agent-at-scale.md), [16:00](https://www.youtube.com/watch?v=31GUkCBD-Uc&t=960s))
+- Reviewers consistently scoring above 90% on accuracy calibration still accepted 50% of deliberately fabricated AI flags — a coin-flip rate indicating automation bias, and reviewer skill is no defense against it. ([Build AI Systems for Discernment, Not Approval](../talks/build-ai-systems-for-discernment-not-approval.md), [6:15](https://www.youtube.com/watch?v=CDqzWpwkSls&t=375s))
+- Changing only the guideline copy — framing the AI signal as a preliminary alert and requiring independent evidence — shifted rejection rates 21% with no model or UI change. ([Build AI Systems for Discernment, Not Approval](../talks/build-ai-systems-for-discernment-not-approval.md), [7:41](https://www.youtube.com/watch?v=CDqzWpwkSls&t=461s))
+- Switching harnesses (e.g. to the Claude Code CLI) can invalidate roughly 80% of hand-built tool-call evals, and most teams would not delay a model upgrade two weeks to repair them — which proves those evals were never load-bearing. ([Designing Agents (The Floor Is the Frontier)](../talks/designing-agents-the-floor-is-the-frontier.md), [4:14](https://www.youtube.com/watch?v=jHMiYtjoJfA&t=254s))
+- Teams should trace and log roughly 10x more than they do today, because agents can consume volumes of telemetry that humans never could. ([From Signal to PR: Anatomy of a Self-Improving Agent](../talks/from-signal-to-pr-anatomy-of-a-self-improving-agent.md), [9:12](https://www.youtube.com/watch?v=9HbzAWnKbo4&t=552s))
+- Reliability is now a threshold requirement rather than a differentiator — only one in five survey respondents named it a top-three model consideration. (["The biggest challenge in your stack? Evals, Evals, Evals"](../talks/the-biggest-challenge-in-your-stack-evals-evals-evals.md), [6:53](https://www.youtube.com/watch?v=RGe6EjucbzI&t=413s))
 
 ## All Talks
 
@@ -180,6 +174,7 @@ Supporting talks: [Build Evals That Actually Matter](../talks/build-evals-that-a
 - [Designing Agents (The Floor Is the Frontier)](../talks/designing-agents-the-floor-is-the-frontier.md)
 - [fighting slop with slop](../talks/fighting-slop-with-slop.md)
 - [From Signal to PR: Anatomy of a Self-Improving Agent](../talks/from-signal-to-pr-anatomy-of-a-self-improving-agent.md)
+- [Guardrails First: Engineering Member-Facing Health AI](../talks/guardrails-first-engineering-member-facing-health-ai.md)
 - [How Evals and Prompts Shape Agent Behavior](../talks/how-evals-and-prompts-shape-agent-behavior.md)
 - [How Forward Deployed Engineering is done at Kepler](../talks/how-forward-deployed-engineering-is-done-at-kepler.md)
 - [Learned Execution Graphs for Anomaly Detection & Drift in APIs](../talks/learned-execution-graphs-for-anomaly-detection-drift-in-apis.md)
@@ -207,6 +202,7 @@ Supporting talks: [Build Evals That Actually Matter](../talks/build-evals-that-a
 - [Nishant Gupta](../speakers/nishant-gupta.md)
 - [Parth Asawa](../speakers/parth-asawa.md)
 - [Preetika Bhateja](../speakers/preetika-bhateja.md)
+- [Rashi Agrawal](../speakers/rashi-agrawal.md)
 - [Ritvik Pandya](../speakers/ritvik-pandya.md)
 - [Soumya Gupta](../speakers/soumya-gupta.md)
 - [Vaibhav Gupta](../speakers/vaibhav-gupta.md)

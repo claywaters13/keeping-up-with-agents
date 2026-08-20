@@ -4,15 +4,15 @@ type: "concept"
 slug: "task-decomposition"
 tier: "supporting"
 maturity: "consolidating"
-talk_count: 12
-speaker_count: 14
+talk_count: 15
+speaker_count: 17
 ---
 
 # task decomposition
 
 **Maturity: CONSOLIDATING** — Consolidating — converging practice, some open edges
 
-*Supporting concept* &middot; discussed across **12** talk(s) by **14** speaker(s)
+*Supporting concept* &middot; discussed across **15** talk(s) by **17** speaker(s)
 
 **Definition:** Breaking a large goal into scoped, independently checkable units sized to what an agent can actually complete.
 
@@ -20,61 +20,11 @@ speaker_count: 14
 
 ## State of Practice
 
-The field has moved from arguing about whether agents need decomposition to arguing about who performs it and how each resulting unit gets closed out. Speakers across coding, browser, scientific, GTM, and enterprise-process work converged on the same diagnosis: model intelligence is no longer the binding constraint, so the missing layer is specifying, scoping, and verifying units of work — Robinson's "mismanaged geniuses," Raj's "the infra around them that sucks," Bahidika/Allou's "reliability was never a prompting problem. It's a control problem." The concrete techniques on offer are unusually specific: model a workflow as a named state machine the harness advances (intro/teach/check/grade/advance/wrap), make decomposition an explicit action that emits a linked hierarchy of component documents rather than an implicit step inside one prompt, write spec and design markdown that a human hand-edits before any code is generated, use stacked diffs to slice a proven prototype into per-domain reviewable PRs, and assign each step an execution mode — fully autonomous, human-in-the-loop, or human-only. A second, harder consensus is that a decomposed unit is worthless without a completion contract: Dotta's argument that "done" is a bundle of distinct operational claims (mergeable, deployable, announceable) flattened into one green checkmark, and Volkov's rule that the builder must not grade itself, are the same point from opposite ends of the stack. The live fights are about ownership — Robinson insists a system only counts as an RLM if the model itself picks the decomposition, while Bahidika/Allou insist the model must never hold workflow state — and about durability, with Shahandeh calling hierarchical decomposition prompting a temporary chain-of-thought-style scaffold that post-training will absorb, against a majority who treat it as permanent software-engineering discipline.
+Decomposition has moved from a prompting trick to a first-class architectural artifact: speakers describe writing the breakdown down (spec/design markdown, a research prototype taxonomy document, a linked hierarchy of component docs, a lesson state machine) before any agent runs. The economic argument is now the dominant one — once a task is cut into narrowly scoped units with defined inputs and output shapes, a much cheaper model clears the same bar, with Microsoft replacing Opus 4.7 with Haiku 4.5 behind a strong harness, Abridge post-training small models per clinical-note section, poolside using step-wise generation to beat what the teacher model produces one-shot, and OpenProse reporting a 9B model as an RLM beating frontier models run as plain LLMs. The failure mode everyone names is the opposite: one agent, one giant prompt, four jobs, resulting in drift, skipped steps, and loops that demos never surface. Sizing is driven by checkability rather than by effort — units are cut so that each one terminates in a decidable state (stop, retry, escalate), carries a structured output contract, and can be routed by consequence to code, to an agent, or to a human. The live arguments are about authorship (does a human write the decomposition up front or does the model choose it at runtime) and permanence (is this scaffolding or is it software engineering).
 
 ## Consensus
 
-### A goal alone is not a usable instruction to an agent; decomposition must be an explicit artifact (path, state machine, spec document, component hierarchy) produced before execution, not left implicit inside a single large prompt.
-
-Support: **6** talk(s)
-
-> "As much as we all love the slash goal command, an agent needs more than a goal, it needs a path."
->
-> — [Build Systems, Not Code](../talks/build-systems-not-code.md), [3:08](https://www.youtube.com/watch?v=ZD9-4fW2HhM&t=188s)
-
-Supporting talks: [Build Systems, Not Code](../talks/build-systems-not-code.md), [Autonomous Agents for Scientific Tasks](../talks/autonomous-agents-for-scientific-tasks.md), [Using Spec-Driven Development for Production Workflows](../talks/using-spec-driven-development-for-production-workflows.md), [Don't Let the LLM Drive](../talks/dont-let-the-llm-drive.md), [The Messy Reality of Scale: Synthetic Data and Pre-Training](../talks/the-messy-reality-of-scale-synthetic-data-and-pre-training.md), [Research to Reality: Bringing Frontier ML Research to Production](../talks/research-to-reality-bringing-frontier-ml-research-to-production.md)
-
-### The constraint on long-horizon agent work is orchestration and scaffolding, not model intelligence — better decomposition, not a smarter model, is what raises task completion.
-
-Support: **5** talk(s)
-
-> "today's agents are mismanaged geniuses. The intelligence is there, and the missing layer is how do we specify and manage and reuse and verify the work."
->
-> — [Recursive Coding Agents](../talks/recursive-coding-agents.md), [1:38](https://www.youtube.com/watch?v=3hXJI2q0Jz8&t=98s)
-
-Supporting talks: [Recursive Coding Agents](../talks/recursive-coding-agents.md), [Browser Agents Don't Need Better Models. They Need Better Eyes.](../talks/browser-agents-dont-need-better-models-they-need-better-eyes.md), [AI tools for Forward Deployed Engineering](../talks/ai-tools-for-forward-deployed-engineering.md), [Autonomous Agents for Scientific Tasks](../talks/autonomous-agents-for-scientific-tasks.md), [Don't Let the LLM Drive](../talks/dont-let-the-llm-drive.md)
-
-### Each decomposed unit needs an explicit, structured completion contract — a defined output shape and terminal conditions — because a boolean 'done' collapses distinct claims (correct, mergeable, deployable, announceable) that the system needs to distinguish.
-
-Support: **5** talk(s)
-
-> "So, one of the best pieces of advice we have is that you stop treating done as a Boolean and treat it more like an object."
->
-> — [What Does Done Even Mean? Agents and Paperclip's Liveness Model](../talks/what-does-done-even-mean-agents-and-paperclips-liveness-model.md), [4:49](https://www.youtube.com/watch?v=7P0elyLIxXo&t=289s)
-
-Supporting talks: [What Does Done Even Mean? Agents and Paperclip's Liveness Model](../talks/what-does-done-even-mean-agents-and-paperclips-liveness-model.md), [Build Systems, Not Code](../talks/build-systems-not-code.md), [Don't Let the LLM Drive](../talks/dont-let-the-llm-drive.md), [Using Spec-Driven Development for Production Workflows](../talks/using-spec-driven-development-for-production-workflows.md), [Should AI Engineers Still Read Code in 2026? The Z/L Continuum](../talks/should-ai-engineers-still-read-code-in-2026-the-zl-continuum.md)
-
-### The component that verifies a completed unit must be separate from the one that produced it; an agent grading its own work hides review rather than eliminating it.
-
-Support: **4** talk(s)
-
-> "You definitely want to separate the verifier from the author. Often, this means you're using a different model. So, if you're coding using Claude, have Codex verify."
->
-> — [What Does Done Even Mean? Agents and Paperclip's Liveness Model](../talks/what-does-done-even-mean-agents-and-paperclips-liveness-model.md), [5:59](https://www.youtube.com/watch?v=7P0elyLIxXo&t=359s)
-
-Supporting talks: [What Does Done Even Mean? Agents and Paperclip's Liveness Model](../talks/what-does-done-even-mean-agents-and-paperclips-liveness-model.md), [Should AI Engineers Still Read Code in 2026? The Z/L Continuum](../talks/should-ai-engineers-still-read-code-in-2026-the-zl-continuum.md), [Don't Let the LLM Drive](../talks/dont-let-the-llm-drive.md), [Build Systems, Not Code](../talks/build-systems-not-code.md)
-
-### Units should be scoped to a single responsibility — one job per subagent, prompt, microservice, or PR — because multi-job units are the direct cause of drift and unreviewable output.
-
-Support: **4** talk(s)
-
-> "Architecturally, they're sort of like functions, right? So, you give them one specific task to do. You call them when it needs to be done. And they can do it really well because that's all that they have in scope, right?"
->
-> — [Build Systems, Not Code](../talks/build-systems-not-code.md), [8:15](https://www.youtube.com/watch?v=ZD9-4fW2HhM&t=495s)
-
-Supporting talks: [Build Systems, Not Code](../talks/build-systems-not-code.md), [Research to Reality: Bringing Frontier ML Research to Production](../talks/research-to-reality-bringing-frontier-ml-research-to-production.md), [Should AI Engineers Still Read Code in 2026? The Z/L Continuum](../talks/should-ai-engineers-still-read-code-in-2026-the-zl-continuum.md), [Autonomous Agents for Scientific Tasks](../talks/autonomous-agents-for-scientific-tasks.md)
-
-### Once work is decomposed into narrowly scoped steps, a smaller and cheaper model driven by a strong harness matches or beats a frontier model running the task end to end.
+### Cutting work into narrow, scoped units lets a substantially smaller and cheaper model hit the quality bar that a monolithic task would require a frontier model for.
 
 Support: **4** talk(s)
 
@@ -82,86 +32,114 @@ Support: **4** talk(s)
 >
 > — [Don't Let the LLM Drive](../talks/dont-let-the-llm-drive.md), [2:27](https://www.youtube.com/watch?v=m24UKZomm7k&t=147s)
 
-Supporting talks: [Don't Let the LLM Drive](../talks/dont-let-the-llm-drive.md), [Browser Agents Don't Need Better Models. They Need Better Eyes.](../talks/browser-agents-dont-need-better-models-they-need-better-eyes.md), [Recursive Coding Agents](../talks/recursive-coding-agents.md), [AI tools for Forward Deployed Engineering](../talks/ai-tools-for-forward-deployed-engineering.md)
+Supporting talks: [Don't Let the LLM Drive](../talks/dont-let-the-llm-drive.md), [From Ambient Documentation to Clinical Intelligence](../talks/from-ambient-documentation-to-clinical-intelligence.md), [Recursive Coding Agents](../talks/recursive-coding-agents.md), [The Messy Reality of Scale: Synthetic Data and Pre-Training](../talks/the-messy-reality-of-scale-synthetic-data-and-pre-training.md)
+
+### Overloading one agent or one prompt with multiple responsibilities is the primary cause of drift and unreliability; build many narrowly scoped agents instead.
+
+Support: **4** talk(s)
+
+> "That's four different jobs crammed into a single prompt. And then you wonder why your agent is drifting and not sticking to the script."
+>
+> — [Build Systems, Not Code](../talks/build-systems-not-code.md), [5:13](https://www.youtube.com/watch?v=ZD9-4fW2HhM&t=313s)
+
+Supporting talks: [Build Systems, Not Code](../talks/build-systems-not-code.md), [Trading Desks to Clinical Trials: Parallels in Applied Vertical AI](../talks/trading-desks-to-clinical-trials-parallels-in-applied-vertical-ai.md), [From Ambient Documentation to Clinical Intelligence](../talks/from-ambient-documentation-to-clinical-intelligence.md), [Don't Let the LLM Drive](../talks/dont-let-the-llm-drive.md)
+
+### Decomposition should be an explicit, separately produced written artifact — a spec, taxonomy document, or linked component hierarchy — that exists before execution begins rather than being implied by a single goal prompt.
+
+Support: **4** talk(s)
+
+> "First is to decompose the problem into its subcomponents but it's an explicit act um um action."
+>
+> — [Autonomous Agents for Scientific Tasks](../talks/autonomous-agents-for-scientific-tasks.md), [6:56](https://www.youtube.com/watch?v=XLEYtv3cMlw&t=416s)
+
+Supporting talks: [Autonomous Agents for Scientific Tasks](../talks/autonomous-agents-for-scientific-tasks.md), [Using Spec-Driven Development for Production Workflows](../talks/using-spec-driven-development-for-production-workflows.md), [Research to Reality: Bringing Frontier ML Research to Production](../talks/research-to-reality-bringing-frontier-ml-research-to-production.md), [Build Systems, Not Code](../talks/build-systems-not-code.md)
+
+### Each decomposed unit needs an explicit completion contract — a defined output shape and a decidable terminal state — because a self-reported boolean 'done' hides distinct claims about what was actually achieved.
+
+Support: **4** talk(s)
+
+> "So, one of the best pieces of advice we have is that you stop treating done as a Boolean and treat it more like an object."
+>
+> — [What Does Done Even Mean? Agents and Paperclip's Liveness Model](../talks/what-does-done-even-mean-agents-and-paperclips-liveness-model.md), [4:49](https://www.youtube.com/watch?v=7P0elyLIxXo&t=289s)
+
+Supporting talks: [What Does Done Even Mean? Agents and Paperclip's Liveness Model](../talks/what-does-done-even-mean-agents-and-paperclips-liveness-model.md), [Build Systems, Not Code](../talks/build-systems-not-code.md), [Don't Let the LLM Drive](../talks/dont-let-the-llm-drive.md), [Should AI Engineers Still Read Code in 2026? The Z/L Continuum](../talks/should-ai-engineers-still-read-code-in-2026-the-zl-continuum.md)
+
+### Units should be routed by consequence after decomposition: deterministic code for exact answers, agents for judgment, and human approval for irreversible or high-blast-radius steps.
+
+Support: **5** talk(s)
+
+> "Meaning, you do say, all right, four out of these eight steps will be handled completely autonomously. The other three will be handled with some human-in-the-loop intervention. And one step of that process will be handled by a human, period."
+>
+> — [AI tools for Forward Deployed Engineering](../talks/ai-tools-for-forward-deployed-engineering.md), [6:30](https://www.youtube.com/watch?v=l0FLhNqBOic&t=390s)
+
+Supporting talks: [AI tools for Forward Deployed Engineering](../talks/ai-tools-for-forward-deployed-engineering.md), [Build Systems, Not Code](../talks/build-systems-not-code.md), [Should AI Engineers Still Read Code in 2026? The Z/L Continuum](../talks/should-ai-engineers-still-read-code-in-2026-the-zl-continuum.md), [How to build an AI-Native Health Company](../talks/how-to-build-an-ai-native-health-company.md), [What Does Done Even Mean? Agents and Paperclip's Liveness Model](../talks/what-does-done-even-mean-agents-and-paperclips-liveness-model.md)
 
 ## Disagreements
 
-### Should the model choose how a task is decomposed, or should the decomposition be fixed in advance by a harness or a human?
+### Who should choose the decomposition — a human-authored workflow fixed before the run, or the model itself at runtime?
 
 | Position A | Position B |
 |---|---|
-| The model must pick the decomposition at runtime — that dynamic choice is what makes a system agent-native, and agents are in fact better than humans at slicing a large change into atomic units. Robinson goes so far as to disqualify hardcoded map-reduce pipelines from counting as RLMs at all.<br>*[Recursive Coding Agents](../talks/recursive-coding-agents.md), [Should AI Engineers Still Read Code in 2026? The Z/L Continuum](../talks/should-ai-engineers-still-read-code-in-2026-the-zl-continuum.md), [Autonomous Agents for Scientific Tasks](../talks/autonomous-agents-for-scientific-tasks.md)* | The decomposition is authored outside the model and the model only fills in leaf steps: the harness holds workflow state and decides what comes next, the workflow defines the path, research teams write a taxonomy document before engineers touch the project, and generated spec/design docs are hand-edited by the developer before implementation.<br>*[Don't Let the LLM Drive](../talks/dont-let-the-llm-drive.md), [Build Systems, Not Code](../talks/build-systems-not-code.md), [Research to Reality: Bringing Frontier ML Research to Production](../talks/research-to-reality-bringing-frontier-ml-research-to-production.md), [Using Spec-Driven Development for Production Workflows](../talks/using-spec-driven-development-for-production-workflows.md)* |
+| The decomposition is engineered outside the model: a state machine, spec document, or workflow defines the path, the harness advances state and decides what comes next, and the model only proposes within a step. Letting a coding agent design the breakdown yields something that works but is unmaintainable.<br>*[Don't Let the LLM Drive](../talks/dont-let-the-llm-drive.md), [Build Systems, Not Code](../talks/build-systems-not-code.md), [Using Spec-Driven Development for Production Workflows](../talks/using-spec-driven-development-for-production-workflows.md), [AI tools for Forward Deployed Engineering](../talks/ai-tools-for-forward-deployed-engineering.md)* | The model picking its own decomposition into sub-calls is the defining property of the architecture; a hardcoded map-reduce pipeline does not qualify. Agents are better than humans at splitting large changes into atomic reviewable units, and a coding agent asked to emit a linked document hierarchy widens the space of solutions it will then propose.<br>*[Recursive Coding Agents](../talks/recursive-coding-agents.md), [Autonomous Agents for Scientific Tasks](../talks/autonomous-agents-for-scientific-tasks.md), [Should AI Engineers Still Read Code in 2026? The Z/L Continuum](../talks/should-ai-engineers-still-read-code-in-2026-the-zl-continuum.md)* |
 
-*Why it matters: It determines where reliability engineering goes: side A invests in prompting, sub-agent wiring, and test-time compute so the model can search a wider space of plans; side B invests in state machines, structured contracts, and review gates and accepts a narrower plan space in exchange for reproducibility. It also changes which model you can afford — a model that must plan cannot be Haiku.*
+*Why it matters: It decides whether you invest in workflow state machines and spec pipelines or in recursive scaffolds and sub-agent primitives, and it determines whether the plan is auditable before execution or only reconstructable after it.*
 
-### Does every decomposed unit require a human sign-off, or should verification itself be delegated to agents?
-
-| Position A | Position B |
-|---|---|
-| A human is accountable for each unit and must personally review it. Hanchett: you must be the code reviewer of all generated code and of the spec documents; Jones walls high-consequence actions (emailing sellers, submitting offers) behind explicit approval and reserves authority for humans; Volkov calls merging with no review at all — human or agentic — unacceptable and demands line-by-line reading for auth, money, permissions, and irreversible data.<br>*[Using Spec-Driven Development for Production Workflows](../talks/using-spec-driven-development-for-production-workflows.md), [Build Systems, Not Code](../talks/build-systems-not-code.md), [Should AI Engineers Still Read Code in 2026? The Z/L Continuum](../talks/should-ai-engineers-still-read-code-in-2026-the-zl-continuum.md)* | Human review of every unit does not scale and degenerates into verification theater; the control plane should route units to agent verifiers with evidence-producing tools (browser harnesses, screenshots, hooks) and reserve human attention for units the rubric flags, letting productive work continue in the meantime.<br>*[What Does Done Even Mean? Agents and Paperclip's Liveness Model](../talks/what-does-done-even-mean-agents-and-paperclips-liveness-model.md), [Recursive Coding Agents](../talks/recursive-coding-agents.md), [Don't Let the LLM Drive](../talks/dont-let-the-llm-drive.md)* |
-
-*Why it matters: This sets the ceiling on throughput: if every unit needs a human, decomposition into more units makes the human the bottleneck faster, so you decompose coarsely; if agents can verify, you decompose finely and invest in evidence tooling and rubrics instead of reviewer headcount.*
-
-### Is explicit decomposition scaffolding a permanent architectural layer or a temporary crutch that post-training will absorb?
+### Is explicit decomposition scaffolding a durable engineering layer or a transitional crutch that better-post-trained models will make unnecessary?
 
 | Position A | Position B |
 |---|---|
-| It is temporary. Shahandeh frames hierarchical decomposition prompting as directly analogous to chain-of-thought on GPT-4-era models — a trick that newer models post-trained to compartmentalize problems will need less and less.<br>*[Autonomous Agents for Scientific Tasks](../talks/autonomous-agents-for-scientific-tasks.md)* | It is permanent engineering discipline. Hanchett states that better frontier models and built-in planning modes have not removed the need for human-reviewed spec documents; Volkov argues rising capability relocates where proof is required but never removes the requirement; Jones treats agentic decomposition as ordinary software architecture with different primitives.<br>*[Using Spec-Driven Development for Production Workflows](../talks/using-spec-driven-development-for-production-workflows.md), [Should AI Engineers Still Read Code in 2026? The Z/L Continuum](../talks/should-ai-engineers-still-read-code-in-2026-the-zl-continuum.md), [Build Systems, Not Code](../talks/build-systems-not-code.md), [Don't Let the LLM Drive](../talks/dont-let-the-llm-drive.md)* |
+| It is a temporary trick, directly analogous to chain-of-thought prompting on GPT-4-era models; as models are post-trained to compartmentalize and break down problems themselves, less and less of this scaffolding will be needed.<br>*[Autonomous Agents for Scientific Tasks](../talks/autonomous-agents-for-scientific-tasks.md)* | Intelligence is not the constraint and will not become one — the missing layer is orchestration, specification, and reuse. Designing these systems is software engineering with different primitives, and rising capability relocates where proof is required rather than removing the requirement.<br>*[Recursive Coding Agents](../talks/recursive-coding-agents.md), [Build Systems, Not Code](../talks/build-systems-not-code.md), [Don't Let the LLM Drive](../talks/dont-let-the-llm-drive.md), [Should AI Engineers Still Read Code in 2026? The Z/L Continuum](../talks/should-ai-engineers-still-read-code-in-2026-the-zl-continuum.md)* |
 
-*Why it matters: It decides whether to build durable decomposition infrastructure — state machines, spec pipelines, control planes — or to treat today's scaffolding as throwaway tooling you will delete at the next model release.*
+*Why it matters: If it is a crutch, orchestration infrastructure is depreciating and should be kept thin; if it is engineering, the workflow layer is the durable asset and deserves the same investment as the codebase.*
 
-### When you decompose, which steps deserve the strongest available model?
+### Can a decomposed unit's completion be checked by another model, or does it require human-authored ground truth?
 
 | Position A | Position B |
 |---|---|
-| Decomposition is what lets you downgrade: with good structure and a good environment representation, a cheap model outperforms a frontier one. Raj beats screenshot-driven Claude with a compressed-markdown representation and a cheaper model; Robinson reports Qwen 3.5 9B as an RLM beating Opus and GPT-5.4 as plain LLMs; Moza reports post-trained open-source models beating frontier models at writing normalized process flows.<br>*[Browser Agents Don't Need Better Models. They Need Better Eyes.](../talks/browser-agents-dont-need-better-models-they-need-better-eyes.md), [Recursive Coding Agents](../talks/recursive-coding-agents.md), [AI tools for Forward Deployed Engineering](../talks/ai-tools-for-forward-deployed-engineering.md), [Don't Let the LLM Drive](../talks/dont-let-the-llm-drive.md)* | The decomposition and critique steps are exactly where you spend on the strongest model — Shahandeh routes hypothesis generation and post-implementation critique to GPT-5.x Pro via Oracle CLI and reports much better improvements, and calls in a stronger multimodal model to review images as part of the metric.<br>*[Autonomous Agents for Scientific Tasks](../talks/autonomous-agents-for-scientific-tasks.md)* |
+| Cross-model verification is sufficient and should be standard: separate the verifier from the author by using a different model, gate high-stakes actions on agreement between models, and never let the agent that wrote the code also grade its own tests.<br>*[What Does Done Even Mean? Agents and Paperclip's Liveness Model](../talks/what-does-done-even-mean-agents-and-paperclips-liveness-model.md), [How to build an AI-Native Health Company](../talks/how-to-build-an-ai-native-health-company.md), [Should AI Engineers Still Read Code in 2026? The Z/L Continuum](../talks/should-ai-engineers-still-read-code-in-2026-the-zl-continuum.md)* | No LLM verifier can serve as ground truth in high-stakes verticals — a verifier good enough to grade would be the better generator, LLM-as-judge produces plausible jargon without understanding, and rubrics-as-rewards creates an echo chamber. Checkability must come from domain-expert-authored rubrics and expert judgment in the loop.<br>*[From Ambient Documentation to Clinical Intelligence](../talks/from-ambient-documentation-to-clinical-intelligence.md), [Trading Desks to Clinical Trials: Parallels in Applied Vertical AI](../talks/trading-desks-to-clinical-trials-parallels-in-applied-vertical-ai.md)* |
 
-*Why it matters: It changes the cost model of a decomposed pipeline: uniformly cheap leaf execution versus a barbell where planning and verification calls are expensive and only execution is cheap.*
+*Why it matters: It sets the ceiling on how finely you can decompose before verification becomes the bottleneck: automated checking scales to hundreds of units, expert rubrics cap you at what clinicians or traders can author and review.*
 
 ## Practical Guidance
 
 **Do:**
 
-- Make decomposition a separate, explicit action that emits a linked hierarchy of component documents over the codebase, then have the reasoning model propose improvements against each component.
-- Model multi-step workflows as a named state machine (e.g. intro, teach, check, grade, advance, wrap) and have the harness — not the model — validate returns, advance state, and decide what is next.
-- Give every run exactly three terminal outcomes: stop, retry, or escalate.
-- Label each step of an existing human process with its execution mode — fully autonomous, human-in-the-loop, or human-only — rather than replacing the whole process at once.
-- Send exact-answer subtasks (deduplication, commute calculation) to plain code, judgment subtasks to agents, and authority to humans.
-- Define the output shape of each unit as a structured contract whenever another system consumes it; reserve free-form text for units a human is the sole reader of.
-- Model 'done' as an object with artifact, scope, rubric, evidence, verifier, approver, residual risk, and next action.
-- Have a different model verify than the one that authored, and give the verifier real evidence tools (browser harness, screenshots, custom hooks) instead of asking it whether it is done.
-- Ask the agent to split a large change into atomic reviewable PRs, and use stacked diffs so domain specialists can review slices asynchronously.
-- For generation tasks, split into outline-then-chapters rather than one shot — the decomposed pipeline exceeds what the teacher model produces in a single pass.
-- Write the spec and design markdown before code, then hand-edit them with your own knowledge and taste before implementation begins.
-- Enforce blockers and dependencies in the control plane as first-class objects, with watchdog agents that keep work moving until the goal is met and bound infinite loops.
-- Enforce idempotency at the system level so a retried unit is not treated as a new task.
-- Read every line of authentication, money movement, permissions, and irreversible data changes regardless of how the work was sliced.
+- Make decomposition a separate explicit action that produces a durable artifact — linked component documents, a spec plus design markdown, or a research prototype taxonomy document — before any implementation step runs.
+- Hold multi-step state in the harness, not the model: model the task as a small state machine (e.g. intro, teach, check, grade, advance, wrap) where the harness validates each returned step and decides the next one.
+- Give every unit exactly one of three terminal outcomes — stop, retry, or escalate — so a run can never silently end in an undefined state.
+- Define the output shape of each unit as a structured contract whenever another system consumes it; free-form text is acceptable only when a human is the sole reader.
+- Send any unit with an exact answer (deduplication, arithmetic, lookups) to plain code, and reserve agents for units that genuinely need interpretation or judgment.
+- Wall high-consequence units — emailing counterparties, booking, submitting offers, money movement, permissions, irreversible data changes — behind explicit human approval to bound blast radius.
+- Post-train or select a smaller model per unit once the units are narrow: per-section clinical-note models and Haiku-class models behind a strong harness hit the same quality bar at lower cost and latency.
+- Use a different model to verify than the one that authored the work, and give the verifier real tools (browser harnesses, screenshots, state diffs) instead of asking the agent whether it is done.
+- Cap review units at a size a human can actually inspect — 500-line PRs, stacked diffs sliced so each slice can go to the right subject-matter expert asynchronously.
+- Enforce idempotency at the system level so a retried unit does not get reworded into what looks like a new task.
+- When decomposing an existing human process, keep roughly the original step structure and mark each step autonomous / human-in-the-loop / human-only, since collapsing an 11-step workflow to one step damages adoption.
+- Break generation into ordered sub-steps (outline, then chapters one by one) when the whole task is too hard for the model in one shot — this exceeds what the model produces one-shot rather than merely matching it.
 
 **Avoid:**
 
-- Cramming four jobs into a single prompt — this is the agentic equivalent of a god class and the direct cause of drift.
-- Letting your coding agent design your other agents; it produces something that technically works but is not maintainable.
-- Letting the model hold or report workflow state — it is terrible at remembering whether it is on step three of six.
-- The 'here's the codebase, here's the objective, optimize' prompt: it produces hyperparameter tweaks rather than radical changes and saturates after a while.
-- Writing a plain for-loop over a task manager and expecting it to survive dependency trees, blockers, multiple agents, and idempotent checkouts.
-- Collapsing an 11-step human workflow into one step — adoption suffers even when the efficiency win is real.
-- Over-modularizing: instructions local to one workflow cost more to abstract than they save.
-- Overstuffing agents.md or steering files; there is a Goldilocks amount of context and too much is harmful.
-- Running the spec/decomposition workflow on small changes and quick fixes where it does not pay for itself.
-- Merging PRs with no review at all, human or agentic — up 31% per the Faros AI survey, alongside 242% more incidents per PR.
-- Letting the builder grade itself — that hides the review rather than removing it.
-- Running units fully live with no approvals at all, which produces slop that is worse than producing nothing.
+- Fixing multi-step unreliability by adding more prompt rules — when reliability approaches a coin flip, the problem is control flow, not prompting.
+- Cramming multiple jobs into one giant prompt; it is the agentic equivalent of a god class and is the direct cause of agent drift.
+- Letting your coding agent design your agent system for you — it produces something that technically works, typically one giant prompt with poor separation of concerns, and is not maintainable.
+- Handing an agent a goal with no path (the 'here's the codebase, here's the objective, optimize' prompt) — it saturates, proposing hyperparameter tweaks rather than the radical restructurings the problem needs.
+- Modularizing everything: some instructions are local to one workflow and abstracting them costs more than it saves.
+- Letting the same agent both produce the work and grade it — that hides the review rather than removing it.
+- Collapsing mergeable, deployable, and announceable into a single green checkmark on a completed unit.
+- Relying on exhaustive human sign-off for every unit at high task volume; it degenerates into verification theater.
+- Running fully live with no approvals at any step, which produces AI slop that is worse than producing nothing.
+- Treating a for-loop over a task manager as an orchestrator once dependency trees, blockers, and multiple agents are involved — the control plane must enforce blockers and bound infinite loops.
+- Starting to iterate on vertical output before a domain expert is in the loop to scope queries, curate sources, and decompose the problem, because engineers cannot tell whether the output is good.
 
 ## Notable Outliers
 
-- A system only qualifies as an RLM if the model itself picks the decomposition — hardcoded map-reduce pipelines like lambda RLM do not count, because runtime choice of decomposition is the agent-native element. ([Recursive Coding Agents](../talks/recursive-coding-agents.md), [9:59](https://www.youtube.com/watch?v=3hXJI2q0Jz8&t=599s))
-- Hierarchical decomposition prompting is a temporary scaffold analogous to chain-of-thought on GPT-4-era models, and will be needed less as models are post-trained to break down problems themselves. ([Autonomous Agents for Scientific Tasks](../talks/autonomous-agents-for-scientific-tasks.md), [18:24](https://www.youtube.com/watch?v=XLEYtv3cMlw&t=1104s))
-- Preserve the original step structure of a human workflow even at a cost to efficiency — replacing an 11-step process with a one-step one takes operators aback and hurts adoption. ([AI tools for Forward Deployed Engineering](../talks/ai-tools-for-forward-deployed-engineering.md), [5:53](https://www.youtube.com/watch?v=l0FLhNqBOic&t=353s))
-- If a task is too hard for the model it loses both correctness and diversity, so decomposing into simpler steps lets the pipeline exceed what the teacher model could produce in one shot. ([The Messy Reality of Scale: Synthetic Data and Pre-Training](../talks/the-messy-reality-of-scale-synthetic-data-and-pre-training.md), [5:58](https://www.youtube.com/watch?v=KhYifX22yhE&t=358s))
-- Not everything should be modularized — some instructions are local to a workflow and abstracting them costs more than it saves. ([Build Systems, Not Code](../talks/build-systems-not-code.md), [8:58](https://www.youtube.com/watch?v=ZD9-4fW2HhM&t=538s))
-- A one-to-one researcher-to-microservice ratio with fully decoupled services is the right decomposition unit for productionizing research, because it lets each initiative iterate independently. ([Research to Reality: Bringing Frontier ML Research to Production](../talks/research-to-reality-bringing-frontier-ml-research-to-production.md), [7:06](https://www.youtube.com/watch?v=OXMMN-XbxwA&t=426s))
-- Treating done as a structured object rather than a boolean can yield roughly 100x more work completed. ([What Does Done Even Mean? Agents and Paperclip's Liveness Model](../talks/what-does-done-even-mean-agents-and-paperclips-liveness-model.md), [5:25](https://www.youtube.com/watch?v=7P0elyLIxXo&t=325s))
-- Inability to reliably estimate delivery dates for decomposed research work points upstream to research coordination or the codebase, not to the decomposition step itself. ([Research to Reality: Bringing Frontier ML Research to Production](../talks/research-to-reality-bringing-frontier-ml-research-to-production.md), [14:09](https://www.youtube.com/watch?v=OXMMN-XbxwA&t=849s))
+- A system only qualifies as an RLM if the model itself picks the decomposition into sub-calls; hardcoded map-reduce pipelines do not count, and coding agents are not automatically RLMs. ([Recursive Coding Agents](../talks/recursive-coding-agents.md), [9:59](https://www.youtube.com/watch?v=3hXJI2q0Jz8&t=599s))
+- Hierarchical decomposition prompting is the chain-of-thought of this era — a temporary scaffold that newer models post-trained to break down problems will need less and less. ([Autonomous Agents for Scientific Tasks](../talks/autonomous-agents-for-scientific-tasks.md), [18:24](https://www.youtube.com/watch?v=XLEYtv3cMlw&t=1104s))
+- Decomposing generation into simpler steps lets you exceed what the teacher model could produce in one shot, avoiding the correctness and diversity collapse that happens when a task is too hard for the model. ([The Messy Reality of Scale: Synthetic Data and Pre-Training](../talks/the-messy-reality-of-scale-synthetic-data-and-pre-training.md), [5:58](https://www.youtube.com/watch?v=KhYifX22yhE&t=358s))
+- Preserve enough of the original step structure when redesigning a workflow around agents, even at a cost to efficiency — replacing an 11-step process with a one-step one tanks adoption. ([AI tools for Forward Deployed Engineering](../talks/ai-tools-for-forward-deployed-engineering.md), [5:53](https://www.youtube.com/watch?v=l0FLhNqBOic&t=353s))
+- Not everything should be modularized; some instructions are local to a workflow and abstracting them costs more than it saves. ([Build Systems, Not Code](../talks/build-systems-not-code.md), [8:58](https://www.youtube.com/watch?v=ZD9-4fW2HhM&t=538s))
+- Treating done as a structured object rather than a boolean is claimed to yield roughly 100x more work completed. ([What Does Done Even Mean? Agents and Paperclip's Liveness Model](../talks/what-does-done-even-mean-agents-and-paperclips-liveness-model.md), [5:25](https://www.youtube.com/watch?v=7P0elyLIxXo&t=325s))
+- Agents are better than humans at decomposing large changes into atomic reviewable PRs and should be explicitly asked to do it. ([Should AI Engineers Still Read Code in 2026? The Z/L Continuum](../talks/should-ai-engineers-still-read-code-in-2026-the-zl-continuum.md), [15:00](https://www.youtube.com/watch?v=ZpK5PWX2YRM&t=900s))
 
 ## All Talks
 
@@ -171,10 +149,13 @@ Supporting talks: [Don't Let the LLM Drive](../talks/dont-let-the-llm-drive.md),
 - [Build Systems, Not Code](../talks/build-systems-not-code.md)
 - [Build the AI GTM Agent That Knows the Buyer](../talks/build-the-ai-gtm-agent-that-knows-the-buyer.md)
 - [Don't Let the LLM Drive](../talks/dont-let-the-llm-drive.md)
+- [From Ambient Documentation to Clinical Intelligence](../talks/from-ambient-documentation-to-clinical-intelligence.md)
+- [How to build an AI-Native Health Company](../talks/how-to-build-an-ai-native-health-company.md)
 - [Recursive Coding Agents](../talks/recursive-coding-agents.md)
 - [Research to Reality: Bringing Frontier ML Research to Production](../talks/research-to-reality-bringing-frontier-ml-research-to-production.md)
 - [Should AI Engineers Still Read Code in 2026? The Z/L Continuum](../talks/should-ai-engineers-still-read-code-in-2026-the-zl-continuum.md)
 - [The Messy Reality of Scale: Synthetic Data and Pre-Training](../talks/the-messy-reality-of-scale-synthetic-data-and-pre-training.md)
+- [Trading Desks to Clinical Trials: Parallels in Applied Vertical AI](../talks/trading-desks-to-clinical-trials-parallels-in-applied-vertical-ai.md)
 - [Using Spec-Driven Development for Production Workflows](../talks/using-spec-driven-development-for-production-workflows.md)
 - [What Does Done Even Mean? Agents and Paperclip's Liveness Model](../talks/what-does-done-even-mean-agents-and-paperclips-liveness-model.md)
 
@@ -182,6 +163,9 @@ Supporting talks: [Don't Let the LLM Drive](../talks/dont-let-the-llm-drive.md),
 
 - [Alex Volkov](../speakers/alex-volkov.md)
 - [Angie Jones](../speakers/angie-jones.md)
+- [Ayush Bhardwaj](../speakers/ayush-bhardwaj.md)
+- [Chaitanya Asawa](../speakers/chaitanya-asawa.md)
+- [Dan Feng](../speakers/dan-feng.md)
 - [Deepak Pathak](../speakers/deepak-pathak.md)
 - [Dotta](../speakers/dotta.md)
 - [Erik Hanchett](../speakers/erik-hanchett.md)

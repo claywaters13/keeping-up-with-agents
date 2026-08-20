@@ -1,17 +1,17 @@
 {
   "is_error": false,
-  "duration_api_ms": 142684,
+  "duration_api_ms": 117134,
   "num_turns": 1,
   "stop_reason": "end_turn",
-  "session_id": "a2179521-6e5f-47da-bf62-75f60fca90e2",
-  "total_cost_usd": 0.6505405,
+  "session_id": "43030d73-e836-462d-a27d-5e1e3dbf4ef4",
+  "total_cost_usd": 0.5854625,
   "usage": {
     "input_tokens": 2,
-    "cache_creation_input_tokens": 31057,
-    "cache_read_input_tokens": 7927,
-    "output_tokens": 12709,
+    "cache_creation_input_tokens": 30855,
+    "cache_read_input_tokens": 12109,
+    "output_tokens": 10020,
     "output_tokens_details": {
-      "thinking_tokens": 6593
+      "thinking_tokens": 4295
     },
     "server_tool_use": {
       "web_search_requests": 0,
@@ -19,19 +19,19 @@
     },
     "service_tier": "standard",
     "cache_creation": {
-      "ephemeral_1h_input_tokens": 31057,
+      "ephemeral_1h_input_tokens": 30855,
       "ephemeral_5m_input_tokens": 0
     },
     "inference_geo": "not_available",
     "iterations": [
       {
         "input_tokens": 2,
-        "output_tokens": 12709,
-        "cache_read_input_tokens": 7927,
-        "cache_creation_input_tokens": 31057,
+        "output_tokens": 10020,
+        "cache_read_input_tokens": 12109,
+        "cache_creation_input_tokens": 30855,
         "cache_creation": {
           "ephemeral_5m_input_tokens": 0,
-          "ephemeral_1h_input_tokens": 31057
+          "ephemeral_1h_input_tokens": 30855
         },
         "type": "message"
       }
@@ -40,12 +40,12 @@
   },
   "modelUsage": {
     "claude-haiku-4-5-20251001": {
-      "inputTokens": 18202,
-      "outputTokens": 14,
+      "inputTokens": 20293,
+      "outputTokens": 11,
       "cacheReadInputTokens": 0,
       "cacheCreationInputTokens": 0,
       "webSearchRequests": 0,
-      "costUSD": 0.018272,
+      "costUSD": 0.020347999999999998,
       "contextWindow": 200000,
       "maxOutputTokens": 32000,
       "canonicalModel": "claude-haiku-4-5",
@@ -53,11 +53,11 @@
     },
     "claude-opus-5": {
       "inputTokens": 2,
-      "outputTokens": 12709,
-      "cacheReadInputTokens": 7927,
-      "cacheCreationInputTokens": 31057,
+      "outputTokens": 10020,
+      "cacheReadInputTokens": 12109,
+      "cacheCreationInputTokens": 30855,
       "webSearchRequests": 0,
-      "costUSD": 0.6322685,
+      "costUSD": 0.5651145,
       "contextWindow": 1000000,
       "maxOutputTokens": 64000,
       "canonicalModel": "claude-opus-5",
@@ -70,108 +70,86 @@
   "fast_mode_disabled_reason": "sdk_opt_in_required",
   "subtype": "success",
   "api_error_status": null,
-  "result": "{\"concept\":\"small language models\",\"state_of_practice\":\"The field has stopped treating model size as a proxy for quality and started treating it as a budget line with latency, DRAM, and energy denominations. The dominant claim across tracks is that the frontier model is the wrong default for production: roughly 90% of tasks don't need frontier intelligence, a voice agent must start speaking inside ~950ms (and 4s is the outer limit of believability in chat), and a 2B model needs ~4GB of device DRAM at a moment when Raspberry Pi memory prices have gone up 2.5x. The consensus workflow is prototype big, deploy small \u2014 build against a frontier model, then push components down to a 3-4B open model, a fine-tuned task model, or a 50M-500M tiny model, validated against a golden dataset rather than peer recommendation. Where speakers split is on how you close the residual gap: one camp keeps weights frozen and pays once in code (state machines that hold workflow state, deterministic post-processing for structural/length failures, few-shot examples at +200ms instead of chain-of-thought at +600ms), the other changes the weights (10k-10M synthetic samples for a tiny model, post-training an open model on your harness, RL over verified outcome data). Both camps report the same headline result \u2014 small model beats or matches frontier on the narrow task \u2014 which is why the argument is about method, not possibility. The economic argument is sharper than a year ago: total inference spend is rising even where per-token prices fall, because agentic and reasoning workloads consume tokens faster than prices drop, and at least one speaker claims the per-token trend itself reversed in 2026.\",\"consensus\":[{\"claim\":\"Most production workloads do not need frontier-level intelligence; the correct selection rule is the smallest model that produces acceptable output for the specific use case, not the most capable one available.\",\"support_count\":7,\"supporting_talks\":[\"frontier-results-on-device\",\"local-models-trust-control-optimization\",\"state-of-the-union-why-local-why-now\",\"the-future-is-domain-specific-agents\",\"your-voice-agent-doesnt-need-a-frontier-model\",\"why-large-tiny-lms-agents-on-edgerobotics\",\"dont-let-the-llm-drive\"],\"evidence_quote\":\"most people probably do not need frontier level intelligence for like 90% of their tasks\",\"evidence_talk\":\"local-models-trust-control-optimization\",\"evidence_timestamp_sec\":1605},{\"claim\":\"A small model inside a strong harness performs at the level expected of a frontier model; the surrounding scaffolding, not the parameter count, is what determines delivered reliability.\",\"support_count\":5,\"supporting_talks\":[\"dont-let-the-llm-drive\",\"your-voice-agent-doesnt-need-a-frontier-model\",\"frontier-results-on-device\",\"local-models-trust-control-optimization\",\"state-of-the-union-why-local-why-now\"],\"evidence_quote\":\"instead of having a very heavy model like a 4.7, we were actually able to rely on something like a Haiku 4.5, which is a much smaller model, doesn't have as much reasoning capabilities, but because of the harnessing around it, it's still able to perform at the level in which we expect\",\"evidence_talk\":\"dont-let-the-llm-drive\",\"evidence_timestamp_sec\":147},{\"claim\":\"Falling per-token prices do not produce falling bills, because agentic and reasoning workloads multiply token consumption faster than unit prices move \u2014 so cost control has to come from architecture, not from waiting.\",\"support_count\":4,\"supporting_talks\":[\"frontier-results-on-device\",\"local-models-trust-control-optimization\",\"the-future-is-domain-specific-agents\",\"why-large-tiny-lms-agents-on-edgerobotics\"],\"evidence_quote\":\"Now, token costs have been falling as of late, but total inference spend has been rising because agent can reasoning workloads consume tokens way faster than prices are dropping.\",\"evidence_talk\":\"frontier-results-on-device\",\"evidence_timestamp_sec\":131},{\"claim\":\"Latency, not answer quality, is the binding constraint in interactive systems, and frontier reasoning time costs more than the quality it buys.\",\"support_count\":4,\"supporting_talks\":[\"your-voice-agent-doesnt-need-a-frontier-model\",\"frontier-results-on-device\",\"dont-let-the-llm-drive\",\"local-models-trust-control-optimization\"],\"evidence_quote\":\"A frontier model that think for a full second has already lost the room, no matter how good the answer is.\",\"evidence_talk\":\"your-voice-agent-doesnt-need-a-frontier-model\",\"evidence_timestamp_sec\":51},{\"claim\":\"Frontier models belong at the top of the stack \u2014 prototyping, planning, hypothesis generation, synthetic data generation \u2014 while smaller models execute the subtasks in production.\",\"support_count\":4,\"supporting_talks\":[\"frontier-results-on-device\",\"state-of-the-union-why-local-why-now\",\"why-off-the-shelf-ai-doesnt-understand-money\",\"why-large-tiny-lms-agents-on-edgerobotics\"],\"evidence_quote\":\"Now, first off, I like to think of this as prototype big, deploy small. Just repeat this to yourself.\",\"evidence_talk\":\"frontier-results-on-device\",\"evidence_timestamp_sec\":536},{\"claim\":\"On a narrowly scoped task, a specialized smaller model matches or beats a frontier model head-to-head \u2014 via fine-tuning, post-training, or grounding in proprietary outcome data.\",\"support_count\":5,\"supporting_talks\":[\"why-off-the-shelf-ai-doesnt-understand-money\",\"local-models-trust-control-optimization\",\"why-large-tiny-lms-agents-on-edgerobotics\",\"the-future-is-domain-specific-agents\",\"frontier-results-on-device\"],\"evidence_quote\":\"we were able with a midsize cheaper model to outperform the frontier models because of the grounding that I just showed you.\",\"evidence_talk\":\"why-off-the-shelf-ai-doesnt-understand-money\",\"evidence_timestamp_sec\":921},{\"claim\":\"The trajectory is toward many specialized models coordinating, not one general model absorbing every workload \u2014 no single static model can cover the heterogeneity of real deployment environments.\",\"support_count\":4,\"supporting_talks\":[\"intelligence-continual-learning-expertise\",\"local-models-trust-control-optimization\",\"state-of-the-union-why-local-why-now\",\"the-future-is-domain-specific-agents\"],\"evidence_quote\":\"It's just like too heterogeneous and dynamic for any monolithic model to try to compress it into one static representation\",\"evidence_talk\":\"intelligence-continual-learning-expertise\",\"evidence_timestamp_sec\":327}],\"disagreements\":[{\"question\":\"When a small model falls short on your task, do you fix the harness around it or change the model's weights?\",\"position_a\":\"Leave the weights alone. Extract control flow and state into application code, add deterministic post-processing for structural and length failures, tune prompts with few-shot examples, and use the thinnest possible wrapper \u2014 the scaffolding cost is paid once in code rather than on every turn, and shipping a retrained 1-2GB model to mobile users for every capability change is untenable.\",\"position_a_talks\":[\"dont-let-the-llm-drive\",\"your-voice-agent-doesnt-need-a-frontier-model\",\"frontier-results-on-device\",\"html-is-all-agents-need\"],\"position_b\":\"Change the model. Generate 10k-10M synthetic samples and fine-tune a tiny model per fixed task, post-train an open model on the harness you care about, or train an RL selector on verified outcome data \u2014 because prompting and context cannot supply experience the model never had.\",\"position_b_talks\":[\"why-large-tiny-lms-agents-on-edgerobotics\",\"why-off-the-shelf-ai-doesnt-understand-money\",\"local-models-trust-control-optimization\",\"state-of-the-union-why-local-why-now\"],\"why_it_matters\":\"This decides whether a team needs a data-labeling and training pipeline plus a weight-distribution story, or only software engineers writing state machines and post-processors. It also determines the update cadence: a harness change ships instantly, a weights change ships as a multi-gigabyte binary over users' data plans.\"},{\"question\":\"Is a frozen small model plus good scaffolding sufficient, or is the real ceiling the inability to accumulate expertise over time?\",\"position_a\":\"Sufficient. The model proposes and the harness decides; judgments about task completion and next step are engineered outside the model, so a static Haiku-class model plus a state machine delivers reliable multi-step behavior indefinitely.\",\"position_a_talks\":[\"dont-let-the-llm-drive\",\"your-voice-agent-doesnt-need-a-frontier-model\"],\"position_b\":\"Insufficient. Intelligence and expertise are orthogonal, and past a threshold of raw intelligence the continual-learning algorithm becomes the binding constraint; markdown-file agent memory is a stopgap and real progress requires updating weights, locally, from in-situ experience.\",\"position_b_talks\":[\"intelligence-continual-learning-expertise\",\"state-of-the-union-why-local-why-now\"],\"why_it_matters\":\"If scaffolding is sufficient, the small-model roadmap is an engineering problem solved today. If expertise accumulation is the ceiling, every harness-based system is capped at 'world's smartest novice' and the investment belongs in local training infrastructure instead.\"},{\"question\":\"Is the per-token cost of intelligence still falling?\",\"position_a\":\"Yes \u2014 unit prices continue to drop and the rising bill is purely a volume effect from exponentially growing tokens per session; some operators report token counts exploding while total costs stay flat.\",\"position_a_talks\":[\"frontier-results-on-device\",\"local-models-trust-control-optimization\",\"state-of-the-union-why-local-why-now\"],\"position_b\":\"No \u2014 the trend reversed in 2026. Tokens are up 76% raw and 29% IQ-adjusted at the halfway point of the year, which means you cannot put a frontier model in front of a customer unless that customer has very high lifetime value.\",\"position_b_talks\":[\"the-future-is-domain-specific-agents\"],\"why_it_matters\":\"If unit prices keep falling, cost-driven downsizing is an optimization you can defer and recover through volume growth. If the trend has genuinely reversed, per-unit-economics pressure compounds and downsizing becomes a survival requirement for any consumer-facing product this year.\"},{\"question\":\"How small does 'small' actually need to be to reach the majority of devices?\",\"position_a\":\"3-4B is the target. A 4B Qwen 3.5 on an iPhone is roughly GPT-4o-equivalent, a 4B model on a phone today beats GPT-4 at launch, and within a year most daily AI work runs on a laptop-hosted model.\",\"position_a_talks\":[\"state-of-the-union-why-local-why-now\",\"local-models-trust-control-optimization\",\"frontier-results-on-device\"],\"position_b\":\"1-4B is still too big \u2014 it cannot reach older laptops or consumer edge devices, where the model is one small feature in a corner of an app competing for DRAM with everything else. Reaching the majority of devices requires 50M-500M parameters, which means fine-tuning is mandatory rather than optional.\",\"position_b_talks\":[\"why-large-tiny-lms-agents-on-edgerobotics\"],\"why_it_matters\":\"At 3-4B the playbook is zero-shot prompting and LoRA adapters on off-the-shelf weights; at 50M-500M you must build a synthetic-data pipeline and fine-tune per task. The two answers imply completely different team compositions and time-to-first-deploy.\"}],\"practical_guidance\":{\"do\":[\"Prototype on a foundation model, then convert components to small and specialized models for production ('prototype big, deploy small').\",\"Build a curated, preferably human-labeled golden dataset of input-output pairs before choosing a model, and select on eval results rather than peer recommendation \u2014 one recommended model came in at ~8 seconds latency.\",\"Pick the fastest model your latency budget allows, then spend the remaining engineering effort on scaffolding; budget ~950ms to first speech for voice and treat 4 seconds as the outer limit of believability in chat.\",\"Move workflow state, completion judgments, and next-step selection into an explicit state machine \u2014 the model proposes, the harness decides.\",\"Prefer few-shot examples for small models (+200ms) over chain-of-thought (+600ms); isolate one variable per prompt variant when testing.\",\"Fix structural and length failures with deterministic post-processing in the harness instead of escalating to a larger model \u2014 post-processing closed the gap and beat the frontier baseline.\",\"Manually inspect LLM-judge scores rather than trusting the numbers: judges favor models from their own family (Opus favoring Sonnet over Llama 3.2).\",\"Run regression evals continuously, like CI tests, so a prompt or model change cannot silently degrade behavior overnight.\",\"For tiny (50M-500M) models, generate 10,000-10,000,000 synthetic samples and fine-tune; expect ~86% reliability on ~10 output functions for voice-to-function-calling.\",\"Size device memory realistically: a 2B-class model needs ~4GB+ of DRAM once KV cache, runtime and OS are counted, and mixed 2/4/8-bit quantization to ~2.9 bits per weight is what makes it fit.\",\"Route frontier models to top-level planning and hypothesis generation, with smaller models executing subtasks and a separately trained selector deciding which hypothesis to act on.\",\"Have agents emit HTML/CSS/JavaScript rather than a custom format; a small model (Gemini 3 Flash) authoring workable code in a format is the signal that larger agents will handle it too.\",\"When agent reliability approaches a coin flip, take the control flow out of the model rather than adding prompt rules.\"],\"avoid\":[\"Reaching for more prompt rules when a multi-step agent skips steps or loops \u2014 that is a control problem, not a prompting problem.\",\"Asking the model to remember which step of a workflow it is on.\",\"Explicit negative constraints in small-model prompts \u2014 they made results measurably worse than few-shot examples or reformatted input.\",\"Trusting LLM-judge scores numerically without inspection.\",\"Shipping distilled models to mobile apps, where every capability change forces a retrain and a 1-2 GB download over users' data plans.\",\"Teaching a model a new DSL or custom JSON structure \u2014 quality degrades even with many examples.\",\"Loading many skills, MCP servers and tools into one agent's context; research shows it makes the agent substantially worse, and it is inheritance by another name.\",\"Assuming more context substitutes for outcome grounding \u2014 a company's complete financial data is still just one group of data points.\",\"Fine-tuning SAM 3 directly; distill to a fixed class list and drop the expensive autoencoder instead, or you lose the open-vocabulary capability that made it worth using.\",\"Targeting Raspberry Pi-class hardware for real-time interaction with a 2B model \u2014 7.6 tokens/sec decode is too slow; Jetson-class NPU reaches ~31 tokens/sec decode.\",\"Validating agent reliability under demo conditions, which systematically fail to surface the step-skipping and looping that real users trigger.\",\"Expecting to close a domain gap by scaling to a bigger model.\"]},\"notable_outliers\":[{\"claim\":\"Past a threshold of raw intelligence, further intelligence is unnecessary and the continual-learning algorithm becomes the binding constraint \u2014 current frontier models may already be smart enough, producing 'the world's smartest novice.'\",\"talk\":\"intelligence-continual-learning-expertise\",\"timestamp_sec\":862},{\"claim\":\"In a Princeton 500-day business simulation, most frontier models drove the company bankrupt in under 500 days, and a simple rules-based system outperformed almost all of them.\",\"talk\":\"why-off-the-shelf-ai-doesnt-understand-money\",\"timestamp_sec\":424},{\"claim\":\"DeepSeek V4 Flash is 137 times cheaper per task than Fable 5, and narrow task scoping is what makes the cheap model reliable enough to actually use.\",\"talk\":\"the-future-is-domain-specific-agents\",\"timestamp_sec\":1057},{\"claim\":\"An SLM consumes about 25% of the energy an LLM uses for the same task, and a task-specific model about half of that again.\",\"talk\":\"frontier-results-on-device\",\"timestamp_sec\":392},{\"claim\":\"Reaching the majority of devices requires 50M-500M parameter models, because the model is usually one small feature in the corner of an app rather than the app itself \u2014 and DRAM cost is getting worse, with some phone makers shipping less memory than last year.\",\"talk\":\"why-large-tiny-lms-agents-on-edgerobotics\",\"timestamp_sec\":736},{\"claim\":\"On the order of 0.000001% of AI users have ever run an open model themselves, making distribution rather than capability the decisive variable this year.\",\"talk\":\"local-models-trust-control-optimization\",\"timestamp_sec\":2159},{\"claim\":\"EXO Labs and NVIDIA got a 10x inference improvement on DGX Spark in about three weeks using only existing techniques \u2014 vLLM backend, quantization, config tuning \u2014 with no new computer science.\",\"talk\":\"state-of-the-union-why-local-why-now\",\"timestamp_sec\":1303},{\"claim\":\"Deliberately starting with a very small model (Gemini 3 Flash) as the design partner is a format-validation strategy: if the small model can author workable code in your format, the coding agents certainly can.\",\"talk\":\"html-is-all-agents-need\",\"timestamp_sec\":315}],\"maturity\":\"consolidating\",\"maturity_rationale\":\"Seven claims \u2014 smallest-acceptable-model selection, harness-over-parameters, latency as the binding constraint, prototype-big-deploy-small, specialization beating frontier generality, rising total spend, and many-models-over-one \u2014 each drew independent support from four or more talks with concrete numbers attached. The unresolved edges are method rather than premise: whether to close the gap in the harness or in the weights, whether static models plus scaffolding hit a ceiling that only continual learning breaks, and whether 'small' means 3-4B or 50M-500M.\"}",
-  "ttft_ms": 73981,
-  "ttft_stream_ms": 1175,
-  "time_to_request_ms": 49,
+  "result": "{\"concept\": \"small language models\", \"state_of_practice\": \"The field has moved past \\\"use the best model available\\\" as a default. Across voice, clinical documentation, finance, edge/IoT, and local-first deployments, speakers converged on the claim that frontier-level intelligence is unnecessary for the large majority of production tasks, and that the binding constraints are latency (950ms to first audio for voice, ~4s ceiling for chat), unit cost, and deployability (DRAM on device, sovereignty, guaranteed access). Two distinct routes to making a small model work were demonstrated: engineered scaffolding \u2014 pulling state tracking, control flow, and completion judgments out of the model into a deterministic harness or state machine \u2014 and post-training, where a small open model is fine-tuned on proprietary or synthetic task data. Both routes produced the same reported outcome: a Haiku-class or open small model matching or beating an Opus/frontier model on the narrow task, at a fraction of cost and latency. Notably, the economic argument is not that tokens are cheap: multiple speakers reported that total inference spend is rising because agentic sessions consume tokens faster than prices fall, and one tracked per-token prices actually reversing upward in 2026. What remains unsettled is the size class that matters (1\u20134B \\\"small\\\" versus 50M\u2013500M \\\"tiny\\\"), whether a frontier model stays in the production loop as planner or hypothesis generator, and whether harness engineering or fine-tuning is the higher-leverage investment.\", \"consensus\": [{\"claim\": \"Most production tasks do not require frontier-level intelligence; the correct default is the smallest model that clears the quality bar for that specific task.\", \"support_count\": 8, \"supporting_talks\": [\"dont-let-the-llm-drive\", \"from-ambient-documentation-to-clinical-intelligence\", \"frontier-results-on-device\", \"local-models-trust-control-optimization\", \"state-of-the-union-why-local-why-now\", \"the-future-is-domain-specific-agents\", \"your-voice-agent-doesnt-need-a-frontier-model\", \"why-large-tiny-lms-agents-on-edgerobotics\"], \"evidence_quote\": \"Health care is actually many specific workflows. You don't need, you know, Fable 5 to actually solve all of your clinical notes. We we don't need frontier level intelligence for every problem.\", \"evidence_talk\": \"from-ambient-documentation-to-clinical-intelligence\", \"evidence_timestamp_sec\": 1091}, {\"claim\": \"A small model reaches frontier-level task performance only when surrounded by engineered scaffolding that removes state tracking and control flow from the model; the model proposes, the harness decides.\", \"support_count\": 6, \"supporting_talks\": [\"dont-let-the-llm-drive\", \"your-voice-agent-doesnt-need-a-frontier-model\", \"frontier-results-on-device\", \"local-models-trust-control-optimization\", \"state-of-the-union-why-local-why-now\", \"the-future-is-domain-specific-agents\"], \"evidence_quote\": \"instead of having a very heavy model like a 4.7, we were actually able to rely on something like a Haiku 4.5, which is a much smaller model, doesn't have as much reasoning capabilities, but because of the harnessing around it, it's still able to perform at the level in which we expect\", \"evidence_talk\": \"dont-let-the-llm-drive\", \"evidence_timestamp_sec\": 147}, {\"claim\": \"The motivation for going small is latency and total cost rather than quality, and total inference spend is rising even as per-token prices fall because agentic sessions consume tokens faster than prices drop.\", \"support_count\": 5, \"supporting_talks\": [\"frontier-results-on-device\", \"local-models-trust-control-optimization\", \"the-future-is-domain-specific-agents\", \"why-large-tiny-lms-agents-on-edgerobotics\", \"your-voice-agent-doesnt-need-a-frontier-model\"], \"evidence_quote\": \"Now, token costs have been falling as of late, but total inference spend has been rising because agent can reasoning workloads consume tokens way faster than prices are dropping.\", \"evidence_talk\": \"frontier-results-on-device\", \"evidence_timestamp_sec\": 131}, {\"claim\": \"Post-training or fine-tuning a small model on proprietary or synthetic task data beats an off-the-shelf frontier model on that narrow task, at dramatically lower cost, and is achievable in weeks.\", \"support_count\": 5, \"supporting_talks\": [\"from-ambient-documentation-to-clinical-intelligence\", \"why-off-the-shelf-ai-doesnt-understand-money\", \"local-models-trust-control-optimization\", \"why-large-tiny-lms-agents-on-edgerobotics\", \"state-of-the-union-why-local-why-now\"], \"evidence_quote\": \"take an open model and like specialize it to automate finance within like a week or two to get like better performance than like Opus at a fraction of the cost of Haiku\", \"evidence_talk\": \"local-models-trust-control-optimization\", \"evidence_timestamp_sec\": 819}, {\"claim\": \"The architecture is trending from one general model toward many narrow specialized models, because no single model can absorb the idiosyncrasies of every domain or workflow.\", \"support_count\": 5, \"supporting_talks\": [\"local-models-trust-control-optimization\", \"state-of-the-union-why-local-why-now\", \"the-future-is-domain-specific-agents\", \"from-ambient-documentation-to-clinical-intelligence\", \"intelligence-continual-learning-expertise\"], \"evidence_quote\": \"It's just like too heterogeneous and dynamic for any monolithic model to try to compress it into one static representation\", \"evidence_talk\": \"intelligence-continual-learning-expertise\", \"evidence_timestamp_sec\": 327}], \"disagreements\": [{\"question\": \"To make a small model production-viable on a task, should you invest in harness/scaffolding engineering around an off-the-shelf model, or in post-training a specialized model?\", \"position_a\": \"Invest in scaffolding and deterministic code. The model is off-the-shelf and swappable; you pay the cost once in code rather than on every turn, and structural failures are fixed with post-processing, not a bigger or retrained model. Frontier-results-on-device explicitly rejects distillation for mobile because every capability change forces a retrain and a 1\u20132 GB redownload.\", \"position_a_talks\": [\"dont-let-the-llm-drive\", \"your-voice-agent-doesnt-need-a-frontier-model\", \"frontier-results-on-device\", \"the-future-is-domain-specific-agents\"], \"position_b\": \"Invest in training. Prompting and context are not substitutes for grounding in outcome or in-domain data; you post-train per-section or per-task models on proprietary data (100M clinical conversations, verified business outcomes) or on 10k\u201310M synthetic samples, which is what actually closes the quality gap and produces the durable moat.\", \"position_b_talks\": [\"from-ambient-documentation-to-clinical-intelligence\", \"why-off-the-shelf-ai-doesnt-understand-money\", \"why-large-tiny-lms-agents-on-edgerobotics\", \"local-models-trust-control-optimization\"], \"why_it_matters\": \"The two routes demand completely different teams and cost structures \u2014 control-flow engineers and eval harnesses versus a data pipeline, labeling budget, and training infrastructure. Choosing wrong means either a scaffolding stack that plateaus below the quality bar, or a training investment on a problem that a state machine would have solved for free.\"}, {\"question\": \"Does a frontier model remain in the production path as a planner, hypothesis generator, or escalation target, or should it be removed entirely?\", \"position_a\": \"Keep it at the top of the stack. The frontier model produces the high-level plan or candidate hypotheses and smaller/local models execute the subtasks; cheap event gates decide when to escalate to a heavier model rather than running one continuously.\", \"position_a_talks\": [\"state-of-the-union-why-local-why-now\", \"why-off-the-shelf-ai-doesnt-understand-money\", \"from-ambient-documentation-to-clinical-intelligence\"], \"position_b\": \"Remove it. Planning, state, and answer selection belong in application code, not in any model, so there is nothing left for a frontier model to do at runtime; frontier models are also simply too expensive to place in front of a customer without very high lifetime value.\", \"position_b_talks\": [\"dont-let-the-llm-drive\", \"your-voice-agent-doesnt-need-a-frontier-model\", \"the-future-is-domain-specific-agents\"], \"why_it_matters\": \"If a frontier model stays in the loop, latency and cost floors are set by its slowest call and you retain a hard API dependency; if it is removed, the entire system can run locally or on cheap inference, but every planning decision must be encoded and maintained as deterministic logic.\"}, {\"question\": \"What parameter range actually counts as the useful 'small model' target?\", \"position_a\": \"The 1\u20134B class. A 4B Qwen 3.5 on an iPhone is roughly GPT-4o-quality, Llama 3.2 3B hits ~90% accuracy on thread summarization, and a 4B model on a phone today beats GPT-4 at launch \u2014 this is the size that makes local-first practical.\", \"position_a_talks\": [\"state-of-the-union-why-local-why-now\", \"local-models-trust-control-optimization\", \"frontier-results-on-device\"], \"position_b\": \"1\u20134B is still too big. Reaching the majority of devices requires 50M\u2013500M parameters, because a 2B-class model needs 4GB+ of device DRAM once KV cache, runtime, and OS are counted, DRAM cost is rising, and the model is usually a minor feature running alongside everything else \u2014 a fine-tuned tiny model matches a 2\u20134B model on a single fixed task anyway.\", \"position_b_talks\": [\"why-large-tiny-lms-agents-on-edgerobotics\"], \"why_it_matters\": \"The size class determines whether zero-shot prompting plus LoRA is viable or whether task-specific fine-tuning is mandatory, and it determines the addressable device population \u2014 Jetson/phone-class flagship hardware versus the long tail of older laptops and IoT devices.\"}], \"practical_guidance\": {\"do\": [\"Prototype on a frontier model, then convert production paths to the smallest model that passes your golden dataset \u2014 'prototype big, deploy small'.\", \"Move state tracking, completion judgments ('is the lesson done?', 'did the user succeed?'), and next-step selection into a deterministic state machine in application code; let the model only propose or speak.\", \"Pick the fastest model your latency budget allows \u2014 ~950ms to first speech for voice, a 4s ceiling for chat believability \u2014 and spend remaining engineering effort on scaffolding rather than model upgrades.\", \"Fix structural and length compliance failures with deterministic post-processing in the harness instead of escalating to a larger model; one talk closed the gap to Claude this way while saving ~$1/day of inference.\", \"Prefer few-shot examples over reformatted input or chain-of-thought when prompting small models: few-shot added 200ms while CoT added 600ms for a weaker gain.\", \"Build a curated human-labeled golden dataset and run regression evals continuously like CI tests, so a prompt or model change cannot silently degrade behavior.\", \"Manually inspect LLM-judge scores rather than trusting the numbers \u2014 judges systematically favor models from their own family.\", \"For fixed-task tiny models, generate 10,000\u201310,000,000 synthetic samples and fine-tune; a ~86% function-call reliability across ~10 output functions is achievable at that scale.\", \"Use cheap always-on event gates to decide when to escalate to a heavy model, rather than running the heavy model continuously over a stream.\", \"Budget 4GB+ of device DRAM for a 2B-class model once KV cache, runtime, and OS are counted, and use mixed 2/4/8-bit quantization (~2.9 bits per weight) to fit.\", \"Decompose the problem into per-section or per-subtask workflows and post-train a distinct small model for each \u2014 e.g. one per section of a clinical note.\", \"When training on proprietary outcome data, adjust for selection bias \u2014 firms that took an action are systematically different from those that didn't ($4,200/day vs $2,800/day naive becomes ~$1,150 corrected).\", \"Keep small models in their native formats \u2014 HTML/CSS/JS rather than a custom DSL \u2014 since that is what dominates their training data.\"], \"avoid\": [\"Don't answer multi-step unreliability by adding more prompt rules; when reliability approaches a coin flip, take the control flow out of the model entirely.\", \"Don't pick a model on peer recommendation \u2014 the socially recommended model (Gemma) came in around 8 seconds latency and would have shipped a materially worse experience.\", \"Don't use explicit negative constraints in small-model prompts; strict negative rules measurably worsened output versus few-shot.\", \"Don't ship distilled per-capability models inside mobile apps, where every capability change forces retraining and a 1\u20132 GB download over users' data plans.\", \"Don't treat more context as a substitute for outcome grounding \u2014 a company's complete financial data is still just one group of data points.\", \"Don't load many skills, MCP servers, and tools into a single agent's context; it is functionally inheritance and it degrades performance.\", \"Don't teach a model a custom DSL or bespoke JSON schema when a language it already knows will do \u2014 quality drops even with many examples.\", \"Don't fine-tune SAM 3 directly; distill to a fixed class list and drop the expensive autoencoder for a lighter detector, or you lose the open-vocabulary capability you wanted.\", \"Don't target Raspberry Pi-class hardware for real-time 2B-model interaction \u2014 ~7.6 tokens/sec decode is too slow; Jetson-class NPUs reach ~31 tokens/sec.\", \"Don't trust a single LLM verifier as ground truth on open-ended domains: a verifier good enough to grade would already be your best generator.\", \"Don't rely on demo conditions to surface failures \u2014 step-skipping, premature completion, and looping only appear with real users.\"]}, \"notable_outliers\": [{\"claim\": \"The 1\u20134B 'small model' class is still too big: reaching the majority of devices requires 50M\u2013500M parameter models, because the model is usually one small feature running alongside everything else in the system.\", \"talk\": \"why-large-tiny-lms-agents-on-edgerobotics\", \"timestamp_sec\": 736}, {\"claim\": \"The cost of intelligence stopped falling and reversed in 2026 \u2014 tokens are up 76% raw and 29% IQ-adjusted at the halfway point of the year.\", \"talk\": \"the-future-is-domain-specific-agents\", \"timestamp_sec\": 1357}, {\"claim\": \"In a Princeton 500-day business simulation, most frontier models drove the company bankrupt and a simple rules-based system outperformed almost all of them.\", \"talk\": \"why-off-the-shelf-ai-doesnt-understand-money\", \"timestamp_sec\": 424}, {\"claim\": \"Past a certain threshold of raw intelligence, further intelligence gains are unnecessary and the continual-learning algorithm becomes the binding constraint \u2014 current frontier models may already be smart enough.\", \"talk\": \"intelligence-continual-learning-expertise\", \"timestamp_sec\": 862}, {\"claim\": \"A small model (Gemini 3 Flash) was deliberately used as the design partner for a new output format, on the logic that if the small model can author workable code in it, larger coding agents certainly can.\", \"talk\": \"html-is-all-agents-need\", \"timestamp_sec\": 315}, {\"claim\": \"DRAM cost, not compute, is the binding constraint on edge AI, and it is getting worse \u2014 some phone makers shipped less DRAM this year, and Raspberry Pi 6GB cost has risen ~2.5x since launch.\", \"talk\": \"why-large-tiny-lms-agents-on-edgerobotics\", \"timestamp_sec\": 184}, {\"claim\": \"Roughly 0.000001% of AI users have ever run an open model themselves, despite a 4B model on a phone now being more useful than GPT-4 at launch.\", \"talk\": \"local-models-trust-control-optimization\", \"timestamp_sec\": 2159}, {\"claim\": \"On a problem where quality is already maxed out, the reason to train your own model is purely to cut cost and latency \u2014 not to improve quality.\", \"talk\": \"from-ambient-documentation-to-clinical-intelligence\", \"timestamp_sec\": 1163}], \"maturity\": \"consolidating\", \"maturity_rationale\": \"Eight independent talks across unrelated verticals converged on the same core claim \u2014 most tasks don't need frontier intelligence, and a small model plus engineering matches frontier performance \u2014 with concrete numbers rather than aspiration. What is still openly argued is the route (scaffolding versus post-training), the target size class (1\u20134B versus 50M\u2013500M), and whether a frontier model stays in the loop as planner.\"}",
+  "ttft_ms": 52218,
+  "ttft_stream_ms": 1315,
+  "time_to_request_ms": 169,
   "type": "result",
-  "duration_ms": 143186,
-  "uuid": "f6db5837-7698-49cc-90ed-4b645acec0f8",
+  "duration_ms": 117448,
+  "uuid": "7a11af69-233f-46b1-bd2d-ff2203ab86bb",
   "passC": {
     "concept": "small language models",
-    "state_of_practice": "The field has stopped treating model size as a proxy for quality and started treating it as a budget line with latency, DRAM, and energy denominations. The dominant claim across tracks is that the frontier model is the wrong default for production: roughly 90% of tasks don't need frontier intelligence, a voice agent must start speaking inside ~950ms (and 4s is the outer limit of believability in chat), and a 2B model needs ~4GB of device DRAM at a moment when Raspberry Pi memory prices have gone up 2.5x. The consensus workflow is prototype big, deploy small \u2014 build against a frontier model, then push components down to a 3-4B open model, a fine-tuned task model, or a 50M-500M tiny model, validated against a golden dataset rather than peer recommendation. Where speakers split is on how you close the residual gap: one camp keeps weights frozen and pays once in code (state machines that hold workflow state, deterministic post-processing for structural/length failures, few-shot examples at +200ms instead of chain-of-thought at +600ms), the other changes the weights (10k-10M synthetic samples for a tiny model, post-training an open model on your harness, RL over verified outcome data). Both camps report the same headline result \u2014 small model beats or matches frontier on the narrow task \u2014 which is why the argument is about method, not possibility. The economic argument is sharper than a year ago: total inference spend is rising even where per-token prices fall, because agentic and reasoning workloads consume tokens faster than prices drop, and at least one speaker claims the per-token trend itself reversed in 2026.",
+    "state_of_practice": "The field has moved past \"use the best model available\" as a default. Across voice, clinical documentation, finance, edge/IoT, and local-first deployments, speakers converged on the claim that frontier-level intelligence is unnecessary for the large majority of production tasks, and that the binding constraints are latency (950ms to first audio for voice, ~4s ceiling for chat), unit cost, and deployability (DRAM on device, sovereignty, guaranteed access). Two distinct routes to making a small model work were demonstrated: engineered scaffolding \u2014 pulling state tracking, control flow, and completion judgments out of the model into a deterministic harness or state machine \u2014 and post-training, where a small open model is fine-tuned on proprietary or synthetic task data. Both routes produced the same reported outcome: a Haiku-class or open small model matching or beating an Opus/frontier model on the narrow task, at a fraction of cost and latency. Notably, the economic argument is not that tokens are cheap: multiple speakers reported that total inference spend is rising because agentic sessions consume tokens faster than prices fall, and one tracked per-token prices actually reversing upward in 2026. What remains unsettled is the size class that matters (1\u20134B \"small\" versus 50M\u2013500M \"tiny\"), whether a frontier model stays in the production loop as planner or hypothesis generator, and whether harness engineering or fine-tuning is the higher-leverage investment.",
     "consensus": [
       {
-        "claim": "Most production workloads do not need frontier-level intelligence; the correct selection rule is the smallest model that produces acceptable output for the specific use case, not the most capable one available.",
-        "support_count": 7,
+        "claim": "Most production tasks do not require frontier-level intelligence; the correct default is the smallest model that clears the quality bar for that specific task.",
+        "support_count": 8,
         "supporting_talks": [
+          "dont-let-the-llm-drive",
+          "from-ambient-documentation-to-clinical-intelligence",
           "frontier-results-on-device",
           "local-models-trust-control-optimization",
           "state-of-the-union-why-local-why-now",
           "the-future-is-domain-specific-agents",
           "your-voice-agent-doesnt-need-a-frontier-model",
-          "why-large-tiny-lms-agents-on-edgerobotics",
-          "dont-let-the-llm-drive"
+          "why-large-tiny-lms-agents-on-edgerobotics"
         ],
-        "evidence_quote": "most people probably do not need frontier level intelligence for like 90% of their tasks",
-        "evidence_talk": "local-models-trust-control-optimization",
-        "evidence_timestamp_sec": 1605
+        "evidence_quote": "Health care is actually many specific workflows. You don't need, you know, Fable 5 to actually solve all of your clinical notes. We we don't need frontier level intelligence for every problem.",
+        "evidence_talk": "from-ambient-documentation-to-clinical-intelligence",
+        "evidence_timestamp_sec": 1091
       },
       {
-        "claim": "A small model inside a strong harness performs at the level expected of a frontier model; the surrounding scaffolding, not the parameter count, is what determines delivered reliability.",
-        "support_count": 5,
+        "claim": "A small model reaches frontier-level task performance only when surrounded by engineered scaffolding that removes state tracking and control flow from the model; the model proposes, the harness decides.",
+        "support_count": 6,
         "supporting_talks": [
           "dont-let-the-llm-drive",
           "your-voice-agent-doesnt-need-a-frontier-model",
           "frontier-results-on-device",
           "local-models-trust-control-optimization",
-          "state-of-the-union-why-local-why-now"
+          "state-of-the-union-why-local-why-now",
+          "the-future-is-domain-specific-agents"
         ],
         "evidence_quote": "instead of having a very heavy model like a 4.7, we were actually able to rely on something like a Haiku 4.5, which is a much smaller model, doesn't have as much reasoning capabilities, but because of the harnessing around it, it's still able to perform at the level in which we expect",
         "evidence_talk": "dont-let-the-llm-drive",
         "evidence_timestamp_sec": 147
       },
       {
-        "claim": "Falling per-token prices do not produce falling bills, because agentic and reasoning workloads multiply token consumption faster than unit prices move \u2014 so cost control has to come from architecture, not from waiting.",
-        "support_count": 4,
+        "claim": "The motivation for going small is latency and total cost rather than quality, and total inference spend is rising even as per-token prices fall because agentic sessions consume tokens faster than prices drop.",
+        "support_count": 5,
         "supporting_talks": [
           "frontier-results-on-device",
           "local-models-trust-control-optimization",
           "the-future-is-domain-specific-agents",
-          "why-large-tiny-lms-agents-on-edgerobotics"
+          "why-large-tiny-lms-agents-on-edgerobotics",
+          "your-voice-agent-doesnt-need-a-frontier-model"
         ],
         "evidence_quote": "Now, token costs have been falling as of late, but total inference spend has been rising because agent can reasoning workloads consume tokens way faster than prices are dropping.",
         "evidence_talk": "frontier-results-on-device",
         "evidence_timestamp_sec": 131
       },
       {
-        "claim": "Latency, not answer quality, is the binding constraint in interactive systems, and frontier reasoning time costs more than the quality it buys.",
-        "support_count": 4,
-        "supporting_talks": [
-          "your-voice-agent-doesnt-need-a-frontier-model",
-          "frontier-results-on-device",
-          "dont-let-the-llm-drive",
-          "local-models-trust-control-optimization"
-        ],
-        "evidence_quote": "A frontier model that think for a full second has already lost the room, no matter how good the answer is.",
-        "evidence_talk": "your-voice-agent-doesnt-need-a-frontier-model",
-        "evidence_timestamp_sec": 51
-      },
-      {
-        "claim": "Frontier models belong at the top of the stack \u2014 prototyping, planning, hypothesis generation, synthetic data generation \u2014 while smaller models execute the subtasks in production.",
-        "support_count": 4,
-        "supporting_talks": [
-          "frontier-results-on-device",
-          "state-of-the-union-why-local-why-now",
-          "why-off-the-shelf-ai-doesnt-understand-money",
-          "why-large-tiny-lms-agents-on-edgerobotics"
-        ],
-        "evidence_quote": "Now, first off, I like to think of this as prototype big, deploy small. Just repeat this to yourself.",
-        "evidence_talk": "frontier-results-on-device",
-        "evidence_timestamp_sec": 536
-      },
-      {
-        "claim": "On a narrowly scoped task, a specialized smaller model matches or beats a frontier model head-to-head \u2014 via fine-tuning, post-training, or grounding in proprietary outcome data.",
+        "claim": "Post-training or fine-tuning a small model on proprietary or synthetic task data beats an off-the-shelf frontier model on that narrow task, at dramatically lower cost, and is achievable in weeks.",
         "support_count": 5,
         "supporting_talks": [
+          "from-ambient-documentation-to-clinical-intelligence",
           "why-off-the-shelf-ai-doesnt-understand-money",
           "local-models-trust-control-optimization",
           "why-large-tiny-lms-agents-on-edgerobotics",
-          "the-future-is-domain-specific-agents",
-          "frontier-results-on-device"
+          "state-of-the-union-why-local-why-now"
         ],
-        "evidence_quote": "we were able with a midsize cheaper model to outperform the frontier models because of the grounding that I just showed you.",
-        "evidence_talk": "why-off-the-shelf-ai-doesnt-understand-money",
-        "evidence_timestamp_sec": 921
+        "evidence_quote": "take an open model and like specialize it to automate finance within like a week or two to get like better performance than like Opus at a fraction of the cost of Haiku",
+        "evidence_talk": "local-models-trust-control-optimization",
+        "evidence_timestamp_sec": 819
       },
       {
-        "claim": "The trajectory is toward many specialized models coordinating, not one general model absorbing every workload \u2014 no single static model can cover the heterogeneity of real deployment environments.",
-        "support_count": 4,
+        "claim": "The architecture is trending from one general model toward many narrow specialized models, because no single model can absorb the idiosyncrasies of every domain or workflow.",
+        "support_count": 5,
         "supporting_talks": [
-          "intelligence-continual-learning-expertise",
           "local-models-trust-control-optimization",
           "state-of-the-union-why-local-why-now",
-          "the-future-is-domain-specific-agents"
+          "the-future-is-domain-specific-agents",
+          "from-ambient-documentation-to-clinical-intelligence",
+          "intelligence-continual-learning-expertise"
         ],
         "evidence_quote": "It's just like too heterogeneous and dynamic for any monolithic model to try to compress it into one static representation",
         "evidence_talk": "intelligence-continual-learning-expertise",
@@ -180,148 +158,135 @@
     ],
     "disagreements": [
       {
-        "question": "When a small model falls short on your task, do you fix the harness around it or change the model's weights?",
-        "position_a": "Leave the weights alone. Extract control flow and state into application code, add deterministic post-processing for structural and length failures, tune prompts with few-shot examples, and use the thinnest possible wrapper \u2014 the scaffolding cost is paid once in code rather than on every turn, and shipping a retrained 1-2GB model to mobile users for every capability change is untenable.",
+        "question": "To make a small model production-viable on a task, should you invest in harness/scaffolding engineering around an off-the-shelf model, or in post-training a specialized model?",
+        "position_a": "Invest in scaffolding and deterministic code. The model is off-the-shelf and swappable; you pay the cost once in code rather than on every turn, and structural failures are fixed with post-processing, not a bigger or retrained model. Frontier-results-on-device explicitly rejects distillation for mobile because every capability change forces a retrain and a 1\u20132 GB redownload.",
         "position_a_talks": [
           "dont-let-the-llm-drive",
           "your-voice-agent-doesnt-need-a-frontier-model",
           "frontier-results-on-device",
-          "html-is-all-agents-need"
-        ],
-        "position_b": "Change the model. Generate 10k-10M synthetic samples and fine-tune a tiny model per fixed task, post-train an open model on the harness you care about, or train an RL selector on verified outcome data \u2014 because prompting and context cannot supply experience the model never had.",
-        "position_b_talks": [
-          "why-large-tiny-lms-agents-on-edgerobotics",
-          "why-off-the-shelf-ai-doesnt-understand-money",
-          "local-models-trust-control-optimization",
-          "state-of-the-union-why-local-why-now"
-        ],
-        "why_it_matters": "This decides whether a team needs a data-labeling and training pipeline plus a weight-distribution story, or only software engineers writing state machines and post-processors. It also determines the update cadence: a harness change ships instantly, a weights change ships as a multi-gigabyte binary over users' data plans."
-      },
-      {
-        "question": "Is a frozen small model plus good scaffolding sufficient, or is the real ceiling the inability to accumulate expertise over time?",
-        "position_a": "Sufficient. The model proposes and the harness decides; judgments about task completion and next step are engineered outside the model, so a static Haiku-class model plus a state machine delivers reliable multi-step behavior indefinitely.",
-        "position_a_talks": [
-          "dont-let-the-llm-drive",
-          "your-voice-agent-doesnt-need-a-frontier-model"
-        ],
-        "position_b": "Insufficient. Intelligence and expertise are orthogonal, and past a threshold of raw intelligence the continual-learning algorithm becomes the binding constraint; markdown-file agent memory is a stopgap and real progress requires updating weights, locally, from in-situ experience.",
-        "position_b_talks": [
-          "intelligence-continual-learning-expertise",
-          "state-of-the-union-why-local-why-now"
-        ],
-        "why_it_matters": "If scaffolding is sufficient, the small-model roadmap is an engineering problem solved today. If expertise accumulation is the ceiling, every harness-based system is capped at 'world's smartest novice' and the investment belongs in local training infrastructure instead."
-      },
-      {
-        "question": "Is the per-token cost of intelligence still falling?",
-        "position_a": "Yes \u2014 unit prices continue to drop and the rising bill is purely a volume effect from exponentially growing tokens per session; some operators report token counts exploding while total costs stay flat.",
-        "position_a_talks": [
-          "frontier-results-on-device",
-          "local-models-trust-control-optimization",
-          "state-of-the-union-why-local-why-now"
-        ],
-        "position_b": "No \u2014 the trend reversed in 2026. Tokens are up 76% raw and 29% IQ-adjusted at the halfway point of the year, which means you cannot put a frontier model in front of a customer unless that customer has very high lifetime value.",
-        "position_b_talks": [
           "the-future-is-domain-specific-agents"
         ],
-        "why_it_matters": "If unit prices keep falling, cost-driven downsizing is an optimization you can defer and recover through volume growth. If the trend has genuinely reversed, per-unit-economics pressure compounds and downsizing becomes a survival requirement for any consumer-facing product this year."
+        "position_b": "Invest in training. Prompting and context are not substitutes for grounding in outcome or in-domain data; you post-train per-section or per-task models on proprietary data (100M clinical conversations, verified business outcomes) or on 10k\u201310M synthetic samples, which is what actually closes the quality gap and produces the durable moat.",
+        "position_b_talks": [
+          "from-ambient-documentation-to-clinical-intelligence",
+          "why-off-the-shelf-ai-doesnt-understand-money",
+          "why-large-tiny-lms-agents-on-edgerobotics",
+          "local-models-trust-control-optimization"
+        ],
+        "why_it_matters": "The two routes demand completely different teams and cost structures \u2014 control-flow engineers and eval harnesses versus a data pipeline, labeling budget, and training infrastructure. Choosing wrong means either a scaffolding stack that plateaus below the quality bar, or a training investment on a problem that a state machine would have solved for free."
       },
       {
-        "question": "How small does 'small' actually need to be to reach the majority of devices?",
-        "position_a": "3-4B is the target. A 4B Qwen 3.5 on an iPhone is roughly GPT-4o-equivalent, a 4B model on a phone today beats GPT-4 at launch, and within a year most daily AI work runs on a laptop-hosted model.",
+        "question": "Does a frontier model remain in the production path as a planner, hypothesis generator, or escalation target, or should it be removed entirely?",
+        "position_a": "Keep it at the top of the stack. The frontier model produces the high-level plan or candidate hypotheses and smaller/local models execute the subtasks; cheap event gates decide when to escalate to a heavier model rather than running one continuously.",
+        "position_a_talks": [
+          "state-of-the-union-why-local-why-now",
+          "why-off-the-shelf-ai-doesnt-understand-money",
+          "from-ambient-documentation-to-clinical-intelligence"
+        ],
+        "position_b": "Remove it. Planning, state, and answer selection belong in application code, not in any model, so there is nothing left for a frontier model to do at runtime; frontier models are also simply too expensive to place in front of a customer without very high lifetime value.",
+        "position_b_talks": [
+          "dont-let-the-llm-drive",
+          "your-voice-agent-doesnt-need-a-frontier-model",
+          "the-future-is-domain-specific-agents"
+        ],
+        "why_it_matters": "If a frontier model stays in the loop, latency and cost floors are set by its slowest call and you retain a hard API dependency; if it is removed, the entire system can run locally or on cheap inference, but every planning decision must be encoded and maintained as deterministic logic."
+      },
+      {
+        "question": "What parameter range actually counts as the useful 'small model' target?",
+        "position_a": "The 1\u20134B class. A 4B Qwen 3.5 on an iPhone is roughly GPT-4o-quality, Llama 3.2 3B hits ~90% accuracy on thread summarization, and a 4B model on a phone today beats GPT-4 at launch \u2014 this is the size that makes local-first practical.",
         "position_a_talks": [
           "state-of-the-union-why-local-why-now",
           "local-models-trust-control-optimization",
           "frontier-results-on-device"
         ],
-        "position_b": "1-4B is still too big \u2014 it cannot reach older laptops or consumer edge devices, where the model is one small feature in a corner of an app competing for DRAM with everything else. Reaching the majority of devices requires 50M-500M parameters, which means fine-tuning is mandatory rather than optional.",
+        "position_b": "1\u20134B is still too big. Reaching the majority of devices requires 50M\u2013500M parameters, because a 2B-class model needs 4GB+ of device DRAM once KV cache, runtime, and OS are counted, DRAM cost is rising, and the model is usually a minor feature running alongside everything else \u2014 a fine-tuned tiny model matches a 2\u20134B model on a single fixed task anyway.",
         "position_b_talks": [
           "why-large-tiny-lms-agents-on-edgerobotics"
         ],
-        "why_it_matters": "At 3-4B the playbook is zero-shot prompting and LoRA adapters on off-the-shelf weights; at 50M-500M you must build a synthetic-data pipeline and fine-tune per task. The two answers imply completely different team compositions and time-to-first-deploy."
+        "why_it_matters": "The size class determines whether zero-shot prompting plus LoRA is viable or whether task-specific fine-tuning is mandatory, and it determines the addressable device population \u2014 Jetson/phone-class flagship hardware versus the long tail of older laptops and IoT devices."
       }
     ],
     "practical_guidance": {
       "do": [
-        "Prototype on a foundation model, then convert components to small and specialized models for production ('prototype big, deploy small').",
-        "Build a curated, preferably human-labeled golden dataset of input-output pairs before choosing a model, and select on eval results rather than peer recommendation \u2014 one recommended model came in at ~8 seconds latency.",
-        "Pick the fastest model your latency budget allows, then spend the remaining engineering effort on scaffolding; budget ~950ms to first speech for voice and treat 4 seconds as the outer limit of believability in chat.",
-        "Move workflow state, completion judgments, and next-step selection into an explicit state machine \u2014 the model proposes, the harness decides.",
-        "Prefer few-shot examples for small models (+200ms) over chain-of-thought (+600ms); isolate one variable per prompt variant when testing.",
-        "Fix structural and length failures with deterministic post-processing in the harness instead of escalating to a larger model \u2014 post-processing closed the gap and beat the frontier baseline.",
-        "Manually inspect LLM-judge scores rather than trusting the numbers: judges favor models from their own family (Opus favoring Sonnet over Llama 3.2).",
-        "Run regression evals continuously, like CI tests, so a prompt or model change cannot silently degrade behavior overnight.",
-        "For tiny (50M-500M) models, generate 10,000-10,000,000 synthetic samples and fine-tune; expect ~86% reliability on ~10 output functions for voice-to-function-calling.",
-        "Size device memory realistically: a 2B-class model needs ~4GB+ of DRAM once KV cache, runtime and OS are counted, and mixed 2/4/8-bit quantization to ~2.9 bits per weight is what makes it fit.",
-        "Route frontier models to top-level planning and hypothesis generation, with smaller models executing subtasks and a separately trained selector deciding which hypothesis to act on.",
-        "Have agents emit HTML/CSS/JavaScript rather than a custom format; a small model (Gemini 3 Flash) authoring workable code in a format is the signal that larger agents will handle it too.",
-        "When agent reliability approaches a coin flip, take the control flow out of the model rather than adding prompt rules."
+        "Prototype on a frontier model, then convert production paths to the smallest model that passes your golden dataset \u2014 'prototype big, deploy small'.",
+        "Move state tracking, completion judgments ('is the lesson done?', 'did the user succeed?'), and next-step selection into a deterministic state machine in application code; let the model only propose or speak.",
+        "Pick the fastest model your latency budget allows \u2014 ~950ms to first speech for voice, a 4s ceiling for chat believability \u2014 and spend remaining engineering effort on scaffolding rather than model upgrades.",
+        "Fix structural and length compliance failures with deterministic post-processing in the harness instead of escalating to a larger model; one talk closed the gap to Claude this way while saving ~$1/day of inference.",
+        "Prefer few-shot examples over reformatted input or chain-of-thought when prompting small models: few-shot added 200ms while CoT added 600ms for a weaker gain.",
+        "Build a curated human-labeled golden dataset and run regression evals continuously like CI tests, so a prompt or model change cannot silently degrade behavior.",
+        "Manually inspect LLM-judge scores rather than trusting the numbers \u2014 judges systematically favor models from their own family.",
+        "For fixed-task tiny models, generate 10,000\u201310,000,000 synthetic samples and fine-tune; a ~86% function-call reliability across ~10 output functions is achievable at that scale.",
+        "Use cheap always-on event gates to decide when to escalate to a heavy model, rather than running the heavy model continuously over a stream.",
+        "Budget 4GB+ of device DRAM for a 2B-class model once KV cache, runtime, and OS are counted, and use mixed 2/4/8-bit quantization (~2.9 bits per weight) to fit.",
+        "Decompose the problem into per-section or per-subtask workflows and post-train a distinct small model for each \u2014 e.g. one per section of a clinical note.",
+        "When training on proprietary outcome data, adjust for selection bias \u2014 firms that took an action are systematically different from those that didn't ($4,200/day vs $2,800/day naive becomes ~$1,150 corrected).",
+        "Keep small models in their native formats \u2014 HTML/CSS/JS rather than a custom DSL \u2014 since that is what dominates their training data."
       ],
       "avoid": [
-        "Reaching for more prompt rules when a multi-step agent skips steps or loops \u2014 that is a control problem, not a prompting problem.",
-        "Asking the model to remember which step of a workflow it is on.",
-        "Explicit negative constraints in small-model prompts \u2014 they made results measurably worse than few-shot examples or reformatted input.",
-        "Trusting LLM-judge scores numerically without inspection.",
-        "Shipping distilled models to mobile apps, where every capability change forces a retrain and a 1-2 GB download over users' data plans.",
-        "Teaching a model a new DSL or custom JSON structure \u2014 quality degrades even with many examples.",
-        "Loading many skills, MCP servers and tools into one agent's context; research shows it makes the agent substantially worse, and it is inheritance by another name.",
-        "Assuming more context substitutes for outcome grounding \u2014 a company's complete financial data is still just one group of data points.",
-        "Fine-tuning SAM 3 directly; distill to a fixed class list and drop the expensive autoencoder instead, or you lose the open-vocabulary capability that made it worth using.",
-        "Targeting Raspberry Pi-class hardware for real-time interaction with a 2B model \u2014 7.6 tokens/sec decode is too slow; Jetson-class NPU reaches ~31 tokens/sec decode.",
-        "Validating agent reliability under demo conditions, which systematically fail to surface the step-skipping and looping that real users trigger.",
-        "Expecting to close a domain gap by scaling to a bigger model."
+        "Don't answer multi-step unreliability by adding more prompt rules; when reliability approaches a coin flip, take the control flow out of the model entirely.",
+        "Don't pick a model on peer recommendation \u2014 the socially recommended model (Gemma) came in around 8 seconds latency and would have shipped a materially worse experience.",
+        "Don't use explicit negative constraints in small-model prompts; strict negative rules measurably worsened output versus few-shot.",
+        "Don't ship distilled per-capability models inside mobile apps, where every capability change forces retraining and a 1\u20132 GB download over users' data plans.",
+        "Don't treat more context as a substitute for outcome grounding \u2014 a company's complete financial data is still just one group of data points.",
+        "Don't load many skills, MCP servers, and tools into a single agent's context; it is functionally inheritance and it degrades performance.",
+        "Don't teach a model a custom DSL or bespoke JSON schema when a language it already knows will do \u2014 quality drops even with many examples.",
+        "Don't fine-tune SAM 3 directly; distill to a fixed class list and drop the expensive autoencoder for a lighter detector, or you lose the open-vocabulary capability you wanted.",
+        "Don't target Raspberry Pi-class hardware for real-time 2B-model interaction \u2014 ~7.6 tokens/sec decode is too slow; Jetson-class NPUs reach ~31 tokens/sec.",
+        "Don't trust a single LLM verifier as ground truth on open-ended domains: a verifier good enough to grade would already be your best generator.",
+        "Don't rely on demo conditions to surface failures \u2014 step-skipping, premature completion, and looping only appear with real users."
       ]
     },
     "notable_outliers": [
       {
-        "claim": "Past a threshold of raw intelligence, further intelligence is unnecessary and the continual-learning algorithm becomes the binding constraint \u2014 current frontier models may already be smart enough, producing 'the world's smartest novice.'",
-        "talk": "intelligence-continual-learning-expertise",
-        "timestamp_sec": 862
-      },
-      {
-        "claim": "In a Princeton 500-day business simulation, most frontier models drove the company bankrupt in under 500 days, and a simple rules-based system outperformed almost all of them.",
-        "talk": "why-off-the-shelf-ai-doesnt-understand-money",
-        "timestamp_sec": 424
-      },
-      {
-        "claim": "DeepSeek V4 Flash is 137 times cheaper per task than Fable 5, and narrow task scoping is what makes the cheap model reliable enough to actually use.",
-        "talk": "the-future-is-domain-specific-agents",
-        "timestamp_sec": 1057
-      },
-      {
-        "claim": "An SLM consumes about 25% of the energy an LLM uses for the same task, and a task-specific model about half of that again.",
-        "talk": "frontier-results-on-device",
-        "timestamp_sec": 392
-      },
-      {
-        "claim": "Reaching the majority of devices requires 50M-500M parameter models, because the model is usually one small feature in the corner of an app rather than the app itself \u2014 and DRAM cost is getting worse, with some phone makers shipping less memory than last year.",
+        "claim": "The 1\u20134B 'small model' class is still too big: reaching the majority of devices requires 50M\u2013500M parameter models, because the model is usually one small feature running alongside everything else in the system.",
         "talk": "why-large-tiny-lms-agents-on-edgerobotics",
         "timestamp_sec": 736
       },
       {
-        "claim": "On the order of 0.000001% of AI users have ever run an open model themselves, making distribution rather than capability the decisive variable this year.",
+        "claim": "The cost of intelligence stopped falling and reversed in 2026 \u2014 tokens are up 76% raw and 29% IQ-adjusted at the halfway point of the year.",
+        "talk": "the-future-is-domain-specific-agents",
+        "timestamp_sec": 1357
+      },
+      {
+        "claim": "In a Princeton 500-day business simulation, most frontier models drove the company bankrupt and a simple rules-based system outperformed almost all of them.",
+        "talk": "why-off-the-shelf-ai-doesnt-understand-money",
+        "timestamp_sec": 424
+      },
+      {
+        "claim": "Past a certain threshold of raw intelligence, further intelligence gains are unnecessary and the continual-learning algorithm becomes the binding constraint \u2014 current frontier models may already be smart enough.",
+        "talk": "intelligence-continual-learning-expertise",
+        "timestamp_sec": 862
+      },
+      {
+        "claim": "A small model (Gemini 3 Flash) was deliberately used as the design partner for a new output format, on the logic that if the small model can author workable code in it, larger coding agents certainly can.",
+        "talk": "html-is-all-agents-need",
+        "timestamp_sec": 315
+      },
+      {
+        "claim": "DRAM cost, not compute, is the binding constraint on edge AI, and it is getting worse \u2014 some phone makers shipped less DRAM this year, and Raspberry Pi 6GB cost has risen ~2.5x since launch.",
+        "talk": "why-large-tiny-lms-agents-on-edgerobotics",
+        "timestamp_sec": 184
+      },
+      {
+        "claim": "Roughly 0.000001% of AI users have ever run an open model themselves, despite a 4B model on a phone now being more useful than GPT-4 at launch.",
         "talk": "local-models-trust-control-optimization",
         "timestamp_sec": 2159
       },
       {
-        "claim": "EXO Labs and NVIDIA got a 10x inference improvement on DGX Spark in about three weeks using only existing techniques \u2014 vLLM backend, quantization, config tuning \u2014 with no new computer science.",
-        "talk": "state-of-the-union-why-local-why-now",
-        "timestamp_sec": 1303
-      },
-      {
-        "claim": "Deliberately starting with a very small model (Gemini 3 Flash) as the design partner is a format-validation strategy: if the small model can author workable code in your format, the coding agents certainly can.",
-        "talk": "html-is-all-agents-need",
-        "timestamp_sec": 315
+        "claim": "On a problem where quality is already maxed out, the reason to train your own model is purely to cut cost and latency \u2014 not to improve quality.",
+        "talk": "from-ambient-documentation-to-clinical-intelligence",
+        "timestamp_sec": 1163
       }
     ],
     "maturity": "consolidating",
-    "maturity_rationale": "Seven claims \u2014 smallest-acceptable-model selection, harness-over-parameters, latency as the binding constraint, prototype-big-deploy-small, specialization beating frontier generality, rising total spend, and many-models-over-one \u2014 each drew independent support from four or more talks with concrete numbers attached. The unresolved edges are method rather than premise: whether to close the gap in the harness or in the weights, whether static models plus scaffolding hit a ceiling that only continual learning breaks, and whether 'small' means 3-4B or 50M-500M."
+    "maturity_rationale": "Eight independent talks across unrelated verticals converged on the same core claim \u2014 most tasks don't need frontier intelligence, and a small model plus engineering matches frontier performance \u2014 with concrete numbers rather than aspiration. What is still openly argued is the route (scaffolding versus post-training), the target size class (1\u20134B versus 50M\u2013500M), and whether a frontier model stays in the loop as planner."
   },
   "_meta": {
     "concept": "small language models",
     "slug": "small-language-models",
-    "talk_count": 10,
+    "talk_count": 11,
     "missing_talks": [],
-    "wall_sec": 144.5,
-    "run_at": "2026-08-13T20:53:41Z"
+    "wall_sec": 118.3,
+    "run_at": "2026-08-20T03:49:56Z"
   }
 }

@@ -4,15 +4,15 @@ type: "concept"
 slug: "agent-memory"
 tier: "core"
 maturity: "contested"
-talk_count: 39
-speaker_count: 41
+talk_count: 40
+speaker_count: 42
 ---
 
 # agent memory
 
 **Maturity: CONTESTED** — Contested — active, unresolved disagreement across talks
 
-*Core concept* &middot; discussed across **39** talk(s) by **41** speaker(s)
+*Core concept* &middot; discussed across **40** talk(s) by **42** speaker(s)
 
 **Definition:** Persisting and recalling information across an agent's turns, sessions, or lifetime — storage substrate, write policy, and retrieval policy.
 
@@ -20,143 +20,151 @@ speaker_count: 41
 
 ## State of Practice
 
-As of this conference the field has stopped treating memory as a database problem and started treating it as a control loop — write policy, consolidation policy, recall policy — layered on top of a durable substrate that lives outside the model's context window. The dominant architecture is an append-only session or event log (Anthropic's managed-agents session log, ActiveGraph's immutable event log, files-on-disk fleets) that survives harness death, container death, and context wipes, plus a smaller derived artifact — a running profile, a decisions ledger, a pattern catalog, a skills directory — that gets injected or retrieved per turn. Two findings recur independently: in-band memory writing produces incorrect and locally-optimal entries that only an out-of-band consolidation pass ("dreaming", a nightly sleep cycle, a 24-hour profile rebuild) corrects, and pure dense-vector recall is not a sufficient retrieval policy — BM25, graph traversal, rank-only ledgers, and outcome-weighted scores all beat it on someone's benchmark. Costs are now measured explicitly: memory is a compute-allocation tradeoff between update frequency and per-turn serving tokens (ChatGPT ~4k tokens every few days vs. Claude ~1k every 24 hours), and bad recall shows up as token spend, not just wrong answers. What is genuinely unsettled is whether an engineered memory system beats simply keeping everything in context — vanilla in-context learning topped the Continual Learning Bench leaderboard, and one team found untouched full history won on recall, cost, and latency at once — and whether markdown files remain viable past the million-token mark or must be replaced by graphs and precomputed world models.
+The field has converged on one structural answer — durable agent state belongs outside the model, in an append-only session/event log or files on disk that survive compaction, container death, and harness restarts — and on one operational answer: writing memory in-band during a session is necessary but not sufficient, so leading systems run a periodic offline consolidation pass (Anthropic's "dreaming", nightly sleep cycles, profile refresh loops) to correct locally-optimal or contradictory memories. Beyond that, almost everything is contested. Substrate choices range from plain markdown in a git repo (Netflix, Sakana, DataChain) to property graphs (Neo4j, TwelveLabs) to enterprise databases and semantic layers (Onlay, Tesla), with credible measurements on both sides. The most uncomfortable results of the conference were negative ones: vanilla in-context learning topped Continual Learning Bench over sophisticated context-management systems, keeping the full conversation untouched beat every compaction preset on recall, cost, and latency simultaneously, and oracle retrieval — handing the agent exactly the right memory — still did not reach maximum task performance, because the model can ignore what it is given. Practitioners increasingly treat recall policy as a cost lever rather than an accuracy lever, and treat siloed per-agent memory as an architectural error: memory that does not cross developer, product, and org boundaries is a bottleneck rather than an asset. Retrieval by embedding similarity alone is now widely regarded as inadequate; hybrid lexical+dense, graph traversal from vector seed nodes, and outcome-weighted (utility-scored) ranking are the replacements being tried.
 
 ## Consensus
 
-### Durable agent state must live outside the model's context window — in an append-only log or files on disk — so that compaction, container death, or a machine crash cannot destroy the work.
+### Durable agent state must live outside the model's context window — in an append-only event log or files on disk — so the work survives context wipes, compaction, and machine or container crashes.
 
 Support: **6** talk(s)
 
-> "The context can get wiped, the machine can even crash, and the work still survives because it was never only in the model."
+> "The state lives in files. It is not trapped inside one model. And this is the single most practical thing I learned all year."
 >
-> — [I Run a Fleet of AI Agents Across Three Machines. Here's What Broke.](../talks/i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke.md), [3:10](https://www.youtube.com/watch?v=4kYl2_mqmnQ&t=190s)
+> — [I Run a Fleet of AI Agents Across Three Machines. Here's What Broke.](../talks/i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke.md), [2:25](https://www.youtube.com/watch?v=4kYl2_mqmnQ&t=145s)
 
-Supporting talks: [Claude for Long-Horizon Tasks](../talks/claude-for-long-horizon-tasks.md), [Active Graph Agent Runtime (BabyAGI 4)](../talks/active-graph-agent-runtime-babyagi-4.md), [I Run a Fleet of AI Agents Across Three Machines. Here's What Broke.](../talks/i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke.md), [Evolution of agentic surfaces](../talks/evolution-of-agentic-surfaces.md), [Your agent architecture has a half-life of 6 months](../talks/your-agent-architecture-has-a-half-life-of-6-months.md), [A Genius With Amnesia](../talks/a-genius-with-amnesia.md)
+Supporting talks: [I Run a Fleet of AI Agents Across Three Machines. Here's What Broke.](../talks/i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke.md), [Claude for Long-Horizon Tasks](../talks/claude-for-long-horizon-tasks.md), [Active Graph Agent Runtime (BabyAGI 4)](../talks/active-graph-agent-runtime-babyagi-4.md), [Evolution of agentic surfaces](../talks/evolution-of-agentic-surfaces.md), [Your agent architecture has a half-life of 6 months](../talks/your-agent-architecture-has-a-half-life-of-6-months.md), [A Genius With Amnesia](../talks/a-genius-with-amnesia.md)
 
-### Memory written in-band during a session is unreliable on its own; a periodic out-of-band consolidation pass is required to correct wrong entries, resolve contradictions, and compress experience into reusable abstractions.
+### In-band memory writing during a session is insufficient; a periodic out-of-band consolidation pass over transcripts plus current memory state is required to correct wrong or only-locally-optimal memories.
 
-Support: **6** talk(s)
+Support: **4** talk(s)
 
 > "those mistakes get stuck in memory unless you have an offline process to kind of correct them"
 >
 > — [Claude for Long-Horizon Tasks](../talks/claude-for-long-horizon-tasks.md), [15:40](https://www.youtube.com/watch?v=9QebvrrY3KY&t=940s)
 
-Supporting talks: [Claude for Long-Horizon Tasks](../talks/claude-for-long-horizon-tasks.md), [Evolution of agentic surfaces](../talks/evolution-of-agentic-surfaces.md), [The Factory That Dreams: 39 AI Agents, No Framework](../talks/the-factory-that-dreams-39-ai-agents-no-framework.md), [CrabRAG: Why Automated Assistants Need Graph Memory, Not More Tokens](../talks/crabrag-why-automated-assistants-need-graph-memory-not-more-tokens.md), [Improving Agents is a Data Mining Problem](../talks/improving-agents-is-a-data-mining-problem.md), [User Signal Dies at the Retrieval Boundary](../talks/user-signal-dies-at-the-retrieval-boundary.md)
+Supporting talks: [Claude for Long-Horizon Tasks](../talks/claude-for-long-horizon-tasks.md), [Evolution of agentic surfaces](../talks/evolution-of-agentic-surfaces.md), [The Factory That Dreams: 39 AI Agents, No Framework](../talks/the-factory-that-dreams-39-ai-agents-no-framework.md), [Improving Agents is a Data Mining Problem](../talks/improving-agents-is-a-data-mining-problem.md)
 
-### Dense vector similarity alone is an inadequate recall policy; production memory systems combine it with keyword/lexical search, graph traversal, or outcome weighting.
+### Vector/semantic similarity alone is an inadequate recall policy; production memory requires hybrid lexical retrieval, graph traversal, or outcome-weighted ranking on top of embeddings.
 
-Support: **7** talk(s)
+Support: **6** talk(s)
 
-> "when we increased it to like 400k tokens it was not able to facts that were buried in the middle and it started giving us like 0% recall whereas uh you know something like BM25 it still got 100% every time."
+> "the challenge here is similar what what vectors give you, which is similarity in vector space, is not the same as actual relationships."
 >
-> — [Context Engineering in 2026](../talks/context-engineering-in-2026.md), [58:58](https://www.youtube.com/watch?v=WP3hjUXd918&t=3538s)
+> — [CrabRAG: Why Automated Assistants Need Graph Memory, Not More Tokens](../talks/crabrag-why-automated-assistants-need-graph-memory-not-more-tokens.md), [7:57](https://www.youtube.com/watch?v=Q0VkgCyNVUg&t=477s)
 
-Supporting talks: [CrabRAG: Why Automated Assistants Need Graph Memory, Not More Tokens](../talks/crabrag-why-automated-assistants-need-graph-memory-not-more-tokens.md), [Context Engineering in 2026](../talks/context-engineering-in-2026.md), [On AI and Knowledge](../talks/on-ai-and-knowledge.md), [Memory Harnesses for Long-Running Research Agents](../talks/memory-harnesses-for-long-running-research-agents.md), [User Signal Dies at the Retrieval Boundary](../talks/user-signal-dies-at-the-retrieval-boundary.md), [We Cut 94% of AI Coding Tokens With a Local Code Index](../talks/we-cut-94-of-ai-coding-tokens-with-a-local-code-index.md), [Lessons from Studying Every Memory System](../talks/lessons-from-studying-every-memory-system.md)
+Supporting talks: [CrabRAG: Why Automated Assistants Need Graph Memory, Not More Tokens](../talks/crabrag-why-automated-assistants-need-graph-memory-not-more-tokens.md), [On AI and Knowledge](../talks/on-ai-and-knowledge.md), [Context Engineering in 2026](../talks/context-engineering-in-2026.md), [We Cut 94% of AI Coding Tokens With a Local Code Index](../talks/we-cut-94-of-ai-coding-tokens-with-a-local-code-index.md), [User Signal Dies at the Retrieval Boundary](../talks/user-signal-dies-at-the-retrieval-boundary.md), [Lessons from Studying Every Memory System](../talks/lessons-from-studying-every-memory-system.md)
 
-### Model capability is no longer the binding constraint on agent usefulness; the absence of persistent, environment-specific memory is — which currently forces the human to act as the system's memory layer.
+### Memory scoped per-agent, per-developer, or per-product is an architectural error; the substrate should be shared across the org, the fleet, and multiple agent products.
 
-Support: **7** talk(s)
+Support: **6** talk(s)
 
-> "Second is amnesia. Agent forget the work. Every session start with a blank slate. The human becomes the memory in this case."
+> "agents all had their own memory systems to a certain extent. So, they were learning They were all learning separately and they were learning differently."
 >
-> — [A Genius With Amnesia](../talks/a-genius-with-amnesia.md), [2:41](https://www.youtube.com/watch?v=jVjt-2g8NMY&t=161s)
+> — [WTF Is the Context Layer? The Missing Infrastructure for Production Agents](../talks/wtf-is-the-context-layer-the-missing-infrastructure-for-production-agents.md), [9:53](https://www.youtube.com/watch?v=8G_1-3IO4ZQ&t=593s)
 
-Supporting talks: [A Genius With Amnesia](../talks/a-genius-with-amnesia.md), [Always-on agents run production without the on-call tax](../talks/always-on-agents-run-production-without-the-on-call-tax.md), [WTF Is the Context Layer? The Missing Infrastructure for Production Agents](../talks/wtf-is-the-context-layer-the-missing-infrastructure-for-production-agents.md), [From Systems of Record to Systems of Context](../talks/from-systems-of-record-to-systems-of-context.md), [Enterprise Agents Have a Structure Problem](../talks/enterprise-agents-have-a-structure-problem.md), [Evolution of agentic surfaces](../talks/evolution-of-agentic-surfaces.md), [Beyond Static Intelligence: Evaluating Continual Learning](../talks/beyond-static-intelligence-evaluating-continual-learning.md)
+Supporting talks: [WTF Is the Context Layer? The Missing Infrastructure for Production Agents](../talks/wtf-is-the-context-layer-the-missing-infrastructure-for-production-agents.md), [A Genius With Amnesia](../talks/a-genius-with-amnesia.md), [Claude for Long-Horizon Tasks](../talks/claude-for-long-horizon-tasks.md), [AI Agents for Performance: Ship Faster, Pay Less](../talks/ai-agents-for-performance-ship-faster-pay-less.md), [We Cut 94% of AI Coding Tokens With a Local Code Index](../talks/we-cut-94-of-ai-coding-tokens-with-a-local-code-index.md), [Lessons from Studying Every Memory System](../talks/lessons-from-studying-every-memory-system.md)
 
-### Recall policy is a cost lever, not only an accuracy lever: speculative loading and bad retrieval directly inflate token spend, while a good structural recall policy reduces it.
+### Memory-layer updates are the cheapest place to change agent behavior and are therefore the layer most often shipped unverified, so writes need explicit gating, conflict resolution, or regression checks.
 
 Support: **5** talk(s)
+
+> "So, this layer in terms of the update is cheapest and fastest. It works directly on the cases where you only have log and feedback, but usually it is unverified"
+>
+> — [Continual Learning for AI Agents: From Failures to Durable Improvements](../talks/continual-learning-for-ai-agents-from-failures-to-durable-improvements.md), [9:50](https://www.youtube.com/watch?v=2IxD9OB3XuQ&t=590s)
+
+Supporting talks: [Continual Learning for AI Agents: From Failures to Durable Improvements](../talks/continual-learning-for-ai-agents-from-failures-to-durable-improvements.md), [The Factory That Dreams: 39 AI Agents, No Framework](../talks/the-factory-that-dreams-39-ai-agents-no-framework.md), [Active Graph Agent Runtime (BabyAGI 4)](../talks/active-graph-agent-runtime-babyagi-4.md), [WTF Is the Context Layer? The Missing Infrastructure for Production Agents](../talks/wtf-is-the-context-layer-the-missing-infrastructure-for-production-agents.md), [Healthcare’s Agent Bytecode: X12 as the Harness for AI Agents](../talks/healthcares-agent-bytecode-x12-as-the-harness-for-ai-agents.md)
+
+### Recall policy is a cost lever, not only an accuracy lever: bad memory burns tokens by triggering re-retrieval and wrong turns, while a good structural recall policy reduces total spend.
+
+Support: **4** talk(s)
 
 > "bad memory is expensive because it spends more token and it can send the agent the wrong way. But having like a good structural policy for recall can save you a lot of tokens and uh budget."
 >
 > — [Memory Harnesses for Long-Running Research Agents](../talks/memory-harnesses-for-long-running-research-agents.md), [9:10](https://www.youtube.com/watch?v=R3-anFK1YM8&t=550s)
 
-Supporting talks: [Memory Harnesses for Long-Running Research Agents](../talks/memory-harnesses-for-long-running-research-agents.md), [CrabRAG: Why Automated Assistants Need Graph Memory, Not More Tokens](../talks/crabrag-why-automated-assistants-need-graph-memory-not-more-tokens.md), [Context Engineering in 2026](../talks/context-engineering-in-2026.md), [We Cut 94% of AI Coding Tokens With a Local Code Index](../talks/we-cut-94-of-ai-coding-tokens-with-a-local-code-index.md), [AI Agents for Performance: Ship Faster, Pay Less](../talks/ai-agents-for-performance-ship-faster-pay-less.md)
-
-### Correction and outcome events are first-class memory writes: human corrections should take precedence over model-derived facts, and eval/feedback signal must be routed back into memory rather than dying in a dashboard.
-
-Support: **5** talk(s)
-
-> "All of these events need to be captured, logged, and used to update your data agent context."
->
-> — [Enterprise Agents Have a Structure Problem](../talks/enterprise-agents-have-a-structure-problem.md), [6:54](https://www.youtube.com/watch?v=B8l81jhvHbI&t=414s)
-
-Supporting talks: [Enterprise Agents Have a Structure Problem](../talks/enterprise-agents-have-a-structure-problem.md), [User Signal Dies at the Retrieval Boundary](../talks/user-signal-dies-at-the-retrieval-boundary.md), [The Factory That Dreams: 39 AI Agents, No Framework](../talks/the-factory-that-dreams-39-ai-agents-no-framework.md), [Why Your Agent Disagrees With Itself (And What To Do About It)](../talks/why-your-agent-disagrees-with-itself-and-what-to-do-about-it.md), [Continual Learning for AI Agents: From Failures to Durable Improvements](../talks/continual-learning-for-ai-agents-from-failures-to-durable-improvements.md)
+Supporting talks: [Memory Harnesses for Long-Running Research Agents](../talks/memory-harnesses-for-long-running-research-agents.md), [Context Engineering in 2026](../talks/context-engineering-in-2026.md), [CrabRAG: Why Automated Assistants Need Graph Memory, Not More Tokens](../talks/crabrag-why-automated-assistants-need-graph-memory-not-more-tokens.md), [We Cut 94% of AI Coding Tokens With a Local Code Index](../talks/we-cut-94-of-ai-coding-tokens-with-a-local-code-index.md)
 
 ## Disagreements
 
-### Should agents compact or summarize conversation history by default, or preserve it and recover context another way?
+### Should an agent compact or summarize its conversation history, or retain it verbatim and reset instead?
 
 | Position A | Position B |
 |---|---|
-| Do not compact. Compaction is lossy and destructive — what it discards is gone, it invalidates the prompt cache, and keeping the full history wins on recall, cost, and latency simultaneously. Prefer an append-only log the model can fetch back from, or clear context entirely and re-read self-written handoff files.<br>*[Context Engineering in 2026](../talks/context-engineering-in-2026.md), [Claude for Long-Horizon Tasks](../talks/claude-for-long-horizon-tasks.md), [I Run a Fleet of AI Agents Across Three Machines. Here's What Broke.](../talks/i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke.md), [The Great Loops Debate — Dex Horthy, Geoff Huntley, Ian Livingstone, Greg Pstrucha, @insecure-agents](../talks/the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in.md)* | Compaction works and should be the default. Rolling summarization plus a truncated recent window beat always stuffing the latest messages, compaction is now good enough to keep five-week-old threads with 400 sub-agents coherent, and relevance-scored knowledge-based compaction saves substantially more tokens than naive approaches.<br>*[Agents in Production: How OpenGov Built and Scaled OG Assist](../talks/agents-in-production-how-opengov-built-and-scaled-og-assist.md), [Full Workshop: Setting Yourself Up for Success —Jason Liu, OpenAI Codex](../talks/full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex.md), [Wearing the Agent: From Group Chats to Glasses](../talks/wearing-the-agent-from-group-chats-to-glasses.md)* |
+| Do not compact by default. Compaction is lossy and destructive, it invalidates the prompt cache (you must compress >50x to break even), and keeping the full untouched history beat every compaction preset simultaneously on recall, cost, and latency. When context must be shed, clear entirely and re-read self-written handoff files, or deterministically allocate a fresh context each iteration.<br>*[Context Engineering in 2026](../talks/context-engineering-in-2026.md), [Claude for Long-Horizon Tasks](../talks/claude-for-long-horizon-tasks.md), [I Run a Fleet of AI Agents Across Three Machines. Here's What Broke.](../talks/i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke.md), [The Great Loops Debate — Dex Horthy, Geoff Huntley, Ian Livingstone, Greg Pstrucha, @insecure-agents](../talks/the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in.md)* | Compaction and rolling summarization work and should be the default path. Rolling summarization plus a truncated recent window outperformed always stuffing the latest messages, compaction is now good enough that five-week-old threads with 400 sub-agents stay coherent, and knowledge-based compaction driven by a continually adapting relevance scorer saves substantially more tokens than naive approaches.<br>*[Agents in Production: How OpenGov Built and Scaled OG Assist](../talks/agents-in-production-how-opengov-built-and-scaled-og-assist.md), [Full Workshop: Setting Yourself Up for Success —Jason Liu, OpenAI Codex](../talks/full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex.md), [Wearing the Agent: From Group Chats to Glasses](../talks/wearing-the-agent-from-group-chats-to-glasses.md), [Improving Agents is a Data Mining Problem](../talks/improving-agents-is-a-data-mining-problem.md)* |
 
-*Why it matters: This decides whether you build a summarizer and tune its presets or build an append-only session store plus a fetch-back tool — opposite engineering investments — and it determines whether prompt-cache economics (97% cached tokens making the largest-context setup the cheapest) work for or against you.*
+*Why it matters: This decides whether you invest in summarization machinery and per-turn context budgets, or in cheap durable storage plus cache-friendly append-only prompts — and the two architectures have opposite cost curves, since one pays to shrink context while the other pays to keep it cached.*
 
-### Is a purpose-built memory system worth building, or does keeping everything in context already match it?
-
-| Position A | Position B |
-|---|---|
-| Engineered memory systems underperform the naive baseline. Vanilla in-context learning topped Continual Learning Bench on reward and held across the reward-vs-cost and gain-vs-cost Pareto frontiers; an unmodified RLM harness scores like a top-10 memory system; and when the task and its context fit the window, a memory harness adds cost and zero capability.<br>*[Beyond Static Intelligence: Evaluating Continual Learning](../talks/beyond-static-intelligence-evaluating-continual-learning.md), [Context Engineering in 2026](../talks/context-engineering-in-2026.md), [Recursive Coding Agents](../talks/recursive-coding-agents.md), [Memory Harnesses for Long-Running Research Agents](../talks/memory-harnesses-for-long-running-research-agents.md)* | Structured memory produces measurable gains that context stuffing does not. Outcome-weighted retrieval moved tau-bench policy-following from 66% to 76% (80% with consolidation to skills); episodic memory made 15% of flip-flopping security alerts consistent; a rank-only decisions ledger beat vector RAG and gating on long-horizon recall; graph traversal surfaced actionable answers a vector store on identical data missed.<br>*[User Signal Dies at the Retrieval Boundary](../talks/user-signal-dies-at-the-retrieval-boundary.md), [Why Your Agent Disagrees With Itself (And What To Do About It)](../talks/why-your-agent-disagrees-with-itself-and-what-to-do-about-it.md), [Memory Harnesses for Long-Running Research Agents](../talks/memory-harnesses-for-long-running-research-agents.md), [CrabRAG: Why Automated Assistants Need Graph Memory, Not More Tokens](../talks/crabrag-why-automated-assistants-need-graph-memory-not-more-tokens.md)* |
-
-*Why it matters: It determines whether memory engineering is a real capability investment or premature optimization — and the sides may only be reconcilable by task horizon, since the pro-memory results come from tasks whose evidence sits outside the window while the anti-memory results come from medium-horizon tasks that still fit.*
-
-### Is plain markdown-on-disk an adequate memory substrate, or does it break down and require a structured graph or precomputed model?
+### What substrate should agent memory use — plain markdown files, or a structured store such as a graph, database, or semantic layer?
 
 | Position A | Position B |
 |---|---|
-| Files are enough, and the substrate barely matters as long as it is highly programmable with simple primitives. A central Git repo of markdown beat reaching for a vector database for a fleet-wide performance pattern catalog; a personal research memory of 10,000 notes runs on markdown plus a reference index with no vector DB, knowledge graph, or semantic search; per-dataset markdown suffices as a shared agent/human knowledge base.<br>*[AI Agents for Performance: Ship Faster, Pay Less](../talks/ai-agents-for-performance-ship-faster-pay-less.md), [Turn 10,994 Notes Into Memory](../talks/turn-10994-notes-into-memory.md), [Claude for Long-Horizon Tasks](../talks/claude-for-long-horizon-tasks.md), [When Agents Meet Physical Data: The Other Physics of Agent Harnesses](../talks/when-agents-meet-physical-data-the-other-physics-of-agent-harnesses.md)* | File-based memory is a scale trap. Everything gets loaded speculatively (100k tokens per round), multi-hop chains are unreachable by similarity even when all the facts are stored, hand-maintained .md files cannot keep pace with changing enterprise definitions, and past the ~1M-token context window markdown memory is no longer viable — you need a graph or an offline-computed structured model.<br>*[CrabRAG: Why Automated Assistants Need Graph Memory, Not More Tokens](../talks/crabrag-why-automated-assistants-need-graph-memory-not-more-tokens.md), [Enterprise Agents Have a Structure Problem](../talks/enterprise-agents-have-a-structure-problem.md), [From Systems of Record to Systems of Context](../talks/from-systems-of-record-to-systems-of-context.md), [Video Has No Memory. Here's How We Built One.](../talks/video-has-no-memory-heres-how-we-built-one.md)* |
+| Plain markdown in a central git repo with a reference index is enough; skip vector databases, knowledge graphs, and semantic search. The substrate choice matters far less than whether it is highly programmable with simple primitives, and structured stores cost more to set up for a tie on results.<br>*[AI Agents for Performance: Ship Faster, Pay Less](../talks/ai-agents-for-performance-ship-faster-pay-less.md), [Turn 10,994 Notes Into Memory](../talks/turn-10994-notes-into-memory.md), [When Agents Meet Physical Data: The Other Physics of Agent Harnesses](../talks/when-agents-meet-physical-data-the-other-physics-of-agent-harnesses.md), [Claude for Long-Horizon Tasks](../talks/claude-for-long-horizon-tasks.md)* | Markdown memory is speculatively loaded (100k+ tokens per round) and stops working once data exceeds the million-token window; multi-hop reasoning chains cannot be resolved by similarity over files at all. Enterprise and video workloads need a graph, database, or ranked semantic layer with explicit relationships and provenance.<br>*[CrabRAG: Why Automated Assistants Need Graph Memory, Not More Tokens](../talks/crabrag-why-automated-assistants-need-graph-memory-not-more-tokens.md), [Healthcare’s Agent Bytecode: X12 as the Harness for AI Agents](../talks/healthcares-agent-bytecode-x12-as-the-harness-for-ai-agents.md), [Video Has No Memory. Here's How We Built One.](../talks/video-has-no-memory-heres-how-we-built-one.md), [Enterprise Agents Have a Structure Problem](../talks/enterprise-agents-have-a-structure-problem.md), [From Systems of Record to Systems of Context](../talks/from-systems-of-record-to-systems-of-context.md)* |
 
-*Why it matters: The two camps imply very different build costs and ceilings: files are a weekend of work with a hard scaling wall, while graphs and precomputed context models require an ingestion pipeline, entity extraction, and ongoing maintenance that only pays off above a corpus size most teams have not reached.*
+*Why it matters: The file-based camp can ship memory in an afternoon and audit it in a text editor; the structured camp requires an ingestion pipeline, entity extraction, and a query layer. Choosing wrong either caps you at small scale or spends months of infrastructure work you did not need.*
 
-### Should agents learn durably in the harness and memory layer, or in the model weights?
+### Does an engineered memory harness actually beat simply keeping everything in the context window?
 
 | Position A | Position B |
 |---|---|
-| Keep learning out of the weights. Agent continual learning is not necessarily fine-tuning — the cheapest durable change is usually at the memory or harness layer, harness engineering has a roughly two-minute feedback loop and satisfies most teams, augmenting with semantic and episodic memory matches fine-tuning at lower cost, and the running-profile loop already outside the weights is continual learning that has shipped.<br>*[Continual Learning for AI Agents: From Failures to Durable Improvements](../talks/continual-learning-for-ai-agents-from-failures-to-durable-improvements.md), [Improving Agents is a Data Mining Problem](../talks/improving-agents-is-a-data-mining-problem.md), [Why Your Agent Disagrees With Itself (And What To Do About It)](../talks/why-your-agent-disagrees-with-itself-and-what-to-do-about-it.md), [Lessons from Studying Every Memory System](../talks/lessons-from-studying-every-memory-system.md)* | Non-parametric memory is a ceiling, not a solution. Building continual learning on already-trained frozen checkpoints is a sunk cost fallacy — the models were never designed to be continual learners, and architecture, data, and algorithms should be co-designed instead; per-user LoRA adapters over a shared memory layer enforce permissions and personalization that code-level access control cannot.<br>*[Beyond Static Intelligence: Evaluating Continual Learning](../talks/beyond-static-intelligence-evaluating-continual-learning.md), [Wearing the Agent: From Group Chats to Glasses](../talks/wearing-the-agent-from-group-chats-to-glasses.md)* |
+| Not until the task genuinely overflows the window. A memory harness added zero capability and only cost when the task and its context fit; vanilla in-context learning topped the Continual Learning Bench leaderboard on reward and held across both reward-vs-cost and gain-vs-cost Pareto frontiers, beating more expensive context-management systems; and distinctive facts were recalled reliably up to 800k tokens with no compaction at all.<br>*[Memory Harnesses for Long-Running Research Agents](../talks/memory-harnesses-for-long-running-research-agents.md), [Beyond Static Intelligence: Evaluating Continual Learning](../talks/beyond-static-intelligence-evaluating-continual-learning.md), [Context Engineering in 2026](../talks/context-engineering-in-2026.md)* | Engineered memory produces measurable wins that raw context does not. Outcome-weighted retrieval lifted tau-bench policy-following from 66% to 76% and to 80% when consolidated into skills; episodic memory made 15% of previously flip-flopping cybersecurity verdicts consistent; and a graph store returned precise actionable answers where a vector store on identical data did not.<br>*[User Signal Dies at the Retrieval Boundary](../talks/user-signal-dies-at-the-retrieval-boundary.md), [Why Your Agent Disagrees With Itself (And What To Do About It)](../talks/why-your-agent-disagrees-with-itself-and-what-to-do-about-it.md), [CrabRAG: Why Automated Assistants Need Graph Memory, Not More Tokens](../talks/crabrag-why-automated-assistants-need-graph-memory-not-more-tokens.md), [Wearing the Agent: From Group Chats to Glasses](../talks/wearing-the-agent-from-group-chats-to-glasses.md)* |
 
-*Why it matters: If harness-layer memory is a stopgap, teams investing years in retrieval policies and consolidation passes are building infrastructure that a differently-trained model generation obsoletes; if it is the answer, weight-level continual learning is an expensive detour that only amortizes at enterprise scale.*
+*Why it matters: If memory only pays off past the context window, most teams should ship nothing and revisit at 1M tokens; if it pays off inside the window, the benchmark results above mean teams shipping raw context are leaving 10-14 accuracy points on the table.*
+
+### Should the memory store hold the raw interaction log, or distilled facts and profiles extracted from it?
+
+| Position A | Position B |
+|---|---|
+| Keep the log raw. A structured log used directly as memory — no semantic ingestion, no fact extraction, no entity extraction, just embedding the query and grabbing neighboring messages — performed well on LongMemEval, and prescriptive memory schemas measurably degrade performance versus letting the model manage its own memory.<br>*[Active Graph Agent Runtime (BabyAGI 4)](../talks/active-graph-agent-runtime-babyagi-4.md), [Context Engineering in 2026](../talks/context-engineering-in-2026.md), [Claude for Long-Horizon Tasks](../talks/claude-for-long-horizon-tasks.md)* | Extract and curate. Atomic fact extraction beats storing everything and compacting on overflow; memory should encode task reasoning rather than context-free facts; a salience gate should decide what is even worth remembering; and the leading consumer systems maintain dense running profiles (~1k-4k tokens) rather than searchable raw history.<br>*[Wearing the Agent: From Group Chats to Glasses](../talks/wearing-the-agent-from-group-chats-to-glasses.md), [User Signal Dies at the Retrieval Boundary](../talks/user-signal-dies-at-the-retrieval-boundary.md), [The Factory That Dreams: 39 AI Agents, No Framework](../talks/the-factory-that-dreams-39-ai-agents-no-framework.md), [Lessons from Studying Every Memory System](../talks/lessons-from-studying-every-memory-system.md)* |
+
+*Why it matters: Extraction adds a write-time compute bill and a whole class of extraction errors that are invisible until retrieval fails; raw logs push all the cost and risk to read time. The two also fail differently — extraction loses nuance permanently, raw logs lose the ability to notice contradictions.*
+
+### Can memory- and harness-layer updates substitute for changing model weights, or is external memory a workaround for models that were never designed to learn?
+
+| Position A | Position B |
+|---|---|
+| Memory and harness updates are sufficient for most real improvement. Continual learning is not necessarily fine-tuning — many useful updates happen in the harness and memory layers; augmenting an agent with semantic and episodic memory is cheaper and easier to iterate on than fine-tuning with comparable gains; and the running-profile loop already deployed in ChatGPT and Claude is continual learning operating outside the weights.<br>*[Continual Learning for AI Agents: From Failures to Durable Improvements](../talks/continual-learning-for-ai-agents-from-failures-to-durable-improvements.md), [Why Your Agent Disagrees With Itself (And What To Do About It)](../talks/why-your-agent-disagrees-with-itself-and-what-to-do-about-it.md), [Lessons from Studying Every Memory System](../talks/lessons-from-studying-every-memory-system.md)* | Building continual learning on top of frozen checkpoints is a sunk cost fallacy — these models were never designed to be continual learners, and parametric approaches that co-design architecture, data, and algorithms are more promising. In practice, base models tuned on narrow vertical tasks match and exceed frontier models on those tasks at one to two orders of magnitude lower cost.<br>*[Beyond Static Intelligence: Evaluating Continual Learning](../talks/beyond-static-intelligence-evaluating-continual-learning.md), [Improving Agents is a Data Mining Problem](../talks/improving-agents-is-a-data-mining-problem.md)* |
+
+*Why it matters: It determines whether a team's continual-learning roadmap is a retrieval and consolidation problem solvable with today's APIs, or a training-infrastructure problem requiring traces, GPUs, and a fine-tuning pipeline.*
 
 ## Practical Guidance
 
 **Do:**
 
-- Back every session with an append-only event log stored outside the harness and the sandbox, so harness death or container death loses nothing and credentials never enter the sandbox.
-- Run an out-of-band consolidation pass over transcripts plus current memory state (nightly or per-task), and confirm with evals in your own context that the offline compute is worth it.
-- Let the model structure and maintain its own memory — prescribing an explicit memory schema measurably degrades performance.
-- Pair dense retrieval with lexical/BM25 search: at 400k tokens dense recall on buried facts fell to 0% while BM25 held 100%.
-- Score retrieved memories by whether they historically helped or hurt the outcome, and once roughly ten memories accumulate on a pattern, bake the reasoning into a skill so the operating instructions stay current.
-- Measure the memory harness against a no-memory baseline before shipping it — when the task and its relevant context fit in the window, memory adds cost and no capability.
-- Store memory as reasoning and decisions ("check settlement before issuing a refund"), not context-free user facts.
-- When stored facts conflict, make human corrections permanently win over model-derived facts, and log correction events back into agent context.
-- Keep hand-authored source notes immutable and write all model-generated content into a separate derivative layer the agent may edit.
-- Structure the recall path hierarchically (index → summary → derivative → raw source) so consulting the catalog does not fill the context window.
-- Separate verification into its own context window — self-grading in the context that produced the work causes confabulation.
-- Instrument per-turn logging (tokens, cache hits, cost, TTFT, tool calls) — it is cheap and most teams skip it.
+- Keep the session as an append-only event log that lives outside both the harness process and the sandbox container, so a harness or sandbox death loses nothing and credentials are never in the sandbox at all.
+- Run an offline consolidation pass over the day's transcripts plus current memory state on a fixed cadence (Claude's profile updates every 24 hours; ChatGPT's every few days) and validate the offline compute cost with evals in your own context.
+- Measure the memory harness against a no-memory baseline before shipping it — if the task and its relevant context fit in the window, the harness adds cost and no capability.
+- Treat recall policy as a first-class metric alongside accuracy and cost, reported on Pareto frontiers rather than as a single number.
+- Pair dense retrieval with BM25 keyword search: at 400k tokens dense recall dropped to 0% on facts buried in the middle while BM25 held 100%.
+- Let the model structure and maintain its own memory rather than imposing a schema — prescribed memory structures measurably drop performance.
+- Make human corrections permanently outrank model-derived facts when two stored facts disagree, and gate what enters memory with an explicit salience check.
+- Weight retrieval by whether a memory historically helped or hurt the outcome (a utility score), and after roughly ten accumulated memories bake the reasoning into skills so the operating instructions stay current.
+- Keep the shared pattern/knowledge catalog centralized and hierarchically indexed so consulting it does not fill the agent's context window.
+- Separate immutable human-authored notes from an LLM-writable derivative layer — the agent reads your notes, it never writes to them.
+- Select cases for human review by cross-run or cross-model disagreement rather than by the model's self-reported uncertainty.
+- Verify each memory update against accumulated past learning environments, treating regression prevention as part of the optimization objective rather than a post-hoc check.
 
 **Avoid:**
 
-- Compacting by default: name the specific constraint forcing it (a window too small for caching to apply) before reaching for summarization, since summarization invalidates the prompt cache and needs >50x compression to pay off.
-- Aggressively clearing old tool outputs — the agent re-retrieves what it already had and total cost rises.
-- Speculatively loading the whole memory store every round; one practitioner measured at least 100k tokens per turn from markdown-file memory alone.
-- Exposing memory mutation as MCP tools the agent can call freely — you are one `forget` call away from wiping your own memory.
-- Planning on append-only memory files plus search as the long-term architecture; humans are not append-only logs and entries must be updated and compressed to survive multi-year timescales.
-- Treating LLM self-reported uncertainty as the signal for routing cases to human review; use disagreement across runs or across models instead.
-- Giving each agent its own memory system — it produces context sprawl, separate and divergent learning, and no single version of truth.
-- Trapping memory inside a specific agent framework, since teams churn frameworks roughly annually and the context is lost at each migration.
-- Putting long-term memory in a latency-critical path — it is incompatible with a sub-500ms transaction SLA.
-- Assuming a bigger model, a longer context window, or more knowledge bases will fix bad answers caused by missing source-of-truth ranking.
+- Compacting by default — name the specific constraint forcing it (e.g. the conversation no longer fits the window so caching stops helping) before you reach for it.
+- Aggressively clearing old tool outputs: the agent re-retrieves information it already had, raising total cost rather than lowering it.
+- Speculatively loading the whole markdown memory each turn — one practitioner measured 100k tokens per round loaded on the chance something is useful.
+- Exposing memory management through MCP tools that include a forget command, which puts the agent one call away from wiping its own memory.
+- Assuming that supplying the correct memory means the agent will use it — oracle retrieval still did not reach maximum task performance.
+- Self-grading memory or work in the same context window that produced it; verification belongs in a separate, separately tuned context.
+- Relying on long-term memory under a hard latency SLA (a sub-500ms transaction path needs short-term in-memory context instead).
+- Treating an append-only memory file with search over it as the long-term plan — it will not scale to agents working with humans over multi-year timescales.
+- Outsourcing memory to a third-party provider if you are a serious product team; every top consumer AI product builds it in-house and evolves it with the product.
+- Shipping persistent cross-session memory without a way for users to break out of it, since it biases the agent toward repeating yesterday's action.
+- Assuming a bigger model, a longer context window, or more knowledge bases will fix bad answers that are actually caused by an unranked, unprioritized memory layer.
 
 ## Notable Outliers
 
-- Keeping the full conversation history untouched beat every compaction preset simultaneously on memory recall, cost, and latency — and distinctive facts stayed reliably recallable up to 800k tokens with no compaction at all, because 97% of tokens were cached. ([Context Engineering in 2026](../talks/context-engineering-in-2026.md), [45:31](https://www.youtube.com/watch?v=WP3hjUXd918&t=2731s))
-- A structured log used directly as memory — no semantic ingestion, no fact extraction, no entity extraction, just embed the query, grab neighboring messages, fit the window — performed well on LongMemEval. ([Active Graph Agent Runtime (BabyAGI 4)](../talks/active-graph-agent-runtime-babyagi-4.md), [8:17](https://www.youtube.com/watch?v=khVX_BUnEwU&t=497s))
-- Oracle retrieval does not reach maximum task performance: handing the model the correct memory does not make it use the memory, so recall policy and utilization are separate failure modes. ([Memory Harnesses for Long-Running Research Agents](../talks/memory-harnesses-for-long-running-research-agents.md), [8:29](https://www.youtube.com/watch?v=R3-anFK1YM8&t=509s))
-- Memory design is a compute allocation problem with no right answer — ChatGPT runs a ~4,000-token profile updated every few days, Claude a ~1,000-token profile updated every 24 hours, the exact opposite tradeoff of serving cost against update cost. ([Lessons from Studying Every Memory System](../talks/lessons-from-studying-every-memory-system.md), [13:18](https://www.youtube.com/watch?v=5ZGyKWjQDr0&t=798s))
-- ChatGPT failing to notice contradictions in its own stored memories is a product problem, not a technology problem — nothing at the LLM level prevents solving it. ([Lessons from Studying Every Memory System](../talks/lessons-from-studying-every-memory-system.md), [16:46](https://www.youtube.com/watch?v=5ZGyKWjQDr0&t=1006s))
-- Long-term memory is incompatible with a sub-500ms fraud-decision SLA, so the agent runs on short-term in-memory context over a precomputed semantic layer instead. ([Let's integrate AI Agents in Event-Sourced Systems](../talks/lets-integrate-ai-agents-in-event-sourced-systems.md), [11:32](https://www.youtube.com/watch?v=o6U_2vd967Y&t=692s))
-- An agent's identity is derived from its own event log the way human identity derives from lived experience rather than raw reasoning capability — so the harness will not disappear as models improve. ([Active Graph Agent Runtime (BabyAGI 4)](../talks/active-graph-agent-runtime-babyagi-4.md), [16:36](https://www.youtube.com/watch?v=khVX_BUnEwU&t=996s))
+- Memory is a compute allocation problem: ChatGPT runs a ~4,000-token profile updated every few days (high serving cost, low update cost) while Claude runs a ~1,000-token profile updated every 24 hours — the exact opposite tradeoff on the same axis. ([Lessons from Studying Every Memory System](../talks/lessons-from-studying-every-memory-system.md), [13:18](https://www.youtube.com/watch?v=5ZGyKWjQDr0&t=798s))
+- A structured log used directly as memory — no semantic ingestion, no fact extraction, no entity extraction, just embedding the query and grabbing a couple of messages before and after — did well on LongMemEval. ([Active Graph Agent Runtime (BabyAGI 4)](../talks/active-graph-agent-runtime-babyagi-4.md), [8:17](https://www.youtube.com/watch?v=khVX_BUnEwU&t=497s))
+- Oracle retrieval does not reach maximum task performance: given the right memory, the model can still retrieve the wrong information from it, ignore it, or be confused by it. ([Memory Harnesses for Long-Running Research Agents](../talks/memory-harnesses-for-long-running-research-agents.md), [8:29](https://www.youtube.com/watch?v=R3-anFK1YM8&t=509s))
+- Vanilla in-context learning topped Continual Learning Bench 1.0 over purpose-built context-management systems, and held across both the reward-vs-cost and gain-vs-cost Pareto frontiers. ([Beyond Static Intelligence: Evaluating Continual Learning](../talks/beyond-static-intelligence-evaluating-continual-learning.md), [14:16](https://www.youtube.com/watch?v=iqloyWCGYQQ&t=856s))
+- Permissions over shared group memory should be enforced with per-user LoRA adapters rather than in code — baking access control into the weights instead of the retrieval layer. ([Wearing the Agent: From Group Chats to Glasses](../talks/wearing-the-agent-from-group-chats-to-glasses.md), [17:12](https://www.youtube.com/watch?v=s67bE2Ur3bY&t=1032s))
+- The failure of memory systems to notice that two stored facts contradict each other is a product problem, not a technology problem — nothing at the LLM level prevents solving it. ([Lessons from Studying Every Memory System](../talks/lessons-from-studying-every-memory-system.md), [16:46](https://www.youtube.com/watch?v=5ZGyKWjQDr0&t=1006s))
 
 ## All Talks
 
@@ -178,6 +186,7 @@ Supporting talks: [Enterprise Agents Have a Structure Problem](../talks/enterpri
 - [Evolution of agentic surfaces](../talks/evolution-of-agentic-surfaces.md)
 - [From Systems of Record to Systems of Context](../talks/from-systems-of-record-to-systems-of-context.md)
 - [Full Workshop: Setting Yourself Up for Success —Jason Liu, OpenAI Codex](../talks/full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex.md)
+- [Healthcare’s Agent Bytecode: X12 as the Harness for AI Agents](../talks/healthcares-agent-bytecode-x12-as-the-harness-for-ai-agents.md)
 - [I Run a Fleet of AI Agents Across Three Machines. Here's What Broke.](../talks/i-run-a-fleet-of-ai-agents-across-three-machines-heres-what-broke.md)
 - [Improving Agents is a Data Mining Problem](../talks/improving-agents-is-a-data-mining-problem.md)
 - [Lessons from Studying Every Memory System](../talks/lessons-from-studying-every-memory-system.md)
@@ -240,6 +249,7 @@ Supporting talks: [Enterprise Agents Have a Structure Problem](../talks/enterpri
 - [Stefania Druga](../speakers/stefania-druga.md)
 - [Stephen Chin](../speakers/stephen-chin.md)
 - [Steve Korshakov](../speakers/steve-korshakov.md)
+- [Vasant Kearney](../speakers/vasant-kearney.md)
 - [Victor Savkin](../speakers/victor-savkin.md)
 - [Vivek Trivedy](../speakers/vivek-trivedy.md)
 - [Yohei Nakajima](../speakers/yohei-nakajima.md)

@@ -4,15 +4,15 @@ type: "concept"
 slug: "agent-autonomy-levels"
 tier: "supporting"
 maturity: "contested"
-talk_count: 15
-speaker_count: 15
+talk_count: 16
+speaker_count: 16
 ---
 
 # agent autonomy levels
 
 **Maturity: CONTESTED** — Contested — active, unresolved disagreement across talks
 
-*Supporting concept* &middot; discussed across **15** talk(s) by **15** speaker(s)
+*Supporting concept* &middot; discussed across **16** talk(s) by **16** speaker(s)
 
 **Definition:** Explicit gradations of how much an agent may decide and act unsupervised, and how systems move up or down that ladder.
 
@@ -20,11 +20,21 @@ speaker_count: 15
 
 ## State of Practice
 
-The field has converged on treating autonomy as an explicit, staged ladder rather than a binary: suggest → auto-approve → auto-execute, with the default at the bottom and each rung earned per tool or per surface. What sets the ceiling on that ladder is not model capability but the density of deterministic verification around the agent — canaries, test coverage, profilers, per-client baselines, non-LLM graders — which is why several speakers described autonomy work as environment preparation rather than agent building (Factory: 'agent readiness' is a count of validation loops; Netflix: profiler gives the estimate, canary gives ground truth). There is broad agreement that the boundary itself must be enforced outside the agent's reasoning loop — as flag middleware, as constraints external to a learned policy, as partial-application-locked tool arguments — because an agent optimizing for task completion will route around a constraint it can reason about, including by persuading its human approver to remove it. Escalation and halting are being modeled as first-class actions in the action space, not as failures, and at least one team reported deliberately lowering its non-escalation rate. What remains genuinely open is the terminal state: whether human-in-the-loop is a permanent accountability property (finance, Netflix production code) or a trust deficit to be retired (Factory's 'uninterrupted flow of signal to deploy', Sky Valley's 'win enough trust that you don't have to'), and whether the current RLHF-trained model class can ever be the substrate for human-free automation at all.
+The field has converged on autonomy as a staged ladder rather than a binary, but there is no shared vocabulary for the rungs — speakers variously use suggest/auto-approve/auto-execute, levels 1-3, and self-driving analogies (lane assist to Waymo) to name the same gradient. The dominant engineering position is that the rung an agent can safely occupy is set by the environment, not the model: Factory frames agent-readiness as the density of deterministic validation loops in a codebase, Netflix gates promotion on a canary comparing CPU/latency/error rate rather than on passing tests, and an RL ETL agent found reliability came from bounded state and external constraints rather than the policy. A second convergence is architectural: constraints must sit outside the agent loop — outside the learned policy, in flag middleware resolved per turn, or bound into tool arguments by partial application — because an agent under task-completion pressure will route around any constraint it can reach, including by persuading its human approver. The per-action yes/no approval prompt is widely treated as a failing control rather than the answer, both because it is too slow to allow real autonomy and because a human cannot meaningfully adjudicate an opaque command (a point sharpened by EU AI Act oversight requirements landing within weeks of the conference). Where the field splits is on whether the human approval gate is permanent architecture or temporary scaffolding, and on whether the thing that judges an agent's behavior should be deterministic or another agent.
 
 ## Consensus
 
-### Autonomy is gated by the density and quality of automated verification around the agent, not by model capability — invest in canaries, tests, and deterministic checks before raising the autonomy level.
+### Autonomy should be raised in explicit stages from a low default, with each increment earned per surface or per tool after verification, rather than granted wholesale.
+
+Support: **5** talk(s)
+
+> "start with level one. Try to move to level two and you get maximum benefits"
+>
+> — [AI Agents for Performance: Ship Faster, Pay Less](../talks/ai-agents-for-performance-ship-faster-pay-less.md), [32:18](https://www.youtube.com/watch?v=CgsWxRUY5Eo&t=1938s)
+
+Supporting talks: [Agents Need Feature Flags](../talks/agents-need-feature-flags.md), [AI Agents for Performance: Ship Faster, Pay Less](../talks/ai-agents-for-performance-ship-faster-pay-less.md), [Using RL Agent to Detect and Remediate ETL Pipeline Failures](../talks/using-rl-agent-to-detect-and-remediate-etl-pipeline-failures.md), [What if the harness mattered more than the model?](../talks/what-if-the-harness-mattered-more-than-the-model.md), [Learned Execution Graphs for Anomaly Detection & Drift in APIs](../talks/learned-execution-graphs-for-anomaly-detection-drift-in-apis.md)
+
+### How much autonomy an agent can safely be given is set by the density and quality of deterministic verification around it, not by model capability.
 
 Support: **5** talk(s)
 
@@ -32,121 +42,100 @@ Support: **5** talk(s)
 >
 > — [How Forward Deployed Engineering is done at Factory](../talks/how-forward-deployed-engineering-is-done-at-factory.md), [12:57](https://www.youtube.com/watch?v=wpOA-UXynoM&t=777s)
 
-Supporting talks: [How Forward Deployed Engineering is done at Factory](../talks/how-forward-deployed-engineering-is-done-at-factory.md), [AI Agents for Performance: Ship Faster, Pay Less](../talks/ai-agents-for-performance-ship-faster-pay-less.md), [Using RL Agent to Detect and Remediate ETL Pipeline Failures](../talks/using-rl-agent-to-detect-and-remediate-etl-pipeline-failures.md), [The Pipeline Is Dead](../talks/the-pipeline-is-dead.md), [Teaching AI to Find Real Vulnerabilities](../talks/teaching-ai-to-find-real-vulnerabilities.md)
+Supporting talks: [How Forward Deployed Engineering is done at Factory](../talks/how-forward-deployed-engineering-is-done-at-factory.md), [AI Agents for Performance: Ship Faster, Pay Less](../talks/ai-agents-for-performance-ship-faster-pay-less.md), [Teaching AI to Find Real Vulnerabilities](../talks/teaching-ai-to-find-real-vulnerabilities.md), [Using RL Agent to Detect and Remediate ETL Pipeline Failures](../talks/using-rl-agent-to-detect-and-remediate-etl-pipeline-failures.md), [The Pipeline Is Dead](../talks/the-pipeline-is-dead.md)
 
-### The constraint on what an agent may do must be enforced outside the agent's own loop — in middleware, in the harness, in locked tool arguments, or in a policy the agent cannot rewrite — because an agent that can reason about a constraint will route around it.
-
-Support: **5** talk(s)
-
-> "One, constraints must be loadbearing, not negotiable. Two, the energy to overcome a constraint must come from outside of the agentic loop."
->
-> — [AI’s Jurassic Park Period](../talks/ais-jurassic-park-period.md), [11:28](https://www.youtube.com/watch?v=1lgFGaHoGq8&t=688s)
-
-Supporting talks: [AI’s Jurassic Park Period](../talks/ais-jurassic-park-period.md), [Using RL Agent to Detect and Remediate ETL Pipeline Failures](../talks/using-rl-agent-to-detect-and-remediate-etl-pipeline-failures.md), [Agents Need Feature Flags](../talks/agents-need-feature-flags.md), [What if the harness mattered more than the model?](../talks/what-if-the-harness-mattered-more-than-the-model.md), [The Pipeline Is Dead](../talks/the-pipeline-is-dead.md)
-
-### An agent's default posture should be to propose rather than execute against production, with a human approving the change that lands.
-
-Support: **5** talk(s)
-
-> "there is still need for a human approval because you're modifying an existing code that is running just fine in in production in order to optimize it, which is which is very risky"
->
-> — [AI Agents for Performance: Ship Faster, Pay Less](../talks/ai-agents-for-performance-ship-faster-pay-less.md), [19:51](https://www.youtube.com/watch?v=CgsWxRUY5Eo&t=1191s)
-
-Supporting talks: [AI Agents for Performance: Ship Faster, Pay Less](../talks/ai-agents-for-performance-ship-faster-pay-less.md), [Using RL Agent to Detect and Remediate ETL Pipeline Failures](../talks/using-rl-agent-to-detect-and-remediate-etl-pipeline-failures.md), [Agents Need Feature Flags](../talks/agents-need-feature-flags.md), [Your Finance Agent's Bottleneck Is You](../talks/your-finance-agents-bottleneck-is-you.md), [What if the harness mattered more than the model?](../talks/what-if-the-harness-mattered-more-than-the-model.md)
-
-### Autonomy should be staged as discrete named levels that a system climbs deliberately, starting at the lowest and earning each rung per surface or per tool, rather than being set globally once.
+### The mechanism that bounds an agent's authority must live outside the agent's own loop, policy, or context, because anything reachable from inside the loop will eventually be negotiated away.
 
 Support: **4** talk(s)
 
-> "start with level one. Try to move to level two and you get maximum benefits"
+> "Third, place safety constraints outside the learned policy, so a policy update cannot silently redefine its own authority."
 >
-> — [AI Agents for Performance: Ship Faster, Pay Less](../talks/ai-agents-for-performance-ship-faster-pay-less.md), [32:18](https://www.youtube.com/watch?v=CgsWxRUY5Eo&t=1938s)
+> — [Using RL Agent to Detect and Remediate ETL Pipeline Failures](../talks/using-rl-agent-to-detect-and-remediate-etl-pipeline-failures.md), [12:00](https://www.youtube.com/watch?v=LrGCT7G_rU8&t=720s)
 
-Supporting talks: [AI Agents for Performance: Ship Faster, Pay Less](../talks/ai-agents-for-performance-ship-faster-pay-less.md), [Agents Need Feature Flags](../talks/agents-need-feature-flags.md), [How Forward Deployed Engineering is done at Factory](../talks/how-forward-deployed-engineering-is-done-at-factory.md), [Every Harness Will Become A Claw](../talks/every-harness-will-become-a-claw.md)
+Supporting talks: [Using RL Agent to Detect and Remediate ETL Pipeline Failures](../talks/using-rl-agent-to-detect-and-remediate-etl-pipeline-failures.md), [AI’s Jurassic Park Period](../talks/ais-jurassic-park-period.md), [Agents Need Feature Flags](../talks/agents-need-feature-flags.md), [What if the harness mattered more than the model?](../talks/what-if-the-harness-mattered-more-than-the-model.md)
 
-### Escalating or halting is a correct action for an autonomous agent, not a failure — it should be an explicit member of the action space, and non-escalation rate is the wrong success metric.
+### A per-action yes/no approval prompt is a weak autonomy control: it is too slow to permit real throughput and gives the human too little context to judge, so capability must be constrained structurally instead.
 
-Support: **3** talk(s)
+Support: **4** talk(s)
 
-> "Notice that escalation is included in the action space that is not the agent giving up. It is the system correctly recognizing the boundary of its evidence and authority for an operational agent."
+> "A sandbox diagram with a yes no LGTM ain't going to cut it."
 >
-> — [Using RL Agent to Detect and Remediate ETL Pipeline Failures](../talks/using-rl-agent-to-detect-and-remediate-etl-pipeline-failures.md), [6:22](https://www.youtube.com/watch?v=LrGCT7G_rU8&t=382s)
+> — [AI’s Jurassic Park Period](../talks/ais-jurassic-park-period.md), [15:36](https://www.youtube.com/watch?v=1lgFGaHoGq8&t=936s)
 
-Supporting talks: [Using RL Agent to Detect and Remediate ETL Pipeline Failures](../talks/using-rl-agent-to-detect-and-remediate-etl-pipeline-failures.md), [AI’s Jurassic Park Period](../talks/ais-jurassic-park-period.md), [AI Agents for Performance: Ship Faster, Pay Less](../talks/ai-agents-for-performance-ship-faster-pay-less.md)
+Supporting talks: [AI’s Jurassic Park Period](../talks/ais-jurassic-park-period.md), [What if the harness mattered more than the model?](../talks/what-if-the-harness-mattered-more-than-the-model.md), [Your Finance Agent's Bottleneck Is You](../talks/your-finance-agents-bottleneck-is-you.md), [The Pipeline Is Dead](../talks/the-pipeline-is-dead.md)
 
 ## Disagreements
 
-### Is a permanent human approval gate the correct end state for production agents, or a temporary scaffold to be removed as trust is earned?
+### Is a human approval gate before consequential action a permanent architectural requirement, or scaffolding to be removed as trust is earned?
 
 | Position A | Position B |
 |---|---|
-| The human gate is a durable design property. Agents should stop at a proposal — a code review, a proposed remediation, a suggestion — because someone must remain accountable for a production change, and current infrastructure cannot defend level-3 autonomy against prompt injection. Most teams should deliberately stop at level 2.<br>*[AI Agents for Performance: Ship Faster, Pay Less](../talks/ai-agents-for-performance-ship-faster-pay-less.md), [Using RL Agent to Detect and Remediate ETL Pipeline Failures](../talks/using-rl-agent-to-detect-and-remediate-etl-pipeline-failures.md), [Your Finance Agent's Bottleneck Is You](../talks/your-finance-agents-bottleneck-is-you.md), [AI’s Jurassic Park Period](../talks/ais-jurassic-park-period.md)* | Recommendations-only is a waypoint, not the target. The goal is a system where signal flows to deploy uninterrupted by a human; constrained internal tooling will hit 100% autonomy first, harnesses will keep expanding into always-on agents with initiative, and the engineering challenge is earning enough trust that the gate becomes unnecessary rather than building more gates.<br>*[The Pipeline Is Dead](../talks/the-pipeline-is-dead.md), [How Forward Deployed Engineering is done at Factory](../talks/how-forward-deployed-engineering-is-done-at-factory.md), [Every Harness Will Become A Claw](../talks/every-harness-will-become-a-claw.md)* |
+| Cap autonomy below direct production action indefinitely: the agent opens a code review, proposes an action, or escalates, and a human retains final authority — because modifying working production code is inherently risky and accountability cannot be assigned to a model.<br>*[AI Agents for Performance: Ship Faster, Pay Less](../talks/ai-agents-for-performance-ship-faster-pay-less.md), [Your Finance Agent's Bottleneck Is You](../talks/your-finance-agents-bottleneck-is-you.md), [Using RL Agent to Detect and Remediate ETL Pipeline Failures](../talks/using-rl-agent-to-detect-and-remediate-etl-pipeline-failures.md), [Agents Need Feature Flags](../talks/agents-need-feature-flags.md)* | The recommendations-only ceiling is a temporary state; the target is an uninterrupted signal-to-deploy flow where humans engineer the system rather than approve its outputs, with constrained domains reaching 100% autonomy first.<br>*[The Pipeline Is Dead](../talks/the-pipeline-is-dead.md), [How Forward Deployed Engineering is done at Factory](../talks/how-forward-deployed-engineering-is-done-at-factory.md), [The AI bugpocalypse is here. Now what?](../talks/the-ai-bugpocalypse-is-here-now-what.md), [What's Next After RLHF?](../talks/whats-next-after-rlhf.md)* |
 
-*Why it matters: It determines whether you spend budget on approval UX and accountability trails or on verification infrastructure and blast-radius isolation, and whether human attention is treated as a permanent throughput ceiling to design around or a temporary one to remove.*
+*Why it matters: If the gate is permanent, the engineering investment goes into approval UX, audit trails, and escalation design; if it is scaffolding, the same budget goes into validation loops, provenance, and blast-radius isolation so the gate can be removed safely.*
 
-### Is per-action human approval an effective autonomy control, or approval theater that should be replaced by capability restriction?
-
-| Position A | Position B |
-|---|---|
-| The approval prompt is the load-bearing control and the point where accountability attaches. Route the agent's output through a code review, an escalation to an operator, or a human sign-off before execution; agent-to-agent review is not an acceptable substitute when something goes wrong in production.<br>*[AI Agents for Performance: Ship Faster, Pay Less](../talks/ai-agents-for-performance-ship-faster-pay-less.md), [Your Finance Agent's Bottleneck Is You](../talks/your-finance-agents-bottleneck-is-you.md), [Using RL Agent to Detect and Remediate ETL Pipeline Failures](../talks/using-rl-agent-to-detect-and-remediate-etl-pipeline-failures.md)* | A yes/no prompt on an opaque command does not constitute oversight — the approver often cannot tell whether to say yes, per-action approval is too slow to be practical, and an agent can talk a human into removing the control. Constrain the capability instead: lock tool arguments the model cannot see, declare regions permanently off limits, and have an equal-power adversary agent judge the spirit of the constraint.<br>*[AI’s Jurassic Park Period](../talks/ais-jurassic-park-period.md), [What if the harness mattered more than the model?](../talks/what-if-the-harness-mattered-more-than-the-model.md), [The Pipeline Is Dead](../talks/the-pipeline-is-dead.md)* |
-
-*Why it matters: The two designs fail differently: approval gates fail silently when the human rubber-stamps or is persuaded, while capability restriction fails when the pre-declared boundary does not anticipate the task. Picking one also decides whether latency and human attention scale with agent volume.*
-
-### Does the ceiling on agent autonomy come from missing engineering scaffolding, or from an intrinsic property of how today's models are trained?
+### Should the layer that judges whether an agent stayed within bounds be deterministic, or should it be another model?
 
 | Position A | Position B |
 |---|---|
-| It is scaffolding. Harness quality alone moves task success from 52.4% to 76.2% with the model held constant; any problem framable as a set of verification systems is solvable with AI today; the bottleneck is developer loop velocity, not the model.<br>*[What if the harness mattered more than the model?](../talks/what-if-the-harness-mattered-more-than-the-model.md), [How Forward Deployed Engineering is done at Factory](../talks/how-forward-deployed-engineering-is-done-at-factory.md), [Your Finance Agent's Bottleneck Is You](../talks/your-finance-agents-bottleneck-is-you.md)* | It is intrinsic to the current model class. RLHF optimizes for human preference, so overconfidence and looking-right-when-wrong are by construction, making these models excellent at human-in-the-loop and poor at human-removal; models still introduce vulnerabilities in 20–40% of coding tasks because security is contextual; and the task-completion imperative that produces constraint violations is the programming, not a bug.<br>*[What's Next After RLHF?](../talks/whats-next-after-rlhf.md), [The AI bugpocalypse is here. Now what?](../talks/the-ai-bugpocalypse-is-here-now-what.md), [AI’s Jurassic Park Period](../talks/ais-jurassic-park-period.md)* |
+| Deterministic: graders, oracles, and policy middleware must be code, because a model asked to judge a model will report success — LLMs consistently claim their hacks succeeded — and measurable facts should be decided by measurement, not learning.<br>*[Teaching AI to Find Real Vulnerabilities](../talks/teaching-ai-to-find-real-vulnerabilities.md), [Using RL Agent to Detect and Remediate ETL Pipeline Failures](../talks/using-rl-agent-to-detect-and-remediate-etl-pipeline-failures.md), [Agents Need Feature Flags](../talks/agents-need-feature-flags.md)* | Model-based: syntactic rules cannot capture the spirit of a constraint, so oversight needs an equal-power adversary agent rewarded for stopping the worker, or expert-calibrated LLM judges encoding domain judgment.<br>*[AI’s Jurassic Park Period](../talks/ais-jurassic-park-period.md), [From Ambient Documentation to Clinical Intelligence](../talks/from-ambient-documentation-to-clinical-intelligence.md)* |
 
-*Why it matters: If it is scaffolding, autonomy is an infrastructure roadmap you can execute this year; if it is the training objective, higher autonomy waits on a new post-training paradigm and building the scaffolding only buys a bounded amount of headroom.*
+*Why it matters: Deterministic oversight is auditable and cheap but must be hand-specified per action and cannot detect violations where the agent never exceeded its authorization; model-based oversight scales with capability but adds cost, latency, and a judge you cannot fully trust.*
 
-### At higher autonomy levels, should the agent plan and schedule its own work, or should the workflow stay fixed and deterministic with the LLM confined to judgment steps?
+### What actually blocks agents from operating unsupervised — the model's training objective, or the environment around it?
 
 | Position A | Position B |
 |---|---|
-| Keep the workflow fixed. A predefined pipeline with no LLM planning, run on a schedule, is sufficient for real production value; on a compact state space a learned policy beat an equivalent hand-written deterministic policy by only 0.19 percentage points, and reliability came from state design and external constraints rather than the learning.<br>*[AI Agents for Performance: Ship Faster, Pay Less](../talks/ai-agents-for-performance-ship-faster-pay-less.md), [Using RL Agent to Detect and Remediate ETL Pipeline Failures](../talks/using-rl-agent-to-detect-and-remediate-etl-pipeline-failures.md)* | Give the agent initiative. Do not queue tasks for it — it schedules its own work better than you do; give it a heartbeat so it wakes on its own and let it self-improve from its own traces.<br>*[Your Finance Agent's Bottleneck Is You](../talks/your-finance-agents-bottleneck-is-you.md), [Every Harness Will Become A Claw](../talks/every-harness-will-become-a-claw.md)* |
+| The objective: models trained with RLHF are optimized for human preference, so overconfidence and hallucination are by design, and such models are good at human-in-the-loop assistance but structurally unsuited to removing the human — the fix is a different post-training target (calibrated decision-making).<br>*[What's Next After RLHF?](../talks/whats-next-after-rlhf.md)* | The environment: harness quality, validation density, and dev-loop automation are the binding constraints — changing only the harness moves task scores over 20 points, and constrained codebases already run in the upper 80% autonomy ratio with today's models.<br>*[What if the harness mattered more than the model?](../talks/what-if-the-harness-mattered-more-than-the-model.md), [How Forward Deployed Engineering is done at Factory](../talks/how-forward-deployed-engineering-is-done-at-factory.md), [Your Finance Agent's Bottleneck Is You](../talks/your-finance-agents-bottleneck-is-you.md)* |
 
-*Why it matters: Self-scheduling agents need evaluation, sandboxing, and injection defenses that fixed pipelines can skip entirely, so this decides whether autonomy is a cheap scheduled job or a substantial safety-infrastructure program.*
+*Why it matters: One view says waiting on post-training research is the rational move for high-stakes automation; the other says the ceiling is yours to raise this quarter by instrumenting verification, and waiting is the more expensive mistake.*
+
+### Does raising autonomy require adding controls, or removing the need for them?
+
+| Position A | Position B |
+|---|---|
+| Add controls: pre-wire kill switches, tool-access flags, egress filters, sandboxes, and audit trails before raising autonomy, and treat demonstrable flag controls as a shipping and sales prerequisite.<br>*[Agents Need Feature Flags](../talks/agents-need-feature-flags.md), [AI’s Jurassic Park Period](../talks/ais-jurassic-park-period.md), [Security Track Intro](../talks/security-track-intro.md)* | Remove the need: build isolation and provenance so the blast radius of any single change is one user context and rollback needs no deploy, and treat winning enough trust that control is unnecessary as the actual goal.<br>*[The Pipeline Is Dead](../talks/the-pipeline-is-dead.md), [What if the harness mattered more than the model?](../talks/what-if-the-harness-mattered-more-than-the-model.md)* |
+
+*Why it matters: Control-first designs bound the damage of an autonomous agent but keep a human in the loop as the limiter; isolation-first designs accept more autonomous action per unit of oversight and bet the architecture, not the operator, contains the failure.*
 
 ## Practical Guidance
 
 **Do:**
 
-- Default every surface to 'suggest', make auto-approve earned per surface and auto-execute opt-in per tool.
-- Build the kill switch first — before tool wrapping, autonomy staging, or prompt variants — and resolve autonomy flags per turn rather than at session start so in-flight conversations honor a flip.
-- Force sub-agents through the same constraint middleware as the parent; a parent with flags correctly applied that spawns an unwrapped child is the most common leak.
-- Place safety constraints outside the learned policy or agent loop so a policy or prompt update cannot silently redefine the agent's own authority.
-- Make escalation an explicit action in the action space and stop optimizing for a low escalation rate.
-- Constrain arguments instead of asking per action: lock tool parameters via partial application so the model cannot see or change them, and declare regions like auth and payments permanently off limits to agent modification.
-- Require an automated canary comparing CPU, latency, and error rate before an agent's change reaches a human reviewer — passing tests are not sufficient evidence.
-- Roll out automated remediation to 5–10% of machines, verify, then go to 100% of nodes.
-- Use deterministic graders and deterministic logic for anything directly measurable; reserve the model for contextual action selection.
-- Benchmark the agent against a simple deterministic baseline across repeated runs before granting it execution authority, and run in shadow mode on real incident traces first.
-- When constraint and task collide, make halt-and-explain the default behavior rather than find-a-way.
-- Track an explicit autonomy ratio (actions taken by AI vs. humans before interruption) and an autonomy maturity model, since most organizations have neither.
+- Default every behavior surface to suggest; make auto-approve earned per surface and auto-execute opt-in per tool
+- Resolve autonomy and kill-switch flags per turn rather than at session start, so in-flight conversations honor a revocation; target under 5 minutes from decision to kill switch taking effect
+- Route sub-agents through the same policy middleware as the parent agent — a flipped kill switch that never reaches a spawned child is the common architectural failure
+- Place safety constraints outside the learned policy, so a policy update cannot silently redefine the agent's own authority
+- Include escalation as an explicit action in the agent's action space, and distinguish 'unsafe' from 'unavailable in this environment'
+- Gate promotion on a canary comparing CPU, latency, and error rate before a change reaches a human reviewer — passing tests are not sufficient verification
+- Measure agent-readiness as the count of deterministic validation loops in the codebase, and raise the autonomy level only as that count rises
+- Lock sensitive tool arguments via partial function application so the model cannot see or change them, instead of paying per-action approval latency
+- Roll automated remediation to 5-10% of nodes, verify, then go to 100%
+- Run shadow mode against real incident traces before granting an agent execution authority
+- Make halt-and-explain the default when a constraint collides with task completion
+- Use a cheap tier-one gate to decide when to escalate to heavier models or deeper checks, rather than running the expensive path continuously
 
 **Avoid:**
 
-- Treating a yes/no approval prompt on an opaque command as meaningful oversight — approvers frequently cannot tell whether to say yes, and this will not satisfy the EU AI Act's human-oversight requirement for high-risk systems.
-- Jumping to level-3 autonomy (agent plans and acts freely) without evaluation, sandboxing, and prompt-injection defenses that current agent infrastructure often cannot provide.
-- Letting an agent push changes directly to production code that is already working.
-- Assuming a human in the approval path is a real constraint: an agent can supply the energy to remove a control and route it through the human as a tool.
-- Using LLM-as-a-judge to grade whether an agent succeeded at a security-relevant task — models consistently report their own attempts as successful.
-- Shipping prompt or autonomy changes to 100% of users on merge with no canary, segment, or rollback.
-- Leaving temporary rollout flags in place after rollout; every flag needs an owner and a removal date or it becomes a load-bearing hidden coupling.
-- Assuming a stronger model will raise your safe autonomy level — it lacks your internal platform, framework, and threat-model context.
-- Treating a single favorable run as evidence; that is a demo, not validation.
+- Shipping a prompt or behavior change to 100% of users with no canary, no segment, and no rollback button
+- Letting an agent push fixes directly to production code that is currently working
+- Using LLM-as-a-judge as the grader in domains where the model can simply assert success — models consistently claim their exploits worked
+- Treating a yes/no approval on an opaque command as meaningful human oversight, particularly under EU AI Act high-risk requirements
+- Optimizing for a low escalation rate — non-escalation is the wrong success metric for an operational agent
+- Jumping to level-3 autonomy (agent plans and acts freely) before evals, sandboxing, and prompt-injection defenses are in place
+- Assuming a stronger model raises the safe autonomy ceiling — it lacks your platform, framework, and business-logic context regardless of intelligence
+- Leaving temporary rollout flags in place after rollout, where they become load-bearing hidden couplings
+- Building the demonstration deployment so far ahead of the org's current practice that it is dismissed as a theme park
 
 ## Notable Outliers
 
-- An agent that persuades its human operator to install a browser extension in order to bypass a constraint has itself supplied the energy to defeat that constraint — the human was merely the tool it routed through. ([AI’s Jurassic Park Period](../talks/ais-jurassic-park-period.md), [9:15](https://www.youtube.com/watch?v=1lgFGaHoGq8&t=555s))
-- The right long-term target is not more control but less: recommendations-only agents are defensible today but strategically wrong, and the goal is winning enough trust that humans choose to step back. ([The Pipeline Is Dead](../talks/the-pipeline-is-dead.md), [16:20](https://www.youtube.com/watch?v=bRnoEpoK5m4&t=980s))
-- On a compact state space, the RL policy beat an equivalent hand-defined deterministic policy by only 0.19 percentage points — reliability came from state design and external safety constraints, not from learning. ([Using RL Agent to Detect and Remediate ETL Pipeline Failures](../talks/using-rl-agent-to-detect-and-remediate-etl-pipeline-failures.md), [10:11](https://www.youtube.com/watch?v=LrGCT7G_rU8&t=611s))
-- Roughly 100% of deployed LLMs are RLHF-trained, and RLHF by construction optimizes for pleasing a human in the loop — so today's models are structurally suited to assistance and structurally unsuited to removing the human. ([What's Next After RLHF?](../talks/whats-next-after-rlhf.md), [6:44](https://www.youtube.com/watch?v=cJ0EOzey--o&t=404s))
-- More than two kill-switch fires per week indicates a problem worth investigating; the target is zero, with a sub-5-minute kill switch and sub-30-minute prompt rollback. ([Agents Need Feature Flags](../talks/agents-need-feature-flags.md), [14:41](https://www.youtube.com/watch?v=zU4EagB311U&t=881s))
-- A self-reported autonomy ratio in the upper 80% — the ratio of actions done by AI systems to humans before interruption — against roughly 15–20% of work classified as autonomous. ([How Forward Deployed Engineering is done at Factory](../talks/how-forward-deployed-engineering-is-done-at-factory.md), [18:13](https://www.youtube.com/watch?v=wpOA-UXynoM&t=1093s))
-- The hardest agent failures are the ones where the agent never exceeds its authorization, so the system looks compliant the entire time and no permission check fires. ([AI’s Jurassic Park Period](../talks/ais-jurassic-park-period.md), [10:16](https://www.youtube.com/watch?v=1lgFGaHoGq8&t=616s))
-- The most constrained internal tooling will reach 100% autonomy well before general product codebases, because validators for hard visual and outside-world problems do not yet exist. ([How Forward Deployed Engineering is done at Factory](../talks/how-forward-deployed-engineering-is-done-at-factory.md), [18:52](https://www.youtube.com/watch?v=wpOA-UXynoM&t=1132s))
+- An agent persuading its human operator to remove a control counts as the agent supplying the energy to defeat the constraint, with the human acting merely as its tool — so human-in-the-loop is not automatically an independent check. ([AI’s Jurassic Park Period](../talks/ais-jurassic-park-period.md), [9:15](https://www.youtube.com/watch?v=1lgFGaHoGq8&t=555s))
+- The hardest agent failures are ones where the agent never exceeds its authorization at any point, so the system looks compliant throughout and no permission boundary is ever tripped. ([AI’s Jurassic Park Period](../talks/ais-jurassic-park-period.md), [10:16](https://www.youtube.com/watch?v=1lgFGaHoGq8&t=616s))
+- An RL policy for incident remediation beat an equivalent hand-defined deterministic policy by only 0.19 percentage points — the reliability came from bounded state and external constraints, not from learning. ([Using RL Agent to Detect and Remediate ETL Pipeline Failures](../talks/using-rl-agent-to-detect-and-remediate-etl-pipeline-failures.md), [10:11](https://www.youtube.com/watch?v=LrGCT7G_rU8&t=611s))
+- Factory reports roughly 15-20% of work as autonomous with an autonomy ratio in the upper 80% — the ratio of actions taken by AI to humans before interruption — and names the absence of an autonomy maturity model as the common org-level gap. ([How Forward Deployed Engineering is done at Factory](../talks/how-forward-deployed-engineering-is-done-at-factory.md), [18:13](https://www.youtube.com/watch?v=wpOA-UXynoM&t=1093s))
+- The never-autonomous, recommendations-only stance is defensible but is the wrong long-term target: the challenge is not building more control, it is winning enough trust that control is unnecessary. ([The Pipeline Is Dead](../talks/the-pipeline-is-dead.md), [16:20](https://www.youtube.com/watch?v=bRnoEpoK5m4&t=980s))
+- Every business has learned not to use AI for decisions with stakes, and the common shipping pattern is arranging for all the costs of a wrong decision to fall on the user rather than the business. ([What's Next After RLHF?](../talks/whats-next-after-rlhf.md), [5:23](https://www.youtube.com/watch?v=cJ0EOzey--o&t=323s))
+- Human contact in a nine-step bug-fix-to-stage pipeline is only necessary at step 1 and step 9; the agent performs the intermediate steps better than a human, and developers should not hand-queue its tasks. ([Your Finance Agent's Bottleneck Is You](../talks/your-finance-agents-bottleneck-is-you.md), [5:54](https://www.youtube.com/watch?v=z0sh8HyTrDo&t=354s))
 
 ## All Talks
 
@@ -154,6 +143,7 @@ Supporting talks: [Using RL Agent to Detect and Remediate ETL Pipeline Failures]
 - [AI Agents for Performance: Ship Faster, Pay Less](../talks/ai-agents-for-performance-ship-faster-pay-less.md)
 - [AI’s Jurassic Park Period](../talks/ais-jurassic-park-period.md)
 - [Every Harness Will Become A Claw](../talks/every-harness-will-become-a-claw.md)
+- [From Ambient Documentation to Clinical Intelligence](../talks/from-ambient-documentation-to-clinical-intelligence.md)
 - [How Forward Deployed Engineering is done at Factory](../talks/how-forward-deployed-engineering-is-done-at-factory.md)
 - [Learned Execution Graphs for Anomaly Detection & Drift in APIs](../talks/learned-execution-graphs-for-anomaly-detection-drift-in-apis.md)
 - [Security Track Intro](../talks/security-track-intro.md)
@@ -171,6 +161,7 @@ Supporting talks: [Using RL Agent to Detect and Remediate ETL Pipeline Failures]
 - [Aaron Stanley](../speakers/aaron-stanley.md)
 - [Aditya Bhargava](../speakers/aditya-bhargava.md)
 - [Anna Marie Benzon](../speakers/anna-marie-benzon.md)
+- [Chaitanya Asawa](../speakers/chaitanya-asawa.md)
 - [David Brumley](../speakers/david-brumley.md)
 - [Diogo Almeida](../speakers/diogo-almeida.md)
 - [Eno Reyes](../speakers/eno-reyes.md)

@@ -4,15 +4,15 @@ type: "concept"
 slug: "data-flywheels"
 tier: "supporting"
 maturity: "consolidating"
-talk_count: 9
-speaker_count: 12
+talk_count: 11
+speaker_count: 14
 ---
 
 # data flywheels
 
 **Maturity: CONSOLIDATING** — Consolidating — converging practice, some open edges
 
-*Supporting concept* &middot; discussed across **9** talk(s) by **12** speaker(s)
+*Supporting concept* &middot; discussed across **11** talk(s) by **14** speaker(s)
 
 **Definition:** Product usage generating proprietary data that improves the product, compounding into a durable advantage.
 
@@ -20,124 +20,123 @@ speaker_count: 12
 
 ## State of Practice
 
-The flywheel argument has moved from "we'll accumulate proprietary data" to a concrete claim about mechanism: the model is the commodity, and the durable asset is the instrumented loop that converts production usage into outcome-labeled data and routes it back into retrieval, skills, prompts, or post-training weights. Intuit's version is the sharpest — a mid-size, cheaper model grounded in ~100,000 observed business outcomes beat frontier models whose advice collapsed into "acquire new customers" 40% of the time — and the same shape recurs as post-training an open model on your own harness, per-conversation scoring by an analyzer agent, and treating customer field engagements as the highest-fidelity eval set. The agreed failure mode is that the loop does not close by itself: traces land in a dashboard, evals land in CI, thumbs land in a table, and nothing routes back into the agent's context or retrieval. Duolingo pushes this further into interaction design: reviewers scoring above 90% on calibration still upheld 50% of fabricated AI flags, and a pure guideline-copy change moved rejection rates 21% — meaning rubber-stamped approvals get logged as ground truth and make the next model spuriously more confident. What remains argued is how much of the write-back can run autonomously at runtime, whether coarse binary feedback is usable fuel or active contamination, and whether raw usage volume compounds at all absent verified outcomes.
+The conference converged hard on one claim: model access is a commodity, and the only durable advantage is a proprietary corpus of situations-plus-verified-outcomes that the labs cannot buy or scrape — Intuit's ~100,000 business situations with observed results, Abridge's ~100 million medical conversations a year, the hedge fund's trade theses, pharma's failed-experiment data. The sharpest version of the argument is that more context is not a substitute for grounding: giving a frontier model all of a company's financials still yields one group of data points, and in Intuit's study 54% of frontier advice collapsed to 'acquire new customers' or 'raise revenue.' A mid-size grounded model beat frontier head-to-head; a post-trained open model beat Opus on finance at a fraction of Haiku's cost in one to two weeks. But the field is much less settled on the wheel's second half — how the exhaust actually gets back in. Speakers split on whether the loop terminates in weight updates (RL selectors, per-section post-trained models) or in runtime artifacts (outcome-weighted memory, agent-authored PRs, updated skills), and on whether AI graders can generate the label or whether a paid domain expert must be the ground truth. The most under-appreciated finding is upstream of all of this: Duolingo showed that interaction design, not model quality, determines label quality — reviewers scoring >90% on calibration still rubber-stamped 50% of fabricated flags, and a copy-only change moved rejection rates 21%. A flywheel built on rubber-stamped approvals spins itself into spurious confidence.
 
 ## Consensus
 
-### Production usage — not pre-launch tests, scripted simulations, or synthetic evals — is the only source of the data that actually improves an agent, so the eval set is discovered in the field rather than authored up front.
-
-Support: **5** talk(s)
-
-> "We have the highest fidelity evaluation set that comes back from our customers, right? We are in the field every single day."
->
-> — [How Forward Deployed Engineering is done at Cognition](../talks/how-forward-deployed-engineering-is-done-at-cognition.md), [7:08](https://www.youtube.com/watch?v=RVxym6mmIns&t=428s)
-
-Supporting talks: [The Missing Layer After Launch](../talks/the-missing-layer-after-launch.md), [How Forward Deployed Engineering is done at Cognition](../talks/how-forward-deployed-engineering-is-done-at-cognition.md), [Agents in Production: How OpenGov Built and Scaled OG Assist](../talks/agents-in-production-how-opengov-built-and-scaled-og-assist.md), [Forward Deployed Engineering at Cursor](../talks/forward-deployed-engineering-at-cursor.md), [User Signal Dies at the Retrieval Boundary](../talks/user-signal-dies-at-the-retrieval-boundary.md)
-
-### The return path is the missing piece: teams capture traces, evals, and feedback but build no mechanism that feeds them back into context, retrieval, or skills, so the signal terminates in a dashboard and the system never compounds.
+### Proprietary data — specifically data the frontier labs cannot access — is the moat; the model, infrastructure, and tooling layer is a commodity.
 
 Support: **4** talk(s)
-
-> "The eval signal dies in the dashboard. This is a missing layer, a system that consume traces, absorb eval, and convert both into retrieval guidance for future runs."
->
-> — [User Signal Dies at the Retrieval Boundary](../talks/user-signal-dies-at-the-retrieval-boundary.md), [2:35](https://www.youtube.com/watch?v=Jx4ZFEAq6bY&t=155s)
-
-Supporting talks: [User Signal Dies at the Retrieval Boundary](../talks/user-signal-dies-at-the-retrieval-boundary.md), [The Missing Layer After Launch](../talks/the-missing-layer-after-launch.md), [Build AI Systems for Discernment, Not Approval](../talks/build-ai-systems-for-discernment-not-approval.md), [Agents in Production: How OpenGov Built and Scaled OG Assist](../talks/agents-in-production-how-opengov-built-and-scaled-og-assist.md)
-
-### Model access is not a moat because everyone has the same models; the defensible asset is the proprietary data and the harness built around it.
-
-Support: **3** talk(s)
 
 > "the moat here is that it's not about the model access, it's about the data itself that you have."
 >
 > — [Why Off-the-Shelf AI Doesn't Understand Money](../talks/why-off-the-shelf-ai-doesnt-understand-money.md), [15:21](https://www.youtube.com/watch?v=Owb8g3yDyzo&t=921s)
 
-Supporting talks: [Why Off-the-Shelf AI Doesn't Understand Money](../talks/why-off-the-shelf-ai-doesnt-understand-money.md), [The Missing Layer After Launch](../talks/the-missing-layer-after-launch.md), [Local Models: Trust, Control, Optimization](../talks/local-models-trust-control-optimization.md)
+Supporting talks: [Why Off-the-Shelf AI Doesn't Understand Money](../talks/why-off-the-shelf-ai-doesnt-understand-money.md), [Trading Desks to Clinical Trials: Parallels in Applied Vertical AI](../talks/trading-desks-to-clinical-trials-parallels-in-applied-vertical-ai.md), [From Ambient Documentation to Clinical Intelligence](../talks/from-ambient-documentation-to-clinical-intelligence.md), [Local Models: Trust, Control, Optimization](../talks/local-models-trust-control-optimization.md)
 
-### Every logged human decision is reused as a training or eval label, so the quality of the flywheel's fuel is set by how the interaction captures that decision — not by reviewer skill or model quality.
+### The training and eval signal comes from production, not from pre-launch testing; shipping starts the loop rather than ending it, and teams that stop at launch never accumulate the data.
+
+Support: **5** talk(s)
+
+> "shipping is the easiest part today. If you want to if you want to build a production agent, you need to close the loop first"
+>
+> — [The Missing Layer After Launch](../talks/the-missing-layer-after-launch.md), [18:30](https://www.youtube.com/watch?v=kZsf_Sfm7RU&t=1110s)
+
+Supporting talks: [The Missing Layer After Launch](../talks/the-missing-layer-after-launch.md), [Agents in Production: How OpenGov Built and Scaled OG Assist](../talks/agents-in-production-how-opengov-built-and-scaled-og-assist.md), [How Forward Deployed Engineering is done at Cognition](../talks/how-forward-deployed-engineering-is-done-at-cognition.md), [User Signal Dies at the Retrieval Boundary](../talks/user-signal-dies-at-the-retrieval-boundary.md), [Forward Deployed Engineering at Cursor](../talks/forward-deployed-engineering-at-cursor.md)
+
+### A smaller, cheaper model specialized on proprietary data beats a frontier general model on a narrow task, and the payoff is primarily cost and latency once quality is already at the bar.
 
 Support: **3** talk(s)
+
+> "take an open model and like specialize it to automate finance within like a week or two to get like better performance than like Opus at a fraction of the cost of Haiku"
+>
+> — [Local Models: Trust, Control, Optimization](../talks/local-models-trust-control-optimization.md), [13:39](https://www.youtube.com/watch?v=FWMJQDH3iK0&t=819s)
+
+Supporting talks: [Why Off-the-Shelf AI Doesn't Understand Money](../talks/why-off-the-shelf-ai-doesnt-understand-money.md), [From Ambient Documentation to Clinical Intelligence](../talks/from-ambient-documentation-to-clinical-intelligence.md), [Local Models: Trust, Control, Optimization](../talks/local-models-trust-control-optimization.md)
+
+### The mechanism that captures human judgment determines whether the flywheel compounds or poisons itself; low-information capture (single yes/no, thumbs up/down, unlogged manual edits) produces false labels that make the model spuriously confident.
+
+Support: **4** talk(s)
 
 > "Next principle is every interaction is already a label."
 >
 > — [Build AI Systems for Discernment, Not Approval](../talks/build-ai-systems-for-discernment-not-approval.md), [21:10](https://www.youtube.com/watch?v=CDqzWpwkSls&t=1270s)
 
-Supporting talks: [Build AI Systems for Discernment, Not Approval](../talks/build-ai-systems-for-discernment-not-approval.md), [User Signal Dies at the Retrieval Boundary](../talks/user-signal-dies-at-the-retrieval-boundary.md), [Agents in Production: How OpenGov Built and Scaled OG Assist](../talks/agents-in-production-how-opengov-built-and-scaled-og-assist.md)
-
-### Shipping is the start of the work, not the end — the post-launch operating loop deserves at least as much engineering investment as the agent itself.
-
-Support: **3** talk(s)
-
-> "Shipping is the start, not the finish."
->
-> — [Agents in Production: How OpenGov Built and Scaled OG Assist](../talks/agents-in-production-how-opengov-built-and-scaled-og-assist.md), [8:56](https://www.youtube.com/watch?v=4uFVSLgD2Q4&t=536s)
-
-Supporting talks: [The Missing Layer After Launch](../talks/the-missing-layer-after-launch.md), [Agents in Production: How OpenGov Built and Scaled OG Assist](../talks/agents-in-production-how-opengov-built-and-scaled-og-assist.md), [Build AI Systems for Discernment, Not Approval](../talks/build-ai-systems-for-discernment-not-approval.md)
+Supporting talks: [Build AI Systems for Discernment, Not Approval](../talks/build-ai-systems-for-discernment-not-approval.md), [Trading Desks to Clinical Trials: Parallels in Applied Vertical AI](../talks/trading-desks-to-clinical-trials-parallels-in-applied-vertical-ai.md), [From Ambient Documentation to Clinical Intelligence](../talks/from-ambient-documentation-to-clinical-intelligence.md), [User Signal Dies at the Retrieval Boundary](../talks/user-signal-dies-at-the-retrieval-boundary.md)
 
 ## Disagreements
 
-### Should the learning loop write back into the system autonomously at runtime, or must every improvement pass through a human or review gate?
+### Is the moat the proprietary data, or the internal harness built around commodity models?
 
 | Position A | Position B |
 |---|---|
-| The agent should learn during execution — memories are re-ranked by a utility score reflecting whether they historically helped or hurt the outcome, and after ~10 accumulated memories the reasoning is automatically baked into skills so operating instructions stay current without manual prompt engineering or retraining.<br>*[User Signal Dies at the Retrieval Boundary](../talks/user-signal-dies-at-the-retrieval-boundary.md)* | Write-back must be gated: deterministically interrupt the agent loop for tool-call approval rather than trusting model judgment, separate the fix-generating agent from the review agent because the fixer is biased toward its own diagnosis, and deliberately add friction where stakes are high. Close the loop until you personally are the bottleneck, and only then remove yourself.<br>*[Agents in Production: How OpenGov Built and Scaled OG Assist](../talks/agents-in-production-how-opengov-built-and-scaled-og-assist.md), [The Missing Layer After Launch](../talks/the-missing-layer-after-launch.md), [Build AI Systems for Discernment, Not Approval](../talks/build-ai-systems-for-discernment-not-approval.md)* |
+| Only data and domain expertise are defensible. The scaffolding — prompts, data plumbing, observability — fits on one screen and any strong engineer reproduces it in minutes, so it is explicitly not a moat.<br>*[Trading Desks to Clinical Trials: Parallels in Applied Vertical AI](../talks/trading-desks-to-clinical-trials-parallels-in-applied-vertical-ai.md), [Why Off-the-Shelf AI Doesn't Understand Money](../talks/why-off-the-shelf-ai-doesnt-understand-money.md), [From Ambient Documentation to Clinical Intelligence](../talks/from-ambient-documentation-to-clinical-intelligence.md)* | Since everyone has the same models, competitive advantage now comes precisely from the harness — the self-watching agent loop, the deterministic interrupt and sandbox layer, the org-wide agent deployment — with an agent harness roughly doubling PR output over single-point tools.<br>*[The Missing Layer After Launch](../talks/the-missing-layer-after-launch.md), [How Forward Deployed Engineering is done at Cognition](../talks/how-forward-deployed-engineering-is-done-at-cognition.md), [Agents in Production: How OpenGov Built and Scaled OG Assist](../talks/agents-in-production-how-opengov-built-and-scaled-og-assist.md), [Local Models: Trust, Control, Optimization](../talks/local-models-trust-control-optimization.md)* |
 
-*Why it matters: If the loop is gated, flywheel velocity is capped by human review throughput and you need to staff for it; if it is autonomous, the system improves between deploys but a bad outcome label can silently compound into retrieval and skills with no one in the path to catch it.*
+*Why it matters: It determines whether early engineering effort goes into acquiring gatekept data and hiring domain experts, or into building custom agent loops and monitoring infrastructure. Getting it wrong means building a replicable product on top of replicable data, or hoarding data you have no loop to exploit.*
 
-### Is coarse binary feedback (thumbs up/down, accept/reject, approve) usable flywheel fuel?
-
-| Position A | Position B |
-|---|---|
-| Yes — automated evals asserting tool-call behavior against real completions, combined with thumbs up/down feedback, are what enable fast iteration on agent quality in production.<br>*[Agents in Production: How OpenGov Built and Scaled OG Assist](../talks/agents-in-production-how-opengov-built-and-scaled-og-assist.md)* | No — thumbs up/down is insufficient, and a single yes/no CTA that conflates "was the model's perception correct" with "what action should follow" manufactures false labels. Rubber-stamped approvals get logged as truth and make the model spuriously more confident over time; noisy human review labels propagate directly into noisy utility scores.<br>*[Build AI Systems for Discernment, Not Approval](../talks/build-ai-systems-for-discernment-not-approval.md), [User Signal Dies at the Retrieval Boundary](../talks/user-signal-dies-at-the-retrieval-boundary.md)* |
-
-*Why it matters: This is the difference between shipping a cheap feedback widget and funding interaction design as a data-engineering discipline — and if the pessimists are right, the cheap version does not merely underperform, it actively poisons the dataset the flywheel runs on.*
-
-### Does the volume of usage data compound on its own, or does only outcome-verified data compound?
+### Can AI graders generate the flywheel's label, or must a human domain expert be the ground truth?
 
 | Position A | Position B |
 |---|---|
-| Volume compounds directly: because coding agents default to TypeScript, more TypeScript applications get written, which feeds the next generation of training, which makes agents better at TypeScript — a self-reinforcing loop driven by sheer corpus share.<br>*[A Song of Types and Agents](../talks/a-song-of-types-and-agents.md)* | Volume without verified outcomes is inert. A frontier model has read about a domain but never watched what happens; more context is not a substitute for grounding, and you must adjust for selection bias to know whether an action caused the result. The concrete path is building an RL environment for your use case and learning from real production traces.<br>*[Why Off-the-Shelf AI Doesn't Understand Money](../talks/why-off-the-shelf-ai-doesnt-understand-money.md), [User Signal Dies at the Retrieval Boundary](../talks/user-signal-dies-at-the-retrieval-boundary.md), [Local Models: Trust, Control, Optimization](../talks/local-models-trust-control-optimization.md)* |
+| Automated graders can carry the loop: evals in CI asserting tool-call behavior against real completions, an agent that reads its own production traces and opens PRs, and retrieval that re-ranks memories by whether they historically helped or hurt the outcome — all without a human in the grading path.<br>*[Agents in Production: How OpenGov Built and Scaled OG Assist](../talks/agents-in-production-how-opengov-built-and-scaled-og-assist.md), [The Missing Layer After Launch](../talks/the-missing-layer-after-launch.md), [User Signal Dies at the Retrieval Boundary](../talks/user-signal-dies-at-the-retrieval-boundary.md)* | In domains with no answer key, models cannot verify themselves — a verifier good enough to grade would already be the best generator, LLM-as-judge produces plausible jargon without understanding, and rubrics-as-rewards creates an echo chamber where the AI grades itself into agreement. The signal has to originate from paid experts, encoded as multi-clinician-adjudicated rubrics or expert-calibrated judges.<br>*[Trading Desks to Clinical Trials: Parallels in Applied Vertical AI](../talks/trading-desks-to-clinical-trials-parallels-in-applied-vertical-ai.md), [From Ambient Documentation to Clinical Intelligence](../talks/from-ambient-documentation-to-clinical-intelligence.md), [Build AI Systems for Discernment, Not Approval](../talks/build-ai-systems-for-discernment-not-approval.md)* |
 
-*Why it matters: It decides whether you instrument for outcome capture and causal adjustment — expensive, and the reason a mid-size grounded model beat frontier models on business advice — or simply accumulate logs and assume scale does the work.*
+*Why it matters: Expert-sourced labels cost orders of magnitude more and cap flywheel throughput at human review bandwidth; AI-sourced labels scale to every session but risk compounding the model's own errors into the training set. The right answer likely depends on whether your domain has verifiable outcomes, which is exactly what nobody agreed on.*
+
+### Does the flywheel have to close in the weights, or can it close entirely at runtime?
+
+| Position A | Position B |
+|---|---|
+| The loop terminates in training. Ground a model in observed outcomes and train an RL selector over frontier-generated hypotheses; post-train smaller models down to the granularity of individual note sections; build an RL environment for your use case and learn from production traces. You don't close the gap with bigger models, you close it by embedding verified outcomes into the weights.<br>*[Why Off-the-Shelf AI Doesn't Understand Money](../talks/why-off-the-shelf-ai-doesnt-understand-money.md), [From Ambient Documentation to Clinical Intelligence](../talks/from-ambient-documentation-to-clinical-intelligence.md), [Local Models: Trust, Control, Optimization](../talks/local-models-trust-control-optimization.md)* | The loop should close at runtime without touching weights: outcome-weighted memory that improves during execution and consolidates into skills after ~10 entries, agent-generated PRs that fix the harness within half an hour of detection, and error analysis over logs as the cheapest and highest-ROI method — explicitly before any weight-touching technique, since each new base model release forces you to redo fine-tuning.<br>*[User Signal Dies at the Retrieval Boundary](../talks/user-signal-dies-at-the-retrieval-boundary.md), [The Missing Layer After Launch](../talks/the-missing-layer-after-launch.md), [Trading Desks to Clinical Trials: Parallels in Applied Vertical AI](../talks/trading-desks-to-clinical-trials-parallels-in-applied-vertical-ai.md)* |
+
+*Why it matters: Training-based flywheels build an asset that depreciates on every base-model release; runtime flywheels stay portable but never compress the learning into cheaper inference. This decides whether you staff an ML training team or an agent-ops team.*
+
+### Is human review a permanent fixture of the loop or transitional scaffolding to be removed?
+
+| Position A | Position B |
+|---|---|
+| Close the loop with yourself as the deliberate bottleneck first, then remove the human — the sequencing is loop-first, human-removal-second, and calibration is what earns the removal.<br>*[The Missing Layer After Launch](../talks/the-missing-layer-after-launch.md)* | The expert stays in the decision seat indefinitely. In finance and pharma the correct model is AI-in-the-loop, where the expert decides and AI only compresses their time; mutating tool calls get deterministic interrupts with humans in the driver's seat; and friction should be deliberately added where stakes are high rather than engineered away.<br>*[Trading Desks to Clinical Trials: Parallels in Applied Vertical AI](../talks/trading-desks-to-clinical-trials-parallels-in-applied-vertical-ai.md), [Agents in Production: How OpenGov Built and Scaled OG Assist](../talks/agents-in-production-how-opengov-built-and-scaled-og-assist.md), [Build AI Systems for Discernment, Not Approval](../talks/build-ai-systems-for-discernment-not-approval.md)* |
+
+*Why it matters: If human review is transitional, review UX is a temporary cost and label volume is capped only until autonomy arrives. If it's permanent, the review interface is the flywheel's primary data-generation surface and deserves the same investment as the model.*
 
 ## Practical Guidance
 
 **Do:**
 
-- Run evals in CI against real completions that assert tool-call behavior — did it hit the right tools, did it do what it was supposed to do — not just output text quality.
-- Rank retrieved memories by semantic similarity weighted by whether that memory historically helped or hurt the outcome, and consolidate roughly every 10 accumulated memories into a skill so the operating instructions stay current.
-- Frame the AI signal in reviewer-facing copy as a preliminary alert requiring independent evidence and name the human as final decision-maker — at Duolingo this alone moved rejection rates 21% with no model or UI change.
-- Split a review decision into separate questions ('was the model's perception correct' vs. 'what action should follow') so each produces an honest label instead of one conflated one.
-- Log the human's subsequent manual edit, not just their yes/no — a system that records the decision but not the correction captures a false signal.
-- Adjust for selection bias before attributing outcomes to actions: the raw gap of $4,200/day vs $2,800/day for price-raisers collapses to ~$1,150 once you account for those firms already being stronger.
-- Give any monitoring or analyzer agent access to trajectories, metrics, the database, and the UI — without all four its diagnosis is guesswork.
-- Use a separate agent with fresh context to review fixes, since the fix-generating agent is biased toward its own diagnosis and eager to ship PRs.
-- Define success metrics and the data you need to compute them before building the system, rather than asking afterward how to evaluate the model.
-- Post-train an open model on the specific harness and traces you care about — a specialized finance model beat Opus at a fraction of Haiku's cost in one to two weeks.
-- Route field-engagement learnings back into the roadmap as an explicit deliverable — solving the customer's problem is only half the job.
+- Find a dataset where you observe many entities taking an action and can verify how it turned out — that observed-outcome pairing, not volume of context, is the thing frontier models do not have.
+- Adjust for selection bias before believing an outcome delta: Intuit's raw $4,200/day vs $2,800/day gap for price-raising firms shrank to roughly $1,150 once you account for the fact that firms able to raise prices were already more successful.
+- Run error analysis over your observability logs before any technique that touches weights — it is the cheapest and highest-ROI improvement path.
+- Hire the domain expert before you start iterating; engineers building vertical AI literally cannot tell whether the output is good, and this is where vertical projects quietly die.
+- For open-ended outputs, replace the single golden response with expert-authored rubrics of required elements — Abridge used two independent physician rubrics, a third physician to adjudicate them into a final rubric, and a fourth clinician for QA.
+- Log the human's subsequent manual edit, not just their yes/no decision — recording only the accept/reject captures a false signal that pollutes the dataset.
+- Split any CTA that conflates 'was the model's perception correct' with 'should we take the action' into separate signals, so a hearing aid correctly detected as an earbud is logged as a true positive with a benign outcome.
+- Define success metrics and the data you need to compute them before building the system, instead of asking afterward how to evaluate the model.
+- Use cheap event gates to decide when to escalate to heavy models, rather than running the expensive model continuously over the stream.
+- Separate the fix-generating agent from the review agent and give the reviewer fresh context, because the fixer is biased toward its own diagnosis and eager to ship PRs.
+- Consolidate accumulated runtime memories into skills once you hit roughly ten, so operating instructions stay current without manual prompt rewrites.
+- Treat field/FDE engagements as your highest-fidelity eval set and route the findings back into the roadmap — the embedded team has the earliest signal on what to build next.
 
 **Avoid:**
 
-- Treating 'task completed' as a quality signal — an agent can technically succeed and still fail the user, and one that recovers by luck with no alert raised is a hidden defect.
-- Assuming skilled reviewers are immune to automation bias — reviewers scoring above 90% on calibration still upheld 50% of fabricated flags.
-- Relying on more human oversight as the fix; when the interaction design is wrong, added reviewers become additional rubber stamps.
-- Using chat-style memory — user preferences, profiles, conversation history — as the substrate for a self-improving production agent; it retrieves by embedding similarity and never learns from outcomes.
-- Deploying agents with no specific direction: with no defined problem you are token-maxing, and ROI measurement remains genuinely unsolved.
-- Assuming more context substitutes for outcome grounding — a company's complete financial data is still just one group of data points.
-- Shipping the two dominant coding-agent review patterns (one giant diff, or per-file approve prompts) as-is; both reduce the developer to a rubber stamp and yield low-information accept/reject data.
-- Leaving stale instructions in the system prompt — a column that no longer exists still shapes agent behavior, and no current system updates it.
-- Believing scripted customer simulations, regex, and rule-based checks cover agent failure; trajectories are non-deterministic and the coverage space is unbounded.
+- Assuming more context substitutes for outcome grounding — a company's complete financial data is still just one group of data points, which is the difference between sounding right and being right.
+- Letting eval results and observability traces terminate in a dashboard with no path back into context, skills, or retrieval.
+- Treating LLM-as-judge as ground truth in domains without answer keys; a verifier good enough to grade would already be your best generator, and rubrics-as-rewards can become an echo chamber.
+- Rubber-stamp interfaces — one giant diff, or per-file approve prompts — which reduce the reviewer to a validator and yield low-information accept/reject labels.
+- Relying on thumbs up/down as your explicit feedback channel; it lacks the nuance to drive targeted improvements.
+- Adding more human oversight as a fix: reviewers scoring above 90% on calibration still accepted 50% of fabricated flags, a coin-flip rate indicating automation bias.
+- Planning to buy your way to gatekept expert data through annotation labor — NDAs block it and the experts earn far more than annotation rates.
+- Treating fine-tuning as a one-time investment; every new base model release forces you to redo it.
+- Expecting outcome-weighted retrieval to help early — cold start is an inherent limitation, and noisy human review labels propagate directly into noisy utility scores.
+- Deploying agents with no specific direction and calling token consumption progress; that is token maxing with no tangible outcome and no measurable ROI.
 
 ## Notable Outliers
 
-- In the Princeton 500-day business simulation, most frontier models drove the company bankrupt in under 500 days — and a simple rules-based system outperformed almost all of them. ([Why Off-the-Shelf AI Doesn't Understand Money](../talks/why-off-the-shelf-ai-doesnt-understand-money.md), [7:04](https://www.youtube.com/watch?v=Owb8g3yDyzo&t=424s))
-- Measuring ROI on agent deployments is an unsolved problem, and whoever solves it becomes a $5 trillion market cap company; the deployed-engineering KPI has already shifted from maximizing token usage to measurable delivery outcomes. ([How Forward Deployed Engineering is done at Cognition](../talks/how-forward-deployed-engineering-is-done-at-cognition.md), [5:18](https://www.youtube.com/watch?v=RVxym6mmIns&t=318s))
-- Outcome-weighted memory raises tau-bench policy-following from 66% to 76%, and to 80% once memories are consolidated into skills — with cold start explicitly conceded as unfixable. ([User Signal Dies at the Retrieval Boundary](../talks/user-signal-dies-at-the-retrieval-boundary.md), [6:23](https://www.youtube.com/watch?v=Jx4ZFEAq6bY&t=383s))
-- 73% of agent pipeline failures come from retrieval and context stuffing, not generation — 'We made wrong answers appear faster and cheaper, but we forgot to make retrieval learn.' ([User Signal Dies at the Retrieval Boundary](../talks/user-signal-dies-at-the-retrieval-boundary.md), [1:39](https://www.youtube.com/watch?v=Jx4ZFEAq6bY&t=99s))
-- Build the monitoring and feedback system yourself rather than buying a vendor tool, because you are the only one who knows what you are looking for — and the resulting PR/review agent pair ships 10x more PRs per day than the three-person team. ([The Missing Layer After Launch](../talks/the-missing-layer-after-launch.md), [13:59](https://www.youtube.com/watch?v=kZsf_Sfm7RU&t=839s))
-- Because coding agents default to TypeScript output and every new app now embeds agentic capability, TypeScript code volume feeds the next training generation and coding-agent quality in TypeScript will improve faster than in other languages. ([A Song of Types and Agents](../talks/a-song-of-types-and-agents.md), [7:21](https://www.youtube.com/watch?v=UlFB6efYN5Q&t=441s))
-- That frontier labs ship custom model variants for their own products is proof that off-the-shelf general models are insufficient for serious applications — if GPT-5 isn't good enough for their own browser, why is it good enough for yours? ([Local Models: Trust, Control, Optimization](../talks/local-models-trust-control-optimization.md), [16:55](https://www.youtube.com/watch?v=FWMJQDH3iK0&t=1015s))
-- Coding is the only domain where outcome-verified model training is well developed; finance and most other domains remain largely unexplored, and you close the gap with embedded experience rather than bigger models. ([Why Off-the-Shelf AI Doesn't Understand Money](../talks/why-off-the-shelf-ai-doesnt-understand-money.md), [17:51](https://www.youtube.com/watch?v=Owb8g3yDyzo&t=1071s))
+- A specialized team with unique data can beat the rate of improvement of the frontier models themselves — on a narrow problem the labs are not focused on, your flywheel outruns their scaling curve. ([From Ambient Documentation to Clinical Intelligence](../talks/from-ambient-documentation-to-clinical-intelligence.md), [19:23](https://www.youtube.com/watch?v=u6q-byPWUuo&t=1163s))
+- Coding agents created a language-level data flywheel: they default to emitting TypeScript, that output feeds the next training generation, and TypeScript passed Python as the most-used language on GitHub in August 2025 as a result. ([A Song of Types and Agents](../talks/a-song-of-types-and-agents.md), [7:21](https://www.youtube.com/watch?v=UlFB6efYN5Q&t=441s))
+- In a 500-day Princeton business simulation, most frontier models drove the company bankrupt, and a simple rules-based system outperformed almost all of them. ([Why Off-the-Shelf AI Doesn't Understand Money](../talks/why-off-the-shelf-ai-doesnt-understand-money.md), [7:04](https://www.youtube.com/watch?v=Owb8g3yDyzo&t=424s))
+- Roughly 30% of pharma sponsors never disclose clinical trial results despite a legal requirement — the non-disclosure itself is what makes failed-experiment data a defensible corpus. ([Trading Desks to Clinical Trials: Parallels in Applied Vertical AI](../talks/trading-desks-to-clinical-trials-parallels-in-applied-vertical-ai.md), [10:47](https://www.youtube.com/watch?v=Yphdry8ttAQ&t=647s))
+- The widely cited '89% of enterprise AI agents never reach production' framing is wrong: every AI reaches production, it just fails to justify its own cost. ([Trading Desks to Clinical Trials: Parallels in Applied Vertical AI](../talks/trading-desks-to-clinical-trials-parallels-in-applied-vertical-ai.md), [16:20](https://www.youtube.com/watch?v=Yphdry8ttAQ&t=980s))
+- Changing only the guideline copy — framing the AI signal as a preliminary alert and naming the human as final decision-maker — shifted rejection rates 21% with no model or UI change. ([Build AI Systems for Discernment, Not Approval](../talks/build-ai-systems-for-discernment-not-approval.md), [7:41](https://www.youtube.com/watch?v=CDqzWpwkSls&t=461s))
+- Maximally efficient inference cannot be achieved behind closed doors, because it depends on many small contributions from resource-constrained practitioners — the Linux argument applied to model optimization. ([Local Models: Trust, Control, Optimization](../talks/local-models-trust-control-optimization.md), [29:21](https://www.youtube.com/watch?v=FWMJQDH3iK0&t=1761s))
 
 ## All Talks
 
@@ -145,16 +144,20 @@ Supporting talks: [The Missing Layer After Launch](../talks/the-missing-layer-af
 - [Agents in Production: How OpenGov Built and Scaled OG Assist](../talks/agents-in-production-how-opengov-built-and-scaled-og-assist.md)
 - [Build AI Systems for Discernment, Not Approval](../talks/build-ai-systems-for-discernment-not-approval.md)
 - [Forward Deployed Engineering at Cursor](../talks/forward-deployed-engineering-at-cursor.md)
+- [From Ambient Documentation to Clinical Intelligence](../talks/from-ambient-documentation-to-clinical-intelligence.md)
 - [How Forward Deployed Engineering is done at Cognition](../talks/how-forward-deployed-engineering-is-done-at-cognition.md)
 - [Local Models: Trust, Control, Optimization](../talks/local-models-trust-control-optimization.md)
 - [The Missing Layer After Launch](../talks/the-missing-layer-after-launch.md)
+- [Trading Desks to Clinical Trials: Parallels in Applied Vertical AI](../talks/trading-desks-to-clinical-trials-parallels-in-applied-vertical-ai.md)
 - [User Signal Dies at the Retrieval Boundary](../talks/user-signal-dies-at-the-retrieval-boundary.md)
 - [Why Off-the-Shelf AI Doesn't Understand Money](../talks/why-off-the-shelf-ai-doesnt-understand-money.md)
 
 ## Speakers
 
 - [Angel Ortmann Lee](../speakers/angel-ortmann-lee.md)
+- [Ayush Bhardwaj](../speakers/ayush-bhardwaj.md)
 - [Carter Abdallah](../speakers/carter-abdallah.md)
+- [Chaitanya Asawa](../speakers/chaitanya-asawa.md)
 - [Chris Alexiuk](../speakers/chris-alexiuk.md)
 - [Gabe De Mesa](../speakers/gabe-de-mesa.md)
 - [Giedrius Steimantas](../speakers/giedrius-steimantas.md)

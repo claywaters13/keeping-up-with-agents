@@ -1,0 +1,295 @@
+{
+  "is_error": false,
+  "duration_api_ms": 71440,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "52d78ae7-0b4b-40d7-899d-7a3599d258f6",
+  "total_cost_usd": 0.31326149999999997,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 13928,
+    "cache_read_input_tokens": 8113,
+    "output_tokens": 6513,
+    "output_tokens_details": {
+      "thinking_tokens": 1793
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 13928,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 6513,
+        "cache_read_input_tokens": 8113,
+        "cache_creation_input_tokens": 13928,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 13928
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 7000,
+      "outputTokens": 18,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.00709,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 6513,
+      "cacheReadInputTokens": 8113,
+      "cacheCreationInputTokens": 13928,
+      "webSearchRequests": 0,
+      "costUSD": 0.3061715,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "{\n  \"summary\": \"Vivek Muppalla, who runs engineering at Hippocratic AI, walks through the architecture behind an AI system that has made over 200 million clinical phone calls to patients across 60+ health systems. His core argument is that healthcare has always been rationed by scarcity \u2014 triage exists because there were never enough clinicians \u2014 and that cheap, clinically safe AI conversations flip the math so you can call everyone rather than just the sickest 5%. The bulk of the talk is a concrete engineering tour: why a generic voice stack fails on clinical accuracy and latency, how their 'Polaris' constellation runs 31 models in parallel with short-circuiting specialists, a context-conditioned decoder-only audio LLM for ASR, and lossless inference optimizations (4-bit quantization, speculative decoding, KV cache compression). It's worth watching for anyone building high-stakes voice agents or wrestling with eval statistics, since he shows why 99% accuracy is unacceptable at 10,000 calls a day and why they use 7,000 trained clinicians rather than synthetic data alone. The talk ends on safety grading (99.89% no-harm vs ~81% for humans on the same rubric) and a case that empathy, not just safety, is a shipping requirement.\",\n  \"key_points\": [\n    \"Healthcare's triage model exists because of clinician scarcity; once AI conversations are both clinically safe and cheap, the economics permit proactive outreach to every patient rather than only the sickest.\",\n    \"Off-the-shelf models sit at the wrong corners of the intelligence/latency plane \u2014 smart models take tens of seconds to over a minute, fast models lack clinical accuracy \u2014 which forced Hippocratic to build a vertically integrated stack.\",\n    \"Latency savings are never banked: each optimization frees a gap that gets refilled with more intelligence, turning the latency-vs-intelligence tradeoff into a compounding flywheel.\",\n    \"The 'brain' is a constellation of 31 models run in parallel for every conversation \u2014 one central conversational model plus ~30 specialists (labs, medications, scheduling) \u2014 because a single model is a single point of failure that is unacceptable in patient care.\",\n    \"Parallel specialists stay within latency budget because each first does a cheap check on whether it has anything to contribute and short-circuits if not; separate asynchronous and offline verifiers check tool-call parameters and responses.\",\n    \"Their ASR is a decoder-only audio LLM (fine-tuned Whisper V3 large turbo encoder plus a conformer projector that preserves prosody) conditioned on conversation context and domain knowledge, which converts open-vocabulary guessing into a finite-list problem and cuts medical word error rate by over 50%.\",\n    \"Single-word patient responses ('a' vs 'no', 'five' vs 'fine') are a catastrophic failure mode, so they run a second scoring pass using full-conversation context whenever a patient utters one word.\",\n    \"Inference optimizations are constrained to be lossless on quality: 4-bit quantization down from 16-bit, speculative decoding, and KV cache compression yielding a 96%+ cache hit rate and 18x faster prefill.\",\n    \"Eval math at scale is brutal \u2014 1% error on 10,000 scheduling calls a day means 100 wrong appointments \u2014 and catching a 1% error rate statistically requires ~450 tests for 99% confidence, so they pair synthetic data with 7,000 trained clinicians who have run nearly 800,000 evaluation conversations.\",\n    \"Safety is graded on the same human rubric (correct, no harm, minor harm, severe harm, death), where Polaris reaches 99.89% no-harm against roughly 81% for humans, attributed to AI not tiring and having 30+ supervising models.\",\n    \"Empathy needed its own benchmark, so they built and published HEART, on the premise that patients only open up to a system they prefer, not merely one that is safe.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"We can stop rationing, and you don't have to have calls just for the sickest 5%, but you can call everyone.\",\n      \"timestamp_sec\": 49,\n      \"why\": \"The thesis in one line: abundance replacing triage.\"\n    },\n    {\n      \"text\": \"we've had 200 million clinical interactions. We've had zero significant safety incidents. We've deployed in over 60 plus health systems and have an 8.5 on 10 patient satisfaction rating.\",\n      \"timestamp_sec\": 126,\n      \"why\": \"The headline scale and safety numbers the whole talk rests on.\"\n    },\n    {\n      \"text\": \"many of these models take tens of seconds to respond, sometimes over a minute. And that's completely useless when we're trying to have a two-way conversation on a telephone.\",\n      \"timestamp_sec\": 324,\n      \"why\": \"Names the concrete constraint that rules out frontier reasoning models for voice.\"\n    },\n    {\n      \"text\": \"every time we work on an optimization, we buy back some latency, and we just don't bank that latency. We use that extra gap now to pack more intelligence into the overall system\",\n      \"timestamp_sec\": 420,\n      \"why\": \"A transferable engineering policy for latency budgets.\"\n    },\n    {\n      \"text\": \"So, what seems like a tug-of-war between latency and intelligence for us is a compounding flywheel.\",\n      \"timestamp_sec\": 461,\n      \"why\": \"Reframes the central tradeoff of voice-agent design.\"\n    },\n    {\n      \"text\": \"We in fact run 31 models at any given point of time for every conversation.\",\n      \"timestamp_sec\": 506,\n      \"why\": \"The most surprising architectural number in the talk.\"\n    },\n    {\n      \"text\": \"The reason we have the system is because we see a singular model being as like one point of failure, and that's just unacceptable for a patient conversation.\",\n      \"timestamp_sec\": 506,\n      \"why\": \"States the reliability rationale for multi-model over single-model design.\"\n    },\n    {\n      \"text\": \"most of what looks like model reasoning failures end up actually being model mishearing things\",\n      \"timestamp_sec\": 552,\n      \"why\": \"A debugging insight that reassigns blame from the LLM to the ASR layer.\"\n    },\n    {\n      \"text\": \"So, the model hears not just the what, but also the how.\",\n      \"timestamp_sec\": 642,\n      \"why\": \"Compact statement of why prosody preservation matters in the projector.\"\n    },\n    {\n      \"text\": \"when a patient mentions a medication name, we aren't guessing from like an infinite list of medications, but we have the chance to optimize around a finite list, and that helps in getting the word error rate down\",\n      \"timestamp_sec\": 642,\n      \"why\": \"Explains the mechanism by which context conditioning improves recognition.\"\n    },\n    {\n      \"text\": \"A now becomes a no, or a five becomes a fine. And in a patient conversation, that's catastrophic.\",\n      \"timestamp_sec\": 741,\n      \"why\": \"Vivid example of a domain-specific ASR failure mode with clinical consequences.\"\n    },\n    {\n      \"text\": \"every specialist first decides, \\\"Hey, do I need to speak?\\\" If not, it's a short circuit and that's what helps us keep us in the budget.\",\n      \"timestamp_sec\": 780,\n      \"why\": \"The trick that makes 31 parallel models affordable in real time.\"\n    },\n    {\n      \"text\": \"for inference itself, quality is our constraint and speed is the work. So, we can never compromise on the quality of the output. Every speed optimization has to be lossless.\",\n      \"timestamp_sec\": 897,\n      \"why\": \"Crisp statement of the optimization constraint in a safety-critical domain.\"\n    },\n    {\n      \"text\": \"we've figured out a way to keep a large chunk of these conversations warm on cache, giving us an over 96% hit rate\",\n      \"timestamp_sec\": 943,\n      \"why\": \"Reports a specific cache performance number for long voice sessions.\"\n    },\n    {\n      \"text\": \"Most agentic systems would claim 80%, 90% accuracy, and that's great for them. For us, even the 99% is pretty bad because 1% error means 100 people a day are going to get the wrong appointment type\",\n      \"timestamp_sec\": 988,\n      \"why\": \"The clearest argument that healthcare accuracy bars are categorically different.\"\n    },\n    {\n      \"text\": \"You need about 450 tests to be 99% sure that you can catch this like 1% error rate and and 1900 tests to be able to see that you've caught it like 10 times.\",\n      \"timestamp_sec\": 1033,\n      \"why\": \"Quantifies the sample-size cost of detecting rare failures.\"\n    },\n    {\n      \"text\": \"So you can't purely rely on synthetic data from our experience to be able to get to the scale of accuracy.\",\n      \"timestamp_sec\": 1033,\n      \"why\": \"A direct position against synthetic-only eval pipelines.\"\n    },\n    {\n      \"text\": \"across five generations where we're at with our Polaris system is a 99.89% accuracy with respect to like no harm. And humans on the same rubric are at about 81%.\",\n      \"timestamp_sec\": 1070,\n      \"why\": \"The talk's boldest comparative claim, AI safety versus human clinicians.\"\n    },\n    {\n      \"text\": \"It's not because like we're terrible, but AI systems don't get tired and unfortunately we do\",\n      \"timestamp_sec\": 1070,\n      \"why\": \"Offers the mechanism behind the human-vs-AI safety gap.\"\n    },\n    {\n      \"text\": \"We're told you got to pick two of these options around quality, speed, and safety. We didn't and we decided to go with all of them\",\n      \"timestamp_sec\": 1207,\n      \"why\": \"The closing rejection of the pick-two framing.\"\n    }\n  ],\n  \"concepts\": [\n    \"voice agent architecture\",\n    \"multi-model orchestration\",\n    \"speech recognition in noisy conditions\",\n    \"context-conditioned asr\",\n    \"latency budgeting\",\n    \"speculative decoding\",\n    \"kv cache compression\",\n    \"quantization\",\n    \"eval sample size and statistical power\",\n    \"human-in-the-loop evaluation\",\n    \"clinical safety grading\",\n    \"empathy benchmarking\",\n    \"tool call verification\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"Generic off-the-shelf voice stacks cannot meet clinical requirements, so a vertically integrated, self-built stack is necessary for use cases like lab results checks and IVR navigation that need over 99% accuracy.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 420\n    },\n    {\n      \"claim\": \"Latency and intelligence are not a permanent tradeoff; reinvesting latency savings into more intelligence makes them a compounding flywheel.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 461\n    },\n    {\n      \"claim\": \"Relying on a single model for a patient conversation is an unacceptable single point of failure; redundancy across 31 parallel models provides safety a single model cannot.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 506\n    },\n    {\n      \"claim\": \"Most apparent reasoning failures in clinical voice agents are actually transcription errors, not model reasoning errors.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 552\n    },\n    {\n      \"claim\": \"Public audio benchmarks are misleading because they are recorded in quiet rooms while real deployments are noisy.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 552\n    },\n    {\n      \"claim\": \"Feeding conversation context and domain knowledge into a decoder-only audio LLM reduces medical word error rate by over 50% relative to standard off-the-shelf models, and their system is 3x faster at P99 than every other system.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 741\n    },\n    {\n      \"claim\": \"Every speed optimization must be lossless with respect to output quality; quality is a hard constraint rather than something to trade against latency.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 897\n    },\n    {\n      \"claim\": \"Four-bit quantization from 16-bit, speculative decoding, and KV cache compression (96%+ hit rate, 18x faster prefill) were the three most meaningful inference optimizations.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 943\n    },\n    {\n      \"claim\": \"The 80-90% accuracy typical of agentic systems is inadequate for healthcare, and even 99% is bad because it means 100 wrong appointments per day at 10,000 calls.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 988\n    },\n    {\n      \"claim\": \"Synthetic data alone cannot reach the accuracy scale required; human clinician evaluation at scale (7,000 clinicians, ~800,000 conversations) is required.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1033\n    },\n    {\n      \"claim\": \"On the same harm rubric used for humans, their Polaris system achieves 99.89% no-harm accuracy versus about 81% for human clinicians, because AI systems do not get tired and have 30+ supervisor models.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1070\n    },\n    {\n      \"claim\": \"Safety alone is insufficient for adoption \u2014 patients must find the system empathetic to open up to it \u2014 and existing benchmarks did not measure empathy, so they built and published HEART.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1123\n    },\n    {\n      \"claim\": \"AI-native operations, including unlimited tokens for every employee and dedicated agent/AI residency programs, are a prerequisite for shipping at this level.\",\n      \"confidence\": \"implied\",\n      \"timestamp_sec\": 1165\n    },\n    {\n      \"claim\": \"The conventional wisdom that you must pick two of quality, speed, and safety is wrong.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1207\n    }\n  ],\n  \"speaker_org\": \"Hippocratic AI\"\n}",
+  "ttft_ms": 21675,
+  "ttft_stream_ms": 1197,
+  "time_to_request_ms": 168,
+  "type": "result",
+  "duration_ms": 72433,
+  "uuid": "4fd18031-da18-40ea-a214-0ba079eaf1f1",
+  "passA": {
+    "summary": "Vivek Muppalla, who runs engineering at Hippocratic AI, walks through the architecture behind an AI system that has made over 200 million clinical phone calls to patients across 60+ health systems. His core argument is that healthcare has always been rationed by scarcity \u2014 triage exists because there were never enough clinicians \u2014 and that cheap, clinically safe AI conversations flip the math so you can call everyone rather than just the sickest 5%. The bulk of the talk is a concrete engineering tour: why a generic voice stack fails on clinical accuracy and latency, how their 'Polaris' constellation runs 31 models in parallel with short-circuiting specialists, a context-conditioned decoder-only audio LLM for ASR, and lossless inference optimizations (4-bit quantization, speculative decoding, KV cache compression). It's worth watching for anyone building high-stakes voice agents or wrestling with eval statistics, since he shows why 99% accuracy is unacceptable at 10,000 calls a day and why they use 7,000 trained clinicians rather than synthetic data alone. The talk ends on safety grading (99.89% no-harm vs ~81% for humans on the same rubric) and a case that empathy, not just safety, is a shipping requirement.",
+    "key_points": [
+      "Healthcare's triage model exists because of clinician scarcity; once AI conversations are both clinically safe and cheap, the economics permit proactive outreach to every patient rather than only the sickest.",
+      "Off-the-shelf models sit at the wrong corners of the intelligence/latency plane \u2014 smart models take tens of seconds to over a minute, fast models lack clinical accuracy \u2014 which forced Hippocratic to build a vertically integrated stack.",
+      "Latency savings are never banked: each optimization frees a gap that gets refilled with more intelligence, turning the latency-vs-intelligence tradeoff into a compounding flywheel.",
+      "The 'brain' is a constellation of 31 models run in parallel for every conversation \u2014 one central conversational model plus ~30 specialists (labs, medications, scheduling) \u2014 because a single model is a single point of failure that is unacceptable in patient care.",
+      "Parallel specialists stay within latency budget because each first does a cheap check on whether it has anything to contribute and short-circuits if not; separate asynchronous and offline verifiers check tool-call parameters and responses.",
+      "Their ASR is a decoder-only audio LLM (fine-tuned Whisper V3 large turbo encoder plus a conformer projector that preserves prosody) conditioned on conversation context and domain knowledge, which converts open-vocabulary guessing into a finite-list problem and cuts medical word error rate by over 50%.",
+      "Single-word patient responses ('a' vs 'no', 'five' vs 'fine') are a catastrophic failure mode, so they run a second scoring pass using full-conversation context whenever a patient utters one word.",
+      "Inference optimizations are constrained to be lossless on quality: 4-bit quantization down from 16-bit, speculative decoding, and KV cache compression yielding a 96%+ cache hit rate and 18x faster prefill.",
+      "Eval math at scale is brutal \u2014 1% error on 10,000 scheduling calls a day means 100 wrong appointments \u2014 and catching a 1% error rate statistically requires ~450 tests for 99% confidence, so they pair synthetic data with 7,000 trained clinicians who have run nearly 800,000 evaluation conversations.",
+      "Safety is graded on the same human rubric (correct, no harm, minor harm, severe harm, death), where Polaris reaches 99.89% no-harm against roughly 81% for humans, attributed to AI not tiring and having 30+ supervising models.",
+      "Empathy needed its own benchmark, so they built and published HEART, on the premise that patients only open up to a system they prefer, not merely one that is safe."
+    ],
+    "notable_quotes": [
+      {
+        "text": "We can stop rationing, and you don't have to have calls just for the sickest 5%, but you can call everyone.",
+        "timestamp_sec": 49,
+        "why": "The thesis in one line: abundance replacing triage."
+      },
+      {
+        "text": "we've had 200 million clinical interactions. We've had zero significant safety incidents. We've deployed in over 60 plus health systems and have an 8.5 on 10 patient satisfaction rating.",
+        "timestamp_sec": 126,
+        "why": "The headline scale and safety numbers the whole talk rests on."
+      },
+      {
+        "text": "many of these models take tens of seconds to respond, sometimes over a minute. And that's completely useless when we're trying to have a two-way conversation on a telephone.",
+        "timestamp_sec": 324,
+        "why": "Names the concrete constraint that rules out frontier reasoning models for voice."
+      },
+      {
+        "text": "every time we work on an optimization, we buy back some latency, and we just don't bank that latency. We use that extra gap now to pack more intelligence into the overall system",
+        "timestamp_sec": 420,
+        "why": "A transferable engineering policy for latency budgets."
+      },
+      {
+        "text": "So, what seems like a tug-of-war between latency and intelligence for us is a compounding flywheel.",
+        "timestamp_sec": 461,
+        "why": "Reframes the central tradeoff of voice-agent design."
+      },
+      {
+        "text": "We in fact run 31 models at any given point of time for every conversation.",
+        "timestamp_sec": 506,
+        "why": "The most surprising architectural number in the talk."
+      },
+      {
+        "text": "The reason we have the system is because we see a singular model being as like one point of failure, and that's just unacceptable for a patient conversation.",
+        "timestamp_sec": 506,
+        "why": "States the reliability rationale for multi-model over single-model design."
+      },
+      {
+        "text": "most of what looks like model reasoning failures end up actually being model mishearing things",
+        "timestamp_sec": 552,
+        "why": "A debugging insight that reassigns blame from the LLM to the ASR layer."
+      },
+      {
+        "text": "So, the model hears not just the what, but also the how.",
+        "timestamp_sec": 642,
+        "why": "Compact statement of why prosody preservation matters in the projector."
+      },
+      {
+        "text": "when a patient mentions a medication name, we aren't guessing from like an infinite list of medications, but we have the chance to optimize around a finite list, and that helps in getting the word error rate down",
+        "timestamp_sec": 642,
+        "why": "Explains the mechanism by which context conditioning improves recognition."
+      },
+      {
+        "text": "A now becomes a no, or a five becomes a fine. And in a patient conversation, that's catastrophic.",
+        "timestamp_sec": 741,
+        "why": "Vivid example of a domain-specific ASR failure mode with clinical consequences."
+      },
+      {
+        "text": "every specialist first decides, \"Hey, do I need to speak?\" If not, it's a short circuit and that's what helps us keep us in the budget.",
+        "timestamp_sec": 780,
+        "why": "The trick that makes 31 parallel models affordable in real time."
+      },
+      {
+        "text": "for inference itself, quality is our constraint and speed is the work. So, we can never compromise on the quality of the output. Every speed optimization has to be lossless.",
+        "timestamp_sec": 897,
+        "why": "Crisp statement of the optimization constraint in a safety-critical domain."
+      },
+      {
+        "text": "we've figured out a way to keep a large chunk of these conversations warm on cache, giving us an over 96% hit rate",
+        "timestamp_sec": 943,
+        "why": "Reports a specific cache performance number for long voice sessions."
+      },
+      {
+        "text": "Most agentic systems would claim 80%, 90% accuracy, and that's great for them. For us, even the 99% is pretty bad because 1% error means 100 people a day are going to get the wrong appointment type",
+        "timestamp_sec": 988,
+        "why": "The clearest argument that healthcare accuracy bars are categorically different."
+      },
+      {
+        "text": "You need about 450 tests to be 99% sure that you can catch this like 1% error rate and and 1900 tests to be able to see that you've caught it like 10 times.",
+        "timestamp_sec": 1033,
+        "why": "Quantifies the sample-size cost of detecting rare failures."
+      },
+      {
+        "text": "So you can't purely rely on synthetic data from our experience to be able to get to the scale of accuracy.",
+        "timestamp_sec": 1033,
+        "why": "A direct position against synthetic-only eval pipelines."
+      },
+      {
+        "text": "across five generations where we're at with our Polaris system is a 99.89% accuracy with respect to like no harm. And humans on the same rubric are at about 81%.",
+        "timestamp_sec": 1070,
+        "why": "The talk's boldest comparative claim, AI safety versus human clinicians."
+      },
+      {
+        "text": "It's not because like we're terrible, but AI systems don't get tired and unfortunately we do",
+        "timestamp_sec": 1070,
+        "why": "Offers the mechanism behind the human-vs-AI safety gap."
+      },
+      {
+        "text": "We're told you got to pick two of these options around quality, speed, and safety. We didn't and we decided to go with all of them",
+        "timestamp_sec": 1207,
+        "why": "The closing rejection of the pick-two framing."
+      }
+    ],
+    "concepts": [
+      "voice agent architecture",
+      "multi-model orchestration",
+      "speech recognition in noisy conditions",
+      "context-conditioned asr",
+      "latency budgeting",
+      "speculative decoding",
+      "kv cache compression",
+      "quantization",
+      "eval sample size and statistical power",
+      "human-in-the-loop evaluation",
+      "clinical safety grading",
+      "empathy benchmarking",
+      "tool call verification"
+    ],
+    "positions": [
+      {
+        "claim": "Generic off-the-shelf voice stacks cannot meet clinical requirements, so a vertically integrated, self-built stack is necessary for use cases like lab results checks and IVR navigation that need over 99% accuracy.",
+        "confidence": "stated",
+        "timestamp_sec": 420
+      },
+      {
+        "claim": "Latency and intelligence are not a permanent tradeoff; reinvesting latency savings into more intelligence makes them a compounding flywheel.",
+        "confidence": "stated",
+        "timestamp_sec": 461
+      },
+      {
+        "claim": "Relying on a single model for a patient conversation is an unacceptable single point of failure; redundancy across 31 parallel models provides safety a single model cannot.",
+        "confidence": "stated",
+        "timestamp_sec": 506
+      },
+      {
+        "claim": "Most apparent reasoning failures in clinical voice agents are actually transcription errors, not model reasoning errors.",
+        "confidence": "stated",
+        "timestamp_sec": 552
+      },
+      {
+        "claim": "Public audio benchmarks are misleading because they are recorded in quiet rooms while real deployments are noisy.",
+        "confidence": "stated",
+        "timestamp_sec": 552
+      },
+      {
+        "claim": "Feeding conversation context and domain knowledge into a decoder-only audio LLM reduces medical word error rate by over 50% relative to standard off-the-shelf models, and their system is 3x faster at P99 than every other system.",
+        "confidence": "stated",
+        "timestamp_sec": 741
+      },
+      {
+        "claim": "Every speed optimization must be lossless with respect to output quality; quality is a hard constraint rather than something to trade against latency.",
+        "confidence": "stated",
+        "timestamp_sec": 897
+      },
+      {
+        "claim": "Four-bit quantization from 16-bit, speculative decoding, and KV cache compression (96%+ hit rate, 18x faster prefill) were the three most meaningful inference optimizations.",
+        "confidence": "stated",
+        "timestamp_sec": 943
+      },
+      {
+        "claim": "The 80-90% accuracy typical of agentic systems is inadequate for healthcare, and even 99% is bad because it means 100 wrong appointments per day at 10,000 calls.",
+        "confidence": "stated",
+        "timestamp_sec": 988
+      },
+      {
+        "claim": "Synthetic data alone cannot reach the accuracy scale required; human clinician evaluation at scale (7,000 clinicians, ~800,000 conversations) is required.",
+        "confidence": "stated",
+        "timestamp_sec": 1033
+      },
+      {
+        "claim": "On the same harm rubric used for humans, their Polaris system achieves 99.89% no-harm accuracy versus about 81% for human clinicians, because AI systems do not get tired and have 30+ supervisor models.",
+        "confidence": "stated",
+        "timestamp_sec": 1070
+      },
+      {
+        "claim": "Safety alone is insufficient for adoption \u2014 patients must find the system empathetic to open up to it \u2014 and existing benchmarks did not measure empathy, so they built and published HEART.",
+        "confidence": "stated",
+        "timestamp_sec": 1123
+      },
+      {
+        "claim": "AI-native operations, including unlimited tokens for every employee and dedicated agent/AI residency programs, are a prerequisite for shipping at this level.",
+        "confidence": "implied",
+        "timestamp_sec": 1165
+      },
+      {
+        "claim": "The conventional wisdom that you must pick two of quality, speed, and safety is wrong.",
+        "confidence": "stated",
+        "timestamp_sec": 1207
+      }
+    ],
+    "speaker_org": "Hippocratic AI"
+  },
+  "_meta": {
+    "slug": "200-million-patient-interactions-later",
+    "video_id": "AN65uc645mE",
+    "url": "https://www.youtube.com/watch?v=AN65uc645mE",
+    "word_count": 3472,
+    "wall_sec": 73.3,
+    "run_at": "2026-08-20T02:46:19Z",
+    "effort": "default"
+  }
+}

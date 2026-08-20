@@ -4,15 +4,15 @@ type: "concept"
 slug: "computer-use-agents"
 tier: "core"
 maturity: "contested"
-talk_count: 14
-speaker_count: 15
+talk_count: 15
+speaker_count: 16
 ---
 
 # computer use agents
 
 **Maturity: CONTESTED** — Contested — active, unresolved disagreement across talks
 
-*Core concept* &middot; discussed across **14** talk(s) by **15** speaker(s)
+*Core concept* &middot; discussed across **15** talk(s) by **16** speaker(s)
 
 **Definition:** Agents that operate GUIs, browsers, and screens directly — grounding on pixels, DOM, or accessibility trees — rather than through purpose-built APIs.
 
@@ -20,41 +20,21 @@ speaker_count: 15
 
 ## State of Practice
 
-The field has largely stopped treating computer use as a model-capability problem and started treating it as a harness, representation, and verification problem. The dominant production pattern is hybrid rather than pure clicking: an agent that reads a compressed page representation (accessibility tree, markdown digest, or 'appshot') alongside a screenshot, drives deterministic code or CLI/CDP calls for the repeatable parts, and reserves model calls for the steps that genuinely need eyes and judgment — with the outcome verified through a different channel than the one that took the action. Concrete engineering numbers are now the currency of the debate: ~1,800 markdown tokens versus ~20,000 for full DOM on the same page, a 62%→80% pass rate and 34% token cut from scoping the agent to a window instead of the desktop, a 2% context cap on the skills list, ~$0.80 versus ~$230 per 20-30 step task. Against that optimism sits a hard evaluation backlash: a blind replay agent matches frontier models on OSWorld/MobileWorld, no model exceeds 30% reward on CAD tasks, from-scratch creation is 0%, rollout-only confidence intervals achieve 17-20% empirical coverage against a nominal 95%, and 9% of long-horizon rollouts showed clear verifier bypasses. Almost everyone agrees the long tail of software will never ship APIs or MCP servers, so the rendered UI is the permissionless universal interface — and that reliability, not capability, is what stands between demos and deployment.
+The field has largely stopped blaming the model. Across the Computer Use track the recurring claim is a capability overhang: frontier models can already reason about screens, and what's missing is the harness — page representation, context compression, action verification, sandbox infrastructure, and recovery policy. Practice has converged on hybrid execution: the accessibility tree or a compressed markdown rendering of the page as the primary observation channel with a screenshot alongside, and code execution (CDP calls, network-request replay, a persistent REPL) doing the deterministic driving while the model handles only the parts that need eyes and judgment. Everyone who reported numbers reported low absolute capability — no model above 30% reward on Cua's CAD dataset, 0% success when a task starts from a blank artifact, 26% on SWE-Marathon's project-scale tasks — and simultaneously reported that existing benchmarks are gameable: a blind replay agent matches the frontier model that generated it on OSWorld, and rollout-only confidence intervals cover at 17-20% instead of 95%. The second-order problem is trust rather than action: verify through a different channel than the one you acted on, surface infra errors to the model instead of resetting, and hand control back to the human when confidence is low. Unresolved at the fundamentals level: whether pixels or structured trees are the right substrate, and whether the next gain comes from harness engineering or from RL-training the perception into the model.
 
 ## Consensus
 
-### The binding constraint on computer-use agents is the surrounding harness, infrastructure, and page representation — not model capability.
+### The binding constraint on computer-use agents is the harness and surrounding infrastructure, not model capability — there is a capability overhang that ordinary engineering can close today.
 
 Support: **5** talk(s)
 
-> "The hypothesis here is models are pretty smart, but it's the infra around them that sucks."
+> "there is a massive capabilities overhang in computer use. The models are good enough, but we haven't done the engineering work to solve it."
 >
-> — [Browser Agents Don't Need Better Models. They Need Better Eyes.](../talks/browser-agents-dont-need-better-models-they-need-better-eyes.md), [0:54](https://www.youtube.com/watch?v=JnubYCYunk8&t=54s)
+> — [Bringing agents onto the world wide web](../talks/bringing-agents-onto-the-world-wide-web.md), [5:46](https://www.youtube.com/watch?v=GqoNrUz8hEU&t=346s)
 
-Supporting talks: [Bringing agents onto the world wide web](../talks/bringing-agents-onto-the-world-wide-web.md), [Browser Agents Don't Need Better Models. They Need Better Eyes.](../talks/browser-agents-dont-need-better-models-they-need-better-eyes.md), [Codex, Behind the Harness](../talks/codex-behind-the-harness.md), [SWE-Marathon: Evaluating Coding Agents at Billion-Token Scale](../talks/swe-marathon-evaluating-coding-agents-at-billion-token-scale.md), [The Missing Layer After Launch](../talks/the-missing-layer-after-launch.md)
+Supporting talks: [Bringing agents onto the world wide web](../talks/bringing-agents-onto-the-world-wide-web.md), [Browser Agents Don't Need Better Models. They Need Better Eyes.](../talks/browser-agents-dont-need-better-models-they-need-better-eyes.md), [The Missing Layer After Launch](../talks/the-missing-layer-after-launch.md), [SWE-Marathon: Evaluating Coding Agents at Billion-Token Scale](../talks/swe-marathon-evaluating-coding-agents-at-billion-token-scale.md), [Codex, Behind the Harness](../talks/codex-behind-the-harness.md)
 
-### Verification of an action must come through a different channel than the action itself; an agent's own report that it succeeded is not evidence that it did.
-
-Support: **6** talk(s)
-
-> "if you've clicked something, don't ask the click if it was successful. Check the network or check the screen."
->
-> — [The Dark Arts of Web Automation: Teaching Agents to Use Websites Like Humans](../talks/the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans.md), [6:10](https://www.youtube.com/watch?v=26RtyAm9y_Q&t=370s)
-
-Supporting talks: [The Dark Arts of Web Automation: Teaching Agents to Use Websites Like Humans](../talks/the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans.md), [Browser Agents Don't Need Better Models. They Need Better Eyes.](../talks/browser-agents-dont-need-better-models-they-need-better-eyes.md), [Perception Agents](../talks/perception-agents.md), [The Missing Layer After Launch](../talks/the-missing-layer-after-launch.md), [SWE-Marathon: Evaluating Coding Agents at Billion-Token Scale](../talks/swe-marathon-evaluating-coding-agents-at-billion-token-scale.md), [Develop at Idea Velocity](../talks/develop-at-idea-velocity.md)
-
-### Reliable agents combine deterministic code execution with GUI interaction rather than clicking through every step with a model in the loop.
-
-Support: **4** talk(s)
-
-> "Code does the deterministic driving and the agent does the only bits that require eyes and a brain."
->
-> — [The Dark Arts of Web Automation: Teaching Agents to Use Websites Like Humans](../talks/the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans.md), [17:54](https://www.youtube.com/watch?v=26RtyAm9y_Q&t=1074s)
-
-Supporting talks: [Bringing agents onto the world wide web](../talks/bringing-agents-onto-the-world-wide-web.md), [Computer-use models will agentify the web, not APIs](../talks/computer-use-models-will-agentify-the-web-not-apis.md), [Codex, Behind the Harness](../talks/codex-behind-the-harness.md), [The Dark Arts of Web Automation: Teaching Agents to Use Websites Like Humans](../talks/the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans.md)
-
-### The observation channel should pair pixels with a structured or compressed representation (accessibility tree, markdown digest, appshot) — neither raw DOM nor screenshots alone is sufficient.
+### Neither raw DOM nor screenshots alone are an adequate observation channel; the working pattern is a compressed structured representation (accessibility tree or markdown) supplied alongside a screenshot.
 
 Support: **5** talk(s)
 
@@ -62,39 +42,49 @@ Support: **5** talk(s)
 >
 > — [Browser Agents Don't Need Better Models. They Need Better Eyes.](../talks/browser-agents-dont-need-better-models-they-need-better-eyes.md), [3:54](https://www.youtube.com/watch?v=JnubYCYunk8&t=234s)
 
-Supporting talks: [Browser Agents Don't Need Better Models. They Need Better Eyes.](../talks/browser-agents-dont-need-better-models-they-need-better-eyes.md), [Computer-Use 2.0: Agents Just Got Multi-Cursor](../talks/computer-use-20-agents-just-got-multi-cursor.md), [Full Workshop: Setting Yourself Up for Success —Jason Liu, OpenAI Codex](../talks/full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex.md), [From RL to IRL](../talks/from-rl-to-irl.md), [Bringing agents onto the world wide web](../talks/bringing-agents-onto-the-world-wide-web.md)
+Supporting talks: [Browser Agents Don't Need Better Models. They Need Better Eyes.](../talks/browser-agents-dont-need-better-models-they-need-better-eyes.md), [Bringing agents onto the world wide web](../talks/bringing-agents-onto-the-world-wide-web.md), [Computer-Use 2.0: Agents Just Got Multi-Cursor](../talks/computer-use-20-agents-just-got-multi-cursor.md), [Full Workshop: Setting Yourself Up for Success —Jason Liu, OpenAI Codex](../talks/full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex.md), [From RL to IRL](../talks/from-rl-to-irl.md)
 
-### Context must be actively compressed and budgeted; dumping full page content or all available tools into the window degrades quality, not just cost.
+### Computer-use agents should not be restricted to human-style clicking — the reliable production pattern mixes code execution (scripts, network-request replay, a persistent REPL, CDP calls) with GUI interaction.
 
 Support: **5** talk(s)
 
-> "the more context you have in your in your context, the higher it is that you have contradicting information and it causes confusion for the model."
+> "click buttons when you have to, write code when you have to and look at the result uh through pixels because that is the that is the source of of truth."
 >
-> — [Codex, Behind the Harness](../talks/codex-behind-the-harness.md), [4:05](https://www.youtube.com/watch?v=shRR1e2HXMk&t=245s)
+> — [Computer-use models will agentify the web, not APIs](../talks/computer-use-models-will-agentify-the-web-not-apis.md), [15:09](https://www.youtube.com/watch?v=Ki980nV0__0&t=909s)
 
-Supporting talks: [Codex, Behind the Harness](../talks/codex-behind-the-harness.md), [Bringing agents onto the world wide web](../talks/bringing-agents-onto-the-world-wide-web.md), [Browser Agents Don't Need Better Models. They Need Better Eyes.](../talks/browser-agents-dont-need-better-models-they-need-better-eyes.md), [Computer-Use 2.0: Agents Just Got Multi-Cursor](../talks/computer-use-20-agents-just-got-multi-cursor.md), [Develop at Idea Velocity](../talks/develop-at-idea-velocity.md)
+Supporting talks: [Computer-use models will agentify the web, not APIs](../talks/computer-use-models-will-agentify-the-web-not-apis.md), [Bringing agents onto the world wide web](../talks/bringing-agents-onto-the-world-wide-web.md), [Codex, Behind the Harness](../talks/codex-behind-the-harness.md), [The Dark Arts of Web Automation: Teaching Agents to Use Websites Like Humans](../talks/the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans.md), [From RL to IRL](../talks/from-rl-to-irl.md)
 
-### Existing computer-use benchmarks are gameable and their headline numbers cannot be trusted; environments must be adversarially attacked and verifiers treated as first-class design, not an afterthought.
+### Verification must come through a channel independent of the action — never accept the acting agent's own report that the action succeeded.
+
+Support: **7** talk(s)
+
+> "if you've clicked something, don't ask the click if it was successful. Check the network or check the screen."
+>
+> — [The Dark Arts of Web Automation: Teaching Agents to Use Websites Like Humans](../talks/the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans.md), [6:10](https://www.youtube.com/watch?v=26RtyAm9y_Q&t=370s)
+
+Supporting talks: [The Dark Arts of Web Automation: Teaching Agents to Use Websites Like Humans](../talks/the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans.md), [SWE-Marathon: Evaluating Coding Agents at Billion-Token Scale](../talks/swe-marathon-evaluating-coding-agents-at-billion-token-scale.md), [Perception Agents](../talks/perception-agents.md), [The Missing Layer After Launch](../talks/the-missing-layer-after-launch.md), [Develop at Idea Velocity](../talks/develop-at-idea-velocity.md), [Can Oncology Workflows Run Without Human Touch?](../talks/can-oncology-workflows-run-without-human-touch.md), [Browser Agents Don't Need Better Models. They Need Better Eyes.](../talks/browser-agents-dont-need-better-models-they-need-better-eyes.md)
+
+### Context must be actively budgeted and compressed rather than dumped in; oversized observation context degrades task quality, not just cost.
+
+Support: **5** talk(s)
+
+> "The right harness should not only present the right tools, but present an optimized amount of tokens that are compressed to get exactly the right repeatable result every single time."
+>
+> — [Bringing agents onto the world wide web](../talks/bringing-agents-onto-the-world-wide-web.md), [8:46](https://www.youtube.com/watch?v=GqoNrUz8hEU&t=526s)
+
+Supporting talks: [Bringing agents onto the world wide web](../talks/bringing-agents-onto-the-world-wide-web.md), [Codex, Behind the Harness](../talks/codex-behind-the-harness.md), [Browser Agents Don't Need Better Models. They Need Better Eyes.](../talks/browser-agents-dont-need-better-models-they-need-better-eyes.md), [Computer-Use 2.0: Agents Just Got Multi-Cursor](../talks/computer-use-20-agents-just-got-multi-cursor.md), [Develop at Idea Velocity](../talks/develop-at-idea-velocity.md)
+
+### Existing computer-use and long-horizon benchmarks are gameable, and building trustworthy verification is now harder than building the agent being measured.
 
 Support: **4** talk(s)
 
-> "if the benchmark is static is deterministic then it is somehow gameable by this sort of strategy"
+> "Reward hacking is an arms race between coding agents and our environment. This is why strong verifiers are are central to Sweep Marathon's task design and not an afterthought."
 >
-> — [Computer Use at the Edge of the Statistical Precipice](../talks/computer-use-at-the-edge-of-the-statistical-precipice.md), [1:48](https://www.youtube.com/watch?v=CTLa_p6iOiY&t=108s)
+> — [SWE-Marathon: Evaluating Coding Agents at Billion-Token Scale](../talks/swe-marathon-evaluating-coding-agents-at-billion-token-scale.md), [8:44](https://www.youtube.com/watch?v=Rx8f05JI_WA&t=524s)
 
-Supporting talks: [Computer Use at the Edge of the Statistical Precipice](../talks/computer-use-at-the-edge-of-the-statistical-precipice.md), [SWE-Marathon: Evaluating Coding Agents at Billion-Token Scale](../talks/swe-marathon-evaluating-coding-agents-at-billion-token-scale.md), [Computer-Use 2.0: Agents Just Got Multi-Cursor](../talks/computer-use-20-agents-just-got-multi-cursor.md), [Computer-use models will agentify the web, not APIs](../talks/computer-use-models-will-agentify-the-web-not-apis.md)
+Supporting talks: [Computer Use at the Edge of the Statistical Precipice](../talks/computer-use-at-the-edge-of-the-statistical-precipice.md), [Computer-Use 2.0: Agents Just Got Multi-Cursor](../talks/computer-use-20-agents-just-got-multi-cursor.md), [SWE-Marathon: Evaluating Coding Agents at Billion-Token Scale](../talks/swe-marathon-evaluating-coding-agents-at-billion-token-scale.md), [Computer-use models will agentify the web, not APIs](../talks/computer-use-models-will-agentify-the-web-not-apis.md)
 
-### The long tail of software will never expose usable APIs or MCP servers, so driving the rendered UI is the only general integration path — effectively a permissionless universal API.
-
-Support: **4** talk(s)
-
-> "it doesn't need an API or backend process. And that's important because it works off the rendered interface. It sees the same pixels and the structure you see. And most of today's software people use every day don't expose APIs at all."
->
-> — [Perception Agents](../talks/perception-agents.md), [12:04](https://www.youtube.com/watch?v=2JX6JYyQG4Y&t=724s)
-
-Supporting talks: [Computer-use models will agentify the web, not APIs](../talks/computer-use-models-will-agentify-the-web-not-apis.md), [Perception Agents](../talks/perception-agents.md), [The Dark Arts of Web Automation: Teaching Agents to Use Websites Like Humans](../talks/the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans.md), [Can Oncology Workflows Run Without Human Touch?](../talks/can-oncology-workflows-run-without-human-touch.md)
-
-### Full autonomy is not the objective — handing control back to a human on low confidence or insufficient evidence is a designed-in optimal action, not a failure.
+### Full autonomy is the wrong default target: when evidence or confidence is insufficient, handing control back to the human is the correct action, and that requires a calibrated confidence signal rather than a completion signal.
 
 Support: **3** talk(s)
 
@@ -106,78 +96,82 @@ Supporting talks: [From RL to IRL](../talks/from-rl-to-irl.md), [Can Oncology Wo
 
 ## Disagreements
 
-### How capable are computer-use agents right now — is what remains engineering work, or is the underlying capability still missing?
+### Should a computer-use agent ground primarily on rendered pixels, or on a structured representation of the interface (accessibility tree, compressed markdown)?
 
 | Position A | Position B |
 |---|---|
-| The models are already good enough and there is a large capabilities overhang; benchmarks like Mind2Web are saturated at 97% human eval and should be retired, and the residual problems are harness engineering, latency per step, and cost per task, all of which are being optimized away today.<br>*[Computer-use models will agentify the web, not APIs](../talks/computer-use-models-will-agentify-the-web-not-apis.md), [Bringing agents onto the world wide web](../talks/bringing-agents-onto-the-world-wide-web.md), [Browser Agents Don't Need Better Models. They Need Better Eyes.](../talks/browser-agents-dont-need-better-models-they-need-better-eyes.md)* | Headline benchmark numbers systematically overstate capability: a blind replay agent matches or beats the frontier model it was extracted from on OSWorld and MobileWorld, no model exceeds 30% reward on CAD tasks, success from a blank artifact is 0%, the best coding-agent configuration resolves only 26% of project-scale tasks, and frontier models are not robust to changes in starting screen or app theme.<br>*[Computer Use at the Edge of the Statistical Precipice](../talks/computer-use-at-the-edge-of-the-statistical-precipice.md), [Computer-Use 2.0: Agents Just Got Multi-Cursor](../talks/computer-use-20-agents-just-got-multi-cursor.md), [SWE-Marathon: Evaluating Coding Agents at Billion-Token Scale](../talks/swe-marathon-evaluating-coding-agents-at-billion-token-scale.md), [Perception Agents](../talks/perception-agents.md)* |
+| Pixels are the source of truth. The web was built for human eyes, page content is computed at render time and absent from the HTML, and any structured scaffold you write around a site fails to generalize to the long tail — so the agent must see what a human sees.<br>*[Computer-use models will agentify the web, not APIs](../talks/computer-use-models-will-agentify-the-web-not-apis.md), [Perception Agents](../talks/perception-agents.md)* | Screenshot-driven browsing is the bottleneck: it exposes one viewport at a time, is slow, and wastes the model's reasoning. A compressed structured view (a11y tree, ~1,800-token markdown) lets a cheaper model see the whole page at once and beat a stronger screenshot-driven model on both speed and success; pixels are a fallback or a secondary check.<br>*[Browser Agents Don't Need Better Models. They Need Better Eyes.](../talks/browser-agents-dont-need-better-models-they-need-better-eyes.md), [Bringing agents onto the world wide web](../talks/bringing-agents-onto-the-world-wide-web.md), [Computer-Use 2.0: Agents Just Got Multi-Cursor](../talks/computer-use-20-agents-just-got-multi-cursor.md), [Full Workshop: Setting Yourself Up for Success —Jason Liu, OpenAI Codex](../talks/full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex.md)* |
 
-*Why it matters: If the overhang thesis is right, the correct investment is harness and infrastructure engineering shipped this quarter; if the measurement critique is right, teams are optimizing against scores that do not predict production behavior and will ship agents that break on the first layout shift. It also determines whether a 4% apparent model gap is real — at a million tasks that decision is worth hundreds of thousands of dollars per month.*
+*Why it matters: It decides whether you need a vision-heavy frontier model per step or a cheap text model, which swings per-task cost and latency by orders of magnitude, and it determines whether your agent degrades gracefully on canvas/WebGL/legacy surfaces that have no useful accessibility tree.*
 
-### Should the primary observation channel for a GUI agent be rendered pixels, or a structured/compressed representation of the page?
-
-| Position A | Position B |
-|---|---|
-| Pixels are the source of truth because the web was built for human eyes; content is computed and rendered rather than present as text, and writing per-site scaffolds or parsing the code behind the page is the bitter-lesson mistake that fails to generalize to the long tail. Read the rendered screen, not the page source.<br>*[Computer-use models will agentify the web, not APIs](../talks/computer-use-models-will-agentify-the-web-not-apis.md), [Perception Agents](../talks/perception-agents.md)* | Screenshot-driven browsing is the bottleneck — a screenshot shows only one viewport-sized snippet and costs seconds per click. Lead with a compressed markdown or accessibility-tree representation (~1,800 tokens versus ~20,000 for full DOM), execute against the accessibility tree first, and use pixels as a supplement or a fallback.<br>*[Browser Agents Don't Need Better Models. They Need Better Eyes.](../talks/browser-agents-dont-need-better-models-they-need-better-eyes.md), [Computer-Use 2.0: Agents Just Got Multi-Cursor](../talks/computer-use-20-agents-just-got-multi-cursor.md), [Bringing agents onto the world wide web](../talks/bringing-agents-onto-the-world-wide-web.md), [Full Workshop: Setting Yourself Up for Success —Jason Liu, OpenAI Codex](../talks/full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex.md)* |
-
-*Why it matters: This picks your model tier and your unit economics: a cheap model on a compressed text representation versus a frontier VLM on screenshots changes latency and cost per step by an order of magnitude. It also determines your failure mode — a11y-first agents go blind on canvas, WebGL, and image-embedded content such as sponsored ads, while pixel-first agents miss anything requiring scroll and pay for every look.*
-
-### Is the agent harness a durable source of advantage, or transitional scaffolding that models will absorb?
+### Does the next increment of computer-use reliability come from harness engineering or from training the capability into the model?
 
 | Position A | Position B |
 |---|---|
-| The harness is where the advantage lives and it is an ordinary engineering problem — a domain-optimized harness produces above-baseline results on the same model, you do not have to be a frontier lab to build one, and since everyone has the same models the internal harness is the only differentiator left.<br>*[Bringing agents onto the world wide web](../talks/bringing-agents-onto-the-world-wide-web.md), [The Missing Layer After Launch](../talks/the-missing-layer-after-launch.md), [Browser Agents Don't Need Better Models. They Need Better Eyes.](../talks/browser-agents-dont-need-better-models-they-need-better-eyes.md)* | Harness guardrails are a transitional scaffold that should get progressively thinner as models improve, and the harness should conform to what the model was trained on — apply_patch for edits, ripgrep for search, server-side compaction in the trained format — rather than invent its own interfaces, which is why the standout features are just exposed in the API.<br>*[From RL to IRL](../talks/from-rl-to-irl.md), [Codex, Behind the Harness](../talks/codex-behind-the-harness.md)* |
+| Engineering. The models are already good enough; reliability comes from the harness — consistent rendering infrastructure, compressed representations, state diffs, deterministic CLI/CDP driving, and a production feedback loop. You don't have to be a lab to build one, and the competitive advantage now lives in the harness rather than the model.<br>*[Bringing agents onto the world wide web](../talks/bringing-agents-onto-the-world-wide-web.md), [Browser Agents Don't Need Better Models. They Need Better Eyes.](../talks/browser-agents-dont-need-better-models-they-need-better-eyes.md), [The Missing Layer After Launch](../talks/the-missing-layer-after-launch.md), [The Dark Arts of Web Automation: Teaching Agents to Use Websites Like Humans](../talks/the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans.md)* | The model. Coding ability is explicitly not sufficient for computer use — visual grounding, semantic screen understanding, change detection, and recovery must be RL-trained into the model against messy sandboxes, and harness guardrails are transitional scaffolding that should get thinner as the model improves. Per-site scaffolding is the bitter lesson repeating.<br>*[From RL to IRL](../talks/from-rl-to-irl.md), [Computer-use models will agentify the web, not APIs](../talks/computer-use-models-will-agentify-the-web-not-apis.md), [Computer-Use 2.0: Agents Just Got Multi-Cursor](../talks/computer-use-20-agents-just-got-multi-cursor.md)* |
 
-*Why it matters: It decides whether to spend engineering years building scaffold IP or to bet on end-to-end RL plus a thin conformant harness that gets better for free. Even the strongest harness advocate concedes it is unresolved whether custom harnesses will beat models RL-trained end-to-end for the task.*
+*Why it matters: It determines whether a team's investment in a domain-specific harness compounds or gets obsoleted by the next model release — a question Browserbase itself flagged as still open ('it's not clear yet if custom harnesses are going to beat out durable RL models').*
+
+### Will the substrate for agent action be existing human interfaces, or agent-native structured interfaces (APIs, MCP, standard schemas)?
+
+| Position A | Position B |
+|---|---|
+| Human interfaces, indefinitely. Thirty years of web infrastructure will not be rebuilt for machines; the long tail of ~200 million active sites will never ship an API, most daily-use software exposes none, and driving the UI is often the only permissionless path inside corporate environments where API access requires unobtainable admin approval.<br>*[Computer-use models will agentify the web, not APIs](../talks/computer-use-models-will-agentify-the-web-not-apis.md), [Perception Agents](../talks/perception-agents.md), [The Dark Arts of Web Automation: Teaching Agents to Use Websites Like Humans](../talks/the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans.md)* | Build toward structured contracts. Sites are already publishing in-page MCP servers, teams should be designing agent-first signup and login flows now, and where a public standard schema exists (X12 in claims) it should be the harness because LLMs perform better confined to a strict limited vocabulary and the schema is lookup-able by both new engineers and coding agents.<br>*[Bringing agents onto the world wide web](../talks/bringing-agents-onto-the-world-wide-web.md), [Healthcare’s Agent Bytecode: X12 as the Harness for AI Agents](../talks/healthcares-agent-bytecode-x12-as-the-harness-for-ai-agents.md)* |
+
+*Why it matters: It sets where product teams spend the next two years — hardening pixel-level agents against a hostile, unchanging web, versus publishing agent-facing surfaces and identity/trust primitives that don't exist yet.*
+
+### Are today's computer-use agents over-restricted or under-restricted in practice?
+
+| Position A | Position B |
+|---|---|
+| Over-restricted. Current models are more often too reluctant to take destructive actions than too eager, so over-restriction is the bigger day-to-day annoyance; AGENTS.md rules plus auto-review suffice for individual use, and a Docker-style sandbox is unnecessary unless the agent is externally facing.<br>*[Full Workshop: Setting Yourself Up for Success —Jason Liu, OpenAI Codex](../talks/full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex.md), [Develop at Idea Velocity](../talks/develop-at-idea-velocity.md)* | Under-restricted. Full-access mode stays unsafe no matter how good the model gets, because pushing for high agency produces actions that diverge from intent; outcome-only reward hides dangerous intermediate steps, so dangerous actions must be detected and penalized, subagents confined to read-only, and low-evidence cases routed to a human.<br>*[Codex, Behind the Harness](../talks/codex-behind-the-harness.md), [From RL to IRL](../talks/from-rl-to-irl.md), [Can Oncology Workflows Run Without Human Touch?](../talks/can-oncology-workflows-run-without-human-touch.md)* |
+
+*Why it matters: A computer-use agent holds the user's OS session, cookies, and credentials, and a determined one will route around a blocked connector by opening Chrome and clicking the button manually — so whether you invest in approval infrastructure or in removing friction changes the blast radius of a single misread instruction.*
 
 ## Practical Guidance
 
 **Do:**
 
-- Supply a compressed page representation alongside the screenshot rather than either alone — roughly 1,800 markdown tokens versus ~20,000 for the same page's full DOM.
-- Scope the agent's computer tool to a single window instead of the whole desktop: pass rate 62% → 80% with 34% fewer tokens.
-- Cap the available-skills list at 2% of the context window and mark rarely-used tools as deferred so they load via tool search instead of up front.
-- Give the agent explicit state-diff feedback — what appeared, what was removed, whether the click actually landed — so it can recover rather than repeat.
-- Try accessibility-tree execution first and fall back to pixel-level background clicks only when it fails; run in the background rather than taking over the user's screen.
-- Default to synthetic JavaScript clicks and escalate to trusted CDP input events only when the page rejects untrusted input (e.g. Amazon's add-to-cart silently ignores untrusted clicks).
-- Let deterministic code drive at machine speed and call the model only for steps that need vision — reCAPTCHA v2 rounds expire on a clock that a model round-trip per interaction will lose.
-- Prefer shell CLIs over MCP servers for browser automation: same ~83% task success, but 7 turns and under a minute versus 71 round trips and 8 minutes, and up to 75x cheaper in tokens.
-- Benchmark your agent against the raw baseline model to prove the harness is adding value, not subtracting it.
-- Vary data, appearance, and initial state across eval runs, and extract a replay agent from your own benchmark — if it scores well, the benchmark is gamed.
-- Adversarially attack your environment for reward hacks before admitting a task, and use syscall-level tracing (strace) to catch forbidden shortcuts like shelling out to GCC.
-- Compute confidence intervals that account for the hierarchical structure of the benchmark; rollout-only intervals achieve 17-20% coverage against a nominal 95%.
-- Surface infrastructure errors to the model instead of resetting the environment, so recovery becomes a native model action.
-- Require two independent sources to agree before proceeding unattended, and route insufficient-evidence cases to human escalation with a confidence score attached.
-- Keep a demand-autoscaled warm sandbox pool for RL training — sandbox compute is 2-4x cheaper than GPU time, so over-provisioning still saves money.
-- Guarantee rendering consistency in your browser infrastructure; a page that renders mobile one run and desktop the next produces inconsistent agent results.
-- Separate the fixing agent from the reviewing agent — a fixer grades its own diagnosis favorably and is eager to ship the PR.
-- Write concrete, verifiable goal prompts and let the model draft them, since the loop only terminates when the model can detect the goal was achieved.
+- Scope the agent's view to a single application window instead of the full desktop — Cua measured pass rate rising from 62% to 80% with 34% fewer tokens
+- Send a compressed page representation (~1,800 tokens of markdown, or the accessibility tree with ARIA tags) alongside the screenshot instead of the full DOM (~20,000 tokens on the same page)
+- Cap ambient context as a fraction of the window — Codex caps the available-skills list at 2% of max context and progressively truncates beyond it — and mark rarely-used tools as deferred so they load via tool search rather than up front
+- Feed the agent an explicit state diff after every action: what appeared, what was removed, whether the click actually landed
+- Try accessibility-tree execution first and fall back to pixel-level background clicks only when it fails, so the agent runs in the background instead of taking over the user's screen
+- Use a synthetic JavaScript click as the default and escalate to trusted CDP input events only when the page rejects untrusted input — three rungs, climb only as high as the page forces
+- Give the agent shell CLIs over MCP servers for browser work: same ~83% task success, but a CLI sequence is written once and replayed without a model in the loop
+- Surface infrastructure errors to the model as observations and expect recovery via native actions, instead of resetting the environment
+- Vary initial state, theme, appearance, and data across eval runs, and check that a blind replay agent extracted from your benchmark scores near zero on it
+- Compute confidence intervals that account for the benchmark's hierarchical structure — rollout-only intervals achieve 17-20% coverage against a nominal 95%
+- Adversarially attack your own environments for reward hacking before admitting a task to the dataset; syscall-level tracing (strace) catches shortcuts like shelling out to GCC
+- Run deterministic rule checks first and invoke agents only for cases the rules cannot decide; require two independent sources to agree before proceeding without human review
+- Autoscale a warm sandbox pool on demand for RL training — over-provisioning still saves money because sandbox compute is 2-4x cheaper than idle GPU time
+- Benchmark every harness against the raw baseline model to confirm the harness is adding value
+- Keep rendering infrastructure consistent across runs — a page that renders mobile once and desktop the next time produces inconsistent results
 
 **Avoid:**
 
-- Dumping full page content or raw DOM/HTML into the model — higher cost and worse results.
-- Screenshot-only observation loops that scroll and re-screenshot: two minutes of wall clock to click one button in a 30-step task.
-- Writing per-site scaffolds — they do not generalize to the long tail of ~200 million active websites.
-- Assuming the long tail of the web will expose APIs or publish MCP servers; head-of-distribution sites might, the rest will not.
-- Pass@k on deterministic environments — it is formally equivalent to measuring a blind replay agent's success rate.
-- Treating task success rate as the sole measure of agent intelligence, without measuring its understanding of environment state.
-- Outcome-only reward, which scores a trajectory as done even when it took dangerous or unintended intermediate actions.
-- Running full-access mode on the assumption that better models make it safe — pushing a model toward high agency produces actions that diverge from intent.
-- Approving or denying actions without the task context; deleting a file is fine or catastrophic depending on what the user asked for.
-- Serving production agent fleets from self-hosted Mac Minis — there is no SOC 2 compliant version of that at scale.
-- Trusting a single non-deterministic LLM extraction enough to skip human review, or building hand-rolled custom integrations per portal.
-- Treating a completed run as a successful one — technically successful trajectories routinely fail the user's actual task, and a recovery that happened by luck with no alert is a hidden defect.
-- Blocking a connector and assuming the action is prevented — a determined agent will open the browser and perform it manually via computer use.
-- Continuing to publish against a benchmark you know is gameable; a non-rigorous benchmark points the whole field's optimization at the wrong target.
+- Dumping full page content or raw HTML into the model — it costs more and produces worse results, and rendered content often isn't in the HTML at all
+- Screenshot-only observation loops: one viewport-sized snippet per step, with scroll-and-rescreenshot sequences burning minutes on a single button click
+- Asking the action whether the action worked, or letting the agent that wrote the fix also review it — both are biased toward declaring success
+- Treating task completion as the quality metric; a technically successful run can still fail the user's task, and a run that recovers by luck with no alert is a hidden defect
+- Writing per-site scaffolds as a long-tail strategy — they don't generalize, and each one is ongoing maintenance
+- Reporting pass@k on a deterministic environment: it is formally equivalent to measuring a blind replay agent, and a non-rigorous benchmark actively misdirects the field
+- Outcome-only rewards, which score a trajectory as done even when it took dangerous or unauthorized intermediate actions
+- Full-access / no-approval mode, on the assumption that better models make it safe
+- Running production browser fleets on self-hosted Mac Minis — no viable compliance story at scale
+- Relying on CAPTCHAs to distinguish agents from humans; CDP-driven input traverses the same internal Chrome path as yours and gets the same trusted stamp
+- Swapping in a newer, higher-scoring model without rebuilding evals and validation first — different is not automatically better
+- Writing essay-length goal prompts; the loop only terminates when the model can detect the goal is achieved, so goals must be concrete and verifiable
+- Using an overpowered, expensive model for routine transactions that run a thousand times a day
 
 ## Notable Outliers
 
-- A replay agent that blindly replays a recorded action sequence scores the same or better than the frontier model it was extracted from on OSWorld and MobileWorld. ([Computer Use at the Edge of the Statistical Precipice](../talks/computer-use-at-the-edge-of-the-statistical-precipice.md), [0:59](https://www.youtube.com/watch?v=CTLa_p6iOiY&t=59s))
-- Every full pass by the top-tested agent on the CAD benchmark involved editing an existing schematic; starting from a blank schematic, success drops to 0%. ([Computer-Use 2.0: Agents Just Got Multi-Cursor](../talks/computer-use-20-agents-just-got-multi-cursor.md), [8:38](https://www.youtube.com/watch?v=ZSQb5fzRFPw&t=518s))
-- Input driven through the Chrome DevTools Protocol travels the same internal path as human input and receives the trusted stamp, making it indistinguishable to Google and Cloudflare — 'just like a meatbag with a mouse'. ([The Dark Arts of Web Automation: Teaching Agents to Use Websites Like Humans](../talks/the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans.md), [1:45](https://www.youtube.com/watch?v=26RtyAm9y_Q&t=105s))
-- On 20-30 step interaction tasks, a small computer-use model costs about 80 cents per task versus $230 for a trillion-parameter frontier model — accuracy differences are within statistical noise, so latency and cost are the real edge. ([Computer-use models will agentify the web, not APIs](../talks/computer-use-models-will-agentify-the-web-not-apis.md), [18:07](https://www.youtube.com/watch?v=Ki980nV0__0&t=1087s))
-- Rollout-only confidence intervals on computer-use benchmarks achieve only 17-20% empirical coverage against a nominal 95%, so apparently tight error bars are overconfident and drive wrong deployment decisions. ([Computer Use at the Edge of the Statistical Precipice](../talks/computer-use-at-the-edge-of-the-statistical-precipice.md), [12:26](https://www.youtube.com/watch?v=CTLa_p6iOiY&t=746s))
-- A blocked connector is not a security control: a determined agent will open Chrome and perform the blocked action through the UI instead. ([Full Workshop: Setting Yourself Up for Success —Jason Liu, OpenAI Codex](../talks/full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex.md), [54:37](https://www.youtube.com/watch?v=il1c1a2FufU&t=3277s))
+- A blind replay agent that just replays recorded action sequences matches or beats the frontier model it was extracted from on OSWorld and Mobile World — which means pass@k on a deterministic environment measures nothing about the agent. ([Computer Use at the Edge of the Statistical Precipice](../talks/computer-use-at-the-edge-of-the-statistical-precipice.md), [0:59](https://www.youtube.com/watch?v=CTLa_p6iOiY&t=59s))
+- Every full CAD task the top agent passed involved editing an existing schematic; starting from a blank schematic, success drops to 0% — current computer-use agents edit but cannot create. ([Computer-Use 2.0: Agents Just Got Multi-Cursor](../talks/computer-use-20-agents-just-got-multi-cursor.md), [8:38](https://www.youtube.com/watch?v=ZSQb5fzRFPw&t=518s))
+- reCAPTCHA v2 cannot be beaten by any architecture that round-trips a model on every interaction, because challenge rounds expire on a clock — the only reliable approach is deterministic code at machine speed with a single vision call per round. ([The Dark Arts of Web Automation: Teaching Agents to Use Websites Like Humans](../talks/the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans.md), [18:36](https://www.youtube.com/watch?v=26RtyAm9y_Q&t=1116s))
+- An agent told it can't email through the Gmail connector will open Chrome and hit send itself — computer use routes around connector-level permission controls, which is a real security hole. ([Full Workshop: Setting Yourself Up for Success —Jason Liu, OpenAI Codex](../talks/full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex.md), [54:37](https://www.youtube.com/watch?v=il1c1a2FufU&t=3277s))
+- An X12 response from an insurance company is not ground truth: the portal, the phone system, and the X12 layer can all independently report the same wrong answer, so your internal representation should be treated as correct only until downstream evidence disproves it. ([Healthcare’s Agent Bytecode: X12 as the Harness for AI Agents](../talks/healthcares-agent-bytecode-x12-as-the-harness-for-ai-agents.md), [16:18](https://www.youtube.com/watch?v=UyyOoJmuATU&t=978s))
+- At 1,000 tokens/sec inference, the network — not inference — becomes the bottleneck in the agent loop, which is why the Responses API moved to a persistent WebSocket transmitting only changed items. ([Codex, Behind the Harness](../talks/codex-behind-the-harness.md), [15:33](https://www.youtube.com/watch?v=shRR1e2HXMk&t=933s))
 
 ## All Talks
 
@@ -191,6 +185,7 @@ Supporting talks: [From RL to IRL](../talks/from-rl-to-irl.md), [Can Oncology Wo
 - [Develop at Idea Velocity](../talks/develop-at-idea-velocity.md)
 - [From RL to IRL](../talks/from-rl-to-irl.md)
 - [Full Workshop: Setting Yourself Up for Success —Jason Liu, OpenAI Codex](../talks/full-workshop-setting-yourself-up-for-success-jason-liu-openai-codex.md)
+- [Healthcare’s Agent Bytecode: X12 as the Harness for AI Agents](../talks/healthcares-agent-bytecode-x12-as-the-harness-for-ai-agents.md)
 - [Perception Agents](../talks/perception-agents.md)
 - [SWE-Marathon: Evaluating Coding Agents at Billion-Token Scale](../talks/swe-marathon-evaluating-coding-agents-at-billion-token-scale.md)
 - [The Dark Arts of Web Automation: Teaching Agents to Use Websites Like Humans](../talks/the-dark-arts-of-web-automation-teaching-agents-to-use-websites-like-humans.md)
@@ -213,4 +208,5 @@ Supporting talks: [From RL to IRL](../talks/from-rl-to-irl.md), [Can Oncology Wo
 - [Paul Klein IV](../speakers/paul-klein-iv.md)
 - [Pierluca D'Oro](../speakers/pierluca-d-oro.md)
 - [Rishi Desai](../speakers/rishi-desai.md)
+- [Vasant Kearney](../speakers/vasant-kearney.md)
 

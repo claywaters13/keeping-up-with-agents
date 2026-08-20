@@ -3,16 +3,16 @@ title: "agent reliability engineering"
 type: "concept"
 slug: "agent-reliability-engineering"
 tier: "core"
-maturity: "consolidating"
-talk_count: 15
-speaker_count: 14
+maturity: "contested"
+talk_count: 17
+speaker_count: 16
 ---
 
 # agent reliability engineering
 
-**Maturity: CONSOLIDATING** — Consolidating — converging practice, some open edges
+**Maturity: CONTESTED** — Contested — active, unresolved disagreement across talks
 
-*Core concept* &middot; discussed across **15** talk(s) by **14** speaker(s)
+*Core concept* &middot; discussed across **17** talk(s) by **16** speaker(s)
 
 **Definition:** Making agents fail rarely and recover gracefully — error compounding across steps, retries, degradation, and reliability as a system property.
 
@@ -20,41 +20,41 @@ speaker_count: 14
 
 ## State of Practice
 
-The conference's near-unanimous framing is that model capability is no longer the binding constraint on agentic products — reliability is, and reliability is a systems property rather than a model property. Speakers from Meta Superintelligence Labs, Microsoft, Amazon AGI Lab, and OpenProse independently arrived at the same architecture: the model emits proposals (a next action, a UI intent, a lesson step), and a deterministic layer around it — harness, policy engine, execution gateway, BFF — validates, approves, and advances state, with workflow state never held in the model's head. Failure is assumed to be persistent rather than transient, so recovery policies, bounded retries, graceful degradation, and human handoff are first-class design objects; the canonical horror story is a minor API error escalating into a compute incident through uncontrolled retries. Verification is the recognized substrate of reliability — coding got reliable first because code runs — and the open problem is knowledge work where no unit test exists. Evaluation is being repositioned as always-on infrastructure fed by production traces (reasoning chains, tool calls, memory access, state transitions) rather than a pre-deployment benchmark gate, because the benchmark-to-production gap widens as autonomy increases. The live arguments are where the reliability investment belongs (harness versus weights) and whether the verifier itself is allowed to be probabilistic.
+The conference's dominant claim is that model capability has stopped being the binding constraint and reliability has replaced it: speakers from Meta Superintelligence Labs, Amazon AGI Lab, Microsoft, Bespoke Labs and OpenProse all independently framed the gap between a demo and a product as a systems problem, not an intelligence problem. The concrete architecture that emerged is a control-plane pattern — the model emits proposals (typed UI blocks, X12 transactions, tool calls, state-machine transitions), and validation, policy, state advancement, and execution live in deterministic code outside the model. Failure modeling has shifted away from hallucination toward infrastructure and state failures: uncontrolled retries turning a minor API error into a compute incident, distributed-state inconsistency misdiagnosed as bad reasoning, unknown content types crashing unpatchable mobile clients, and failures that persist rather than reset. Measurement has followed: teams are adopting SRE framing (reliability, recovery, latency, cost, tail percentiles) over accuracy, running each test case many times against a sustained pass-rate bar such as 90%, and treating production traces as the largest and most representative eval set they will ever have. Where the field splits is on mechanism — whether reliability is engineered around a permanently untrustworthy model or trained into it via post-training and RL on messy environments, and whether verification should be agentic or forced down to deterministic and static checks.
 
 ## Consensus
 
-### Reliability, not model intelligence, is the binding constraint on production agents; the models are already good enough and the failures live in the system around them.
+### Reliability, not model intelligence, is the binding constraint on production agents; the models are already capable enough for most deployed workflows.
 
 Support: **8** talk(s)
 
-> "The challenge is no longer in intelligence. The challenge is is reliability."
+> "The models are intelligent enough. They know all kinds of things. They know the entire internet. But they can't reliably deliver outcomes. And so I can't trust them."
 >
-> — [Deterministic Infra for Non-Deterministic AI Agents](../talks/deterministic-infra-for-non-deterministic-ai-agents.md), [0:03](https://www.youtube.com/watch?v=APh1Vx0oLmQ&t=3s)
+> — [Recursive Coding Agents](../talks/recursive-coding-agents.md), [0:52](https://www.youtube.com/watch?v=3hXJI2q0Jz8&t=52s)
 
-Supporting talks: [Deterministic Infra for Non-Deterministic AI Agents](../talks/deterministic-infra-for-non-deterministic-ai-agents.md), [Perception Agents](../talks/perception-agents.md), [Recursive Coding Agents](../talks/recursive-coding-agents.md), [Don't Let the LLM Drive](../talks/dont-let-the-llm-drive.md), [Data and Environment Curation for Post-Training LLMs](../talks/data-and-environment-curation-for-post-training-llms.md), [The Great Loops Debate — Dex Horthy, Geoff Huntley, Ian Livingstone, Greg Pstrucha, @insecure-agents](../talks/the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in.md), [From Systems of Record to Systems of Context](../talks/from-systems-of-record-to-systems-of-context.md), [Agent Output Is Not UX: Rendering Layer Your LLM Pipeline Is Missing](../talks/agent-output-is-not-ux-rendering-layer-your-llm-pipeline-is-missing.md)
+Supporting talks: [Recursive Coding Agents](../talks/recursive-coding-agents.md), [Deterministic Infra for Non-Deterministic AI Agents](../talks/deterministic-infra-for-non-deterministic-ai-agents.md), [Perception Agents](../talks/perception-agents.md), [Data and Environment Curation for Post-Training LLMs](../talks/data-and-environment-curation-for-post-training-llms.md), [Agent Output Is Not UX: Rendering Layer Your LLM Pipeline Is Missing](../talks/agent-output-is-not-ux-rendering-layer-your-llm-pipeline-is-missing.md), [Don't Let the LLM Drive](../talks/dont-let-the-llm-drive.md), [From Systems of Record to Systems of Context](../talks/from-systems-of-record-to-systems-of-context.md), [The Great Loops Debate — Dex Horthy, Geoff Huntley, Ian Livingstone, Greg Pstrucha, @insecure-agents](../talks/the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in.md)
 
-### The model should only propose; a deterministic layer (harness, policy engine, execution gateway, backend-for-frontend) validates the proposal, decides, and holds the workflow state — the model must never hold multi-step state or drive control flow.
+### The model should only propose; validation, state advancement, and execution authority belong to deterministic code outside the model, and model output should be constrained to a fixed vocabulary it cannot extend.
 
 Support: **5** talk(s)
 
-> "the model never really um has to think. It proposes, but ultimately it is the harness that decides."
+> "Never let the model directly control production systems. The model should generate proposals, infrastructure validates them, policy engine approves them, execution gateway enforces them."
 >
-> — [Don't Let the LLM Drive](../talks/dont-let-the-llm-drive.md), [4:04](https://www.youtube.com/watch?v=m24UKZomm7k&t=244s)
+> — [Deterministic Infra for Non-Deterministic AI Agents](../talks/deterministic-infra-for-non-deterministic-ai-agents.md), [3:09](https://www.youtube.com/watch?v=APh1Vx0oLmQ&t=189s)
 
-Supporting talks: [Don't Let the LLM Drive](../talks/dont-let-the-llm-drive.md), [Deterministic Infra for Non-Deterministic AI Agents](../talks/deterministic-infra-for-non-deterministic-ai-agents.md), [Agent Output Is Not UX: Rendering Layer Your LLM Pipeline Is Missing](../talks/agent-output-is-not-ux-rendering-layer-your-llm-pipeline-is-missing.md), [Recursive Coding Agents](../talks/recursive-coding-agents.md), [The Great Loops Debate — Dex Horthy, Geoff Huntley, Ian Livingstone, Greg Pstrucha, @insecure-agents](../talks/the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in.md)
+Supporting talks: [Deterministic Infra for Non-Deterministic AI Agents](../talks/deterministic-infra-for-non-deterministic-ai-agents.md), [Don't Let the LLM Drive](../talks/dont-let-the-llm-drive.md), [Agent Output Is Not UX: Rendering Layer Your LLM Pipeline Is Missing](../talks/agent-output-is-not-ux-rendering-layer-your-llm-pipeline-is-missing.md), [Healthcare’s Agent Bytecode: X12 as the Harness for AI Agents](../talks/healthcares-agent-bytecode-x12-as-the-harness-for-ai-agents.md), [The Great Loops Debate — Dex Horthy, Geoff Huntley, Ian Livingstone, Greg Pstrucha, @insecure-agents](../talks/the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in.md)
 
-### Reliability appears exactly where verification is cheap; domains without a mechanical check on the answer remain unsolved, so teams should manufacture verifiability (tests, types, explicit design rules, rendered-screen checks) rather than trust output.
+### Hallucination is not the dominant production failure mode; the expensive failures are infrastructure, control-flow, and delivery failures around the model.
 
-Support: **5** talk(s)
+Support: **4** talk(s)
 
-> "why was coding first solved? It's because code is verifiable. You can run it, you can test it, you can check it and you can be for sure that it worked. So reliability showed up in the first place you can actually verify the answer."
+> "Many teams still think hallucinations are the primary AI failure modes. In production, they are often just one category."
 >
-> — [Perception Agents](../talks/perception-agents.md), [5:55](https://www.youtube.com/watch?v=2JX6JYyQG4Y&t=355s)
+> — [Production Evals For Agentic AI Systems](../talks/production-evals-for-agentic-ai-systems.md), [1:43](https://www.youtube.com/watch?v=vljxQZfJ9wY&t=103s)
 
-Supporting talks: [Perception Agents](../talks/perception-agents.md), [The Great Loops Debate — Dex Horthy, Geoff Huntley, Ian Livingstone, Greg Pstrucha, @insecure-agents](../talks/the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in.md), [The Future of Evals: From LLM as a Judge to Agent as a Judge](../talks/the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge.md), [From RL to IRL](../talks/from-rl-to-irl.md), [Production Evals For Agentic AI Systems](../talks/production-evals-for-agentic-ai-systems.md)
+Supporting talks: [Production Evals For Agentic AI Systems](../talks/production-evals-for-agentic-ai-systems.md), [Deterministic Infra for Non-Deterministic AI Agents](../talks/deterministic-infra-for-non-deterministic-ai-agents.md), [Agent Output Is Not UX: Rendering Layer Your LLM Pipeline Is Missing](../talks/agent-output-is-not-ux-rendering-layer-your-llm-pipeline-is-missing.md), [Don't Let the LLM Drive](../talks/dont-let-the-llm-drive.md)
 
-### Failure in agent systems is persistent, not transient — systems must be built with explicit recovery policies, bounded retries, isolated sources, and graceful degradation, because agents by default fire an action and move on without checking whether it landed.
+### Failure in real environments is persistent rather than transient, so recovery policy and graceful degradation must be designed explicitly instead of assumed from retry or reset.
 
 Support: **5** talk(s)
 
@@ -64,95 +64,125 @@ Support: **5** talk(s)
 
 Supporting talks: [From RL to IRL](../talks/from-rl-to-irl.md), [Deterministic Infra for Non-Deterministic AI Agents](../talks/deterministic-infra-for-non-deterministic-ai-agents.md), [Perception Agents](../talks/perception-agents.md), [From Systems of Record to Systems of Context](../talks/from-systems-of-record-to-systems-of-context.md), [Agent Output Is Not UX: Rendering Layer Your LLM Pipeline Is Missing](../talks/agent-output-is-not-ux-rendering-layer-your-llm-pipeline-is-missing.md)
 
-### Demos and benchmarks systematically hide the failure modes that matter, and the gap widens with autonomy; production telemetry and traces are the highest-value reliability signal, so evaluation must run continuously after deployment.
+### Human supervision is a permanent architectural component, not a temporary crutch that better models will remove; the design question is where to spend human attention (evaluation, taste, handoff), not how to eliminate it.
 
 Support: **6** talk(s)
 
-> "And as systems become more autonomous, the gap between the benchmark performance and production performance grows."
+> "Many people frame human involvement as temporarily temporary necessity. I don't think that's correct. The most successful systems are likely to remain human supervised."
 >
-> — [Production Evals For Agentic AI Systems](../talks/production-evals-for-agentic-ai-systems.md), [0:47](https://www.youtube.com/watch?v=vljxQZfJ9wY&t=47s)
+> — [Deterministic Infra for Non-Deterministic AI Agents](../talks/deterministic-infra-for-non-deterministic-ai-agents.md), [4:50](https://www.youtube.com/watch?v=APh1Vx0oLmQ&t=290s)
 
-Supporting talks: [Production Evals For Agentic AI Systems](../talks/production-evals-for-agentic-ai-systems.md), [The Future of Evals: From LLM as a Judge to Agent as a Judge](../talks/the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge.md), [Don't Let the LLM Drive](../talks/dont-let-the-llm-drive.md), [From RL to IRL](../talks/from-rl-to-irl.md), [Deterministic Infra for Non-Deterministic AI Agents](../talks/deterministic-infra-for-non-deterministic-ai-agents.md), [Building Turbopuffer: Gergely Orosz (@pragmaticengineer ) × Simon Eskildsen (CEO)](../talks/building-turbopuffer-gergely-orosz-pragmaticengineer-simon-eskildsen-ceo.md)
+Supporting talks: [Deterministic Infra for Non-Deterministic AI Agents](../talks/deterministic-infra-for-non-deterministic-ai-agents.md), [Production Evals For Agentic AI Systems](../talks/production-evals-for-agentic-ai-systems.md), [From RL to IRL](../talks/from-rl-to-irl.md), [How Forward Deployed Engineering is done at Ramp](../talks/how-forward-deployed-engineering-is-done-at-ramp.md), [How to build an AI-Native Health Company](../talks/how-to-build-an-ai-native-health-company.md), [The Great Loops Debate — Dex Horthy, Geoff Huntley, Ian Livingstone, Greg Pstrucha, @insecure-agents](../talks/the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in.md)
 
-### Errors compound across steps, so agent systems must be designed against tail behavior rather than average behavior — per-step success rates in the 60–80% range and P50-based infrastructure assumptions both collapse once a single logical task fans out into many steps or requests.
+### Evaluation must continue after deployment against real production traffic; pre-launch benchmarks and demo conditions systematically miss the failures real users trigger.
 
-Support: **4** talk(s)
+Support: **5** talk(s)
 
-> "So in aggregate you have like you want to look at the P99 probably even the P999 to design the system properly because you will need to minimize the number of round trips that you had to make."
+> "after we launch the software, we have our auto evolve system evaluate carefully evaluate each conversation. We have predefined a lot of rubrics, what we think is good, what is bad."
 >
-> — [Building Turbopuffer: Gergely Orosz (@pragmaticengineer ) × Simon Eskildsen (CEO)](../talks/building-turbopuffer-gergely-orosz-pragmaticengineer-simon-eskildsen-ceo.md), [25:34](https://www.youtube.com/watch?v=jQDXzEVHMSE&t=1534s)
+> — [How to build an AI-Native Health Company](../talks/how-to-build-an-ai-native-health-company.md), [15:49](https://www.youtube.com/watch?v=WJRdLNhrsLQ&t=949s)
 
-Supporting talks: [Building Turbopuffer: Gergely Orosz (@pragmaticengineer ) × Simon Eskildsen (CEO)](../talks/building-turbopuffer-gergely-orosz-pragmaticengineer-simon-eskildsen-ceo.md), [Perception Agents](../talks/perception-agents.md), [Deterministic Infra for Non-Deterministic AI Agents](../talks/deterministic-infra-for-non-deterministic-ai-agents.md), [Voice agents with Realtime Video](../talks/voice-agents-with-realtime-video.md)
+Supporting talks: [Production Evals For Agentic AI Systems](../talks/production-evals-for-agentic-ai-systems.md), [The Future of Evals: From LLM as a Judge to Agent as a Judge](../talks/the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge.md), [How to build an AI-Native Health Company](../talks/how-to-build-an-ai-native-health-company.md), [From RL to IRL](../talks/from-rl-to-irl.md), [The Great Loops Debate — Dex Horthy, Geoff Huntley, Ian Livingstone, Greg Pstrucha, @insecure-agents](../talks/the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in.md)
+
+### Reliability must be measured as a distribution over many repeated runs and at the tail, not as single-shot accuracy — a system that works once or at P50 is not a system that works.
+
+Support: **5** talk(s)
+
+> "if your agent one in four times deletes a database, you will never touch that agent again, right? So when you need this reliability, you really need to be it in the nines."
+>
+> — [Perception Agents](../talks/perception-agents.md), [3:30](https://www.youtube.com/watch?v=2JX6JYyQG4Y&t=210s)
+
+Supporting talks: [Perception Agents](../talks/perception-agents.md), [Production Evals For Agentic AI Systems](../talks/production-evals-for-agentic-ai-systems.md), [How to build an AI-Native Health Company](../talks/how-to-build-an-ai-native-health-company.md), [Deterministic Infra for Non-Deterministic AI Agents](../talks/deterministic-infra-for-non-deterministic-ai-agents.md), [Building Turbopuffer: Gergely Orosz (@pragmaticengineer ) × Simon Eskildsen (CEO)](../talks/building-turbopuffer-gergely-orosz-pragmaticengineer-simon-eskildsen-ceo.md)
+
+### Reliability appears first where outputs are verifiable, so teams should engineer verifiability into the task representation rather than trying to make unverifiable work reliable.
+
+Support: **5** talk(s)
+
+> "why was coding first solved? It's because code is verifiable. You can run it, you can test it, you can check it and you can be for sure that it worked. So reliability showed up in the first place you can actually verify the answer."
+>
+> — [Perception Agents](../talks/perception-agents.md), [5:55](https://www.youtube.com/watch?v=2JX6JYyQG4Y&t=355s)
+
+Supporting talks: [Perception Agents](../talks/perception-agents.md), [The Great Loops Debate — Dex Horthy, Geoff Huntley, Ian Livingstone, Greg Pstrucha, @insecure-agents](../talks/the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in.md), [Healthcare’s Agent Bytecode: X12 as the Harness for AI Agents](../talks/healthcares-agent-bytecode-x12-as-the-harness-for-ai-agents.md), [From RL to IRL](../talks/from-rl-to-irl.md), [How to build an AI-Native Health Company](../talks/how-to-build-an-ai-native-health-company.md)
 
 ## Disagreements
 
-### Should reliability be engineered around the model in the harness, or into the model through post-training on messy environments?
+### Should agent reliability be engineered around the model in the harness, or trained into the model itself?
 
 | Position A | Position B |
 |---|---|
-| Constrain the model: take control flow, state, and judgment calls out of it and put them in deterministic infrastructure. A strong enough harness lets a smaller model (Haiku 4.5) hit the performance level of a frontier model, and the model should choose only from a fixed catalog of actions or components it can never extend.<br>*[Don't Let the LLM Drive](../talks/dont-let-the-llm-drive.md), [Deterministic Infra for Non-Deterministic AI Agents](../talks/deterministic-infra-for-non-deterministic-ai-agents.md), [Agent Output Is Not UX: Rendering Layer Your LLM Pipeline Is Missing](../talks/agent-output-is-not-ux-rendering-layer-your-llm-pipeline-is-missing.md), [Recursive Coding Agents](../talks/recursive-coding-agents.md)* | Train the model into reliability: post-training is a more powerful lever than prompting or harness changes, infra errors should be passed to the model so recovery becomes a native model action, and training should deliberately include layout shifts, pop-ups, stale tabs, and adversarial tasks rather than shielding the model from them.<br>*[Data and Environment Curation for Post-Training LLMs](../talks/data-and-environment-curation-for-post-training-llms.md), [From RL to IRL](../talks/from-rl-to-irl.md)* |
+| Reliability is a control problem solved outside the model: take control flow, state, and completion judgments out of the model permanently, and treat the model as an untrustworthy component whose failure domains are engineered away.<br>*[Don't Let the LLM Drive](../talks/dont-let-the-llm-drive.md), [Deterministic Infra for Non-Deterministic AI Agents](../talks/deterministic-infra-for-non-deterministic-ai-agents.md), [Agent Output Is Not UX: Rendering Layer Your LLM Pipeline Is Missing](../talks/agent-output-is-not-ux-rendering-layer-your-llm-pipeline-is-missing.md), [Healthcare’s Agent Bytecode: X12 as the Harness for AI Agents](../talks/healthcares-agent-bytecode-x12-as-the-harness-for-ai-agents.md), [The Great Loops Debate — Dex Horthy, Geoff Huntley, Ian Livingstone, Greg Pstrucha, @insecure-agents](../talks/the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in.md)* | Reliability is a training problem: post-training and RL on messy, failure-rich environments are the strongest lever, infra errors should be surfaced to the model so recovery becomes a native model action, and harness guardrails are transitional scaffolding that should get thinner as the model improves.<br>*[Data and Environment Curation for Post-Training LLMs](../talks/data-and-environment-curation-for-post-training-llms.md), [From RL to IRL](../talks/from-rl-to-irl.md)* |
 
-*Why it matters: It determines whether a reliability budget buys orchestration engineering and eval infrastructure or data curation and RL environments — and whether hard-won harness logic is a durable asset or scaffolding you will delete after the next model release.*
+*Why it matters: It determines whether engineering investment goes into a durable orchestration/control-plane layer or into data and environment pipelines, and whether an infrastructure error should be caught and handled by code or deliberately passed through to the model to recover from.*
 
-### Can the verification layer itself be probabilistic, or must checks on agent output be deterministic?
-
-| Position A | Position B |
-|---|---|
-| Stacking non-deterministic verification on non-deterministic output makes correctness worse; push verification toward static, deterministic checks — types, compilers, harness validation, policy engines — and read the output yourself, because you cannot prevent loops from compounding slop any other way.<br>*[The Great Loops Debate — Dex Horthy, Geoff Huntley, Ian Livingstone, Greg Pstrucha, @insecure-agents](../talks/the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in.md), [Don't Let the LLM Drive](../talks/dont-let-the-llm-drive.md), [Deterministic Infra for Non-Deterministic AI Agents](../talks/deterministic-infra-for-non-deterministic-ai-agents.md)* | Fixed rubrics cannot catch the failure modes of multi-step agents whose trajectories differ every run, so the evaluator must itself be an agent doing adaptive trace analysis — up to opening the PR that fixes what it found — or a perception agent visually confirming its own work against brand and flow rules.<br>*[The Future of Evals: From LLM as a Judge to Agent as a Judge](../talks/the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge.md), [Perception Agents](../talks/perception-agents.md), [Production Evals For Agentic AI Systems](../talks/production-evals-for-agentic-ai-systems.md)* |
-
-*Why it matters: If probabilistic verifiers are legitimate, reliability scales with eval spend and agents can close their own loops; if not, agent autonomy is capped by whatever a deterministic checker or a human reviewer can cover, and unverifiable knowledge work stays out of reach.*
-
-### Is the guardrail/harness layer permanent infrastructure or transitional scaffolding?
+### Should verification of agent output be done by other models/agents, or pushed down to deterministic and static checks?
 
 | Position A | Position B |
 |---|---|
-| Guardrails are a transitional scaffold — strong early, progressively thinner as the model gets better at recovery, grounding, and calibrated handoff.<br>*[From RL to IRL](../talks/from-rl-to-irl.md)* | The control layer is a durable architectural tier, analogous to Kubernetes for containers and service meshes for microservices; human supervision is permanent rather than a temporary necessity, and infrastructure is the next differentiator now that prompts and models have commoditized.<br>*[Deterministic Infra for Non-Deterministic AI Agents](../talks/deterministic-infra-for-non-deterministic-ai-agents.md), [Production Evals For Agentic AI Systems](../talks/production-evals-for-agentic-ai-systems.md), [Don't Let the LLM Drive](../talks/dont-let-the-llm-drive.md), [Recursive Coding Agents](../talks/recursive-coding-agents.md)* |
+| Use models to check models: agent-as-a-judge with full trace analysis catches multi-step failures fixed rubrics cannot, cross-model agreement gates high-stakes actions, and a perception agent can read the rendered screen to confirm its own work.<br>*[The Future of Evals: From LLM as a Judge to Agent as a Judge](../talks/the-future-of-evals-from-llm-as-a-judge-to-agent-as-a-judge.md), [How to build an AI-Native Health Company](../talks/how-to-build-an-ai-native-health-company.md), [Perception Agents](../talks/perception-agents.md)* | Stacking non-deterministic verification on non-deterministic output makes correctness worse; verification should be static and deterministic (types, schemas, structured contracts, harness validation), with a human actually reading the output as the backstop.<br>*[The Great Loops Debate — Dex Horthy, Geoff Huntley, Ian Livingstone, Greg Pstrucha, @insecure-agents](../talks/the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in.md), [Don't Let the LLM Drive](../talks/dont-let-the-llm-drive.md), [Healthcare’s Agent Bytecode: X12 as the Harness for AI Agents](../talks/healthcares-agent-bytecode-x12-as-the-harness-for-ai-agents.md)* |
 
-*Why it matters: It sets the amortization horizon for orchestration work: scaffolding you expect to delete should stay cheap and disposable, while a control plane you expect to own justifies building a real platform team around it.*
+*Why it matters: It decides whether the reliability budget buys more inference (judge agents, multi-model quorums, eval fleets) or buys stricter representations and type systems — and whether a passing agentic eval is admissible evidence for shipping.*
+
+### Is reliability a single high bar the system must clear, or a per-action risk budget that varies by stakes?
+
+| Position A | Position B |
+|---|---|
+| End-to-end reliability must reach 'the nines' and hold across 10,000 to 1,000,000 executions; 60-80% success is not usable and one bad action destroys trust in the whole system.<br>*[Perception Agents](../talks/perception-agents.md), [Deterministic Infra for Non-Deterministic AI Agents](../talks/deterministic-infra-for-non-deterministic-ai-agents.md)* | Eliminating failure entirely is costly and often unnecessary; classify failures by consequence — a one-in-a-thousand failure is fine where the user can retry, zero tolerance applies to irreversible actions — and use calibrated confidence about risk, reversibility, and authorization to decide when to hand back to a human.<br>*[How to build an AI-Native Health Company](../talks/how-to-build-an-ai-native-health-company.md), [From RL to IRL](../talks/from-rl-to-irl.md)* |
+
+*Why it matters: A uniform nines target blocks shipping anything until the weakest path is fixed, while a graded risk budget ships most of the surface immediately and concentrates cost on irreversible actions — very different roadmaps and very different cost structures.*
+
+### Does reliability come from adopting the strongest available model, or from harnessing a smaller one?
+
+| Position A | Position B |
+|---|---|
+| A sufficiently strong harness lets a much smaller model hit the required performance bar at lower cost and latency, and an overpowered model on high-frequency routine transactions defeats the purpose; upgrading to a newer higher-scoring model can break a working system and requires rebuilding evals from scratch.<br>*[Don't Let the LLM Drive](../talks/dont-let-the-llm-drive.md), [Healthcare’s Agent Bytecode: X12 as the Harness for AI Agents](../talks/healthcares-agent-bytecode-x12-as-the-harness-for-ai-agents.md), [Recursive Coding Agents](../talks/recursive-coding-agents.md)* | Teams must scale with model capabilities or fall behind — frontier models can one-shot medium-sized features from a good spec, and planning should assume model capability keeps improving.<br>*[How Forward Deployed Engineering is done at Ramp](../talks/how-forward-deployed-engineering-is-done-at-ramp.md), [How to build an AI-Native Health Company](../talks/how-to-build-an-ai-native-health-company.md)* |
+
+*Why it matters: It sets whether the reliability roadmap is 'build scaffolding so cheap models suffice' or 'keep the pipeline model-agnostic and ride upgrades', which changes eval strategy, unit economics, and how much work is thrown away on each model release.*
 
 ## Practical Guidance
 
 **Do:**
 
-- Model the workflow as an explicit state machine in the harness (intro, teach, check, grade, advance, wrap) and let the harness — not the model — decide task completion, success, and what comes next.
-- Treat reliability approaching a coin flip as the trigger to remove control flow from the model rather than to add prompt rules.
-- Route every model action through validate → policy-approve → execution-gateway; never let the model touch production systems directly.
-- Bound and budget retries explicitly; assume an unbounded retry path turns a minor API error into a compute incident.
-- Give the model a fixed catalog of actions/components and gate availability by client version, so an unpatchable mobile client never meets a content type it cannot render.
-- Pass infrastructure errors back to the model as observations and expect recovery via native tool use, instead of resetting the environment on infra failure.
-- Penalize dangerous intermediate actions during training, not just wrong final outcomes — a trajectory can reach 'done' having sent a resignation letter to the CEO.
-- Train calibrated handoff as an action, conditioned on risk, reversibility, authorization, and visibility, rather than treating full autonomy as the objective.
-- Adopt SRE metrics as the North Star — reliability, availability, latency, cost, recovery — and drop accuracy from the business-outcome dashboard.
-- Emit traces of reasoning paths, tool calls, memory access, and state transitions; run evals continuously on live production traces, not just before deploy.
-- Isolate data sources and fall back to last-verified context so one bad feed degrades the system instead of breaking it.
-- Design storage/retrieval paths against P99/P999, not P50, when one logical operation fans out into many round trips (~200ms P99 for a 256–512KB S3 read).
-- Hard-crash training runs on invariant violations such as weight-hash mismatches across data-parallel replicas.
-- Use time to first chunk as the primary latency metric for AI UX, and show 'thinking' state sparingly to keep long waits legible.
-- Run AI security scanning on PRs both before and after they land — roughly $5 per PR — since it reliably finds real issues humans overlook.
+- Model multi-step workflows as an explicit state machine in the harness (e.g. intro, teach, check, grade, advance, wrap); the harness validates the model's return, advances state, and decides what comes next.
+- Give the model a fixed catalog to select from rather than free generation — a closed component list, a standard public schema, or an X12-style transaction vocabulary — and gate catalog entries by client version so old clients are never offered types they cannot render.
+- Cap and budget retries explicitly; treat uncontrolled retry as a resource-exhaustion vector that converts a minor API error into a compute incident.
+- Emit traces of the decision chain — reasoning path, tool calls, memory access, state transitions — not just logs, since debugging an autonomous workflow depends on the chain more than the final output.
+- Run each integration test many times and gate on a sustained pass rate (e.g. 90%) rather than a single green run.
+- Adopt SRE metrics as the North Star — reliability, availability, latency, cost, recovery — and stop treating accuracy as the headline number.
+- Design against P99/P999 rather than P50 when one logical operation fans out into many calls, because per-call tail latency compounds through traversal.
+- Train and test in high-fidelity messy sandboxes: layout shift, slow loads, missing labels, pop-ups, focus stealing, random account states, stale tabs.
+- Surface infrastructure errors to the agent as recoverable events rather than resetting the environment, so recovery becomes a learned action.
+- Penalize dangerous intermediate actions, not just wrong final outcomes — a trajectory can reach 'done' having done something irreversible along the way.
+- Isolate data sources and fall back to last-verified context at serve time so a bad feed degrades the system instead of breaking it.
+- Gate irreversible high-stakes actions on agreement between two different models, escalating to a human when they disagree.
+- Keep working context well under the window — roughly 100k tokens, under 60k for the hardest problems — and re-allocate a fresh context each iteration rather than compacting.
+- Maintain your own internal representation of external system state, treated as correct only until downstream evidence disproves it.
+- Replace total latency with time-to-first-chunk as the primary UX metric, and show intermediate progress rather than an opaque spinner.
+- Cap PRs at 500 lines so review remains meaningful when agents are producing thousands of lines a day.
 
 **Avoid:**
 
-- Fixing multi-step unreliability by prompting harder or adding more rules — it is a control problem, and long rule lists also blow up latency.
-- Letting the model remember which step of the workflow it is on, or invent an action/component outside the supplied catalog.
-- Treating hallucination as the primary production failure mode; infrastructure and distributed-state failures dominate, and many 'reasoning' failures in multi-agent systems are consistency failures.
-- Believing demos or benchmark scores — step-skipping, premature completion, and looping only surface with real users — or making infrastructure decisions from benchmarks that measure the wrong thing.
-- Assuming failure resets, or firing actions and moving on without checking whether they landed.
-- Deploying agents at 60–80% end-to-end success for real work; one-in-four destructive failures permanently destroys trust in the agent.
-- Buying quality with more tokens by stacking loops on loops — the token budget per engineer cracks before the quality problem does.
-- Relying on compaction to preserve fidelity; it is lossy, and re-allocating a fresh context per iteration (keeping working context under ~100k tokens, under 60k for the hardest problems) beats it.
-- Running loops over dynamically typed codebases, where the absence of types removes the cheapest verification signal.
-- Storing secrets as files in agent environments, and running coding agents on a local laptop given existing NPM supply-chain risk.
-- Automating an intake-to-implementation pipeline without scoping discipline — the result is a high-volume, low-quality output cannon.
+- Fixing multi-step unreliability by adding more prompt rules — it is a control problem, and long rule lists also blow up latency.
+- Letting the model hold the state of a multi-step workflow or decide whether it is finished.
+- Assuming failure resets: firing off actions and moving on without watching whether the step actually succeeded.
+- Treating hallucination as the primary production risk while leaving retry storms, distributed-state inconsistency, and delivery-layer crashes unaddressed.
+- Shipping unknown content types to clients you cannot patch — a mobile client that meets an unfamiliar type crashes, and keeps crashing for days or weeks.
+- Trusting benchmark scores or demo runs as evidence of production reliability; the benchmark-to-production gap widens as autonomy increases.
+- Positioning humans as fallback handlers instead of evaluators, or rubber-stamping agent-authored PRs, which manufactures false confidence.
+- Swapping in a newer, higher-scoring model without rebuilding evals and validation first — different is not automatically better.
+- Stacking loops on loops and buying quality with more tokens; the token spend is not sustainable at company scale and it does not fix correctness.
+- Running loop-driven code generation in dynamically typed languages where there is no type system doing verification for you.
+- Using an expensive frontier model for routine transactions executed thousands of times a day, which defeats the cost case for the system.
+- Storing secrets as files in an agent's environment, since increasingly goal-seeking models will find and use them.
 
 ## Notable Outliers
 
-- Many multi-agent failures blamed on reasoning are actually distributed-state consistency failures masquerading as reasoning failures. ([Deterministic Infra for Non-Deterministic AI Agents](../talks/deterministic-infra-for-non-deterministic-ai-agents.md), [3:58](https://www.youtube.com/watch?v=APh1Vx0oLmQ&t=238s))
-- A strong enough harness let a Haiku 4.5-class model replace an Opus 4.7-class model at the expected performance level for live voice tutoring, saving cost and latency. ([Don't Let the LLM Drive](../talks/dont-let-the-llm-drive.md), [2:27](https://www.youtube.com/watch?v=m24UKZomm7k&t=147s))
-- A race condition in open-source FP8 kernels silently corrupted about 0.5% of gradients, and replica hash checking cannot detect it because real runs have no forward/backward redundancy — reliability failures start below the model layer. ([The Messy Reality of Scale: Synthetic Data and Pre-Training](../talks/the-messy-reality-of-scale-synthetic-data-and-pre-training.md), [14:32](https://www.youtube.com/watch?v=KhYifX22yhE&t=872s))
-- Running a coding agent in a loop works out to $10.42 an hour, which is the whole economic argument for loops. ([The Great Loops Debate — Dex Horthy, Geoff Huntley, Ian Livingstone, Greg Pstrucha, @insecure-agents](../talks/the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in.md), [20:42](https://www.youtube.com/watch?v=c35YoMdnI78&t=1242s))
-- Trust in an agent reduces entirely to its reliability — one day it ships a working SaaS app from a single prompt, the next it empties a Solana wallet. ([Recursive Coding Agents](../talks/recursive-coding-agents.md), [0:52](https://www.youtube.com/watch?v=3hXJI2q0Jz8&t=52s))
-- Error accumulation in causally-masked real-time video generation was solved well enough to run 8–16 hours of continuous frame-by-frame generation with no noticeable drift and no reset. ([Voice agents with Realtime Video](../talks/voice-agents-with-realtime-video.md), [12:36](https://www.youtube.com/watch?v=z1dqv74SpUs&t=756s))
-- Targeting a 100x speedup traps teams in meta-optimization; small incremental loops that yield 2–3x while humans still read the code and own the architecture is the achievable target. ([The Great Loops Debate — Dex Horthy, Geoff Huntley, Ian Livingstone, Greg Pstrucha, @insecure-agents](../talks/the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in.md), [49:02](https://www.youtube.com/watch?v=c35YoMdnI78&t=2942s))
+- Many multi-agent failures blamed on model reasoning are actually distributed-state consistency failures in disguise. ([Deterministic Infra for Non-Deterministic AI Agents](../talks/deterministic-infra-for-non-deterministic-ai-agents.md), [3:58](https://www.youtube.com/watch?v=APh1Vx0oLmQ&t=238s))
+- When reliability on a step approaches a coin flip, that is the explicit signal to remove control flow from the model entirely. ([Don't Let the LLM Drive](../talks/dont-let-the-llm-drive.md), [5:17](https://www.youtube.com/watch?v=m24UKZomm7k&t=317s))
+- Reliability failures reach below the agent stack: a race condition in widely used open-source FP8 kernels silently corrupted about 0.5% of gradients, and replica hash checking cannot detect it because real training runs have no redundancy in the forward/backward pass. ([The Messy Reality of Scale: Synthetic Data and Pre-Training](../talks/the-messy-reality-of-scale-synthetic-data-and-pre-training.md), [14:32](https://www.youtube.com/watch?v=KhYifX22yhE&t=872s))
+- A structured response from an authoritative external system is not ground truth — the payer's phone line, portal, and X12 feed can all agree on the same wrong answer, and the claim is still denied. ([Healthcare’s Agent Bytecode: X12 as the Harness for AI Agents](../talks/healthcares-agent-bytecode-x12-as-the-harness-for-ai-agents.md), [15:18](https://www.youtube.com/watch?v=UyyOoJmuATU&t=918s))
+- Treat the model as a drunk you cannot trust, and engineer away the failure domains: the loop must not be allowed to close until the output satisfies your engineering certification for the domain. ([The Great Loops Debate — Dex Horthy, Geoff Huntley, Ian Livingstone, Greg Pstrucha, @insecure-agents](../talks/the-great-loops-debate-dex-horthy-geoff-huntley-ian-livingstone-greg-pstrucha-in.md), [22:53](https://www.youtube.com/watch?v=c35YoMdnI78&t=1373s))
+- Acceptable failure rate should be set per action class: one-in-a-thousand is fine for appointment scheduling because the user can retry, but reimbursement claims tolerate zero because every error escalates immediately. ([How to build an AI-Native Health Company](../talks/how-to-build-an-ai-native-health-company.md), [14:27](https://www.youtube.com/watch?v=WJRdLNhrsLQ&t=867s))
+- Error accumulation in an autoregressive, past-only generator is solvable well enough to run 8 to 16 hours of continuous frame-by-frame generation with no reset and no noticeable drift. ([Voice agents with Realtime Video](../talks/voice-agents-with-realtime-video.md), [12:36](https://www.youtube.com/watch?v=z1dqv74SpUs&t=756s))
 
 ## All Talks
 
@@ -163,7 +193,9 @@ Supporting talks: [Building Turbopuffer: Gergely Orosz (@pragmaticengineer ) × 
 - [Don't Let the LLM Drive](../talks/dont-let-the-llm-drive.md)
 - [From RL to IRL](../talks/from-rl-to-irl.md)
 - [From Systems of Record to Systems of Context](../talks/from-systems-of-record-to-systems-of-context.md)
+- [Healthcare’s Agent Bytecode: X12 as the Harness for AI Agents](../talks/healthcares-agent-bytecode-x12-as-the-harness-for-ai-agents.md)
 - [How Forward Deployed Engineering is done at Ramp](../talks/how-forward-deployed-engineering-is-done-at-ramp.md)
+- [How to build an AI-Native Health Company](../talks/how-to-build-an-ai-native-health-company.md)
 - [Perception Agents](../talks/perception-agents.md)
 - [Production Evals For Agentic AI Systems](../talks/production-evals-for-agentic-ai-systems.md)
 - [Recursive Coding Agents](../talks/recursive-coding-agents.md)
@@ -177,6 +209,7 @@ Supporting talks: [Building Turbopuffer: Gergely Orosz (@pragmaticengineer ) × 
 - [Antje Barth](../speakers/antje-barth.md)
 - [Aparna Dhinakaran](../speakers/aparna-dhinakaran.md)
 - [Bala Ramdoss](../speakers/bala-ramdoss.md)
+- [Dan Feng](../speakers/dan-feng.md)
 - [Gaurav Mishra](../speakers/gaurav-mishra.md)
 - [Joel Allou](../speakers/joel-allou.md)
 - [Lee Robinson](../speakers/lee-robinson.md)
@@ -188,4 +221,5 @@ Supporting talks: [Building Turbopuffer: Gergely Orosz (@pragmaticengineer ) × 
 - [Omri Bruchim](../speakers/omri-bruchim.md)
 - [Ornella Bahidika](../speakers/ornella-bahidika.md)
 - [Robert McHardy](../speakers/robert-mchardy.md)
+- [Vasant Kearney](../speakers/vasant-kearney.md)
 

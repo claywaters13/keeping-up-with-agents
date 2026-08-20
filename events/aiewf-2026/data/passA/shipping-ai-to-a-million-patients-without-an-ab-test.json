@@ -1,0 +1,301 @@
+{
+  "is_error": false,
+  "duration_api_ms": 87929,
+  "num_turns": 1,
+  "stop_reason": "end_turn",
+  "session_id": "b358af01-4adc-4b8e-a30e-7d19111de9f5",
+  "total_cost_usd": 0.32369000000000003,
+  "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 11131,
+    "cache_read_input_tokens": 11376,
+    "output_tokens": 7975,
+    "output_tokens_details": {
+      "thinking_tokens": 3214
+    },
+    "server_tool_use": {
+      "web_search_requests": 0,
+      "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+      "ephemeral_1h_input_tokens": 11131,
+      "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "not_available",
+    "iterations": [
+      {
+        "input_tokens": 2,
+        "output_tokens": 7975,
+        "cache_read_input_tokens": 11376,
+        "cache_creation_input_tokens": 11131,
+        "cache_creation": {
+          "ephemeral_5m_input_tokens": 0,
+          "ephemeral_1h_input_tokens": 11131
+        },
+        "type": "message"
+      }
+    ],
+    "speed": "standard"
+  },
+  "modelUsage": {
+    "claude-haiku-4-5-20251001": {
+      "inputTokens": 7207,
+      "outputTokens": 20,
+      "cacheReadInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0.007307,
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "canonicalModel": "claude-haiku-4-5",
+      "provider": "firstParty"
+    },
+    "claude-opus-5": {
+      "inputTokens": 2,
+      "outputTokens": 7975,
+      "cacheReadInputTokens": 11376,
+      "cacheCreationInputTokens": 11131,
+      "webSearchRequests": 0,
+      "costUSD": 0.316383,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 64000,
+      "canonicalModel": "claude-opus-5",
+      "provider": "firstParty"
+    }
+  },
+  "permission_denials": [],
+  "terminal_reason": "completed",
+  "fast_mode_state": "off",
+  "fast_mode_disabled_reason": "sdk_opt_in_required",
+  "subtype": "success",
+  "api_error_status": null,
+  "result": "```json\n{\n  \"summary\": \"Jared Joselowitz, a research engineer at Ufonia, explains how his team proves the safety of Dora \u2014 a voice AI agent that phones patients for post-op follow-ups and pre-op checks \u2014 when the usual ship-small/watch-dashboard/roll-back playbook is unavailable. Because Dora asks about symptoms and gives advice, it is a regulated medical device, and A/B testing patients into a worse variant would be unethical and illegal; a call that has happened cannot be rolled back. Ufonia's answer, borrowed from self-driving cars, is simulation-first: a framework called Matrix pairs an LLM 'PatBot' playing conditioned patient scenarios against Dora, and a validated LLM judge ('BehJudge') grades transcripts against a documented hazard list, scoring an F1 of 0.96 against ten clinicians. Grading alone doesn't improve the product, so failures feed a GEPA-style prompt optimizer with a clinician-defined cost matrix that deliberately over-weights sensitivity to red flags. Worth watching if you ship AI where being wrong for a few users is not an acceptable cost, or if you want a concrete pattern for replacing canary deploys with simulation gates plus staged, evidence-earned autonomy.\",\n  \"key_points\": [\n    \"The standard de-risking playbook \u2014 ship to 5%, watch dashboards, roll back \u2014 silently assumes you can afford to be wrong for a while, an assumption that collapses when the user is a patient and a red dashboard means someone was already harmed.\",\n    \"Because Dora asks about symptoms and gives medical advice, it legally counts as a medical device, so regulation reduces to three questions: what does the software do, what could go wrong, and how do you ensure it doesn't.\",\n    \"Ufonia starts safety work from an enumerated hazard list (missed red flags like sudden vision loss, hallucinated answers, ignored patient distress \u2014 20 to 40 documented hazards) rather than from model benchmarks.\",\n    \"The Matrix framework simulates clinical conversations with an LLM-played 'PatBot' conditioned on scenarios grounded in real clinical workflows; simulated patients are used instead of hired actors purely because actors don't scale to fast iteration.\",\n    \"PatBot realism was validated with a patient and public involvement study: in three of four side-by-side comparisons, most real patients judged the simulated patient more realistic than the real one \u2014 while confirming there is no single 'realistic patient' persona to target.\",\n    \"The LLM judge was validated against 240 labelled examples reviewed by ten clinicians across ten specialties, reaching F1 0.96 (Gemini 2.5 Pro at the time of the paper) with near-perfect sensitivity \u2014 the metric clinicians care about, since over-calling hazards is cheap and missing them is catastrophic.\",\n    \"Manual prompt engineering is rejected as non-reproducible and brittle \u2014 formatting changes alone have swung benchmarks by 76 percentage points \u2014 and replaced with automated prompt optimization (GEPA, from the DSPy authors), which turns hours-to-days of tuning into 30\u201360 minutes with an audit trail.\",\n    \"The reactive ship/watch/rollback loop is replaced by a flywheel: real call data plus synthetic edge cases \u2192 prompt optimization \u2192 Matrix as a simulation safety gate \u2192 gated deploy, with every new call feeding back into the dataset.\",\n    \"Simulation is necessary but not sufficient \u2014 it is the inner loop that earns the right to a staged outer loop of user testing, supervised clinical evaluation with clinicians in the loop, and monitored deployment, where autonomy is granted in proportion to accumulated evidence.\",\n    \"The same black-box method transfers to new modalities: voice introduces failure modes like back-channeling and interruptions that make weak models abandon safety advice mid-sentence, but the hazard-enumerate-simulate-judge framework itself doesn't change.\"\n  ],\n  \"notable_quotes\": [\n    {\n      \"text\": \"you can't actually AB test on patients of course. Randomizing patients into a worse variant is unethical and often illegal.\",\n      \"timestamp_sec\": 47,\n      \"why\": \"States the core constraint the entire talk is built around.\"\n    },\n    {\n      \"text\": \"you can't undo a call. Once Dora says it, it's been said and there is no rollback.\",\n      \"timestamp_sec\": 47,\n      \"why\": \"Names the second missing safety net \u2014 irreversibility \u2014 in one line.\"\n    },\n    {\n      \"text\": \"And very importantly the model card won't save you. Um you can't claim like some model vendors said that they have 92% on some benchmark.\",\n      \"timestamp_sec\": 47,\n      \"why\": \"A direct swipe at vendor benchmarks as a regulatory defense.\"\n    },\n    {\n      \"text\": \"so far we've done around 200,000 real clinical calls within the UK across 20 hospitals. And we are contracted to scale to a million patients in the next 2 years.\",\n      \"timestamp_sec\": 85,\n      \"why\": \"Establishes the deployment scale that makes the safety argument concrete.\"\n    },\n    {\n      \"text\": \"Roll back. You can't really roll back. The call has already happened. The person has already been harmed.\",\n      \"timestamp_sec\": 286,\n      \"why\": \"The sharpest statement of why canary deploys break in healthcare.\"\n    },\n    {\n      \"text\": \"Well, they didn't just drive around crashing into walls and say, \\\"We won't do that again.\\\" and then doing another RL loop.\",\n      \"timestamp_sec\": 318,\n      \"why\": \"The self-driving analogy that motivates simulation-first development.\"\n    },\n    {\n      \"text\": \"Simulation is only the real ethical option we can go with. You can't run all the hazard the hazards I just mentioned on real people as a first grasp.\",\n      \"timestamp_sec\": 356,\n      \"why\": \"Frames simulation as an ethical requirement rather than a convenience.\"\n    },\n    {\n      \"text\": \"We use a simulated patient and not a hired actor because hired actors don't scale.\",\n      \"timestamp_sec\": 389,\n      \"why\": \"Names the explicit tradeoff behind synthetic user simulation.\"\n    },\n    {\n      \"text\": \"In three out of the four, the majority of people actually thought that the simulated patient was more realistic.\",\n      \"timestamp_sec\": 507,\n      \"why\": \"Reports the counterintuitive validation result for the patient simulator.\"\n    },\n    {\n      \"text\": \"The top model, which as of a year ago when we wrote the paper, was Gemini 2.5 Pro. Now we've maybe updated the models. Um it achieved an F1 score of of 0.96.\",\n      \"timestamp_sec\": 613,\n      \"why\": \"The headline number for LLM-judge-versus-clinician agreement.\"\n    },\n    {\n      \"text\": \"You would rather overcall hazards that aren't there than undercall hazards that are there.\",\n      \"timestamp_sec\": 651,\n      \"why\": \"The asymmetric-cost principle that drives their whole metric design.\"\n    },\n    {\n      \"text\": \"grading isn't technically improving the product. A pile of pass/fails tells you where Dora breaks and where it's not safe, but doesn't actually make the product better.\",\n      \"timestamp_sec\": 651,\n      \"why\": \"The pivot from evaluation to optimization, and a critique of eval-only stacks.\"\n    },\n    {\n      \"text\": \"Formatting changes alone have been seen to swing benchmark by 76 percentage points. And reordering few-shot examples flips a model from near random, so near 50%, to near state-of-the-art on some benchmarks.\",\n      \"timestamp_sec\": 685,\n      \"why\": \"Quantified case against hand-tuned prompts in a regulated setting.\"\n    },\n    {\n      \"text\": \"Simulation is the inner loop. It's fast, it's free, you can do thousands of runs before anyone actually real is is exposed.\",\n      \"timestamp_sec\": 907,\n      \"why\": \"Crisp framing of simulation's role in the development cycle.\"\n    },\n    {\n      \"text\": \"But, real patients are the outer loop, and that's where the only real proof is. So, simulation is necessary, but it's not sufficient.\",\n      \"timestamp_sec\": 944,\n      \"why\": \"Guards against over-trusting simulation, balancing the talk's main thesis.\"\n    },\n    {\n      \"text\": \"And how much autonomy you allow the system to do depends on your evidence. As the system gets more evidence, you can give it more independence.\",\n      \"timestamp_sec\": 978,\n      \"why\": \"States the evidence-gated autonomy principle other teams could adopt directly.\"\n    },\n    {\n      \"text\": \"The important thing is that you don't ship the model, you ship the evidence when trying to regulate.\",\n      \"timestamp_sec\": 978,\n      \"why\": \"The talk's thesis compressed into a single line.\"\n    },\n    {\n      \"text\": \"You first have to define exactly what harm is for your product. You have to manufacture your rare but then but dangerous cases. Don't wait for them just to happen naturally.\",\n      \"timestamp_sec\": 1015,\n      \"why\": \"The most portable takeaway for non-healthcare teams.\"\n    },\n    {\n      \"text\": \"Voice is just a new module in the same safety case\",\n      \"timestamp_sec\": 1094,\n      \"why\": \"Argues the hazard framework generalizes across modalities without a rebuild.\"\n    }\n  ],\n  \"concepts\": [\n    \"clinical conversational agents\",\n    \"hazard analysis\",\n    \"simulation-based evaluation\",\n    \"synthetic user simulation\",\n    \"llm-as-judge validation\",\n    \"automated prompt optimization\",\n    \"cost-sensitive evaluation metrics\",\n    \"staged deployment gating\",\n    \"medical device regulation\",\n    \"voice agent failure modes\"\n  ],\n  \"positions\": [\n    {\n      \"claim\": \"A/B testing and canary rollouts are unusable for patient-facing AI because randomizing patients into a worse variant is unethical and often illegal.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 47\n    },\n    {\n      \"claim\": \"Vendor benchmark scores on a model card are not a valid defense in a post-incident review.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 47\n    },\n    {\n      \"claim\": \"The ship-to-5%-and-watch-dashboards playbook depends on a hidden assumption that being wrong for a short time is affordable, which does not hold for patients.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 286\n    },\n    {\n      \"claim\": \"Large-scale simulation, as used by self-driving car companies, is the only ethical way to iterate on patient-facing AI before exposure.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 356\n    },\n    {\n      \"claim\": \"Simulated LLM patients are preferable to hired standardized-patient actors because actors cannot scale to fast iteration across many scenarios.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 389\n    },\n    {\n      \"claim\": \"There is no single realistic patient to simulate; diverse personas (verbose vs. terse) must be simulated instead.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 543\n    },\n    {\n      \"claim\": \"An LLM judge validated on 240 examples performs at least on par with, if not slightly better than, expert clinicians at detecting clinical hazards, reaching F1 0.96 with near-perfect sensitivity.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 613\n    },\n    {\n      \"claim\": \"In healthcare evaluation you should deliberately over-call hazards rather than risk under-calling them, because false positives are mildly annoying while false negatives can be catastrophic.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 651\n    },\n    {\n      \"claim\": \"Evaluation alone does not improve a product; pass/fail grading must be wired into an optimization loop.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 651\n    },\n    {\n      \"claim\": \"Manual prompt engineering cannot survive prompt brittleness \u2014 formatting changes alone have swung benchmarks by 76 percentage points \u2014 so it should be replaced by automated prompt optimizers like GEPA.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 685\n    },\n    {\n      \"claim\": \"Automated prompt optimization reduces tuning time from hours or days to roughly 30 to 60 minutes while producing a reproducible audit trail.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 761\n    },\n    {\n      \"claim\": \"Evaluation metrics should be defined jointly with clinicians as an explicit cost matrix rather than a flat accuracy score.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 794\n    },\n    {\n      \"claim\": \"Passing every simulated test does not prove the product helps real patients; simulation is necessary but not sufficient and only earns the right to test carefully.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 944\n    },\n    {\n      \"claim\": \"System autonomy should be granted in proportion to accumulated evidence, expanded stage by stage with clinicians in the loop.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 978\n    },\n    {\n      \"claim\": \"The regulatory deliverable is the traceable evidence \u2014 calls, datasets, pinned prompts, judge verdicts mapped to specific hazards \u2014 not the model itself.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 978\n    },\n    {\n      \"claim\": \"Voice introduces new failure modes such as back-channeling and interruptions that cause weak models to abandon in-progress safety advice, but the hazard-simulation framework transfers unchanged to new modalities.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 1055\n    },\n    {\n      \"claim\": \"Dora augments rather than replaces clinicians by removing time-consuming follow-up calls from their workload.\",\n      \"confidence\": \"stated\",\n      \"timestamp_sec\": 85\n    }\n  ],\n  \"speaker_org\": \"Ufonia\"\n}\n```",
+  "ttft_ms": 37147,
+  "ttft_stream_ms": 1024,
+  "time_to_request_ms": 173,
+  "type": "result",
+  "duration_ms": 88484,
+  "uuid": "e9b325c1-2619-48e4-a368-027de8d5e7a1",
+  "passA": {
+    "summary": "Jared Joselowitz, a research engineer at Ufonia, explains how his team proves the safety of Dora \u2014 a voice AI agent that phones patients for post-op follow-ups and pre-op checks \u2014 when the usual ship-small/watch-dashboard/roll-back playbook is unavailable. Because Dora asks about symptoms and gives advice, it is a regulated medical device, and A/B testing patients into a worse variant would be unethical and illegal; a call that has happened cannot be rolled back. Ufonia's answer, borrowed from self-driving cars, is simulation-first: a framework called Matrix pairs an LLM 'PatBot' playing conditioned patient scenarios against Dora, and a validated LLM judge ('BehJudge') grades transcripts against a documented hazard list, scoring an F1 of 0.96 against ten clinicians. Grading alone doesn't improve the product, so failures feed a GEPA-style prompt optimizer with a clinician-defined cost matrix that deliberately over-weights sensitivity to red flags. Worth watching if you ship AI where being wrong for a few users is not an acceptable cost, or if you want a concrete pattern for replacing canary deploys with simulation gates plus staged, evidence-earned autonomy.",
+    "key_points": [
+      "The standard de-risking playbook \u2014 ship to 5%, watch dashboards, roll back \u2014 silently assumes you can afford to be wrong for a while, an assumption that collapses when the user is a patient and a red dashboard means someone was already harmed.",
+      "Because Dora asks about symptoms and gives medical advice, it legally counts as a medical device, so regulation reduces to three questions: what does the software do, what could go wrong, and how do you ensure it doesn't.",
+      "Ufonia starts safety work from an enumerated hazard list (missed red flags like sudden vision loss, hallucinated answers, ignored patient distress \u2014 20 to 40 documented hazards) rather than from model benchmarks.",
+      "The Matrix framework simulates clinical conversations with an LLM-played 'PatBot' conditioned on scenarios grounded in real clinical workflows; simulated patients are used instead of hired actors purely because actors don't scale to fast iteration.",
+      "PatBot realism was validated with a patient and public involvement study: in three of four side-by-side comparisons, most real patients judged the simulated patient more realistic than the real one \u2014 while confirming there is no single 'realistic patient' persona to target.",
+      "The LLM judge was validated against 240 labelled examples reviewed by ten clinicians across ten specialties, reaching F1 0.96 (Gemini 2.5 Pro at the time of the paper) with near-perfect sensitivity \u2014 the metric clinicians care about, since over-calling hazards is cheap and missing them is catastrophic.",
+      "Manual prompt engineering is rejected as non-reproducible and brittle \u2014 formatting changes alone have swung benchmarks by 76 percentage points \u2014 and replaced with automated prompt optimization (GEPA, from the DSPy authors), which turns hours-to-days of tuning into 30\u201360 minutes with an audit trail.",
+      "The reactive ship/watch/rollback loop is replaced by a flywheel: real call data plus synthetic edge cases \u2192 prompt optimization \u2192 Matrix as a simulation safety gate \u2192 gated deploy, with every new call feeding back into the dataset.",
+      "Simulation is necessary but not sufficient \u2014 it is the inner loop that earns the right to a staged outer loop of user testing, supervised clinical evaluation with clinicians in the loop, and monitored deployment, where autonomy is granted in proportion to accumulated evidence.",
+      "The same black-box method transfers to new modalities: voice introduces failure modes like back-channeling and interruptions that make weak models abandon safety advice mid-sentence, but the hazard-enumerate-simulate-judge framework itself doesn't change."
+    ],
+    "notable_quotes": [
+      {
+        "text": "you can't actually AB test on patients of course. Randomizing patients into a worse variant is unethical and often illegal.",
+        "timestamp_sec": 47,
+        "why": "States the core constraint the entire talk is built around."
+      },
+      {
+        "text": "you can't undo a call. Once Dora says it, it's been said and there is no rollback.",
+        "timestamp_sec": 47,
+        "why": "Names the second missing safety net \u2014 irreversibility \u2014 in one line."
+      },
+      {
+        "text": "And very importantly the model card won't save you. Um you can't claim like some model vendors said that they have 92% on some benchmark.",
+        "timestamp_sec": 47,
+        "why": "A direct swipe at vendor benchmarks as a regulatory defense."
+      },
+      {
+        "text": "so far we've done around 200,000 real clinical calls within the UK across 20 hospitals. And we are contracted to scale to a million patients in the next 2 years.",
+        "timestamp_sec": 85,
+        "why": "Establishes the deployment scale that makes the safety argument concrete."
+      },
+      {
+        "text": "Roll back. You can't really roll back. The call has already happened. The person has already been harmed.",
+        "timestamp_sec": 286,
+        "why": "The sharpest statement of why canary deploys break in healthcare."
+      },
+      {
+        "text": "Well, they didn't just drive around crashing into walls and say, \"We won't do that again.\" and then doing another RL loop.",
+        "timestamp_sec": 318,
+        "why": "The self-driving analogy that motivates simulation-first development."
+      },
+      {
+        "text": "Simulation is only the real ethical option we can go with. You can't run all the hazard the hazards I just mentioned on real people as a first grasp.",
+        "timestamp_sec": 356,
+        "why": "Frames simulation as an ethical requirement rather than a convenience."
+      },
+      {
+        "text": "We use a simulated patient and not a hired actor because hired actors don't scale.",
+        "timestamp_sec": 389,
+        "why": "Names the explicit tradeoff behind synthetic user simulation."
+      },
+      {
+        "text": "In three out of the four, the majority of people actually thought that the simulated patient was more realistic.",
+        "timestamp_sec": 507,
+        "why": "Reports the counterintuitive validation result for the patient simulator."
+      },
+      {
+        "text": "The top model, which as of a year ago when we wrote the paper, was Gemini 2.5 Pro. Now we've maybe updated the models. Um it achieved an F1 score of of 0.96.",
+        "timestamp_sec": 613,
+        "why": "The headline number for LLM-judge-versus-clinician agreement."
+      },
+      {
+        "text": "You would rather overcall hazards that aren't there than undercall hazards that are there.",
+        "timestamp_sec": 651,
+        "why": "The asymmetric-cost principle that drives their whole metric design."
+      },
+      {
+        "text": "grading isn't technically improving the product. A pile of pass/fails tells you where Dora breaks and where it's not safe, but doesn't actually make the product better.",
+        "timestamp_sec": 651,
+        "why": "The pivot from evaluation to optimization, and a critique of eval-only stacks."
+      },
+      {
+        "text": "Formatting changes alone have been seen to swing benchmark by 76 percentage points. And reordering few-shot examples flips a model from near random, so near 50%, to near state-of-the-art on some benchmarks.",
+        "timestamp_sec": 685,
+        "why": "Quantified case against hand-tuned prompts in a regulated setting."
+      },
+      {
+        "text": "Simulation is the inner loop. It's fast, it's free, you can do thousands of runs before anyone actually real is is exposed.",
+        "timestamp_sec": 907,
+        "why": "Crisp framing of simulation's role in the development cycle."
+      },
+      {
+        "text": "But, real patients are the outer loop, and that's where the only real proof is. So, simulation is necessary, but it's not sufficient.",
+        "timestamp_sec": 944,
+        "why": "Guards against over-trusting simulation, balancing the talk's main thesis."
+      },
+      {
+        "text": "And how much autonomy you allow the system to do depends on your evidence. As the system gets more evidence, you can give it more independence.",
+        "timestamp_sec": 978,
+        "why": "States the evidence-gated autonomy principle other teams could adopt directly."
+      },
+      {
+        "text": "The important thing is that you don't ship the model, you ship the evidence when trying to regulate.",
+        "timestamp_sec": 978,
+        "why": "The talk's thesis compressed into a single line."
+      },
+      {
+        "text": "You first have to define exactly what harm is for your product. You have to manufacture your rare but then but dangerous cases. Don't wait for them just to happen naturally.",
+        "timestamp_sec": 1015,
+        "why": "The most portable takeaway for non-healthcare teams."
+      },
+      {
+        "text": "Voice is just a new module in the same safety case",
+        "timestamp_sec": 1094,
+        "why": "Argues the hazard framework generalizes across modalities without a rebuild."
+      }
+    ],
+    "concepts": [
+      "clinical conversational agents",
+      "hazard analysis",
+      "simulation-based evaluation",
+      "synthetic user simulation",
+      "llm-as-judge validation",
+      "automated prompt optimization",
+      "cost-sensitive evaluation metrics",
+      "staged deployment gating",
+      "medical device regulation",
+      "voice agent failure modes"
+    ],
+    "positions": [
+      {
+        "claim": "A/B testing and canary rollouts are unusable for patient-facing AI because randomizing patients into a worse variant is unethical and often illegal.",
+        "confidence": "stated",
+        "timestamp_sec": 47
+      },
+      {
+        "claim": "Vendor benchmark scores on a model card are not a valid defense in a post-incident review.",
+        "confidence": "stated",
+        "timestamp_sec": 47
+      },
+      {
+        "claim": "The ship-to-5%-and-watch-dashboards playbook depends on a hidden assumption that being wrong for a short time is affordable, which does not hold for patients.",
+        "confidence": "stated",
+        "timestamp_sec": 286
+      },
+      {
+        "claim": "Large-scale simulation, as used by self-driving car companies, is the only ethical way to iterate on patient-facing AI before exposure.",
+        "confidence": "stated",
+        "timestamp_sec": 356
+      },
+      {
+        "claim": "Simulated LLM patients are preferable to hired standardized-patient actors because actors cannot scale to fast iteration across many scenarios.",
+        "confidence": "stated",
+        "timestamp_sec": 389
+      },
+      {
+        "claim": "There is no single realistic patient to simulate; diverse personas (verbose vs. terse) must be simulated instead.",
+        "confidence": "stated",
+        "timestamp_sec": 543
+      },
+      {
+        "claim": "An LLM judge validated on 240 examples performs at least on par with, if not slightly better than, expert clinicians at detecting clinical hazards, reaching F1 0.96 with near-perfect sensitivity.",
+        "confidence": "stated",
+        "timestamp_sec": 613
+      },
+      {
+        "claim": "In healthcare evaluation you should deliberately over-call hazards rather than risk under-calling them, because false positives are mildly annoying while false negatives can be catastrophic.",
+        "confidence": "stated",
+        "timestamp_sec": 651
+      },
+      {
+        "claim": "Evaluation alone does not improve a product; pass/fail grading must be wired into an optimization loop.",
+        "confidence": "stated",
+        "timestamp_sec": 651
+      },
+      {
+        "claim": "Manual prompt engineering cannot survive prompt brittleness \u2014 formatting changes alone have swung benchmarks by 76 percentage points \u2014 so it should be replaced by automated prompt optimizers like GEPA.",
+        "confidence": "stated",
+        "timestamp_sec": 685
+      },
+      {
+        "claim": "Automated prompt optimization reduces tuning time from hours or days to roughly 30 to 60 minutes while producing a reproducible audit trail.",
+        "confidence": "stated",
+        "timestamp_sec": 761
+      },
+      {
+        "claim": "Evaluation metrics should be defined jointly with clinicians as an explicit cost matrix rather than a flat accuracy score.",
+        "confidence": "stated",
+        "timestamp_sec": 794
+      },
+      {
+        "claim": "Passing every simulated test does not prove the product helps real patients; simulation is necessary but not sufficient and only earns the right to test carefully.",
+        "confidence": "stated",
+        "timestamp_sec": 944
+      },
+      {
+        "claim": "System autonomy should be granted in proportion to accumulated evidence, expanded stage by stage with clinicians in the loop.",
+        "confidence": "stated",
+        "timestamp_sec": 978
+      },
+      {
+        "claim": "The regulatory deliverable is the traceable evidence \u2014 calls, datasets, pinned prompts, judge verdicts mapped to specific hazards \u2014 not the model itself.",
+        "confidence": "stated",
+        "timestamp_sec": 978
+      },
+      {
+        "claim": "Voice introduces new failure modes such as back-channeling and interruptions that cause weak models to abandon in-progress safety advice, but the hazard-simulation framework transfers unchanged to new modalities.",
+        "confidence": "stated",
+        "timestamp_sec": 1055
+      },
+      {
+        "claim": "Dora augments rather than replaces clinicians by removing time-consuming follow-up calls from their workload.",
+        "confidence": "stated",
+        "timestamp_sec": 85
+      }
+    ],
+    "speaker_org": "Ufonia"
+  },
+  "_meta": {
+    "slug": "shipping-ai-to-a-million-patients-without-an-ab-test",
+    "video_id": "McknwOzbmyg",
+    "url": "https://www.youtube.com/watch?v=McknwOzbmyg",
+    "word_count": 3617,
+    "wall_sec": 89.3,
+    "run_at": "2026-08-20T02:51:02Z",
+    "effort": "default"
+  }
+}

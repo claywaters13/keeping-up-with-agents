@@ -1,6 +1,6 @@
 ---
 type: regex
-pattern: "246"
+pattern: "256"
 match: contains
 weight: 1
 ---

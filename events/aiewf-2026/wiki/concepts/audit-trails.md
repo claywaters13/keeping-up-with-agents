@@ -4,15 +4,15 @@ type: "concept"
 slug: "audit-trails"
 tier: "supporting"
 maturity: "consolidating"
-talk_count: 14
-speaker_count: 14
+talk_count: 15
+speaker_count: 16
 ---
 
 # audit trails
 
 **Maturity: CONSOLIDATING** — Consolidating — converging practice, some open edges
 
-*Supporting concept* &middot; discussed across **14** talk(s) by **14** speaker(s)
+*Supporting concept* &middot; discussed across **15** talk(s) by **16** speaker(s)
 
 **Definition:** Durable, attributable records of what an agent did and why, produced for compliance and after-the-fact accountability rather than debugging.
 
@@ -20,31 +20,51 @@ speaker_count: 14
 
 ## State of Practice
 
-The field has moved from "log everything" to "produce evidence," and the distinction is now load-bearing: a transcript, a tool's success return, or an agent's own "looks done to me" are treated as claims, not proof, while a receipt records what the system allowed, what was attempted, what executed, and what the user-visible edge confirmed. The record is expected to be emitted by deterministic infrastructure outside the model — harness commit paths, blocking gates, flag middleware, async hooks on tool calls, immutable event logs — because anything the agent narrates about itself is unverifiable. Attribution has hardened into a specific schema several speakers converge on independently: which agent identity acted, on behalf of which user, under which authorization, granted when, scoped how, expiring when — which is why the identity talks reject giving agents user credentials outright, since acting-as-the-user erases the attribution the audit trail exists to capture. Replayability, not retention, is the acceptance test: a named owner must be able to reconstruct the run, which drives event-sourcing at one end and, at the other, complaints that rented inference endpoints make a generated recommendation impossible to recreate under audit. What remains unsettled is how heavy the record must be (signed tamper-evident chains versus an append-only internal log), whether auditability requires rearchitecting around the log or just a handful of boundary gates, and how much of the accountability chain a human is still supposed to sign.
+The field has converged on a specific structural answer: the audit trail should be an append-only, immutable, timestamped event log that is the system's source of truth, with all other views treated as ephemeral projections of it — not a logging sidecar attached to an agent built around the LLM. Speakers from healthcare, security, finance, and runtime engineering independently argued that a transcript of what the agent said is not evidence; what counts is a receipt recording what the system allowed, what was attempted, what executed, and what the user-visible edge confirmed, plus who authorized it, on behalf of whom, and for how long. Compliance-grade records (SOC 2, HITRUST, HIPAA, EU AI Act) are treated as categorically different from developer logs — they must cover every action, every data access, and every authorization, and must survive a court or regulator, because accountability today sits with the developer or the named human who signs, not the model vendor. Two practical refinements recur: the log must be executable (replay, rollback, fork, reproduce a recommendation) rather than merely readable, and sensitive payloads should live in separate immutable object storage that the log only references, so engineers can retrace agent behavior from schema alone. The live arguments are about cost of entry — whether you must rebuild on an event-sourced foundation or can bolt a handful of blocking boundary gates onto what you already run — and about whether an agent's own attestation can ever be evidence.
 
 ## Consensus
 
-### Agent self-report is not evidence; the record of what happened must be emitted by the system at the action boundary, and a transcript or a tool's success return does not prove the external effect occurred.
+### The audit trail should be an append-only immutable event log that is the system's source of truth, with all state and views derived as projections of it, rather than logging bolted onto an agent built around the LLM.
 
-Support: **5** talk(s)
+Support: **3** talk(s)
+
+> "And architecting this way, the making this trade-off, uh means that auditability becomes trivial. It falls out of your data storage paradigm that you've chosen."
+>
+> — [Why Your Enterprise Tech Stack Isn’t Ready for AI Agents](../talks/why-your-enterprise-tech-stack-isnt-ready-for-ai-agents.md), [6:55](https://www.youtube.com/watch?v=mav15aW9lLM&t=415s)
+
+Supporting talks: [Why Your Enterprise Tech Stack Isn’t Ready for AI Agents](../talks/why-your-enterprise-tech-stack-isnt-ready-for-ai-agents.md), [Active Graph Agent Runtime (BabyAGI 4)](../talks/active-graph-agent-runtime-babyagi-4.md), [Your Agent Didn't Fail. Your Harness Did.](../talks/your-agent-didnt-fail-your-harness-did.md)
+
+### A transcript or an agent's own claim of success is not proof of what happened; the audit artifact must be a receipt covering allowance, attempt, execution, and externally confirmed effect.
+
+Support: **4** talk(s)
 
 > "A transcript tells you what the agent said. A receipt tells you what the system allowed, attempted, executed and what the user visible edge confirmed."
 >
 > — [Your Agent Didn't Fail. Your Harness Did.](../talks/your-agent-didnt-fail-your-harness-did.md), [3:23](https://www.youtube.com/watch?v=BInpv7lGp1o&t=203s)
 
-Supporting talks: [Your Agent Didn't Fail. Your Harness Did.](../talks/your-agent-didnt-fail-your-harness-did.md), [What Does Done Even Mean? Agents and Paperclip's Liveness Model](../talks/what-does-done-even-mean-agents-and-paperclips-liveness-model.md), [Every Solo Agent Builder Eventually Reinvents a Worse Version of CI/CD](../talks/every-solo-agent-builder-eventually-reinvents-a-worse-version-of-cicd.md), [Build for the Memo, Not the Demo](../talks/build-for-the-memo-not-the-demo.md), [Agents Need Receipts, Not More Tool Calls](../talks/agents-need-receipts-not-more-tool-calls.md)
+Supporting talks: [Your Agent Didn't Fail. Your Harness Did.](../talks/your-agent-didnt-fail-your-harness-did.md), [Agents Need Receipts, Not More Tool Calls](../talks/agents-need-receipts-not-more-tool-calls.md), [Every Solo Agent Builder Eventually Reinvents a Worse Version of CI/CD](../talks/every-solo-agent-builder-eventually-reinvents-a-worse-version-of-cicd.md), [Build for the Memo, Not the Demo](../talks/build-for-the-memo-not-the-demo.md)
 
-### Every recorded action must be attributable to a distinct agent identity plus the principal and authorization behind it — who acted, on behalf of whom, under what grant, when, and for how long.
+### The record must capture authorization and attribution — which agent acted, on behalf of which principal, authorized by whom, when, with what scope and lifetime — not just the action taken.
 
-Support: **5** talk(s)
+Support: **4** talk(s)
 
 > "you have to have absolute visibility into what your agent can do, every action that's taken in your system, who took it, on behalf of whom, and who authorized it, when was the authorization given, what authorization was given, how long is it given for"
 >
 > — [You Didn't Ship a Bug. You Just Wrote It for a Human.](../talks/you-didnt-ship-a-bug-you-just-wrote-it-for-a-human.md), [11:43](https://www.youtube.com/watch?v=lMCxVorb9wM&t=703s)
 
-Supporting talks: [You Didn't Ship a Bug. You Just Wrote It for a Human.](../talks/you-didnt-ship-a-bug-you-just-wrote-it-for-a-human.md), [Full Workshop: Better Auth](../talks/full-workshop-better-auth.md), [Agents Need Feature Flags](../talks/agents-need-feature-flags.md), [Agentic Development Security](../talks/agentic-development-security.md), [Build for the Memo, Not the Demo](../talks/build-for-the-memo-not-the-demo.md)
+Supporting talks: [You Didn't Ship a Bug. You Just Wrote It for a Human.](../talks/you-didnt-ship-a-bug-you-just-wrote-it-for-a-human.md), [Why Your Enterprise Tech Stack Isn’t Ready for AI Agents](../talks/why-your-enterprise-tech-stack-isnt-ready-for-ai-agents.md), [Full Workshop: Better Auth](../talks/full-workshop-better-auth.md), [Agents Need Feature Flags](../talks/agents-need-feature-flags.md)
 
-### The purpose of the record is after-the-fact reconstruction — replay, rollback, or reproduction of a specific decision — not storage; a log nobody can replay does not count.
+### Audit trails exist because accountability for agent actions currently lands on the humans and organizations deploying them, so the record must be defensible after the fact to auditors, regulators, or a court.
+
+Support: **4** talk(s)
+
+> "say our agent's decisions came up in a court of law. Could we show a justifiable chain of evidence for why the particular actions were taken by a decision?"
+>
+> — [Why Your Enterprise Tech Stack Isn’t Ready for AI Agents](../talks/why-your-enterprise-tech-stack-isnt-ready-for-ai-agents.md), [6:07](https://www.youtube.com/watch?v=mav15aW9lLM&t=367s)
+
+Supporting talks: [Why Your Enterprise Tech Stack Isn’t Ready for AI Agents](../talks/why-your-enterprise-tech-stack-isnt-ready-for-ai-agents.md), [Agentic Development Security](../talks/agentic-development-security.md), [Build for the Memo, Not the Demo](../talks/build-for-the-memo-not-the-demo.md), [Agents Need Feature Flags](../talks/agents-need-feature-flags.md)
+
+### The log's value comes from being executable — replay, rollback, fork, and reconstruction of a past decision — not merely from being readable after an incident.
 
 Support: **4** talk(s)
 
@@ -52,101 +72,77 @@ Support: **4** talk(s)
 >
 > — [Active Graph Agent Runtime (BabyAGI 4)](../talks/active-graph-agent-runtime-babyagi-4.md), [3:43](https://www.youtube.com/watch?v=khVX_BUnEwU&t=223s)
 
-Supporting talks: [Active Graph Agent Runtime (BabyAGI 4)](../talks/active-graph-agent-runtime-babyagi-4.md), [Your Agent Didn't Fail. Your Harness Did.](../talks/your-agent-didnt-fail-your-harness-did.md), [Stop Renting Your Cognitive Infrastructure](../talks/stop-renting-your-cognitive-infrastructure.md), [Agents Need Receipts, Not More Tool Calls](../talks/agents-need-receipts-not-more-tool-calls.md)
-
-### Accountability terminates in an identified human or organization and cannot be transferred to the model or its vendor; the audit trail exists to make that signature defensible.
-
-Support: **4** talk(s)
-
-> "You can't outsource accountability to your own software. At the bottom of every real decision, a human signs."
->
-> — [Build for the Memo, Not the Demo](../talks/build-for-the-memo-not-the-demo.md), [19:21](https://www.youtube.com/watch?v=tJFjeMBKbIY&t=1161s)
-
-Supporting talks: [Build for the Memo, Not the Demo](../talks/build-for-the-memo-not-the-demo.md), [Agentic Development Security](../talks/agentic-development-security.md), [Full Workshop: Better Auth](../talks/full-workshop-better-auth.md), [What Does Done Even Mean? Agents and Paperclip's Liveness Model](../talks/what-does-done-even-mean-agents-and-paperclips-liveness-model.md)
-
-### An observability layer that only records without the ability to stop an action is insufficient; the same path that produces the record must be able to block, kill, or refuse.
-
-Support: **4** talk(s)
-
-> "A gate which logs only warnings is not a gate. It's a suggestion. The gate needs to block the artifact from moving forward."
->
-> — [Every Solo Agent Builder Eventually Reinvents a Worse Version of CI/CD](../talks/every-solo-agent-builder-eventually-reinvents-a-worse-version-of-cicd.md), [10:01](https://www.youtube.com/watch?v=WLXxTaPagA8&t=601s)
-
-Supporting talks: [Every Solo Agent Builder Eventually Reinvents a Worse Version of CI/CD](../talks/every-solo-agent-builder-eventually-reinvents-a-worse-version-of-cicd.md), [Agents Need Feature Flags](../talks/agents-need-feature-flags.md), [Agentic Development Security](../talks/agentic-development-security.md), [You Didn't Ship a Bug. You Just Wrote It for a Human.](../talks/you-didnt-ship-a-bug-you-just-wrote-it-for-a-human.md)
+Supporting talks: [Active Graph Agent Runtime (BabyAGI 4)](../talks/active-graph-agent-runtime-babyagi-4.md), [Your Agent Didn't Fail. Your Harness Did.](../talks/your-agent-didnt-fail-your-harness-did.md), [Why Your Enterprise Tech Stack Isn’t Ready for AI Agents](../talks/why-your-enterprise-tech-stack-isnt-ready-for-ai-agents.md), [Stop Renting Your Cognitive Infrastructure](../talks/stop-renting-your-cognitive-infrastructure.md)
 
 ## Disagreements
 
-### Should human approval be the mechanism that makes agent actions accountable, or does it collapse at production volume and need to be replaced by machine-produced evidence?
+### Does auditability require rearchitecting the agent around an event log, or can it be added as a thin layer of boundary controls over an existing agent?
 
 | Position A | Position B |
 |---|---|
-| A named human must sign at the end of the chain and autonomy should default to 'suggest', with auto-approve earned per surface and auto-execute opt-in per tool; a system whose figures don't match should refuse to ship rather than defer to a reviewer.<br>*[Build for the Memo, Not the Demo](../talks/build-for-the-memo-not-the-demo.md), [Agents Need Feature Flags](../talks/agents-need-feature-flags.md)* | Exhaustive human sign-off becomes verification theater at high task volume, and approval prompts are unworkable for background and cloud agents, so authority must be encoded as deterministic policy and 'done' proven by a separate verifying agent plus receipts.<br>*[What Does Done Even Mean? Agents and Paperclip's Liveness Model](../talks/what-does-done-even-mean-agents-and-paperclips-liveness-model.md), [Agentic Development Security](../talks/agentic-development-security.md), [Full Workshop: Better Auth](../talks/full-workshop-better-auth.md)* |
+| Auditability must be a property of the foundation: build around an append-only event log as ground truth, treat state as a projection, and rebuild toward POC accuracy on those primitives — bolting audit onto a working POC produces brittle systems that don't generalize.<br>*[Why Your Enterprise Tech Stack Isn’t Ready for AI Agents](../talks/why-your-enterprise-tech-stack-isnt-ready-for-ai-agents.md), [Active Graph Agent Runtime (BabyAGI 4)](../talks/active-graph-agent-runtime-babyagi-4.md), [Your Agent Didn't Fail. Your Harness Did.](../talks/your-agent-didnt-fail-your-harness-did.md)* | No new platform, framework, or runtime is needed: add a few blocking gates at the most expensive handoffs, or a thin middleware in front of the existing agent loop using off-the-shelf flag services, and record which gate fired.<br>*[Every Solo Agent Builder Eventually Reinvents a Worse Version of CI/CD](../talks/every-solo-agent-builder-eventually-reinvents-a-worse-version-of-cicd.md), [Agents Need Feature Flags](../talks/agents-need-feature-flags.md), [Agentic Development Security](../talks/agentic-development-security.md)* |
 
-*Why it matters: It determines whether your audit trail is a queue of approvals a person must clear (which caps throughput at human review capacity) or a stream of machine-generated evidence a person samples after the fact. The second scales but shifts the compliance burden onto the completeness of the evidence schema.*
+*Why it matters: This is the difference between a multi-quarter rewrite and a week of instrumentation, and it decides whether teams already in production can get a compliance-grade trail at all or must ship without one until they rebuild.*
 
-### How strong must the record be — a cryptographically signed, tamper-evident chain, or an append-only internal log plus source links?
-
-| Position A | Position B |
-|---|---|
-| Sign the chain: per-agent private keys, signed receipts whose chain is only valid if no data point is tampered with, attestation with a public transparency log, and a security-critical codebase kept small enough (~20k lines) to fully audit.<br>*[Agents Need Receipts, Not More Tool Calls](../talks/agents-need-receipts-not-more-tool-calls.md), [Privacy-Preserving Intelligence](../talks/privacy-preserving-intelligence.md), [Full Workshop: Better Auth](../talks/full-workshop-better-auth.md)* | An immutable typed event log, a flag audit trail in an off-the-shelf service, a record of which gate failed, and one-click provenance back to the source paragraph are sufficient; the work is plumbing and honesty, not cryptography.<br>*[Active Graph Agent Runtime (BabyAGI 4)](../talks/active-graph-agent-runtime-babyagi-4.md), [Agents Need Feature Flags](../talks/agents-need-feature-flags.md), [Every Solo Agent Builder Eventually Reinvents a Worse Version of CI/CD](../talks/every-solo-agent-builder-eventually-reinvents-a-worse-version-of-cicd.md), [Build for the Memo, Not the Demo](../talks/build-for-the-memo-not-the-demo.md)* |
-
-*Why it matters: Signature chains are the only option when the counterparty reading the record is outside your trust boundary — another lab, a payer, a regulator — while inside one org they are cost with no additional assurance. Picking wrong either blocks cross-organizational agent collaboration or burns budget on crypto nobody verifies.*
-
-### Does auditability require rearchitecting the agent around its log, or can it be retrofitted as a few boundary checks on the system you already have?
+### Is a named human approving at decision time required for accountability, or does an attributable after-the-fact record replace it?
 
 | Position A | Position B |
 |---|---|
-| Build around the log: flatten agent changes and agent actions into one immutable event log as ground truth, derive graph state as a projection of it, and accept that the resulting code is unintuitive enough that only an AI should write it.<br>*[Active Graph Agent Runtime (BabyAGI 4)](../talks/active-graph-agent-runtime-babyagi-4.md), [Your Agent Didn't Fail. Your Harness Did.](../talks/your-agent-didnt-fail-your-harness-did.md)* | No new platform, framework, or flag backend is needed — add a small number of blocking gates at the most expensive handoff and put a thin middleware layer in front of the existing agent loop.<br>*[Every Solo Agent Builder Eventually Reinvents a Worse Version of CI/CD](../talks/every-solo-agent-builder-eventually-reinvents-a-worse-version-of-cicd.md), [Agents Need Feature Flags](../talks/agents-need-feature-flags.md)* |
+| A human must sign: every real decision ends with a fundable, accountable person, agents are never detached principals and always report to a user, and escalation to a human must remain possible at any step.<br>*[Build for the Memo, Not the Demo](../talks/build-for-the-memo-not-the-demo.md), [Full Workshop: Better Auth](../talks/full-workshop-better-auth.md), [Why Your Enterprise Tech Stack Isn’t Ready for AI Agents](../talks/why-your-enterprise-tech-stack-isnt-ready-for-ai-agents.md)* | Per-action human approval does not survive background and cloud agents or high task volume — it degenerates into verification theater — so deterministic policy plus a verifiable receipt chain must carry the accountability instead.<br>*[Agentic Development Security](../talks/agentic-development-security.md), [What Does Done Even Mean? Agents and Paperclip's Liveness Model](../talks/what-does-done-even-mean-agents-and-paperclips-liveness-model.md), [Agents Need Receipts, Not More Tool Calls](../talks/agents-need-receipts-not-more-tool-calls.md)* |
 
-*Why it matters: One path costs a rewrite and buys replay, rollback, and forking as free properties; the other costs a week and buys evidence only at the boundaries you instrumented. Teams that pick the cheap path and later need full replay cannot reconstruct history that was never written.*
+*Why it matters: It determines whether the audit trail is a record of human sign-offs (which caps agent throughput at human review capacity) or a record of machine-enforced policy decisions (which shifts liability onto whoever wrote the policy).*
 
-### Can a decision made on a rented inference endpoint be made auditable, or does reproducibility require owning the model?
+### Can an agent-produced attestation count as audit evidence, or does evidence have to be deterministic and externally observed?
 
 | Position A | Position B |
 |---|---|
-| It cannot: recreating a model-generated recommendation requires access into the model itself, third-party inference dependencies get redlined in real audits, and controlling data, traces, and compute locally is what makes step-by-step verification possible.<br>*[Stop Renting Your Cognitive Infrastructure](../talks/stop-renting-your-cognitive-infrastructure.md), [Memory Harnesses for Long-Running Research Agents](../talks/memory-harnesses-for-long-running-research-agents.md), [Privacy-Preserving Intelligence](../talks/privacy-preserving-intelligence.md)* | Auditability is a property of the harness, not the weights: receipts at the commit boundary, evidence produced by a separate verifier model, and a shared receipt interface that explicitly does not require every node to run the same software stack.<br>*[Your Agent Didn't Fail. Your Harness Did.](../talks/your-agent-didnt-fail-your-harness-did.md), [What Does Done Even Mean? Agents and Paperclip's Liveness Model](../talks/what-does-done-even-mean-agents-and-paperclips-liveness-model.md), [Agents Need Receipts, Not More Tool Calls](../talks/agents-need-receipts-not-more-tool-calls.md)* |
+| Agent-produced verification is acceptable if the verifier is a different model from the author and is given real tooling (browser harnesses, screenshots, hooks) to produce artifacts rather than self-reporting; gated self-modification loops can likewise accept or reject their own patches.<br>*[What Does Done Even Mean? Agents and Paperclip's Liveness Model](../talks/what-does-done-even-mean-agents-and-paperclips-liveness-model.md), [Active Graph Agent Runtime (BabyAGI 4)](../talks/active-graph-agent-runtime-babyagi-4.md)* | Only deterministic, externally confirmed evidence counts: model-level judgment is unreliable, a tool reporting success does not prove the user saw the result, asking a model to check its own output is not a control, and gates must block rather than warn.<br>*[Your Agent Didn't Fail. Your Harness Did.](../talks/your-agent-didnt-fail-your-harness-did.md), [Agentic Development Security](../talks/agentic-development-security.md), [Build for the Memo, Not the Demo](../talks/build-for-the-memo-not-the-demo.md), [Every Solo Agent Builder Eventually Reinvents a Worse Version of CI/CD](../talks/every-solo-agent-builder-eventually-reinvents-a-worse-version-of-cicd.md)* |
 
-*Why it matters: If reproducibility genuinely requires model access, regulated deployments must own or self-host inference, which changes the cost structure by orders of magnitude. If receipts at the boundary suffice, hosted frontier models stay viable in compliance-bound settings.*
+*Why it matters: If model attestations are admissible, verification scales with compute; if not, every claim in the trail needs a deterministic checker or an external edge confirmation, which bounds how much agent work can be certified.*
 
 ## Practical Guidance
 
 **Do:**
 
-- Emit a receipt per action recording four things separately: what policy allowed, what was attempted, what executed, and what the user-visible edge confirmed — internal success is not external proof.
-- Model 'done' as an object with artifact, scope, rubric, evidence, verifier, approver, residual risk, and next action, instead of a single green checkmark that conflates mergeable, deployable, and announceable.
-- Make the verifier a different model from the author (code with Claude, verify with Codex) and give it real verification tooling — browser harnesses, screenshots, custom hooks — rather than asking the author whether it is done.
-- Keep agent self-modification and agent actions in one immutable event log rather than tracking them in two places, so state is a projection of the log and replay/rollback/fork come for free.
-- Bind every agent to its own identity — its own private key or client ID, always reporting to a named user — instead of handing it the user's credentials, and log the grant, its scope, and its expiry.
-- Resolve flags and authority per turn, not at session start, and force sub-agents through the same middleware, so a kill switch reaches in-flight work and spawned children.
-- Hold flag audit-trail completeness at 100% (who flipped what, when), and target under 5 minutes to a kill switch and under 30 minutes to a prompt rollback.
-- Make provenance one click: a reviewer should land on the exact source paragraph in about 30 seconds, and estimates should carry a label that survives being copy-pasted into someone else's slides three weeks later.
-- Escalate contradictions between sources to a human instead of resolving them silently — the contradiction is the highest-value signal in diligence.
-- Log which gate failed, not just the final artifact, so a 2 a.m. scheduled-run failure is diagnosable from the record alone.
-- Instrument the most expensive handoff first — the one where bad data costs the most — rather than the most technically interesting one.
-- Give every external boundary a terminal state (success, failure, timeout, cancel, max attempts) and make recovery commands runnable without queueing behind the stuck work.
+- Make an append-only timestamped event log the single source of truth and treat every view of system state as an ephemeral computed projection of it.
+- Put changes to the agent itself and the agent's actions in the same log rather than tracking them in two different places.
+- Emit a receipt per external action recording what the system allowed, what was attempted, what executed, and what the user-visible edge confirmed.
+- Give each agent its own private key and identity so actions are attributable per agent, per host, and per user, with the agent bound to a principal at all times.
+- Record scope and lifetime with every authorization — which tool, which arguments, which session, and when the grant expires — and make expiration terminate rather than loop.
+- Keep sensitive payloads (e.g. PHI) in immutable schema-driven object storage that the event log only references, so developers can retrace agent steps from schema alone.
+- Make gates blocking and record which gate failed, so a scheduled run that dies at 2 a.m. is diagnosable from the trail rather than from the final artifact.
+- Instrument the most expensive handoff first — the one where bad data costs the most — not the most technically complex one.
+- Ship one-click provenance from any generated claim to the exact source paragraph, verifiable in about 30 seconds.
+- Label estimates separately from facts with a tag that survives being copy-pasted into someone else's document weeks later.
+- Escalate contradictions between sources to a human instead of silently resolving them inside the model.
+- Separate the verifier from the author, using a different model for verification (e.g. code with Claude, verify with Codex).
+- Track flag-change audit completeness at 100% — who flipped what, when — and give every flag an owner and a removal date.
+- Replay real production events for evaluation rather than relying on offline eval datasets that drift and may be unrepresentative.
+- Enforce one ordered commit path per mutable state boundary so the recorded sequence matches what actually happened.
 
 **Avoid:**
 
-- Asking the model to check its own output — 'are these cases real?' answered by the same chatbot is not a hallucination control.
-- Treating a tool's success return or a clean transcript as proof the effect reached the user; delivery can survive while state does not.
-- Gates that only log warnings, which are suggestions rather than controls.
-- Sub-agents that bypass the flag/audit middleware — the parent looks governed while a flipped kill switch never reaches the child.
-- Letting the agent act as the user or pretend to be the user, which destroys per-agent attribution at exactly the moment you need it.
-- Coarse OAuth scopes as the audit substrate: 'can send email on your behalf' records nothing about hour, sender, or recipient.
-- Relying on a person happening to have both documents open at once to catch a contradiction — luck is not a control.
-- Keeping temporary rollout flags past their removal date; every flag needs an owner and a deletion date or it becomes a load-bearing hidden coupling.
-- Assuming a rented inference endpoint will let you reconstruct a recommendation when an auditor asks; third-party dependencies have been redlined for exactly this.
-- Shipping because the artifact looks complete — the dangerous failure is a polished output that passed no check, not a visibly bad one.
-- Prompting a human for approval on every read action in a background-agent setting; it is both unusable and no longer a real control.
+- Treating a transcript, or a tool returning success, as proof that the action reached the outside world.
+- Last-writer-wins state, where two individually correct writes produce one wrong outcome and an unreconstructable history.
+- Asking the model that produced an output to verify that output.
+- Sub-agents spawned outside the flag/audit middleware, so a kill switch or policy change never reaches them and their actions never appear in the record.
+- Building up from a successful POC and strapping on auditability, security, and evals as requirements surface.
+- Gates that only log warnings — a gate that cannot halt the artifact is a suggestion, not a control.
+- Relying on per-action human approval as the governance mechanism for background and cloud agents.
+- Handing agents your own credentials, which destroys attribution by making the agent indistinguishable from the user.
+- Broad OAuth scopes (e.g. 'can send email on your behalf') with no time-of-day, sender, or recipient constraints to record against.
+- Rented model endpoints when you need to reproduce a model-generated recommendation for an audit — a third-party dependency can be redlined and block the deployment.
+- Retrieval that ranks by proximity to the query without distinguishing an audited filing from an informal note.
+- Leaving temporary rollout flags in place after rollout, where they become undocumented load-bearing couplings years later.
 
 ## Notable Outliers
 
-- An agent's identity should be understood as derived from its own event log — we are not our reasoning capability but the beliefs and behaviors derived from lived experience — making the audit log constitutive of the agent rather than a record about it. ([Active Graph Agent Runtime (BabyAGI 4)](../talks/active-graph-agent-runtime-babyagi-4.md), [16:36](https://www.youtube.com/watch?v=khVX_BUnEwU&t=996s))
-- In an audit of nearly 4,000 ClawHub skills, over one in eight had a critical severity issue and 76 malicious payloads were found; malicious skills can modify agent memory, so they persist even after the skill is removed. ([Agentic Development Security](../talks/agentic-development-security.md), [7:14](https://www.youtube.com/watch?v=cgimkNGNjvU&t=434s))
-- More than two kill-switch fires per week indicates a problem worth investigating; the target is zero. ([Agents Need Feature Flags](../talks/agents-need-feature-flags.md), [14:41](https://www.youtube.com/watch?v=zU4EagB311U&t=881s))
-- Deliberately capping the security-critical codebase at roughly 20k lines of a memory-safe language, mostly attestation verification, is what makes full external audit feasible at all. ([Privacy-Preserving Intelligence](../talks/privacy-preserving-intelligence.md), [11:40](https://www.youtube.com/watch?v=IvE8n-ylFYY&t=700s))
-- Cross-document correlation cut false positives by 76% and manual audit effort by roughly 40% across ~3 million records over 4 regulatory jurisdictions, turning compliance from periodic review into a continuous function. ([AI-Driven Multi-Document Correlation for Financial Compliance](../talks/ai-driven-multi-document-correlation-for-financial-compliance.md), [11:28](https://www.youtube.com/watch?v=Iwe_RY-fYgI&t=688s))
-- A third-party inference vendor dependency was redlined during an audit and the deployment could not go forward — the blocker was procurement-side auditability, not model quality. ([Stop Renting Your Cognitive Infrastructure](../talks/stop-renting-your-cognitive-infrastructure.md), [4:15](https://www.youtube.com/watch?v=Bck7ABCZRZI&t=255s))
+- An agent's identity should be understood as derived from its own event log — closer to lived experience than to reasoning capability — which reframes the audit trail as the thing that constitutes the agent rather than a record about it. ([Active Graph Agent Runtime (BabyAGI 4)](../talks/active-graph-agent-runtime-babyagi-4.md), [16:36](https://www.youtube.com/watch?v=khVX_BUnEwU&t=996s))
+- The log's underrated payoff is negative results: an agent with its own history understands which experiments were already tried and failed, which YOLO-style iteration destroys. ([Active Graph Agent Runtime (BabyAGI 4)](../talks/active-graph-agent-runtime-babyagi-4.md), [14:19](https://www.youtube.com/watch?v=khVX_BUnEwU&t=859s))
+- Developers can debug and retrace agent behavior seeing only the schema of the data and never the protected health information itself, making full observability compatible with strict data minimization. ([Why Your Enterprise Tech Stack Isn’t Ready for AI Agents](../talks/why-your-enterprise-tech-stack-isnt-ready-for-ai-agents.md), [11:16](https://www.youtube.com/watch?v=mav15aW9lLM&t=676s))
+- After marketplace discovery, receipts should be exchanged peer-to-peer with no third party mediating quote, deal, execution, or receipt — the chain is valid only if no data point is tampered with. ([Agents Need Receipts, Not More Tool Calls](../talks/agents-need-receipts-not-more-tool-calls.md), [8:40](https://www.youtube.com/watch?v=Fu45geO3zX8&t=520s))
+- Concrete operating thresholds: flag audit trail completeness must be 100%, more than two kill switch fires per week signals a problem, and rollback targets are under 5 minutes for a kill switch and under 30 minutes for a prompt. ([Agents Need Feature Flags](../talks/agents-need-feature-flags.md), [14:41](https://www.youtube.com/watch?v=zU4EagB311U&t=881s))
+- Use a public transparency log (Sigstore) so anyone outside the company can verify the running workload is genuine, extending auditability past the operator's own perimeter. ([Privacy-Preserving Intelligence](../talks/privacy-preserving-intelligence.md), [5:06](https://www.youtube.com/watch?v=IvE8n-ylFYY&t=306s))
 
 ## All Talks
 
@@ -162,17 +158,20 @@ Supporting talks: [Every Solo Agent Builder Eventually Reinvents a Worse Version
 - [Privacy-Preserving Intelligence](../talks/privacy-preserving-intelligence.md)
 - [Stop Renting Your Cognitive Infrastructure](../talks/stop-renting-your-cognitive-infrastructure.md)
 - [What Does Done Even Mean? Agents and Paperclip's Liveness Model](../talks/what-does-done-even-mean-agents-and-paperclips-liveness-model.md)
+- [Why Your Enterprise Tech Stack Isn’t Ready for AI Agents](../talks/why-your-enterprise-tech-stack-isnt-ready-for-ai-agents.md)
 - [You Didn't Ship a Bug. You Just Wrote It for a Human.](../talks/you-didnt-ship-a-bug-you-just-wrote-it-for-a-human.md)
 - [Your Agent Didn't Fail. Your Harness Did.](../talks/your-agent-didnt-fail-your-harness-did.md)
 
 ## Speakers
 
 - [Armanas Povilionis](../speakers/armanas-povilionis.md)
+- [Christopher Lovejoy](../speakers/christopher-lovejoy.md)
 - [Dotta](../speakers/dotta.md)
 - [Ezra Tanzer](../speakers/ezra-tanzer.md)
 - [Paola Estefania](../speakers/paola-estefania.md)
 - [Ravi Madabhushi](../speakers/ravi-madabhushi.md)
 - [Sachin Gupta](../speakers/sachin-gupta.md)
+- [Saul Howard](../speakers/saul-howard.md)
 - [Shawn Chan](../speakers/shawn-chan.md)
 - [Stefania Druga](../speakers/stefania-druga.md)
 - [Steve Korshakov](../speakers/steve-korshakov.md)
