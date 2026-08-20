@@ -68,7 +68,8 @@ Each season of the material also ships as an AI-narrated podcast, "Keeping up wi
 Agents." If you want the show, use a podcast app, not this repo:
 
 - **RSS feed:** https://claywaters13.github.io/keeping-up-with-agents/feed.xml
-- Spotify and Apple Podcasts links coming after directory approval.
+- **Spotify:** https://open.spotify.com/show/25ttLwwUesoO1SaPSALBAp
+- Apple Podcasts link coming after directory approval.
 
 Hosts are AI-generated (Google NotebookLM) and every episode discloses this. Episode
 audio is hosted as GitHub Release assets, so cloning this repo (or installing the
