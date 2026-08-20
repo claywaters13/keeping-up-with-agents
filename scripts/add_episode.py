@@ -41,12 +41,12 @@ from xml.etree import ElementTree as ET
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 PODCAST_DIR = REPO_ROOT / "episodes"
-FEED_PATH = PODCAST_DIR / "feed.xml"
+FEED_PATH = REPO_ROOT / "feed.xml"  # served from repo root by GitHub Pages
 
-SITE_BASE = "https://claywaters13.github.io/aiewf-2026-wiki"
-REPO_URL = "https://github.com/claywaters13/aiewf-2026-wiki"
+SITE_BASE = "https://claywaters13.github.io/keeping-up-with-agents"
+REPO_URL = "https://github.com/claywaters13/keeping-up-with-agents"
 FEED_URL = f"{SITE_BASE}/feed.xml"
-COVER_URL = f"{SITE_BASE}/podcast/cover.png"
+COVER_URL = f"{SITE_BASE}/cover.png"
 
 SHOW_TITLE = "Keeping up with Agents"
 AUTHOR = "Clay Waters"
@@ -162,7 +162,8 @@ def make_item(mp3_path: Path, slug: str, title: str, description: str,
               pubdate: str, explicit: str) -> ET.Element:
     size_bytes = mp3_path.stat().st_size
     duration = ffprobe_duration_seconds(mp3_path)
-    enclosure_url = f"{SITE_BASE}/podcast/{mp3_path.name}"
+    # audio is a GitHub Release asset (tag: episodes), never in the git tree
+    enclosure_url = f"{REPO_URL}/releases/download/episodes/{mp3_path.name}"
     guid_text = f"{GUID_PREFIX}-{slug}"
     full_description = description.strip() + "\n\n" + DISCLOSURE
 
