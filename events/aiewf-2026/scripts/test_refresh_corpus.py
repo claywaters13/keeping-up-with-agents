@@ -67,16 +67,21 @@ def make_repo():
 class TriageSkipsKnownReuploads(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.mkdtemp(prefix="refresh-known-")
-        self._known = rc.KNOWN_REUPLOADS
-        self._fetch = rc.fetch_meta
+        self._known, self._approved = rc.KNOWN_REUPLOADS, rc.APPROVED_TRACK_ONLY
+        self._fetch, self._index = rc.fetch_meta, rc.load_index
         rc.KNOWN_REUPLOADS = os.path.join(self.tmp, "known_reuploads.json")
+        # Point the approvals file at an absent path: these tests are about the
+        # re-upload memory, and the real file now carries Clay's healthcare
+        # approvals, which would otherwise join every queue under test.
+        rc.APPROVED_TRACK_ONLY = os.path.join(self.tmp, "approved_track_only.json")
+        rc.load_index = lambda: []
         self.fetched = []
         rc.fetch_meta = lambda ids, **kw: (self.fetched.append(list(ids)) or {})
         rc.REPORT["reuploads_skipped"] = []
 
     def tearDown(self):
-        rc.KNOWN_REUPLOADS = self._known
-        rc.fetch_meta = self._fetch
+        rc.KNOWN_REUPLOADS, rc.APPROVED_TRACK_ONLY = self._known, self._approved
+        rc.fetch_meta, rc.load_index = self._fetch, self._index
         shutil.rmtree(self.tmp, ignore_errors=True)
 
     def write_known(self, mapping):
@@ -118,6 +123,105 @@ class TriageSkipsKnownReuploads(unittest.TestCase):
         with open(rc.KNOWN_REUPLOADS, "w") as handle:
             handle.write("{ not json")
         self.assertEqual(rc.load_known_reuploads(), {})
+
+
+class ApprovedTrackOnlyCandidates(unittest.TestCase):
+    """The one way a video outside an official 2026 playlist gets ingested.
+
+    Auto-ingest is deliberately restricted to official-playlist membership, because
+    the topical playlists are cross-year and 2025 contamination is this corpus's
+    stated embarrassment risk. raw/approved_track_only.json is the human override, so
+    what these tests pin down is that approval buys provenance and NOTHING ELSE: an
+    approved video still has to be a 2026 upload and still has to not be a livestream
+    block.
+    """
+
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp(prefix="refresh-approved-")
+        self._approved, self._known = rc.APPROVED_TRACK_ONLY, rc.KNOWN_REUPLOADS
+        self._fetch, self._index = rc.fetch_meta, rc.load_index
+        rc.APPROVED_TRACK_ONLY = os.path.join(self.tmp, "approved_track_only.json")
+        rc.KNOWN_REUPLOADS = os.path.join(self.tmp, "known_reuploads.json")
+        rc.load_index = lambda: [{"video_id": "ALREADY00001", "slug": "s", "word_count": 1}]
+        self.meta = {}
+        rc.fetch_meta = lambda ids, **kw: {v: self.meta[v] for v in ids if v in self.meta}
+        rc.REPORT["approved_track_only"] = []
+        rc.REPORT["still_private"] = 0
+
+    def tearDown(self):
+        rc.APPROVED_TRACK_ONLY, rc.KNOWN_REUPLOADS = self._approved, self._known
+        rc.fetch_meta, rc.load_index = self._fetch, self._index
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def approve(self, *ids):
+        with open(rc.APPROVED_TRACK_ONLY, "w") as handle:
+            json.dump({v: {"approved_by": "Clay", "date": "2026-08-19", "note": "healthcare"}
+                       for v in ids}, handle)
+
+    def test_an_approved_track_only_video_is_ingested_and_labelled(self):
+        self.approve("HEALTH00001")
+        self.meta["HEALTH00001"] = ("20260819", "1200", "Guardrails First — Rashi Agrawal")
+
+        accepted = rc.triage({}, [], ["HEALTH00001"])
+
+        self.assertEqual([r["video_id"] for r in accepted], ["HEALTH00001"])
+        self.assertEqual(accepted[0]["origin"], "track-only, human-approved")
+        # And it leaves the review backlog: a human has already ruled on it.
+        self.assertEqual(rc.REPORT["track_only_candidates"], [])
+        self.assertEqual(rc.REPORT["approved_track_only"], ["HEALTH00001"])
+
+    def test_approval_does_not_waive_the_provenance_gates(self):
+        # The whole reason auto-ingest is narrow. An approval says "this belongs to
+        # the fair", not "skip the checks that keep 2025 out".
+        self.approve("OLD000000001", "LIVE00000001")
+        self.meta["OLD000000001"] = ("20250612", "1200", "A 2025 talk")
+        self.meta["LIVE00000001"] = ("20260819", "1200", "Day 1 Track A livestream")
+
+        self.assertEqual(rc.triage({}, [], ["OLD000000001", "LIVE00000001"]), [])
+
+    def test_an_approved_video_in_no_playlist_at_all_is_still_tried(self):
+        # Approval is a standing decision about a talk, not about the state of the
+        # channel on the morning the job ran. One of the ten healthcare ids Clay
+        # approved (mav15aW9lLM) was unavailable at approval time.
+        self.approve("GONE00000001")
+        self.meta["GONE00000001"] = ("20260819", "900", "Back from the dead")
+
+        accepted = rc.triage({}, [], [])
+
+        self.assertEqual([r["video_id"] for r in accepted], ["GONE00000001"])
+
+    def test_an_unavailable_approved_video_reports_and_retries_rather_than_failing(self):
+        self.approve("PRIV00000001")  # no metadata registered => unavailable
+
+        accepted = rc.triage({}, [], [])
+
+        self.assertEqual(accepted, [])
+        self.assertEqual(rc.REPORT["still_private"], 1)
+
+    def test_an_approved_video_already_in_the_corpus_is_not_re_ingested(self):
+        self.approve("ALREADY00001")
+        self.meta["ALREADY00001"] = ("20260819", "900", "Already indexed")
+
+        self.assertEqual(rc.triage({}, [], []), [])
+
+    def test_a_known_reupload_beats_an_approval(self):
+        # Both files can name the same id. The re-upload record wins: an approved
+        # re-upload is still un-ingestable, and would loop forever.
+        self.approve("REUP123456A")
+        self.meta["REUP123456A"] = ("20260819", "900", "A re-upload")
+        with open(rc.KNOWN_REUPLOADS, "w") as handle:
+            json.dump({"REUP123456A": {"absorbed_into_slug": "x"}}, handle)
+
+        self.assertEqual(rc.triage({}, [], ["REUP123456A"]), [])
+
+    def test_an_unreadable_approvals_file_stops_the_run(self):
+        # Unlike known_reuploads, this must NOT degrade to empty: doing so would
+        # silently un-approve talks a person deliberately cleared.
+        with open(rc.APPROVED_TRACK_ONLY, "w") as handle:
+            handle.write("{ not json")
+        with self.assertRaises(SystemExit) as caught:
+            rc.load_approved_track_only()
+        self.assertEqual(caught.exception.code, 1)
 
 
 class NoopRestoresAndExitsClean(unittest.TestCase):

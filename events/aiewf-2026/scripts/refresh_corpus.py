@@ -74,6 +74,16 @@ VIDEO_IDS = os.path.join(RAW, "video_ids.txt")
 # Wednesday, indefinitely. Gitignored along with the rest of raw/.
 KNOWN_REUPLOADS = os.path.join(RAW, "known_reuploads.json")
 
+# Track-only videos a human has explicitly cleared for ingestion. The auto-ingest
+# rule is deliberately narrow -- only membership in an official 2026 playlist
+# qualifies, because the topical playlists are cross-year and 2025 contamination is
+# this project's stated embarrassment risk -- so this file is the one way a video
+# outside that rule gets in, and only ever by a person putting it there. Approved
+# ids still pass every metadata gate; approval substitutes for playlist provenance,
+# not for the 2026-upload and not-a-livestream checks. Gitignored with the rest of
+# raw/, so nothing about who approved what is published.
+APPROVED_TRACK_ONLY = os.path.join(RAW, "approved_track_only.json")
+
 # The paths the refresh writes, and therefore the only paths it may stage or
 # revert. Defined once so commit_and_push() and restore_tracked_paths() cannot
 # disagree about scope -- one of them staging something the other would not put
@@ -130,6 +140,7 @@ REPORT = {
     "deduped_video_ids": [],
     "reuploads_skipped": [],
     "reuploads_detected": [],
+    "approved_track_only": [],
     "no_caption_video_ids": [],
     "talks_before": None,
     "talks_after": None,
@@ -315,6 +326,25 @@ def load_known_reuploads():
         except ValueError:
             log(f"WARN {os.path.relpath(KNOWN_REUPLOADS, ROOT)} is unreadable; "
                 "treating it as empty, which costs one wasted ingest attempt, not correctness")
+    return {}
+
+
+def load_approved_track_only():
+    """{video_id: {approved_by, date, note}}. Absent file means nobody has approved
+    anything, which is the correct default for a gate that only a human opens."""
+    if os.path.exists(APPROVED_TRACK_ONLY):
+        try:
+            with open(APPROVED_TRACK_ONLY) as handle:
+                data = json.load(handle)
+            if isinstance(data, dict):
+                return data
+        except ValueError:
+            # Deliberately NOT a silent empty dict the way known_reuploads degrades:
+            # there, losing the file costs a wasted ingest attempt; here it would
+            # silently un-approve talks a person deliberately cleared.
+            fail("triage", f"{os.path.relpath(APPROVED_TRACK_ONLY, ROOT)} is not readable "
+                           "JSON. It records human approvals, so this run stops rather "
+                           "than quietly behaving as if nothing was approved.")
     return {}
 
 
@@ -561,13 +591,36 @@ def triage(vid2pl, main_candidates, track_only):
             f" ({entry.get('existing_video_id') or 'video id unresolved'}), "
             f"detected {entry.get('detected', 'unknown')}")
 
-    log(f"fetching metadata for {len(main_candidates)} official-playlist candidate(s)")
-    meta = fetch_meta(main_candidates)
-    for vid in main_candidates:
+    # Human-approved track-only videos join the ingest queue. They are considered even
+    # when they are in no playlist this week and even when they are currently
+    # unavailable: an approval is a standing decision about the talk, not about the
+    # state of the channel on the morning the job happened to run, so an approved id
+    # that is private today simply retries next week like any other candidate.
+    approved = load_approved_track_only()
+    already_have = {rec["video_id"] for rec in load_index()}
+    approved_ids = [v for v in approved
+                    if v not in already_have and v not in known_reuploads]
+    approved_set = set(approved_ids)
+    track_only = [v for v in track_only if v not in approved_set]
+    queue = main_candidates + [v for v in approved_ids if v not in set(main_candidates)]
+    REPORT["approved_track_only"] = approved_ids
+    if approved_ids:
+        log(f"{len(approved_ids)} human-approved track-only candidate(s) joining the queue:")
+        for vid in approved_ids:
+            entry = approved[vid]
+            log(f"  {vid} approved by {entry.get('approved_by', 'unknown')} "
+                f"on {entry.get('date', 'unknown')}"
+                + (f" -- {entry['note']}" if entry.get("note") else ""))
+
+    log(f"fetching metadata for {len(queue)} candidate(s) "
+        f"({len(main_candidates)} official-playlist, {len(approved_ids)} human-approved)")
+    meta = fetch_meta(queue)
+    for vid in queue:
+        origin = "track-only, human-approved" if vid in approved_set else "official playlist"
         row = meta.get(vid)
         if row is None:
             private.append(vid)
-            log(f"  {vid} PRIVATE/UNAVAILABLE")
+            log(f"  {vid} PRIVATE/UNAVAILABLE ({origin})")
             continue
         upload_date, duration, title = row
         if not is_2026_or_later(upload_date):
@@ -580,8 +633,9 @@ def triage(vid2pl, main_candidates, track_only):
             continue
         accepted.append({"video_id": vid, "upload_date": upload_date,
                          "duration": duration, "title": title,
-                         "playlists": vid2pl.get(vid, [])})
-        log(f"  {vid} ACCEPT {upload_date} {duration}s: {title}")
+                         "playlists": vid2pl.get(vid, []),
+                         "origin": origin})
+        log(f"  {vid} ACCEPT [{origin}] {upload_date} {duration}s: {title}")
 
     # Track-only candidates are report-only, and there are hundreds of them
     # because the channel's topical playlists are cross-year. Their metadata is
@@ -632,7 +686,8 @@ def triage(vid2pl, main_candidates, track_only):
     REPORT["track_only_total"] = len(eligible)
 
     log()
-    log(f"accepted for ingestion: {len(accepted)}")
+    log(f"accepted for ingestion: {len(accepted)}"
+        f" ({sum(1 for r in accepted if r['origin'].startswith('track-only'))} human-approved)")
     log(f"known re-uploads skipped: {len(skipped)}")
     log(f"still private on an official 2026 playlist: {len(private)}")
     log(f"track-only videos that did not resolve:     {len(unresolved)}")
@@ -1094,6 +1149,29 @@ def sub_once(path, pattern, replacement, edits):
         edits.append(os.path.relpath(path, REPO))
 
 
+def sub_once_fn(path, pattern, repl_fn, edits):
+    """sub_once for a replacement that has to be computed from what it matched.
+
+    Needed for cross-event totals: the repo root now states a quote count spanning
+    every indexed event, so this event's refresh has to move it by its own delta
+    rather than overwrite it with its own total. Reading the current value out of
+    the file keeps that correct no matter how many events exist.
+    """
+    with open(path, encoding="utf-8") as handle:
+        text = handle.read()
+    new_text, n = re.subn(pattern, repl_fn, text)
+    if n != 1:
+        fail("count_sync",
+             f"pattern matched {n} time(s) in {os.path.relpath(path, REPO)} (expected exactly 1):\n"
+             f"  {pattern}\nThe hand-maintained counts in that file have drifted from what this "
+             "job knows how to update. Fix the file or the pattern by hand; the run stopped "
+             "before committing anything.")
+    if new_text != text:
+        with open(path, "w", encoding="utf-8") as handle:
+            handle.write(new_text)
+        edits.append(os.path.relpath(path, REPO))
+
+
 def count_sync(before, after):
     section("10. COUNT SYNC -- hand-maintained files that carry corpus numbers")
 
@@ -1138,9 +1216,22 @@ def count_sync(before, after):
              f"Headline finding: of\n{ac} concepts synthesized across those talks, zero came "
              f"back settled practice ({acons}\nconsolidating, {acont} contested, "
              f"{afront} frontier)", edits)
-    sub_once(root_readme,
-             rf"{c(bq)} quotes checked character for character",
-             f"{aq:,} quotes checked character for character", edits)
+    # The repo root's quote count spans EVERY indexed event (5,253 = AIEWF 4,925 + YC
+    # 328 as of the 2026-08-19 two-event integration), so it moves by this event's
+    # delta instead of being overwritten with this event's total. Reading the current
+    # figure out of the file keeps that right as more events land.
+    quote_delta = aq - bq
+
+    def bump_combined_quotes(match):
+        current = int(match.group(1).replace(",", ""))
+        return f"{current + quote_delta:,} quotes{match.group(2)}checked character for"
+
+    # Stops at "checked character for" rather than the full "character for character":
+    # the sentence wraps mid-phrase in the README, so requiring the trailing word
+    # would only match if the line break happened to fall somewhere else.
+    sub_once_fn(root_readme,
+                r"([\d,]+) quotes([^.]{0,40}?)checked character for",
+                bump_combined_quotes, edits)
 
     sub_once(event_readme,
              rf"wiki built from {n(bt)} talks at the AI Engineer",
@@ -1159,15 +1250,22 @@ def count_sync(before, after):
              f"settled practice. {acons} are consolidating, {acont} contested, "
              f"{afront} frontier.", edits)
 
+    # SKILL.md and the manifests were rewritten for the two-event integration
+    # (commit 7053728): the counts now sit in "N for aiewf-2026, M for
+    # yc-startup-school-2026" lists and the manifests name both events. Every anchor
+    # below stops at the AIEWF number on purpose -- this job must never touch
+    # another event's figures, and the exactly-once rule is what enforces that.
     sub_once(skill, rf"\(AIEWF 2026, {n(bt)} talks\)", f"(AIEWF 2026, {at} talks)", edits)
-    sub_once(skill, rf"\) — {n(bt)}\npublished talks", f") — {at}\npublished talks", edits)
-    sub_once(skill, rf"\({n(bt)} for aiewf-2026\.\)", f"({at} for aiewf-2026.)", edits)
-    sub_once(skill, rf"\({n(bc)} for aiewf-2026\.\)", f"({ac} for aiewf-2026.)", edits)
-    sub_once(skill, rf"\({n(bs)} for aiewf-2026\.\)", f"({asp} for aiewf-2026.)", edits)
+    sub_once(skill, rf"\) — {n(bt)} published talks", f") — {at} published talks", edits)
+    sub_once(skill, rf"\({n(bt)} for aiewf-2026,", f"({at} for aiewf-2026,", edits)
+    sub_once(skill, rf"\({n(bc)} for aiewf-2026,", f"({ac} for aiewf-2026,", edits)
+    sub_once(skill, rf"\({n(bs)} for aiewf-2026,", f"({asp} for aiewf-2026,", edits)
 
     sub_once(plugin,
-             rf"Currently indexed: AI Engineer World's Fair 2026 \({n(bt)} talks\)",
-             f"Currently indexed: AI Engineer World's Fair 2026 ({at} talks)", edits)
+             rf"Currently indexed: AI Engineer World's Fair 2026 \({n(bt)} talks, {n(bc)} "
+             rf"concepts, {n(bs)} speakers\)",
+             f"Currently indexed: AI Engineer World's Fair 2026 ({at} talks, {ac} "
+             f"concepts, {asp} speakers)", edits)
     sub_once(marketplace,
              rf"currently AI Engineer World's Fair 2026 \({n(bt)} talks, {n(bc)} concepts, "
              rf"{n(bs)} speakers\)",
